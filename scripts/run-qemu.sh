@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ISO=${ISO:-"/media/freezer/SteamLibrary/vms/aspartame-build/artifacts/out/aspartame-x86_64.iso"}
+if test -z "${ISO:-}"; then
+    ISO=$(find /media/freezer/SteamLibrary/vms/aspartame-build/artifacts/out \
+        -maxdepth 1 -type f -name 'aspartame-*.iso' -printf '%T@ %p\n' |
+        sort -nr | head -n1 | cut -d' ' -f2-)
+fi
 RAM=${RAM:-4096}
 CPUS=${CPUS:-4}
 DISK=${DISK:-"/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-test.qcow2"}
