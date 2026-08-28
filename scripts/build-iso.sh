@@ -11,4 +11,6 @@ if ! command -v mkarchiso >/dev/null 2>&1; then
 fi
 
 mkdir -p "$OUT_DIR" "$WORK_DIR"
-mkarchiso -v -r -w "$WORK_DIR" -o "$OUT_DIR" "$PROFILE"
+rm -rf -- "$WORK_DIR"
+mkdir -p "$WORK_DIR"
+mkarchiso -v -w "$WORK_DIR" -o "$OUT_DIR" "$PROFILE"
