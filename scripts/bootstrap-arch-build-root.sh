@@ -15,8 +15,12 @@ test -f "$project_root/Makefile" || {
 }
 
 mkdir -p "$mount_point"
+mount --bind "$build_root" "$build_root"
 mount --bind "$project_root" "$mount_point"
-cleanup() { umount "$mount_point" 2>/dev/null || true; }
+cleanup() {
+    umount "$mount_point" 2>/dev/null || true
+    umount "$build_root" 2>/dev/null || true
+}
 trap cleanup EXIT
 
 mirror="$build_root/etc/pacman.d/mirrorlist"
@@ -28,4 +32,3 @@ sed -i 's|^#Server = https://geo.mirror.pkgbuild.com/|Server = https://geo.mirro
     pacman-key --populate archlinux
     pacman -Sy --noconfirm --needed archiso git
 '
-
