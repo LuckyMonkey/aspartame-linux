@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if test "$(id -u)" -ne 0; then
+    exec sudo -- "$0" "$@"
+fi
+
 build_area=${BUILD_ROOT:-/media/freezer/SteamLibrary/vms/aspartame-build}
 build_root=${ARCH_ROOT:-$build_area/root.x86_64}
 project_root=${PROJECT_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}
