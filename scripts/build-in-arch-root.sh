@@ -27,10 +27,8 @@ mount --bind "$build_root" "$build_root"
 mount --bind "$project_root" "$root_mount"
 mount --bind "$artifact_root" "$artifact_mount"
 mount -t proc proc "$build_root/proc"
-mount --rbind /sys "$build_root/sys"
-mount --make-rslave "$build_root/sys"
-mount --rbind /dev "$build_root/dev"
-mount --make-rslave "$build_root/dev"
+mount --bind /sys "$build_root/sys"
+mount --bind /dev "$build_root/dev"
 # The build only needs a private runtime directory; binding the host's /run
 # recursively leaks desktop mounts (GVFS, portals, snap namespaces) into the
 # chroot and makes cleanup unnecessarily fragile.
