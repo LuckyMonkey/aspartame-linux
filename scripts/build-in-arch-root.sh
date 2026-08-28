@@ -11,6 +11,7 @@ project_root=${PROJECT_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}
 artifact_root=${ARTIFACT_ROOT:-$build_area/artifacts}
 root_mount=$build_root/mnt/aspartame
 artifact_mount=$build_root/mnt/aspartame-artifacts
+resolver_mount=$build_root/etc/resolv.conf
 
 test -x "$build_root/bin/arch-chroot" || {
     echo "error: Arch build root is missing: $build_root" >&2
@@ -26,6 +27,7 @@ mkdir -p "$root_mount" "$artifact_root" "$artifact_mount"
 mount --bind "$build_root" "$build_root"
 mount --bind "$project_root" "$root_mount"
 mount --bind "$artifact_root" "$artifact_mount"
+mount --bind /etc/resolv.conf "$resolver_mount"
 mount -t proc proc "$build_root/proc"
 mount --bind /sys "$build_root/sys"
 mount --make-rslave "$build_root/sys"
@@ -54,6 +56,7 @@ cleanup() {
     detach_tree "$build_root/proc"
     detach_tree "$artifact_mount"
     detach_tree "$root_mount"
+    detach_tree "$resolver_mount"
     detach_tree "$build_root"
 }
 trap cleanup EXIT
