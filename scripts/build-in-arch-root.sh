@@ -23,17 +23,26 @@ test -f "$project_root/archiso/aspartame/profiledef.sh" || {
 }
 
 mkdir -p "$root_mount" "$artifact_root" "$artifact_mount"
-mount --bind "$build_root" "$build_root"
 mount --bind "$project_root" "$root_mount"
 mount --bind "$artifact_root" "$artifact_mount"
+mount -t proc proc "$build_root/proc"
+mount --rbind /sys "$build_root/sys"
+mount --make-rslave "$build_root/sys"
+mount --rbind /dev "$build_root/dev"
+mount --make-rslave "$build_root/dev"
+mount --rbind /run "$build_root/run"
+mount --make-rslave "$build_root/run"
 cleanup() {
+    umount -R "$build_root/run" 2>/dev/null || true
+    umount -R "$build_root/dev" 2>/dev/null || true
+    umount -R "$build_root/sys" 2>/dev/null || true
+    umount "$build_root/proc" 2>/dev/null || true
     umount "$artifact_mount" 2>/dev/null || true
     umount "$root_mount" 2>/dev/null || true
-    umount "$build_root" 2>/dev/null || true
 }
 trap cleanup EXIT
 
-"$build_root/bin/arch-chroot" -r "$build_root" /bin/bash -lc '
+chroot "$build_root" /bin/bash -lc '
     set -euo pipefail
     PROFILE=/mnt/aspartame/archiso/aspartame \
     OUT_DIR=/mnt/aspartame-artifacts/out \
