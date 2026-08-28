@@ -36,7 +36,9 @@ mount --make-rslave "$build_root/run"
 detach_tree() {
     local base=$1 targets
     for _ in $(seq 1 12); do
-        targets=$(findmnt -R -n -o TARGET "$base" 2>/dev/null | sort -r || true)
+        targets=$(findmnt --list --submounts -n -o TARGET 2>/dev/null |
+            awk -v base="$base" 'index($0, base) == 1 && (length($0) == length(base) || substr($0, length(base) + 1, 1) == "/")' |
+            sort -r -u || true)
         test -n "$targets" || return 0
         while IFS= read -r target; do
             umount -l "$target" 2>/dev/null || true
