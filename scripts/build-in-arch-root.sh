@@ -23,6 +23,7 @@ test -f "$project_root/archiso/aspartame/profiledef.sh" || {
 }
 
 mkdir -p "$root_mount" "$artifact_root" "$artifact_mount"
+mount --bind "$build_root" "$build_root"
 mount --bind "$project_root" "$root_mount"
 mount --bind "$artifact_root" "$artifact_mount"
 mount -t proc proc "$build_root/proc"
@@ -39,6 +40,7 @@ cleanup() {
     umount "$build_root/proc" 2>/dev/null || true
     umount "$artifact_mount" 2>/dev/null || true
     umount "$root_mount" 2>/dev/null || true
+    umount "$build_root" 2>/dev/null || true
 }
 trap cleanup EXIT
 
