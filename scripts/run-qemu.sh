@@ -23,7 +23,6 @@ exec qemu-system-x86_64 \
     -cdrom "$ISO" -boot menu=on \
     -device virtio-vga -display gtk,gl=off \
     -nic user,model=virtio-net-pci \
-    -audiodev driver=none,id=a0 -device AC97,audiodev=a0 \
+    -audiodev driver=pa,id=a0 -device AC97,audiodev=a0 \
     -device qemu-xhci -device usb-tablet \
     -name Aspartame
-

@@ -3,11 +3,13 @@ base-devel
 linux
 linux-firmware
 networkmanager
+iwd
 bluez
 bluez-utils
 pipewire
 pipewire-pulse
 wireplumber
+rtkit
 mesa
 libglvnd
 xorg-server
