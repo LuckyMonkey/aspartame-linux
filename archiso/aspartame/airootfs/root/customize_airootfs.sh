@@ -3,7 +3,7 @@ set -euo pipefail
 
 useradd --create-home --shell /bin/bash aspartame
 passwd --delete aspartame
-usermod --append --groups audio,video,storage,network,lp aspartame
+usermod --append --groups audio,video,storage,network,lp,wheel aspartame
 
 systemctl enable NetworkManager.service
 systemctl enable bluetooth.service
@@ -18,4 +18,3 @@ install -d -o aspartame -g aspartame /home/aspartame/Desktop /home/aspartame/Dow
 
 rm -f /etc/systemd/system/getty@tty1.service.d/autologin.conf
 systemctl preset-all || true
-

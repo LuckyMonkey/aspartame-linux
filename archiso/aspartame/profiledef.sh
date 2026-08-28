@@ -11,5 +11,6 @@ pacman_conf="/etc/pacman.conf"
 airootfs_image_type="squashfs"
 file_permissions=(
   ["/etc/shadow"]="0:0:400"
+  ["/etc/sudoers.d/aspartame"]="0:0:440"
   ["/root/customize_airootfs.sh"]="0:0:755"
 )
