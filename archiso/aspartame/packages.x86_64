@@ -1,6 +1,7 @@
 base
 base-devel
 syslinux
+mkinitcpio-archiso
 linux
 linux-firmware
 networkmanager
