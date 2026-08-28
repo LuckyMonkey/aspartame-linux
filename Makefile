@@ -9,7 +9,7 @@ iso:
 	./scripts/build-in-arch-root.sh
 
 run:
-	ISO=$(OUT_DIR)/aspartame-x86_64.iso ./scripts/run-qemu.sh
+	./scripts/run-qemu.sh
 
 rebuild-run: clean iso run
 
