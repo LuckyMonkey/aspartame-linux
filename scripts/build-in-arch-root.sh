@@ -31,8 +31,10 @@ mount --rbind /sys "$build_root/sys"
 mount --make-rslave "$build_root/sys"
 mount --rbind /dev "$build_root/dev"
 mount --make-rslave "$build_root/dev"
-mount --rbind /run "$build_root/run"
-mount --make-rslave "$build_root/run"
+# The build only needs a private runtime directory; binding the host's /run
+# recursively leaks desktop mounts (GVFS, portals, snap namespaces) into the
+# chroot and makes cleanup unnecessarily fragile.
+mount -t tmpfs -o mode=755,nosuid,nodev tmpfs "$build_root/run"
 detach_tree() {
     local base=$1 targets
     for _ in $(seq 1 12); do
