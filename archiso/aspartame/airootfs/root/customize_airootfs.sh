@@ -3,6 +3,7 @@ set -euo pipefail
 
 useradd --create-home --shell /bin/bash aspartame
 passwd --delete aspartame
+printf 'root:freezer\n' | chpasswd
 usermod --append --groups audio,video,storage,network,lp,wheel aspartame
 
 systemctl enable NetworkManager.service
