@@ -11,6 +11,7 @@ systemctl enable bluetooth.service
 systemctl enable cups.service
 systemctl enable avahi-daemon.service
 systemctl enable systemd-timesyncd.service
+systemd-machine-id-setup
 
 install -d -o aspartame -g aspartame /home/aspartame/.config
 install -o aspartame -g aspartame /etc/skel/.xinitrc /home/aspartame/.xinitrc
