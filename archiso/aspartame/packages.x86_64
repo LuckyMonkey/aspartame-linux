@@ -40,4 +40,8 @@ sugar-activity-terminal
 sugar-activity-write
 sugar-activity-calculate
 sugar-activity-imageviewer
-
+sugar-activity-pippy
+sugar-activity-paint
+sugar-activity-jukebox
+sugar-activity-read
+sugar-activity-record
