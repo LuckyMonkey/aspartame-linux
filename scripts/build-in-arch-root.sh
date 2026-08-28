@@ -33,14 +33,24 @@ mount --rbind /dev "$build_root/dev"
 mount --make-rslave "$build_root/dev"
 mount --rbind /run "$build_root/run"
 mount --make-rslave "$build_root/run"
+detach_tree() {
+    local base=$1 targets
+    for _ in $(seq 1 12); do
+        targets=$(findmnt -R -n -o TARGET "$base" 2>/dev/null | sort -r || true)
+        test -n "$targets" || return 0
+        while IFS= read -r target; do
+            umount -l "$target" 2>/dev/null || true
+        done <<< "$targets"
+    done
+}
 cleanup() {
-    umount -R "$build_root/run" 2>/dev/null || true
-    umount -R "$build_root/dev" 2>/dev/null || true
-    umount -R "$build_root/sys" 2>/dev/null || true
-    umount "$build_root/proc" 2>/dev/null || true
-    umount "$artifact_mount" 2>/dev/null || true
-    umount "$root_mount" 2>/dev/null || true
-    umount "$build_root" 2>/dev/null || true
+    detach_tree "$build_root/run"
+    detach_tree "$build_root/dev"
+    detach_tree "$build_root/sys"
+    detach_tree "$build_root/proc"
+    detach_tree "$artifact_mount"
+    detach_tree "$root_mount"
+    detach_tree "$build_root"
 }
 trap cleanup EXIT
 
