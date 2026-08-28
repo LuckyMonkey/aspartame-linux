@@ -33,7 +33,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-arch-chroot "$build_root" /bin/bash -lc '
+"$build_root/bin/arch-chroot" "$build_root" /bin/bash -lc '
     set -euo pipefail
     PROFILE=/mnt/aspartame/archiso/aspartame \
     OUT_DIR=/mnt/aspartame-artifacts/out \
