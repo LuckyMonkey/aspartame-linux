@@ -28,7 +28,7 @@ exec qemu-system-x86_64 \
     -drive "file=$DISK,if=virtio,format=qcow2" \
     -cdrom "$ISO" -boot menu=on \
     -device virtio-vga -display gtk,gl=off \
-    -serial "file=$SERIAL_LOG" \
+    -serial "file:$SERIAL_LOG" \
     -nic user,model=virtio-net-pci \
     -audiodev "driver=$AUDIO_BACKEND,id=a0" -device AC97,audiodev=a0 \
     -device qemu-xhci -device usb-tablet \
