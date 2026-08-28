@@ -10,6 +10,7 @@ RAM=${RAM:-4096}
 CPUS=${CPUS:-4}
 DISK=${DISK:-"/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-test.qcow2"}
 AUDIO_BACKEND=${AUDIO_BACKEND:-none}
+SERIAL_LOG=${SERIAL_LOG:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-serial.log}
 
 test -f "$ISO" || { echo "missing ISO: $ISO" >&2; exit 2; }
 mkdir -p "$(dirname "$DISK")"
@@ -27,6 +28,7 @@ exec qemu-system-x86_64 \
     -drive "file=$DISK,if=virtio,format=qcow2" \
     -cdrom "$ISO" -boot menu=on \
     -device virtio-vga -display gtk,gl=off \
+    -serial "file=$SERIAL_LOG" \
     -nic user,model=virtio-net-pci \
     -audiodev "driver=$AUDIO_BACKEND,id=a0" -device AC97,audiodev=a0 \
     -device qemu-xhci -device usb-tablet \
