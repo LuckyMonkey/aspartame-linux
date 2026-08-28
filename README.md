@@ -9,7 +9,9 @@ storage, sound infrastructure, and printing.
 
 ## Quick start
 
-Build inside Arch Linux with `archiso` installed:
+The build uses an official Arch bootstrap root on SteamLibrary. This keeps
+archiso's package cache and large work/output trees off the Ubuntu root
+filesystem.
 
 ```sh
 git clone https://github.com/LuckyMonkey/aspartame-linux.git
@@ -17,6 +19,9 @@ cd aspartame-linux
 make iso
 make run
 ```
+
+The first `make iso` asks for sudo to enter the isolated Arch build root.
+Run `make test` for host-side checks without building.
 
 Use `RAM=8192 CPUS=4 make run` to override QEMU defaults. See [docs/building.md](docs/building.md) and [docs/qemu.md](docs/qemu.md).
 

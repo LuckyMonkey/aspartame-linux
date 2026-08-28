@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ISO=${ISO:-"$(dirname "$0")/../out/aspartame-x86_64.iso"}
+ISO=${ISO:-"/media/freezer/SteamLibrary/vms/aspartame-build/artifacts/out/aspartame-x86_64.iso"}
 RAM=${RAM:-4096}
 CPUS=${CPUS:-4}
-DISK=${DISK:-"$(dirname "$0")/../runtime/aspartame-test.qcow2"}
+DISK=${DISK:-"/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-test.qcow2"}
 
 test -f "$ISO" || { echo "missing ISO: $ISO" >&2; exit 2; }
 mkdir -p "$(dirname "$DISK")"

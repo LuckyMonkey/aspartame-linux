@@ -1,11 +1,12 @@
 PROFILE := $(CURDIR)/archiso/aspartame
-OUT_DIR ?= $(CURDIR)/out
-WORK_DIR ?= $(CURDIR)/work
+BUILD_ROOT ?= /media/freezer/SteamLibrary/vms/aspartame-build
+OUT_DIR ?= $(BUILD_ROOT)/artifacts/out
+WORK_DIR ?= $(BUILD_ROOT)/artifacts/work
 
 .PHONY: iso run rebuild-run clean test
 
 iso:
-	PROFILE=$(PROFILE) OUT_DIR=$(OUT_DIR) WORK_DIR=$(WORK_DIR) ./scripts/build-iso.sh
+	./scripts/build-in-arch-root.sh
 
 run:
 	ISO=$(OUT_DIR)/aspartame-x86_64.iso ./scripts/run-qemu.sh
@@ -17,4 +18,3 @@ clean:
 
 test:
 	./scripts/smoke-test.sh
-
