@@ -23,6 +23,10 @@ make run
 The first `make iso` asks for sudo to enter the isolated Arch build root.
 Run `make test` for host-side checks without building.
 
+The development live image autologins as `aspartame`. Direct console login is
+also available as `root` with password `freezer`; this is intentionally a
+development-only image and is not an appropriate installed-system default.
+
 Use `RAM=8192 CPUS=4 make run` to override QEMU defaults. See [docs/building.md](docs/building.md) and [docs/qemu.md](docs/qemu.md).
 
 Aspartame keeps Arch, pacman, systemd, ordinary filesystem paths, and a real
