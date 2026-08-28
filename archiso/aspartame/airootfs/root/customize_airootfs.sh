@@ -12,6 +12,7 @@ systemctl enable cups.service
 systemctl enable avahi-daemon.service
 systemctl enable systemd-timesyncd.service
 systemd-machine-id-setup
+ln -sfn /dev/null /etc/systemd/system/systemd-firstboot.service
 
 install -d -o aspartame -g aspartame /home/aspartame/.config
 install -o aspartame -g aspartame /etc/skel/.xinitrc /home/aspartame/.xinitrc
