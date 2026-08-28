@@ -1,0 +1,3 @@
+export XDG_CURRENT_DESKTOP=Sugar
+export XDG_SESSION_DESKTOP=sugar
+
