@@ -12,7 +12,7 @@ from sugar3.graphics.toolbarbox import ToolbarBox
 
 
 class CountActivity(activity.Activity):
-    """A simple physical-feeling counter made from layers of squares."""
+    """Count things on a floor and then stack the floors upward."""
 
     def __init__(self, handle):
         super().__init__(handle)
@@ -20,6 +20,9 @@ class CountActivity(activity.Activity):
         self.layers = [self._empty_layer()]
         self.current_layer = 0
         self.undo_stack, self.redo_stack = [], []
+        self._press_cell = None
+        self._paint_add = False
+        self._gesture_recorded = False
 
         toolbar = ToolbarBox()
         toolbar.toolbar.insert(ActivityToolbarButton(self), -1)
@@ -31,53 +34,66 @@ class CountActivity(activity.Activity):
         self.set_toolbar_box(toolbar)
 
         self._install_style()
-        self.root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        self.root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.root.set_name("count-root")
-        self.root.set_border_width(16)
+        self.root.set_border_width(14)
 
         title = Gtk.Label(label="Count")
         title.set_name("count-title")
         self.root.pack_start(title, False, False, 0)
-
         self.total = Gtk.Label()
-        self.total.set_name("count-total")
+        self.total.set_name("org.aspartame.count.total")
+        self.total.set_tooltip_text("The number of things represented across every layer.")
+        self.total.get_style_context().add_class("count-total")
         self.root.pack_start(self.total, False, False, 0)
-        total_label = Gtk.Label(label="total")
-        total_label.set_name("count-hint")
-        self.root.pack_start(total_label, False, False, 0)
+        total_hint = Gtk.Label(label="total")
+        total_hint.get_style_context().add_class("count-hint")
+        self.root.pack_start(total_hint, False, False, 0)
 
-        self.stack_area = Gtk.Overlay()
-        self.stack_area.set_size_request(760, 560)
-        self.stack_area.set_halign(Gtk.Align.CENTER)
-        self.stack_area.set_valign(Gtk.Align.CENTER)
-        self.stack_view = Gtk.DrawingArea()
-        self.stack_view.connect("draw", self._draw_stack)
-        self.stack_area.add(self.stack_view)
-
-        self.grid = Gtk.Grid(row_spacing=4, column_spacing=4)
-        self.grid.set_halign(Gtk.Align.CENTER)
-        self.grid.set_valign(Gtk.Align.CENTER)
-        self.stack_area.add_overlay(self.grid)
-        self.root.pack_start(self.stack_area, True, True, 0)
+        self.stack = Gtk.DrawingArea()
+        self.stack.set_name("org.aspartame.count.stack")
+        self.stack.set_size_request(760, 520)
+        self.stack.set_hexpand(True)
+        self.stack.set_vexpand(True)
+        self.stack.set_tooltip_text("Click an empty place to add a box; click a box to remove it. Drag to add several boxes.")
+        self.stack.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
+                              Gdk.EventMask.BUTTON_RELEASE_MASK |
+                              Gdk.EventMask.POINTER_MOTION_MASK)
+        self.stack.connect("draw", self._draw_stack)
+        self.stack.connect("button-press-event", self._button_press)
+        self.stack.connect("button-release-event", self._button_release)
+        self.stack.connect("motion-notify-event", self._motion)
+        self.root.pack_start(self.stack, True, True, 0)
 
         self.layer_count = Gtk.Label()
-        self.layer_count.set_name("count-layer-count")
+        self.layer_count.set_name("org.aspartame.count.current-layer")
+        self.layer_count.get_style_context().add_class("count-layer-count")
         self.root.pack_start(self.layer_count, False, False, 0)
         self.layer_total = Gtk.Label()
-        self.layer_total.set_name("count-hint")
+        self.layer_total.get_style_context().add_class("count-hint")
         self.root.pack_start(self.layer_total, False, False, 0)
 
-        controls = Gtk.Box(spacing=8)
-        controls.set_halign(Gtk.Align.CENTER)
-        self._symbol_button(controls, "◀", "Previous layer", self._previous_layer)
+        nav = Gtk.Box(spacing=8)
+        nav.set_halign(Gtk.Align.CENTER)
+        self._symbol_button(nav, "◀", "Previous layer", self._previous_layer,
+                            "org.aspartame.count.layer.previous")
         self.layer_position = Gtk.Label()
-        self.layer_position.set_name("count-layer-position")
-        controls.pack_start(self.layer_position, False, False, 4)
-        self._symbol_button(controls, "▶", "Next layer", self._next_layer)
-        self._symbol_button(controls, "+", "Add layer", self._add_layer)
-        self._symbol_button(controls, "⧉", "Copy layer", self._copy_layer)
-        self._make_layer_menu(controls)
-        self.root.pack_start(controls, False, False, 0)
+        self.layer_position.get_style_context().add_class("count-layer-position")
+        nav.pack_start(self.layer_position, False, False, 5)
+        self._symbol_button(nav, "▶", "Next layer", self._next_layer,
+                            "org.aspartame.count.layer.next")
+        self.root.pack_start(nav, False, False, 0)
+
+        actions = Gtk.Box(spacing=8)
+        actions.set_halign(Gtk.Align.CENTER)
+        self._action_button(actions, "＋  New Layer",
+                            "Add an empty layer on top of the stack.",
+                            self._add_layer, "org.aspartame.count.layer.new")
+        self._action_button(actions, "⧉  Copy Layer",
+                            "Add another layer with the same boxes as this one.",
+                            self._copy_layer, "org.aspartame.count.layer.copy")
+        self._make_layer_menu(actions)
+        self.root.pack_start(actions, False, False, 0)
 
         self.set_canvas(self.root)
         self._load()
@@ -88,16 +104,13 @@ class CountActivity(activity.Activity):
         css = Gtk.CssProvider()
         css.load_from_data(b"""
             #count-root { background: #eeeeee; color: #222222; }
-            #count-title { font-size: 26px; font-weight: bold; }
-            #count-total { font-size: 48px; font-weight: bold; }
-            #count-hint { font-size: 16px; color: #555555; }
-            #count-layer-count { font-size: 20px; font-weight: bold; }
-            #count-layer-position { font-size: 18px; font-weight: bold; }
-            .count-cell { min-width: 68px; min-height: 68px; background: #ffffff;
-                          border: 2px solid #777777; border-radius: 5px; }
-            .count-cell:checked { background: #444444; }
-            .count-symbol { min-width: 38px; min-height: 38px; border-radius: 20px;
-                            font-size: 20px; }
+            #count-title { font-size: 25px; font-weight: bold; }
+            .count-total { font-size: 46px; font-weight: bold; }
+            .count-hint { font-size: 15px; color: #555555; }
+            .count-layer-count { font-size: 19px; font-weight: bold; }
+            .count-layer-position { font-size: 18px; font-weight: bold; }
+            .count-action { padding: 7px 14px; border-radius: 18px; }
+            .count-symbol { min-width: 40px; min-height: 38px; border-radius: 20px; font-size: 20px; }
         """)
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -105,10 +118,20 @@ class CountActivity(activity.Activity):
     def _empty_layer(self):
         return [[False for _ in range(self.width)] for _ in range(self.height)]
 
-    def _symbol_button(self, box, label, help_text, callback):
+    def _symbol_button(self, box, label, tooltip, callback, name):
         button = Gtk.Button(label=label)
-        button.set_tooltip_text(help_text)
+        button.set_name(name)
+        button.set_tooltip_text(tooltip)
         button.get_style_context().add_class("count-symbol")
+        button.connect("clicked", callback)
+        box.pack_start(button, False, False, 0)
+        return button
+
+    def _action_button(self, box, label, tooltip, callback, name):
+        button = Gtk.Button(label=label)
+        button.set_name(name)
+        button.set_tooltip_text(tooltip)
+        button.get_style_context().add_class("count-action")
         button.connect("clicked", callback)
         box.pack_start(button, False, False, 0)
         return button
@@ -116,13 +139,15 @@ class CountActivity(activity.Activity):
     def _make_layer_menu(self, box):
         menu = Gtk.Menu()
         delete = Gtk.MenuItem(label="Delete layer")
-        delete.set_tooltip_text("Remove the layer you are looking at")
+        delete.set_name("org.aspartame.count.layer.delete")
+        delete.set_tooltip_text("Remove the layer you are looking at.")
         delete.connect("activate", self._delete_layer)
         menu.append(delete)
         menu.show_all()
         more = Gtk.MenuButton()
         more.set_label("⋯")
-        more.set_tooltip_text("More layer actions")
+        more.set_name("org.aspartame.count.layer.more")
+        more.set_tooltip_text("More layer actions, including delete layer.")
         more.get_style_context().add_class("count-symbol")
         more.set_popup(menu)
         box.pack_start(more, False, False, 0)
@@ -139,67 +164,177 @@ class CountActivity(activity.Activity):
         return sum(sum(row) for row in layer)
 
     def _render(self):
-        for child in self.grid.get_children():
-            self.grid.remove(child)
-        layer = self.layers[self.current_layer]
-        for y in range(self.height):
-            for x in range(self.width):
-                cell = Gtk.ToggleButton()
-                cell.set_active(layer[y][x])
-                cell.set_size_request(68, 68)
-                cell.get_style_context().add_class("count-cell")
-                cell.set_tooltip_text("Thing %d, %d" % (x + 1, y + 1))
-                cell.connect("toggled", self._cell_toggled, x, y)
-                self.grid.attach(cell, x, y, 1, 1)
-
-        total = sum(self._layer_count(item) for item in self.layers)
-        current = self._layer_count(layer)
+        total = sum(self._layer_count(layer) for layer in self.layers)
+        current = self._layer_count(self.layers[self.current_layer])
         self.total.set_text(str(total))
         self.layer_count.set_text("Layer %d of %d" %
                                   (self.current_layer + 1, len(self.layers)))
         self.layer_total.set_text("%d on this layer" % current)
         self.layer_position.set_text("%d / %d" %
                                      (self.current_layer + 1, len(self.layers)))
-        self.grid.show_all()
-        self.stack_view.queue_draw()
+        self.stack.queue_draw()
+
+    def _flat_geometry(self):
+        width = max(1, self.stack.get_allocated_width())
+        height = max(1, self.stack.get_allocated_height())
+        size = min(88, (width - 36) / self.width, (height - 36) / self.height)
+        size = max(28, size)
+        ox = (width - self.width * size) / 2
+        oy = (height - self.height * size) / 2
+        return ox, oy, size
+
+    def _iso_geometry(self):
+        width = max(1, self.stack.get_allocated_width())
+        height = max(1, self.stack.get_allocated_height())
+        sx = min(38, (width - 80) / max(1, self.width + self.height))
+        sy = sx * 0.52
+        cube_height = sx * 0.62
+        z_height = cube_height * 0.70
+        total_w = (self.width + self.height) * sx
+        total_h = (self.width + self.height) * sy + len(self.layers) * z_height
+        ox = (width - total_w) / 2 + self.height * sx
+        oy = (height - total_h) / 2 + len(self.layers) * z_height
+        return ox, oy, sx, sy, cube_height, z_height
 
     def _draw_stack(self, widget, cr):
-        if len(self.layers) <= 1:
-            return
-        width = widget.get_allocated_width()
-        height = widget.get_allocated_height()
-        grid_width = self.width * 72 - 4
-        grid_height = self.height * 72 - 4
-        front_x = (width - grid_width) / 2
-        front_y = (height - grid_height) / 2
-        # Older layers recede up and to the right; they never become floors.
-        for index, layer in enumerate(self.layers):
-            if index == self.current_layer:
-                continue
-            distance = abs(index - self.current_layer)
-            offset_x = distance * 28
-            offset_y = -distance * 18
-            alpha = max(0.10, 0.28 - distance * 0.025)
-            for y, row in enumerate(layer):
-                for x, occupied in enumerate(row):
-                    if not occupied:
-                        continue
-                    left = front_x + offset_x + x * 72
-                    top = front_y + offset_y + y * 72
-                    cr.set_source_rgba(0.25, 0.25, 0.25, alpha)
-                    cr.rectangle(left, top, 68, 68)
-                    cr.fill_preserve()
-                    cr.set_source_rgba(0.15, 0.15, 0.15, alpha + 0.12)
-                    cr.set_line_width(2)
-                    cr.stroke()
+        if len(self.layers) == 1:
+            self._draw_floor(cr)
+        else:
+            self._draw_isometric(cr)
+        return False
 
-    def _cell_toggled(self, button, x, y):
-        active = button.get_active()
-        if self.layers[self.current_layer][y][x] == active:
+    def _draw_floor(self, cr):
+        ox, oy, size = self._flat_geometry()
+        layer = self.layers[0]
+        for y in range(self.height):
+            for x in range(self.width):
+                left, top = ox + x * size, oy + y * size
+                cr.set_source_rgb(0.27, 0.27, 0.27) if layer[y][x] else cr.set_source_rgb(1, 1, 1)
+                cr.rectangle(left, top, size - 3, size - 3)
+                cr.fill_preserve()
+                cr.set_source_rgb(0.43, 0.43, 0.43)
+                cr.set_line_width(2)
+                cr.stroke()
+
+    def _diamond(self, cr, x, y, sx, sy):
+        cr.move_to(x, y)
+        cr.line_to(x + sx, y + sy)
+        cr.line_to(x, y + sy * 2)
+        cr.line_to(x - sx, y + sy)
+        cr.close_path()
+
+    def _draw_isometric(self, cr):
+        ox, oy, sx, sy, cube_height, z_height = self._iso_geometry()
+        # Draw far layers first, then the selected layer, so the selected plane reads strongest.
+        order = [i for i in range(len(self.layers)) if i != self.current_layer]
+        order.append(self.current_layer)
+        for layer_index in order:
+            layer = self.layers[layer_index]
+            ghost = layer_index != self.current_layer
+            alpha = max(0.14, 0.34 - abs(layer_index - self.current_layer) * 0.035) if ghost else 1.0
+            for y in range(self.height):
+                for x in range(self.width):
+                    if not layer[y][x]:
+                        continue
+                    px = ox + (x - y) * sx
+                    py = oy + (x + y) * sy - layer_index * z_height
+                    self._diamond(cr, px, py, sx, sy)
+                    cr.set_source_rgba(0.27, 0.27, 0.27, alpha)
+                    cr.fill_preserve()
+                    cr.set_source_rgba(0.12, 0.12, 0.12, alpha)
+                    cr.set_line_width(1.5)
+                    cr.stroke()
+                    if not ghost:
+                        cr.set_source_rgba(0.38, 0.38, 0.38, 1)
+                        cr.move_to(px - sx, py + sy)
+                        cr.line_to(px - sx, py + sy + cube_height)
+                        cr.line_to(px, py + sy * 2 + cube_height)
+                        cr.line_to(px, py + sy * 2)
+                        cr.close_path()
+                        cr.fill_preserve()
+                        cr.stroke()
+                        cr.set_source_rgba(0.20, 0.20, 0.20, 1)
+                        cr.move_to(px + sx, py + sy)
+                        cr.line_to(px + sx, py + sy + cube_height)
+                        cr.line_to(px, py + sy * 2 + cube_height)
+                        cr.line_to(px, py + sy * 2)
+                        cr.close_path()
+                        cr.fill_preserve()
+                        cr.stroke()
+
+        # A light outline grid marks the editable horizontal plane without adding labels to boxes.
+        for y in range(self.height):
+            for x in range(self.width):
+                px = ox + (x - y) * sx
+                py = oy + (x + y) * sy - self.current_layer * z_height
+                self._diamond(cr, px, py, sx, sy)
+                cr.set_source_rgba(0.18, 0.18, 0.18, 0.35)
+                cr.set_line_width(1)
+                cr.stroke()
+
+    def _point_in_polygon(self, px, py, points):
+        inside = False
+        j = len(points) - 1
+        for i, (xi, yi) in enumerate(points):
+            xj, yj = points[j]
+            if ((yi > py) != (yj > py)) and (px < (xj - xi) * (py - yi) / ((yj - yi) or 1e-9) + xi):
+                inside = not inside
+            j = i
+        return inside
+
+    def _hit_cell(self, px, py):
+        if len(self.layers) == 1:
+            ox, oy, size = self._flat_geometry()
+            x, y = int((px - ox) // size), int((py - oy) // size)
+            if 0 <= x < self.width and 0 <= y < self.height:
+                if ox + x * size <= px <= ox + (x + 1) * size and oy + y * size <= py <= oy + (y + 1) * size:
+                    return x, y
+            return None
+        ox, oy, sx, sy, _cube_height, z_height = self._iso_geometry()
+        py += self.current_layer * z_height
+        for y in range(self.height):
+            for x in range(self.width):
+                cx, cy = ox + (x - y) * sx, oy + (x + y) * sy
+                if self._point_in_polygon(px, py, [(cx, cy), (cx + sx, cy + sy),
+                                                   (cx, cy + sy * 2), (cx - sx, cy + sy)]):
+                    return x, y
+        return None
+
+    def _set_cell(self, cell, value):
+        if cell is None:
             return
-        self._record()
-        self.layers[self.current_layer][y][x] = active
+        x, y = cell
+        if self.layers[self.current_layer][y][x] == value:
+            return
+        if not self._gesture_recorded:
+            self._record()
+            self._gesture_recorded = True
+        self.layers[self.current_layer][y][x] = value
         self._render()
+
+    def _button_press(self, _widget, event):
+        cell = self._hit_cell(event.x, event.y)
+        self._press_cell = cell
+        self._gesture_recorded = False
+        self._paint_add = bool(cell is not None and
+                               not self.layers[self.current_layer][cell[1]][cell[0]])
+        if self._paint_add:
+            self._set_cell(cell, True)
+        return True
+
+    def _motion(self, _widget, event):
+        if self._paint_add and event.state & Gdk.ModifierType.BUTTON1_MASK:
+            self._set_cell(self._hit_cell(event.x, event.y), True)
+        return True
+
+    def _button_release(self, _widget, event):
+        cell = self._hit_cell(event.x, event.y)
+        if not self._paint_add and cell == self._press_cell and cell is not None:
+            self._set_cell(cell, False)
+        self._press_cell = None
+        self._paint_add = False
+        self._gesture_recorded = False
+        return True
 
     def _add_layer(self, *_):
         self._record()
@@ -210,8 +345,8 @@ class CountActivity(activity.Activity):
     def _copy_layer(self, *_):
         self._record()
         copied = json.loads(json.dumps(self.layers[self.current_layer]))
-        self.layers.insert(self.current_layer + 1, copied)
-        self.current_layer += 1
+        self.layers.append(copied)
+        self.current_layer = len(self.layers) - 1
         self._render()
 
     def _delete_layer(self, *_):
@@ -246,5 +381,4 @@ class CountActivity(activity.Activity):
         self._render()
 
     def _load(self):
-        # New activities start with one empty layer. Journal resume calls read_file.
         return
