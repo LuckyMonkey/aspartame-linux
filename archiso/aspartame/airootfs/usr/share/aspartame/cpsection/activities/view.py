@@ -1,7 +1,7 @@
 from gettext import gettext as _
 import sys
 
-from gi.repository import Gdk, Gtk
+from gi.repository import Gtk
 
 from sugar3.graphics import style
 from jarabe.controlpanel.sectionview import SectionView
@@ -34,11 +34,10 @@ class ActivityManager(SectionView):
                 font-size: 21px;
                 min-width: 34px;
                 min-height: 34px;
-            }
-            .aspartame-table-divider {
-                background-color: #8fa3ad;
-                min-width: 2px;
-                min-height: 2px;
+                padding: 0;
+                border: none;
+                background: transparent;
+                box-shadow: none;
             }
             .aspartame-table-header {
                 background-color: #e6eef1;
@@ -96,7 +95,7 @@ class ActivityManager(SectionView):
                 (_('Rating'), 250, 0.5),
                 (_('Version'), 120, 0.5),
                 (_('Actions'), 100, 0.5))):
-            actual_column = column * 2
+            actual_column = column
             label = Gtk.Label(label=text)
             label.set_xalign(align)
             label.set_halign(Gtk.Align.FILL)
@@ -104,13 +103,6 @@ class ActivityManager(SectionView):
             label.set_size_request(width, -1)
             header.attach(label, actual_column, 0, 1, 1)
             self._column_groups[column].add_widget(label)
-            if column < 3:
-                divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
-                divider.set_size_request(3, -1)
-                divider.set_vexpand(True)
-                divider.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0.45, 0.55, 0.60, 1.0))
-                divider.get_style_context().add_class('aspartame-table-divider')
-                header.attach(divider, actual_column + 1, 0, 1, 1)
         self._list.add(header)
         for activity in activities:
             help_id = None
@@ -167,7 +159,6 @@ class ActivityManager(SectionView):
         labels.pack_start(detail, False, False, 0)
         grid.attach(labels, 0, 0, 1, 1)
         self._column_groups[0].add_widget(labels)
-        self._add_table_divider(grid, 1)
 
         rating_box = Gtk.Box(spacing=2)
         rating_box.set_size_request(250, -1)
@@ -184,6 +175,8 @@ class ActivityManager(SectionView):
             else:
                 face_button = Gtk.RadioButton.new_with_label_from_widget(group, face)
             face_button.set_mode(False)
+            face_button.set_relief(Gtk.ReliefStyle.NONE)
+            face_button.set_can_focus(False)
             face_button.get_style_context().add_class('aspartame-rating-face')
             face_button.set_tooltip_text(_('%s: %s') % (face_label, activity['name']))
             face_button.set_active(rating == index)
@@ -193,9 +186,8 @@ class ActivityManager(SectionView):
                 aspartame_help.guard(face_button, help_id)
             face_buttons.append(face_button)
             rating_box.pack_start(face_button, False, False, 0)
-        grid.attach(rating_box, 2, 0, 1, 1)
+        grid.attach(rating_box, 1, 0, 1, 1)
         self._column_groups[1].add_widget(rating_box)
-        self._add_table_divider(grid, 3)
 
         version = activity['version'] or _('version unknown')
         detail_version = Gtk.Label(label=version)
@@ -204,9 +196,8 @@ class ActivityManager(SectionView):
         detail_version.set_hexpand(False)
         detail_version.set_size_request(120, -1)
         detail_version.set_tooltip_text(activity['path'])
-        grid.attach(detail_version, 4, 0, 1, 1)
+        grid.attach(detail_version, 2, 0, 1, 1)
         self._column_groups[2].add_widget(detail_version)
-        self._add_table_divider(grid, 5)
 
         remove = Gtk.Button(label=_('Remove'))
         remove.set_tooltip_text(_('Remove this Activity for this user.'))
@@ -216,19 +207,11 @@ class ActivityManager(SectionView):
         remove.connect('clicked', self._remove_clicked, activity)
         remove.set_size_request(100, -1)
         remove.set_halign(Gtk.Align.END)
-        grid.attach(remove, 6, 0, 1, 1)
+        grid.attach(remove, 3, 0, 1, 1)
         self._column_groups[3].add_widget(remove)
 
         self._rows[activity['id']] = (activity['id'], face_buttons)
         return row
-
-    def _add_table_divider(self, grid, column):
-        divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
-        divider.set_size_request(3, -1)
-        divider.set_vexpand(True)
-        divider.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0.45, 0.55, 0.60, 1.0))
-        divider.get_style_context().add_class('aspartame-table-divider')
-        grid.attach(divider, column, 0, 1, 1)
 
     def _face_toggled(self, button, activity_id, rating):
         if button.get_active():
