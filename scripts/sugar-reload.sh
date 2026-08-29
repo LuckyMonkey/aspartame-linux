@@ -57,7 +57,7 @@ printf '  guest package ........ PASS (%s %s)\n' "$SUGAR_PACKAGE" "$guest_versio
 
 printf '\nHost write access:\n'
 printf '  sudo is used only for %s\n' "$share_root"
-sudo -v
+SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A -v
 
 vm_ssh env EXPECTED_SUGAR_VERSION="$SUGAR_VERSION" bash -s <<'REMOTE'
 set -euo pipefail

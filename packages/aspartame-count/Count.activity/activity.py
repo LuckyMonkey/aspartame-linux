@@ -62,6 +62,7 @@ class CountActivity(activity.Activity):
         self.set_canvas(root)
         self._load()
         self._render()
+        self.show_all()
 
     def _button(self, box, label, callback):
         button = Gtk.ToolButton.new(None, label)
