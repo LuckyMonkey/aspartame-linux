@@ -63,69 +63,51 @@
          self._set_zoom_level(kwargs['new_level'])
  
 --- jarabe/desktop/viewtoolbar.py	2026-08-29 00:56:53.763206405 -0400
-+++ jarabe/desktop/viewtoolbar.py	2026-08-29 07:00:57.821135668 -0400
-@@ -22,6 +22,8 @@
++++ jarabe/desktop/viewtoolbar.py	2026-08-29 07:07:24.181899535 -0400
+@@ -20,6 +20,7 @@
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
  from gettext import gettext as _
++from datetime import datetime
  import logging
  
-+from datetime import datetime
-+
  from gi.repository import Gtk
- from gi.repository import GObject
- from gi.repository import GLib
-@@ -48,6 +50,7 @@
- 
-     def __init__(self):
-         Gtk.Toolbar.__init__(self)
-+        self.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
- 
-         self._favorites_views_indicies = []
-         for i in range(desktop.get_number_of_views()):
-@@ -78,7 +81,23 @@
+@@ -78,7 +79,7 @@
          tool_item.add(self.search_entry)
          self.search_entry.show()
  
 -        self._add_separator(expand=True)
-+        self._clock_item = Gtk.ToolItem()
-+        self._clock_item.set_expand(False)
-+        self._clock_item.set_size_request(300, -1)
-+        self._clock_alignment = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
-+        self._clock_label = Gtk.Label()
-+        self._clock_label.set_width_chars(8)
-+        self._clock_label.set_justify(Gtk.Justification.CENTER)
-+        self._clock_label.set_xalign(0.5)
-+        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">--:--</span>')
-+        self._clock_label.set_margin_start(style.DEFAULT_PADDING)
-+        self._clock_label.set_margin_end(style.DEFAULT_PADDING)
-+        self._clock_alignment.add(self._clock_label)
-+        self._clock_item.add(self._clock_alignment)
-+        self.insert(self._clock_item, -1)
-+        self._clock_item.show_all()
-+        self.__update_clock_cb()
-+        GLib.timeout_add_seconds(30, self.__update_clock_cb)
++        self._add_clock_separator()
  
          self._button_box = Gtk.HBox()
          self._favorites_buttons = []
-@@ -104,6 +123,8 @@
-     def _add_favorites_button(self, i):
-         logging.debug('adding FavoritesButton %d' % (i))
-         self._favorites_buttons.append(FavoritesButton(i))
-+        self._favorites_buttons[i].set_label(desktop.get_view_labels()[i])
-+        self._favorites_buttons[i].set_is_important(True)
-         self._favorites_buttons[i].connect('toggled',
-                                            self.__view_button_toggled_cb,
-                                            self._favorites_views_indicies[i])
-@@ -122,6 +143,10 @@
-             self._favorites_buttons[i].hide()
-         self._list_button.hide()
+@@ -101,6 +102,26 @@
  
+         self._add_separator()
+ 
++    def _add_clock_separator(self):
++        clock_item = Gtk.ToolItem()
++        clock_item.set_expand(True)
++        clock_alignment = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
++        self._clock_label = Gtk.Label()
++        self._clock_label.set_justify(Gtk.Justification.CENTER)
++        self._clock_label.set_xalign(0.5)
++        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">--:--</span>')
++        clock_alignment.add(self._clock_label)
++        clock_item.add(clock_alignment)
++        self.insert(clock_item, -1)
++        clock_item.show_all()
++        self.__update_clock_cb()
++        GLib.timeout_add_seconds(30, self.__update_clock_cb)
++
 +    def __update_clock_cb(self):
 +        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">%s</span>' % datetime.now().strftime('%H:%M'))
 +        return True
 +
-     def clear_query(self):
-         self.search_entry.props.text = ''
- 
++
+     def _add_favorites_button(self, i):
+         logging.debug('adding FavoritesButton %d' % (i))
+         self._favorites_buttons.append(FavoritesButton(i))
 --- jarabe/desktop/meshbox.py	2026-08-29 06:33:24.517549545 -0400
 +++ jarabe/desktop/meshbox.py	2026-08-29 06:48:12.536413259 -0400
 @@ -18,9 +18,15 @@
