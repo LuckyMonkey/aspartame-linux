@@ -146,22 +146,22 @@ class ViewToolbar(Gtk.Toolbar):
         help_css = Gtk.CssProvider()
         help_css.load_from_data(b'''
             .aspartame-help-button {
-                min-width: 56px;
-                min-height: 56px;
+                min-width: 72px;
+                min-height: 72px;
                 padding: 0;
-                border-radius: 28px;
-                border: 2px solid #ffffff;
-                background-color: #202b31;
-            }
-            .aspartame-help-button label {
-                color: #ffffff;
-            }
-            .aspartame-help-button.aspartame-help-active {
-                border-color: #202b31;
+                border-radius: 36px;
+                border: 2px solid #30383c;
                 background-color: #ffffff;
             }
+            .aspartame-help-button label {
+                color: #30383c;
+            }
+            .aspartame-help-button.aspartame-help-active {
+                border-color: #ffffff;
+                background-color: #30383c;
+            }
             .aspartame-help-button.aspartame-help-active label {
-                color: #202b31;
+                color: #ffffff;
             }
         ''')
         Gtk.StyleContext.add_provider_for_screen(
@@ -172,7 +172,7 @@ class ViewToolbar(Gtk.Toolbar):
         self._help_button.get_style_context().add_class(
             'aspartame-help-button')
         self._help_button.set_is_important(True)
-        self._help_button.set_size_request(56, 56)
+        self._help_button.set_size_request(72, 72)
         self._help_button.set_tooltip_text(
             "What is this? - Learn what something on the screen does.")
         self._help_button.connect('button-press-event',

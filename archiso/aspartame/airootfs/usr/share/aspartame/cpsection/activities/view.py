@@ -31,13 +31,17 @@ class ActivityManager(SectionView):
                 padding: 5px 0;
             }
             .aspartame-rating-face {
-                font-size: 28px;
-                min-width: 42px;
-                min-height: 42px;
+                font-size: 36px;
+                min-width: 52px;
+                min-height: 52px;
                 padding: 0;
                 border: none;
                 background: transparent;
                 box-shadow: none;
+                opacity: 0.42;
+            }
+            .aspartame-rating-face:checked {
+                opacity: 1;
             }
             .aspartame-table-header {
                 background-color: #e6eef1;
@@ -91,15 +95,15 @@ class ActivityManager(SectionView):
         header.set_hexpand(True)
         header.get_style_context().add_class('aspartame-table-header')
         for column, (text, width, align) in enumerate((
+                (_('Version'), 120, 0.5),
                 (_('Activity'), 360, 0.0),
                 (_('Rating'), 250, 0.5),
-                (_('Version'), 120, 0.5),
-                (_('Actions'), 100, 0.5))):
+                (_('Actions'), 100, 1.0))):
             actual_column = column
             label = Gtk.Label(label=text)
             label.set_xalign(align)
             label.set_halign(Gtk.Align.FILL)
-            label.set_hexpand(column == 0)
+            label.set_hexpand(column == 1)
             label.set_size_request(width, -1)
             header.attach(label, actual_column, 0, 1, 1)
             self._column_groups[column].add_widget(label)
@@ -158,8 +162,8 @@ class ActivityManager(SectionView):
         detail.set_ellipsize(0)
         detail.set_tooltip_text(activity.get('url') or activity['path'])
         labels.pack_start(detail, False, False, 0)
-        grid.attach(labels, 0, 0, 1, 1)
-        self._column_groups[0].add_widget(labels)
+        grid.attach(labels, 1, 0, 1, 1)
+        self._column_groups[1].add_widget(labels)
 
         rating_box = Gtk.Box(spacing=2)
         rating_box.set_size_request(250, -1)
@@ -179,6 +183,9 @@ class ActivityManager(SectionView):
             face_button.set_relief(Gtk.ReliefStyle.NONE)
             face_button.set_can_focus(False)
             face_button.get_style_context().add_class('aspartame-rating-face')
+            face_label_widget = face_button.get_child()
+            if isinstance(face_label_widget, Gtk.Label):
+                face_label_widget.set_markup('<span size="xx-large">%s</span>' % face)
             face_button.set_tooltip_text(_('%s: %s') % (face_label, activity['name']))
             face_button.set_active(rating == index)
             face_button.connect('toggled', self._face_toggled,
@@ -187,8 +194,8 @@ class ActivityManager(SectionView):
                 aspartame_help.guard(face_button, help_id)
             face_buttons.append(face_button)
             rating_box.pack_start(face_button, False, False, 0)
-        grid.attach(rating_box, 1, 0, 1, 1)
-        self._column_groups[1].add_widget(rating_box)
+        grid.attach(rating_box, 2, 0, 1, 1)
+        self._column_groups[2].add_widget(rating_box)
 
         version = activity['version'] or _('version unknown')
         detail_version = Gtk.Label(label=version)
@@ -197,8 +204,8 @@ class ActivityManager(SectionView):
         detail_version.set_hexpand(False)
         detail_version.set_size_request(120, -1)
         detail_version.set_tooltip_text(activity['path'])
-        grid.attach(detail_version, 2, 0, 1, 1)
-        self._column_groups[2].add_widget(detail_version)
+        grid.attach(detail_version, 0, 0, 1, 1)
+        self._column_groups[0].add_widget(detail_version)
 
         remove = Gtk.Button(label=_('Remove'))
         remove.set_tooltip_text(_('Remove this Activity for this user.'))
