@@ -35,6 +35,10 @@ class ActivityManager(SectionView):
                 min-width: 34px;
                 min-height: 34px;
             }
+            .aspartame-table-divider {
+                background-color: #c8d3d8;
+                min-width: 1px;
+            }
         ''')
         Gtk.StyleContext.add_provider_for_screen(
             self.get_screen(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -77,17 +81,23 @@ class ActivityManager(SectionView):
         self._empty.set_visible(not activities)
         header = Gtk.Grid()
         header.set_border_width(style.DEFAULT_SPACING)
-        header.set_column_spacing(style.DEFAULT_SPACING * 2)
+        header.set_column_spacing(style.DEFAULT_SPACING)
         header.set_hexpand(True)
         for column, (text, width, align) in enumerate((
-                (_('Activity'), 360, 0),
+                (_('Activity'), 360, 0.0),
                 (_('Rating'), 250, 0.5),
-                (_('Version'), 120, 0),
+                (_('Version'), 120, 0.5),
                 (_('Actions'), 100, 0.5))):
+            actual_column = column * 2
             label = Gtk.Label(label=text)
             label.set_xalign(align)
+            label.set_halign(Gtk.Align.FILL)
             label.set_size_request(width, -1)
-            header.attach(label, column, 0, 1, 1)
+            header.attach(label, actual_column, 0, 1, 1)
+            if column < 3:
+                divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
+                divider.get_style_context().add_class('aspartame-table-divider')
+                header.attach(divider, actual_column + 1, 0, 1, 1)
         self._list.add(header)
         for activity in activities:
             help_id = None
@@ -138,6 +148,7 @@ class ActivityManager(SectionView):
         detail.set_tooltip_text(activity.get('url') or activity['path'])
         labels.pack_start(detail, False, False, 0)
         grid.attach(labels, 0, 0, 1, 1)
+        self._add_table_divider(grid, 1)
 
         rating_box = Gtk.Box(spacing=2)
         rating_box.set_size_request(250, -1)
@@ -162,14 +173,17 @@ class ActivityManager(SectionView):
                 aspartame_help.guard(face_button, help_id)
             face_buttons.append(face_button)
             rating_box.pack_start(face_button, False, False, 0)
-        grid.attach(rating_box, 1, 0, 1, 1)
+        grid.attach(rating_box, 2, 0, 1, 1)
+        self._add_table_divider(grid, 3)
 
         version = activity['version'] or _('version unknown')
         detail_version = Gtk.Label(label=version)
-        detail_version.set_xalign(0)
+        detail_version.set_xalign(0.5)
+        detail_version.set_halign(Gtk.Align.FILL)
         detail_version.set_size_request(120, -1)
         detail_version.set_tooltip_text(activity['path'])
-        grid.attach(detail_version, 2, 0, 1, 1)
+        grid.attach(detail_version, 4, 0, 1, 1)
+        self._add_table_divider(grid, 5)
 
         remove = Gtk.Button(label=_('Remove'))
         remove.set_tooltip_text(_('Remove this Activity for this user.'))
@@ -178,10 +192,16 @@ class ActivityManager(SectionView):
             remove.set_tooltip_text(_('System Activities cannot be removed from this user session.'))
         remove.connect('clicked', self._remove_clicked, activity)
         remove.set_size_request(100, -1)
-        grid.attach(remove, 3, 0, 1, 1)
+        remove.set_halign(Gtk.Align.CENTER)
+        grid.attach(remove, 6, 0, 1, 1)
 
         self._rows[activity['id']] = (activity['id'], face_buttons)
         return row
+
+    def _add_table_divider(self, grid, column):
+        divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
+        divider.get_style_context().add_class('aspartame-table-divider')
+        grid.attach(divider, column, 0, 1, 1)
 
     def _face_toggled(self, button, activity_id, rating):
         if button.get_active():
