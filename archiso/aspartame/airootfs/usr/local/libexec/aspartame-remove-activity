@@ -1,0 +1,24 @@
+#!/bin/sh
+set -eu
+
+if [ "$#" -ne 1 ]; then
+    echo 'usage: aspartame-remove-activity /managed/path/Activity.activity' >&2
+    exit 2
+fi
+
+path=$(realpath -- "$1")
+case "$path" in
+    /usr/share/sugar/activities/*.activity|/usr/local/share/sugar/activities/*.activity)
+        ;;
+    *)
+        echo 'refusing to remove an Activity outside the managed system directories' >&2
+        exit 1
+        ;;
+esac
+
+test -d "$path/activity"
+quarantine=/var/lib/aspartame/removed-activities
+install -d -m 0700 "$quarantine"
+target="$quarantine/$(date +%s)-$(basename "$path")"
+mv -- "$path" "$target"
+printf '%s\n' "$target"
