@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+set -u
+
+failures=0
+pass() { printf '  %-28s PASS  %s\n' "$1" "${2:-}"; }
+fail() { printf '  %-28s FAIL  %s\n' "$1" "${2:-}"; failures=$((failures + 1)); }
+
+mapfile -t shell_pids < <(pgrep -u aspartame -f '^python3 -m jarabe\.main$')
+if test "${#shell_pids[@]}" -eq 1; then
+    pass 'Sugar process' "PID ${shell_pids[0]}"
+else
+    fail 'Sugar process' "expected 1, found ${#shell_pids[@]}"
+    exit 1
+fi
+shell_pid=${shell_pids[0]}
+get_env() {
+    tr '\0' '\n' < "/proc/$shell_pid/environ" |
+        sed -n "s/^$1=//p" | head -n 1
+}
+display=$(get_env DISPLAY)
+dbus_address=$(get_env DBUS_SESSION_BUS_ADDRESS)
+python_path=$(get_env PYTHONPATH)
+xauthority=$(get_env XAUTHORITY)
+xdg_runtime=$(get_env XDG_RUNTIME_DIR)
+shell_user=$(ps -o user= -p "$shell_pid" | xargs)
+session_env=(
+    "HOME=/home/$shell_user" "USER=$shell_user" "LOGNAME=$shell_user"
+    "DISPLAY=$display" "DBUS_SESSION_BUS_ADDRESS=$dbus_address"
+    "PYTHONPATH=$python_path" "XAUTHORITY=$xauthority"
+    "XDG_RUNTIME_DIR=$xdg_runtime"
+)
+run_as_shell_user() {
+    if test "$(id -u)" -eq 0; then
+        runuser -u "$shell_user" -- env "${session_env[@]}" "$@"
+    else
+        env "${session_env[@]}" "$@"
+    fi
+}
+
+metacity_pid=$(pgrep -P "$shell_pid" -f '^metacity --no-force-fullscreen$' | head -n 1)
+if test -n "$metacity_pid"; then pass 'Metacity' "PID $metacity_pid"; else fail 'Metacity' 'not running under shell'; fi
+
+if run_as_shell_user busctl --address="$dbus_address" --no-pager list 2>/dev/null |
+        awk '$1 == "org.laptop.Shell" && $2 != "-" {found=1} END {exit !found}'; then
+    pass 'org.laptop.Shell D-Bus'
+else
+    fail 'org.laptop.Shell D-Bus' 'name has no owner'
+fi
+
+home_found=false
+client_ids=$(run_as_shell_user xprop -root _NET_CLIENT_LIST 2>/dev/null |
+    sed 's/.*# //; s/,//g')
+for window_id in $client_ids; do
+    if run_as_shell_user xprop -id "$window_id" _NET_WM_WINDOW_TYPE 2>/dev/null |
+            grep -q '_NET_WM_WINDOW_TYPE_DESKTOP'; then
+        home_found=true
+        break
+    fi
+done
+if $home_found; then pass 'Sugar Home X window' "$window_id"; else fail 'Sugar Home X window' 'not detected'; fi
+
+module_origin=$(run_as_shell_user python3 - <<'PY'
+import importlib.util
+spec = importlib.util.find_spec("jarabe.desktop.viewtoolbar")
+print(spec.origin if spec else "NOT FOUND")
+PY
+)
+if [[ "$module_origin" == /mnt/aspartame-dev/sugar/src/* ]]; then
+    pass 'Development import path' "$module_origin"
+else
+    fail 'Development import path' "$module_origin"
+fi
+
+shell_log=/home/aspartame/.sugar/default/logs/shell.log
+if test -r "$shell_log" && grep -Eq 'Traceback \(most recent call last\)|SyntaxError:|ModuleNotFoundError:|ImportError:|Segmentation fault|Fatal Python error' "$shell_log"; then
+    fail 'Fatal shell log entries' 'see make sugar-logs'
+else
+    warning_count=$(grep -Eic 'warning|critical|error|failed' "$shell_log" 2>/dev/null || true)
+    pass 'Fatal shell log entries' "none; warnings=$warning_count"
+fi
+
+if test "$failures" -eq 0; then
+    echo 'Result: PASS'
+    exit 0
+fi
+echo "Result: FAIL ($failures checks)"
+exit 1

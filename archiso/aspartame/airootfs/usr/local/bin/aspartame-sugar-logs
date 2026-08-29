@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -u
+
+lines=${LINES:-200}
+if test "${1:-}" = '--lines'; then
+    lines=${2:-200}
+fi
+profile=/home/aspartame/.sugar/default
+shell_log=$profile/logs/shell.log
+datastore_log=$profile/logs/datastore.log
+marker_log=/home/aspartame/.cache/aspartame-version-overlay.log
+
+show_log() {
+    local title=$1 path=$2
+    printf '\n=== %s: %s ===\n' "$title" "$path"
+    if test -r "$path"; then tail -n "$lines" "$path"; else echo '(not present)'; fi
+}
+
+printf 'Aspartame Sugar logs (last %s lines per source)\n' "$lines"
+show_log 'Sugar shell' "$shell_log"
+show_log 'Sugar datastore' "$datastore_log"
+show_log 'Version marker' "$marker_log"
+printf '\n=== Serious shell signatures ===\n'
+if test -r "$shell_log"; then
+    grep -Ein 'Traceback|exception|critical|error|warning|failed|SyntaxError|ImportError|ModuleNotFoundError' "$shell_log" || echo '(none)'
+else
+    echo '(shell log absent)'
+fi
+printf '\n=== User-session journal (last %s records) ===\n' "$lines"
+journalctl --no-pager -n "$lines" _UID=1000 2>/dev/null || true
+printf '\nKnown current nonfatal warning family:\n'
+printf '  PyGObject g_value/buddy-property warnings are currently observed.\n'
+printf '  Their root cause is not yet isolated; this command does not suppress them.\n'

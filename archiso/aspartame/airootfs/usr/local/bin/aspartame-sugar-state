@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -u
+shell_pid=$(pgrep -u aspartame -f '^python3 -m jarabe\.main$' | head -n 1)
+session_pid=$(ps -o ppid= -p "$shell_pid" 2>/dev/null | xargs)
+dbus_runner_pid=$(ps -o ppid= -p "$session_pid" 2>/dev/null | xargs)
+dbus_pid=$(pgrep -P "$dbus_runner_pid" -f 'dbus-daemon.*--session' | head -n 1)
+printf 'xorg=%s shell=%s dbus=%s metacity=%s\n' \
+    "$(pgrep -f '/usr/lib/Xorg .*:0' | head -n 1)" \
+    "$shell_pid" \
+    "$dbus_pid" \
+    "$(pgrep -P "$shell_pid" -f '^metacity --no-force-fullscreen$' | head -n 1)"

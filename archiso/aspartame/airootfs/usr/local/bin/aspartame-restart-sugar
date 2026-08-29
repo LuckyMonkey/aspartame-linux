@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+target_user=${SUGAR_USER:-aspartame}
+old_pid=$(pgrep -u "$target_user" -f '^python3 -m jarabe\.main$' | head -n 1 || true)
+test -n "$old_pid" || { echo "Sugar is not running for $target_user" >&2; exit 1; }
+
+kill -TERM "$old_pid"
+for _ in $(seq 1 50); do
+    test -d "/proc/$old_pid" || break
+    sleep 0.1
+done
+if test -d "/proc/$old_pid"; then
+    echo "Sugar PID $old_pid ignored SIGTERM; sending SIGKILL" >&2
+    kill -KILL "$old_pid"
+fi
+
+for _ in $(seq 1 150); do
+    new_pid=$(pgrep -u "$target_user" -f '^python3 -m jarabe\.main$' | head -n 1 || true)
+    if test -n "$new_pid" && test "$new_pid" != "$old_pid"; then
+        echo "Sugar restarted: $old_pid -> $new_pid"
+        exit 0
+    fi
+    sleep 0.1
+done
+echo 'Sugar did not respawn within 15 seconds' >&2
+exit 1

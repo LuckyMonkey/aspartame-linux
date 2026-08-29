@@ -40,9 +40,11 @@ mountpoint -q /home/aspartame || mount "$device" /home/aspartame
 test "$(findmnt -n -o SOURCE --target /home/aspartame)" = "$device"
 install -d -o aspartame -g aspartame /home/aspartame/Desktop \
     /home/aspartame/Downloads /home/aspartame/.config
-if ! grep -q aspartame-start-sshd /home/aspartame/.xinitrc 2>/dev/null; then
-    install -o aspartame -g aspartame /etc/skel/.xinitrc \
-        /home/aspartame/.xinitrc
+if ! grep -qx 'exec /usr/local/bin/aspartame-x-session' /home/aspartame/.xinitrc 2>/dev/null; then
+    if test -f /home/aspartame/.xinitrc && test ! -e /home/aspartame/.xinitrc.pre-aspartame-system-session; then
+        cp -p /home/aspartame/.xinitrc /home/aspartame/.xinitrc.pre-aspartame-system-session
+    fi
+    install -o aspartame -g aspartame /etc/skel/.xinitrc /home/aspartame/.xinitrc
 fi
 if test ! -e /home/aspartame/.bash_profile; then
     install -o aspartame -g aspartame /etc/skel/.bash_profile \
@@ -104,29 +106,6 @@ fi
 echo "Development share: /mnt/aspartame-dev"
 EOF
 chmod 0755 /usr/local/bin/aspartame-dev-mount
-cat > /usr/local/bin/aspartame-restart-sugar <<'EOF'
-#!/bin/sh
-set -eu
-old_pid=$(pgrep -u "${USER:-aspartame}" -f "^python3 -m jarabe\.main$" | head -n 1 || true)
-if test -n "$old_pid"; then
-    kill -TERM "$old_pid" 2>/dev/null || true
-    for _ in 1 2 3 4 5 6 7 8 9 10; do
-        test -d "/proc/$old_pid" || break
-        sleep 1
-    done
-fi
-for _ in 1 2 3 4 5 6 7 8 9 10; do
-    new_pid=$(pgrep -u "${USER:-aspartame}" -f "^python3 -m jarabe\.main$" | head -n 1 || true)
-    if test -n "$new_pid" && test "$new_pid" != "$old_pid"; then
-        echo "Sugar restarted: $old_pid -> $new_pid"
-        exit 0
-    fi
-    sleep 1
-done
-echo "Sugar did not restart within 10 seconds" >&2
-exit 1
-EOF
-chmod 0755 /usr/local/bin/aspartame-restart-sugar
 
 install -d -m 0755 /etc/ssh/sshd_config.d /etc/sudoers.d
 cat > /usr/local/sbin/aspartame-start-sshd <<'EOF'

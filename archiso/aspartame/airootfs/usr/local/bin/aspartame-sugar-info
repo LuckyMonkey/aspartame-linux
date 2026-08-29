@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+set -u
+
+shell_pid=$(pgrep -u aspartame -f '^python3 -m jarabe\.main$' | head -n 1)
+if test -z "$shell_pid"; then
+    echo 'Sugar shell: NOT RUNNING' >&2
+    exit 1
+fi
+
+shell_user=$(ps -o user= -p "$shell_pid" | xargs)
+shell_uid=$(stat -c %u "/proc/$shell_pid")
+get_env() {
+    tr '\0' '\n' < "/proc/$shell_pid/environ" |
+        sed -n "s/^$1=//p" | head -n 1
+}
+
+display=$(get_env DISPLAY)
+dbus_address=$(get_env DBUS_SESSION_BUS_ADDRESS)
+python_path=$(get_env PYTHONPATH)
+xauthority=$(get_env XAUTHORITY)
+xdg_runtime=$(get_env XDG_RUNTIME_DIR)
+sugar_scaling=$(get_env SUGAR_SCALING)
+sugar_home=$(get_env SUGAR_HOME)
+sugar_profile=$(get_env SUGAR_PROFILE)
+session_pid=$(ps -o ppid= -p "$shell_pid" | xargs)
+dbus_runner_pid=$(ps -o ppid= -p "$session_pid" | xargs)
+dbus_pid=$(pgrep -P "$dbus_runner_pid" -f 'dbus-daemon.*--session' | head -n 1)
+metacity_pid=$(pgrep -P "$shell_pid" -f '^metacity --no-force-fullscreen$' | head -n 1)
+xorg_pid=$(pgrep -f '/usr/lib/Xorg .*:0' | head -n 1)
+
+session_env=(
+    "HOME=/home/$shell_user"
+    "USER=$shell_user"
+    "LOGNAME=$shell_user"
+    "DISPLAY=$display"
+    "DBUS_SESSION_BUS_ADDRESS=$dbus_address"
+    "PYTHONPATH=$python_path"
+    "XAUTHORITY=$xauthority"
+    "XDG_RUNTIME_DIR=$xdg_runtime"
+)
+run_as_shell_user() {
+    if test "$(id -u)" -eq 0; then
+        runuser -u "$shell_user" -- env "${session_env[@]}" "$@"
+    else
+        env "${session_env[@]}" "$@"
+    fi
+}
+
+home_window='not detected'
+client_ids=$(run_as_shell_user xprop -root _NET_CLIENT_LIST 2>/dev/null |
+    sed 's/.*# //; s/,//g')
+for window_id in $client_ids; do
+    properties=$(run_as_shell_user xprop -id "$window_id" \
+        WM_CLASS _NET_WM_NAME _NET_WM_WINDOW_TYPE 2>/dev/null)
+    if grep -q '_NET_WM_WINDOW_TYPE_DESKTOP' <<<"$properties"; then
+        home_window="$window_id"
+        break
+    fi
+done
+
+printf '%s\n' 'Aspartame Sugar runtime'
+printf '  Current user:       %s (uid %s)\n' "$shell_user" "$shell_uid"
+printf '  Sugar shell PID:    %s\n' "$shell_pid"
+printf '  Session wrapper PID:%s\n' "$session_pid"
+printf '  dbus-run-session:   %s\n' "$dbus_runner_pid"
+printf '  Session D-Bus PID:  %s\n' "${dbus_pid:-not detected}"
+printf '  Metacity PID:       %s\n' "${metacity_pid:-not detected}"
+printf '  Xorg PID:           %s\n' "${xorg_pid:-not detected}"
+printf '  Home X window:      %s\n' "$home_window"
+printf '  Display protocol:   X11 (%s)\n' "$display"
+printf '  Session bus:        %s\n' "$dbus_address"
+printf '  PYTHONPATH:         %s\n' "${python_path:-<unset>}"
+printf '  Sugar profile:      %s/%s\n' "$sugar_home" "$sugar_profile"
+printf '  UI revision:        %s\n' "$(cat /mnt/aspartame-dev/ui-version 2>/dev/null || cat /usr/share/aspartame/ui-version 2>/dev/null || echo unknown)"
+printf '\nVersions\n'
+printf '  %s\n' "$(pacman -Q sugar sugar-toolkit-gtk3 sugar-artwork sugar-datastore metacity 2>/dev/null | paste -sd ';' -)"
+run_as_shell_user python3 - <<'PY'
+import gi
+
+gi.require_version("Gtk", "3.0")
+from gi.repository import GObject, Gtk
+
+print("  Python:             " + __import__("platform").python_version())
+print("  PyGObject:          " + ".".join(map(str, GObject.pygobject_version)))
+print("  GTK:                %d.%d.%d" %
+      (Gtk.get_major_version(), Gtk.get_minor_version(), Gtk.get_micro_version()))
+PY
+
+printf '\nRuntime imports\n'
+run_as_shell_user /usr/local/bin/aspartame-sugar-imports
+
+printf '\nStyling\n'
+printf '  Sugar scaling:      %s\n' "$sugar_scaling"
+printf '  Shell GTK theme:    sugar-%s (set by jarabe.main)\n' "$sugar_scaling"
+printf '  Sugar icon theme:   sugar (set by jarabe.main)\n'
+printf '  GTK2 compatibility: %s\n' "$(get_env GTK2_RC_FILES)"
+printf '  Theme CSS:          /usr/share/themes/sugar-%s/gtk-3.0/gtk.css\n' "$sugar_scaling"
+printf '  Artwork icons:      /usr/share/icons/sugar/scalable\n'
+printf '  Font:               %s %s\n' \
+    "$(run_as_shell_user gsettings get org.sugarlabs.font default-face 2>/dev/null)" \
+    "$(run_as_shell_user gsettings get org.sugarlabs.font default-size 2>/dev/null)"
+
+packaged_jarabe=$(pacman -Ql sugar 2>/dev/null | awk "/\/jarabe\/__init__\.py$/ {print \$2; exit}")
+packaged_sugar3=$(pacman -Ql sugar-toolkit-gtk3 2>/dev/null | awk "/\/sugar3\/__init__\.py$/ {print \$2; exit}")
+printf '\nPackage ownership\n'
+for path in \
+    "$packaged_jarabe" \
+    "$packaged_sugar3" \
+    "/usr/share/themes/sugar-$sugar_scaling/gtk-3.0/gtk.css" \
+    /usr/bin/metacity; do
+    printf '  %-68s ' "$path"
+    pacman -Qo "$path" 2>/dev/null | sed 's/.* is owned by //'
+done

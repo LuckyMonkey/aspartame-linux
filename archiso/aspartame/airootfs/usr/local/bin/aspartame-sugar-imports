@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+import importlib.util
+from pathlib import Path
+
+modules = (
+    "jarabe",
+    "jarabe.desktop.homewindow",
+    "jarabe.desktop.homebox",
+    "jarabe.desktop.favoritesview",
+    "jarabe.desktop.favoriteslayout",
+    "jarabe.desktop.viewtoolbar",
+    "jarabe.desktop.meshbox",
+    "jarabe.desktop.groupbox",
+    "jarabe.frame.frame",
+    "jarabe.frame.zoomtoolbar",
+    "jarabe.journal.journalactivity",
+    "jarabe.model.shell",
+    "jarabe.controlpanel.gui",
+    "jarabe.intro.window",
+    "sugar3",
+    "sugar3.graphics.style",
+    "sugar3.graphics.icon",
+    "sugar3.graphics.palette",
+)
+
+roots = {}
+for package in ("jarabe", "sugar3"):
+    spec = importlib.util.find_spec(package)
+    roots[package] = (Path(next(iter(spec.submodule_search_locations)))
+                      if spec and spec.submodule_search_locations else None)
+
+for name in modules:
+    package, *parts = name.split(".")
+    root = roots.get(package)
+    if root is None:
+        origin = "NOT FOUND"
+    elif not parts:
+        origin = str(root / "__init__.py")
+    else:
+        candidate = root.joinpath(*parts)
+        module_file = candidate.with_suffix(".py")
+        package_file = candidate / "__init__.py"
+        if module_file.is_file():
+            origin = str(module_file)
+        elif package_file.is_file():
+            origin = str(package_file)
+        else:
+            origin = "NOT FOUND"
+    print("  %-36s %s" % (name + ":", origin))
