@@ -36,8 +36,13 @@ class ActivityManager(SectionView):
                 min-height: 34px;
             }
             .aspartame-table-divider {
-                background-color: #c8d3d8;
-                min-width: 1px;
+                background-color: #8fa3ad;
+                min-width: 2px;
+                min-height: 2px;
+            }
+            .aspartame-table-header {
+                background-color: #e6eef1;
+                border-bottom: 2px solid #8fa3ad;
             }
         ''')
         Gtk.StyleContext.add_provider_for_screen(
@@ -83,6 +88,7 @@ class ActivityManager(SectionView):
         header.set_border_width(style.DEFAULT_SPACING)
         header.set_column_spacing(style.DEFAULT_SPACING)
         header.set_hexpand(True)
+        header.get_style_context().add_class('aspartame-table-header')
         for column, (text, width, align) in enumerate((
                 (_('Activity'), 360, 0.0),
                 (_('Rating'), 250, 0.5),
@@ -96,6 +102,7 @@ class ActivityManager(SectionView):
             header.attach(label, actual_column, 0, 1, 1)
             if column < 3:
                 divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
+                divider.set_size_request(2, -1)
                 divider.get_style_context().add_class('aspartame-table-divider')
                 header.attach(divider, actual_column + 1, 0, 1, 1)
         self._list.add(header)
@@ -200,6 +207,7 @@ class ActivityManager(SectionView):
 
     def _add_table_divider(self, grid, column):
         divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
+        divider.set_size_request(2, -1)
         divider.get_style_context().add_class('aspartame-table-divider')
         grid.attach(divider, column, 0, 1, 1)
 
