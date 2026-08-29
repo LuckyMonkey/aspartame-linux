@@ -3,7 +3,7 @@
 This is the operational map for the Aspartame Sugar shell. Read this before
 changing shell code. The reference environment in this document was inspected
 live on 2026-08-29 with Sugar 0.121-7, sugar-toolkit-gtk3 0.121-7, GTK 3.24.52,
-Python 3.14.7, Metacity 3.58.1, Xorg, and the Aspartame UI v0.0.13 overlay.
+Python 3.14.7, Metacity 3.58.1, Xorg, and the Aspartame UI v0.0.14 overlay.
 
 ## Fast path
 
@@ -192,7 +192,7 @@ are Aspartame-owned development infrastructure copied from this repository.
 | Running/current Activity | `CurrentActivityIcon`; `jarabe.model.shell.Activity` and `ShellModel` | Wnck/X11 window tracking and Activity metadata | shell |
 | Launch/resume | favorites/Home callbacks, `jarabe.model.shell`, Sugar activity factory and Journal object IDs | D-Bus, Journal datastore, bundle registry, X11 | shell; Activity process is separate |
 | Home search | `jarabe.desktop.viewtoolbar.ViewToolbar` and `HomeBox` query callbacks | `IconEntry`, delayed GLib search callback | shell |
-| Aspartame clock | `jarabe.desktop.viewtoolbar.ViewToolbar` | native `Gtk.ToolButton`/internal `Gtk.Label`; local scoped CSS provider; `datetime.now()` | shell |
+| Aspartame clock | `jarabe.desktop.viewtoolbar.ViewToolbar` | native `Gtk.ToolButton`/internal `Gtk.Label`; local scoped CSS provider; locale-aware `datetime.now()` | shell |
 | Frame | `jarabe.frame.frame.Frame` | four `FrameWindow` panels, trays, animator, palettes | shell |
 | Frame activation | `jarabe.frame.eventarea.EventArea`; `jarabe.view.keyhandler.KeyHandler` | invisible edge/corner X windows; `org.sugarlabs.frame`; F6 calls `Frame.notify_key_press()` | shell |
 | Frame navigation | `jarabe.frame.zoomtoolbar.ZoomToolbar` | Sugar toolbar/radio buttons; emits zoom levels | shell |

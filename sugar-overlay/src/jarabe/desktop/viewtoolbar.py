@@ -21,6 +21,7 @@
 
 from gettext import gettext as _
 from datetime import datetime
+import locale
 import logging
 
 from gi.repository import Gtk
@@ -167,9 +168,14 @@ class ViewToolbar(Gtk.Toolbar):
 
 
     def __update_clock_cb(self):
-        text = datetime.now().strftime('%H:%M')
+        locale.setlocale(locale.LC_TIME, "")
+        time_format = locale.nl_langinfo(locale.T_FMT)
+        if "%I" in time_format or "%p" in time_format:
+            text = datetime.now().strftime("%I:%M %p").lstrip("0")
+        else:
+            text = datetime.now().strftime("%H:%M")
         if self._clock_render_label is not None:
-            self._clock_render_label.set_markup('<span size="xx-large" weight="bold">%s</span>' % text)
+            self._clock_render_label.set_markup("<span size=\"xx-large\" weight=\"bold\">%s</span>" % text)
         else:
             self._clock_item.set_label(text)
         return True

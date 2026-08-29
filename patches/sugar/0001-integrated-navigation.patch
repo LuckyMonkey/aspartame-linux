@@ -89,15 +89,16 @@
  
 --- jarabe/desktop/viewtoolbar.py
 +++ jarabe/desktop/viewtoolbar.py
-@@ -20,6 +20,7 @@
+@@ -20,6 +20,8 @@
  # along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
  from gettext import gettext as _
 +from datetime import datetime
++import locale
  import logging
  
  from gi.repository import Gtk
-@@ -48,6 +49,7 @@
+@@ -48,6 +50,7 @@
  
      def __init__(self):
          Gtk.Toolbar.__init__(self)
@@ -105,7 +106,7 @@
  
          self._favorites_views_indicies = []
          for i in range(desktop.get_number_of_views()):
-@@ -78,7 +80,38 @@
+@@ -78,7 +81,38 @@
          tool_item.add(self.search_entry)
          self.search_entry.show()
  
@@ -145,7 +146,7 @@
  
          self._button_box = Gtk.HBox()
          self._favorites_buttons = []
-@@ -122,6 +155,26 @@
+@@ -122,6 +156,31 @@
              self._favorites_buttons[i].hide()
          self._list_button.hide()
  
@@ -161,9 +162,14 @@
 +
 +
 +    def __update_clock_cb(self):
-+        text = datetime.now().strftime('%H:%M')
++        locale.setlocale(locale.LC_TIME, "")
++        time_format = locale.nl_langinfo(locale.T_FMT)
++        if "%I" in time_format or "%p" in time_format:
++            text = datetime.now().strftime("%I:%M %p").lstrip("0")
++        else:
++            text = datetime.now().strftime("%H:%M")
 +        if self._clock_render_label is not None:
-+            self._clock_render_label.set_markup('<span size="xx-large" weight="bold">%s</span>' % text)
++            self._clock_render_label.set_markup("<span size=\"xx-large\" weight=\"bold\">%s</span>" % text)
 +        else:
 +            self._clock_item.set_label(text)
 +        return True
