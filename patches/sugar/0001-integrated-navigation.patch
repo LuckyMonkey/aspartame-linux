@@ -63,7 +63,7 @@
          self._set_zoom_level(kwargs['new_level'])
  
 --- jarabe/desktop/viewtoolbar.py	2026-08-29 00:56:53.763206405 -0400
-+++ jarabe/desktop/viewtoolbar.py	2026-08-29 06:58:03.169563109 -0400
++++ jarabe/desktop/viewtoolbar.py	2026-08-29 06:59:13.018142831 -0400
 @@ -22,6 +22,8 @@
  from gettext import gettext as _
  import logging
@@ -88,11 +88,11 @@
 -        self._add_separator(expand=True)
 +        self._clock_item = Gtk.ToolItem()
 +        self._clock_item.set_expand(True)
-+        self._clock_item.set_size_request(260, -1)
++        self._clock_item.set_size_request(300, -1)
 +        self._clock_alignment = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
 +        self._clock_label = Gtk.Label()
 +        self._clock_label.set_xalign(0.5)
-+        self._clock_label.set_markup('<span size="xx-large" weight="bold" foreground="#000000">--:--</span>')
++        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">--:--</span>')
 +        self._clock_label.set_margin_start(style.DEFAULT_PADDING)
 +        self._clock_label.set_margin_end(style.DEFAULT_PADDING)
 +        self._clock_alignment.add(self._clock_label)
@@ -118,7 +118,7 @@
          self._list_button.hide()
  
 +    def __update_clock_cb(self):
-+        self._clock_label.set_markup('<span size="xx-large" weight="bold" foreground="#000000">%s</span>' % datetime.now().strftime('%H:%M'))
++        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">%s</span>' % datetime.now().strftime('%H:%M'))
 +        return True
 +
      def clear_query(self):
