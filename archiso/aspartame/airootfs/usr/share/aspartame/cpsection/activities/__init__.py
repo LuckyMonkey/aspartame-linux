@@ -2,5 +2,5 @@ from gettext import gettext as _
 
 
 CLASS = 'ActivityManager'
-ICON = 'module-software'
+ICON = 'module-updater'
 TITLE = _('Activities')
