@@ -6,23 +6,28 @@ share_root=${DEV_SHARE:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/
 activity_root="$project_root/packages/upstream-activities"
 require_vm
 SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A -v
-for spec in \
-  'turtleart-activity:TurtleBlocks.activity' \
-  'memorize-activity:Memorize.activity' \
-  'maze-activity:Maze.activity'; do
-  repo=${spec%%:*}; bundle=${spec##*:}
-  test -f "$activity_root/$repo/activity/activity.info"
+while IFS=$'\t' read -r repo bundle; do
+  test -n "$repo" || continue
+  source="$activity_root/$repo"
+  test -d "$source" && test -f "$source/activity/activity.info"
   SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A rm -rf "$share_root/activities/$bundle"
   SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A mkdir -p "$share_root/activities"
-  SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A cp -a "$activity_root/$repo" "$share_root/activities/$bundle"
+  SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A cp -a "$source" "$share_root/activities/$bundle"
+done < "$activity_root/INSTALL-MANIFEST"
+SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A install -m 0644 "$activity_root/INSTALL-MANIFEST" "$share_root/activities/INSTALL-MANIFEST"
+# Remove only bundles previously installed by this experiment that failed runtime smoke tests.
+for bundle in connect-the-dots.activity diamond-fusion.activity finance.activity gears.activity get-books.activity get-things-done.activity grid-paint.activity last-one-loses.activity level.activity markdown.activity moon.activity words.activity; do
+  SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A rm -rf "$share_root/activities/$bundle"
 done
 vm_ssh bash -s <<'REMOTE'
 set -euo pipefail
-for bundle in TurtleBlocks.activity Memorize.activity Maze.activity; do
+while IFS=$'\t' read -r repo bundle; do
+  test -n "$repo" || continue
   rm -rf "/usr/share/sugar/activities/$bundle"
   cp -a "/mnt/aspartame-dev/activities/$bundle" "/usr/share/sugar/activities/$bundle"
-  find "/usr/share/sugar/activities/$bundle" -type f -name '*.py' -exec chmod 0644 {} +
+done < /mnt/aspartame-dev/activities/INSTALL-MANIFEST
+for bundle in connect-the-dots.activity diamond-fusion.activity finance.activity gears.activity get-books.activity get-things-done.activity grid-paint.activity last-one-loses.activity level.activity markdown.activity moon.activity words.activity; do
+  rm -rf "/usr/share/sugar/activities/$bundle"
 done
 REMOTE
-printf 'Installed canonical activity bundles:\n'
-vm_ssh 'find /usr/share/sugar/activities -maxdepth 2 -type f -name activity.info | grep -E "TurtleBlocks|Memorize|Maze" | sort'
+printf 'Canonical source bundles deployed.\n'
