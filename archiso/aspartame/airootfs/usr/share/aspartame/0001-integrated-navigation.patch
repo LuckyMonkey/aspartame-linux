@@ -63,7 +63,7 @@
          self._set_zoom_level(kwargs['new_level'])
  
 --- jarabe/desktop/viewtoolbar.py	2026-08-29 00:56:53.763206405 -0400
-+++ jarabe/desktop/viewtoolbar.py	2026-08-29 07:03:14.425578322 -0400
++++ jarabe/desktop/viewtoolbar.py	2026-08-29 07:00:57.821135668 -0400
 @@ -22,6 +22,8 @@
  from gettext import gettext as _
  import logging
@@ -81,15 +81,32 @@
  
          self._favorites_views_indicies = []
          for i in range(desktop.get_number_of_views()):
-@@ -78,7 +81,6 @@
+@@ -78,7 +81,23 @@
          tool_item.add(self.search_entry)
          self.search_entry.show()
  
 -        self._add_separator(expand=True)
++        self._clock_item = Gtk.ToolItem()
++        self._clock_item.set_expand(False)
++        self._clock_item.set_size_request(300, -1)
++        self._clock_alignment = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
++        self._clock_label = Gtk.Label()
++        self._clock_label.set_width_chars(8)
++        self._clock_label.set_justify(Gtk.Justification.CENTER)
++        self._clock_label.set_xalign(0.5)
++        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">--:--</span>')
++        self._clock_label.set_margin_start(style.DEFAULT_PADDING)
++        self._clock_label.set_margin_end(style.DEFAULT_PADDING)
++        self._clock_alignment.add(self._clock_label)
++        self._clock_item.add(self._clock_alignment)
++        self.insert(self._clock_item, -1)
++        self._clock_item.show_all()
++        self.__update_clock_cb()
++        GLib.timeout_add_seconds(30, self.__update_clock_cb)
  
          self._button_box = Gtk.HBox()
          self._favorites_buttons = []
-@@ -104,6 +106,8 @@
+@@ -104,6 +123,8 @@
      def _add_favorites_button(self, i):
          logging.debug('adding FavoritesButton %d' % (i))
          self._favorites_buttons.append(FavoritesButton(i))
@@ -98,56 +115,17 @@
          self._favorites_buttons[i].connect('toggled',
                                             self.__view_button_toggled_cb,
                                             self._favorites_views_indicies[i])
-@@ -122,6 +126,7 @@
+@@ -122,6 +143,10 @@
              self._favorites_buttons[i].hide()
          self._list_button.hide()
- 
-+
-     def clear_query(self):
-         self.search_entry.props.text = ''
- 
---- jarabe/desktop/homewindow.py	2026-08-29 07:03:01.724564269 -0400
-+++ jarabe/desktop/homewindow.py	2026-08-29 07:03:18.597796220 -0400
-@@ -14,6 +14,7 @@
- # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
- from gettext import gettext as _
-+from datetime import datetime
- import logging
- 
- from gi.repository import GLib
-@@ -102,7 +103,18 @@
-         self._mesh_box = MeshBox(self._toolbar)
-         self._transition_box = TransitionBox()
- 
--        self.add(self._box)
-+        self._overlay = Gtk.Overlay()
-+        self._overlay.add(self._box)
-+        self._clock_label = Gtk.Label()
-+        self._clock_label.set_halign(Gtk.Align.CENTER)
-+        self._clock_label.set_valign(Gtk.Align.START)
-+        self._clock_label.set_margin_top(10)
-+        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">--:--</span>')
-+        self._overlay.add_overlay(self._clock_label)
-+        self._clock_label.show()
-+        self.__update_clock_cb()
-+        GLib.timeout_add_seconds(30, self.__update_clock_cb)
-+        self.add(self._overlay)
-         self._box.show()
- 
-         self._transition_box.connect('completed',
-@@ -139,6 +151,11 @@
-         elif level == ShellModel.ZOOM_MESH:
-             self._mesh_box.suspend()
  
 +    def __update_clock_cb(self):
 +        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">%s</span>' % datetime.now().strftime('%H:%M'))
 +        return True
 +
-+
-     def __screen_size_changed_cb(self, screen):
-         screen = Gdk.Screen.get_default()
-         n = screen.get_number()
+     def clear_query(self):
+         self.search_entry.props.text = ''
+ 
 --- jarabe/desktop/meshbox.py	2026-08-29 06:33:24.517549545 -0400
 +++ jarabe/desktop/meshbox.py	2026-08-29 06:48:12.536413259 -0400
 @@ -18,9 +18,15 @@
