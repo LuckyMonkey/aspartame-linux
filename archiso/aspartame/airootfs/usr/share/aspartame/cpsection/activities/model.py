@@ -33,6 +33,8 @@ def _read_info(path):
         'id': bundle_id,
         'name': section.get('name', bundle_id),
         'version': section.get('activity_version', section.get('version', '')),
+        'summary': section.get('summary', ''),
+        'url': section.get('url', ''),
         'path': path,
         'user': path.startswith(os.path.expanduser('~')),
     }

@@ -99,6 +99,23 @@ def register_target(widget, target_id, **metadata):
     return target_data
 
 
+def register_activity(activity):
+    bundle_id = activity.get('id', 'unknown')
+    safe_id = ''.join(char if char.isalnum() else '-'
+                      for char in bundle_id).strip('-').lower()
+    target_id = 'org.aspartame.activity.' + safe_id
+    title = activity.get('name', bundle_id)
+    summary = activity.get('summary') or ('Open %s and explore what it can do.' % title)
+    explanation = summary.rstrip('.')
+    if explanation:
+        explanation += '.'
+    explanation += ' Open it from Home to begin, or use Journal to resume saved work.'
+    _TARGETS[target_id] = Target(
+        target_id, title, summary, explanation,
+        'activities#' + safe_id)
+    return target_id
+
+
 def target(target_id):
     return _TARGETS.get(target_id)
 

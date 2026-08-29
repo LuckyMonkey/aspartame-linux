@@ -20,3 +20,15 @@ System bundles use the fixed `pkexec` helper
 `/var/lib/aspartame/removed-activities`; they are never recursively deleted.
 The Sugar shell/activity registry may need a shell or full session restart
 before a removed system bundle disappears from Home.
+
+The Activity Manager presents those same five numeric values as a centered
+face scale: frowning face = Broken, unhappy face = Bad, neutral face = Needs
+work, smiling face = Good, and the bright smiling face = Perfect. The face
+selection is only another view of the existing numeric rating; it does not
+reset or migrate the ratings file.
+
+Each row is separated visually and includes the Activity summary, version,
+remove action, and a contextual-help target. Activity metadata records the
+bundle ID and any upstream help or repository URL declared by activity.info.
+The maintained source inventory is documented in
+docs/ACTIVITY-SOURCES.md.

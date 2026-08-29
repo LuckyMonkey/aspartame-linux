@@ -1,3 +1,6 @@
 cpsection/datetime/__init__.py
 cpsection/datetime/model.py
 cpsection/datetime/view.py
+cpsection/activities/__init__.py
+cpsection/activities/model.py
+cpsection/activities/view.py

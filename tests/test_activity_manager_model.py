@@ -14,6 +14,11 @@ from activities import model
 
 
 class ActivityManagerModelTests(unittest.TestCase):
+    def test_rating_scale_has_five_preserved_values(self):
+        self.assertEqual(
+            model.RATINGS,
+            ('Broken', 'Bad', 'Needs work', 'Good', 'Perfect'))
+
     def test_lists_activity_info_and_prefers_first_root(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / 'activities'
