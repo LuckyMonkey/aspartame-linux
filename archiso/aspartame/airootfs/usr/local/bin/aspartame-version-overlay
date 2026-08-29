@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+from gi.repository import Gdk
+from gi.repository import Gtk
+
+VERSION = 'Aspartame UI v0.0.4'
+
+
+def main():
+    window = Gtk.Window(type=Gtk.WindowType.POPUP)
+    window.set_decorated(False)
+    window.set_keep_above(True)
+    window.set_skip_taskbar_hint(True)
+    window.set_accept_focus(False)
+    window.set_default_size(150, 24)
+    window.set_opacity(0.78)
+    label = Gtk.Label(label=VERSION)
+    label.set_halign(Gtk.Align.END)
+    label.set_valign(Gtk.Align.CENTER)
+    label.set_margin_end(12)
+    label.override_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0, 0, 0, 1))
+    window.add(label)
+
+    def place(_window):
+        screen = window.get_screen()
+        window.move(screen.get_width() - 162, screen.get_height() - 34)
+
+    window.connect('realize', place)
+    window.show_all()
+    Gtk.main()
+
+
+if __name__ == '__main__':
+    main()
