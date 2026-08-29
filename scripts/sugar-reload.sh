@@ -6,7 +6,9 @@ source "$project_root/sugar-overlay/UPSTREAM"
 overlay_root="$project_root/sugar-overlay/src"
 files_list="$project_root/sugar-overlay/files.list"
 extension_files_list="$project_root/sugar-overlay/extensions.list"
-extension_root="$project_root/archiso/aspartame/airootfs/usr/share/sugar/extensions"
+# Control-panel overrides are staged outside the package-owned tree and copied
+# into /usr/share/sugar/extensions during ISO customization or reload.
+extension_root="$project_root/archiso/aspartame/airootfs/usr/share/aspartame"
 clock_schema="$project_root/archiso/aspartame/airootfs/usr/share/glib-2.0/schemas/org.aspartame.clock.gschema.xml"
 version_file="$project_root/archiso/aspartame/airootfs/usr/share/aspartame/ui-version"
 marker_file="$project_root/archiso/aspartame/airootfs/usr/local/bin/aspartame-version-overlay"
