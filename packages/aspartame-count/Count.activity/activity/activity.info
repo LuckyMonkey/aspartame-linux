@@ -1,0 +1,10 @@
+[Activity]
+name = Count
+bundle_id = org.aspartame.Count
+exec = sugar-activity3 activity.CountActivity
+icon = count
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Count cells and layers in a simple grid
+tags = Utility;Math
