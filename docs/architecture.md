@@ -1,11 +1,21 @@
 # Aspartame architecture
 
 Aspartame is an Arch Linux live image built by `archiso`. Sugar is the primary
-session, launched by an autologin on tty1 through Xorg and `startx`. The
-underlying system remains ordinary Arch: systemd, NetworkManager, pacman,
-normal home directories, and a real shell remain available.
+session and retains its Home, Activity, Frame, Journal, Group, Neighborhood,
+palette, and XO-color interaction model. The underlying system remains
+conventional Arch: systemd, NetworkManager, pacman, Xorg, Metacity, ordinary
+home directories, and a real shell.
 
-The first profile intentionally uses upstream Arch packages. Aspartame-owned
-changes belong in the archiso profile or future PKGBUILDs, not in a fork of
-Sugar or systemd.
+The development image uses tty1 autologin and `startx`; it does not use a
+display manager. A stable user `.xinitrc` delegates to the system-owned
+`aspartame-x-session`, which creates the Sugar D-Bus session and supervises the
+shell. `/home/aspartame` is a separate persistent QEMU disk.
 
+Official Arch packages own Sugar, sugar-toolkit-gtk3, sugar-artwork, datastore,
+Metacity, and Activities. Aspartame's modified `jarabe` source is isolated under
+`sugar-overlay/`, converted reproducibly into the ISO patch, and synchronized
+to a generated QEMU development tree. Pacman-owned files are not live-edited.
+
+The authoritative runtime/process/import/development map is
+[SUGAR-DEVELOPMENT.md](SUGAR-DEVELOPMENT.md). The visual layer map is
+[SUGAR-STYLING.md](SUGAR-STYLING.md).

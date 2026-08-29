@@ -2,45 +2,68 @@
 
 **Sugar on Arch.**
 
-Aspartame is an Arch-based desktop distribution with Sugar as its primary
-desktop. The bootstrap target is a reproducible archiso live image that boots
-to a usable Sugar session in QEMU, with networking, Firefox, terminal,
-storage, sound infrastructure, and printing.
+Aspartame is an Arch-derived desktop distribution with Sugar as its primary
+interaction model. It preserves Home, Activities, Journal, Frame, Group,
+Neighborhood, palettes, and Sugar's color/state semantics while building a
+modern general-purpose system around them.
+
+The current bootstrap is a reproducible archiso image that boots directly into
+a real Sugar session in QEMU. It includes networking, browser and Terminal
+Activities, persistent user data, audio infrastructure, CUPS, SSH-based
+development control, and a 1920×1080 reference display.
 
 ## Quick start
 
-The build uses an official Arch bootstrap root on SteamLibrary. This keeps
-archiso's package cache and large work/output trees off the Ubuntu root
-filesystem.
+Large archiso caches and artifacts live on SteamLibrary rather than the Ubuntu
+root filesystem.
 
 ```sh
 git clone https://github.com/LuckyMonkey/aspartame-linux.git
 cd aspartame-linux
+make test
 make iso
 make run
 ```
 
-The first `make iso` asks for sudo to enter the isolated Arch build root.
-Run `make test` for host-side checks without building.
+Override QEMU defaults with environment variables:
 
-The development live image autologins as `aspartame`. Direct console login is
-also available as `root` with password `freezer`; this is intentionally a
-development-only image and is not an appropriate installed-system default.
+```sh
+RAM=8192 CPUS=4 make run
+```
 
-Use `RAM=8192 CPUS=4 make run` to override QEMU defaults. See [docs/building.md](docs/building.md) and [docs/qemu.md](docs/qemu.md).
+## Sugar development
+
+The repository now has one deterministic Sugar development loop:
+
+```sh
+make sugar-info
+# Edit sugar-overlay/src/jarabe/...
+make sugar-reload
+make sugar-logs
+make sugar-screenshot
+```
+
+Use `make sugar-session-restart` only for the broader tty1/X/session boundary.
+The runtime/source/process map and recovery procedure are in
+[docs/SUGAR-DEVELOPMENT.md](docs/SUGAR-DEVELOPMENT.md). Styling layers are
+mapped in [docs/SUGAR-STYLING.md](docs/SUGAR-STYLING.md).
+
+## Architecture
 
 Aspartame keeps Arch, pacman, systemd, ordinary filesystem paths, and a real
-terminal beneath Sugar. Python is preferred for user-layer integration, while
-system Python and low-level native infrastructure remain distribution-owned.
-See [docs/philosophy.md](docs/philosophy.md).
+terminal beneath Sugar. Python is preferred for understandable user-layer
+integration; Arch's system Python and low-level native infrastructure remain
+distribution-owned. CUPS is intentional core infrastructure.
 
-## Current status
+Start with:
 
-The repository is in bootstrap profile stage. The Ubuntu development host
-does not provide `mkarchiso`; the build script intentionally stops with a
-clear prerequisite error. Sugar package availability is promising on current
-Arch Extra, but the actual ISO boot and Activity compatibility still need to be
-tested in Arch/QEMU.
+- [architecture](docs/architecture.md)
+- [building](docs/building.md)
+- [QEMU](docs/qemu.md)
+- [Sugar current state](docs/sugar-current-state.md)
+- [Sugar development](docs/SUGAR-DEVELOPMENT.md)
+- [Sugar styling](docs/SUGAR-STYLING.md)
+- [known issues](docs/known-issues.md)
 
-Current upstream/package findings are recorded in
-[docs/sugar-current-state.md](docs/sugar-current-state.md).
+The live image's autologin and root development password are for QEMU
+engineering only and are not an installed-system security model.
