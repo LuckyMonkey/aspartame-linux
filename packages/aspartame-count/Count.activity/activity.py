@@ -12,7 +12,7 @@ from sugar3.graphics.toolbarbox import ToolbarBox
 
 
 class CountActivity(activity.Activity):
-    """Count things on a floor and then stack the floors upward."""
+    """Count boxes on a front face and then look deeper into the stack."""
 
     def __init__(self, handle):
         super().__init__(handle)
@@ -75,22 +75,22 @@ class CountActivity(activity.Activity):
 
         nav = Gtk.Box(spacing=8)
         nav.set_halign(Gtk.Align.CENTER)
-        self._symbol_button(nav, "◀", "Previous layer", self._previous_layer,
+        self._symbol_button(nav, "◀", "Move toward the front of the stack.", self._previous_layer,
                             "org.aspartame.count.layer.previous")
         self.layer_position = Gtk.Label()
         self.layer_position.get_style_context().add_class("count-layer-position")
         nav.pack_start(self.layer_position, False, False, 5)
-        self._symbol_button(nav, "▶", "Next layer", self._next_layer,
+        self._symbol_button(nav, "▶", "Move deeper into the stack.", self._next_layer,
                             "org.aspartame.count.layer.next")
         self.root.pack_start(nav, False, False, 0)
 
         actions = Gtk.Box(spacing=8)
         actions.set_halign(Gtk.Align.CENTER)
         self._action_button(actions, "＋  New Layer",
-                            "Add an empty layer on top of the stack.",
+                            "Add an empty row behind the deepest row.",
                             self._add_layer, "org.aspartame.count.layer.new")
         self._action_button(actions, "⧉  Copy Layer",
-                            "Add another layer with the same boxes as this one.",
+                            "Add a row behind the deepest row with the same boxes as this one.",
                             self._copy_layer, "org.aspartame.count.layer.copy")
         self._make_layer_menu(actions)
         self.root.pack_start(actions, False, False, 0)
@@ -186,24 +186,26 @@ class CountActivity(activity.Activity):
     def _iso_geometry(self):
         width = max(1, self.stack.get_allocated_width())
         height = max(1, self.stack.get_allocated_height())
-        sx = min(38, (width - 80) / max(1, self.width + self.height))
-        sy = sx * 0.52
-        cube_height = sx * 0.62
-        z_height = cube_height * 0.70
-        total_w = (self.width + self.height) * sx
-        total_h = (self.width + self.height) * sy + len(self.layers) * z_height
-        ox = (width - total_w) / 2 + self.height * sx
-        oy = (height - total_h) / 2 + len(self.layers) * z_height
-        return ox, oy, sx, sy, cube_height, z_height
+        # XY is the front-facing rectangle. Z is a fixed diagonal projection
+        # away from the viewer, never a vertical stack.
+        size = min(76, (width - 50) / max(1, self.width + len(self.layers) * 0.34),
+                   (height - 40) / max(1, self.height + len(self.layers) * 0.22))
+        size = max(28, size)
+        depth_x, depth_y = size * 0.34, -size * 0.22
+        total_width = self.width * size + (len(self.layers) - 1) * depth_x
+        total_height = self.height * size + abs((len(self.layers) - 1) * depth_y)
+        ox = (width - total_width) / 2
+        oy = (height - total_height) / 2 + abs((len(self.layers) - 1) * depth_y)
+        return ox, oy, size, depth_x, depth_y
 
     def _draw_stack(self, widget, cr):
         if len(self.layers) == 1:
-            self._draw_floor(cr)
+            self._draw_front_face(cr)
         else:
-            self._draw_isometric(cr)
+            self._draw_depth_stack(cr)
         return False
 
-    def _draw_floor(self, cr):
+    def _draw_front_face(self, cr):
         ox, oy, size = self._flat_geometry()
         layer = self.layers[0]
         for y in range(self.height):
@@ -216,71 +218,63 @@ class CountActivity(activity.Activity):
                 cr.set_line_width(2)
                 cr.stroke()
 
-    def _diamond(self, cr, x, y, sx, sy):
-        cr.move_to(x, y)
-        cr.line_to(x + sx, y + sy)
-        cr.line_to(x, y + sy * 2)
-        cr.line_to(x - sx, y + sy)
-        cr.close_path()
-
-    def _draw_isometric(self, cr):
-        ox, oy, sx, sy, cube_height, z_height = self._iso_geometry()
-        # Draw far layers first, then the selected layer, so the selected plane reads strongest.
-        order = [i for i in range(len(self.layers)) if i != self.current_layer]
+    def _draw_depth_stack(self, cr):
+        ox, oy, size, depth_x, depth_y = self._iso_geometry()
+        # Draw deepest rows first. The front row is closest to the viewer.
+        order = [i for i in range(len(self.layers) - 1, -1, -1)
+                 if i != self.current_layer]
         order.append(self.current_layer)
         for layer_index in order:
             layer = self.layers[layer_index]
             ghost = layer_index != self.current_layer
-            alpha = max(0.14, 0.34 - abs(layer_index - self.current_layer) * 0.035) if ghost else 1.0
-            for y in range(self.height):
-                for x in range(self.width):
-                    if not layer[y][x]:
-                        continue
-                    px = ox + (x - y) * sx
-                    py = oy + (x + y) * sy - layer_index * z_height
-                    self._diamond(cr, px, py, sx, sy)
-                    cr.set_source_rgba(0.27, 0.27, 0.27, alpha)
-                    cr.fill_preserve()
-                    cr.set_source_rgba(0.12, 0.12, 0.12, alpha)
-                    cr.set_line_width(1.5)
-                    cr.stroke()
-                    if not ghost:
-                        cr.set_source_rgba(0.38, 0.38, 0.38, 1)
-                        cr.move_to(px - sx, py + sy)
-                        cr.line_to(px - sx, py + sy + cube_height)
-                        cr.line_to(px, py + sy * 2 + cube_height)
-                        cr.line_to(px, py + sy * 2)
+            distance = abs(layer_index - self.current_layer)
+            alpha = max(0.16, 0.34 - distance * 0.035) if ghost else 1.0
+            px_offset = layer_index * depth_x
+            py_offset = layer_index * depth_y
+            for y, row in enumerate(layer):
+                for x, occupied in enumerate(row):
+                    left = ox + x * size + px_offset
+                    top = oy + y * size + py_offset
+                    # Every occupied position is a box. The side and top
+                    # faces show that later layers are behind, not above.
+                    if occupied:
+                        cr.set_source_rgba(0.27, 0.27, 0.27, alpha)
+                        cr.rectangle(left, top, size - 3, size - 3)
+                        cr.fill_preserve()
+                        cr.set_source_rgba(0.12, 0.12, 0.12, alpha)
+                        cr.set_line_width(1.3)
+                        cr.stroke()
+                        cr.set_source_rgba(0.42, 0.42, 0.42, alpha)
+                        cr.move_to(left, top)
+                        cr.line_to(left + depth_x, top + depth_y)
+                        cr.line_to(left + size - 3 + depth_x, top + depth_y)
+                        cr.line_to(left + size - 3, top)
                         cr.close_path()
                         cr.fill_preserve()
                         cr.stroke()
-                        cr.set_source_rgba(0.20, 0.20, 0.20, 1)
-                        cr.move_to(px + sx, py + sy)
-                        cr.line_to(px + sx, py + sy + cube_height)
-                        cr.line_to(px, py + sy * 2 + cube_height)
-                        cr.line_to(px, py + sy * 2)
+                        cr.set_source_rgba(0.18, 0.18, 0.18, alpha)
+                        cr.move_to(left + size - 3, top)
+                        cr.line_to(left + size - 3 + depth_x, top + depth_y)
+                        cr.line_to(left + size - 3 + depth_x, top + size - 3 + depth_y)
+                        cr.line_to(left + size - 3, top + size - 3)
                         cr.close_path()
                         cr.fill_preserve()
+                        cr.stroke()
+                    elif layer_index == self.current_layer:
+                        cr.set_source_rgba(0.25, 0.25, 0.25, 0.28)
+                        cr.rectangle(left, top, size - 3, size - 3)
+                        cr.set_line_width(1)
                         cr.stroke()
 
-        # A light outline grid marks the editable horizontal plane without adding labels to boxes.
+        # Keep the editable XY plane obvious without covering ghost rows.
         for y in range(self.height):
             for x in range(self.width):
-                px = ox + (x - y) * sx
-                py = oy + (x + y) * sy - self.current_layer * z_height
-                self._diamond(cr, px, py, sx, sy)
-                cr.set_source_rgba(0.18, 0.18, 0.18, 0.35)
+                left = ox + x * size + self.current_layer * depth_x
+                top = oy + y * size + self.current_layer * depth_y
+                cr.set_source_rgba(0.10, 0.10, 0.10, 0.42)
+                cr.rectangle(left, top, size - 3, size - 3)
                 cr.set_line_width(1)
                 cr.stroke()
-
-    def _point_in_polygon(self, px, py, points):
-        inside = False
-        j = len(points) - 1
-        for i, (xi, yi) in enumerate(points):
-            xj, yj = points[j]
-            if ((yi > py) != (yj > py)) and (px < (xj - xi) * (py - yi) / ((yj - yi) or 1e-9) + xi):
-                inside = not inside
-            j = i
-        return inside
 
     def _hit_cell(self, px, py):
         if len(self.layers) == 1:
@@ -290,14 +284,13 @@ class CountActivity(activity.Activity):
                 if ox + x * size <= px <= ox + (x + 1) * size and oy + y * size <= py <= oy + (y + 1) * size:
                     return x, y
             return None
-        ox, oy, sx, sy, _cube_height, z_height = self._iso_geometry()
-        py += self.current_layer * z_height
-        for y in range(self.height):
-            for x in range(self.width):
-                cx, cy = ox + (x - y) * sx, oy + (x + y) * sy
-                if self._point_in_polygon(px, py, [(cx, cy), (cx + sx, cy + sy),
-                                                   (cx, cy + sy * 2), (cx - sx, cy + sy)]):
-                    return x, y
+        ox, oy, size, depth_x, depth_y = self._iso_geometry()
+        ox += self.current_layer * depth_x
+        oy += self.current_layer * depth_y
+        x, y = int((px - ox) // size), int((py - oy) // size)
+        if 0 <= x < self.width and 0 <= y < self.height:
+            if ox + x * size <= px <= ox + (x + 1) * size and oy + y * size <= py <= oy + (y + 1) * size:
+                return x, y
         return None
 
     def _set_cell(self, cell, value):
