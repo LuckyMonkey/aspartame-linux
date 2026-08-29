@@ -14,6 +14,7 @@ systemctl enable systemd-timesyncd.service
 systemctl enable sshd.service
 systemd-machine-id-setup
 ln -sfn /dev/null /etc/systemd/system/systemd-firstboot.service
+ln -sfn /usr/share/zoneinfo/America/New_York /etc/localtime
 
 install -d -o aspartame -g aspartame /home/aspartame/.config
 install -o aspartame -g aspartame /etc/skel/.xinitrc /home/aspartame/.xinitrc

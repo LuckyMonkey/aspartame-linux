@@ -49,7 +49,7 @@ gsettings set org.sugarlabs.user.background alpha-level 1.0
 ) &
 
 # Keep the graphical session recoverable during Sugar development.
-aspartame-version-overlay >/tmp/aspartame-version-overlay.log 2>&1 &
+aspartame-version-overlay >/home/aspartame/.cache/aspartame-version-overlay.log 2>&1 &
 while true; do
     dbus-run-session -- /usr/local/bin/aspartame-session
     sleep 1

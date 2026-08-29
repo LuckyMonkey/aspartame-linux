@@ -1,5 +1,5 @@
---- jarabe/frame/zoomtoolbar.py	2026-08-29 00:56:53.790204786 -0400
-+++ jarabe/frame/zoomtoolbar.py	2026-08-29 00:57:30.734330068 -0400
+--- jarabe/frame/zoomtoolbar.py
++++ jarabe/frame/zoomtoolbar.py
 @@ -13,7 +13,6 @@
  #
  # You should have received a copy of the GNU General Public License
@@ -48,22 +48,19 @@
          button.connect('clicked', self.__level_clicked_cb, zoom_level)
          self.add(button)
          button.show()
-@@ -92,6 +103,13 @@
+@@ -92,6 +103,10 @@
          shell.get_model().set_zoom_level(level)
          self.emit('level-clicked')
  
 +    def __journal_clicked_cb(self, _button):
 +        journalactivity.get_journal().show_journal()
 +
-+    def __update_clock_cb(self):
-+        self._clock_label.set_text(datetime.now().strftime('%H:%M'))
-+        return True
 +
      def __zoom_level_changed_cb(self, **kwargs):
          self._set_zoom_level(kwargs['new_level'])
  
---- jarabe/desktop/viewtoolbar.py	2026-08-29 00:56:53.763206405 -0400
-+++ jarabe/desktop/viewtoolbar.py	2026-08-29 07:10:01.161067814 -0400
+--- jarabe/desktop/viewtoolbar.py
++++ jarabe/desktop/viewtoolbar.py
 @@ -20,6 +20,7 @@
  # along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
@@ -72,51 +69,83 @@
  import logging
  
  from gi.repository import Gtk
-@@ -78,7 +79,7 @@
+@@ -48,6 +49,7 @@
+ 
+     def __init__(self):
+         Gtk.Toolbar.__init__(self)
++        self.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
+ 
+         self._favorites_views_indicies = []
+         for i in range(desktop.get_number_of_views()):
+@@ -78,7 +80,38 @@
          tool_item.add(self.search_entry)
          self.search_entry.show()
  
 -        self._add_separator(expand=True)
-+        self._add_clock_separator()
++        self._clock_item = Gtk.ToolButton.new(None, "--:--")
++        self._clock_item.set_expand(True)
++        self._clock_item.set_is_important(True)
++        self.insert(self._clock_item, -1)
++        self._clock_item.show_all()
++        self._clock_button = self._clock_item.get_child()
++        self._clock_button.set_can_focus(False)
++        self._clock_button.set_relief(Gtk.ReliefStyle.NONE)
++        self._clock_button.get_style_context().add_class(
++            'aspartame-clock-button')
++        clock_css = Gtk.CssProvider()
++        clock_css.load_from_data(b'''
++            .aspartame-clock-button,
++            .aspartame-clock-button:hover,
++            .aspartame-clock-button:active,
++            .aspartame-clock-button:checked,
++            .aspartame-clock-button:focus {
++                background: transparent;
++                background-image: none;
++                border: 0;
++                box-shadow: none;
++                outline-width: 0;
++            }
++        ''')
++        self._clock_button.get_style_context().add_provider(
++            clock_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++        self._clock_render_label = self.__find_clock_label(self._clock_item)
++        if self._clock_render_label is not None:
++            self._clock_render_label.set_margin_top(6)
++        self._clock_item.get_child().set_margin_end(2 * style.GRID_CELL_SIZE)
++        self.__update_clock_cb()
++        GLib.timeout_add_seconds(30, self.__update_clock_cb)
  
          self._button_box = Gtk.HBox()
          self._favorites_buttons = []
-@@ -101,6 +102,33 @@
+@@ -122,6 +155,26 @@
+             self._favorites_buttons[i].hide()
+         self._list_button.hide()
  
-         self._add_separator()
- 
-+    def _add_clock_separator(self):
-+        clock_item = Gtk.ToolItem()
-+        clock_item.set_expand(True)
-+        clock_alignment = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
-+        clock_alignment.set_size_request(220, -1)
-+        self._clock_label = Gtk.Label()
-+        self._clock_label.set_justify(Gtk.Justification.CENTER)
-+        self._clock_label.set_xalign(0.5)
-+        self._clock_label.set_size_request(180, -1)
-+        self._clock_label.set_hexpand(True)
-+        self._clock_label.get_style_context().add_class("aspartame-clock")
-+        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">--:--</span>')
-+        clock_alignment.add(self._clock_label)
-+        clock_item.add(clock_alignment)
-+        self.insert(clock_item, -1)
-+        clock_item.show_all()
-+        clock_css = Gtk.CssProvider()
-+        clock_css.load_from_data(b".aspartame-clock { color: #ffffff; background-color: #333333; padding: 2px 12px; }")
-+        self._clock_label.get_style_context().add_provider(clock_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-+        self.__update_clock_cb()
-+        GLib.timeout_add_seconds(30, self.__update_clock_cb)
++    def __find_clock_label(self, widget):
++        if isinstance(widget, Gtk.Label):
++            return widget
++        if isinstance(widget, Gtk.Container):
++            for child in widget.get_children():
++                label = self.__find_clock_label(child)
++                if label is not None:
++                    return label
++        return None
++
 +
 +    def __update_clock_cb(self):
-+        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">%s</span>' % datetime.now().strftime('%H:%M'))
++        text = datetime.now().strftime('%H:%M')
++        if self._clock_render_label is not None:
++            self._clock_render_label.set_markup('<span size="xx-large" weight="bold">%s</span>' % text)
++        else:
++            self._clock_item.set_label(text)
 +        return True
 +
 +
-     def _add_favorites_button(self, i):
-         logging.debug('adding FavoritesButton %d' % (i))
-         self._favorites_buttons.append(FavoritesButton(i))
---- jarabe/desktop/meshbox.py	2026-08-29 06:33:24.517549545 -0400
-+++ jarabe/desktop/meshbox.py	2026-08-29 06:48:12.536413259 -0400
+     def clear_query(self):
+         self.search_entry.props.text = ''
+ 
+--- jarabe/desktop/meshbox.py
++++ jarabe/desktop/meshbox.py
 @@ -18,9 +18,15 @@
  
  from gettext import gettext as _
@@ -138,7 +167,7 @@
          self.set_can_focus(False)
  
 +        self._scan_button = Gtk.Button()
-+        
++
 +        self._scan_button.set_label(_('Scan network'))
 +        self._scan_button.set_tooltip_text(_('Scan network'))
 +        self._scan_button.connect('clicked', self.__scan_clicked_cb)
@@ -204,8 +233,8 @@
      def _buddy_added_cb(self, model, buddy_model):
          self._add_buddy(buddy_model)
  
---- jarabe/intro/window.py	2026-08-29 00:56:53.818203108 -0400
-+++ jarabe/intro/window.py	2026-08-29 00:57:30.736018578 -0400
+--- jarabe/intro/window.py
++++ jarabe/intro/window.py
 @@ -57,6 +57,8 @@
      if colors is None:
          colors = XoColor()

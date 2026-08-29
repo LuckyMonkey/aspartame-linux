@@ -1,8 +1,24 @@
 #!/usr/bin/python3
 from gi.repository import Gdk
+from gi.repository import GLib
 from gi.repository import Gtk
 
-VERSION = 'Aspartame UI v0.0.9'
+VERSION_PATHS = (
+    '/mnt/aspartame-dev/ui-version',
+    '/usr/share/aspartame/ui-version',
+)
+
+
+def read_version():
+    for path in VERSION_PATHS:
+        try:
+            with open(path, encoding='utf-8') as version_file:
+                version = version_file.read().strip()
+        except OSError:
+            continue
+        if version:
+            return 'Aspartame UI v%s' % version
+    return 'Aspartame UI version unknown'
 
 
 def main():
@@ -11,21 +27,39 @@ def main():
     window.set_keep_above(True)
     window.set_skip_taskbar_hint(True)
     window.set_accept_focus(False)
-    window.set_default_size(150, 24)
+    window.set_resizable(False)
     window.set_opacity(0.78)
-    label = Gtk.Label(label=VERSION)
+    label = Gtk.Label(label=read_version())
     label.set_halign(Gtk.Align.END)
     label.set_valign(Gtk.Align.CENTER)
+    label.set_margin_start(8)
+    label.set_margin_top(4)
+    label.set_margin_bottom(4)
     label.set_margin_end(12)
     label.override_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0, 0, 0, 1))
     window.add(label)
 
-    def place(_window):
+    def place():
         screen = window.get_screen()
-        window.move(screen.get_width() - 162, screen.get_height() - 34)
+        monitor = screen.get_primary_monitor()
+        workarea = screen.get_monitor_workarea(monitor)
+        _minimum, natural = window.get_preferred_size()
+        width = max(window.get_allocated_width(), natural.width)
+        height = max(window.get_allocated_height(), natural.height)
+        window.move(workarea.x + workarea.width - width - 12,
+                    workarea.y + workarea.height - height - 12)
+        return False
 
-    window.connect('realize', place)
+    def refresh_version():
+        version = read_version()
+        if label.get_text() != version:
+            label.set_text(version)
+            GLib.idle_add(place)
+        return True
+
     window.show_all()
+    GLib.idle_add(place)
+    GLib.timeout_add_seconds(2, refresh_version)
     Gtk.main()
 
 
