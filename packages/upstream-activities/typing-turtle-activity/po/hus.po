@@ -1,0 +1,630 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-27 14:55-0400\n"
+"PO-Revision-Date: 2012-10-07 22:39+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hus\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+#: titlescene.py:54 typingturtle.py:82
+msgid "Typing Turtle"
+msgstr "An pet xi dhuchum"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Need some help typing? Here you will learn the best way to hold your hands "
+"in order for you to become a faster typist!"
+msgstr ""
+
+#: balloongame.py:59 editlessonlistscreen.py:50 editlessonscreen.py:50
+#: editlessonscreen.py:584 lessonscreen.py:65
+msgid "Go Back"
+msgstr "Wichiy"
+
+#: balloongame.py:217
+msgid "You finished!"
+msgstr "¡it exbanits!"
+
+#: balloongame.py:234
+#, python-format
+msgid "Your score was %(score)d."
+msgstr "Tata' a bajuw %(score)d."
+
+#: balloongame.py:236
+#, python-format
+msgid "You earned a %(type)s medal!"
+msgstr "¡Tata' a bajuw jun a ów %(type)s!"
+
+#: balloongame.py:238 medalscreen.py:101
+msgid "Press the ENTER key to continue."
+msgstr "Ka ni'a' andhuche abal ka ayna'."
+
+#: balloongame.py:350 balloongame.py:363
+#, python-format
+#, python-format,
+msgid "SCORE: %d"
+msgstr "TUKMÍL: %d"
+
+#: balloongame.py:378
+msgid "Type the words to pop the balloons!"
+msgstr "¡Ka ni'a' an dhuchladh abal ka tixk'a an jujuchudh nak'el!"
+
+#: editlessonlistscreen.py:47 typingturtle.py:111
+msgid "Edit Lessons"
+msgstr "Jalk'uy dhuchadh"
+
+#: editlessonlistscreen.py:71 editlessonscreen.py:275
+msgid "Name"
+msgstr "Bijlab"
+
+#: editlessonlistscreen.py:76 editlessonscreen.py:307
+msgid "Description"
+msgstr "Tejwamedhomtalab"
+
+#: editlessonlistscreen.py:82 editlessonscreen.py:287
+msgid "Type"
+msgstr "Ni'axtal"
+
+#: editlessonlistscreen.py:91
+msgid "Import Lessons from Journal"
+msgstr "Ka chi'dha' i dhuchlab xi k'wajat ti chudhél dhuchlab"
+
+#: editlessonlistscreen.py:96
+msgid "Export Lessons to Journal"
+msgstr "Ka wat'ba' i dhuchlab ti chudhél dhuchlab"
+
+#: editlessonlistscreen.py:101
+msgid "Save Lessons to Activity"
+msgstr "Ka dhaya' an exobintaláb ti t'ojláb"
+
+#: editlessonlistscreen.py:165 editlessonscreen.py:191
+msgid "Text"
+msgstr "Dhuchlab"
+
+#: editlessonlistscreen.py:167 editlessonscreen.py:295
+msgid "Balloon Game"
+msgstr "Ubat'intaláb k'al an juchuch"
+
+#: editlessonlistscreen.py:204
+msgid "Delete Lesson?"
+msgstr "¿Ka pakun an exobintaláb?"
+
+#: editlessonlistscreen.py:205
+msgid "Deleting the lesson will erase the lesson content."
+msgstr "Max ka pakuw an exobintaláb ne'ets ka k'ibts'on in inkíl."
+
+#: editlessonlistscreen.py:311
+msgid " (Exported Lessons)"
+msgstr " (Kaldhach exobintaláb)"
+
+#: editlessonscreen.py:47
+msgid "Edit a Lesson"
+msgstr "Jalk'uy ajumtaláb"
+
+#: editlessonscreen.py:77
+msgid "New keys"
+msgstr "An itchik dhuche'"
+
+#: editlessonscreen.py:78
+msgid "Known keys"
+msgstr "Dhuche' axe xi a exoblamadh"
+
+#: editlessonscreen.py:79
+msgid "Length"
+msgstr "Nak'tal"
+
+#: editlessonscreen.py:90
+msgid "Generate!"
+msgstr "¡Yanedha'!"
+
+#: editlessonscreen.py:108 editlessonscreen.py:581
+msgid "Edit Word List"
+msgstr "Ka jalk'uy an k'elab dhuche'"
+
+#: editlessonscreen.py:124
+#, python-format
+msgid "Step #%d"
+msgstr "Xakab #%d"
+
+#: editlessonscreen.py:130
+msgid "Keys"
+msgstr "Dhuche'"
+
+#: editlessonscreen.py:131 editlessonscreen.py:388
+msgid "Words"
+msgstr "Kawchik"
+
+#: editlessonscreen.py:169
+msgid "Instructions"
+msgstr "Olchixtalab"
+
+#: editlessonscreen.py:234
+msgid "Accuracy"
+msgstr "T'ojchidh"
+
+#: editlessonscreen.py:235
+msgid "WPM"
+msgstr "PPM"
+
+#: editlessonscreen.py:249
+msgid "Score"
+msgstr "Pilmedhach k'ali t'uk"
+
+#: editlessonscreen.py:270
+msgid "Lesson Details"
+msgstr "In tek'edh an dhuchlap"
+
+#: editlessonscreen.py:291
+msgid "Normal Lesson"
+msgstr "Dhuchadh janti' in bajual"
+
+#: editlessonscreen.py:326
+msgid "Options"
+msgstr "Jolat takudhtaláb"
+
+#: editlessonscreen.py:330
+msgid "Allow Mistakes"
+msgstr "Ka bats'uw an uk'pintalab"
+
+#: editlessonscreen.py:332
+msgid "Allow Backspace"
+msgstr "Ka bats'uw ka wichiy"
+
+#: editlessonscreen.py:353
+msgid "Automatic Lesson Generator"
+msgstr "Tujundhom k'al an dhuchladh kwetémk'i"
+
+#: editlessonscreen.py:412
+msgid "Medal Requirements"
+msgstr "Yejéntal k'al an ów"
+
+#: editlessonscreen.py:420
+msgid "Bronze"
+msgstr "Tsokoy pat'al"
+
+#: editlessonscreen.py:421
+msgid "Silver"
+msgstr "Mak'i patál"
+
+#: editlessonscreen.py:422
+msgid "Gold"
+msgstr "Manu' patál"
+
+#: editlessonscreen.py:594
+msgid ""
+"Type or paste words here, for the Automatic Lesson Generator.  If empty, the "
+"dictionary will be used."
+msgstr ""
+"Ka dhuch'a ani ka ts'atk'a' an kaw teje' abal an tujhundhommati an dhuchadh "
+"uw k'wetwmtal     maxka' jila' jolat, ne ka eyen an lejkix kaw."
+
+#: lessonbuilder.py:261 lessonscreen.py:617
+msgid "Well done!"
+msgstr "Alwa t'ajadh"
+
+#: lessonbuilder.py:262
+msgid "Good job."
+msgstr "Alwa t'ojlab."
+
+#: lessonbuilder.py:263
+msgid "Awesome!"
+msgstr "Jik'padh"
+
+#: lessonbuilder.py:264 lessonscreen.py:619
+msgid "Way to go!"
+msgstr "Antsan'a t'ajadh"
+
+#: lessonbuilder.py:265
+msgid "Wonderful!"
+msgstr "K'adhpidh alabel"
+
+#: lessonbuilder.py:266
+msgid "Nice work."
+msgstr "Alwa t'ojlab."
+
+#: lessonbuilder.py:267
+msgid "You did it!"
+msgstr "A t'aja'"
+
+#: lessonbuilder.py:274
+msgid ""
+"Be careful to use the correct finger to press each key.  Look at the "
+"keyboard below if you need help remembering."
+msgstr ""
+"Ka beletńa'a chuch'ub tam ka eyendha an dhuche abal ka tsapts'ek'a' ka ni'a' "
+"an dhuche   ka tsú'uw an dhuche alal tam ka yejenchij abal ka t'ela'."
+
+#: lessonbuilder.py:275
+msgid ""
+"Try to type at the same speed, all the time.  As you get more comfortable "
+"you can increase the speed a little."
+msgstr ""
+"An tak'axtalab ka dhucha' kal an adhik', patal an kíj max kit kwajiy it "
+"kulbel ne'et ka yejenchij an adhiktalab."
+
+#: lessonbuilder.py:282
+msgid "left little"
+msgstr "k'watab ts'uts'i' (ch'uchub)"
+
+#: lessonbuilder.py:283
+msgid "left ring"
+msgstr "k'watab aníl"
+
+#: lessonbuilder.py:284
+msgid "left middle"
+msgstr "k'watab tsejel"
+
+#: lessonbuilder.py:285
+msgid "left index"
+msgstr "k'watab ch'uchbix"
+
+#: lessonbuilder.py:286 lessonscreen.py:44
+msgid "left thumb"
+msgstr "k'watab mím"
+
+#: lessonbuilder.py:287
+msgid "right little"
+msgstr "winab ts'uts'i'"
+
+#: lessonbuilder.py:288
+msgid "right ring"
+msgstr "winab aníl"
+
+#: lessonbuilder.py:289
+msgid "right middle"
+msgstr "winab ts'ejel"
+
+#: lessonbuilder.py:290
+msgid "right index"
+msgstr "winab ch'uchbix"
+
+#: lessonbuilder.py:291 lessonscreen.py:49
+msgid "right thumb"
+msgstr "winab mím"
+
+#: lessonbuilder.py:320
+#, python-format
+#, python-format,
+msgid " and %s keys"
+msgstr " ani %s ni'imtal dhuche'"
+
+#: lessonbuilder.py:322
+msgid " key"
+msgstr " ni'imtal dhuche'"
+
+#: lessonbuilder.py:325
+#, python-format
+msgid ""
+"In this lesson, you will learn the %(keynames)s.\n"
+"\n"
+"Press the ENTER key when you are ready to begin!"
+msgstr ""
+"Ti al axé' xi exobintaláb, ne'ets ka exla' an %(keynames)s.\n"
+".\n"
+"Ka ni'aj an ni'imtaláb ENTER tam it t'ojojodhakits abal ka tujchij"
+
+#: lessonbuilder.py:364
+msgid "Let's learn the new keys."
+msgstr "Wanaj ki exobna' an dhuche' ni'imtaláb xi ít."
+
+#: lessonbuilder.py:367
+msgid "Practice typing the keys you just learned."
+msgstr "Ka exobna' tit dhuchum an ni'imtal dhuché xi talelej ta exlál."
+
+#: lessonbuilder.py:371
+msgid "Now put the keys together into pairs."
+msgstr "X'o' ka punuw ti tsabchik an ni'imtal dhuche'."
+
+#: lessonbuilder.py:376
+msgid "Time to type jumbles."
+msgstr "Wa'ats i jolát abal ka dhucha' jumbles."
+
+#: lessonbuilder.py:381
+msgid "Time to type real words."
+msgstr "Wa'ats i jolát abal ka dhucha' an chubax káw."
+
+# welakaníj, expresión de sorpresa o de alegría
+#: lessonbuilder.py:390
+msgid "Hihowahyah!  Ready to learn the secret of fast typing?\n"
+msgstr "Welakaníj! It t'ojojodhitschik  ka exla' an tsinataláb abal tit adhik "
+"dhuchum?\n"
+
+#: lessonbuilder.py:391
+msgid ""
+"Always use the correct finger to press each key!\n"
+"\n"
+msgstr ""
+"Ka ayindha' ets'ey a ch'uchub xin tomnál abal ka ni'aj an ni'imtal dhuche'\n"
+"\n"
+
+# ni'imtal (tecla), ni'imtaláb (teclado), ni'ímk'aníl (teclado de música) ni'ímdhuche'(teclado de letras)
+#: lessonbuilder.py:392
+msgid "Now, place your hands on the keyboard just like the picture below.\n"
+msgstr "Xó', ka punuw tsablom a k'ubak eblim ti ni'imdhuchumtaláb' jant'ini' ti "
+"tejmél ti t'iplab.\n"
+
+#: lessonbuilder.py:393
+msgid "When you're ready, press the SPACE bar with your thumb!"
+msgstr "Tam it t'ojojodhakits ka ni'inchij an ni'imjolát k'al a mím ch'uchub"
+
+#: lessonbuilder.py:397
+msgid ""
+"Good job!  The SPACE bar is used to insert spaces between words.\n"
+"\n"
+msgstr ""
+"Alwa' t'ojláb!  an ni'imjolát u eynal abal kin biná' i jolát tin ts'ejeltal "
+"an káwchik.\n"
+"\n"
+
+#: lessonbuilder.py:398
+msgid "Press the SPACE bar again with your thumb."
+msgstr "Ni'iná' junilik'ij an ni'imjolát k'al a mím ch'uchub."
+
+#: lessonbuilder.py:402
+msgid "Now I'll teach you the second key, ENTER.  "
+msgstr "Xó' ne'ets tu exobchichik an tsabchíl ni'imtal, ENTER (otskan).  "
+
+#: lessonbuilder.py:403
+msgid ""
+"That's the big square key near your right little finger.\n"
+"\n"
+msgstr ""
+"Axé' pél an yetse' ni'imtal xi k'wajat utat ta ts'uts'i' ch'uchub.\n"
+"\n"
+
+#: lessonbuilder.py:404
+msgid "Now, reach your little finger over and press ENTER."
+msgstr ""
+"Xówé', ka punuw a ts'uts'i' ch'uchub eblim ti ni'imtal ENTER ani ka ni'ina'."
+
+#: lessonbuilder.py:408
+msgid ""
+"Great!  When typing, the ENTER key is used to begin a new line.\n"
+"\n"
+msgstr ""
+"Welakaníj!  a ni'ina', an ni'imtal ENTER u eynal abal tit dhuchum ti ít "
+"kits'lab.\n"
+"\n"
+
+#: lessonbuilder.py:409
+msgid "Press the ENTER key again with your right little finger."
+msgstr "Ka ni'ina' juníl an ni'imtal ENTER k'al a winab ts'uts'i'."
+
+#: lessonbuilder.py:417
+msgid "Copy out the following text."
+msgstr "Ka k'ot'biy xi tál an dhuchlab."
+
+#: lessonscreen.py:40
+msgid "left little finger"
+msgstr "ts'uts'i' ch'uchub k'watbej"
+
+#: lessonscreen.py:41
+msgid "left ring finger"
+msgstr "aníl ch'uchub k'watbej"
+
+#: lessonscreen.py:42
+msgid "left middle finger"
+msgstr "ts'ejel ch'uchub k'watbej"
+
+#: lessonscreen.py:43
+msgid "left index finger"
+msgstr "ch'uchbix ch'uchub k'watbej"
+
+#: lessonscreen.py:45
+msgid "right little finger"
+msgstr "ts'uts'i' ch'uchub winbej"
+
+#: lessonscreen.py:46
+msgid "right ring finger"
+msgstr "aníl ch'uchub winbej"
+
+#: lessonscreen.py:47
+msgid "right middle finger"
+msgstr "ts'ejel ch'uchub winbej"
+
+#: lessonscreen.py:48
+msgid "right index finger"
+msgstr "ch'uchbix ch'uchub winbej"
+
+#: lessonscreen.py:190
+#, python-format
+#, python-format,
+msgid "<b>WPM:</b> %(wpm)d"
+msgstr "<b>ppm:</b> %(wpm)d"
+
+#: lessonscreen.py:198 medalscreen.py:92
+#, python-format
+#, python-format,
+msgid "<b>Accuracy:</b> %(accuracy)d%%"
+msgstr "<b>Precisión:</b> %(accuracy)d%%"
+
+# %(finger)
+#: lessonscreen.py:511
+#, python-format
+#, python-format,
+msgid "Press and hold the shift key with your %(finger)s, "
+msgstr ""
+"Ka ni'chij k'al a ch'uchub ani ka ko'oy antsaná' an ni'imtal SHIFT %"
+"(finger)s, "
+
+#: lessonscreen.py:512 lessonscreen.py:516 lessonscreen.py:520
+#, python-format
+msgid "then press the %(letter)s key with your %(finger)s."
+msgstr ""
+"x'o' talbél, ka ni'aj an ni'imtal %(letter)s k'al a ch'uchub %(finger)s."
+
+#: lessonscreen.py:515
+msgid "Press and hold the altgr key, "
+msgstr "Ka ni'chij ani ka ko'oy antsaná' an ni'imtal ALTG "
+
+#: lessonscreen.py:519
+msgid "Press and hold the altgr and shift keys, "
+msgstr "Ka ni'chij ani ka ko'oy antsaná' an ni'imtalchik ALTGR ani SHIFT "
+
+#: lessonscreen.py:523
+#, python-format
+msgid "Press the %(letter)s key with your %(finger)s."
+msgstr "Ka ni'chij an ni'imtal %(letter)s k'al a ch'uchub %(finger)s."
+
+#: lessonscreen.py:543
+#, python-format
+msgid "Uh oh!  Your keyboard cannot type the letter '%s'.\n"
+msgstr "¡Nix ojni'o'j!  A ni'imdhuche' yab in ni'iyal an ni'im %s'.\n"
+
+#: lessonscreen.py:544
+msgid "Please change your keyboard settings and try this lesson again."
+msgstr ""
+"Ka t'aja' an alwa'taláb ka jalk'uy an t'ojojox xi in k'al an ni'imdhuche' "
+"ani ka tsab t'aja' axé' xi exobchixtaláb."
+
+#: lessonscreen.py:616
+msgid "Good job!"
+msgstr "¡Alwa' t'ojláb!"
+
+#: lessonscreen.py:618
+msgid "Nice work!"
+msgstr "¡Alwa' t'ojláb!"
+
+#: lessonscreen.py:624
+#, python-format
+#, python-format,
+msgid "You finished the lesson in %(time)d seconds, with %(errors)d errors.\n"
+msgstr "A taldha'its an exobchixtaláb, al %(time)d ti adhik k'ij, k'al %(errors)d "
+"uk'pintaláb.\n"
+
+#: lessonscreen.py:626
+#, python-format
+msgid ""
+"Your words per minute (WPM) was %(wpm)d, and your accuracy was %(accuracy)d%"
+"%.\n"
+"\n"
+msgstr ""
+"An káwchik ti al an tsakamk'ij (ppm) pelak %(wpm)d, ani a lujnídh játsak %"
+"(accuracy)d%%.\n"
+"\n"
+
+#: lessonscreen.py:629
+#, python-format
+msgid "You finished the lesson with %(errors)d errors.\n"
+msgstr "A taldha' an exobchixtaláb k'ali %(errors)d k'ibts'ontaláb.\n"
+
+#: lessonscreen.py:631
+#, python-format
+msgid ""
+"Your accuracy was %(accuracy)d%%.\n"
+"\n"
+msgstr ""
+"A lujnídh pelak %(accuracy)d%%.\n"
+"\n"
+
+# %(type)s
+#: lessonscreen.py:637
+#, python-format
+#, python-format,
+msgid "Congratulations!  You earned a %(type)s medal!"
+msgstr "¡Alwa'taláb!  A atamal juni ata'owláb %(type)s!"
+
+#: lessonscreen.py:645
+msgid "You need to practice this lesson more before moving on."
+msgstr "In yejenchal ka wilk'idh exobna' abal ka wat'ba axé' xi exobchixtaláb."
+
+#: lessonscreen.py:648
+msgid "You almost got a medal!  Next time, try not to make as many errors."
+msgstr ""
+"¡Wé' in k'iba' ka bats'uw juni ata'owláb! Junilakits yab kit k'ibts'on "
+"yaníl."
+
+#: lessonscreen.py:651
+msgid "You almost got a medal!  Next time, try to type a little faster."
+msgstr ""
+"¡Wé' in k'iba' ka bats'uw juni ata'owláb! Junilakits ka t'aja' tit dhuchum "
+"adhik."
+
+#: mainscreen.py:59
+msgid "Next"
+msgstr "Xi junakej"
+
+#: mainscreen.py:68
+msgid "Previous"
+msgstr "Xi ok'xidh"
+
+#: mainscreen.py:75
+msgid "Start Lesson"
+msgstr "Tujuw dhuche"
+
+#: mainscreen.py:185
+msgid ""
+"You earned a medal in this lesson!  Advance to the next one\n"
+"by clicking the Next button."
+msgstr "!A at'a' jun an ów ba axe dhuche'   ka watb'a axi jun."
+
+#: mainscreen.py:216
+msgid "No Medal Yet"
+msgstr "Yab a at'a' an ów"
+
+#: mainscreen.py:217
+msgid "Bronze Medal"
+msgstr "ów tsokoy pat'al"
+
+#: mainscreen.py:218
+msgid "Silver Medal"
+msgstr "ów mak'i pat'al"
+
+#: mainscreen.py:219
+msgid "Gold Medal"
+msgstr "ów manu' ṕatál"
+
+#: medalscreen.py:56
+msgid ""
+"<span font_desc='Serif Bold Italic 28'>Certificate of Achievement</span>"
+msgstr "<span font_desc='Serif Bold Italic 28'>Certificado de Logro</span>"
+
+#: medalscreen.py:59
+msgid "<span font_desc='Sans 16'>This certifies that</span>"
+msgstr "<span font_desc='Sans 16'>Esto certifica que</span>"
+
+#: medalscreen.py:62
+#, python-format
+msgid "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+
+#: medalscreen.py:65
+#, python-format
+#, python-format,
+msgid "<span font_desc='Sans 16'>earned a %(type)s medal in </span>"
+msgstr "<span font_desc='Sans 16'> obtuvo una medalla de %(type)s </span>"
+
+#: medalscreen.py:68
+#, python-format
+#, python-format,
+msgid "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'> en <b><u><i>%(lesson)s</i></u></b></span>"
+
+#: medalscreen.py:71
+#, python-format
+#, python-format,
+msgid "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+msgstr "<span font_desc='Sans 16'>en <b><u><i>%(date)s</i></u></b>.</span>"
+
+#: medalscreen.py:88
+#, python-format
+msgid "<b>Words Per Minute:</b> %(wpm)d"
+msgstr "<b>Káwchik ti al jún i tsakamk'ij:</b> %(wpm)d"
+
+#: medalscreen.py:97
+#, python-format
+msgid "<b>SCORE:</b> %(score)d"
+msgstr "b TUKMÍL: b %(score)d"

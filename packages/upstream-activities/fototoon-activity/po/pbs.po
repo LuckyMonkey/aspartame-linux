@@ -1,0 +1,215 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2014-02-25 19:59+0200\n"
+"Last-Translator: xavier <proyecto.olpc@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pbs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr "FotoToon"
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"kimieng nata'aung nda meng? ¡nip ngul'ajau! ¡ki't pu xikji'ik maiñ kad-er se "
+"tijì kimieng se manatsjau tiji manamang!"
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "mamejep xikji'ik"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "ngutsa talung"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "ligyajaù"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "lijiu sejep"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Ndupuì"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "ndakal'"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Meje'euts nda ngutsa talung"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Vankajam"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Makuas"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "kue'e ma'ujuch'"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "ve'eje'"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "kiji't nda niñ'eje' se maka'aut"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "Mata't"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "Mavun"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "numvù"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Italica"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "xikjia'p ne keich'kuly'e"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Mapejeel'"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Matsjau"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Kint' pu xikji'ik se manakjaik"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Reset to box size"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr "Kint' se manaka'aut lixa'au manajut' make' pu mú me'es"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Masa'aun ngutue'p kily'e"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr ""
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr ""
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "Makjat nkjaì xikji'ik"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "Makjat nkjaì xikji'ik"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "malejeiñ"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "Manù"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Nda'u'up"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr ""
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr ""
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Nak'ujuly lipià"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "keich'kily'e"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Mavaun' pu namá likjiu'un re xikji'ik"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Malejeiñ xikji'ik lamei kimviu'p"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "Makjat nkjai nda nguk'uix (PDF)"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr ""
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "ndania'at"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "ndania'at nichjau nda xikji'ik pu xiñi'iu matsjau"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "ndania't nichjau nda PDF pu xiñi'iu matsjau"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr ""
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr ""
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "nda'u'up ne xiñi'iu matsjau"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "Matajaixh"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "ngunjiu' kily'e"

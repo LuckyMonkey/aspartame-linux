@@ -1,0 +1,335 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-04 00:33-0400\n"
+"PO-Revision-Date: 2013-09-29 18:56+0200\n"
+"Last-Translator: lite <litekok@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "Poll"
+msgstr "民意调查"
+
+#: PollSession.py:502 PollSession.py:586
+#, python-format
+#, python-format,
+msgid "%(author)s shared a poll '%(title)s' with you."
+msgstr "%(author)s 和你共享了一项调查'%(title)s'。"
+
+#: PollSession.py:585
+msgid "New Poll"
+msgstr "新的调查"
+
+#: Widgets.py:59 Widgets.py:497
+msgid "Choose a Poll"
+msgstr "选择一项调查"
+
+#: Widgets.py:63
+msgid "Build a Poll"
+msgstr "创建一项调查"
+
+#: Widgets.py:67 Widgets.py:388
+msgid "Settings"
+msgstr "设置"
+
+#: Widgets.py:71 Widgets.py:570
+msgid "Lesson Plans"
+msgstr "课程计划"
+
+#: Widgets.py:106
+msgid "Build a poll"
+msgstr "创建一项调查"
+
+#: Widgets.py:109
+msgid "Poll Title:"
+msgstr "调查题目"
+
+#: Widgets.py:113
+msgid "Question:"
+msgstr "问题："
+
+#: Widgets.py:118
+msgid "Number of votes to collect:"
+msgstr "要收集的票数："
+
+#: Widgets.py:126
+#, python-format
+#, python-format,
+msgid "Answer %s:"
+msgstr "答案 %s:"
+
+#: Widgets.py:134 Widgets.py:205
+msgid "Change Image"
+msgstr "改变图像"
+
+#: Widgets.py:139
+msgid "Add Image"
+msgstr "添加图像"
+
+#: Widgets.py:150
+msgid "Step 1: Preview"
+msgstr "第一步：预览"
+
+#: Widgets.py:154
+msgid "Step 2: Save"
+msgstr "第二步：保存"
+
+#: Widgets.py:209 Widgets.py:484 poll.py:380
+msgid "Poll Activity"
+msgstr "投票活动"
+
+#: Widgets.py:210
+msgid "Your selection is not an image"
+msgstr "你的选择不是一张图"
+
+#: Widgets.py:394
+msgid "Show answers while voting"
+msgstr "投票时显示答案"
+
+#: Widgets.py:399
+msgid "Remember last vote"
+msgstr "记住最近的投票"
+
+#: Widgets.py:406
+msgid "Play a sound when make a vote"
+msgstr "投票时播放声音"
+
+#: Widgets.py:412
+msgid "Use image in answer"
+msgstr "答案中使用图像"
+
+#: Widgets.py:417
+msgid "Image Size: "
+msgstr "图像大小："
+
+#: Widgets.py:445
+msgid "Save"
+msgstr "保存"
+
+#: Widgets.py:485
+msgid "The settings have been saved"
+msgstr "设置已保存"
+
+#: Widgets.py:536
+msgid "VOTE"
+msgstr "投票"
+
+#: Widgets.py:539
+msgid "SEE RESULTS"
+msgstr "查看结果"
+
+#: Widgets.py:546
+msgid "DELETE"
+msgstr "删除"
+
+#: Widgets.py:560
+msgid "Introduction"
+msgstr "介绍"
+
+#: Widgets.py:560
+msgid "Lesson 1"
+msgstr "第一课"
+
+#: Widgets.py:560
+msgid "Lesson 2"
+msgstr "第二课"
+
+#: Widgets.py:561
+msgid "Lesson 3"
+msgstr "第三课"
+
+#: Widgets.py:561
+msgid "Lesson 4"
+msgstr "第四课"
+
+#: Widgets.py:725
+msgid "votes"
+msgstr "票数"
+
+#: Widgets.py:725
+msgid "(votes left to collect)"
+msgstr "（余下要收集的投票）"
+
+#: Widgets.py:733 poll.py:476
+msgid "Vote"
+msgstr "投票"
+
+#: Widgets.py:739
+msgid "Edit Poll"
+msgstr "编辑"
+
+#: Widgets.py:744
+msgid "Save Poll"
+msgstr "保存"
+
+#: poll.py:279 poll.py:370 poll.py:480
+msgid "VOTE!"
+msgstr "投票！"
+
+#: poll.py:282 poll.py:373 poll.py:483
+msgid "Poll Preview"
+msgstr "查看"
+
+#: poll.py:381
+msgid "To vote you have to select first one option"
+msgstr "必须选择第一个选项才能投票"
+
+#: poll.py:477
+#, python-format
+msgid "Somebody voted on %s"
+msgstr "某人对%s投过票"
+
+#: poll.py:564 poll.py:599
+msgid "Joined"
+msgstr "加入"
+
+#: poll.py:604
+msgid "Left"
+msgstr "左边"
+
+#~ msgid "Choose image"
+#~ msgstr "选择图像"
+
+#~ msgid "Favorite Color"
+#~ msgstr "最喜欢的颜色"
+
+#~ msgid "What is your favorite color?"
+#~ msgstr "你最喜欢什么颜色？"
+
+#~ msgid "Orange"
+#~ msgstr "橙色"
+
+#~ msgid "None of the above"
+#~ msgstr "以上都不是"
+
+#~ msgid "Close Lessons"
+#~ msgstr "关闭课程"
+
+#~ msgid "Answer"
+#~ msgstr "答案"
+
+#~ msgid "Green"
+#~ msgstr "绿色"
+
+#~ msgid "Red"
+#~ msgstr "红色"
+
+#~ msgid "Blue"
+#~ msgstr "蓝色"
+
+#~ msgid "Chinese (simplified)"
+#~ msgstr "中文 （简体）"
+
+#~ msgid "Chinese (traditional)"
+#~ msgstr "中文 （繁体）"
+
+#~ msgid "Czech"
+#~ msgstr "捷克语"
+
+#~ msgid "Danish"
+#~ msgstr "丹麦语"
+
+#~ msgid "Dutch"
+#~ msgstr "荷兰语"
+
+#~ msgid "English"
+#~ msgstr "英语"
+
+#~ msgid "English - Great Britain"
+#~ msgstr "英语 - 英式"
+
+#~ msgid "English - U.S."
+#~ msgstr "英语 - 美式"
+
+#~ msgid "Finnish"
+#~ msgstr "芬兰语"
+
+#~ msgid "French"
+#~ msgstr "法语"
+
+#~ msgid "German"
+#~ msgstr "德语"
+
+#~ msgid "Hungarian"
+#~ msgstr "匈牙利语"
+
+#~ msgid "Italian"
+#~ msgstr "意大利语"
+
+#~ msgid "Japanese"
+#~ msgstr "日语"
+
+#~ msgid "Korean"
+#~ msgstr "韩语"
+
+#~ msgid "Norwegian"
+#~ msgstr "挪威语"
+
+#~ msgid "Polish"
+#~ msgstr "波兰语"
+
+#~ msgid "Portuguese"
+#~ msgstr "葡萄牙语"
+
+#~ msgid "Portuguese - Brazilian"
+#~ msgstr "葡萄牙语 - 巴西"
+
+#~ msgid "Russian"
+#~ msgstr "俄语"
+
+#~ msgid "Slovak"
+#~ msgstr "斯洛伐克语"
+
+#~ msgid "Spanish"
+#~ msgstr "西班牙语"
+
+#~ msgid "Swedish"
+#~ msgstr "瑞典语"
+
+#~ msgid "Turkish"
+#~ msgstr "土耳其语"

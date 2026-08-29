@@ -1,0 +1,26 @@
+v3
+
+* Add shake effect when ball hits a brick.
+* Better collision handling.
+* Add randomness to velocity after each collision.
+* Center text elements and enable anti-aliasing.
+* Make code compact and consistent.
+
+v2
+
+* Increase the speed of scroller to match that of the ball (Jui Pradhan),
+* Reduce CPU time consumption (James Cameron),
+* Use scaling to determine the vertical position of text (Jui Pradhan),
+* Scroller position till end of canvas (Jui Pradhan),
+* Centre the bricks built (Jui Pradhan),
+* Center the text (Jui Pradhan),
+* Fix text out of Screen and use scaling (Jui Pradhan),
+* Added README (Ayush Nawal),
+* Port to Python3 (Rishikesh Joshi),
+* Update sugargame v1.3 (Ayush Nawal),
+* Fix license (Pipix),
+* Update to sugargame v1.2 (Swarup N)
+
+v1
+
+* Initial Release

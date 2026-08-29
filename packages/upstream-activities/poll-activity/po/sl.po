@@ -1,0 +1,325 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-04 00:33-0400\n"
+"PO-Revision-Date: 2008-12-10 11:46-0500\n"
+"Last-Translator: Denis Oštir <denis.ostir@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Pootle 1.1.0rc2\n"
+
+#. TRANS: "name" option from activity.info file
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "Poll"
+msgstr "Anketa"
+
+#: PollSession.py:502 PollSession.py:586
+#, python-format
+msgid "%(author)s shared a poll '%(title)s' with you."
+msgstr "%(author)s je s teboj delil anketo '%(title)s'."
+
+#: PollSession.py:585
+msgid "New Poll"
+msgstr "Nova anketa"
+
+#: Widgets.py:59 Widgets.py:497
+msgid "Choose a Poll"
+msgstr "Izberi anketo"
+
+#: Widgets.py:63
+msgid "Build a Poll"
+msgstr "Izdelaj anketo"
+
+#: Widgets.py:67 Widgets.py:388
+msgid "Settings"
+msgstr ""
+
+#: Widgets.py:71 Widgets.py:570
+msgid "Lesson Plans"
+msgstr "Načrti vaj"
+
+#: Widgets.py:106
+#, fuzzy
+msgid "Build a poll"
+msgstr "Izdelaj anketo"
+
+#: Widgets.py:109
+msgid "Poll Title:"
+msgstr "Naslov ankete:"
+
+#: Widgets.py:113
+msgid "Question:"
+msgstr "Vprašanje:"
+
+#: Widgets.py:118
+msgid "Number of votes to collect:"
+msgstr "Število potrebnih glasov:"
+
+#: Widgets.py:126
+#, python-format
+msgid "Answer %s:"
+msgstr ""
+
+#: Widgets.py:134 Widgets.py:205
+msgid "Change Image"
+msgstr ""
+
+#: Widgets.py:139
+msgid "Add Image"
+msgstr ""
+
+#: Widgets.py:150
+msgid "Step 1: Preview"
+msgstr "Prvi korak: Predogled"
+
+#: Widgets.py:154
+msgid "Step 2: Save"
+msgstr "Drugi korak: Shrani"
+
+#: Widgets.py:209 Widgets.py:484 poll.py:380
+msgid "Poll Activity"
+msgstr ""
+
+#: Widgets.py:210
+msgid "Your selection is not an image"
+msgstr ""
+
+#: Widgets.py:394
+msgid "Show answers while voting"
+msgstr ""
+
+#: Widgets.py:399
+msgid "Remember last vote"
+msgstr ""
+
+#: Widgets.py:406
+msgid "Play a sound when make a vote"
+msgstr ""
+
+#: Widgets.py:412
+msgid "Use image in answer"
+msgstr ""
+
+#: Widgets.py:417
+msgid "Image Size: "
+msgstr ""
+
+#: Widgets.py:445
+msgid "Save"
+msgstr ""
+
+#: Widgets.py:485
+msgid "The settings have been saved"
+msgstr ""
+
+#: Widgets.py:536
+msgid "VOTE"
+msgstr "GLASUJ"
+
+#: Widgets.py:539
+msgid "SEE RESULTS"
+msgstr "PREGLEJ REZULTATE"
+
+#: Widgets.py:546
+msgid "DELETE"
+msgstr "IZBRIŠI"
+
+#: Widgets.py:560
+msgid "Introduction"
+msgstr "Navodilo"
+
+#: Widgets.py:560
+msgid "Lesson 1"
+msgstr "Vaja 1"
+
+#: Widgets.py:560
+msgid "Lesson 2"
+msgstr "Vaja 2"
+
+#: Widgets.py:561
+msgid "Lesson 3"
+msgstr "Vaja 3"
+
+#: Widgets.py:561
+msgid "Lesson 4"
+msgstr "Vaja 4"
+
+#: Widgets.py:725
+msgid "votes"
+msgstr "glasovi"
+
+#: Widgets.py:725
+msgid "(votes left to collect)"
+msgstr ""
+
+#: Widgets.py:733 poll.py:476
+msgid "Vote"
+msgstr "Glasuj"
+
+#: Widgets.py:739
+msgid "Edit Poll"
+msgstr "Uredi anketo"
+
+#: Widgets.py:744
+msgid "Save Poll"
+msgstr "Shrani anketo"
+
+#: poll.py:279 poll.py:370 poll.py:480
+msgid "VOTE!"
+msgstr "GLASUJ!"
+
+#: poll.py:282 poll.py:373 poll.py:483
+msgid "Poll Preview"
+msgstr "Predogled ankete"
+
+#: poll.py:381
+msgid "To vote you have to select first one option"
+msgstr ""
+
+#: poll.py:477
+#, python-format
+msgid "Somebody voted on %s"
+msgstr "Nekdo je glasoval v anketi %s"
+
+#: poll.py:564 poll.py:599
+msgid "Joined"
+msgstr "Pridružil se je"
+
+#: poll.py:604
+msgid "Left"
+msgstr "Levo"
+
+#~ msgid "Favorite Color"
+#~ msgstr "Najljubša barva"
+
+#~ msgid "What is your favorite color?"
+#~ msgstr "Katera je tvoja najljubša barva?"
+
+#~ msgid "Orange"
+#~ msgstr "Oranžna"
+
+#~ msgid "None of the above"
+#~ msgstr "Nobena od naštetih"
+
+#~ msgid "Close Lessons"
+#~ msgstr "Zapri vaje"
+
+#~ msgid "Answer"
+#~ msgstr "Odgovor"
+
+#~ msgid "Green"
+#~ msgstr "Zelena"
+
+#~ msgid "Red"
+#~ msgstr "Rdeča"
+
+#~ msgid "Blue"
+#~ msgstr "Modra"
+
+#~ msgid "Chinese (simplified)"
+#~ msgstr "Kitajsko (poenostavljeno)"
+
+#~ msgid "Chinese (traditional)"
+#~ msgstr "Kitajsko (tradicionalno)"
+
+#~ msgid "Czech"
+#~ msgstr "Češko"
+
+#~ msgid "Danish"
+#~ msgstr "Dansko"
+
+#~ msgid "Dutch"
+#~ msgstr "Nizozemsko"
+
+#~ msgid "English"
+#~ msgstr "Angleško"
+
+#~ msgid "English - Great Britain"
+#~ msgstr "Angleško - Velika Britanija"
+
+#~ msgid "English - U.S."
+#~ msgstr "Angleško - ZDA"
+
+#~ msgid "Finnish"
+#~ msgstr "Finsko"
+
+#~ msgid "French"
+#~ msgstr "Francosko"
+
+#~ msgid "German"
+#~ msgstr "Nemško"
+
+#~ msgid "Hungarian"
+#~ msgstr "Madžarsko"
+
+#~ msgid "Italian"
+#~ msgstr "Italijansko"
+
+#~ msgid "Japanese"
+#~ msgstr "Japonsko"
+
+#~ msgid "Korean"
+#~ msgstr "Korejsko"
+
+#~ msgid "Norwegian"
+#~ msgstr "Norveško"
+
+#~ msgid "Polish"
+#~ msgstr "Poljsko"
+
+#~ msgid "Portuguese"
+#~ msgstr "Portugalsko"
+
+#~ msgid "Portuguese - Brazilian"
+#~ msgstr "Portugalsko - Brazilsko"
+
+#~ msgid "Russian"
+#~ msgstr "Rusko"
+
+#~ msgid "Slovak"
+#~ msgstr "Slovaško"
+
+#~ msgid "Spanish"
+#~ msgstr "Špansko"
+
+#~ msgid "Swedish"
+#~ msgstr "Švedsko"
+
+#~ msgid "Turkish"
+#~ msgstr "Turško"

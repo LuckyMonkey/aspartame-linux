@@ -1,0 +1,61 @@
+Typing Turtle
+
+Lesson Editor
+- Fix Delete Lesson
+- Wire up step editing keys
+- Aesthetic improvements to lesson editor
+- Better help text
+- Saving and loading from Journal
+- Import and export from JSON data in Journal
+- Graphical lesson builder
++ Automatic step and wordlist generation.
++ Balloon game options: # of balloons, balloon speed, time between balloons.
+
+First Release
++ Export PDF of lesson history and progress.
++ Status message on the main screen.  "You unlocked a new lesson!" for example.  Eventually have the turtle 'say' it.
++ Graphical WPM and accuracy meters.
++ Sound effects.
+  + Welcome to the activity sound.
+  + Speed up / slow down sounds when WPM crosses threshold: Slow, Medium, Fast.
+  + Medal award sounds for each medal type: None, Bronze, Silver, Gold.  Applause sound.
+  + Incorrect key pressed tick sound.
++ Lesson option to specify that incorrect keys are ignored.
++ Fix the keyboard.
+
+Future Release
++ Highlight regions of keyboard, color by finger used.
++ Goal support with progress reporting.  WPM, Accuracy, Entire keyboard learned, etc.
++ Keyboard image showing "skill per key".  Star icons on keys that are mastered.
++ History screen: List of lessons completed with statistics.
++ Progress screen: Line graphs of Accuracy, WPM over time.
++ Some sort of award when all the lessons are complete, followed by general skill work.
++ Ergonomics lesson.
+
+Balloon Game
+
+- Game finished popup, displays score and medal text.
+- Fix flickering
++ Improve graphics.
+- Support for displaying high score in home screen.
++ Swaying strings
++ Moving clouds
++ Show Balloons left, Balloons popped.
++ Put a box behind "Type the words to pop the balloons!" text.
++ Prettier balloon pictures.
+
+Paper Airplane Game
+
++ Create AirplaneGameScreen class (use gtk.Layout?).
++ Implement bottom-scrolling text display.
++ Airplane toss animation (or maybe takeoff from runway?).  Starts with first letter.
++ Floating airplane momentum based on words per minute.
++ Scrolling background graphics.
++ Finish line graphics.
++ Game finished popup, displays score and medal text.
+
+Race Game
+
++ Create RaceGameScreen class (use gtk.Layout?).
++ Copy whatever Prakhar's got, finish it up.
++ Game finished popup, displays score and medal text.

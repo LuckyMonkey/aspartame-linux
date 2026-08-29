@@ -1,0 +1,29 @@
+v4
+
+* Updated Readme (Sourabha G)
+* Updated Screenshots with updated UI (Sourabha G)
+* feat: increased the box height to make it visible when edge frame is hovered (Sourabha G)
+* feat: enhanced the UI of landing pages (Sourabha G)
+* feat: enhanced UI of the answer options (Sourabha G)
+* feat: display '+1' on addition of score (Sourabha G)
+
+v3
+
+* Update README. (Sparsh Goenka)
+* Improve speed system. (Sparsh Goenka)
+* Add textures for better visuals. (Sparsh Goenka)
+
+v2
+
+* fix: fixed the answer selector display issue (Sourabha G)
+* fix: fixed styling; refactor code (Sourabha G)
+* Feature: Keep highscore between instances (Sourabha G)
+* Feature: Added save and restore game from Journal (Sourabha G)
+* Adding callback to terminate activity properly (Ayush Nawal)
+* port to python3 (Ayush Nawal)
+* update sugargame to v1 (Ayush Nawal)
+
+v1
+
+* Minor flake8 fixes (James Cameron)
+* Add GPLv2 license copy (James Cameron)

@@ -1,0 +1,224 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-25 11:58+1000\n"
+"PO-Revision-Date: 2019-04-05 00:09+0000\n"
+"Last-Translator: roohan <rizvi.beta@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1554422958.000000\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "पुस्तकें लाएँ"
+
+#: activity/activity.info:3
+msgid ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+msgstr ""
+"पुस्तकों की आवश्यकता है? हम सब करते हैं! यह गतिविधि आपको कई विभिन्न स्रोतों "
+"से पुस्तकें खोज और पुनर्प्राप्त करने देती है। पढ़ने शुरू करो!"
+
+#: GetIABooksActivity.py:245 GetIABooksActivity.py:477
+#: GetIABooksActivity.py:481 GetIABooksActivity.py:616
+#, fuzzy
+msgid "Catalogs"
+msgstr "केटलॉग"
+
+#: GetIABooksActivity.py:259
+msgid "Any language"
+msgstr ""
+
+#: GetIABooksActivity.py:308 GetIABooksActivity.py:819
+msgid "Performing lookup, please wait..."
+msgstr "देखा जा रहा है, कृपया प्रतीक्षा करें..."
+
+#: GetIABooksActivity.py:348
+msgid "My books"
+msgstr "मेरी किताबें"
+
+#: GetIABooksActivity.py:362
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "%.2f गीबा संस्करण"
+
+#: GetIABooksActivity.py:534
+msgid "Format:"
+msgstr "प्रारूप:"
+
+#: GetIABooksActivity.py:547
+msgid "Get Book"
+msgstr "पुस्तक लाएँ"
+
+#: GetIABooksActivity.py:587
+msgid "Enter words from the Author or Title to begin search."
+msgstr "ढूंढने के लिए लेखक या पुस्तक का नाम भरें."
+
+#: GetIABooksActivity.py:639
+msgid "Selected book"
+msgstr "चयनित पुस्तक"
+
+#: GetIABooksActivity.py:658
+msgid "Title:\t\t"
+msgstr "शीर्षक:\t\t"
+
+#: GetIABooksActivity.py:660
+msgid "Author:\t\t"
+msgstr "लेखक:\t\t"
+
+#: GetIABooksActivity.py:664
+msgid "Summary:\t"
+msgstr "सारांशः\t"
+
+#: GetIABooksActivity.py:673
+msgid "Language:\t"
+msgstr "भाषा:\t"
+
+#: GetIABooksActivity.py:674
+msgid "Publisher:\t"
+msgstr "प्रकाशक:\t"
+
+#: GetIABooksActivity.py:804
+msgid "You must enter at least 3 letters."
+msgstr "आपको कम से कम 3 अक्षरों को दर्ज करना होगा।"
+
+#: GetIABooksActivity.py:832
+msgid "Could not reach the server. Maybe you are not connected to the network"
+msgstr "सर्वर तक नहीं पहुंच सका। शायद आप नेटवर्क से कनेक्ट नहीं हैं"
+
+#: GetIABooksActivity.py:836
+msgid "There was an error downloading the list."
+msgstr "सूची डाउनलोड करने में एक त्रुटि हुई।जमा करें↔ सुझाव दें काम की जरूरत है"
+
+#: GetIABooksActivity.py:838
+#, python-format
+msgid "New catalog list %s was found"
+msgstr "नई सूची सूची% s पाया गया था"
+
+#: GetIABooksActivity.py:842
+msgid "Sorry, no books could be found."
+msgstr "माफ़ कीजिए, कोई पुस्तक नहीं मिली."
+
+#: GetIABooksActivity.py:856
+msgid "Sorry, we only found english books."
+msgstr "क्षमा करें, हमें केवल अंग्रेज़ी किताबें मिलीं"
+
+#: GetIABooksActivity.py:980
+#, fuzzy, python-format
+msgid ""
+"Error: Could not download %s. The path in the catalog seems to be incorrect."
+msgstr "त्रुटि:% s डाउनलोड नहीं कर सका। कैटलॉग में पथ गलत प्रतीत होता है।"
+
+#: GetIABooksActivity.py:986
+#, python-format
+msgid "Error: Could not download %s. The other end sent an empty file."
+msgstr "त्रुटि:% s डाउनलोड नहीं कर सका। दूसरे छोर ने एक खाली फाइल भेजी।"
+
+#: GetIABooksActivity.py:992
+#, python-format
+msgid ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+msgstr ""
+"त्रुटि:% s डाउनलोड नहीं कर सका। दूसरे छोर ने एक पुस्तक के बजाय पाठ / html "
+"भेजा।"
+
+#: GetIABooksActivity.py:1054
+msgid "Download completed"
+msgstr "डाउनलोड सम्पन्न हुआ"
+
+#: GetIABooksActivity.py:1066
+#, python-format
+msgid "Open with %s"
+msgstr "% S के साथ खोलें"
+
+#: GetIABooksActivity.py:1070
+msgid "Show in Journal"
+msgstr "जर्नल में दिखाएं"
+
+#: GetIABooksActivity.py:1075
+#, fuzzy
+msgid "Ok"
+msgstr "ठीक"
+
+#: listview.py:35
+msgid "Title"
+msgstr "शीर्षक"
+
+#: listview.py:37
+msgid "Author"
+msgstr "लेखक"
+
+#: listview.py:39
+msgid "Publisher"
+msgstr "प्रकाशक"
+
+#: listview.py:41
+msgid "Language"
+msgstr "भाषा"
+
+#: listview.py:43
+msgid "Publish Date"
+msgstr "प्रकाशन तिथि"
+
+#~ msgid "Error"
+#~ msgstr "त्रुटि"
+
+#~ msgid "Connection timed out for "
+#~ msgstr "के लिए कनेक्शन टाइमआउट हो गया "
+
+#~ msgid "Books"
+#~ msgstr "पुस्तकें"
+
+#~ msgid "Link:\t\t"
+#~ msgstr "कड़ी:\t\t"
+
+#~ msgid "You must enter at least one search word."
+#~ msgstr "आपको कम से कम एक खोज शब्द भरना होगा."
+
+#, python-format
+#~ msgid ""
+#~ "Error: Could not download %s . The path in the catalog seems to be incorrect"
+#~ msgstr "त्रुटि: %s को डाउनलोड नहीं किया जा सका. कैटलॉग में दिया गया पथ गलत है"
+
+#, python-format
+#~ msgid "Success: %s was added to Journal."
+#~ msgstr "सफल: %s को दैनिकी में जोड़ा गया."

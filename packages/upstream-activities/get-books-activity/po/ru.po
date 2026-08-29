@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-25 11:58+1000\n"
+"PO-Revision-Date: 2017-10-31 02:52+0000\n"
+"Last-Translator: yuray <yuray@komyakino.ru>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1509418329.000000\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Получить книги"
+
+#: activity/activity.info:3
+msgid ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+msgstr ""
+"Нужны книги? Они нужны нам всем! Это действие позволяет вам искать и "
+"получать книги с множества различных источников. Начните читать прямо сейчас!"
+
+#: GetIABooksActivity.py:245 GetIABooksActivity.py:477
+#: GetIABooksActivity.py:481 GetIABooksActivity.py:616
+msgid "Catalogs"
+msgstr "Каталоги"
+
+#: GetIABooksActivity.py:259
+msgid "Any language"
+msgstr "Любой язык"
+
+#: GetIABooksActivity.py:308 GetIABooksActivity.py:819
+msgid "Performing lookup, please wait..."
+msgstr "Проводится поиск, пожалуйста подождите"
+
+#: GetIABooksActivity.py:348
+msgid "My books"
+msgstr "Мои книги"
+
+#: GetIABooksActivity.py:362
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "Объем %.2f GB"
+
+#: GetIABooksActivity.py:534
+msgid "Format:"
+msgstr "Формат:"
+
+#: GetIABooksActivity.py:547
+msgid "Get Book"
+msgstr "Получить книгу"
+
+#: GetIABooksActivity.py:587
+msgid "Enter words from the Author or Title to begin search."
+msgstr "Введите Автора или Название для начала поиска"
+
+#: GetIABooksActivity.py:639
+msgid "Selected book"
+msgstr "Выбранная книга"
+
+#: GetIABooksActivity.py:658
+msgid "Title:\t\t"
+msgstr "Название:\t\t"
+
+#: GetIABooksActivity.py:660
+msgid "Author:\t\t"
+msgstr "Автор:\t\t"
+
+#: GetIABooksActivity.py:664
+msgid "Summary:\t"
+msgstr "Краткое описание:\t"
+
+#: GetIABooksActivity.py:673
+msgid "Language:\t"
+msgstr "Языу:\t"
+
+#: GetIABooksActivity.py:674
+msgid "Publisher:\t"
+msgstr "Издатель:\t"
+
+#: GetIABooksActivity.py:804
+msgid "You must enter at least 3 letters."
+msgstr "Вы должны ввести минимум 3 символа"
+
+#: GetIABooksActivity.py:832
+msgid "Could not reach the server. Maybe you are not connected to the network"
+msgstr "Нет ответа от сервера. Возможно вы не подключены к сети."
+
+#: GetIABooksActivity.py:836
+msgid "There was an error downloading the list."
+msgstr "Во время загрузки списка произошла ошибка."
+
+#: GetIABooksActivity.py:838
+#, python-format
+msgid "New catalog list %s was found"
+msgstr "Новый список каталогов %s был найден"
+
+#: GetIABooksActivity.py:842
+msgid "Sorry, no books could be found."
+msgstr "Извините, книги не были найдены"
+
+#: GetIABooksActivity.py:856
+msgid "Sorry, we only found english books."
+msgstr "Извините, мы нашли только книги на английском языке."
+
+#: GetIABooksActivity.py:980
+#, python-format
+msgid ""
+"Error: Could not download %s. The path in the catalog seems to be incorrect."
+msgstr "Ошибка: невозможно скачать %s. Вероятно, неправильный путь в каталоге."
+
+#: GetIABooksActivity.py:986
+#, python-format
+msgid "Error: Could not download %s. The other end sent an empty file."
+msgstr "Ошибка: невозможно скачать %s. От другой стороны получен пустой файл."
+
+#: GetIABooksActivity.py:992
+#, python-format
+msgid ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+msgstr ""
+"Ошибка: невозможно скачать %s. От другой стороны получен text/html, а не "
+"книга."
+
+#: GetIABooksActivity.py:1054
+msgid "Download completed"
+msgstr "Загрузка завершена"
+
+#: GetIABooksActivity.py:1066
+#, python-format
+msgid "Open with %s"
+msgstr "Открыть с помощью %s"
+
+#: GetIABooksActivity.py:1070
+msgid "Show in Journal"
+msgstr "Показать в журнале"
+
+#: GetIABooksActivity.py:1075
+msgid "Ok"
+msgstr "Ок"
+
+#: listview.py:35
+msgid "Title"
+msgstr "Название"
+
+#: listview.py:37
+msgid "Author"
+msgstr "Автор"
+
+#: listview.py:39
+msgid "Publisher"
+msgstr "Издатель"
+
+#: listview.py:41
+msgid "Language"
+msgstr "Язык"
+
+#: listview.py:43
+msgid "Publish Date"
+msgstr "Дата публикации"
+
+#~ msgid "Error"
+#~ msgstr "Ошибка"
+
+#~ msgid "Connection timed out for "
+#~ msgstr "Истекло время ожидания соединения. "
+
+#, python-format
+#~ msgid ""
+#~ "Error: Could not download %s. The path in the catalog seems to be incorrect"
+#~ msgstr ""
+#~ "Ошибка: Невозможно скачать %s. Возможно указан неправильный путь в каталоге."

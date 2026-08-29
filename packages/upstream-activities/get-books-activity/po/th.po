@@ -1,0 +1,208 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-25 11:58+1000\n"
+"PO-Revision-Date: 2012-03-15 11:40+0200\n"
+"Last-Translator: Meechai <malaku38@hotmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: th\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Get Books"
+
+#: activity/activity.info:3
+msgid ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+msgstr ""
+
+#: GetIABooksActivity.py:245 GetIABooksActivity.py:477
+#: GetIABooksActivity.py:481 GetIABooksActivity.py:616
+msgid "Catalogs"
+msgstr "แคตตาล็อก"
+
+#: GetIABooksActivity.py:259
+msgid "Any language"
+msgstr "ภาษาใดก็ได้"
+
+#: GetIABooksActivity.py:308 GetIABooksActivity.py:819
+msgid "Performing lookup, please wait..."
+msgstr "กำลังค้นหากรุณารอสักครู่..."
+
+#: GetIABooksActivity.py:348
+msgid "My books"
+msgstr "หนังสือของฉัน"
+
+#: GetIABooksActivity.py:362
+#, python-format
+#, python-format,
+msgid "%.2f GB Volume"
+msgstr "%.2f GB Volume"
+
+#: GetIABooksActivity.py:534
+msgid "Format:"
+msgstr "รูปแบบ:"
+
+#: GetIABooksActivity.py:547
+msgid "Get Book"
+msgstr "รับหนังสือ"
+
+#: GetIABooksActivity.py:587
+msgid "Enter words from the Author or Title to begin search."
+msgstr "ป้อนชื่อผู้เขียนหรือชื่อเรื้องในการค้นหา"
+
+#: GetIABooksActivity.py:639
+msgid "Selected book"
+msgstr "หนังเสือที่เลือก"
+
+#: GetIABooksActivity.py:658
+msgid "Title:\t\t"
+msgstr "ชื่อเรื่อง:\t\t"
+
+#: GetIABooksActivity.py:660
+msgid "Author:\t\t"
+msgstr "ผู้เขียน:\t\t"
+
+#: GetIABooksActivity.py:664
+msgid "Summary:\t"
+msgstr "สรุป:\t"
+
+#: GetIABooksActivity.py:673
+msgid "Language:\t"
+msgstr "ภาษา:\t"
+
+#: GetIABooksActivity.py:674
+msgid "Publisher:\t"
+msgstr "สำนักพิมพ์:\t"
+
+#: GetIABooksActivity.py:804
+msgid "You must enter at least 3 letters."
+msgstr "คุณต้องใส่อย่างน้อย 3 ตัวอักษร"
+
+#: GetIABooksActivity.py:832
+msgid "Could not reach the server. Maybe you are not connected to the network"
+msgstr ""
+
+#: GetIABooksActivity.py:836
+msgid "There was an error downloading the list."
+msgstr ""
+
+#: GetIABooksActivity.py:838
+#, python-format
+#, python-format, ,
+msgid "New catalog list %s was found"
+msgstr "รายการแคตตาล็อกใหม่ %s ถูกพบ"
+
+#: GetIABooksActivity.py:842
+msgid "Sorry, no books could be found."
+msgstr "ขออภัย, ไม่มีหนังสือที่คุณต้องการ"
+
+#: GetIABooksActivity.py:856
+msgid "Sorry, we only found english books."
+msgstr "ขออภัย, เจอเพียงหนังสือภาษาอังกฤษ"
+
+#: GetIABooksActivity.py:980
+#, python-format
+msgid ""
+"Error: Could not download %s. The path in the catalog seems to be incorrect."
+msgstr ""
+
+#: GetIABooksActivity.py:986
+#, python-format
+msgid "Error: Could not download %s. The other end sent an empty file."
+msgstr ""
+
+#: GetIABooksActivity.py:992
+#, python-format
+msgid ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+msgstr ""
+
+#: GetIABooksActivity.py:1054
+msgid "Download completed"
+msgstr "ดาวน์โหลดเสร็จสิ้นแล้ว"
+
+#: GetIABooksActivity.py:1066
+#, python-format
+msgid "Open with %s"
+msgstr ""
+
+#: GetIABooksActivity.py:1070
+msgid "Show in Journal"
+msgstr "แสดงในบันทึกประจำวัน"
+
+#: GetIABooksActivity.py:1075
+msgid "Ok"
+msgstr "ตกลง"
+
+#: listview.py:35
+msgid "Title"
+msgstr "ชื่อเรื่อง"
+
+#: listview.py:37
+msgid "Author"
+msgstr "ผู้เขียน"
+
+#: listview.py:39
+msgid "Publisher"
+msgstr "สำนักพิมพ์"
+
+#: listview.py:41
+msgid "Language"
+msgstr "ภาษา"
+
+#: listview.py:43
+msgid "Publish Date"
+msgstr "วันที่พิมพ์"
+
+#~ msgid "Error"
+#~ msgstr "ข้อผิดพลาด"
+
+#~ msgid "Connection timed out for "
+#~ msgstr "หมดเวลาการเชื่อมต่อ "
+
+#, python-format
+#~ msgid "Error: Could not download %s. "
+#~ msgstr "ข้อผิดพลาด: ไม่สามารถดาวน์โหลด %s "
+
+#~ msgid "Books"
+#~ msgstr "หนังสือ"

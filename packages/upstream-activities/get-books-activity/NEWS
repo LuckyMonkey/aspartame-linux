@@ -1,0 +1,61 @@
+20
+
+Feedbooks is going out of business soon and its OPDS feed is no more. I tried
+several other OPDS feeds from this list: http://opdshome.uo1.net/ including
+the one from Project Gutenberg and found them all to be unsatisfactory for
+one reason or another. OPDS catalogs are not standardized as much as they could
+be.
+
+* Upgrade to a newer version of feedparser.py.
+* Make feedparser.py work with Python3.
+* Add sgmllib3.py which was included with feedparser.
+* Make search criteria for Internet Archive match what is in GetIABooks Activity.
+
+(James Simmons)
+
+19
+
+* New translations {ibo,hi,uk}, and remove empty PO files,
+* Add option to ignore mimetypes to config file (Katarina Durechova),
+
+18.2
+
+* Fix for repeatedly widening canvas (Aniket Mathur),
+
+18.1
+
+* Fix for Fedora 18 (James Cameron),
+
+18
+
+* New translations (Chris Leonard et al),
+* Fix download of Internet Archive books (Lubomir Rintel),
+* Port from GObject to GLib (James Cameron),
+* Fix PyGObject warnings and demote errors (James Cameron),
+* Update POT file (James Cameron).
+
+17
+
+* New translations
+* Improved code consistency and clarity
+* Removed deprecated OHM
+* Fixed division by zero during downloading
+* Fixed exception during searching
+* Enabled scope enforcement of image downloader, queries and Internet
+  Archive results
+* Changed logger name to match activity name
+* Formatted log object dumps
+* Fixed downloading books from Internet Archive error
+* Fixed non-unique downloaded files error
+* Improve download cancellation
+* Moved progress bar to the area below "Get Book" button
+* Fixed main window width growth
+* Destroy download threads on premature exit
+* Applied other minor bugs fixes and improvements
+* Fix main window width growth
+* Split Internet Archive single category into three
+* Update repository metadata
+
+5
+
+* Spanish translations (Rafael Ortiz)

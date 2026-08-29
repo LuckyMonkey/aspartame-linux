@@ -1,0 +1,644 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Loba Yeasmeen <loba@ankur.org.bd>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: honey VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-27 14:55-0400\n"
+"PO-Revision-Date: 2012-01-12 08:11+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+#: titlescene.py:54 typingturtle.py:82
+msgid "Typing Turtle"
+msgstr "টাইপিং টার্টেল"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Need some help typing? Here you will learn the best way to hold your hands "
+"in order for you to become a faster typist!"
+msgstr ""
+
+#: balloongame.py:59 editlessonlistscreen.py:50 editlessonscreen.py:50
+#: editlessonscreen.py:584 lessonscreen.py:65
+msgid "Go Back"
+msgstr "পিছনে যাও"
+
+#: balloongame.py:217
+msgid "You finished!"
+msgstr "শেষ করেছো!"
+
+#: balloongame.py:234
+#, python-format
+msgid "Your score was %(score)d."
+msgstr "তোমার স্কোর হলো %(score)d।"
+
+#: balloongame.py:236
+#, python-format
+msgid "You earned a %(type)s medal!"
+msgstr "তুমি %(type)s পদক অর্জন করেছো!"
+
+#: balloongame.py:238 medalscreen.py:101
+msgid "Press the ENTER key to continue."
+msgstr "চালিয়ে যাওয়ার জন্য ENTER চাপো।"
+
+#: balloongame.py:350 balloongame.py:363
+#, python-format
+msgid "SCORE: %d"
+msgstr "SCORE: %d"
+
+#: balloongame.py:378
+#, fuzzy
+msgid "Type the words to pop the balloons!"
+msgstr "বেলুন ফাটানোর জন্য শব্দ টাইপ করো!"
+
+#: editlessonlistscreen.py:47 typingturtle.py:111
+msgid "Edit Lessons"
+msgstr ""
+
+#: editlessonlistscreen.py:71 editlessonscreen.py:275
+msgid "Name"
+msgstr ""
+
+#: editlessonlistscreen.py:76 editlessonscreen.py:307
+msgid "Description"
+msgstr ""
+
+#: editlessonlistscreen.py:82 editlessonscreen.py:287
+msgid "Type"
+msgstr ""
+
+#: editlessonlistscreen.py:91
+msgid "Import Lessons from Journal"
+msgstr ""
+
+#: editlessonlistscreen.py:96
+msgid "Export Lessons to Journal"
+msgstr ""
+
+#: editlessonlistscreen.py:101
+msgid "Save Lessons to Activity"
+msgstr ""
+
+#: editlessonlistscreen.py:165 editlessonscreen.py:191
+#, fuzzy
+msgid "Text"
+msgstr "পরবর্তী"
+
+#: editlessonlistscreen.py:167 editlessonscreen.py:295
+msgid "Balloon Game"
+msgstr ""
+
+#: editlessonlistscreen.py:204
+msgid "Delete Lesson?"
+msgstr ""
+
+#: editlessonlistscreen.py:205
+msgid "Deleting the lesson will erase the lesson content."
+msgstr ""
+
+#: editlessonlistscreen.py:311
+msgid " (Exported Lessons)"
+msgstr ""
+
+#: editlessonscreen.py:47
+msgid "Edit a Lesson"
+msgstr ""
+
+#: editlessonscreen.py:77
+msgid "New keys"
+msgstr ""
+
+#: editlessonscreen.py:78
+msgid "Known keys"
+msgstr ""
+
+#: editlessonscreen.py:79
+msgid "Length"
+msgstr ""
+
+#: editlessonscreen.py:90
+msgid "Generate!"
+msgstr ""
+
+#: editlessonscreen.py:108 editlessonscreen.py:581
+msgid "Edit Word List"
+msgstr ""
+
+#: editlessonscreen.py:124
+#, python-format
+msgid "Step #%d"
+msgstr ""
+
+#: editlessonscreen.py:130
+msgid "Keys"
+msgstr ""
+
+#: editlessonscreen.py:131 editlessonscreen.py:388
+msgid "Words"
+msgstr ""
+
+#: editlessonscreen.py:169
+msgid "Instructions"
+msgstr ""
+
+#: editlessonscreen.py:234
+msgid "Accuracy"
+msgstr ""
+
+#: editlessonscreen.py:235
+msgid "WPM"
+msgstr ""
+
+#: editlessonscreen.py:249
+msgid "Score"
+msgstr ""
+
+#: editlessonscreen.py:270
+msgid "Lesson Details"
+msgstr ""
+
+#: editlessonscreen.py:291
+msgid "Normal Lesson"
+msgstr ""
+
+#: editlessonscreen.py:326
+msgid "Options"
+msgstr ""
+
+#: editlessonscreen.py:330
+msgid "Allow Mistakes"
+msgstr ""
+
+#: editlessonscreen.py:332
+msgid "Allow Backspace"
+msgstr ""
+
+#: editlessonscreen.py:353
+msgid "Automatic Lesson Generator"
+msgstr ""
+
+#: editlessonscreen.py:412
+msgid "Medal Requirements"
+msgstr ""
+
+#: editlessonscreen.py:420
+msgid "Bronze"
+msgstr ""
+
+#: editlessonscreen.py:421
+msgid "Silver"
+msgstr ""
+
+#: editlessonscreen.py:422
+msgid "Gold"
+msgstr ""
+
+#: editlessonscreen.py:594
+msgid ""
+"Type or paste words here, for the Automatic Lesson Generator.  If empty, the "
+"dictionary will be used."
+msgstr ""
+
+#: lessonbuilder.py:261 lessonscreen.py:617
+msgid "Well done!"
+msgstr "খুব ভালো!"
+
+#: lessonbuilder.py:262
+msgid "Good job."
+msgstr "ভালো করেছো।"
+
+#: lessonbuilder.py:263
+msgid "Awesome!"
+msgstr "অসাধারন!"
+
+#: lessonbuilder.py:264 lessonscreen.py:619
+msgid "Way to go!"
+msgstr "খুবই ভালো হয়েছে!"
+
+#: lessonbuilder.py:265
+msgid "Wonderful!"
+msgstr "চমৎকার!"
+
+#: lessonbuilder.py:266
+msgid "Nice work."
+msgstr "সুন্দর কাজ।"
+
+#: lessonbuilder.py:267
+msgid "You did it!"
+msgstr "তুমি এটি করেছো!"
+
+#: lessonbuilder.py:274
+msgid ""
+"Be careful to use the correct finger to press each key.  Look at the "
+"keyboard below if you need help remembering."
+msgstr ""
+"প্রতিটি কী চাপার জন্য সঠিক আঙ্গুল ব্যবহারের ব্যাপারে সতর্ক থাকবে।  তোমার যদি "
+"কী মনে করার জন্য সাহায্যের দরকার হয় তাহলে কীবোর্ড দেখো।"
+
+#: lessonbuilder.py:275
+msgid ""
+"Try to type at the same speed, all the time.  As you get more comfortable "
+"you can increase the speed a little."
+msgstr ""
+"সবসময় একই গতিতে টাইপ করার চেষ্টা করো।  যখন তোমার জন্য টাইপ করা একটু সহজ হয়ে "
+"আসবে তখন গতি একটু বাড়াতে পারো।"
+
+#: lessonbuilder.py:282
+msgid "left little"
+msgstr "বাম হাতের কড়ে আঙ্গুল"
+
+#: lessonbuilder.py:283
+msgid "left ring"
+msgstr "বাম হাতের অনামিকা"
+
+#: lessonbuilder.py:284
+msgid "left middle"
+msgstr "বাম হাতের মধ্যাঙ্গুলি"
+
+#: lessonbuilder.py:285
+msgid "left index"
+msgstr "বাম হাতের তর্জনী"
+
+#: lessonbuilder.py:286 lessonscreen.py:44
+msgid "left thumb"
+msgstr "বাম হাতের বুড়ো আঙ্গুল"
+
+#: lessonbuilder.py:287
+msgid "right little"
+msgstr "ডান হাতের কড়ে আঙ্গুল"
+
+#: lessonbuilder.py:288
+msgid "right ring"
+msgstr "ডান হাতের অনামিকা"
+
+#: lessonbuilder.py:289
+msgid "right middle"
+msgstr "ডান হাতের মধ্যাঙ্গুলি"
+
+#: lessonbuilder.py:290
+msgid "right index"
+msgstr "ডান হাতের তর্জনী"
+
+#: lessonbuilder.py:291 lessonscreen.py:49
+msgid "right thumb"
+msgstr "ডান হাতের বুড়ো আঙ্গুল"
+
+#: lessonbuilder.py:320
+#, python-format
+msgid " and %s keys"
+msgstr " এবং %s কী"
+
+#: lessonbuilder.py:322
+msgid " key"
+msgstr " কী"
+
+#: lessonbuilder.py:325
+#, python-format
+msgid ""
+"In this lesson, you will learn the %(keynames)s.\n"
+"\n"
+"Press the ENTER key when you are ready to begin!"
+msgstr ""
+"এই পাঠে তুমি %(keynames)s শিখতে পারবে।\n"
+"\n"
+"তুমি যখন শুরু করার জন্য তৈরি তখন ENTER চাপো।"
+
+#: lessonbuilder.py:364
+msgid "Let's learn the new keys."
+msgstr ""
+
+#: lessonbuilder.py:367
+msgid "Practice typing the keys you just learned."
+msgstr "তুমি এখনই যেসব কী টাইপ করতে শিখলে তা অনুশীলন করো।"
+
+#: lessonbuilder.py:371
+#, fuzzy
+msgid "Now put the keys together into pairs."
+msgstr "এখন দুটি করে কী টাইপ করো।"
+
+#: lessonbuilder.py:376
+msgid "Time to type jumbles."
+msgstr "এখন এলোমেলোভাবে টাইপ করো।"
+
+#: lessonbuilder.py:381
+msgid "Time to type real words."
+msgstr "এখন একটি আসল শব্দ টাইপ করো।"
+
+#: lessonbuilder.py:390
+msgid "Hihowahyah!  Ready to learn the secret of fast typing?\n"
+msgstr "Hihowahyah!  দ্রুত টাইপ করার রহস্য শিখতে প্রস্তুত?\n"
+
+#: lessonbuilder.py:391
+msgid ""
+"Always use the correct finger to press each key!\n"
+"\n"
+msgstr ""
+"প্রতিটি কী চাপার সময় সর্বদা সঠিক আঙ্গুল ব্যাবহার করো।\n"
+"\n"
+
+#: lessonbuilder.py:392
+msgid "Now, place your hands on the keyboard just like the picture below.\n"
+msgstr "এখন, নিচের ছবির মত করে কীবোর্ডের উপর তোমার হাত রাখো।\n"
+
+#: lessonbuilder.py:393
+msgid "When you're ready, press the SPACE bar with your thumb!"
+msgstr "তুমি যখন প্রস্তুত তখন তোমার বুড়ো আঙ্গুল দিয়ে SPACE বারটি চাপো!"
+
+#: lessonbuilder.py:397
+msgid ""
+"Good job!  The SPACE bar is used to insert spaces between words.\n"
+"\n"
+msgstr ""
+"ভালো করেছো!  SPACE বারটি শব্দের মধ্যে ফাঁকা স্থান প্রবেশ করাতে ব্যবহৃত হয়।\n"
+"\n"
+
+#: lessonbuilder.py:398
+msgid "Press the SPACE bar again with your thumb."
+msgstr "তোমার বুড়ো আঙ্গুলের সাহায্যে আবার SPACE বারটি চাপো।"
+
+#: lessonbuilder.py:402
+msgid "Now I'll teach you the second key, ENTER.  "
+msgstr "এখন আমি তোমাকে দ্বিতীয় কী ENTER চাপতে শিখাবো।  "
+
+#: lessonbuilder.py:403
+msgid ""
+"That's the big square key near your right little finger.\n"
+"\n"
+msgstr ""
+"এটি হলো তোমার ডান হাতের কড়ে আঙ্গুলের কাছে বড় বর্গাকার কী। \n"
+"\n"
+
+#: lessonbuilder.py:404
+msgid "Now, reach your little finger over and press ENTER."
+msgstr "এখন, তোমার কড়ে আঙ্গুল দিয়ে ENTER চাপো।"
+
+#: lessonbuilder.py:408
+msgid ""
+"Great!  When typing, the ENTER key is used to begin a new line.\n"
+"\n"
+msgstr ""
+"খুবই ভালো! টাইপ করার সময় ENTER কী চেপে একটি নতুন লাইন শুরু করা যায়।\n"
+"\n"
+
+#: lessonbuilder.py:409
+msgid "Press the ENTER key again with your right little finger."
+msgstr "তোমার ডান হাতের কড়ে আঙ্গুল দিয়ে আবার ENTER কী চাপো।"
+
+#: lessonbuilder.py:417
+msgid "Copy out the following text."
+msgstr "নিম্নের টেক্সটটি অনুলিপি করো।"
+
+#: lessonscreen.py:40
+msgid "left little finger"
+msgstr ""
+
+#: lessonscreen.py:41
+msgid "left ring finger"
+msgstr ""
+
+#: lessonscreen.py:42
+msgid "left middle finger"
+msgstr ""
+
+#: lessonscreen.py:43
+msgid "left index finger"
+msgstr ""
+
+#: lessonscreen.py:45
+msgid "right little finger"
+msgstr ""
+
+#: lessonscreen.py:46
+msgid "right ring finger"
+msgstr ""
+
+#: lessonscreen.py:47
+msgid "right middle finger"
+msgstr ""
+
+#: lessonscreen.py:48
+msgid "right index finger"
+msgstr ""
+
+#: lessonscreen.py:190
+#, python-format
+msgid "<b>WPM:</b> %(wpm)d"
+msgstr "<b>WPM:</b> %(wpm)d"
+
+#: lessonscreen.py:198 medalscreen.py:92
+#, python-format
+msgid "<b>Accuracy:</b> %(accuracy)d%%"
+msgstr "<b>নির্ভূলতা:</b> %(accuracy)d%%"
+
+#: lessonscreen.py:511
+#, python-format
+msgid "Press and hold the shift key with your %(finger)s, "
+msgstr "তোমার %(finger)s আঙ্গুলের সাহায্যে SHIFT কী চেপে ধরে রাখো, "
+
+#: lessonscreen.py:512 lessonscreen.py:516 lessonscreen.py:520
+#, python-format
+#, fuzzy
+msgid "then press the %(letter)s key with your %(finger)s."
+msgstr "তারপর তোমার %(finger)s আঙ্গুলের সাহায্যে %(letter)s কী চাপো।"
+
+#: lessonscreen.py:515
+#, fuzzy
+msgid "Press and hold the altgr key, "
+msgstr "ALTGR কী চেপে ধরে রাখো, "
+
+#: lessonscreen.py:519
+#, fuzzy
+msgid "Press and hold the altgr and shift keys, "
+msgstr "ALTGR এবং SHIFT চেপে ধরে রাখো, "
+
+#: lessonscreen.py:523
+#, python-format
+#, fuzzy
+msgid "Press the %(letter)s key with your %(finger)s."
+msgstr "তোমার %(finger)s আঙ্গুলের সাহায্যে %(letter)s কী চাপো।"
+
+#: lessonscreen.py:543
+#, python-format
+msgid "Uh oh!  Your keyboard cannot type the letter '%s'.\n"
+msgstr ""
+
+#: lessonscreen.py:544
+msgid "Please change your keyboard settings and try this lesson again."
+msgstr ""
+
+#: lessonscreen.py:616
+msgid "Good job!"
+msgstr "ভালো করেছো!"
+
+#: lessonscreen.py:618
+msgid "Nice work!"
+msgstr "সুন্দর কাজ!"
+
+#: lessonscreen.py:624
+#, python-format
+msgid "You finished the lesson in %(time)d seconds, with %(errors)d errors.\n"
+msgstr "তুমি %(time)d সেকেন্ডে %(errors)d ত্রুটি সহকারে পাঠটি শেষ করেছো।\n"
+
+#: lessonscreen.py:626
+#, python-format
+msgid ""
+"Your words per minute (WPM) was %(wpm)d, and your accuracy was %(accuracy)d%"
+"%.\n"
+"\n"
+msgstr ""
+"তোমার প্রতি মিনিটে টাইপ করা শব্দের সংখ্যা (WMP) হলো %(wpm)d এবং নির্ভূলতা "
+"হলো %(accuracy)d%%।\n"
+"\n"
+
+#: lessonscreen.py:629
+#, python-format
+msgid "You finished the lesson with %(errors)d errors.\n"
+msgstr "তুমি %(errors)d ত্রুটি সহকারে পাঠ শেষ করেছো।\n"
+
+#: lessonscreen.py:631
+#, python-format
+msgid ""
+"Your accuracy was %(accuracy)d%%.\n"
+"\n"
+msgstr ""
+"তোমার নির্ভূলতা হলো %(accuracy)d%%।\n"
+"\n"
+
+#: lessonscreen.py:637
+#, python-format
+msgid "Congratulations!  You earned a %(type)s medal!"
+msgstr "অভিনন্দন! তুমি একটি %(type)s পদক পেয়েছো!"
+
+#: lessonscreen.py:645
+msgid "You need to practice this lesson more before moving on."
+msgstr "পরের পাঠে যাওয়ার পূর্বে তোমার এই পাঠটি আরও অনুশীলন করা প্রয়োজন।"
+
+#: lessonscreen.py:648
+msgid "You almost got a medal!  Next time, try not to make as many errors."
+msgstr ""
+"তুমি একটি পদক প্রায় পেয়ে গিয়েছিলে! পরবর্তীতে এত বেশি ভুল না করার চেষ্টা করো।"
+
+#: lessonscreen.py:651
+msgid "You almost got a medal!  Next time, try to type a little faster."
+msgstr ""
+"তুমি একটি পদক প্রায় পেয়ে গিয়েছিলে! পরবর্তীতে কিছুটা দ্রুত টাইপ করার চেষ্টা "
+"করো।"
+
+#: mainscreen.py:59
+msgid "Next"
+msgstr "পরবর্তী"
+
+#: mainscreen.py:68
+msgid "Previous"
+msgstr "পূর্ববর্তী"
+
+#: mainscreen.py:75
+msgid "Start Lesson"
+msgstr "পাঠ শুরু করো"
+
+#: mainscreen.py:185
+msgid ""
+"You earned a medal in this lesson!  Advance to the next one\n"
+"by clicking the Next button."
+msgstr ""
+"তুমি এই পাঠে একটি পদক পেয়েছো! পরের পাঠে যাও\n"
+"পরবর্তী বোতাম ক্লিক করে।"
+
+#: mainscreen.py:216
+msgid "No Medal Yet"
+msgstr "এখনও কোনো পদক পাওনি"
+
+#: mainscreen.py:217
+msgid "Bronze Medal"
+msgstr "ব্রোন্‍জ  পদক"
+
+#: mainscreen.py:218
+msgid "Silver Medal"
+msgstr "রৌপ্য পদক"
+
+#: mainscreen.py:219
+msgid "Gold Medal"
+msgstr "স্বর্ণ পদক"
+
+#: medalscreen.py:56
+msgid ""
+"<span font_desc='Serif Bold Italic 28'>Certificate of Achievement</span>"
+msgstr "<span font_desc='Serif Bold Italic 28'>কৃতিত্বের সার্টিফিকেট</span>"
+
+#: medalscreen.py:59
+msgid "<span font_desc='Sans 16'>This certifies that</span>"
+msgstr "<span font_desc='Sans 16'>এটি ঘোষনা করে যে</span>"
+
+#: medalscreen.py:62
+#, python-format
+msgid "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+
+#: medalscreen.py:65
+#, python-format
+#, fuzzy
+msgid "<span font_desc='Sans 16'>earned a %(type)s medal in </span>"
+msgstr "<span font_desc='Sans 16'>একটি %(type)s পদক পেয়েছে</span>"
+
+#: medalscreen.py:68
+#, python-format
+msgid "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+
+#: medalscreen.py:71
+#, python-format
+msgid "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+msgstr "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+
+#: medalscreen.py:88
+#, python-format
+msgid "<b>Words Per Minute:</b> %(wpm)d"
+msgstr "<b>প্রতি মিনিটে শব্দের সংখ্যা:</b> %(wpm)d"
+
+#: medalscreen.py:97
+#, python-format
+msgid "<b>SCORE:</b> %(score)d"
+msgstr "<b>SCORE:</b> %(score)d"

@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2017-02-14 16:52+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1487091145.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr ""
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "افزودن عکس"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "زمین، کره"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "فکر کردن"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "نجوا کردن"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "فریاد"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "جعبه"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "یک زمینه اضافه کنید"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "منحنی، خمیدگی"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "خط مستقیم"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "برجسته، قابل توجه"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "نظر، ایده"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "یک خط حرکت انتخاب کنید"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "چرخش، تغییر جهت"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "حذف کردن"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "چشمگیر"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "ایتالیایی"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "رنگ متن"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "لغو کردن"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "انجام شد"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "عکس ها را بکشید تا دوباره مرتب شوند"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "اندازه جعبه مجددا تغییر دهید"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr "به منظور جابجایی یا تغییر سایز، گوشه های مشخص شده را بکشید"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "انتخاب فونت"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr "یک عکس اضافه کنید و شروع کنید به ساختن Foto Toon"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "یک عکس انتخاب کنید"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "عکس را ذخیره کنید"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "ویرایش کردن"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "چشم انداز، نما"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "نمایش اسلاید"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "نمایش اسلاید زمان بندی شده"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "مدت زمان عکس را در نمایش اسلاید مشخص کنید (ثانیه)"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "صفحه کامل"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "متن"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "ترتیب عکس را عوض کنید"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "عکس پس زمینه را ویرایش کنید"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "به صورت فایل BooK )PDF) ذخیره کنید"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "به صورت فیلم (OGG)Movie ذخیره کنید"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "موفقیت"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "یک عکس در ژورنال ایجاد شده است"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "یک فایل PDF در ژورنال ایجاد شده است"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "به صورت فیلم"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "یک فیلم در ژورنال ذخیره شده است"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "در ژورنال نشان دهید"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "خوب"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "عنوان:"
+
+#~ msgid "Choose image"
+#~ msgstr "انتخاب تصویر"

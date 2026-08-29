@@ -1,0 +1,254 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2014-12-18 21:08+0000\n"
+"Last-Translator: paulamorais <pmorais66@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+"X-POOTLE-MTIME: 1418936910.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr "ΦωτοΚόμικ"
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"Interessado em contar uma estória? Fácil! Utiliza as tuas imagens e a tua "
+"imaginação para criar as tuas próprias bandas desenhadas!"
+
+#: toolbar.py:79
+#, fuzzy
+msgid "Add Photo"
+msgstr "Προσθήκη Φωτογραφίας"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "Globo"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "Pensamento"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Sussurro"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Exclamação"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Caixa"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Adicionar um globo"
+
+#: toolbar.py:107
+#, fuzzy
+msgid "Curves"
+msgstr "Καμπύλες"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Direitas"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "Destaque"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Ideia"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Escolhe uma linha de movimento"
+
+#: toolbar.py:134
+#, fuzzy
+msgid "Turn"
+msgstr "Στροφή"
+
+#: toolbar.py:141
+#, fuzzy
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: toolbar.py:259
+#, fuzzy
+msgid "Bold"
+msgstr "Έντονα"
+
+#: toolbar.py:264
+#, fuzzy
+msgid "Italic"
+msgstr "Πλάγια"
+
+#: toolbar.py:278
+#, fuzzy
+msgid "Text Color"
+msgstr "Χρώμα κειμένου"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Concluído"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Mova as imagens para reorganizar"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Reajustar ao tamanho da caixa"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr ""
+"Arraste para mover ou reajuste o tamanho utilizando os cantos assinalados"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Escolher tipo de letra"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr ""
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr ""
+
+#: historietaactivity.py:103 historietaactivity.py:225
+#, fuzzy
+msgid "Save as Image"
+msgstr "Αποθήκευση ως εικόνα"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "Editar"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "Ver"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Apresentação"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr ""
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr ""
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Ecrã inteiro"
+
+#: historietaactivity.py:189
+#, fuzzy
+msgid "Text"
+msgstr "Κείμενο"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Alterar a ordem da imagem"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Editar a imagem de fundo"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "Guardar como Livro (PDF)"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr ""
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "Sucesso"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "Foi criada uma imagem no Diário"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "Foi criado um PDF no Diário"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr ""
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr ""
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "Mostrar no Diário"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "Ok"
+
+#: historietaactivity.py:799
+#, fuzzy
+msgid "Title:"
+msgstr "Τίτλος:"
+
+#~ msgid "Add Globe"
+#~ msgstr "Προσθήκη Σφαίρας"
+
+#~ msgid "Add Think"
+#~ msgstr "Προσθήκη Σκέψης"
+
+#~ msgid "Add Whisper"
+#~ msgstr "Προσθήκη Ψιθυρίσματος"
+
+#~ msgid "Add Exclamation"
+#~ msgstr "Προσθήκη Θαυμαστικού"
+
+#~ msgid "Add Box"
+#~ msgstr "Προσθήκη Κουτιού"
+
+#~ msgid "Choose image"
+#~ msgstr "Επιλογή εικόνας"
+
+#~ msgid "Hello pootle"
+#~ msgstr "Olá pootle"
+
+#~ msgid "Hello again pootle"
+#~ msgstr "Olá novamente pootle"
+
+#~ msgid "Hasta la vista, pootle!"
+#~ msgstr "Até breve pootle!"

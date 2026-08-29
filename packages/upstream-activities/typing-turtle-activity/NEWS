@@ -1,0 +1,70 @@
+31
+
+* Port to Python 3 (Srevin Saju)
+* [Feature] Identify mistyped space (Chihurumnaya Ibiam)
+
+26
+
+* Updated Mongolian translations.
+
+25
+
+* Fix font size on XO.
+* Use GDK keymap as a fallback when a custom keymap is not present.
+
+24
+
+Mostly lesson editor changes.
+* Differentiate Key and Text steps.  This has some user visible effects; mostly that the instruction text has changed slightly.
+* Ability to specify a custom wordlist when generating lessons.
+* Warning dialog when deleting a lesson.
+* Removed some hardcoded fonts.
+
+23
+
+* Added an automatic lesson generator.  Uses the myspell dictionary to automatically generate lessons using a given set of keys.
+
+22
+
+* Fix exception when localized lesson data is missing.
+
+21
+
+* Added a lesson editor.
+
+20
+
+* #1164 Bug while starting the turtle activity
+
+17
+
+Introduced keybuilder and custom keymaps to work around limitations in XKB system.  
+Translators can now completely specify the keyboard layout via a JSON file.
+
+15
+
+14
+
+11
+
+10
+
+9
+
+8
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+* Initial release.

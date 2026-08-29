@@ -1,0 +1,418 @@
+html
+  margin 0
+  padding 0
+  background #ddd
+
+body
+  margin 0
+  padding 0
+  font normal 12px arial, sans-serif
+  color #333
+
+img
+  border none
+
+a
+  text-decoration none
+  &:hover
+    text-decoration underline
+
+.cf:before,
+.cf:after
+  content ""
+  display table
+
+.cf
+  zoom 1
+  &:after
+    clear both
+
+.clear
+  content "."
+  display block
+  height 0
+  clear both
+  visibility hidden
+
+@font-face
+  font-family 'VanillaRegular'
+  src url('../fonts/Vanilla-webfont.eot')
+  src url('../fonts/Vanilla-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/Vanilla-webfont.woff') format('woff'),
+         url('../fonts/Vanilla-webfont.ttf') format('truetype'),
+         url('../fonts/Vanilla-webfont.svg#VanillaRegular') format('svg')
+  font-weight normal
+  font-style normal
+
+#page
+  margin 0 auto
+  max-width 640px
+  min-height 416px
+  position relative
+
+h1
+  font normal 35px VanillaRegular,Arial,sans-serif
+  text-align center
+  margin 10px 0 5px 0
+  color #555
+
+#zone_score
+  font bold 18px Arial,sans-serif
+  padding 5px
+  font-size 14px
+  display none
+
+.col_score
+  float left
+
+.col_combo
+  float right
+  text-align right
+
+#best_score
+  color #999
+
+}
+  #best_combo
+    color #999
+  .col_moves
+    text-align center
+    color #d63
+  @-moz-keyframes
+    anim_hypercube
+      from { background-position 0 0
+    hint_pulse
+      from { box-shadow inset 0 0 9px #ddd
+    anim_explosion
+      from { background-position 0 0
+  @-o-keyframes
+    anim_hypercube
+      from { background-position 0 0
+    hint_pulse
+      from { box-shadow inset 0 0 9px #ddd
+    anim_explosion
+      from { background-position 0 0
+  @keyframes
+    anim_hypercube
+      from { background-position 0 0
+  #zone_jeu
+    .hypercube
+      background-image url(../images/icones/sprite.png)
+      background-size 800% 100%
+      -webkit-animation anim_hypercube .6s steps(8, end) infinite
+      -moz-animation anim_hypercube .6s steps(8, end) infinite
+      -o-animation anim_hypercube .6s steps(8, end) infinite
+      animation anim_hypercube .6s steps(8, end) infinite
+  .icone
+    &.hint
+      border-radius 20%
+      -webkit-animation-name hint_pulse
+      -webkit-animation-duration 2s
+      -webkit-animation-iteration-count infinite
+      -moz-animation-name hint_pulse
+      -moz-animation-duration 2s
+      -moz-animation-iteration-count infinite
+      -o-animation-name hint_pulse
+      -o-animation-duration 2s
+      -o-animation-iteration-count infinite
+    &.adjacent
+      border-radius 20%
+      box-shadow inset 0 0 9px #999
+  .explosion
+    position absolute
+    z-index 40
+    background-image url(../images/anim/explosion.png)
+    background-size 1200% 100%
+    width 37.5%
+    height 37.5%
+    -webkit-animation anim_explosion .6s steps(12, end) 1
+    -moz-animation anim_explosion .6s steps(12, end) 1
+    -o-animation anim_explosion .6s steps(12, end) 1
+  @media
+    screen
+      and
+        (max-height
+          &:
+            720px)
+              and
+                (max-width
+                  &:
+                    1000px)
+                      #send_to_phone{display none
+        (min-height
+          &:
+            720px)
+              and
+                (max-width
+                  &:
+                    1200px)
+                      #send_to_phone{display none
+        (max-width
+          &:
+            640px)
+              h1{font-size 30px
+              and
+                (orientation
+                  &:
+                    landscape)
+                      #page{min-height 0
+
+.col_moves
+  .critical
+    color #c33
+
+#zone_jeu
+  position relative
+  overflow hidden
+  display none
+
+.icone
+  width 12.5%
+  height 12.5%
+  display block
+  position absolute
+  z-index 10
+  cursor pointer
+  background-size 800% 100%
+  background-repeat no-repeat
+  background-image url(../images/icones/sprite.png)
+  -webkit-transition top .2s ease-in, left .2s ease-in
+  -moz-transition top .2s ease-in, left .2s ease-in
+  -ms-transition top .2s ease-in, left .2s ease-in
+  -o-transition top .2s ease-in, left .2s ease-in
+  transition top .2s ease-in, left .2s ease-in
+
+.icone_1
+  background-position 0 0
+  &.fire
+    background-position 0 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/fire.gif)
+    background-size 800% 100%, 100% 100%
+  &.star
+    background-position 0 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/star.gif)
+    background-size 800% 100%, 100% 100%
+
+.icone_2
+  background-position 14.29% 0
+  &.fire
+    background-position 14.29% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/fire.gif)
+    background-size 800% 100%, 100% 100%
+  &.star
+    background-position 14.29% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/star.gif)
+    background-size 800% 100%, 100% 100%
+
+.icone_3
+  background-position 28.57% 0
+  &.fire
+    background-position 28.57% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/fire.gif)
+    background-size 800% 100%, 100% 100%
+  &.star
+    background-position 28.57% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/star.gif)
+    background-size 800% 100%, 100% 100%
+
+.icone_4
+  background-position 42.86% 0
+  &.fire
+    background-position 42.86% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/fire.gif)
+    background-size 800% 100%, 100% 100%
+  &.star
+    background-position 42.86% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/star.gif)
+    background-size 800% 100%, 100% 100%
+
+.icone_5
+  background-position 57.14% 0
+  &.fire
+    background-position 57.14% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/fire.gif)
+    background-size 800% 100%, 100% 100%
+  &.star
+    background-position 57.14% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/star.gif)
+    background-size 800% 100%, 100% 100%
+
+.icone_6
+  background-position 71.43% 0
+  &.fire
+    background-position 71.43% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/fire.gif)
+    background-size 800% 100%, 100% 100%
+  &.star
+    background-position 71.43% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/star.gif)
+    background-size 800% 100%, 100% 100%
+
+.icone_7
+  background-position 85.71% 0
+  &.fire
+    background-position 85.71% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/fire.gif)
+    background-size 800% 100%, 100% 100%
+  &.star
+    background-position 85.71% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/star.gif)
+    background-size 800% 100%, 100% 100%
+
+.icone_8
+  background-position 100% 0
+  &.fire
+    background-position 100% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/fire.gif)
+    background-size 800% 100%, 100% 100%
+  &.star
+    background-position 100% 0, 0 0
+    background-image url(../images/icones/sprite.png), url(../images/picto/star.gif)
+    background-size 800% 100%, 100% 100%
+
+@-webkit-keyframes
+  anim_hypercube
+    from { background-position 0 0
+  hint_pulse
+    from { box-shadow inset 0 0 9px #ddd
+  anim_explosion
+    from { background-position 0 0
+
+to
+  background-position 114.2857% 0
+  background-position 114.2857% 0
+  background-position 114.2857% 0
+  background-position 114.2857% 0
+  box-shadow inset 0 0 9px #ddd
+  box-shadow inset 0 0 9px #ddd
+  box-shadow inset 0 0 9px #ddd
+  background-position 109.09% 0
+  background-position 109.09% 0
+  background-position 109.09% 0
+
+50%
+  box-shadow inset 0 0 18px #9109bd
+  box-shadow inset 0 0 18px #9109bd
+  box-shadow inset 0 0 18px #9109bd
+
+.aff_score
+  position absolute
+  z-index 50
+  font bold 14px Arial,sans-serif
+  padding 10px 0 0 10px
+  color #333
+
+.aff_combo
+  position absolute
+  z-index 60
+  font bold 30px VanillaRegular,Arial,sans-serif
+  color #fff
+  text-shadow 0px 2px 5px #333
+
+#zone_message
+  position absolute
+  left 0
+  top 140px
+  z-index 100
+  width 100%
+  color #fff
+  font normal 40px VanillaRegular,Arial,sans-serif
+  text-align center
+  background rgba(0,0,0,.2)
+  font-size 35px
+  display none
+  div
+    padding 5px 0
+  .good
+    text-shadow 0px 2px 5px #3c3
+  .bad
+    text-shadow 0px 2px 5px #c33
+  .fire
+    text-shadow 0px 2px 5px #c93
+  .star
+    text-shadow 0px 2px 5px #33c
+  .hypercube
+    text-shadow 0px 2px 5px #93c
+  .bt_new_game
+    cursor pointer
+    padding 10px 20px
+    margin 10px auto
+    border-radius 15px
+    border 1px solid #999
+    display inline-block
+    color #fafafa
+    text-shadow 0 -1px rgba(0, 0, 0, 0.5)
+    background #eeeeee
+    background -moz-linear-gradient(top,  #eeeeee 0%, #999999 100%)
+    background -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#999999))
+    background -webkit-linear-gradient(top,  #eeeeee 0%,#999999 100%)
+    background -o-linear-gradient(top,  #eeeeee 0%,#999999 100%)
+    background -ms-linear-gradient(top,  #eeeeee 0%,#999999 100%)
+    background linear-gradient(to bottom,  #eeeeee 0%,#999999 100%)
+    &:hover
+      background #dddddd
+      background -moz-linear-gradient(top,  #dddddd 0%, #888888 100%)
+      background -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(100%,#888888))
+      background -webkit-linear-gradient(top,  #dddddd 0%,#888888 100%)
+      background -o-linear-gradient(top,  #dddddd 0%,#888888 100%)
+      background -ms-linear-gradient(top,  #dddddd 0%,#888888 100%)
+      background linear-gradient(to bottom,  #dddddd 0%,#888888 100%)
+
+#msg_portrait
+  display none
+  display block
+  font-size 20px
+  text-align center
+  padding 30px
+
+#zone_multiplier
+  font bold 18px Arial,sans-serif
+  float right
+
+#bt_hint
+  float left
+  border-radius 5px
+  padding 2px 10px
+  border 1px solid #aaa
+  background #666
+  cursor pointer
+  font bold 14px arial, sans-serif
+  &:hover
+    background #888
+  &.on
+    background #839E2A
+
+.about
+  display none
+
+#send_to_phone
+  position absolute
+  top 35px
+  right 50px
+  text-align center
+  display none
+  display none
+  h2
+    font normal 18px VanillaRegular,Arial,sans-serif
+    color #555
+
+.illus_qr
+  width 123px
+  height 123px
+  display block
+  margin 20px auto
+
+.illus_fleche
+  width 40px
+  height 45px
+  display block
+  margin 20px auto
+
+@media
+  screen
+    and
+      (max-height
+        &:
+          720px)
+            #page{max-width 480px
+

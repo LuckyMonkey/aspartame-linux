@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-24 17:39+1100\n"
+"PO-Revision-Date: 2017-04-14 21:41+0000\n"
+"Last-Translator: Markus <m.slg@gmx.de>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1492206116.000000\n"
+
+#: activity/activity.info:2 PortfolioActivity.py:746
+msgid "Portfolio"
+msgstr "Portfolio"
+
+#: activity/activity.info:3
+msgid "create a slide show from Sugar Journal entries that have been 'starred'"
+msgstr "Erzeuge eine Diaschau auf Tagebucheinträgen, die 'gesternt' sind."
+
+#: collabwrapper.py:178
+msgid "Joining activity..."
+msgstr "Trete Aktivität bei..."
+
+#: collabwrapper.py:179 collabwrapper.py:191
+msgid "Please wait for the connection..."
+msgstr "Warte bitte auf die Vergindung..."
+
+#: collabwrapper.py:190
+msgid "Resuming shared activity..."
+msgstr "Nehme geteilte Aktivität wieder auf..."
+
+#: PortfolioActivity.py:90
+msgid "2 seconds"
+msgstr "2 Sekunden"
+
+#: PortfolioActivity.py:90
+msgid "10 seconds"
+msgstr "10 Sekunden"
+
+#: PortfolioActivity.py:90
+msgid "30 seconds"
+msgstr "30 Sekunden"
+
+#: PortfolioActivity.py:90
+msgid "1 minute"
+msgstr "1 Minute"
+
+#: PortfolioActivity.py:481
+msgid "Enter comments here."
+msgstr "Trage Anmerkungen hier ein."
+
+#: PortfolioActivity.py:509
+msgid "Adjust"
+msgstr "Anpassen"
+
+#: PortfolioActivity.py:518
+msgid "Fullscreen"
+msgstr "Vollbild"
+
+#: PortfolioActivity.py:523
+msgid "Autoplay"
+msgstr "Abspielen"
+
+#: PortfolioActivity.py:525 PortfolioActivity.py:535
+msgid "Adjust playback speed"
+msgstr "Abspielgeschwindigkeit anpassen"
+
+#: PortfolioActivity.py:543
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#: PortfolioActivity.py:551
+msgid "Slide view"
+msgstr "Diaschau"
+
+#: PortfolioActivity.py:556
+msgid "Thumbnail view"
+msgstr "Miniaturansicht"
+
+#: PortfolioActivity.py:563
+msgid "Save as PDF"
+msgstr "Als PDF speichern"
+
+#: PortfolioActivity.py:568
+msgid "Save as presentation"
+msgstr "Als Präsentation speichern"
+
+#: PortfolioActivity.py:782
+msgid "Do you have any items in your Journal starred?"
+msgstr "Hast du in deinem Tagebuch Einträge mit einem Stern versehen?"
+
+#: PortfolioActivity.py:834
+msgid "This project is about..."
+msgstr "Dieses Projekt ist über..."
+
+#: PortfolioActivity.py:1275
+msgid "Save recording"
+msgstr "Aufzeichnung speichern"
+
+#: PortfolioActivity.py:1331
+#, python-format
+msgid "audio note for %s"
+msgstr "Sprachnotiz zu %s"
+
+#: PortfolioActivity.py:1604
+msgid "Please wait."
+msgstr "Bitte warten."
+
+#: exportpdf.py:70
+msgid "untitled"
+msgstr "Unbenannt"
+
+#~ msgid "Page"
+#~ msgstr "Seite"
+
+#~ msgid "Record a sound"
+#~ msgstr "Einen Klang aufzeichnen"
+
+#~ msgid "Record"
+#~ msgstr "Aufnehmen"
+
+#~ msgid "Start recording"
+#~ msgstr "Aufzeichnung starten"
+
+#~ msgid "Nothing to play"
+#~ msgstr "Nichts abzuspielen"
+
+#~ msgid "Nothing to save"
+#~ msgstr "Nichts zu speichern"
+
+#~ msgid "Play recording"
+#~ msgstr "Aufzeichnung abspielen"
+
+#~ msgid "Stop recording"
+#~ msgstr "Aufzeichnung stoppen"
+
+#~ msgid "Prev slide"
+#~ msgstr "Zurück"
+
+#~ msgid "Next slide"
+#~ msgstr "Vor"
+
+#~ msgid "Update description"
+#~ msgstr "Beschreibung aktualisieren"
+
+#~ msgid "Save as HTML"
+#~ msgstr "Als HTML speichern"

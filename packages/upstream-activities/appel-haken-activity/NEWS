@@ -1,0 +1,12 @@
+v25
+
+* Modified shebang (Jui Pradhan),
+* Create README.md (Jui Pradhan),
+* Added screenshots (Jui Pradhan),
+* Port to Python3 (Rishikesh Joshi),
+* Update sugargame (Yash Agrawal, Jui Pradhan),
+* Port to Gtk3 (Yash Agrawal)
+
+v24
+
+* last python2 release (Tony Anderson)

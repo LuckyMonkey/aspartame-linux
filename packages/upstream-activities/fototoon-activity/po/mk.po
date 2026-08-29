@@ -1,0 +1,212 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-19 17:18+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: mk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr ""
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr ""
+
+#: historietaactivity.py:79
+msgid "Add an image and start creating your FotoToon"
+msgstr ""
+
+#: historietaactivity.py:90
+msgid "Choose an image"
+msgstr ""
+
+#: historietaactivity.py:104 historietaactivity.py:226
+msgid "Save as Image"
+msgstr ""
+
+#: historietaactivity.py:104
+msgid "PNG"
+msgstr ""
+
+#: historietaactivity.py:122
+msgid "Edit"
+msgstr ""
+
+#: historietaactivity.py:129
+msgid "View"
+msgstr ""
+
+#: historietaactivity.py:133
+msgid "Slideshow"
+msgstr ""
+
+#: historietaactivity.py:140
+msgid "Slideshow with Timings"
+msgstr ""
+
+#: historietaactivity.py:147
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr ""
+
+#: historietaactivity.py:172
+msgid "Fullscreen"
+msgstr ""
+
+#: historietaactivity.py:190
+msgid "Text"
+msgstr ""
+
+#: historietaactivity.py:195
+msgid "Change image order"
+msgstr ""
+
+#: historietaactivity.py:201
+msgid "Edit background image"
+msgstr ""
+
+#: historietaactivity.py:233
+msgid "Save as a Book (PDF)"
+msgstr ""
+
+#: historietaactivity.py:240
+msgid "Save as a Movie (OGG)"
+msgstr ""
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:503
+msgid "Success"
+msgstr ""
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr ""
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr ""
+
+#: historietaactivity.py:497
+msgid "{} as a movie"
+msgstr ""
+
+#: historietaactivity.py:504
+msgid "A movie was saved in the Journal"
+msgstr ""
+
+#: historietaactivity.py:512
+msgid "Show in Journal"
+msgstr ""
+
+#: historietaactivity.py:514
+msgid "Ok"
+msgstr ""
+
+#: historietaactivity.py:796
+msgid "Title:"
+msgstr ""
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr ""
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr ""
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr ""
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr ""
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr ""
+
+#: toolbar.py:77
+msgid "Add Photo"
+msgstr ""
+
+#: toolbar.py:81
+msgid "Globe"
+msgstr ""
+
+#: toolbar.py:81
+msgid "Think"
+msgstr ""
+
+#: toolbar.py:82
+msgid "Whisper"
+msgstr ""
+
+#: toolbar.py:82
+msgid "Exclamation"
+msgstr ""
+
+#: toolbar.py:83
+msgid "Box"
+msgstr ""
+
+#: toolbar.py:86
+msgid "Add a globe"
+msgstr ""
+
+#: toolbar.py:105
+msgid "Curves"
+msgstr ""
+
+#: toolbar.py:105
+msgid "Straight"
+msgstr ""
+
+#: toolbar.py:106
+msgid "Highlight"
+msgstr ""
+
+#: toolbar.py:106
+msgid "Idea"
+msgstr ""
+
+#: toolbar.py:109
+msgid "Choose a movement line"
+msgstr ""
+
+#: toolbar.py:132
+msgid "Turn"
+msgstr ""
+
+#: toolbar.py:139
+msgid "Delete"
+msgstr ""
+
+#: toolbar.py:257
+msgid "Bold"
+msgstr ""
+
+#: toolbar.py:262
+msgid "Italic"
+msgstr ""
+
+#: toolbar.py:276
+msgid "Text Color"
+msgstr ""

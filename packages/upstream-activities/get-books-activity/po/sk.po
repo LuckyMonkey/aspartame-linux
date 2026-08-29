@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-25 11:58+1000\n"
+"PO-Revision-Date: 2018-08-11 17:32+0000\n"
+"Last-Translator: jana <jpastyrova@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1534008772.000000\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Získaj knihy"
+
+#: activity/activity.info:3
+msgid ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+msgstr ""
+"Potrebujete knihy? My všetci ich potrebujeme! Táto aktivity Vám pomôže nájsť "
+"a získať knihy z rôznych zdrojov. Tak začnite čítať!"
+
+#: GetIABooksActivity.py:245 GetIABooksActivity.py:477
+#: GetIABooksActivity.py:481 GetIABooksActivity.py:616
+msgid "Catalogs"
+msgstr "Katalógy"
+
+#: GetIABooksActivity.py:259
+msgid "Any language"
+msgstr "V akomkoľvek jazyku"
+
+#: GetIABooksActivity.py:308 GetIABooksActivity.py:819
+msgid "Performing lookup, please wait..."
+msgstr "Vykonávam prehľadávanie, prosím čakajte ..."
+
+#: GetIABooksActivity.py:348
+msgid "My books"
+msgstr "Moje knihy"
+
+#: GetIABooksActivity.py:362
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "%.2f GB Veľkosť"
+
+#: GetIABooksActivity.py:534
+msgid "Format:"
+msgstr "Formát"
+
+#: GetIABooksActivity.py:547
+msgid "Get Book"
+msgstr "Získaj knihu"
+
+#: GetIABooksActivity.py:587
+msgid "Enter words from the Author or Title to begin search."
+msgstr "Vložte  autora alebo názov knihy a vyhľadávanie môže začať."
+
+#: GetIABooksActivity.py:639
+msgid "Selected book"
+msgstr "Vybraná kniha"
+
+#: GetIABooksActivity.py:658
+msgid "Title:\t\t"
+msgstr "Názov:\t\t"
+
+#: GetIABooksActivity.py:660
+msgid "Author:\t\t"
+msgstr "Autor:\t\t"
+
+#: GetIABooksActivity.py:664
+msgid "Summary:\t"
+msgstr "Zhrnutie:\t"
+
+#: GetIABooksActivity.py:673
+msgid "Language:\t"
+msgstr "Jazyk:\t"
+
+#: GetIABooksActivity.py:674
+msgid "Publisher:\t"
+msgstr "Vydavateľstvo:\t"
+
+#: GetIABooksActivity.py:804
+msgid "You must enter at least 3 letters."
+msgstr "Musíte zadať aspoň tri písmená."
+
+#: GetIABooksActivity.py:832
+msgid "Could not reach the server. Maybe you are not connected to the network"
+msgstr "Nie je možné pripojiť sa na server. Možno nie ste pripojený k sieti."
+
+#: GetIABooksActivity.py:836
+msgid "There was an error downloading the list."
+msgstr "Chyba v sťahovaní zoznamu."
+
+#: GetIABooksActivity.py:838
+#, python-format
+msgid "New catalog list %s was found"
+msgstr "Bol nájdený nový zoznam katalógu"
+
+#: GetIABooksActivity.py:842
+msgid "Sorry, no books could be found."
+msgstr "Prepáčte, knihy sa nedajú nájsť. "
+
+#: GetIABooksActivity.py:856
+msgid "Sorry, we only found english books."
+msgstr "Prepáčte, knihy sa dajú nájsť iba v angličtine."
+
+#: GetIABooksActivity.py:980
+#, python-format
+msgid ""
+"Error: Could not download %s. The path in the catalog seems to be incorrect."
+msgstr "Chyba: Nedá sa stiahnuť %s. Dráha v katalógu sa zdá nesprávna."
+
+#: GetIABooksActivity.py:986
+#, python-format
+msgid "Error: Could not download %s. The other end sent an empty file."
+msgstr "Chyba: Nedá sa stiahnuť %s.  Na konci je prázdny súbor. "
+
+#: GetIABooksActivity.py:992
+#, python-format
+msgid ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+msgstr ""
+"Chyba: Nedá sa stiahnuť %s. Druhá strana zaslala text/html namiesto knihy. "
+
+#: GetIABooksActivity.py:1054
+msgid "Download completed"
+msgstr "Sťahovanie ukončené"
+
+#: GetIABooksActivity.py:1066
+#, python-format
+msgid "Open with %s"
+msgstr "Otvoriť v %s"
+
+#: GetIABooksActivity.py:1070
+msgid "Show in Journal"
+msgstr "Ukáž v Journal"
+
+#: GetIABooksActivity.py:1075
+msgid "Ok"
+msgstr "Ok"
+
+#: listview.py:35
+msgid "Title"
+msgstr "Názov"
+
+#: listview.py:37
+msgid "Author"
+msgstr "Autor"
+
+#: listview.py:39
+msgid "Publisher"
+msgstr "Vydavateľ"
+
+#: listview.py:41
+msgid "Language"
+msgstr "Jazyk"
+
+#: listview.py:43
+msgid "Publish Date"
+msgstr "Dátum vydania"
+
+#~ msgid "Error"
+#~ msgstr "Chyba"
+
+#~ msgid "Link:\t\t"
+#~ msgstr "Odkaz:\t\t"

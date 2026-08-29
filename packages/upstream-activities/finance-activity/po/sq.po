@@ -1,0 +1,331 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-06 08:02+1100\n"
+"PO-Revision-Date: 2018-02-10 15:48+0000\n"
+"Last-Translator: Besnik_b <besnik@programeshqip.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sq\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1518277739.000000\n"
+
+#: activity/activity.info:2 finance.py:85
+msgid "Finance"
+msgstr "Financë"
+
+#: activity/activity.info:3
+msgid ""
+"Want to wisely manage money? Learn financial planning basics and track your "
+"family's finance, make your own budget and learn how to make every penny "
+"count!"
+msgstr ""
+"Doni t’i administroni me mend paratë? Mësoni bazat e planifikimit financiar "
+"dhe ndiqni financat e familjes tuaj, krijoni buxhetin tuaj dhe mësoni si ta "
+"bëni çdo qindarkë të ketë peshë!"
+
+#: budgetscreen.py:42
+msgid ""
+"The Budget view allows you to set a monthly budget for each expense "
+"category, and to keep track of your\n"
+"budgets. To set a budget, type the amount in the box to the right of the "
+"category."
+msgstr ""
+"Pamja Buxhet ju lejon të caktoni buxhet mujor për çdo kategori shpenzimesh, "
+"dhe të ndiqni buxhetet tuaja.\n"
+"Që të caktoni një buxhet, shtypeni shumën te kutia djathtas kategorisë."
+
+#: budgetscreen.py:90 registerscreen.py:80
+msgid "Category"
+msgstr "Kategori"
+
+#: budgetscreen.py:94
+msgid "Spent"
+msgstr "Të shpenzuara"
+
+#: budgetscreen.py:98 finance.py:195 finance.py:196 finance.py:279
+msgid "Budget"
+msgstr "Buxhet"
+
+#: budgetscreen.py:127 chartscreen.py:160 chartscreen.py:181
+msgid "Unknown"
+msgstr "E panjohur"
+
+#: chartscreen.py:38
+msgid ""
+"The Chart view shows the proportion of your expenses that is in each "
+"category.\n"
+"You can categorize transactions in the Register view."
+msgstr ""
+"Grafiku i parë shfaq pjesën e shpenzimeve tuaja që gjendet në çdo kategori.\n"
+"Transaksionet mund t’i sistemoni në kategori që nga pamja Regjistër."
+
+#: chartscreen.py:94
+msgid "Credit Categories"
+msgstr "Kategori Krediti"
+
+#: chartscreen.py:96
+msgid "Debit Categories"
+msgstr "Kategori Debiti"
+
+#: finance.py:169
+msgid "Add some credit or debit to get started!"
+msgstr "Që t’ia fillohet, shtoni ca kredit ose debit!"
+
+#: finance.py:170
+msgid "Add credit"
+msgstr "Shtoni kredit"
+
+#: finance.py:186 finance.py:187 finance.py:277
+msgid "Register"
+msgstr "Regjistroje"
+
+#: finance.py:203 finance.py:204 finance.py:281
+msgid "Chart"
+msgstr "Hartë"
+
+#: finance.py:244
+msgid "Export data"
+msgstr "Eksporto të dhëna"
+
+#: finance.py:252
+msgid "Export credits by day"
+msgstr "Eksporto kredite sipas ditësh"
+
+#: finance.py:257
+msgid "Export debits by day"
+msgstr "Eksporto debit sipas ditësh"
+
+#: finance.py:262
+msgid "Export credits by month"
+msgstr "Eksporto kredite sipas muajsh"
+
+#: finance.py:267
+msgid "Export debits by month"
+msgstr "Eksporto debit sipas muajsh"
+
+#: finance.py:301 finance.py:382 registerscreen.py:233
+msgid "New Credit"
+msgstr "Kredit i Ri"
+
+#: finance.py:306 finance.py:383 registerscreen.py:240
+msgid "New Debit"
+msgstr "Debit i Ri"
+
+#: finance.py:311
+msgid "Erase Transaction"
+msgstr "Fshije Transaksionin"
+
+#: finance.py:323
+msgid "Save as Image"
+msgstr "Ruaje si Figurë"
+
+#: finance.py:345
+msgid "Day"
+msgstr "Ditë"
+
+#: finance.py:345
+msgid "Week"
+msgstr "Javë"
+
+#: finance.py:345
+msgid "Month"
+msgstr "Muaj"
+
+#: finance.py:346
+msgid "Year"
+msgstr "Vit"
+
+#: finance.py:346 finance.py:461
+msgid "Forever"
+msgstr "Përgjithmonë"
+
+#: finance.py:348
+msgid "Select period"
+msgstr "Përzgjidhni periudhë"
+
+#: finance.py:392
+msgid "Show Credits"
+msgstr "Shfaq Kredite"
+
+#: finance.py:393
+msgid "Show Debits"
+msgstr "Shfaq Debite"
+
+#. TRANS: representation of the "Day" period
+#: finance.py:446
+msgid "%B %d, %Y"
+msgstr "%d %B %Y"
+
+#. TRANS: representation of the "Week of" period
+#: finance.py:450
+msgid "Week of"
+msgstr "Java e"
+
+#: finance.py:450
+msgid " %B %d, %Y"
+msgstr " %d %B, %Y"
+
+#. TRANS: representation of the "Month" period
+#: finance.py:454
+msgid "%B, %Y"
+msgstr "%B, %Y"
+
+#. TRANS: representation of the "Year" period
+#: finance.py:458
+msgid "%Y"
+msgstr "%Y"
+
+#: finance.py:500
+msgid "Balance: "
+msgstr "Balancë: "
+
+#: finance.py:508
+msgid "Starting Balance:"
+msgstr "Balancë Fillimi:"
+
+#: finance.py:515
+#, python-format
+msgid "%s in %d credits"
+msgstr "%s në %d kredite"
+
+#: finance.py:519
+#, python-format
+msgid "%s in %d debits"
+msgstr "%s në %d debit"
+
+#: finance.py:532
+msgid "Previous Month"
+msgstr "Muaji i Mëparshëm"
+
+#: finance.py:533
+msgid "This Month"
+msgstr "Këtë Muaj"
+
+#: finance.py:534
+msgid "Next Month"
+msgstr "Muaji Pasues"
+
+#: finance.py:536
+msgid "Previous Week"
+msgstr "Java e Mëparshme"
+
+#: finance.py:537
+msgid "This Week"
+msgstr "Këtë Javë"
+
+#: finance.py:538
+msgid "Next Week"
+msgstr "Java Pasuese"
+
+#: finance.py:540
+msgid "Previous Day"
+msgstr "Dita e Mëparshme"
+
+#: finance.py:541
+msgid "This Day"
+msgstr "Këtë Ditë"
+
+#: finance.py:542
+msgid "Next Day"
+msgstr "Dita Pasuese"
+
+#: finance.py:544
+msgid "Previous Year"
+msgstr "Viti i Mëparshëm"
+
+#: finance.py:545
+msgid "This Year"
+msgstr "Këtë Vit"
+
+#: finance.py:546
+msgid "Next Year"
+msgstr "Viti Pasues"
+
+#: finance.py:921
+msgid "Chart created"
+msgstr "Grafiku u krijua"
+
+#: finance.py:921 finance.py:1038
+msgid "Open in the Journal"
+msgstr "Hape në Ditar"
+
+#: finance.py:930
+msgid "Show in Journal"
+msgstr "Shfaqe në Ditar"
+
+#: finance.py:933
+msgid "Ok"
+msgstr "Ok"
+
+#: finance.py:979
+#, python-format
+msgid "%s by %s"
+msgstr "%s nga %s"
+
+#: finance.py:1038
+msgid "Exported data"
+msgstr "Të dhëna të eksportuara"
+
+#: helpbutton.py:38
+msgid "Help"
+msgstr "Ndihmë"
+
+#: registerscreen.py:37
+msgid ""
+"Welcome to Finance! This activity keeps track of income and expenses for "
+"anything that earns or spends money, like a school club.  To get started, "
+"use the Transaction box to add credits and debits.\n"
+"Once you have entered some transactions, visit the Chart and Budget views to "
+"see more."
+msgstr ""
+"Mirë se vini te Financat! Përmes kësaj veprimtarie mund të ndiqni të "
+"ardhurat dhe shpenzimet për gjithçka që fiton ose shpenzon para, fjala vjen, "
+"klubi i shkollës. Për t’ia filluar, përdorni kutinë e Transaksioneve që të "
+"shtoni kredit dhe debit. \n"
+"Pasi të keni dhënë disa transaksione, vizitoni pamjet Grafikë dhe Buxhet për "
+"të parë më shumë."
+
+#: registerscreen.py:92
+msgid "Description"
+msgstr "Përshkrim"
+
+#: registerscreen.py:100
+msgid "Date"
+msgstr "Datë"
+
+#: registerscreen.py:109
+msgid "Amount"
+msgstr "Shumë"
+
+#~ msgid "Period: "
+#~ msgstr "Periudhë: "
+
+#~ msgid "Show Help"
+#~ msgstr "Shfaq Ndihmën"
+
+#~ msgid "Transaction"
+#~ msgstr "Transaksion"
+
+#~ msgid "Period"
+#~ msgstr "Periudhë"
+
+#~ msgid "View"
+#~ msgstr "Shikim"
+
+#~ msgid "Previous"
+#~ msgstr "I mëparshmi"
+
+#~ msgid "This"
+#~ msgstr "Kjo"
+
+#~ msgid "Next"
+#~ msgstr "Tjetër"

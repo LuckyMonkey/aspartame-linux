@@ -1,0 +1,327 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-04 00:33-0400\n"
+"PO-Revision-Date: 2017-03-29 11:33+0000\n"
+"Last-Translator: Anders <anders.jonsson@norsjovallen.se>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1490787202.000000\n"
+
+#. TRANS: "name" option from activity.info file
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "Poll"
+msgstr "Omröstning"
+
+#: PollSession.py:502 PollSession.py:586
+#, python-format
+msgid "%(author)s shared a poll '%(title)s' with you."
+msgstr "%(author)s delade en omröstning med dig: '%(title)s'."
+
+#: PollSession.py:585
+msgid "New Poll"
+msgstr "Ny omröstning"
+
+#: Widgets.py:59 Widgets.py:497
+msgid "Choose a Poll"
+msgstr "Välj en omröstning"
+
+#: Widgets.py:63
+msgid "Build a Poll"
+msgstr "Skapa en omröstning"
+
+#: Widgets.py:67 Widgets.py:388
+msgid "Settings"
+msgstr "Inställningar"
+
+#: Widgets.py:71 Widgets.py:570
+msgid "Lesson Plans"
+msgstr "Lektionsplaner"
+
+#: Widgets.py:106
+msgid "Build a poll"
+msgstr "Skapa en omröstning"
+
+#: Widgets.py:109
+msgid "Poll Title:"
+msgstr "Omröstningstitel:"
+
+#: Widgets.py:113
+msgid "Question:"
+msgstr "Fråga:"
+
+#: Widgets.py:118
+msgid "Number of votes to collect:"
+msgstr "Antal röster som ska samlas in:"
+
+#: Widgets.py:126
+#, python-format
+msgid "Answer %s:"
+msgstr "Svara %s:"
+
+#: Widgets.py:134 Widgets.py:205
+msgid "Change Image"
+msgstr "Ändra bild"
+
+#: Widgets.py:139
+msgid "Add Image"
+msgstr "Lägg till bild"
+
+#: Widgets.py:150
+msgid "Step 1: Preview"
+msgstr "Steg 1: Förhandsgranskning"
+
+#: Widgets.py:154
+msgid "Step 2: Save"
+msgstr "Steg 2: Spara"
+
+#: Widgets.py:209 Widgets.py:484 poll.py:380
+msgid "Poll Activity"
+msgstr "Omröstningsaktivitet"
+
+#: Widgets.py:210
+msgid "Your selection is not an image"
+msgstr "Ditt val är inte en bild"
+
+#: Widgets.py:394
+msgid "Show answers while voting"
+msgstr "Visa svar under omröstning"
+
+#: Widgets.py:399
+msgid "Remember last vote"
+msgstr "Kom ihåg senaste röst"
+
+#: Widgets.py:406
+msgid "Play a sound when make a vote"
+msgstr "Spela ett ljud då en röst läggs"
+
+#: Widgets.py:412
+msgid "Use image in answer"
+msgstr "Använd bild i svar"
+
+#: Widgets.py:417
+msgid "Image Size: "
+msgstr "Bildstorlek: "
+
+#: Widgets.py:445
+msgid "Save"
+msgstr "Spara"
+
+#: Widgets.py:485
+msgid "The settings have been saved"
+msgstr "Inställningarna har sparats"
+
+#: Widgets.py:536
+msgid "VOTE"
+msgstr "Rösta"
+
+#: Widgets.py:539
+msgid "SEE RESULTS"
+msgstr "Se resultat"
+
+#: Widgets.py:546
+msgid "DELETE"
+msgstr "Ta bort"
+
+#: Widgets.py:560
+msgid "Introduction"
+msgstr "Introduktion"
+
+#: Widgets.py:560
+msgid "Lesson 1"
+msgstr "Lektion 1"
+
+#: Widgets.py:560
+msgid "Lesson 2"
+msgstr "Lektion 2"
+
+#: Widgets.py:561
+msgid "Lesson 3"
+msgstr "Lektion 3"
+
+#: Widgets.py:561
+msgid "Lesson 4"
+msgstr "Lektion 4"
+
+#: Widgets.py:725
+msgid "votes"
+msgstr "röster"
+
+#: Widgets.py:725
+msgid "(votes left to collect)"
+msgstr "(röster kvar att samla in)"
+
+#: Widgets.py:733 poll.py:476
+msgid "Vote"
+msgstr "Röst"
+
+#: Widgets.py:739
+msgid "Edit Poll"
+msgstr "Redigera omröstning"
+
+#: Widgets.py:744
+msgid "Save Poll"
+msgstr "Spara omröstning"
+
+#: poll.py:279 poll.py:370 poll.py:480
+msgid "VOTE!"
+msgstr "Rösta!"
+
+#: poll.py:282 poll.py:373 poll.py:483
+msgid "Poll Preview"
+msgstr "Omröstningsförhandsgranskning"
+
+#: poll.py:381
+msgid "To vote you have to select first one option"
+msgstr "För att rösta måste du först välja ett alternativ"
+
+#: poll.py:477
+#, python-format
+msgid "Somebody voted on %s"
+msgstr "Någon röstade på %s"
+
+#: poll.py:564 poll.py:599
+msgid "Joined"
+msgstr "Gick med i"
+
+#: poll.py:604
+msgid "Left"
+msgstr "Lämnade"
+
+#~ msgid "Favorite Color"
+#~ msgstr "Favoritfärg"
+
+#~ msgid "What is your favorite color?"
+#~ msgstr "Vilken är din favoritfärg?"
+
+#~ msgid "Orange"
+#~ msgstr "Orange"
+
+#~ msgid "None of the above"
+#~ msgstr "Ingen av ovanstående"
+
+#~ msgid "Close Lessons"
+#~ msgstr "Stäng lektioner"
+
+#~ msgid "Answer"
+#~ msgstr "Svar"
+
+#~ msgid "Green"
+#~ msgstr "Grön"
+
+#~ msgid "Red"
+#~ msgstr "Röd"
+
+#~ msgid "Blue"
+#~ msgstr "Blå"
+
+#~ msgid "Chinese (simplified)"
+#~ msgstr "kinesiska (förenklad)"
+
+#~ msgid "Chinese (traditional)"
+#~ msgstr "kinesiska (traditionell)"
+
+#~ msgid "Czech"
+#~ msgstr "tjeckiska"
+
+#~ msgid "Danish"
+#~ msgstr "danska"
+
+#~ msgid "Dutch"
+#~ msgstr "holländska"
+
+#~ msgid "English"
+#~ msgstr "engelska"
+
+#~ msgid "English - Great Britain"
+#~ msgstr "engelska (Storbritannien)"
+
+#~ msgid "English - U.S."
+#~ msgstr "engelska (USA)"
+
+#~ msgid "Finnish"
+#~ msgstr "finska"
+
+#~ msgid "French"
+#~ msgstr "franska"
+
+#~ msgid "German"
+#~ msgstr "tyska"
+
+#~ msgid "Hungarian"
+#~ msgstr "ungerska"
+
+#~ msgid "Italian"
+#~ msgstr "itanlienska"
+
+#~ msgid "Japanese"
+#~ msgstr "japanska"
+
+#~ msgid "Korean"
+#~ msgstr "koreanska"
+
+#~ msgid "Norwegian"
+#~ msgstr "norska"
+
+#~ msgid "Polish"
+#~ msgstr "polska"
+
+#~ msgid "Portuguese"
+#~ msgstr "portogisiska"
+
+#~ msgid "Portuguese - Brazilian"
+#~ msgstr "portogisiska (brasilianska)"
+
+#~ msgid "Russian"
+#~ msgstr "ryska"
+
+#~ msgid "Slovak"
+#~ msgstr "slovaksika"
+
+#~ msgid "Spanish"
+#~ msgstr "spanska"
+
+#~ msgid "Swedish"
+#~ msgstr "svenska"
+
+#~ msgid "Turkish"
+#~ msgstr "turkiska"

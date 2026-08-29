@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-09 00:33-0400\n"
+"PO-Revision-Date: 2013-06-29 15:06+0200\n"
+"Last-Translator: andika <andika@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "Implode"
+msgstr ""
+
+#: helpwidget.py:207
+msgid "Goal: Clear the board by removing blocks in groups of 3 or more."
+msgstr ""
+"Tujuan: Bersihkan papan dengan menghapus blok dalam kelompok 3 atau lebih."
+
+#: helpwidget.py:232
+msgid "You can't remove groups of one or two blocks."
+msgstr "Anda tak bisa menghapus kelompok dari satu atau dua blok."
+
+#: helpwidget.py:275
+msgid "Blocks fall to fill empty gaps, and they slide to fill empty columns."
+msgstr ""
+
+#: helpwidget.py:298
+msgid "If you get stuck, you can undo to try again."
+msgstr ""
+
+#: helpwidget.py:346
+msgid "There is always a way to clear the board."
+msgstr ""
+
+#: implodeactivity.py:162
+#, fuzzy
+msgid "New"
+msgstr "Baru"
+
+#: implodeactivity.py:163
+msgid "Replay"
+msgstr ""
+
+#: implodeactivity.py:167
+msgid "Undo"
+msgstr ""
+
+#: implodeactivity.py:168
+msgid "Redo"
+msgstr ""
+
+#: implodeactivity.py:189
+#, fuzzy
+msgid "Easy"
+msgstr "Mudah"
+
+#: implodeactivity.py:190
+#, fuzzy
+msgid "Medium"
+msgstr "Sedang"
+
+#: implodeactivity.py:191
+#, fuzzy
+msgid "Hard"
+msgstr "Sulit"
+
+#: implodeactivity.py:204 implodeactivity.py:263
+#, fuzzy
+msgid "Help"
+msgstr "Bantuan"
+
+#: implodeactivity.py:327
+#, fuzzy
+msgid "Done"
+msgstr "Selesai"
+
+#: implodeactivity.py:374
+#, fuzzy
+msgid "Previous"
+msgstr "Sebelumnya"
+
+#: implodeactivity.py:375
+msgid "Again"
+msgstr ""
+
+#: implodeactivity.py:376
+#, fuzzy
+msgid "Next"
+msgstr "Selanjutnya"
+
+#: implodeactivity.py:404
+msgid "Stuck?  You can still solve the puzzle."
+msgstr ""
+
+#: implodeactivity.py:411
+msgid "Undo some moves"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Game"
+#~ msgstr "Permainan"

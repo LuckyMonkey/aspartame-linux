@@ -12,3 +12,7 @@ Sources:
 - Maze: https://github.com/sugarlabs/maze-activity
 
 Revisions are recorded in `REVISION-MANIFEST`.
+
+Only bundles listed in `INSTALL-MANIFEST` are installed automatically. Other
+official snapshots remain available for future porting work but are not
+installed when their current runtime smoke test fails.

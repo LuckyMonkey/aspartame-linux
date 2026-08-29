@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-24 17:39+1100\n"
+"PO-Revision-Date: 2018-10-22 18:26+0000\n"
+"Last-Translator: scootergrisen <scootergrisen@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1540232764.000000\n"
+
+#: activity/activity.info:2 PortfolioActivity.py:746
+msgid "Portfolio"
+msgstr "Portefølje"
+
+#: activity/activity.info:3
+msgid "create a slide show from Sugar Journal entries that have been 'starred'"
+msgstr ""
+"opret et diasshow fra poster i Sugar Journal, der har fået tildelt stjerne"
+
+#: collabwrapper.py:178
+msgid "Joining activity..."
+msgstr "Deltager i aktivitet..."
+
+#: collabwrapper.py:179 collabwrapper.py:191
+msgid "Please wait for the connection..."
+msgstr "Vent venligst på forbindelsen..."
+
+#: collabwrapper.py:190
+msgid "Resuming shared activity..."
+msgstr "Genoptager delt aktivitet..."
+
+#: PortfolioActivity.py:90
+msgid "2 seconds"
+msgstr "2 sekunder"
+
+#: PortfolioActivity.py:90
+msgid "10 seconds"
+msgstr "10 sekunder"
+
+#: PortfolioActivity.py:90
+msgid "30 seconds"
+msgstr "30 sekunder"
+
+#: PortfolioActivity.py:90
+msgid "1 minute"
+msgstr "1 minut"
+
+#: PortfolioActivity.py:481
+msgid "Enter comments here."
+msgstr "Skriv kommentarer her."
+
+#: PortfolioActivity.py:509
+msgid "Adjust"
+msgstr "Tilpas"
+
+#: PortfolioActivity.py:518
+msgid "Fullscreen"
+msgstr "Fuldskærm"
+
+#: PortfolioActivity.py:523
+msgid "Autoplay"
+msgstr "Afspil automatisk"
+
+#: PortfolioActivity.py:525 PortfolioActivity.py:535
+msgid "Adjust playback speed"
+msgstr "Justér hastighed for afspilning"
+
+#: PortfolioActivity.py:543
+msgid "Refresh"
+msgstr "Genopfrisk"
+
+#: PortfolioActivity.py:551
+msgid "Slide view"
+msgstr "Dias visning"
+
+#: PortfolioActivity.py:556
+msgid "Thumbnail view"
+msgstr "Miniaturevisning"
+
+#: PortfolioActivity.py:563
+msgid "Save as PDF"
+msgstr "Gem som PDF"
+
+#: PortfolioActivity.py:568
+msgid "Save as presentation"
+msgstr "Gem som præsentation"
+
+#: PortfolioActivity.py:782
+msgid "Do you have any items in your Journal starred?"
+msgstr "Har du elementer som er markeret med stjerner i din Journal?"
+
+#: PortfolioActivity.py:834
+msgid "This project is about..."
+msgstr "Dette projekt handler om ..."
+
+#: PortfolioActivity.py:1275
+msgid "Save recording"
+msgstr "Gem optagelse"
+
+#: PortfolioActivity.py:1331
+#, python-format
+msgid "audio note for %s"
+msgstr "lydnote til %s"
+
+#: PortfolioActivity.py:1604
+msgid "Please wait."
+msgstr "Vent venligst."
+
+#: exportpdf.py:70
+msgid "untitled"
+msgstr "unavngivet"
+
+#~ msgid "Page"
+#~ msgstr "Side"
+
+#~ msgid "Record a sound"
+#~ msgstr "Optag en lyd"
+
+#~ msgid "Record"
+#~ msgstr "Optag"
+
+#~ msgid "Start recording"
+#~ msgstr "Start optagelse"
+
+#~ msgid "Nothing to play"
+#~ msgstr "Intet at afspille"
+
+#~ msgid "Nothing to save"
+#~ msgstr "Intet af gemme"
+
+#~ msgid "Play recording"
+#~ msgstr "Afspil optagelse"
+
+#~ msgid "Stop recording"
+#~ msgstr "Stop optagelse"
+
+#~ msgid "Prev slide"
+#~ msgstr "Forrige dias"
+
+#~ msgid "Next slide"
+#~ msgstr "Næste dias"
+
+#~ msgid "Update description"
+#~ msgstr "Opdatér beskrivelse"
+
+#~ msgid "Save descriptions"
+#~ msgstr "Gem beskrivelser"
+
+#~ msgid "Save as HTML"
+#~ msgstr "Gem som HTML"

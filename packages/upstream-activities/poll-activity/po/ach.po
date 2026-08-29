@@ -1,0 +1,200 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-04 00:33-0400\n"
+"PO-Revision-Date: 2017-05-18 17:00+0000\n"
+"Last-Translator: chanchumgpa <chanchumgpa@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ach\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1495126856.000000\n"
+
+#. TRANS: "name" option from activity.info file
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "Poll"
+msgstr "Bolo kwir"
+
+#: PollSession.py:502 PollSession.py:586
+#, python-format
+msgid "%(author)s shared a poll '%(title)s' with you."
+msgstr "%(ngat mucoyo)s onywako bolo kwir '%(nying)s' kwedi."
+
+#: PollSession.py:585
+msgid "New Poll"
+msgstr "Bolo kwir Manyen"
+
+#: Widgets.py:59 Widgets.py:497
+msgid "Choose a Poll"
+msgstr "Yer Bolo kwir acel"
+
+#: Widgets.py:63
+msgid "Build a Poll"
+msgstr "Yub Bolo kwir acel"
+
+#: Widgets.py:67 Widgets.py:388
+msgid "Settings"
+msgstr "Tetero"
+
+#: Widgets.py:71 Widgets.py:570
+msgid "Lesson Plans"
+msgstr "Plan me Pwony"
+
+#: Widgets.py:106
+msgid "Build a poll"
+msgstr "Yub bolo kwir acel"
+
+#: Widgets.py:109
+msgid "Poll Title:"
+msgstr "Nying bolo kwir:"
+
+#: Widgets.py:113
+msgid "Question:"
+msgstr "Lapeny:"
+
+#: Widgets.py:118
+msgid "Number of votes to collect:"
+msgstr "Namba pa kwir me atera:"
+
+#: Widgets.py:126
+#, python-format
+msgid "Answer %s:"
+msgstr "Lagam %s:"
+
+#: Widgets.py:134 Widgets.py:205
+msgid "Change Image"
+msgstr "Lok Cal"
+
+#: Widgets.py:139
+msgid "Add Image"
+msgstr "Med Cal"
+
+#: Widgets.py:150
+msgid "Step 1: Preview"
+msgstr "Yadi 1: Nen i wiewie"
+
+#: Widgets.py:154
+msgid "Step 2: Save"
+msgstr "Yadi 2: Gwok"
+
+#: Widgets.py:209 Widgets.py:484 poll.py:380
+msgid "Poll Activity"
+msgstr "Tic me Bolo kwir"
+
+#: Widgets.py:210
+msgid "Your selection is not an image"
+msgstr "Yera ni pe obedo cal"
+
+#: Widgets.py:394
+msgid "Show answers while voting"
+msgstr "Nyut lagam mapol kun i bolo"
+
+#: Widgets.py:399
+msgid "Remember last vote"
+msgstr "Poo wii i kom kwir ma in i bolo angec"
+
+#: Widgets.py:406
+msgid "Play a sound when make a vote"
+msgstr "Tuk dwon acel ikare ma kwir acel obole"
+
+#: Widgets.py:412
+msgid "Use image in answer"
+msgstr "Tii ki cal i lagam"
+
+#: Widgets.py:417
+msgid "Image Size: "
+msgstr "Cajji me Cal: "
+
+#: Widgets.py:445
+msgid "Save"
+msgstr "Gwok"
+
+#: Widgets.py:485
+msgid "The settings have been saved"
+msgstr "Kityeko gwoko woko Tetero"
+
+#: Widgets.py:536
+msgid "VOTE"
+msgstr "YER"
+
+#: Widgets.py:539
+msgid "SEE RESULTS"
+msgstr "NEN ADWOGI MAPOL"
+
+#: Widgets.py:546
+msgid "DELETE"
+msgstr "YWEE WOKO"
+
+#: Widgets.py:560
+msgid "Introduction"
+msgstr "Nyuto"
+
+#: Widgets.py:560
+msgid "Lesson 1"
+msgstr "Pwony me 1"
+
+#: Widgets.py:560
+msgid "Lesson 2"
+msgstr "Pwony me 2"
+
+#: Widgets.py:561
+msgid "Lesson 3"
+msgstr "Pwony me 3"
+
+#: Widgets.py:561
+msgid "Lesson 4"
+msgstr "Pwony me 4"
+
+#: Widgets.py:725
+msgid "votes"
+msgstr "kwir mapol"
+
+#: Widgets.py:725
+msgid "(votes left to collect)"
+msgstr "(kwir mapol makiweko pi atera)"
+
+#: Widgets.py:733 poll.py:476
+msgid "Vote"
+msgstr "Yera"
+
+#: Widgets.py:739
+msgid "Edit Poll"
+msgstr "Yub Bolo kwir"
+
+#: Widgets.py:744
+msgid "Save Poll"
+msgstr "Gwok bolo kwir"
+
+#: poll.py:279 poll.py:370 poll.py:480
+msgid "VOTE!"
+msgstr "YER!"
+
+#: poll.py:282 poll.py:373 poll.py:483
+msgid "Poll Preview"
+msgstr "Nen Bolo kwir wiewie"
+
+#: poll.py:381
+msgid "To vote you have to select first one option"
+msgstr "Pi bolo kwir myero i yer namba acel keken"
+
+#: poll.py:477
+#, python-format
+msgid "Somebody voted on %s"
+msgstr "Ngatmo obolo kwir i kom %s"
+
+#: poll.py:564 poll.py:599
+msgid "Joined"
+msgstr "Odonyo"
+
+#: poll.py:604
+msgid "Left"
+msgstr "Tung cam"

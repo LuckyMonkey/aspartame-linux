@@ -1,0 +1,11 @@
+[Activity]
+name = Typing Turtle
+activity_version = 32
+license = GPLv3+
+bundle_id = org.laptop.community.TypingTurtle
+icon = Activity-typingturtle
+exec = sugar-activity3 typingturtle.TypingTurtle
+summary = Need some help typing? Here you will learn the best way to hold your hands in order for you to become a faster typist!
+repository = https://github.com/sugarlabs/typing-turtle-activity
+tags = Language;System;Game
+url = https://help.sugarlabs.org/en/typing_turtle.html

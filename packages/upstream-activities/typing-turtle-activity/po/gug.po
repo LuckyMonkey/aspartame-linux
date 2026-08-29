@@ -1,0 +1,633 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-27 14:55-0400\n"
+"PO-Revision-Date: 2017-08-18 20:09+0000\n"
+"Last-Translator: MartínOesterreich <martin.otte80@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: gug\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1503086953.000000\n"
+
+#. TRANS: "name" option from activity.info file
+#: titlescene.py:54 typingturtle.py:82
+msgid "Typing Turtle"
+msgstr "Pe karumbe haihára."
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Need some help typing? Here you will learn the best way to hold your hands "
+"in order for you to become a faster typist!"
+msgstr ""
+"¿Rekotevẽ ñepytyvõ haihape? ¡Ãpe ikatu rejetavy'o pe teko porãve jerereko "
+"gui nde pokuera guarã ha pemoambue pe peteĩ kotyrũ pya´eve!  "
+
+#: balloongame.py:59 editlessonlistscreen.py:50 editlessonscreen.py:50
+#: editlessonscreen.py:584 lessonscreen.py:65
+msgid "Go Back"
+msgstr "Jevy."
+
+#: balloongame.py:217
+msgid "You finished!"
+msgstr "Re mbopaha."
+
+#: balloongame.py:234
+#, python-format
+msgid "Your score was %(score)d."
+msgstr "Nde ohesaho ha'e akue %(score)d."
+
+#: balloongame.py:236
+#, python-format
+msgid "You earned a %(type)s medal!"
+msgstr "¡Nde hupytypapyre peteĩ mba'e pererĩ pe %(type)s!"
+
+#: balloongame.py:238 medalscreen.py:101
+msgid "Press the ENTER key to continue."
+msgstr "Ejopy pe votõ ENTER mbojoapy haguã."
+
+#: balloongame.py:350 balloongame.py:363
+#, python-format
+msgid "SCORE: %d"
+msgstr "Ohesaho: %d."
+
+#: balloongame.py:378
+msgid "Type the words to pop the balloons!"
+msgstr "¡Ehai pe ñe'ẽkuera mope haguã mba'e apu'a!"
+
+#: editlessonlistscreen.py:47 typingturtle.py:111
+msgid "Edit Lessons"
+msgstr "Mbojekuaa mbo'epy."
+
+#: editlessonlistscreen.py:71 editlessonscreen.py:275
+msgid "Name"
+msgstr "Téra."
+
+#: editlessonlistscreen.py:76 editlessonscreen.py:307
+msgid "Description"
+msgstr "Ñemombe'upaite."
+
+#: editlessonlistscreen.py:82 editlessonscreen.py:287
+msgid "Type"
+msgstr "Amoha'anga."
+
+#: editlessonlistscreen.py:91
+msgid "Import Lessons from Journal"
+msgstr "Gueru mbo'epykuera amo kuatiamaranduha."
+
+#: editlessonlistscreen.py:96
+msgid "Export Lessons to Journal"
+msgstr "Mondo mbo'epykuera kuatiamaranduha."
+
+#: editlessonlistscreen.py:101
+msgid "Save Lessons to Activity"
+msgstr "Ñongatu mbo'epykuera tembiapo. "
+
+#: editlessonlistscreen.py:165 editlessonscreen.py:191
+msgid "Text"
+msgstr "Kuatia porupyre."
+
+#: editlessonlistscreen.py:167 editlessonscreen.py:295
+msgid "Balloon Game"
+msgstr "Ñembosarai mba'e apu'agui."
+
+#: editlessonlistscreen.py:204
+msgid "Delete Lesson?"
+msgstr "¿Mbogue pe mbo'epy?"
+
+#: editlessonlistscreen.py:205
+msgid "Deleting the lesson will erase the lesson content."
+msgstr "Mboguevo pe mbo'epy remokañytapa jokopapyre."
+
+#: editlessonlistscreen.py:311
+msgid " (Exported Lessons)"
+msgstr "(Mbo'epykuera omondota)."
+
+#: editlessonscreen.py:47
+msgid "Edit a Lesson"
+msgstr "Mbojekuaa mbo'epy."
+
+#: editlessonscreen.py:77
+msgid "New keys"
+msgstr "Pyahu ehai."
+
+#: editlessonscreen.py:78
+msgid "Known keys"
+msgstr "Jehaiha jetavy'opapyre."
+
+#: editlessonscreen.py:79
+msgid "Length"
+msgstr "Puku."
+
+#: editlessonscreen.py:90
+msgid "Generate!"
+msgstr "¡Japo!"
+
+#: editlessonscreen.py:108 editlessonscreen.py:581
+msgid "Edit Word List"
+msgstr "Mbojekuaa tysyikue pe ñe'ẽkuera."
+
+#: editlessonscreen.py:124
+#, python-format
+msgid "Step #%d"
+msgstr "Guata #%d."
+
+#: editlessonscreen.py:130
+msgid "Keys"
+msgstr "Haiha."
+
+#: editlessonscreen.py:131 editlessonscreen.py:388
+msgid "Words"
+msgstr "Ñe'ẽkuera."
+
+#: editlessonscreen.py:169
+msgid "Instructions"
+msgstr "Ñembo'ekuera."
+
+#: editlessonscreen.py:234
+msgid "Accuracy"
+msgstr "Tekotevẽ reko."
+
+#: editlessonscreen.py:235
+msgid "WPM"
+msgstr "PPM."
+
+#: editlessonscreen.py:249
+msgid "Score"
+msgstr "Kyta."
+
+#: editlessonscreen.py:270
+msgid "Lesson Details"
+msgstr "Mohesakã pe mbo'epykuera."
+
+#: editlessonscreen.py:291
+msgid "Normal Lesson"
+msgstr "Mbo'epy hekopeguãva."
+
+#: editlessonscreen.py:326
+msgid "Options"
+msgstr "Poravokuaakuera."
+
+#: editlessonscreen.py:330
+msgid "Allow Mistakes"
+msgstr "Moneĩ jejavykuera."
+
+#: editlessonscreen.py:332
+msgid "Allow Backspace"
+msgstr "Moneĩ jujevy."
+
+#: editlessonscreen.py:353
+msgid "Automatic Lesson Generator"
+msgstr "Ojapova mbo'epykuera jepota'yre."
+
+#: editlessonscreen.py:412
+msgid "Medal Requirements"
+msgstr "Tembijerure pe jeguaka."
+
+#: editlessonscreen.py:420
+msgid "Bronze"
+msgstr "Kuarepotijuatã."
+
+#: editlessonscreen.py:421
+msgid "Silver"
+msgstr "Kuarepotití."
+
+#: editlessonscreen.py:422
+msgid "Gold"
+msgstr "Kuarepotiju."
+
+#: editlessonscreen.py:594
+msgid ""
+"Type or paste words here, for the Automatic Lesson Generator.  If empty, the "
+"dictionary will be used."
+msgstr ""
+"Ehai térâ mboja ñe'ẽkuera ápe guarã ha'e ojapova mbo'epykuera jepota'yre. "
+"Heẽ reja kóva nandi, oipuruta pe ñe'ẽryru."
+
+#: lessonbuilder.py:261 lessonscreen.py:617
+msgid "Well done!"
+msgstr "Mba'e porã japopapyre."
+
+#: lessonbuilder.py:262
+msgid "Good job."
+msgstr "Porã tembiapo."
+
+#: lessonbuilder.py:263
+msgid "Awesome!"
+msgstr "Mba'ete!."
+
+#: lessonbuilder.py:264 lessonscreen.py:619
+msgid "Way to go!"
+msgstr "Péicha ojejapo!."
+
+#: lessonbuilder.py:265
+msgid "Wonderful!"
+msgstr "Mba'e porãite!."
+
+#: lessonbuilder.py:266
+msgid "Nice work."
+msgstr "Porã tembiapo."
+
+#: lessonbuilder.py:267
+msgid "You did it!"
+msgstr "Ichupe rejapo!."
+
+#: lessonbuilder.py:274
+msgid ""
+"Be careful to use the correct finger to press each key.  Look at the "
+"keyboard below if you need help remembering."
+msgstr ""
+"Eguereko ñangareko eipuruhape nde kuã myatyrõ haguã ejopy pe jehaiha. Emaña "
+"pe jehaiha guy hẽe rekotevẽ ñepytyvõ mandu´a haguã. "
+
+#: lessonbuilder.py:275
+msgid ""
+"Try to type at the same speed, all the time.  As you get more comfortable "
+"you can increase the speed a little."
+msgstr ""
+"Ñeha'ã haihape ha'evete pya'ekue, pe árapa. Pe ta'ã ha oime ve porã ikatu "
+"omboheta pe pya'ekue peteĩ sa'i."
+
+#: lessonbuilder.py:282
+msgid "left little"
+msgstr "Kua'ĩ asú."
+
+#: lessonbuilder.py:283
+msgid "left ring"
+msgstr "Mbyai asú."
+
+#: lessonbuilder.py:284
+msgid "left middle"
+msgstr "Mbyte ichupegui asú."
+
+#: lessonbuilder.py:285
+msgid "left index"
+msgstr "Techaukaha asú."
+
+#: lessonbuilder.py:286 lessonscreen.py:44
+msgid "left thumb"
+msgstr "Kuãguasu asú."
+
+#: lessonbuilder.py:287
+msgid "right little"
+msgstr "Kua'ĩ terekua."
+
+#: lessonbuilder.py:288
+msgid "right ring"
+msgstr "Mbyai terekua."
+
+#: lessonbuilder.py:289
+msgid "right middle"
+msgstr "Mbyte ichupegui akatuva."
+
+#: lessonbuilder.py:290
+msgid "right index"
+msgstr "Techaukaha terekua."
+
+#: lessonbuilder.py:291 lessonscreen.py:49
+msgid "right thumb"
+msgstr "Kuãguasu terekua."
+
+#: lessonbuilder.py:320
+#, python-format
+msgid " and %s keys"
+msgstr "Ha %s jehaiha."
+
+#: lessonbuilder.py:322
+msgid " key"
+msgstr "Jehaiha."
+
+#: lessonbuilder.py:325
+#, python-format
+msgid ""
+"In this lesson, you will learn the %(keynames)s.\n"
+"\n"
+"Press the ENTER key when you are ready to begin!"
+msgstr ""
+"Pe mbo'epype oĩ, nde rejetavy'ota pe %(keynames)s.\n"
+"\n"
+"Ejopy pe jehaiha ENTER araka'e reita arandu eñepyrũ haguã!. "
+
+#: lessonbuilder.py:364
+msgid "Let's learn the new keys."
+msgstr "Jaha yajetavy'o pe jehaiha pyahu."
+
+#: lessonbuilder.py:367
+msgid "Practice typing the keys you just learned."
+msgstr "Poru haihape pe jehaiha ha ejapopa jetavy'o."
+
+#: lessonbuilder.py:371
+msgid "Now put the keys together into pairs."
+msgstr "Ko'ãga emoi pe jehaiha pe rememby."
+
+#: lessonbuilder.py:376
+msgid "Time to type jumbles."
+msgstr "Ãra ehai haguã jumbles."
+
+#: lessonbuilder.py:381
+msgid "Time to type real words."
+msgstr "Ãra ehai haguã ñe'ẽkuera añete."
+
+#: lessonbuilder.py:390
+msgid "Hihowahyah!  Ready to learn the secret of fast typing?\n"
+msgstr ""
+"Hihowahyah!  Oima jetavy'o haguã pe teñembigue ehai haguã pya´e?\n"
+"."
+
+#: lessonbuilder.py:391
+msgid ""
+"Always use the correct finger to press each key!\n"
+"\n"
+msgstr ""
+"Tapiã oipuru pe ikuã ojopy haguã pe jehaiha\n"
+"\n"
+"."
+
+#: lessonbuilder.py:392
+msgid "Now, place your hands on the keyboard just like the picture below.\n"
+msgstr ""
+"Ko'ãga, omoĩ ipokuera pe jehaiha ari ha'ete pe ta'anga uperiregua.\n"
+"."
+
+#: lessonbuilder.py:393
+msgid "When you're ready, press the SPACE bar with your thumb!"
+msgstr "Reimevo nde katupyry, ejopy pe pehẽ mopa'ũ pe nde kuãguasupe!."
+
+#: lessonbuilder.py:397
+msgid ""
+"Good job!  The SPACE bar is used to insert spaces between words.\n"
+"\n"
+msgstr ""
+"Porã tembiapo! Pe pehẽ mopa'ũ ojeporu omoirũ haguã pa'ũ mbytépe "
+"ñe'ẽkuera.\n"
+"\n"
+"."
+
+#: lessonbuilder.py:398
+msgid "Press the SPACE bar again with your thumb."
+msgstr "Ejopy pyahu pe pehẽ mopa'ũ nde kuãguasupe."
+
+#: lessonbuilder.py:402
+msgid "Now I'll teach you the second key, ENTER.  "
+msgstr "Ko'ãga porombo'eta pe mokõiha jehaiha, ENTER.  "
+
+#: lessonbuilder.py:403
+msgid ""
+"That's the big square key near your right little finger.\n"
+"\n"
+msgstr ""
+"Pea ha'e pe jehaiha guasu nde kua'ĩ terekua.\n"
+"\n"
+"."
+
+#: lessonbuilder.py:404
+msgid "Now, reach your little finger over and press ENTER."
+msgstr "Ko'ãga, eraha nde kua'ĩ pe jehaiha ari ENTER ha ejopy."
+
+#: lessonbuilder.py:408
+msgid ""
+"Great!  When typing, the ENTER key is used to begin a new line.\n"
+"\n"
+msgstr ""
+"¡Ambotuicha!  ejopy, pe jehaiha ENTER oipuru oñepyrũ haguã peteĩ hai "
+"pyahu.\n"
+"\n"
+"."
+
+#: lessonbuilder.py:409
+msgid "Press the ENTER key again with your right little finger."
+msgstr "Ejopy pe jehaiha ENTER pyahu jevy nde kua'i terekua."
+
+#: lessonbuilder.py:417
+msgid "Copy out the following text."
+msgstr "Haijevy pe uperiregua kuatia porupyre."
+
+#: lessonscreen.py:40
+msgid "left little finger"
+msgstr "Kua'i asũ."
+
+#: lessonscreen.py:41
+msgid "left ring finger"
+msgstr "Kua mbyai asú. "
+
+#: lessonscreen.py:42
+msgid "left middle finger"
+msgstr "Kua mbyte asũ."
+
+#: lessonscreen.py:43
+msgid "left index finger"
+msgstr "Kuã techaukaha asu."
+
+#: lessonscreen.py:45
+msgid "right little finger"
+msgstr "Kua'i terekua."
+
+#: lessonscreen.py:46
+msgid "right ring finger"
+msgstr "Kua mbyai terekua."
+
+#: lessonscreen.py:47
+msgid "right middle finger"
+msgstr "Kua mbyte terekua. "
+
+#: lessonscreen.py:48
+msgid "right index finger"
+msgstr "Kuã techaukaha terekua."
+
+#: lessonscreen.py:190
+#, python-format
+msgid "<b>WPM:</b> %(wpm)d"
+msgstr "<b>ppm:</b> %(wpm)d."
+
+#: lessonscreen.py:198 medalscreen.py:92
+#, python-format
+msgid "<b>Accuracy:</b> %(accuracy)d%%"
+msgstr "<b>Accuracy:</b> %(accuracy)d%%."
+
+#: lessonscreen.py:511
+#, python-format
+msgid "Press and hold the shift key with your %(finger)s, "
+msgstr "Ombopu ha rereko rerahapyre pe jehaiha SHIFT nde kuame %(finger)s, "
+
+#: lessonscreen.py:512 lessonscreen.py:516 lessonscreen.py:520
+#, python-format
+msgid "then press the %(letter)s key with your %(finger)s."
+msgstr "continuaciónpe , ombopu pe tecla %(letter)s nde ndive kuã %(finger)s. "
+
+#: lessonscreen.py:515
+msgid "Press and hold the altgr key, "
+msgstr "ombopu ha mantenga presionada pe tecla altgr, "
+
+#: lessonscreen.py:519
+msgid "Press and hold the altgr and shift keys, "
+msgstr "ombopu ha mantenga presionada tecla kuera altgr ha shift, "
+
+#: lessonscreen.py:523
+#, python-format
+msgid "Press the %(letter)s key with your %(finger)s."
+msgstr "ombopu pe tecla %(letter)s nde ndive kuã %(finger)s."
+
+#: lessonscreen.py:543
+#, python-format
+msgid "Uh oh!  Your keyboard cannot type the letter '%s'.\n"
+msgstr ""
+"uy ! nde teclado nahániri oikatu teclear pe letra '%s'.\n"
+" "
+
+#: lessonscreen.py:544
+msgid "Please change your keyboard settings and try this lesson again."
+msgstr ""
+"rehe pytyvõ omoambue configuracion kuera nde mba'e teclado e intenta pyahu "
+"ko lección. "
+
+#: lessonscreen.py:616
+msgid "Good job!"
+msgstr " porã mba'apo ! "
+
+#: lessonscreen.py:618
+msgid "Nice work!"
+msgstr "porã mba'apo ! "
+
+#: lessonscreen.py:624
+#, python-format
+msgid "You finished the lesson in %(time)d seconds, with %(errors)d errors.\n"
+msgstr ""
+"ha kuera terminado pe lección, %(time)d mokõiha-2-/aravo'ive kuera, % ndive ("
+"jejavy kuera)d jejavy kuera.\n"
+" me/pe "
+
+#: lessonscreen.py:626
+#, python-format
+msgid ""
+"Your words per minute (WPM) was %(wpm)d, and your accuracy was %(accuracy)d%"
+"%.\n"
+"\n"
+msgstr ""
+"nde ñe'ẽ kuera rehe aravo'i (ppm) eran %(wpm)d, ha nde precisión era "
+"%(accuracy)d%%.\n"
+" \n"
+" "
+
+#: lessonscreen.py:629
+#, python-format
+msgid "You finished the lesson with %(errors)d errors.\n"
+msgstr ""
+"terminaste pe lección % ndive (jejavy kuera)d jejavy kuera.\n"
+" "
+
+#: lessonscreen.py:631
+#, python-format
+msgid ""
+"Your accuracy was %(accuracy)d%%.\n"
+"\n"
+msgstr ""
+"nde precisión ha'e akue %(accuracy)d%%.\n"
+" \n"
+" "
+
+#: lessonscreen.py:637
+#, python-format
+msgid "Congratulations!  You earned a %(type)s medal!"
+msgstr ""
+"felicidade kuera ! ha kuera hupytuva/papyre peteĩ medalla % mba'e (type)s ! "
+
+#: lessonscreen.py:645
+msgid "You need to practice this lesson more before moving on."
+msgstr "okotevẽ kuera jepe práctica opyta hasa ko lección. "
+
+#: lessonscreen.py:648
+msgid "You almost got a medal!  Next time, try not to make as many errors."
+msgstr ""
+"háimete consigue kuera peteĩ medalla ! pe próxima jevy , trata nahániri "
+"mba'e cometer tanto kuera jejavy kuera. rõ "
+
+#: lessonscreen.py:651
+msgid "You almost got a medal!  Next time, try to type a little faster."
+msgstr ""
+"háimete consigue kuera peteĩ medalla ! pe próxima jevy , trata hai mba'e "
+"peteĩ sa'i má kuera rápido. rõ "
+
+#: mainscreen.py:59
+msgid "Next"
+msgstr "upeigua"
+
+#: mainscreen.py:68
+msgid "Previous"
+msgstr "mboyvegua"
+
+#: mainscreen.py:75
+msgid "Start Lesson"
+msgstr "moñepyrũ mbo;epy"
+
+#: mainscreen.py:185
+msgid ""
+"You earned a medal in this lesson!  Advance to the next one\n"
+"by clicking the Next button."
+msgstr ""
+"remono'õ akue peteĩ medalla ko lección ! oñemotenonde lape siguiente\n"
+" añemboyvy clic pe votõ siguiente. me/pe "
+
+#: mainscreen.py:216
+msgid "No Medal Yet"
+msgstr "nahániri rehupyty akue peteĩ medalla "
+
+#: mainscreen.py:217
+msgid "Bronze Medal"
+msgstr "medalla bronce mba'e "
+
+#: mainscreen.py:218
+msgid "Silver Medal"
+msgstr "medalla plata mba'e "
+
+#: mainscreen.py:219
+msgid "Gold Medal"
+msgstr "medalla itaju mba'e "
+
+#: medalscreen.py:56
+msgid ""
+"<span font_desc='Serif Bold Italic 28'>Certificate of Achievement</span>"
+msgstr "certificado logro mba'e "
+
+#: medalscreen.py:59
+msgid "<span font_desc='Sans 16'>This certifies that</span>"
+msgstr " esto certifica que "
+
+#: medalscreen.py:62
+#, python-format
+msgid "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+msgstr " %(nick)s "
+
+#: medalscreen.py:65
+#, python-format
+msgid "<span font_desc='Sans 16'>earned a %(type)s medal in </span>"
+msgstr "obtuvo peteĩ medalla % mba'e (type)s "
+
+#: medalscreen.py:68
+#, python-format
+msgid "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+msgstr "en %(lesson)s "
+
+#: medalscreen.py:71
+#, python-format
+msgid "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+msgstr "en %(date)s. "
+
+#: medalscreen.py:88
+#, python-format
+msgid "<b>Words Per Minute:</b> %(wpm)d"
+msgstr "palabra kuera rehe minuto: %(wpm)d "
+
+#: medalscreen.py:97
+#, python-format
+msgid "<b>SCORE:</b> %(score)d"
+msgstr "puntuaciÓn: %(score)d "

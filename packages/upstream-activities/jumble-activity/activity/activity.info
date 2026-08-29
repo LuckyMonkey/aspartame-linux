@@ -1,0 +1,9 @@
+[Activity]
+name = Jumble
+activity_version = 24
+bundle_id = mulawa.Jumble
+icon = activity
+show_launcher = yes
+exec = sugar-activity3 activity.PeterActivity
+repository = https://github.com/sugarlabs/jumble-activity.git
+license = GPLv3

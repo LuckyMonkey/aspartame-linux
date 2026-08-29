@@ -1,0 +1,771 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-27 14:55-0400\n"
+"PO-Revision-Date: 2012-10-03 09:35+0200\n"
+"Last-Translator: AlanJAS <alanjas@hotmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+#: titlescene.py:54 typingturtle.py:82
+msgid "Typing Turtle"
+msgstr "La tortuga escritora"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Need some help typing? Here you will learn the best way to hold your hands "
+"in order for you to become a faster typist!"
+msgstr ""
+"¿Necesitas ayuda escribiendo? ¡Aquí podrás aprender la mejor manera de "
+"mantener tus manos para que te conviertas en un mecanógrafo más rápido!"
+
+#: balloongame.py:59 editlessonlistscreen.py:50 editlessonscreen.py:50
+#: editlessonscreen.py:584 lessonscreen.py:65
+msgid "Go Back"
+msgstr "Regresar"
+
+#: balloongame.py:217
+msgid "You finished!"
+msgstr "¡Has terminado!"
+
+#: balloongame.py:234
+#, python-format
+msgid "Your score was %(score)d."
+msgstr "Tu puntuación fue %(score)d."
+
+#: balloongame.py:236
+#, python-format
+msgid "You earned a %(type)s medal!"
+msgstr "¡Has obtenido una medalla de %(type)s!"
+
+#: balloongame.py:238 medalscreen.py:101
+msgid "Press the ENTER key to continue."
+msgstr "Presione la tecla ENTER para continuar."
+
+#: balloongame.py:350 balloongame.py:363
+#, python-format
+msgid "SCORE: %d"
+msgstr "PUNTUACIÓN: %d"
+
+#: balloongame.py:378
+msgid "Type the words to pop the balloons!"
+msgstr "¡Teclea las palabras para romper los globos!"
+
+#: editlessonlistscreen.py:47 typingturtle.py:111
+msgid "Edit Lessons"
+msgstr "Editar Lecciones"
+
+#: editlessonlistscreen.py:71 editlessonscreen.py:275
+msgid "Name"
+msgstr "Nombre"
+
+#: editlessonlistscreen.py:76 editlessonscreen.py:307
+msgid "Description"
+msgstr "Descripción"
+
+#: editlessonlistscreen.py:82 editlessonscreen.py:287
+msgid "Type"
+msgstr "Tipo"
+
+#: editlessonlistscreen.py:91
+msgid "Import Lessons from Journal"
+msgstr "Importar Lecciones del Diario"
+
+#: editlessonlistscreen.py:96
+msgid "Export Lessons to Journal"
+msgstr "Exportar Lecciones al Diario"
+
+#: editlessonlistscreen.py:101
+msgid "Save Lessons to Activity"
+msgstr "Guardar Lecciones a la Actividad"
+
+#: editlessonlistscreen.py:165 editlessonscreen.py:191
+msgid "Text"
+msgstr "Texto"
+
+#: editlessonlistscreen.py:167 editlessonscreen.py:295
+msgid "Balloon Game"
+msgstr "Juego de Globos"
+
+#: editlessonlistscreen.py:204
+msgid "Delete Lesson?"
+msgstr "¿Borrar la lección?"
+
+#: editlessonlistscreen.py:205
+msgid "Deleting the lesson will erase the lesson content."
+msgstr "Al borrar la lección perderás todo su contenido."
+
+#: editlessonlistscreen.py:311
+msgid " (Exported Lessons)"
+msgstr " (Lecciones Exportadas)"
+
+#: editlessonscreen.py:47
+msgid "Edit a Lesson"
+msgstr "Editar Lección"
+
+#: editlessonscreen.py:77
+msgid "New keys"
+msgstr "Nuevas teclas"
+
+#: editlessonscreen.py:78
+msgid "Known keys"
+msgstr "Teclas aprendidas"
+
+#: editlessonscreen.py:79
+msgid "Length"
+msgstr "Longitud"
+
+#: editlessonscreen.py:90
+msgid "Generate!"
+msgstr "¡Generar!"
+
+#: editlessonscreen.py:108 editlessonscreen.py:581
+msgid "Edit Word List"
+msgstr "Editar Lista de Palabras"
+
+#: editlessonscreen.py:124
+#, python-format
+msgid "Step #%d"
+msgstr "Paso #%d"
+
+#: editlessonscreen.py:130
+msgid "Keys"
+msgstr "Teclas"
+
+#: editlessonscreen.py:131 editlessonscreen.py:388
+msgid "Words"
+msgstr "Palabras"
+
+#: editlessonscreen.py:169
+msgid "Instructions"
+msgstr "Instrucciones"
+
+#: editlessonscreen.py:234
+msgid "Accuracy"
+msgstr "Precisión"
+
+#: editlessonscreen.py:235
+msgid "WPM"
+msgstr "PPM"
+
+#: editlessonscreen.py:249
+msgid "Score"
+msgstr "Puntuación"
+
+#: editlessonscreen.py:270
+msgid "Lesson Details"
+msgstr "Detalles de la Lección"
+
+#: editlessonscreen.py:291
+msgid "Normal Lesson"
+msgstr "Lección Normal"
+
+#: editlessonscreen.py:326
+msgid "Options"
+msgstr "Opciones"
+
+#: editlessonscreen.py:330
+msgid "Allow Mistakes"
+msgstr "Permitir Errores"
+
+#: editlessonscreen.py:332
+msgid "Allow Backspace"
+msgstr "Permitir Retroceso"
+
+#: editlessonscreen.py:353
+msgid "Automatic Lesson Generator"
+msgstr "Generador de Lecciones Automático"
+
+#: editlessonscreen.py:412
+msgid "Medal Requirements"
+msgstr "Requerimientos de Medallas"
+
+#: editlessonscreen.py:420
+msgid "Bronze"
+msgstr "Bronce"
+
+#: editlessonscreen.py:421
+msgid "Silver"
+msgstr "Plata"
+
+#: editlessonscreen.py:422
+msgid "Gold"
+msgstr "Oro"
+
+#: editlessonscreen.py:594
+msgid ""
+"Type or paste words here, for the Automatic Lesson Generator.  If empty, the "
+"dictionary will be used."
+msgstr ""
+"Escriba o pega palabras aquí para el Generador de Lecciones Automático.  Si "
+"dejas esto vacío, se usará el diccionario."
+
+#: lessonbuilder.py:261 lessonscreen.py:617
+msgid "Well done!"
+msgstr "Bien hecho!"
+
+#: lessonbuilder.py:262
+msgid "Good job."
+msgstr "Buen trabajo."
+
+#: lessonbuilder.py:263
+msgid "Awesome!"
+msgstr "Asombroso!"
+
+#: lessonbuilder.py:264 lessonscreen.py:619
+msgid "Way to go!"
+msgstr "Asi se hace!"
+
+#: lessonbuilder.py:265
+msgid "Wonderful!"
+msgstr "Maravilloso!"
+
+#: lessonbuilder.py:266
+msgid "Nice work."
+msgstr "Buen trabajo."
+
+#: lessonbuilder.py:267
+msgid "You did it!"
+msgstr "Lo hiciste!"
+
+#: lessonbuilder.py:274
+msgid ""
+"Be careful to use the correct finger to press each key.  Look at the "
+"keyboard below if you need help remembering."
+msgstr ""
+"Tenga cuidado usando el dedo para corregir presiona cada tecla.  Mira el "
+"teclado debajo si necesitas ayuda para recordar."
+
+#: lessonbuilder.py:275
+msgid ""
+"Try to type at the same speed, all the time.  As you get more comfortable "
+"you can increase the speed a little."
+msgstr ""
+"Prueba escribiendo a la misma velocidad, todo el tiempo.  A medida que estes "
+"mas comodo puedes aumentar la velocidad un poco."
+
+#: lessonbuilder.py:282
+msgid "left little"
+msgstr "meñique izquierdo"
+
+#: lessonbuilder.py:283
+msgid "left ring"
+msgstr "anular izquierdo"
+
+#: lessonbuilder.py:284
+msgid "left middle"
+msgstr "centro de la izquierda"
+
+#: lessonbuilder.py:285
+msgid "left index"
+msgstr "índice izquierdo"
+
+#: lessonbuilder.py:286 lessonscreen.py:44
+msgid "left thumb"
+msgstr "pulgar izquierdo"
+
+#: lessonbuilder.py:287
+msgid "right little"
+msgstr "meñique derecho"
+
+#: lessonbuilder.py:288
+msgid "right ring"
+msgstr "anular derecho"
+
+#: lessonbuilder.py:289
+msgid "right middle"
+msgstr "centro de la derecha"
+
+#: lessonbuilder.py:290
+msgid "right index"
+msgstr "índice derecho"
+
+#: lessonbuilder.py:291 lessonscreen.py:49
+msgid "right thumb"
+msgstr "pulgar derecho"
+
+#: lessonbuilder.py:320
+#, python-format
+msgid " and %s keys"
+msgstr " y %s teclas"
+
+#: lessonbuilder.py:322
+msgid " key"
+msgstr " tecla"
+
+#: lessonbuilder.py:325
+#, python-format
+msgid ""
+"In this lesson, you will learn the %(keynames)s.\n"
+"\n"
+"Press the ENTER key when you are ready to begin!"
+msgstr ""
+"En esta lección, tu aprenderas a %(keynames)s.\n"
+"\n"
+"Presiona la tecla ENTER cuando estes listo para comenzar!"
+
+#: lessonbuilder.py:364
+msgid "Let's learn the new keys."
+msgstr "Vamos a aprender las nuevas teclas."
+
+#: lessonbuilder.py:367
+msgid "Practice typing the keys you just learned."
+msgstr "practica escribiendo las teclas que acabas de aprender."
+
+#: lessonbuilder.py:371
+msgid "Now put the keys together into pairs."
+msgstr "Ahora pon las teclas en pares."
+
+#: lessonbuilder.py:376
+msgid "Time to type jumbles."
+msgstr "Tiempo para escribir jumbles."
+
+#: lessonbuilder.py:381
+msgid "Time to type real words."
+msgstr "Tiempo para escribir las palabras verdaderas."
+
+#: lessonbuilder.py:390
+msgid "Hihowahyah!  Ready to learn the secret of fast typing?\n"
+msgstr "Hihowahyah!  Listos para aprender el secreto para escribir rapido?\n"
+
+#: lessonbuilder.py:391
+msgid ""
+"Always use the correct finger to press each key!\n"
+"\n"
+msgstr ""
+"Siempre usa el dedo correcto para presionar la tecla!\n"
+"\n"
+
+#: lessonbuilder.py:392
+msgid "Now, place your hands on the keyboard just like the picture below.\n"
+msgstr "Ahora, coloca las manos sobre el teclado igual que en la imagen siguiente.\n"
+
+#: lessonbuilder.py:393
+msgid "When you're ready, press the SPACE bar with your thumb!"
+msgstr "Cuando estes listo, presiona la barra espaciadora con el pulgar!"
+
+#: lessonbuilder.py:397
+msgid ""
+"Good job!  The SPACE bar is used to insert spaces between words.\n"
+"\n"
+msgstr ""
+"Buen trabajo!  La barra espaciadora se usa para insertar espacios entre "
+"palabras.\n"
+"\n"
+
+#: lessonbuilder.py:398
+msgid "Press the SPACE bar again with your thumb."
+msgstr "Presiona de nuevo la barra espaciadora con el pulgar."
+
+#: lessonbuilder.py:402
+msgid "Now I'll teach you the second key, ENTER.  "
+msgstr "Ahora voy a enseñarles la segunda tecla, ENTER.  "
+
+#: lessonbuilder.py:403
+msgid ""
+"That's the big square key near your right little finger.\n"
+"\n"
+msgstr ""
+"Esa es la gran tecla cerca de tu dedo meñique derecho.\n"
+"\n"
+
+#: lessonbuilder.py:404
+msgid "Now, reach your little finger over and press ENTER."
+msgstr "Ahora, lleva tu dedo meñique sobre la tecla ENTER y la presionas."
+
+#: lessonbuilder.py:408
+msgid ""
+"Great!  When typing, the ENTER key is used to begin a new line.\n"
+"\n"
+msgstr ""
+"¡magnífico!  la presionaste, la tecla ENTER se usa para iniciar una nueva "
+"línea.\n"
+"\n"
+
+#: lessonbuilder.py:409
+msgid "Press the ENTER key again with your right little finger."
+msgstr "Presiona la tecla ENTER de nuevo con tu dedo meñique derecho."
+
+#: lessonbuilder.py:417
+msgid "Copy out the following text."
+msgstr "Copiar el siguiente texto."
+
+#: lessonscreen.py:40
+msgid "left little finger"
+msgstr "dedo meñique izquierdo"
+
+#: lessonscreen.py:41
+msgid "left ring finger"
+msgstr "dedo anular izquierdo"
+
+#: lessonscreen.py:42
+msgid "left middle finger"
+msgstr "dedo medio izquierdo"
+
+#: lessonscreen.py:43
+msgid "left index finger"
+msgstr "dedo índice izquierdo"
+
+#: lessonscreen.py:45
+msgid "right little finger"
+msgstr "dedo meñique derecho"
+
+#: lessonscreen.py:46
+msgid "right ring finger"
+msgstr "dedo anular derecho"
+
+#: lessonscreen.py:47
+msgid "right middle finger"
+msgstr "dedo medio derecho"
+
+#: lessonscreen.py:48
+msgid "right index finger"
+msgstr "dedo índice derecho"
+
+#: lessonscreen.py:190
+#, python-format
+msgid "<b>WPM:</b> %(wpm)d"
+msgstr "<b>ppm:</b> %(wpm)d"
+
+#: lessonscreen.py:198 medalscreen.py:92
+#, python-format
+msgid "<b>Accuracy:</b> %(accuracy)d%%"
+msgstr "<b>Precisión:</b> %(accuracy)d%%"
+
+#: lessonscreen.py:511
+#, python-format
+msgid "Press and hold the shift key with your %(finger)s, "
+msgstr "Pulsa y mantenga presionada la tecla SHIFT con tu dedo %(finger)s, "
+
+#: lessonscreen.py:512 lessonscreen.py:516 lessonscreen.py:520
+#, python-format
+msgid "then press the %(letter)s key with your %(finger)s."
+msgstr "a continuación, pulsa la tecla %(letter)s con tu dedo %(finger)s."
+
+#: lessonscreen.py:515
+msgid "Press and hold the altgr key, "
+msgstr "Pulsa y mantenga presionada la tecla ALTGR, "
+
+#: lessonscreen.py:519
+msgid "Press and hold the altgr and shift keys, "
+msgstr "Pulsa y mantenga presionada las teclas ALTGR y SHIFT, "
+
+#: lessonscreen.py:523
+#, python-format
+msgid "Press the %(letter)s key with your %(finger)s."
+msgstr "Pulsa la tecla %(letter)s con tu dedo %(finger)s."
+
+#: lessonscreen.py:543
+#, python-format
+msgid "Uh oh!  Your keyboard cannot type the letter '%s'.\n"
+msgstr "¡Uy!  Tu teclado no puede teclear la letra '%s'.\n"
+
+#: lessonscreen.py:544
+msgid "Please change your keyboard settings and try this lesson again."
+msgstr ""
+"Por favor cambia las configuraciones de tu teclado e intenta de nuevo esta "
+"lección."
+
+#: lessonscreen.py:616
+msgid "Good job!"
+msgstr "¡Buen trabajo!"
+
+#: lessonscreen.py:618
+msgid "Nice work!"
+msgstr "¡Buen trabajo!"
+
+#: lessonscreen.py:624
+#, python-format
+msgid "You finished the lesson in %(time)d seconds, with %(errors)d errors.\n"
+msgstr "Has terminado la lección, en %(time)d segundos, con %(errors)d errores.\n"
+
+# ppm is the correct abbreviation.
+#: lessonscreen.py:626
+#, python-format
+msgid ""
+"Your words per minute (WPM) was %(wpm)d, and your accuracy was %(accuracy)d%"
+"%.\n"
+"\n"
+msgstr ""
+"Tus palabras por minuto (ppm) eran %(wpm)d, y tu precisión era %(accuracy)d%"
+"%.\n"
+"\n"
+
+#: lessonscreen.py:629
+#, python-format
+msgid "You finished the lesson with %(errors)d errors.\n"
+msgstr "Terminaste la lección con %(errors)d errores.\n"
+
+# Keeps the word "precision" constant. "Tu" instead of "Su" makes it more personal.
+#: lessonscreen.py:631
+#, python-format
+msgid ""
+"Your accuracy was %(accuracy)d%%.\n"
+"\n"
+msgstr ""
+"Tu precisión fue %(accuracy)d%%.\n"
+"\n"
+
+#: lessonscreen.py:637
+#, python-format
+msgid "Congratulations!  You earned a %(type)s medal!"
+msgstr "¡Felicidades!  Has obtenido una medalla de %(type)s!"
+
+#: lessonscreen.py:645
+msgid "You need to practice this lesson more before moving on."
+msgstr "Necesitas mas práctica para pasar esta lección."
+
+#: lessonscreen.py:648
+msgid "You almost got a medal!  Next time, try not to make as many errors."
+msgstr ""
+"¡Casi consigues una medalla!  La próxima vez, trata de no cometer tantos "
+"errores."
+
+#: lessonscreen.py:651
+msgid "You almost got a medal!  Next time, try to type a little faster."
+msgstr ""
+"¡Casi consigues una medalla!  La próxima vez, trata de escribir un poco más "
+"rápido."
+
+#: mainscreen.py:59
+msgid "Next"
+msgstr "Siguiente"
+
+#: mainscreen.py:68
+msgid "Previous"
+msgstr "Anterior"
+
+#: mainscreen.py:75
+msgid "Start Lesson"
+msgstr "Iniciar lección"
+
+#: mainscreen.py:185
+msgid ""
+"You earned a medal in this lesson!  Advance to the next one\n"
+"by clicking the Next button."
+msgstr ""
+"¡Ganaste una medalla en esta lección!  Avanza a la siguiente\n"
+"haciendo clic en el botón Siguiente."
+
+#: mainscreen.py:216
+msgid "No Medal Yet"
+msgstr "No conseguiste una medalla"
+
+#: mainscreen.py:217
+msgid "Bronze Medal"
+msgstr "Medalla de Bronce"
+
+#: mainscreen.py:218
+msgid "Silver Medal"
+msgstr "Medalla de Plata"
+
+#: mainscreen.py:219
+msgid "Gold Medal"
+msgstr "Medalla de Oro"
+
+#: medalscreen.py:56
+msgid ""
+"<span font_desc='Serif Bold Italic 28'>Certificate of Achievement</span>"
+msgstr "<span font_desc='Serif Bold Italic 28'>Certificado de Logro</span>"
+
+#: medalscreen.py:59
+msgid "<span font_desc='Sans 16'>This certifies that</span>"
+msgstr "<span font_desc='Sans 16'>Esto certifica que</span>"
+
+#: medalscreen.py:62
+#, python-format
+msgid "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+
+# This, along with entry 122, fixes an error present in the original English version where the word "in" is in both lines.
+#: medalscreen.py:65
+#, python-format
+msgid "<span font_desc='Sans 16'>earned a %(type)s medal in </span>"
+msgstr "<span font_desc='Sans 16'>obtuvo una medalla de %(type)s </span>"
+
+#: medalscreen.py:68
+#, python-format
+msgid "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'>en <b><u><i>%(lesson)s</i></u></b></span>"
+
+#: medalscreen.py:71
+#, python-format
+msgid "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+msgstr "<span font_desc='Sans 16'>en <b><u><i>%(date)s</i></u></b>.</span>"
+
+#: medalscreen.py:88
+#, python-format
+msgid "<b>Words Per Minute:</b> %(wpm)d"
+msgstr "<b>Palabras por minuto:</b> %(wpm)d"
+
+#: medalscreen.py:97
+#, python-format
+msgid "<b>SCORE:</b> %(score)d"
+msgstr "<b>PUNTUACIÓN:</b> %(score)d"
+
+#~ msgid "Game"
+#~ msgstr "Juego"

@@ -1,0 +1,216 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2018-02-21 14:26+0000\n"
+"Last-Translator: Yaron <sh.yaron@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1519223176.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr "ציור לשבח"
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"חשקה נפשך לספר סיפור? קלי קלות! ניתן להשתמש בתמונות משלך ובדמיון שלך כדי "
+"ליצור קומיקס פרי עטך!"
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "הוספת תמונה"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "כדור הארץ"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "מחשבה"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "לחישה"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "הצהרה"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "תיבה"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "הוספת כדור הארץ"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "קימורים"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "ישיר"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "גולת הכותרת"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "רעיון"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "בחירת ציר תנועה"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "פנייה"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "מחיקה"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "מודגש"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "נטוי"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "צבע הטקסט"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "ביטול"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "סיום"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "יש לגרור את התמונות כדי לשנות את הסדר"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "איפוס לגודל תיבה"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr "ניתן לגרור כדי להזיז או לשנות את הגודל בעזרת הפינות המסומנות"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "בחירת גופן"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr "ניתן להוסיף תמונה ולהתחיל ליצור קומיקס משלך"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "נא לבחור תמונה"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "שמירה כתמונה"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "עריכה"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "תצוגה"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "מצגת"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "מצגת עם תזמונים"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "הגדרת משך הופעת תמונה במצגת (שניות)"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "מסך מלא"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "טקסט"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "החלפת סדר תמונות"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "עריכת תמונת רקע"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "שמירה כספר (PDF)"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "שמירה כספר (OGG)"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "הצלחה"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "נוצרה תמונה ביומן"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "נוצר PDF ביומן"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "{} כסרט"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "נשמר סרט ביומן"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "הצגה ביומן"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "אישור"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "כותרת:"

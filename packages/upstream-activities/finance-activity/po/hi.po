@@ -1,0 +1,336 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-06 08:02+1100\n"
+"PO-Revision-Date: 2019-04-05 00:05+0000\n"
+"Last-Translator: roohan <rizvi.beta@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1554422702.000000\n"
+
+#: activity/activity.info:2 finance.py:85
+msgid "Finance"
+msgstr "वित्त"
+
+#: activity/activity.info:3
+msgid ""
+"Want to wisely manage money? Learn financial planning basics and track your "
+"family's finance, make your own budget and learn how to make every penny "
+"count!"
+msgstr ""
+"बुद्धिमानी से पैसे का प्रबंधन करना चाहते हैं? वित्तीय नियोजन मूल बातें जानें "
+"और अपने परिवार के वित्त को ट्रैक करें, अपना बजट बनाएं और सीखें कि हर पैसा "
+"कैसे बनाया जाए!"
+
+#: budgetscreen.py:42
+#, fuzzy
+msgid ""
+"The Budget view allows you to set a monthly budget for each expense "
+"category, and to keep track of your\n"
+"budgets. To set a budget, type the amount in the box to the right of the "
+"category."
+msgstr ""
+"बजट दृश्य के जरिए आप अपने प्रत्येक खर्च श्रेणी के मासिक बजट को सेट कर सकते "
+"हैं और अपने\n"
+"बजट पर निगाह रख सकते हैं. बजट सेट करने के लिए श्रेणी के दाएँ बाजू में दिए "
+"बक्से में रकम भरें."
+
+#: budgetscreen.py:90 registerscreen.py:80
+msgid "Category"
+msgstr "श्रेणी"
+
+#: budgetscreen.py:94
+msgid "Spent"
+msgstr "खर्च"
+
+#: budgetscreen.py:98 finance.py:195 finance.py:196 finance.py:279
+msgid "Budget"
+msgstr "बजट"
+
+#: budgetscreen.py:127 chartscreen.py:160 chartscreen.py:181
+msgid "Unknown"
+msgstr "अज्ञात"
+
+#: chartscreen.py:38
+msgid ""
+"The Chart view shows the proportion of your expenses that is in each "
+"category.\n"
+"You can categorize transactions in the Register view."
+msgstr ""
+"चार्ट दृश्य प्रत्येक श्रेणी के आपके खर्च के हिस्से को दिखाता है.\n"
+"रजिस्टर दृश्य में आप अपने लेन-देन को श्रेणीबद्ध कर सकते हैं."
+
+#: chartscreen.py:94
+#, fuzzy
+msgid "Credit Categories"
+msgstr "नामे श्रेणी"
+
+#: chartscreen.py:96
+msgid "Debit Categories"
+msgstr "नामे श्रेणी"
+
+#: finance.py:169
+msgid "Add some credit or debit to get started!"
+msgstr "आरंभ करने के लिए कुछ क्रेडिट या डेबिट जोड़ें!"
+
+#: finance.py:170
+msgid "Add credit"
+msgstr "क्रेडिट जोड़ने"
+
+#: finance.py:186 finance.py:187 finance.py:277
+msgid "Register"
+msgstr "पंजीकरण"
+
+#: finance.py:203 finance.py:204 finance.py:281
+msgid "Chart"
+msgstr "चार्ट"
+
+#: finance.py:244
+msgid "Export data"
+msgstr "निर्यात जानकारी"
+
+#: finance.py:252
+msgid "Export credits by day"
+msgstr "दिन के हिसाब से क्रेडिट निर्यात करें"
+
+#: finance.py:257
+msgid "Export debits by day"
+msgstr "दिन के हिसाब से निर्यात करें"
+
+#: finance.py:262
+msgid "Export credits by month"
+msgstr "महीने के हिसाब से क्रेडिट निर्यात करें"
+
+#: finance.py:267
+msgid "Export debits by month"
+msgstr "महीने से निर्यात डेबिट"
+
+#: finance.py:301 finance.py:382 registerscreen.py:233
+msgid "New Credit"
+msgstr "नया जमा"
+
+#: finance.py:306 finance.py:383 registerscreen.py:240
+msgid "New Debit"
+msgstr "नया नामे"
+
+#: finance.py:311
+msgid "Erase Transaction"
+msgstr "लेन-देन मिटाएँ"
+
+#: finance.py:323
+msgid "Save as Image"
+msgstr "छवि के रूप में सहेजें"
+
+#: finance.py:345
+msgid "Day"
+msgstr "दिन"
+
+#: finance.py:345
+msgid "Week"
+msgstr "सप्ताह"
+
+#: finance.py:345
+msgid "Month"
+msgstr "माह"
+
+#: finance.py:346
+msgid "Year"
+msgstr "वर्ष"
+
+#: finance.py:346 finance.py:461
+msgid "Forever"
+msgstr "हमेशा के लिए"
+
+#: finance.py:348
+msgid "Select period"
+msgstr "अवधि का चयन करें"
+
+#: finance.py:392
+msgid "Show Credits"
+msgstr "क्रेडिट दिखाएं"
+
+#: finance.py:393
+msgid "Show Debits"
+msgstr "डेबिट दिखाएं"
+
+#. TRANS: representation of the "Day" period
+#: finance.py:446
+msgid "%B %d, %Y"
+msgstr "% B% d,% Y"
+
+#. TRANS: representation of the "Week of" period
+#: finance.py:450
+msgid "Week of"
+msgstr "का सप्ताह"
+
+#: finance.py:450
+msgid " %B %d, %Y"
+msgstr "%B %d, %Y"
+
+#. TRANS: representation of the "Month" period
+#: finance.py:454
+msgid "%B, %Y"
+msgstr "%B, %Y"
+
+#. TRANS: representation of the "Year" period
+#: finance.py:458
+msgid "%Y"
+msgstr "%Y"
+
+#: finance.py:500
+msgid "Balance: "
+msgstr "बाकी: "
+
+#: finance.py:508
+msgid "Starting Balance:"
+msgstr ""
+
+#: finance.py:515
+#, python-format
+msgid "%s in %d credits"
+msgstr ""
+
+#: finance.py:519
+#, python-format
+msgid "%s in %d debits"
+msgstr ""
+
+#: finance.py:532
+msgid "Previous Month"
+msgstr "पिछ्ला महिना"
+
+#: finance.py:533
+msgid "This Month"
+msgstr "इस महीने"
+
+#: finance.py:534
+msgid "Next Month"
+msgstr "अगले महीने"
+
+#: finance.py:536
+msgid "Previous Week"
+msgstr "पिछला सप्ताह"
+
+#: finance.py:537
+msgid "This Week"
+msgstr "इस सप्ताह"
+
+#: finance.py:538
+msgid "Next Week"
+msgstr "अगले सप्ताह"
+
+#: finance.py:540
+#, fuzzy
+msgid "Previous Day"
+msgstr "पिछला साल"
+
+#: finance.py:541
+msgid "This Day"
+msgstr "इस दिन"
+
+#: finance.py:542
+msgid "Next Day"
+msgstr "अगले दिन"
+
+#: finance.py:544
+msgid "Previous Year"
+msgstr "पिछला साल"
+
+#: finance.py:545
+msgid "This Year"
+msgstr "इस साल"
+
+#: finance.py:546
+msgid "Next Year"
+msgstr "अगले वर्ष"
+
+#: finance.py:921
+msgid "Chart created"
+msgstr ""
+
+#: finance.py:921 finance.py:1038
+msgid "Open in the Journal"
+msgstr ""
+
+#: finance.py:930
+msgid "Show in Journal"
+msgstr ""
+
+#: finance.py:933
+msgid "Ok"
+msgstr "ठीक"
+
+#: finance.py:979
+#, python-format
+msgid "%s by %s"
+msgstr "%s by %s"
+
+#: finance.py:1038
+msgid "Exported data"
+msgstr "निर्यातित डेटा"
+
+#: helpbutton.py:38
+msgid "Help"
+msgstr "मदद"
+
+#: registerscreen.py:37
+#, fuzzy
+msgid ""
+"Welcome to Finance! This activity keeps track of income and expenses for "
+"anything that earns or spends money, like a school club.  To get started, "
+"use the Transaction box to add credits and debits.\n"
+"Once you have entered some transactions, visit the Chart and Budget views to "
+"see more."
+msgstr ""
+"<b>फ़ाइनेंस में आपका स्वागत है!</b>   इस कार्य में हर किसी के आय और व्यय का "
+"ब्यौरा रख सकते हैं जो कि पैसा कमाता और खर्च करता है जैसे कि स्कूल क्लब\n"
+"शुरूआत करने के लिए, ट्रांजेक्शन डब्बे का प्रयोग नामे और जमा जोड़ने के लिए "
+"करें.\n"
+"जब आप कुछ लेन-देन भर लेंगे तो और दूसरी चीजों को देखने के लिए चार्ट और बजट "
+"दृश्य में जाएं."
+
+#: registerscreen.py:92
+msgid "Description"
+msgstr "वर्णन"
+
+#: registerscreen.py:100
+msgid "Date"
+msgstr "तारीख़"
+
+#: registerscreen.py:109
+msgid "Amount"
+msgstr "रकम"
+
+#~ msgid "Period: "
+#~ msgstr "अवधि: "
+
+#~ msgid "Show Help"
+#~ msgstr "मदद दिखाएँ"
+
+#~ msgid "Transaction"
+#~ msgstr "लेन-देन"
+
+#~ msgid "Period"
+#~ msgstr "अवधि"
+
+#~ msgid "View"
+#~ msgstr "दृश्य"
+
+#~ msgid "Previous"
+#~ msgstr "पिछला"
+
+#~ msgid "This"
+#~ msgstr "यह"
+
+#~ msgid "Next"
+#~ msgstr "अगला"

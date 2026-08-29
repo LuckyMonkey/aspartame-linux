@@ -1,0 +1,272 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Spanish translations for PACKAGE package.
+# Copyright (C) 2010 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Gonzalo Odiard <godiard@gmail.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2016-05-19 23:44+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
+"Language-Team: Spanish\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2);;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1463701457.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr "FotoToon"
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"¿Interesado en contar una historia? ¡Fácil! ¡Usa tus imágenes y tu "
+"imaginación para crear tus propias historietas!"
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "Agregar Foto"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "Globo"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "Pensamiento"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Susurro"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Exclamación"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Caja"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Agregar un globo"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Curvas"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Recto"
+
+# puede ser Subrayado
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "Resaltado"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Idea"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Elige una linea de movimiento"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "Girar"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "Borrar"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "Negrita"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Italica"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "Color del texto"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Hecho"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Arrastra las imágenes para ordenarlas"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Reiniciar al tamaño de la caja"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr "Arrastra para mover o redimensionar usando las esquinas marcadas"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Seleccionar fuente"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr "Adaugă o imagine și începe crearea FotoToon tău"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "Alegeți o imagine"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "Guardar como imagen"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "Editar"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "Vista"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Presentación"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "Prezentare automatica"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "Definiti timpul imaginii in prezentare (secunde)"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Pantalla completa"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "Texto"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Cambiar el orden de las imágenes"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Editar imagen de fondo"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "Guardar como Libro (PDF)"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "Înregistrare ca film (OGG)"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "Éxito"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "Se ha creado una imagen en el Diario"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "Se ha creado un PDF en el Diario"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "{} ca video"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "S-a creat o imagine in Jurnal"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "Mostrar en el Diario"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "Ok"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "Título:"
+
+#~ msgid "Merry Christmas!"
+#~ msgstr "Feliz Navidad"
+
+#~ msgid "Hello pootle"
+#~ msgstr "Hola pootle"
+
+#~ msgid "Hello again pootle"
+#~ msgstr "Hola de nuevo, pootle"
+
+#~ msgid "Hasta la vista, pootle!"
+#~ msgstr "Hasta la vista, pootle!"
+
+#~ msgid "Add Globe"
+#~ msgstr "Agregar Globo"
+
+#~ msgid "Add Think"
+#~ msgstr "Agregar Pensamiento"
+
+#~ msgid "Add Whisper"
+#~ msgstr "Agregar Susurro"
+
+#~ msgid "Add Exclamation"
+#~ msgstr "Agregar Exclamación"
+
+#~ msgid "Add Box"
+#~ msgstr "Agregar Caja"
+
+#~ msgid "Choose image"
+#~ msgstr "Elegir Imagen"

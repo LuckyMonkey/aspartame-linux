@@ -1,0 +1,13 @@
+[Activity]
+name = Poll
+bundle_id = org.worldwideworkshop.PollBuilder
+license = GPLv2+
+exec = sugar-activity3 poll.PollBuilder
+icon = activity-poll
+activity_version = 33
+show_launcher = yes
+repository = https://github.com/godiard/poll-activity.git
+max_participants = 10
+summary = Make a poll
+url = https://help.sugarlabs.org/en/poll.html
+tags = Language;Maths;Media

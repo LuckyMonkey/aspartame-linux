@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-24 17:39+1100\n"
+"PO-Revision-Date: 2019-03-09 00:43+0000\n"
+"Last-Translator: Paulo Francisco <slomp@ufrgs.br>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1552092218.000000\n"
+
+#: activity/activity.info:2
+msgid "Log"
+msgstr "Histórico (log)"
+
+#: activity/activity.info:3
+msgid ""
+"This is an activity designed for anyone who wants to troubleshoot a "
+"complicated program on the computer."
+msgstr ""
+"Esta atividade foi projetada para pessoas interessadas em solucionar "
+"programas complicados no computador."
+
+#: logviewer.py:95
+msgid "Log Files"
+msgstr "Arquivos de Histórico (log)"
+
+#: logviewer.py:108
+msgid "Other"
+msgstr "Outro"
+
+#: logviewer.py:226
+#, python-format
+msgid "ERROR: Failed to look for files in '%(path)s'."
+msgstr "ERRO: Falha ao procurar arquivos em '%(path)s'."
+
+#: logviewer.py:246
+#, python-format
+msgid "ERROR: File '%(file)s' does not exist."
+msgstr "ERRO: O arquivo '%(file)s' não existe."
+
+#: logviewer.py:251
+#, python-format
+msgid "ERROR: Unable to read file '%(file)s'."
+msgstr "ERRO: Não foi possível ler o arquivo '%(file)s'."
+
+#: logviewer.py:399
+#, python-format
+msgid "Error: Can't open file '%s'\n"
+msgstr "Erro: Não foi possível abrir o arquivo '%s'\n"
+
+#: logviewer.py:453
+msgid "Show list of files"
+msgstr "Mostrar a lista de arquivos"
+
+# 1-geralmente ocorre quando a linha não cabe na tela e então escolhemos se queremos que a continuação apareça na próxima linha ou simplesmente haja truncamento visual;
+#
+#: logviewer.py:463
+msgid "Word Wrap"
+msgstr "Quebra de linha"
+
+#: logviewer.py:479
+msgid "Previous"
+msgstr "Anterior"
+
+#: logviewer.py:484
+msgid "Next"
+msgstr "Próximo"
+
+#: logviewer.py:498
+msgid "Delete Log File"
+msgstr "Apagar arquivo de Histórico (log)"
+
+#: logviewer.py:604
+msgid "Error"
+msgstr "Erro"
+
+#: logviewer.py:605
+#, python-format
+msgid "%(error)s when deleting %(file)s"
+msgstr "%(error)s enquanto excluindo %(file)s"
+
+#: logviewer.py:616
+msgid "Log Collector: Capture information"
+msgstr "Coletor de Histórico (Log): Captura informações"
+
+#: logviewer.py:623
+msgid ""
+"This captures information about the system\n"
+"and running processes to a journal entry.\n"
+"Use this to improve a problem report."
+msgstr ""
+"Este captura e envia informações sobre o sistema\n"
+"assim como os de processos sendo executados para o Diário.\n"
+"Use o mesmo para melhorar o relatório do problema."
+
+#: logviewer.py:627
+msgid "Capture information"
+msgstr "Capturar informação"
+
+#: logviewer.py:650
+msgid "Logs not captured"
+msgstr "Registros não capturados"
+
+#: logviewer.py:651
+msgid "The logs could not be captured."
+msgstr "Não foi possível capturar estes registros."
+
+#: logviewer.py:661
+#, python-format
+msgid "log-%s"
+msgstr "log-%s"
