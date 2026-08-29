@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2016-05-16 21:01+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ms\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1463432514.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr ""
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "Tambah gambar"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr ""
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "Fikir"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Bisik"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Seru"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Kotak"
+
+#: toolbar.py:88
+#, fuzzy
+msgid "Add a globe"
+msgstr "Tambahkan"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Lengkung"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Lurus"
+
+#: toolbar.py:108
+#, fuzzy
+msgid "Highlight"
+msgstr "Serlah"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Idea"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr ""
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr ""
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr ""
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "Tebal"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Italik"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "Warna Teks"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Batalkan"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Selesai"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Seret imej-imej untuk menyusun semula"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Tetapkan semula ke saiz kotak"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr ""
+"Seret untuk menggerakkan atau mengubah saiz menggunakan penjuru yang bertanda"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Pilih tulisan"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr "Tambah imej dan mula menghasilkan FotoToon anda"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "Pilih satu imej"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "Simpan sebagai imej"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "Sunting"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "Lihat"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Tayangan slaid"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "Tayangan slaid beserta Timings"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "Tetapkan Tempoh Imej dalam Tayangan Slaid (Saat)"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Skrin penuh"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "Teks"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Tukar kedudukan imej"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Sunting latar belakang imej"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "Simpan sebagai buku (PDF)"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "Simpan sebagai filem (OGG)"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "Berjaya"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "Sebuah imej telah dihasilkan di dalam Jurnal"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "Sebuah PDF telah dihasilkan di dalam Jurnal"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "{} sebagai filem"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "Sebuah filem telah disimpan di dalam Jurnal"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "Tunjukkan dalam Jurnal"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "Ok"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "Tajuk:"

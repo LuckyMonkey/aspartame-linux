@@ -1,0 +1,12 @@
+25
+
+* Adding Readme file (Aniket Mathur),
+* Fix PyGI warning for Gdk 3.0 (Ibiam Chihurumnaya),
+* Port from GObject to GLib (James Cameron),
+* Update screenshots (Vipul Gupta),
+* Update metadata in activity.info (Vipul Gupta),
+* Add .gitignore (Yash Agrawal),
+* Add GPLv3 copying and update metadata (pipix51),
+* Upgrade to sugargame v1.2 (Rahul Bothra),
+* Trying to port to Sugargame1.2 (Rahul Bothra),
+* Fix: Ported Actvity to Gtk+3 (Rahul Bothra)

@@ -1,0 +1,85 @@
+24
+* Add screenshots (Aryan Sharma)
+* Port to Python3 (Rahul Bothra, Zeet)
+* Fix source_remove warning (James Cameron) 
+* Port to GLib (Srevin Saju)
+* Fix deprecated escape sequences in regex search (Srevin Saju)
+* translate.sugarlabs.org synchronisation (James Cameron)
+* Update to espeak-ng 1.49.2 (Martin Abente)
+* Fix speech for Farsi and Hindi (Martin Abente)
+   These two languages dictionaries do not follow
+   the same structure as the other ones, so treat
+   them as special cases.
+* Regenerate POT file (Chihurumnaya Ibiam)
+
+23
+
+* Port to WebKit2 (Sanatan)
+   The WebKit API is deprecated giving way for the WebKit2 API
+   and this activity has been ported to ensure continuous flow
+   of operation without any errors.
+* Added GPLv3 License (Sanatan)
+* Update POT file (James Cameron)
+* Sync of translation.sugarlabs.org (James Cameron)
+   The names of translators have been updated.
+* Replace embedded speech.py with sugar3.speech (Sanatan)
+   The embedded speech.py class has been replaced with sugar3.speech
+
+22
+
+* New translations (Chris Leonard et al),
+* Added max_participants (Gonzalo Odiard),
+* Removed MANIFEST, warnings, unused code (James Cameron),
+* Update POT file (James Cameron).
+
+13
+
+* Es translations
+
+12
+
+*New traslations
+
+11
+
+*Gui improvements, removal of pippy code by Manu Quiñones
+*class to exec and license field on activity.info
+
+10
+
+*Gui fixes by Manu Quiñones
+*Code comments
+*Pylint fixes
+*New translations by pootle users Myckel, mschlager, aputsiaq
+
+9
+
+*adding logger
+*Imports in one line, more pep8 fixes
+*Espanish code comments
+
+8
+
+*Fixing activity.info deprecations
+
+7
+
+*Add langs by pootle, ES translation
+
+6
+
+* New toolbars, i18n, minor cosmetic changes.
+
+5
+
+* translation correction fixing #2212
+
+4
+
+2
+
+* Add speech support via espeak
+
+1
+
+* First public release.

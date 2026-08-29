@@ -1,0 +1,341 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-15 00:31-0400\n"
+"PO-Revision-Date: 2012-03-09 09:47+0200\n"
+"Last-Translator: Meechai <malaku38@hotmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: th\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "Memorize"
+msgstr "Memorize"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Here you can play games that challenge your memory! But, more importantly, "
+"you can create your own game to test the memory of others!"
+msgstr ""
+
+#: activity.py:71
+msgid "Play"
+msgstr "เล่น"
+
+#: activity.py:71
+msgid "Create"
+msgstr "สร้าง"
+
+#: activity.py:71
+msgid "Game name:"
+msgstr "ชื่อเกม:"
+
+#: activity.py:71
+msgid "Equal pairs"
+msgstr "ทำเป็นคู่"
+
+#: activity.py:72
+msgid "addition"
+msgstr "การบวก"
+
+#: activity.py:72
+msgid "letters"
+msgstr "ตัวอักษร"
+
+#: activity.py:72
+msgid "sounds"
+msgstr "เสียง"
+
+#: activity.py:96 activity.py:276
+msgid "Edit game"
+msgstr "แก้ไขเกม"
+
+#: activity.py:272
+msgid "Play game"
+msgstr "เล่นเกม"
+
+#: createcardpanel.py:82
+msgid "Add as new pair"
+msgstr "เพิ่มเป็นคู่ใหม่"
+
+#: createcardpanel.py:85
+msgid "Add"
+msgstr "เพิ่ม"
+
+#: createcardpanel.py:90
+msgid "Update selected pair"
+msgstr "ปรับปรุงคู่ที่ถูกเลือก"
+
+#: createcardpanel.py:93
+msgid "Update"
+msgstr "ปรับปรุง"
+
+#: createcardpanel.py:314
+msgid "Preview:"
+msgstr "ตัวอย่าง:"
+
+#: createcardpanel.py:330
+msgid "Text:"
+msgstr "ข้อความ:"
+
+#: createcardpanel.py:342
+msgid "Insert picture"
+msgstr "แทรกรูปภาพ"
+
+#: createcardpanel.py:347
+msgid "Insert sound"
+msgstr "แทรกเสียง"
+
+#: createcardpanel.py:504
+msgid "Pronounce text during tile flip"
+msgstr "ออกเสียงข้อความในระหว่างพลิกแผ่นป้าย"
+
+#: createtoolbar.py:46 createtoolbar.py:106
+msgid "Match different tiles"
+msgstr "จับคู่แผ่นป้ายใหม่"
+
+#: createtoolbar.py:51 createtoolbar.py:119
+msgid "Mixed tiles game"
+msgstr "แผ่นป้ายถูกผสม"
+
+#: createtoolbar.py:56
+msgid "Clear all tiles"
+msgstr "ล้างแผ่นป้ายทั้งหมด"
+
+#: createtoolbar.py:76
+msgid "Clear all the tiles from the game?"
+msgstr "ล้างแผ่นป้ายทั้งหมด?"
+
+#: createtoolbar.py:78
+msgid "Clear"
+msgstr "ล้าง"
+
+#: createtoolbar.py:80
+msgid "Do not clear"
+msgstr "ไม่ล้าง"
+
+#: createtoolbar.py:102
+msgid "Match identical tiles"
+msgstr "จับคู่แผ่นป้ายที่เหมือนกัน"
+
+#: createtoolbar.py:115
+msgid "Grouped tiles game"
+msgstr "แผ่นป้ายถูกจับกลุ่ม"
+
+#: fontcombobox.py:42
+msgid "Select font"
+msgstr ""
+
+#: game.py:94
+msgid "Loading game..."
+msgstr "กำลังโหลดเกม..."
+
+#: memorizetoolbar.py:43
+msgid "Addition"
+msgstr "การบวก"
+
+#: memorizetoolbar.py:44
+msgid "Letters"
+msgstr "ตัวอักษร"
+
+#: memorizetoolbar.py:45
+msgid "Sounds"
+msgstr "เสียง"
+
+#: memorizetoolbar.py:60
+msgid "Load demo games"
+msgstr "โหลดเกมสาธิต"
+
+#: memorizetoolbar.py:72
+msgid "Change size"
+msgstr ""
+
+#: memorizetoolbar.py:86
+msgid "Restart Game"
+msgstr "เริ่มเกมใหม่"
+
+#: memorizetoolbar.py:111
+msgid "Discard your modified game?"
+msgstr "ละทิ้งเกมที่คุณปรับเปลี่ยนหรือไม่?"
+
+#: memorizetoolbar.py:113
+msgid "Discard"
+msgstr "ละทิ้ง"
+
+#: memorizetoolbar.py:115
+msgid "Do not discard"
+msgstr "ไม่ละทิ้ง"
+
+#: messenger.py:192
+msgid "Receiving game"
+msgstr "การรับเกมส์"
+
+#: messenger.py:193
+msgid "done"
+msgstr "เรียบร้อยแล้ว"
+
+#: speak/voice.py:36
+msgid "Brazil"
+msgstr "ภาษาบราซิล"
+
+#: speak/voice.py:37
+msgid "Swedish"
+msgstr "ภาษาสวีเดน"
+
+#: speak/voice.py:38
+msgid "Icelandic"
+msgstr "ภาษาไอซ์แลนด์"
+
+#: speak/voice.py:39
+msgid "Romanian"
+msgstr "ภาษาโรมาเนีย"
+
+#: speak/voice.py:40
+msgid "Swahili"
+msgstr "ภาษาสวาฮีลี"
+
+#: speak/voice.py:41
+msgid "Hindi"
+msgstr "ภาษาฮินดู"
+
+#: speak/voice.py:42
+msgid "Dutch"
+msgstr "ภาษาดัทช์ (เนเธอแลนด์)"
+
+#: speak/voice.py:43
+msgid "Latin"
+msgstr "ภาษาละติน"
+
+#: speak/voice.py:44
+msgid "Hungarian"
+msgstr "ภาษาฮังการี"
+
+#: speak/voice.py:45
+msgid "Macedonian"
+msgstr "ภาษามาเซอะโดเนีย"
+
+#: speak/voice.py:46
+msgid "Welsh"
+msgstr "ภาษาเวลส์"
+
+#: speak/voice.py:47
+msgid "French"
+msgstr "ภาษาฝรั่งเศส"
+
+#: speak/voice.py:48
+msgid "Norwegian"
+msgstr "ภาษานอร์เวย์"
+
+#: speak/voice.py:49
+msgid "Russian"
+msgstr "ภาษารัสเซีย"
+
+#: speak/voice.py:50
+msgid "Afrikaans"
+msgstr "ภาษาแอฟริกา"
+
+#: speak/voice.py:51
+msgid "Finnish"
+msgstr "ภาษาฟินแลนด์"
+
+#: speak/voice.py:52 speak/voice.py:125
+msgid "Default"
+msgstr "ค่าปริยาย"
+
+#: speak/voice.py:53
+msgid "Cantonese"
+msgstr "ภาษาจีนกวางตุ้ง"
+
+#: speak/voice.py:54
+msgid "Scottish"
+msgstr "ภาษาสก็อต"
+
+#: speak/voice.py:55
+msgid "Greek"
+msgstr "ภาษากรีก"
+
+#: speak/voice.py:56
+msgid "Vietnam"
+msgstr "ภาษาเวียดนาม"
+
+#: speak/voice.py:57
+msgid "English"
+msgstr "ภาษาอังกฤษ"
+
+#: speak/voice.py:58
+msgid "Lancashire"
+msgstr "ภาษาแลนคาเชียร์"
+
+#: speak/voice.py:59
+msgid "Italian"
+msgstr "ภาษาอิตาลี"
+
+#: speak/voice.py:60
+msgid "Portugal"
+msgstr "ภาษาโปรตุเกส"
+
+#: speak/voice.py:61
+msgid "German"
+msgstr "ภาษาเยอรมัน"
+
+#: speak/voice.py:62
+msgid "Whisper"
+msgstr "กระซิบ"
+
+#: speak/voice.py:63
+msgid "Croatian"
+msgstr "ภาษาโครเอเชีย"
+
+#: speak/voice.py:64
+msgid "Czech"
+msgstr "ภาษาเช็ก"
+
+#: speak/voice.py:65
+msgid "Slovak"
+msgstr "ภาษาสโลวาเกีย"
+
+#: speak/voice.py:66
+msgid "Spanish"
+msgstr "ภาษาสเปน"
+
+#: speak/voice.py:67
+msgid "Polish"
+msgstr "ภาษาโปแลนด์"
+
+#: speak/voice.py:68
+msgid "Esperanto"
+msgstr "ภาษาเอสเปอรันโต"

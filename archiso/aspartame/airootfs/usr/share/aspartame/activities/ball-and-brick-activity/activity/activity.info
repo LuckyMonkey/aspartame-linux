@@ -1,0 +1,8 @@
+[Activity]
+name = BallAndBrick
+bundle_id = org.sugarlabs.BallAndBrick
+exec = sugar-activity3 activity.BallAndBrickActivity
+icon = activity-generic
+activity_version = 3
+repository = https://github.com/sugarlabs/ball-and-brick-activity.git
+license = GPLv3+

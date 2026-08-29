@@ -1,0 +1,235 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2015-01-23 16:30+0000\n"
+"Last-Translator: whe <heppew@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1422030641.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr "FotoToon"
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"Vertel je graag een verhaal? Makkelijk! Gebruik je afbeeldingen en je "
+"verbeelding om je eigen strips te maken!"
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "Voeg Foto toe"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "Tekstballon"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "Denk"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Fluister"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Uitroep"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Doos"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Voeg wereldbol toe"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Bochten"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Recht"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "Accentueer"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Idee"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Kies een beweging lijn"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "Omkeren"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "Vet"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Cursief"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "Tekst Kleur"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Klaar"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Sleep de afbeeldingen om volgorde te veranderen"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Herstel box grootte"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr ""
+"Sleep om de aangegeven hoeken te verplaatsen of van grootte te veranderen"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Selecteer lettertype"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr "Voeg een afbeelding toe en begin je FotoToon te maken"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "Kies een afbeelding"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "Bewaar als Afbeelding"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "Bewerk"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "Toon"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Diavoorstelling"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "Diavoorstelling met Timings"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "Stel AfbeeldingDuur in Diavoorstelling in"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Volledig scherm"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "Tekst"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Wijzig afbeelding volgorde"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Bewerk achtergrond"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "Opslaan als een Boek (PDF)"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "Bewaar als een Film (OGG)"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "Succes"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "Een afbeelding is gemaakt in het Logboek"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "Een PDF is gemaakt in het Logboek"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "{} als een film"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "Een afbeelding is gemaakt in het Logboek"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "Toon in Logboek"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "Ok"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "Titel:"
+
+#~ msgid "Add Globe"
+#~ msgstr "Tekstballon toevoegen"
+
+#~ msgid "Add Think"
+#~ msgstr "Denkballon toevoegen"
+
+#~ msgid "Add Whisper"
+#~ msgstr "Fluisterballon toevoegen"
+
+#~ msgid "Add Exclamation"
+#~ msgstr "Uitroepteken toevoegen"
+
+#~ msgid "Add Box"
+#~ msgstr "Box toevoegen"
+
+#~ msgid "Choose image"
+#~ msgstr "Kies afbeelding"

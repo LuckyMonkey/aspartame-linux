@@ -1,0 +1,134 @@
+Idea:
+	A maze game for the XO laptop.
+
+Basics:
+	Use the arrow keys to move around a maze.
+	When you get to the goal, jump to a harder maze.
+
+Collaboration:
+	Multiple players can play on the same maze.
+	The first one to the goal "wins"
+	When one player reaches the end, all players jump to the next maze.
+
+Bugs:
+	[done] Support multiple dirty-rects to avoid performance hit when players are far apart.
+
+Enhancements:
+	Show XO buddy icons instead of colored dots (only for easy mazes, when icons are large).
+	[done] Measure time-to-goal and rank players to formalize the winning condition.
+	Separate easy/hard from small/large maze.
+	Easy mazes could have extra holes punched in them to make for multiple solutions.
+	Different maze-building algorithms
+		Adjust random direction choice to favor twisty vs straight hallways
+		Add larger rooms
+	Bonus items could be sprinkled around the maze.
+		Speed up self/opponents
+		Slow down self/opponents
+		Punch extra holes
+		Move some walls - make sure there is still a valid solution
+		Teleport
+		Keys/locked doors
+		Toggle switches/doors
+	Enemies
+		Block you
+		Eat you
+	Players could block/eat each other.
+		This might require adding a "facing" to control who eats who.
+	Players could draw their own maps
+		Save, load, share
+		Would have to xfer whole map, not just random seed
+	Add multiple floors with ramps, ladders, pits, etc.
+	Add a light source at each player that reveals the map as you travel through it.
+	Add a fog that slowly fades areas you have seen already.
+
+
+Amazing Mazes:
+	Implement some algorithms from here:
+	http://www.astrolog.org/labyrnth/algrithm.htm
+
+	Currently (Maze v5) we use the Recursive backtracker algorithm.
+	It would be nice to switch to "Growing tree algorithm" which would allow
+	a simple adjustment to affect the river of the maze.  It could also have
+	a directional bias adjustment that controls the probability of digging
+	horizontally versus vertically.
+	
+		After implementing this, it seems that there are two adjustments that
+		make a difference to the maze.  One is the probability of continuing the
+		current path versus going back to the stack of old cells.  The other is
+		the probability of picking a new versus old cell.  If you always pick very
+		old cells the maze is very odd looking and boring.  If you always continue
+		the current path or pick a recent cell then the maze is just like before.
+		If you sometimes pick a cell mostly at random, then the maze has many short
+		paths, but the solution is relatively direct and easy to find.  I was not
+		able to find a combination of settings that makes the maze much more difficult
+		than before.  Perhaps picking a mostly new path, but not always the current
+		path is slightly more difficult.
+		
+		If I had to pick just one knob, then I would pick the % chance of continuing the
+		current path, with a fixed uniform probability of picking any path on the stack.
+		This gives a variety in the maze texture without ever getting a bizarre looking
+		maze.
+
+	For some complex mazes, would need to switch to an image-based map or an
+	adjacency-graph-based map.
+	Could use the mouse to move (move in small steps towards mouse - no clicking)
+	
+	Ideally you could just import any image and use it as a maze.
+	
+
+
+    self.icon = self.iconFromBuddy(buddy)
+
+def iconFromBuddy(self, buddy):
+    data = buddy.props.icon
+    fn = "/tmp/buddy.icon.jpg"
+    f = open(fn,"w")
+    f.write(data)
+    f.close()
+    # class StringFile:
+    #     def __init__(self, data):
+    #         self.data = data
+    #     def read(bytes=None):
+    #         if bytes is None:
+    #             bytes = len(self.data)
+    #         d = self.data[:bytes]
+    #         self.data = self.data[bytes:]
+    #         return d
+    # return pygame.image.load(StringFile(data)).convert_alpha()
+    img = pygame.image.load(fn)
+    img.convert_alpha()
+    return img
+
+
+
+        
+        icon = CanvasIcon(
+            icon_name='computer-xo',
+            xo_color=XoColor(buddy.props.color))
+        print icon
+        #print icon.get_pixbuf()
+        print icon.get_image()
+
+
+
+
+    icon = player.icon
+    if icon:
+        pygame.display.get_surface().blit(icon, rect)
+    else:
+
+
+
+
+
+    # self.img = self.readSVG(
+    # file = rsvg.Handle(filename)
+    # (w,h,w2,h2) = file.get_dimension_data()
+    # srf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
+    # file.render_cairo(cairo.Context(srf))
+    # return surface.CairoSurface(srf)        
+
+
+
+
+

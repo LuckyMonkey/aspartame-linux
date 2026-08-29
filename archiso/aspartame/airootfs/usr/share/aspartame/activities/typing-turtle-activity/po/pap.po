@@ -1,0 +1,636 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-27 14:55-0400\n"
+"PO-Revision-Date: 2013-08-30 01:51+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pap\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+#: titlescene.py:54 typingturtle.py:82
+msgid "Typing Turtle"
+msgstr "Turtuga Taipdó"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Need some help typing? Here you will learn the best way to hold your hands "
+"in order for you to become a faster typist!"
+msgstr ""
+
+#: balloongame.py:59 editlessonlistscreen.py:50 editlessonscreen.py:50
+#: editlessonscreen.py:584 lessonscreen.py:65
+msgid "Go Back"
+msgstr "Bai Bèk"
+
+#: balloongame.py:217
+msgid "You finished!"
+msgstr "Bo ta Kla!/ Bo a kaba!"
+
+#: balloongame.py:234
+#, python-format
+msgid "Your score was %(score)d."
+msgstr "Bo skor tabata %(score)d."
+
+#: balloongame.py:236
+#, python-format
+msgid "You earned a %(type)s medal!"
+msgstr "Bo a gana un %(type)s di medaya!"
+
+#: balloongame.py:238 medalscreen.py:101
+msgid "Press the ENTER key to continue."
+msgstr "primi ENTER pa sigui."
+
+#: balloongame.py:350 balloongame.py:363
+#, python-format
+msgid "SCORE: %d"
+msgstr "SKOR: %d"
+
+#: balloongame.py:378
+msgid "Type the words to pop the balloons!"
+msgstr "Taip e palabranan pa kibra e blasnan!"
+
+# revised=Revisa Jack
+#: editlessonlistscreen.py:47 typingturtle.py:111
+msgid "Edit Lessons"
+msgstr "Revisá Lèsnan"
+
+#: editlessonlistscreen.py:71 editlessonscreen.py:275
+msgid "Name"
+msgstr "Nòmber"
+
+#: editlessonlistscreen.py:76 editlessonscreen.py:307
+msgid "Description"
+msgstr "Deskripshon"
+
+# dikshonario ta duna taip
+#: editlessonlistscreen.py:82 editlessonscreen.py:287
+msgid "Type"
+msgstr "Taip"
+
+#: editlessonlistscreen.py:91
+msgid "Import Lessons from Journal"
+msgstr "Importá/Trese Lès for di den Diario"
+
+#: editlessonlistscreen.py:96
+msgid "Export Lessons to Journal"
+msgstr "Eksportá/Manda Lès den Zjurnal"
+
+#: editlessonlistscreen.py:101
+msgid "Save Lessons to Activity"
+msgstr "Warda Lèsnan den Aktividat"
+
+#: editlessonlistscreen.py:165 editlessonscreen.py:191
+msgid "Text"
+msgstr "Teksto"
+
+#: editlessonlistscreen.py:167 editlessonscreen.py:295
+msgid "Balloon Game"
+msgstr "Wega di Blas"
+
+#: editlessonlistscreen.py:204
+msgid "Delete Lesson?"
+msgstr "Kita e Lès?"
+
+#: editlessonlistscreen.py:205
+msgid "Deleting the lesson will erase the lesson content."
+msgstr "Pa kita e lès ta nifika pa kita kontenido di e lès."
+
+#: editlessonlistscreen.py:311
+msgid " (Exported Lessons)"
+msgstr " (Lèsnan Eksportá)"
+
+#: editlessonscreen.py:47
+msgid "Edit a Lesson"
+msgstr "Editá un Lès"
+
+#: editlessonscreen.py:77
+msgid "New keys"
+msgstr "Tekla Nobo"
+
+#: editlessonscreen.py:78
+msgid "Known keys"
+msgstr "Tekla Konosí"
+
+#: editlessonscreen.py:79
+msgid "Length"
+msgstr "Largura/Durashon"
+
+#: editlessonscreen.py:90
+msgid "Generate!"
+msgstr "Generá!"
+
+#: editlessonscreen.py:108 editlessonscreen.py:581
+msgid "Edit Word List"
+msgstr "Editá/Revisá Lista di Palabra"
+
+#: editlessonscreen.py:124
+#, python-format
+msgid "Step #%d"
+msgstr "Paso #%d"
+
+#: editlessonscreen.py:130
+msgid "Keys"
+msgstr "Teklanan/Toetsnan"
+
+#: editlessonscreen.py:131 editlessonscreen.py:388
+msgid "Words"
+msgstr "Palabranan"
+
+#: editlessonscreen.py:169
+msgid "Instructions"
+msgstr "Instrukshon"
+
+#: editlessonscreen.py:234
+msgid "Accuracy"
+msgstr "Presishon"
+
+#: editlessonscreen.py:235
+msgid "WPM"
+msgstr "WPM"
+
+#: editlessonscreen.py:249
+msgid "Score"
+msgstr "Skor"
+
+#: editlessonscreen.py:270
+msgid "Lesson Details"
+msgstr "Detaye di e Lès"
+
+#: editlessonscreen.py:291
+msgid "Normal Lesson"
+msgstr "Lès Normal"
+
+#: editlessonscreen.py:326
+msgid "Options"
+msgstr "Opshon"
+
+#: editlessonscreen.py:330
+msgid "Allow Mistakes"
+msgstr "Pèrmití Fayonan"
+
+#: editlessonscreen.py:332
+msgid "Allow Backspace"
+msgstr "Pèrmiti Backspace"
+
+#: editlessonscreen.py:353
+msgid "Automatic Lesson Generator"
+msgstr "Desaroyo Outomatiko di Lès"
+
+#: editlessonscreen.py:412
+msgid "Medal Requirements"
+msgstr "Rekrimentunan pa optené Medaya"
+
+#: editlessonscreen.py:420
+msgid "Bronze"
+msgstr "Bròns"
+
+#: editlessonscreen.py:421
+msgid "Silver"
+msgstr "Plata"
+
+#: editlessonscreen.py:422
+msgid "Gold"
+msgstr "Oro"
+
+#: editlessonscreen.py:594
+msgid ""
+"Type or paste words here, for the Automatic Lesson Generator.  If empty, the "
+"dictionary will be used."
+msgstr ""
+"Taip of plak palabra aki pa e Generado Outomatiko di Lès.  Si e ta bashí, e "
+"dikshonario lo wòrdu uzá."
+
+#: lessonbuilder.py:261 lessonscreen.py:617
+msgid "Well done!"
+msgstr "Bon hasí!"
+
+#: lessonbuilder.py:262
+msgid "Good job."
+msgstr "Bon trabou."
+
+#: lessonbuilder.py:263
+msgid "Awesome!"
+msgstr "Tremendo!"
+
+# Way to go= uitdrukking=er is nog veel werk aan de winkel= er moet nog veel aan gedaan worden  Jack
+#: lessonbuilder.py:264 lessonscreen.py:619
+msgid "Way to go!"
+msgstr "Tin mas pa bai! Tin mas ainda pa hasi!"
+
+#: lessonbuilder.py:265
+msgid "Wonderful!"
+msgstr "Maravioso!"
+
+#: lessonbuilder.py:266
+msgid "Nice work."
+msgstr "Bunita trabou./Nèchi hasí."
+
+#: lessonbuilder.py:267
+msgid "You did it!"
+msgstr "Bo a logr'é!"
+
+#: lessonbuilder.py:274
+msgid ""
+"Be careful to use the correct finger to press each key.  Look at the "
+"keyboard below if you need help remembering."
+msgstr ""
+"Paga tinu pa uza e dede korekto pa primi kada tekla.  Wak e keyboard aki bou "
+"si bo mester di yudansa."
+
+#: lessonbuilder.py:275
+msgid ""
+"Try to type at the same speed, all the time.  As you get more comfortable "
+"you can increase the speed a little."
+msgstr ""
+"Purba taip konstantemente riba e mesun velosidat.  Segun ku bo ta kustumá "
+"bopor oumentá e velosidat un poko."
+
+#: lessonbuilder.py:282
+msgid "left little"
+msgstr "Dede chikí robes"
+
+#: lessonbuilder.py:283
+msgid "left ring"
+msgstr "Dede di renchi robes"
+
+#: lessonbuilder.py:284
+msgid "left middle"
+msgstr "Dede meimei robes"
+
+#: lessonbuilder.py:285
+msgid "left index"
+msgstr "Dede indisé robes/wijsvinger robes"
+
+#: lessonbuilder.py:286 lessonscreen.py:44
+msgid "left thumb"
+msgstr "Duim robes"
+
+#: lessonbuilder.py:287
+msgid "right little"
+msgstr "Dede chikí drechi"
+
+#: lessonbuilder.py:288
+msgid "right ring"
+msgstr "Dede di renchi drechi"
+
+#: lessonbuilder.py:289
+msgid "right middle"
+msgstr "Dede meimei drechi"
+
+#: lessonbuilder.py:290
+msgid "right index"
+msgstr "Dede índise di man drechi"
+
+#: lessonbuilder.py:291 lessonscreen.py:49
+msgid "right thumb"
+msgstr "Duim drechi"
+
+#: lessonbuilder.py:320
+#, python-format
+msgid " and %s keys"
+msgstr " i %s teklas"
+
+#: lessonbuilder.py:322
+msgid " key"
+msgstr " tekla/toets"
+
+#: lessonbuilder.py:325
+#, python-format
+msgid ""
+"In this lesson, you will learn the %(keynames)s.\n"
+"\n"
+"Press the ENTER key when you are ready to begin!"
+msgstr ""
+"Den e lès aki nos lo siña e %(keynames)s. \n"
+"\n"
+"Primi riba ENTER ora ku bo ta kla pa kuminsa!"
+
+#: lessonbuilder.py:364
+msgid "Let's learn the new keys."
+msgstr "Laga nos ban siña e toetsnan/teklanan nobo."
+
+#: lessonbuilder.py:367
+msgid "Practice typing the keys you just learned."
+msgstr "Praktiká kon ta taip e tekla/toets ku bo a kaba di siña."
+
+#: lessonbuilder.py:371
+msgid "Now put the keys together into pairs."
+msgstr "Awor pone e teklanan/toetsnan huntu na par."
+
+#: lessonbuilder.py:376
+msgid "Time to type jumbles."
+msgstr "Ta tempu pa taip toetsnan/teklanan bruhá den otro."
+
+#: lessonbuilder.py:381
+msgid "Time to type real words."
+msgstr "Ta tempu pa taip palabranan real."
+
+#: lessonbuilder.py:390
+msgid "Hihowahyah!  Ready to learn the secret of fast typing?\n"
+msgstr "Hihowahyah!  Kla pa siña e sekreto kon pa taip lihé?\n"
+
+#: lessonbuilder.py:391
+msgid ""
+"Always use the correct finger to press each key!\n"
+"\n"
+msgstr ""
+"Semper usa e dede korekto pa primi kada tekla/toets!\n"
+"\n"
+
+#: lessonbuilder.py:392
+msgid "Now, place your hands on the keyboard just like the picture below.\n"
+msgstr "Awor, pone bo mannan riba e toetsenbord manera e plachi aki bou ta mustra.\n"
+
+#: lessonbuilder.py:393
+msgid "When you're ready, press the SPACE bar with your thumb!"
+msgstr "Ora bo ta kla, primi SPACE bar ku bo duim!"
+
+#: lessonbuilder.py:397
+msgid ""
+"Good job!  The SPACE bar is used to insert spaces between words.\n"
+"\n"
+msgstr ""
+"Hopi bon!  E SPACE bar ta wòrdu uzá pa pone espasio entre palabranan.\n"
+"\n"
+
+#: lessonbuilder.py:398
+msgid "Press the SPACE bar again with your thumb."
+msgstr "Primi SPACE bar un bia mas ku bo duim."
+
+#: lessonbuilder.py:402
+msgid "Now I'll teach you the second key, ENTER.  "
+msgstr "Awor lo mi siña bo e di dos tekla/toets, ENTER.  "
+
+#: lessonbuilder.py:403
+msgid ""
+"That's the big square key near your right little finger.\n"
+"\n"
+msgstr ""
+"Ta e toets/tekla grandi djis banda di bo pink/dede chikí.\n"
+"\n"
+
+#: lessonbuilder.py:404
+msgid "Now, reach your little finger over and press ENTER."
+msgstr "Awor rèk bo dede chikí iprimi riba ENTER."
+
+#: lessonbuilder.py:408
+msgid ""
+"Great!  When typing, the ENTER key is used to begin a new line.\n"
+"\n"
+msgstr ""
+"Masha bon!  Ora ku bo ta taip, e tekla/toets ENTER ta wòrdu uzá pa kuminsa "
+"un liña nobo.\n"
+"\n"
+
+#: lessonbuilder.py:409
+msgid "Press the ENTER key again with your right little finger."
+msgstr "Primi ENTER un bia mas ku bo dede chikí drechi."
+
+#: lessonbuilder.py:417
+msgid "Copy out the following text."
+msgstr "Kopia e siguiente teksto."
+
+#: lessonscreen.py:40
+msgid "left little finger"
+msgstr "Dede chikí robes"
+
+#: lessonscreen.py:41
+msgid "left ring finger"
+msgstr "dede di renchi robes"
+
+#: lessonscreen.py:42
+msgid "left middle finger"
+msgstr "dede meimei robes"
+
+#: lessonscreen.py:43
+msgid "left index finger"
+msgstr "dede indisé/wijsvinger robes"
+
+#: lessonscreen.py:45
+msgid "right little finger"
+msgstr "dede chiki drechi"
+
+#: lessonscreen.py:46
+msgid "right ring finger"
+msgstr "dede di renchi drechi"
+
+#: lessonscreen.py:47
+msgid "right middle finger"
+msgstr "dede meimei drechi"
+
+#: lessonscreen.py:48
+msgid "right index finger"
+msgstr "wijsvinger drechi"
+
+#: lessonscreen.py:190
+#, python-format
+msgid "<b>WPM:</b> %(wpm)d"
+msgstr "<b>WPM:</b> %(wpm)d"
+
+#: lessonscreen.py:198 medalscreen.py:92
+#, python-format
+msgid "<b>Accuracy:</b> %(accuracy)d%%"
+msgstr ""
+
+#: lessonscreen.py:511
+#, python-format
+msgid "Press and hold the shift key with your %(finger)s, "
+msgstr "Primi i keda tene e tekla SHIFT ku bo %(finger)s, "
+
+#: lessonscreen.py:512 lessonscreen.py:516 lessonscreen.py:520
+#, python-format
+msgid "then press the %(letter)s key with your %(finger)s."
+msgstr "anto primi e %(letter)s tekla cu bo %(finger)s."
+
+#: lessonscreen.py:515
+msgid "Press and hold the altgr key, "
+msgstr "Primi i keda tene tekla altgr, "
+
+#: lessonscreen.py:519
+msgid "Press and hold the altgr and shift keys, "
+msgstr "Primi i keda tene e tekla/toets ALT i SHIFT "
+
+#: lessonscreen.py:523
+#, python-format
+msgid "Press the %(letter)s key with your %(finger)s."
+msgstr "Primi e %(letter)s tekla cu bo %(finger)s."
+
+#: lessonscreen.py:543
+#, python-format
+msgid "Uh oh!  Your keyboard cannot type the letter '%s'.\n"
+msgstr "Ahá Ay Bo kibort no por tiep e letter  '%s'.\n"
+
+#: lessonscreen.py:544
+msgid "Please change your keyboard settings and try this lesson again."
+msgstr "Fabor di kambia e setting di bo toetsenbord i purba e lès aki di nobo."
+
+#: lessonscreen.py:616
+msgid "Good job!"
+msgstr "Bon Trabou!"
+
+#: lessonscreen.py:618
+msgid "Nice work!"
+msgstr "Nèchi hasí!"
+
+#: lessonscreen.py:624
+#, python-format
+msgid "You finished the lesson in %(time)d seconds, with %(errors)d errors.\n"
+msgstr "Bo a caba cu e lès den %(time)d segundonan, cu %(errors)d eròr.\n"
+
+#: lessonscreen.py:626
+#, python-format
+msgid ""
+"Your words per minute (WPM) was %(wpm)d, and your accuracy was %(accuracy)d%"
+"%.\n"
+"\n"
+msgstr ""
+"Bo palabranan pa minüt (PPM/WPM) tabata %(wpm)d i bo presishon tabata %"
+"(accuracy)d%%.\n"
+"\n"
+
+#: lessonscreen.py:629
+#, python-format
+msgid "You finished the lesson with %(errors)d errors.\n"
+msgstr "Bo a caba cu e lès cu %(errors)d errors.\n"
+
+#: lessonscreen.py:631
+#, python-format
+msgid ""
+"Your accuracy was %(accuracy)d%%.\n"
+"\n"
+msgstr ""
+"Bo presishon tabata %(accuracy)d%%.\n"
+"\n"
+
+#: lessonscreen.py:637
+#, python-format
+msgid "Congratulations!  You earned a %(type)s medal!"
+msgstr "Pabien bo a gana un %(type)s medal!ja!"
+
+#: lessonscreen.py:645
+msgid "You need to practice this lesson more before moving on."
+msgstr "Bo mester praktiká e lès aki mas tantu promé ku bo sigui dilanti."
+
+#: lessonscreen.py:648
+msgid "You almost got a medal!  Next time, try not to make as many errors."
+msgstr ""
+"Kasi bo a logra un medaya!  Otro bia, purba na hasi ménos fout/fayo/eror."
+
+#: lessonscreen.py:651
+msgid "You almost got a medal!  Next time, try to type a little faster."
+msgstr "Kasi bo a logra un medaya!  E bia aki purba na taip mas lihé."
+
+#: mainscreen.py:59
+msgid "Next"
+msgstr "Siguiente"
+
+#: mainscreen.py:68
+msgid "Previous"
+msgstr "Anterior"
+
+#: mainscreen.py:75
+msgid "Start Lesson"
+msgstr "Kuminsa e Lès"
+
+#: mainscreen.py:185
+msgid ""
+"You earned a medal in this lesson!  Advance to the next one\n"
+"by clicking the Next button."
+msgstr ""
+"Bo a logra un medaya den e lès aki!  Bai pa e siguiente dor di klek riba e "
+"boton di Sigui."
+
+#: mainscreen.py:216
+msgid "No Medal Yet"
+msgstr "Ningun Medaya Ainda"
+
+#: mainscreen.py:217
+msgid "Bronze Medal"
+msgstr "Medaya di Bròns"
+
+#: mainscreen.py:218
+msgid "Silver Medal"
+msgstr "Medaya di Plata"
+
+#: mainscreen.py:219
+msgid "Gold Medal"
+msgstr "Medaya di Oro"
+
+#: medalscreen.py:56
+msgid ""
+"<span font_desc='Serif Bold Italic 28'>Certificate of Achievement</span>"
+msgstr "<span font_desc='Serif Bold Italic 28'>Sertifikado di Logro</span>"
+
+#: medalscreen.py:59
+msgid "<span font_desc='Sans 16'>This certifies that</span>"
+msgstr "<span font_desc='Sans 16'>Esaki ta sertifiká ku </span>"
+
+#: medalscreen.py:62
+#, python-format
+msgid "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+
+#: medalscreen.py:65
+#, python-format
+msgid "<span font_desc='Sans 16'>earned a %(type)s medal in </span>"
+msgstr "<span font_desc='Sans 16'>a logra %(type)s de medaya den </span>"
+
+#: medalscreen.py:68
+#, python-format
+msgid "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+
+#: medalscreen.py:71
+#, python-format
+msgid "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+msgstr "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+
+#: medalscreen.py:88
+#, python-format
+msgid "<b>Words Per Minute:</b> %(wpm)d"
+msgstr "<b>Palabra pa minüt:</b> %(wpm)d"
+
+#: medalscreen.py:97
+#, python-format
+msgid "<b>SCORE:</b> %(score)d"
+msgstr "<b>Sco :</b> %(score)d"

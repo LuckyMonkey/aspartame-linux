@@ -1,0 +1,224 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-25 11:58+1000\n"
+"PO-Revision-Date: 2015-09-20 17:31+0000\n"
+"Last-Translator: Robert <rbuj@fedoraproject.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1442770289.000000\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Obtenció de llibres"
+
+#: activity/activity.info:3
+msgid ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+msgstr ""
+"Necessiteu llibres? Tots ens necessitem! En aquesta activitat podreu cercar "
+"i recuperar els llibres de moltes fonts diferents. Inicieu la lectura!"
+
+#: GetIABooksActivity.py:245 GetIABooksActivity.py:477
+#: GetIABooksActivity.py:481 GetIABooksActivity.py:616
+msgid "Catalogs"
+msgstr "Catàlegs"
+
+#: GetIABooksActivity.py:259
+msgid "Any language"
+msgstr "Qualsevol idioma"
+
+#: GetIABooksActivity.py:308 GetIABooksActivity.py:819
+msgid "Performing lookup, please wait..."
+msgstr "S'estan realitzant les operacions de recerca, si us plau, espereu..."
+
+#: GetIABooksActivity.py:348
+msgid "My books"
+msgstr "Els meus llibres"
+
+# well-spelled: GB
+#: GetIABooksActivity.py:362
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "Volum de %.2f GB"
+
+#: GetIABooksActivity.py:534
+msgid "Format:"
+msgstr "Format:"
+
+#: GetIABooksActivity.py:547
+msgid "Get Book"
+msgstr "Obté el llibre"
+
+#: GetIABooksActivity.py:587
+msgid "Enter words from the Author or Title to begin search."
+msgstr "Introduïu paraules de l'autor o del títol per començar la cerca."
+
+#: GetIABooksActivity.py:639
+msgid "Selected book"
+msgstr "Llibre seleccionat"
+
+#: GetIABooksActivity.py:658
+msgid "Title:\t\t"
+msgstr "Títol:\t\t"
+
+#: GetIABooksActivity.py:660
+msgid "Author:\t\t"
+msgstr "Autor:\t\t"
+
+#: GetIABooksActivity.py:664
+msgid "Summary:\t"
+msgstr "Resum:\t"
+
+#: GetIABooksActivity.py:673
+msgid "Language:\t"
+msgstr "Idioma:\t"
+
+#: GetIABooksActivity.py:674
+msgid "Publisher:\t"
+msgstr "Editorial:\t"
+
+#: GetIABooksActivity.py:804
+msgid "You must enter at least 3 letters."
+msgstr "Com a mínim heu d'introduir 3 lletres."
+
+#: GetIABooksActivity.py:832
+msgid "Could not reach the server. Maybe you are not connected to the network"
+msgstr "No es pot arribar al servidor. Potser no esteu connectat a la xarxa"
+
+#: GetIABooksActivity.py:836
+msgid "There was an error downloading the list."
+msgstr "Hi va haver un error en baixar la llista."
+
+#: GetIABooksActivity.py:838
+#, python-format
+msgid "New catalog list %s was found"
+msgstr "Es va trobar la llista nova de catàlegs «%s»"
+
+#: GetIABooksActivity.py:842
+msgid "Sorry, no books could be found."
+msgstr "Ho sentim, no es va poder trobar cap llibre."
+
+#: GetIABooksActivity.py:856
+msgid "Sorry, we only found english books."
+msgstr "Ho sentim, únicament es van trobar llibres en anglès."
+
+#: GetIABooksActivity.py:980
+#, python-format
+msgid ""
+"Error: Could not download %s. The path in the catalog seems to be incorrect."
+msgstr ""
+
+#: GetIABooksActivity.py:986
+#, python-format
+msgid "Error: Could not download %s. The other end sent an empty file."
+msgstr ""
+
+#: GetIABooksActivity.py:992
+#, python-format
+msgid ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+msgstr ""
+
+#: GetIABooksActivity.py:1054
+msgid "Download completed"
+msgstr "S'ha completat la baixada"
+
+#: GetIABooksActivity.py:1066
+#, python-format
+msgid "Open with %s"
+msgstr ""
+
+#: GetIABooksActivity.py:1070
+msgid "Show in Journal"
+msgstr "Mostra-ho al diari"
+
+#: GetIABooksActivity.py:1075
+msgid "Ok"
+msgstr "D'acord"
+
+#: listview.py:35
+msgid "Title"
+msgstr "Títol"
+
+#: listview.py:37
+msgid "Author"
+msgstr "Autor"
+
+#: listview.py:39
+msgid "Publisher"
+msgstr "Editorial"
+
+#: listview.py:41
+msgid "Language"
+msgstr "Idioma"
+
+#: listview.py:43
+msgid "Publish Date"
+msgstr "Data de publicació"
+
+#~ msgid "Error"
+#~ msgstr "Error"
+
+#~ msgid "Connection timed out for "
+#~ msgstr "S'ha exhaurit el temps d'espera de connexió a "
+
+#, python-format
+#~ msgid ""
+#~ "Error: Could not download %s. The path in the catalog seems to be incorrect"
+#~ msgstr ""
+#~ "Error: No s'ha pogut baixar %s. El camí al catàleg sembla que estigui "
+#~ "malament"
+
+#~ msgid "Books"
+#~ msgstr "Llibres"
+
+#~ msgid "Link:\t\t"
+#~ msgstr "Enllaça:\t\t"

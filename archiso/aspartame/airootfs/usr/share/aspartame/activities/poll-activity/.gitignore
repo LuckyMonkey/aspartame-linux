@@ -1,0 +1,8 @@
+*.pyc
+*.swp
+*.xo
+*.pyo
+*.bak
+*~
+dist
+locale

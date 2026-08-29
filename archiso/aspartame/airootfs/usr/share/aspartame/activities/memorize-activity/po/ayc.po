@@ -1,0 +1,328 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-15 00:31-0400\n"
+"PO-Revision-Date: 2015-07-20 04:46+0000\n"
+"Last-Translator: traductor_aymara <contacto@somosazucar.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ayc\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1437367608.000000\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "Memorize"
+msgstr "Amxaruña"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Here you can play games that challenge your memory! But, more importantly, "
+"you can create your own game to test the memory of others!"
+msgstr ""
+"¡Sumpuni amxaruri kankañama yant’asiñamatakixa, kunaymana anatañawa utji! ¡"
+"Juma kikimasa yaqha anatañanaksa wakichsurakismawa, masinakamana amxaruri "
+"kankañapa yant’añatakisa!"
+
+#: activity.py:71
+msgid "Play"
+msgstr "Anataña"
+
+#: activity.py:71
+msgid "Create"
+msgstr "Kamaña"
+
+#: activity.py:71
+msgid "Game name:"
+msgstr "Anatañana sutipa:"
+
+#: activity.py:71
+msgid "Equal pairs"
+msgstr "Kikipa panininaka"
+
+#: activity.py:72
+msgid "addition"
+msgstr "yapxatawi"
+
+#: activity.py:72
+msgid "letters"
+msgstr "qillqanaka"
+
+#: activity.py:72
+msgid "sounds"
+msgstr "sallanaka"
+
+#: activity.py:96 activity.py:276
+msgid "Edit game"
+msgstr "Anataña askichaña"
+
+#: activity.py:272
+msgid "Play game"
+msgstr "Anatxaña"
+
+#: createcardpanel.py:82
+msgid "Add as new pair"
+msgstr "Paninimpi yapxataña"
+
+#  "Añadir"
+#: createcardpanel.py:85
+msgid "Add"
+msgstr "Yapxataña"
+
+#: createcardpanel.py:90
+msgid "Update selected pair"
+msgstr "Panini ajllita jichhachaña"
+
+#: createcardpanel.py:93
+msgid "Update"
+msgstr "Jichhachaña"
+
+#: createcardpanel.py:314
+msgid "Preview:"
+msgstr "Nayraqata uñjawi:"
+
+#  "Texto:"
+#: createcardpanel.py:330
+msgid "Text:"
+msgstr "Qillqata:"
+
+#: createcardpanel.py:342
+msgid "Insert picture"
+msgstr "Jamuqata uskuntaña"
+
+#: createcardpanel.py:347
+msgid "Insert sound"
+msgstr "Salla uskuntaña"
+
+#: createcardpanel.py:504
+msgid "Pronounce text during tile flip"
+msgstr "Karta jaqukipañkama qillqata arsuyaña"
+
+#: createtoolbar.py:46 createtoolbar.py:106
+msgid "Match different tiles"
+msgstr "Mayja mayja phichanaka khuskhachaña"
+
+# Ah, acá la palabra JUEGO no proviene de JUGAR O DIVERTIRSE. Acá JUEGO significa COLECCIÓN. P.e. un juego de zapatillas, un juego de lápices de color, un juego de chompas, etc. o ¿Sí?
+#: createtoolbar.py:51 createtoolbar.py:119
+msgid "Mixed tiles game"
+msgstr "Kunaymana phichanaka wakichata anataña"
+
+#: createtoolbar.py:56
+msgid "Clear all tiles"
+msgstr "Phichanaka qawayatha apsuña"
+
+#: createtoolbar.py:76
+msgid "Clear all the tiles from the game?"
+msgstr "¿Anataña phichanaka qawayathti apsuña?"
+
+#  "Limpiar"
+#: createtoolbar.py:78
+msgid "Clear"
+msgstr "Pichsuña"
+
+#: createtoolbar.py:80
+msgid "Do not clear"
+msgstr "Janiwa pichsuñäkiti."
+
+#: createtoolbar.py:102
+msgid "Match identical tiles"
+msgstr "Kikipa uñtani phichakama apthapma."
+
+# ¿"Juego" con la acepción de JUGAR o COLECCIÓN?
+#: createtoolbar.py:115
+msgid "Grouped tiles game"
+msgstr "Mayachata phichanakampi anataña"
+
+# Fuente = letra
+#: fontcombobox.py:42
+msgid "Select font"
+msgstr "Qillqana kankaña ajlliña"
+
+#: game.py:94
+msgid "Loading game..."
+msgstr "Anataña wakt'ayaskiwa..."
+
+#: memorizetoolbar.py:43
+msgid "Addition"
+msgstr "Yapxataña"
+
+#: memorizetoolbar.py:44
+msgid "Letters"
+msgstr "Qillqanaka"
+
+#: memorizetoolbar.py:45
+msgid "Sounds"
+msgstr "Sallanaka"
+
+#: memorizetoolbar.py:60
+msgid "Load demo games"
+msgstr "Yant'aña anatañanaka wakt'ayaña"
+
+#: memorizetoolbar.py:72
+msgid "Change size"
+msgstr "Taña jaqukipaña"
+
+#: memorizetoolbar.py:86
+msgid "Restart Game"
+msgstr "Anataña mayampi qalltaña"
+
+#: memorizetoolbar.py:111
+msgid "Discard your modified game?"
+msgstr "¿Askichata anatañama apamukxantati?"
+
+#: memorizetoolbar.py:113
+msgid "Discard"
+msgstr "Apamukxaña"
+
+#: memorizetoolbar.py:115
+msgid "Do not discard"
+msgstr "Jani apamukumti"
+
+#: messenger.py:192
+msgid "Receiving game"
+msgstr "Anataña katuqaski"
+
+#: messenger.py:193
+msgid "done"
+msgstr "luratäxiwa"
+
+#: speak/voice.py:36
+msgid "Brazil"
+msgstr "Portugués aru"
+
+#: speak/voice.py:37
+msgid "Swedish"
+msgstr "Sueco aru"
+
+#: speak/voice.py:38
+msgid "Icelandic"
+msgstr "Islandés aru"
+
+#: speak/voice.py:39
+msgid "Romanian"
+msgstr "Rumano aru"
+
+#: speak/voice.py:40
+msgid "Swahili"
+msgstr "Swahili aru"
+
+#: speak/voice.py:41
+msgid "Hindi"
+msgstr "Hindi aru"
+
+#: speak/voice.py:42
+msgid "Dutch"
+msgstr "Holandés aru"
+
+#: speak/voice.py:43
+msgid "Latin"
+msgstr "Latín aru"
+
+#: speak/voice.py:44
+msgid "Hungarian"
+msgstr "Húngaro aru"
+
+#: speak/voice.py:45
+msgid "Macedonian"
+msgstr "Macedonio aru"
+
+#: speak/voice.py:46
+msgid "Welsh"
+msgstr "Galés aru"
+
+#: speak/voice.py:47
+msgid "French"
+msgstr "Francés aru"
+
+#: speak/voice.py:48
+msgid "Norwegian"
+msgstr "Noruego aru"
+
+#: speak/voice.py:49
+msgid "Russian"
+msgstr "Ruso aru"
+
+#: speak/voice.py:50
+msgid "Afrikaans"
+msgstr "Afrikáans aru"
+
+#: speak/voice.py:51
+msgid "Finnish"
+msgstr "Finés aru"
+
+#: speak/voice.py:52 speak/voice.py:125
+msgid "Default"
+msgstr "Qalltuthpacha wiñayataki wakichata"
+
+#: speak/voice.py:53
+msgid "Cantonese"
+msgstr "Cantonés aru"
+
+#: speak/voice.py:54
+msgid "Scottish"
+msgstr "Escocés aru"
+
+#: speak/voice.py:55
+msgid "Greek"
+msgstr "Griego aru"
+
+#: speak/voice.py:56
+msgid "Vietnam"
+msgstr "Vietnamita aru"
+
+#: speak/voice.py:57
+msgid "English"
+msgstr "Inglés aru"
+
+#: speak/voice.py:58
+msgid "Lancashire"
+msgstr "Lancashire aru"
+
+#: speak/voice.py:59
+msgid "Italian"
+msgstr "Italiano aru"
+
+#: speak/voice.py:60
+msgid "Portugal"
+msgstr "Portugués aru"
+
+#: speak/voice.py:61
+msgid "German"
+msgstr "Alemán aru"
+
+# Cf. Callo.
+#: speak/voice.py:62
+msgid "Whisper"
+msgstr "Chhipiña"
+
+#: speak/voice.py:63
+msgid "Croatian"
+msgstr "Croata aru"
+
+#: speak/voice.py:64
+msgid "Czech"
+msgstr "Checo aru"
+
+#: speak/voice.py:65
+msgid "Slovak"
+msgstr "Eslovaco aru"
+
+#: speak/voice.py:66
+msgid "Spanish"
+msgstr "Español aru"
+
+#: speak/voice.py:67
+msgid "Polish"
+msgstr "Polaco aru"
+
+#: speak/voice.py:68
+msgid "Esperanto"
+msgstr "Esperanto aru"

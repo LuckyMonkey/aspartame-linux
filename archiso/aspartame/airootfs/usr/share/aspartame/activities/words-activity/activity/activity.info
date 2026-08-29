@@ -1,0 +1,11 @@
+[Activity]
+name = Words
+bundle_id = org.laptop.Words
+exec = sugar-activity3 wordsactivity.WordsActivity
+icon = activity-icon
+activity_version = 24
+show_launcher = yes
+license = GPLv3+
+summary = Decode the world and help the world decode you. Use this translator for access and learn about many different languages!
+repository = https://github.com/sugarlabs/words-activity
+max_participants = 1

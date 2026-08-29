@@ -1,0 +1,8 @@
+[Activity]
+name = Reversi
+activity_version = 4
+bundle_id = net.coderanger.olpc.reversi
+icon = activity-reversi
+exec = sugar-activity3 activity.ReversiActivity
+license = GPLv2+
+repository = https://github.com/sugarlabs/reversi-activity.git

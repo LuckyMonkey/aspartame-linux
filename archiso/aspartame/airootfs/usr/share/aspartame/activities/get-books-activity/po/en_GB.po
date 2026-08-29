@@ -1,0 +1,227 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-25 11:58+1000\n"
+"PO-Revision-Date: 2017-10-28 05:33+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1509168811.000000\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Get Books"
+
+#: activity/activity.info:3
+msgid ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+msgstr ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+
+#: GetIABooksActivity.py:245 GetIABooksActivity.py:477
+#: GetIABooksActivity.py:481 GetIABooksActivity.py:616
+msgid "Catalogs"
+msgstr "Catalogs"
+
+#: GetIABooksActivity.py:259
+msgid "Any language"
+msgstr "Any language"
+
+#: GetIABooksActivity.py:308 GetIABooksActivity.py:819
+msgid "Performing lookup, please wait..."
+msgstr "Performing lookup, please wait..."
+
+#: GetIABooksActivity.py:348
+msgid "My books"
+msgstr "My books"
+
+#: GetIABooksActivity.py:362
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "%.2f GB Volume"
+
+#: GetIABooksActivity.py:534
+msgid "Format:"
+msgstr "Format:"
+
+#: GetIABooksActivity.py:547
+msgid "Get Book"
+msgstr "Get Book"
+
+#: GetIABooksActivity.py:587
+msgid "Enter words from the Author or Title to begin search."
+msgstr "Enter words from the Author or Title to begin search."
+
+#: GetIABooksActivity.py:639
+msgid "Selected book"
+msgstr "Selected book"
+
+#: GetIABooksActivity.py:658
+msgid "Title:\t\t"
+msgstr "Title:\t\t"
+
+#: GetIABooksActivity.py:660
+msgid "Author:\t\t"
+msgstr "Author:\t\t"
+
+#: GetIABooksActivity.py:664
+msgid "Summary:\t"
+msgstr "Summary:\t"
+
+#: GetIABooksActivity.py:673
+msgid "Language:\t"
+msgstr "Language:\t"
+
+#: GetIABooksActivity.py:674
+msgid "Publisher:\t"
+msgstr "Publisher:\t"
+
+#: GetIABooksActivity.py:804
+msgid "You must enter at least 3 letters."
+msgstr "You must enter at least 3 letters."
+
+#: GetIABooksActivity.py:832
+msgid "Could not reach the server. Maybe you are not connected to the network"
+msgstr "Could not reach the server. Maybe you are not connected to the network"
+
+#: GetIABooksActivity.py:836
+msgid "There was an error downloading the list."
+msgstr "There was an error downloading the list."
+
+#: GetIABooksActivity.py:838
+#, python-format
+msgid "New catalog list %s was found"
+msgstr "New catalogue list %s was found"
+
+#: GetIABooksActivity.py:842
+msgid "Sorry, no books could be found."
+msgstr "Sorry, no books could be found."
+
+#: GetIABooksActivity.py:856
+msgid "Sorry, we only found english books."
+msgstr "Sorry, we only found English books."
+
+#: GetIABooksActivity.py:980
+#, python-format
+msgid ""
+"Error: Could not download %s. The path in the catalog seems to be incorrect."
+msgstr ""
+"Error: Could not download %s. The path in the catalogue seems to be "
+"incorrect."
+
+#: GetIABooksActivity.py:986
+#, python-format
+msgid "Error: Could not download %s. The other end sent an empty file."
+msgstr "Error: Could not download %s. The other end sent an empty file."
+
+#: GetIABooksActivity.py:992
+#, python-format
+msgid ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+msgstr ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+
+#: GetIABooksActivity.py:1054
+msgid "Download completed"
+msgstr "Download completed"
+
+#: GetIABooksActivity.py:1066
+#, python-format
+msgid "Open with %s"
+msgstr "Open with %s"
+
+#: GetIABooksActivity.py:1070
+msgid "Show in Journal"
+msgstr "Show in Journal"
+
+#: GetIABooksActivity.py:1075
+msgid "Ok"
+msgstr "Ok"
+
+#: listview.py:35
+msgid "Title"
+msgstr "Title"
+
+#: listview.py:37
+msgid "Author"
+msgstr "Author"
+
+#: listview.py:39
+msgid "Publisher"
+msgstr "Publisher"
+
+#: listview.py:41
+msgid "Language"
+msgstr "Language"
+
+#: listview.py:43
+msgid "Publish Date"
+msgstr "Publish Date"
+
+#~ msgid "Error"
+#~ msgstr "Error"
+
+#~ msgid "Connection timed out for "
+#~ msgstr "Connection timed out for "
+
+#, python-format
+#~ msgid ""
+#~ "Error: Could not download %s. The path in the catalog seems to be incorrect"
+#~ msgstr ""
+#~ "Error: Could not download %s. The path in the catalogue seems to be incorrect"
+
+#, python-format
+#~ msgid "Error: Could not download %s. "
+#~ msgstr "Error: Could not download %s. "
+
+#~ msgid "Books"
+#~ msgstr "Books"
+
+#~ msgid "Link:\t\t"
+#~ msgstr "Link:\t\t"
+
+#~ msgid "You must enter at least one search word."
+#~ msgstr "You must enter at least one search word."
+
+#, python-format
+#~ msgid ""
+#~ "Error: Could not download %s . The path in the catalog seems to be incorrect"
+#~ msgstr ""
+#~ "Error: Could not download %s . The path in the catalogue seems to be "
+#~ "incorrect"
+
+#, python-format
+#~ msgid "Success: %s was added to Journal."
+#~ msgstr "Success: %s was added to Journal."

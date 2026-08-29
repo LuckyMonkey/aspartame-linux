@@ -89,6 +89,15 @@ install -d /usr/share/sugar/extensions/cpsection
 chmod 0755 /usr/local/libexec/aspartame-remove-activity
 cp -a /usr/share/aspartame/cpsection/. /usr/share/sugar/extensions/cpsection/
 
+# Install the pinned canonical Activity collection into the image.  The
+# manifest is the single source of truth for these bundles.
+install -d /usr/share/sugar/activities
+while IFS=$'\t' read -r repo bundle; do
+    test -n "$repo" || continue
+    cp -a "/usr/share/aspartame/activities/$repo" \
+        "/usr/share/sugar/activities/$bundle"
+done < /usr/share/aspartame/activities/INSTALL-MANIFEST
+
 site_packages=$(python3 -c 'import sugar3, os; print(os.path.dirname(sugar3.__file__))')
 patch -d "$(dirname "$site_packages")" -p0 < \
     /usr/share/aspartame/0001-integrated-navigation.patch

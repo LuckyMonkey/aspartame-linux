@@ -1,0 +1,61 @@
+Etapa 1
+
+	* Borrado de globos (hecho)
+	* Cabecera para titulo de la historieta (hecho) 
+	* Seteo de fonts y colores del texto en los globos (hecho)
+	* Setear valores del toolbar de texto acordemente al globo seleccionado (hecho)
+	* Giro de Globos (hecho)
+	* Persistencia de las historietas (hecho)
+	* Obtencion de las fotos desde el journal (hecho)
+	* Borrado de cuadros (hecho)
+	* Estabilizar persistencia
+
+Etapa 2
+
+	* Terminar refactoring 
+    * Uso de clipboard
+	* Reemplazo de imagenes de Globo y Grito por dibujo con vectores
+	* Cambiar de orden los cuadros
+
+Etapa 3
+
+	* Colaboracion
+
+Bugs
+    * el giro en el grito no funciona bien
+
+
+
+Notas:
+
+	* Seria bueno implementar herencia en los globos, cuadros y paginas con los objetos que contienen la data
+
+
+Solicitado por Cristina Zarate (31/1/2010)
+
+EN TEST:
+2) Aparentemente, al poner los signos de interrogación y exclamación iniciales, desaparece la selección del globo (recuadro) y no puedo volver a seleccionarlo, aunque parece estarlo ya que con delete lo borro.
+3) Me sucedió que luego de escribir todo el texto del globo quise colocar el signo al principio porque lo había olvidado y al insertarlo me borró todo el texto dejando sólo el signo y la primer palabra. 
+4) Sin embargo pude insertar cualquier otro caracter. Pienso que debe ser por el idioma. ¿Podría solucionarse este tema ya que es muy importante el uso de signo en el diálogo de historietas?
+No permite ñ. Al colocarla pierdo el cursor
+En esta prueba no pude guardar la actividad de ninguna manera. ¿Qué puede ser?
+
+
+PENDIENTE:
+1) No le pude poner nombre a la actividad para guardarla por eso va como Actividad Foto Toon.
+5) ¿Se le podría poner color de relleno al globo y/o color al borde?
+6) Se podría considerar agregar alguna otra fuente (letra) en cursiva?
+
+Reportado por Cristina Zarate (5/2/2010)
+ 
+No borra hacia la derecha
+No pone tildes.
+
+
+
+PAQUETES GRAFICOS:
+Fondos y personajes
+
+ClassBook
+
+Curioson

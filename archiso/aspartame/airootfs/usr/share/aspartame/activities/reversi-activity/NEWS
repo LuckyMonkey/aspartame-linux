@@ -1,0 +1,33 @@
+
+v4
+
+* Regenerate POT file (Jui Pradhan),
+* Change to meaningful variable names (Jui Pradhan),
+* Flake8 changes (Jui Pradhan),
+* Reflect the background and board color defaults on slider (Jui Pradhan),
+* Change Background and board color defaults (Jui Pradhan),
+* Fix the color of player1 can't change to white (Jui Pradhan),
+* Port to python3 (Ayush Nawal),
+* Fix speaker button not working (Rahul Bothra),
+* Port to Gtk+3 (Yash Agrawal)
+
+v3
+
+* Add restart button (Alan Aguiar),
+* Add player label (Alan Aguiar),
+* Add button for sound control (Alan Aguiar),
+* Add color custom boards and pieces (Alan Aguiar),
+* Redraw to different screen sizes (Alan Aguiar),
+* Update Sugargame to latest versions (Alan Aguiar),
+* Update icon (Alan Aguiar),
+* Add po for future translations (Alan Aguiar)
+
+v2
+
+* Add setup.py (Alan Aguiar),
+* Remove Debug prints (Alan Aguiar),
+* Sugargame Changes (Alan Aguiar)
+
+v1
+
+* Initial Release

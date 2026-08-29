@@ -1,0 +1,11 @@
+23
+
+* include license, port to GTK+ 3, tidy source, fix warnings
+
+22
+
+* final tablet mode scheme added
+* x = left click
+* square or spacebar = new round
+* arrow keys will move the mouse
+* it now works properly without alteration in a non-Sugar environment.

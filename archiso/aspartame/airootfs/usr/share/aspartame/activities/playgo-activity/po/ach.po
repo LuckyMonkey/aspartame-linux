@@ -1,0 +1,145 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-30 00:32-0400\n"
+"PO-Revision-Date: 2017-03-16 13:39+0000\n"
+"Last-Translator: denish <mofistone@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ach\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1489671553.000000\n"
+
+#: activity/activity.info:2
+msgid "PlayGo"
+msgstr "PlayGo"
+
+#: activity.py:56
+msgid "Game"
+msgstr "Tuko"
+
+#: activity.py:72
+msgid "Welcome to PlayGo!"
+msgstr "Wajoli i PlayGo!"
+
+#: activity.py:129
+msgid "Pass"
+msgstr "Kati"
+
+#: activity.py:134
+msgid "Undo"
+msgstr "Gony"
+
+#: activity.py:161 activity.py:220
+msgid "It's not your turn!"
+msgstr "Pud pe kare ni!"
+
+#: activity.py:186
+msgid "Opponent passed"
+msgstr "Ngat ma pyemi okato"
+
+#: activity.py:285
+msgid "White's turn"
+msgstr "Kare pa matar"
+
+#: activity.py:287
+msgid "Black's turn"
+msgstr "Kare pa macol"
+
+#: activity.py:344
+msgid "Black wins!"
+msgstr "Macol oloyo!"
+
+#: activity.py:346
+msgid "White wins!"
+msgstr "Matar oloyo!"
+
+#: activity.py:348
+msgid "There was a tie!"
+msgstr "Twec obedo tye!"
+
+#: activity.py:349
+#, python-format
+msgid "Game ended! %s"
+msgstr "Tuko otum! %s"
+
+#: activity.py:350
+#, python-format
+msgid "Final score: White %(W)g - Black %(B)g"
+msgstr "Wel ducu: Matar %(W)g - Macol %(B)g"
+
+#: activity.py:375 activity.py:381 activity.py:387
+msgid "AI"
+msgstr "AI"
+
+#: activity.py:375
+#, python-format
+msgid "GnuGo loading failed!: %s"
+msgstr "Cano GnuGo pe olare!: %s"
+
+#: activity.py:381
+msgid "PlayGo AI Activated"
+msgstr "Kicako PlayGo AI"
+
+#: activity.py:387
+msgid "PlayGo AI Deactivated"
+msgstr "Kijuko woko PlayGo AI"
+
+#: activity.py:401
+#, python-format
+msgid "Score is: White %(W)g - Black %(B)g"
+msgstr "Wel tye: Matar %(W)g - Macol %(B)g"
+
+#: activity.py:458
+msgid "Buddy joined"
+msgstr "Buddy odonyo"
+
+#: activity.py:458
+#, python-format
+msgid "%s joined"
+msgstr "%s odonyo"
+
+#: activity.py:461
+msgid "Buddy left"
+msgstr "Buddy oaa oko"
+
+#: activity.py:461
+#, python-format
+msgid "%s left"
+msgstr "%s oaa oko"
+
+#: gametoolbar.py:55
+msgid "Restart Game"
+msgstr "Nwo cako tuko"
+
+#: gametoolbar.py:64
+msgid "Board size"
+msgstr "Dit me bao"
+
+#: gametoolbar.py:83
+msgid "Play against PlayGo!"
+msgstr "Tuk wun ki PlayGo!"
+
+#: gametoolbar.py:85
+msgid "You need to install gnugo to play against PlayGo"
+msgstr "Myero i ket gnugo me tuko wun ki PlayGo"
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr "Gweng dong tye kenyo!"
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr "Turo cik me ko!"
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr "Cik pe yee wot eno ni."

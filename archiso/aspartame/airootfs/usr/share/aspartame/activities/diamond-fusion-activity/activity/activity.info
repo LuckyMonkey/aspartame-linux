@@ -1,0 +1,6 @@
+[Activity]
+name = Diamond Fusion
+activity_version = 1
+bundle_id = com.francocorrea.diamondfusion
+exec = sugar-activity-web
+icon = activity-icon

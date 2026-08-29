@@ -1,0 +1,10 @@
+[Activity]
+name = Mancala
+activity_version = 23
+host_version = 1
+bundle_id = mulawa.Mancala
+license = GPLv3+
+icon = activity
+show_launcher = yes
+exec = sugar-activity3 activity.PeterActivity
+repository = https://github.com/sugarlabs/mancala-activity.git

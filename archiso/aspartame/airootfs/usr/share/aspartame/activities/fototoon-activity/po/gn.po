@@ -1,0 +1,204 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-09 19:19+0000\n"
+"PO-Revision-Date: 2016-05-16 21:01+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: gn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1463432470.000000\n"
+
+#: ../historietaactivity.py:75
+msgid "Add an image and start creating your FotoToon"
+msgstr "Emoĩ peteĩ ta'anga ha eñepyrũ rejapo FotoToon nde mba'eva"
+
+#: ../historietaactivity.py:86
+msgid "Choose an image"
+msgstr "Poravo ta'anga"
+
+#: ../historietaactivity.py:100 ../historietaactivity.py:222
+msgid "Save as Image"
+msgstr "Mba'éicha reñongatuta ta'anga"
+
+#: ../historietaactivity.py:100
+msgid "PNG"
+msgstr "PNG"
+
+#: ../historietaactivity.py:118
+msgid "Edit"
+msgstr "Embo hasa pora jey"
+
+#: ../historietaactivity.py:125
+msgid "View"
+msgstr "Ehecha"
+
+#: ../historietaactivity.py:129
+msgid "Slideshow"
+msgstr "Jechauka"
+
+#: ../historietaactivity.py:136
+msgid "Slideshow with Timings"
+msgstr "Jechauka pyae"
+
+#: ../historietaactivity.py:143
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "Emyesakã mboy ãra ohechaukata ta'anga"
+
+#: ../historietaactivity.py:168
+msgid "Fullscreen"
+msgstr "Emoĩ tuichave ta'anga"
+
+#: ../historietaactivity.py:186
+msgid "Text"
+msgstr "Aranduka"
+
+#: ../historietaactivity.py:191
+msgid "Change image order"
+msgstr "Emyengovia ta'anga jechauka"
+
+#: ../historietaactivity.py:197
+msgid "Edit background image"
+msgstr "Ehechauka pora jey ta'anga"
+
+#: ../historietaactivity.py:229
+msgid "Save as a Book (PDF)"
+msgstr "Eñongatu arandukaicha (PDF)"
+
+#: ../historietaactivity.py:236
+msgid "Save as a Movie (OGG)"
+msgstr "Eñongatu ta'angamyi (OGG)"
+
+#: ../historietaactivity.py:392 ../historietaactivity.py:448
+#: ../historietaactivity.py:501
+msgid "Success"
+msgstr "Osẽ porãmba"
+
+#: ../historietaactivity.py:393
+msgid "A image was created in the Journal"
+msgstr "Oñeñongatu ta'anga tembiapokuera apytepe"
+
+#: ../historietaactivity.py:449
+msgid "A PDF was created in the Journal"
+msgstr "Oñeñongatu PDF tembiapokuera apytepe"
+
+#: ../historietaactivity.py:495
+msgid "{} as a movie"
+msgstr "{} Ta'ãnga momýicha"
+
+#: ../historietaactivity.py:502
+msgid "A movie was saved in the Journal"
+msgstr "Eñongatu ta'ãnga tembiapo ryrupe"
+
+#: ../historietaactivity.py:510
+msgid "Show in Journal"
+msgstr "Ehechauka tembiapo ryrupe"
+
+#: ../historietaactivity.py:512
+msgid "Ok"
+msgstr "OK"
+
+#: ../historietaactivity.py:796
+msgid "Title:"
+msgstr "Téra"
+
+#: ../toolbar.py:79
+msgid "Add Photo"
+msgstr "Mbojo'a ta'ãnga"
+
+#: ../toolbar.py:83
+msgid "Globe"
+msgstr "Mba'e apu'a"
+
+#: ../toolbar.py:83
+msgid "Think"
+msgstr "Py'amongeta"
+
+#: ../toolbar.py:84
+msgid "Whisper"
+msgstr "Ñe'ẽguy"
+
+#: ../toolbar.py:84
+msgid "Exclamation"
+msgstr "Mbotuichaha"
+
+#: ../toolbar.py:85
+msgid "Box"
+msgstr "Mbaeru ryepy"
+
+#: ../toolbar.py:88
+msgid "Add a globe"
+msgstr "Emoive nde arandura"
+
+#: ../toolbar.py:107
+msgid "Curves"
+msgstr "Mohenda karẽ"
+
+#: ../toolbar.py:107
+msgid "Straight"
+msgstr "Mohenda joja"
+
+#: ../toolbar.py:108
+msgid "Highlight"
+msgstr "Emohenda añete"
+
+#: ../toolbar.py:108
+msgid "Idea"
+msgstr "Temimo'ã"
+
+#: ../toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Eiporavo linea o'kueva"
+
+#: ../toolbar.py:134
+msgid "Turn"
+msgstr "Embojere"
+
+#: ../toolbar.py:141
+msgid "Delete"
+msgstr "Eipea"
+
+#: ../toolbar.py:259
+msgid "Bold"
+msgstr "Emohũve tái"
+
+#: ../toolbar.py:264
+msgid "Italic"
+msgstr "Italica"
+
+#: ../toolbar.py:278
+msgid "Text Color"
+msgstr "Say aranduka"
+
+#: ../reorderwindow.py:54
+msgid "Cancel"
+msgstr "Eheja"
+
+#: ../reorderwindow.py:59
+msgid "Done"
+msgstr "Japopapyre"
+
+#: ../reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Tembiapo"
+
+#: ../reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Emoĩ jey oĩhagueicha pe mba'eryru"
+
+#: ../reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr "Embo syryry hembe'y embo tuicha o embo michĩ hag̃ua"
+
+#: ../fontcombobox.py:90
+msgid "Select font"
+msgstr "Eiporavo taí"

@@ -1,0 +1,627 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-27 14:55-0400\n"
+"PO-Revision-Date: 2013-04-19 21:47+0200\n"
+"Last-Translator: anushnur <anush.mkrtchyan@ca1492.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+#: titlescene.py:54 typingturtle.py:82
+msgid "Typing Turtle"
+msgstr "Տպող կրիա"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Need some help typing? Here you will learn the best way to hold your hands "
+"in order for you to become a faster typist!"
+msgstr ""
+"Օգնության կարի՞ք ունես տպագրելու համար. Այստեղ կսովորես ձեռքերդ կանոնավոր "
+"պահելու լավագույն եղանակը` ավելի արագ տպելու համար:"
+
+#: balloongame.py:59 editlessonlistscreen.py:50 editlessonscreen.py:50
+#: editlessonscreen.py:584 lessonscreen.py:65
+msgid "Go Back"
+msgstr "Ետ գնալ"
+
+#: balloongame.py:217
+msgid "You finished!"
+msgstr "Ավարտեցիք"
+
+#: balloongame.py:234
+#, python-format
+msgid "Your score was %(score)d."
+msgstr "Ձեր միավորը %(score)d:"
+
+#: balloongame.py:236
+#, python-format
+msgid "You earned a %(type)s medal!"
+msgstr "Դուք նվաճեցիք %(type)s մեդալ:"
+
+#: balloongame.py:238 medalscreen.py:101
+msgid "Press the ENTER key to continue."
+msgstr "Շարունակելու համար սեղմեք ENTER ստեղնը:"
+
+#: balloongame.py:350 balloongame.py:363
+#, python-format
+msgid "SCORE: %d"
+msgstr "ՄԻԱՎՈՐԸ. %d"
+
+#: balloongame.py:378
+msgid "Type the words to pop the balloons!"
+msgstr "Փուչիկները պայթեցնելու համար` տպե´ք բառերը"
+
+#: editlessonlistscreen.py:47 typingturtle.py:111
+msgid "Edit Lessons"
+msgstr "Խմբագրել Դասերը"
+
+#: editlessonlistscreen.py:71 editlessonscreen.py:275
+msgid "Name"
+msgstr "Անունը"
+
+#: editlessonlistscreen.py:76 editlessonscreen.py:307
+msgid "Description"
+msgstr "Նկարագրություն"
+
+#: editlessonlistscreen.py:82 editlessonscreen.py:287
+msgid "Type"
+msgstr "Տեսակը"
+
+#: editlessonlistscreen.py:91
+msgid "Import Lessons from Journal"
+msgstr "Դասերը ներմուծել Մատյանից"
+
+#: editlessonlistscreen.py:96
+msgid "Export Lessons to Journal"
+msgstr "Դասերն արտահանել Մատյան"
+
+#: editlessonlistscreen.py:101
+msgid "Save Lessons to Activity"
+msgstr "Դասերը պահել Գործունեության մեջ"
+
+#: editlessonlistscreen.py:165 editlessonscreen.py:191
+msgid "Text"
+msgstr "Տեքստ"
+
+#: editlessonlistscreen.py:167 editlessonscreen.py:295
+msgid "Balloon Game"
+msgstr "Փուչիկով խաղ"
+
+#: editlessonlistscreen.py:204
+msgid "Delete Lesson?"
+msgstr "Ջնջե՞լ դասը"
+
+#: editlessonlistscreen.py:205
+msgid "Deleting the lesson will erase the lesson content."
+msgstr "Ջնջելով դասը` կջնջեք նաև դասի բովանդակությունը"
+
+#: editlessonlistscreen.py:311
+msgid " (Exported Lessons)"
+msgstr " (Արտահանված դասեր)"
+
+#: editlessonscreen.py:47
+msgid "Edit a Lesson"
+msgstr "Խմբագրել որևէ Դաս"
+
+#: editlessonscreen.py:77
+msgid "New keys"
+msgstr "Նոր ստեղներ"
+
+#: editlessonscreen.py:78
+msgid "Known keys"
+msgstr "Հայտնի ստեղներ"
+
+#: editlessonscreen.py:79
+msgid "Length"
+msgstr "Երկարություն"
+
+#: editlessonscreen.py:90
+msgid "Generate!"
+msgstr "Ստեղծե՛լ"
+
+#: editlessonscreen.py:108 editlessonscreen.py:581
+msgid "Edit Word List"
+msgstr "Խմբագրել բառացանկը"
+
+#: editlessonscreen.py:124
+#, python-format
+msgid "Step #%d"
+msgstr "Քայլ #%d"
+
+#: editlessonscreen.py:130
+msgid "Keys"
+msgstr "Ստեղներ"
+
+#: editlessonscreen.py:131 editlessonscreen.py:388
+msgid "Words"
+msgstr "Բառեր"
+
+#: editlessonscreen.py:169
+msgid "Instructions"
+msgstr "Հրահանգներ"
+
+#: editlessonscreen.py:234
+msgid "Accuracy"
+msgstr "Ճշգրտություն"
+
+#: editlessonscreen.py:235
+msgid "WPM"
+msgstr "բառ/րոպե"
+
+#: editlessonscreen.py:249
+msgid "Score"
+msgstr "Միավոր"
+
+#: editlessonscreen.py:270
+msgid "Lesson Details"
+msgstr "Դասի մանրամասները"
+
+#: editlessonscreen.py:291
+msgid "Normal Lesson"
+msgstr "Սովորական դաս"
+
+#: editlessonscreen.py:326
+msgid "Options"
+msgstr "Տարբերակներ"
+
+#: editlessonscreen.py:330
+msgid "Allow Mistakes"
+msgstr "Թույլատրել սխալները"
+
+# ջնջել նախորդ տառը
+#: editlessonscreen.py:332
+msgid "Allow Backspace"
+msgstr "Թույլատրել հետդարձը"
+
+#: editlessonscreen.py:353
+msgid "Automatic Lesson Generator"
+msgstr "Դասի ինքնաստեղծիչ"
+
+#: editlessonscreen.py:412
+msgid "Medal Requirements"
+msgstr "Մեդալի պահանջները"
+
+#: editlessonscreen.py:420
+msgid "Bronze"
+msgstr "Բրոնզե"
+
+#: editlessonscreen.py:421
+msgid "Silver"
+msgstr "Արծաթե"
+
+#: editlessonscreen.py:422
+msgid "Gold"
+msgstr "Ոսկե"
+
+#: editlessonscreen.py:594
+msgid ""
+"Type or paste words here, for the Automatic Lesson Generator.  If empty, the "
+"dictionary will be used."
+msgstr ""
+"Բառերը տպեք կամ փակցրեք այստեղ, դասի ինքնաստեղծի համար:  Դատարկ թողնելու "
+"դեպքում կօգտագործվի բառարանը:"
+
+#: lessonbuilder.py:261 lessonscreen.py:617
+msgid "Well done!"
+msgstr "Կեցցե՛ս"
+
+#: lessonbuilder.py:262
+msgid "Good job."
+msgstr "Լա՛վ է"
+
+#: lessonbuilder.py:263
+msgid "Awesome!"
+msgstr "Ընտի՛ր է"
+
+#: lessonbuilder.py:264 lessonscreen.py:619
+msgid "Way to go!"
+msgstr "Այդպե՛ս շարունակել"
+
+#: lessonbuilder.py:265
+msgid "Wonderful!"
+msgstr "Հիասքա՛նչ է"
+
+#: lessonbuilder.py:266
+msgid "Nice work."
+msgstr "Գեղեցիկ գործ է"
+
+#: lessonbuilder.py:267
+msgid "You did it!"
+msgstr "Տեսա՞ր, որ արեցիր"
+
+#: lessonbuilder.py:274
+msgid ""
+"Be careful to use the correct finger to press each key.  Look at the "
+"keyboard below if you need help remembering."
+msgstr ""
+"Ուշադիր եղեք, որպեսզի յուրաքանչյուր ստեղնը սեղմեք ճիշտ մատով: Եթե հիշելու "
+"համար օգնության կարիք ունեք, Նայեք ներքև՝ ստեղնաշարին:"
+
+#: lessonbuilder.py:275
+msgid ""
+"Try to type at the same speed, all the time.  As you get more comfortable "
+"you can increase the speed a little."
+msgstr ""
+"Աշխատեք միշտ տպել նույն արագությամբ: Սովորելուն զուգընթաց կարող եք փոքր-ինչ "
+"ավելացնել արագությունը:"
+
+#: lessonbuilder.py:282
+msgid "left little"
+msgstr "Ձախ ճկույթը"
+
+#: lessonbuilder.py:283
+msgid "left ring"
+msgstr "Ձախ մատնեմատը"
+
+#: lessonbuilder.py:284
+msgid "left middle"
+msgstr "Ձախ միջնամատը"
+
+#: lessonbuilder.py:285
+msgid "left index"
+msgstr "Ձախ ցուցամատը"
+
+#: lessonbuilder.py:286 lessonscreen.py:44
+msgid "left thumb"
+msgstr "Ձախ բութը"
+
+#: lessonbuilder.py:287
+msgid "right little"
+msgstr "Աջ ճկույթը"
+
+#: lessonbuilder.py:288
+msgid "right ring"
+msgstr "Աջ մատնեմատը"
+
+#: lessonbuilder.py:289
+msgid "right middle"
+msgstr "Աջ միջնամատը"
+
+#: lessonbuilder.py:290
+msgid "right index"
+msgstr "Աջ ցուցամատը"
+
+#: lessonbuilder.py:291 lessonscreen.py:49
+msgid "right thumb"
+msgstr "Աջ բութը"
+
+#: lessonbuilder.py:320
+#, python-format
+msgid " and %s keys"
+msgstr " եւ %s ստեղները"
+
+#: lessonbuilder.py:322
+msgid " key"
+msgstr " ստեղն"
+
+#: lessonbuilder.py:325
+#, python-format
+msgid ""
+"In this lesson, you will learn the %(keynames)s.\n"
+"\n"
+"Press the ENTER key when you are ready to begin!"
+msgstr ""
+"Այս դասին կսովորեք %(keynames)s \n"
+"\n"
+"Սեղմե՛ք ENTER ստեղնը, եթե պատրաստ եք սկսել:"
+
+#: lessonbuilder.py:364
+msgid "Let's learn the new keys."
+msgstr "Եկեք նոր ստեղներ սովորենք:"
+
+#: lessonbuilder.py:367
+msgid "Practice typing the keys you just learned."
+msgstr "Պարապեք՝ տպելով նոր սովորած ստեղների վրա:"
+
+#: lessonbuilder.py:371
+msgid "Now put the keys together into pairs."
+msgstr "Այժմ ստեղները դասավորեք զույգերով:"
+
+#: lessonbuilder.py:376
+msgid "Time to type jumbles."
+msgstr "ժամանակն է տպել խառը տառեր:"
+
+#: lessonbuilder.py:381
+msgid "Time to type real words."
+msgstr "Ժամանակն է տպել իրական բառեր:"
+
+#: lessonbuilder.py:390
+msgid "Hihowahyah!  Ready to learn the secret of fast typing?\n"
+msgstr "Բարև, ինչպե՞ս ես:  Պատրա՞ստ ես սովորել արագ տպելու գաղտնիքը:\n"
+
+#: lessonbuilder.py:391
+msgid ""
+"Always use the correct finger to press each key!\n"
+"\n"
+msgstr ""
+"Յուրաքանչյուր ստեղնը սեղմելիս միշտ գործածիր ճիշտ մատը:\n"
+"\n"
+
+#: lessonbuilder.py:392
+msgid "Now, place your hands on the keyboard just like the picture below.\n"
+msgstr "Այժմ ձեռքերդ դիր ստեղնաշարին, ինչպես ստորև բերված նկարում:\n"
+
+#: lessonbuilder.py:393
+msgid "When you're ready, press the SPACE bar with your thumb!"
+msgstr "Երբ պատրաստ ես, սեղմի՛ր SPACE ստեղնը բութ մատով:"
+
+#: lessonbuilder.py:397
+msgid ""
+"Good job!  The SPACE bar is used to insert spaces between words.\n"
+"\n"
+msgstr ""
+"Լա՛վ է:  SPACE ստեղնն օգտագործվում է բառերի միջև տարածություն պահելու համար:\n"
+"\n"
+
+#: lessonbuilder.py:398
+msgid "Press the SPACE bar again with your thumb."
+msgstr "Սեղմիր SPACE ստեղնը կրկին, բութ մտով:"
+
+#: lessonbuilder.py:402
+msgid "Now I'll teach you the second key, ENTER.  "
+msgstr "Այժմ սովորենք երկրորդ ստեղնը՝ ENTER:  "
+
+#: lessonbuilder.py:403
+msgid ""
+"That's the big square key near your right little finger.\n"
+"\n"
+msgstr ""
+"Սա քո աջ ճկույթին մոտիկ, մեծ, քառակուսի ստեղնն է:\n"
+"\n"
+
+#: lessonbuilder.py:404
+msgid "Now, reach your little finger over and press ENTER."
+msgstr "Այժմ մեկնիր ճկույթդ ու սեղմիր ENTER-ը:"
+
+#: lessonbuilder.py:408
+msgid ""
+"Great!  When typing, the ENTER key is used to begin a new line.\n"
+"\n"
+msgstr ""
+"Կեցցե՛ս:  Սովորաբար ENTER ստեղնը հաջորդ տող անցնելու համար է:\n"
+"\n"
+
+#: lessonbuilder.py:409
+msgid "Press the ENTER key again with your right little finger."
+msgstr "Սեղմիր ENTER ստեղնը կրկին, աջ ճկույթովդ:"
+
+#: lessonbuilder.py:417
+msgid "Copy out the following text."
+msgstr "Կրկնօրինակի՛ր հետևյալ տեքստը:"
+
+#: lessonscreen.py:40
+msgid "left little finger"
+msgstr "Ձախ ճկույթ"
+
+#: lessonscreen.py:41
+msgid "left ring finger"
+msgstr "Ձախ մատնեմատ"
+
+#: lessonscreen.py:42
+msgid "left middle finger"
+msgstr "Ձախ միջնամատ"
+
+#: lessonscreen.py:43
+msgid "left index finger"
+msgstr "Ձախ ցուցամատ"
+
+#: lessonscreen.py:45
+msgid "right little finger"
+msgstr "Աջ ճկույթ"
+
+#: lessonscreen.py:46
+msgid "right ring finger"
+msgstr "Աջ մատնեմատ"
+
+#: lessonscreen.py:47
+msgid "right middle finger"
+msgstr "Աջ միջնամատ"
+
+#: lessonscreen.py:48
+msgid "right index finger"
+msgstr "Աջ ցուցամատ"
+
+#: lessonscreen.py:190
+#, python-format
+msgid "<b>WPM:</b> %(wpm)d"
+msgstr "<b>բառ/րոպե:</b> %(wpm)d"
+
+#: lessonscreen.py:198 medalscreen.py:92
+#, python-format
+msgid "<b>Accuracy:</b> %(accuracy)d%%"
+msgstr "<b>Ճշգրտությունը:</b> %(accuracy)d%%"
+
+#: lessonscreen.py:511
+#, python-format
+msgid "Press and hold the shift key with your %(finger)s, "
+msgstr "Սեղմեք և պահեք shift ստեղնը Ձեր %(finger)s, "
+
+#: lessonscreen.py:512 lessonscreen.py:516 lessonscreen.py:520
+#, python-format
+msgid "then press the %(letter)s key with your %(finger)s."
+msgstr "Այնուհետ սեղմեք %(letter)s ստեղնը Ձեր %(finger)s:"
+
+#: lessonscreen.py:515
+msgid "Press and hold the altgr key, "
+msgstr "Սեղմեք և պահեք altgr ստեղնը, "
+
+#: lessonscreen.py:519
+msgid "Press and hold the altgr and shift keys, "
+msgstr "Սեղմեք և պահեք altgr և shift ստեղները, "
+
+#: lessonscreen.py:523
+#, python-format
+msgid "Press the %(letter)s key with your %(finger)s."
+msgstr "Սեղմեք %(letter)s ստեղնը Ձեր %(finger)s:"
+
+#: lessonscreen.py:543
+#, python-format
+msgid "Uh oh!  Your keyboard cannot type the letter '%s'.\n"
+msgstr "Վայ... Ձեր ստեղնաշարը չի կարող տպել  '%s' տառը:\n"
+
+#: lessonscreen.py:544
+msgid "Please change your keyboard settings and try this lesson again."
+msgstr ""
+"Փոխեք, խնդրեմ, Ձեր ստեղնաշարի չափանիշները, և փորձեք այս դասը մեկ անգամ ևս:"
+
+#: lessonscreen.py:616
+msgid "Good job!"
+msgstr "Լա՛վ է:"
+
+#: lessonscreen.py:618
+msgid "Nice work!"
+msgstr "Գեղեցիկ աշխատանք է:"
+
+#: lessonscreen.py:624
+#, python-format
+msgid "You finished the lesson in %(time)d seconds, with %(errors)d errors.\n"
+msgstr "Դուք դասն ավարտեցիք %(time)d վայրկյանում՝ թույլ տալով %(errors)d սխալ:\n"
+
+#: lessonscreen.py:626
+#, python-format
+msgid ""
+"Your words per minute (WPM) was %(wpm)d, and your accuracy was %(accuracy)d%"
+"%.\n"
+"\n"
+msgstr ""
+"Րոպեում Ձեր բառերի քանակը (բառ/րոպե) %(wpm)d էր, իսկ ճշգրտությունը՝ %"
+"(accuracy)d%%:\n"
+"\n"
+
+#: lessonscreen.py:629
+#, python-format
+msgid "You finished the lesson with %(errors)d errors.\n"
+msgstr "Դուք դասն ավարտեցիք՝ թույլ տալով %(errors)d սխալ:\n"
+
+#: lessonscreen.py:631
+#, python-format
+msgid ""
+"Your accuracy was %(accuracy)d%%.\n"
+"\n"
+msgstr ""
+"Ձեր ճշգրտությունը %(accuracy)d%% էր:\n"
+"\n"
+
+#: lessonscreen.py:637
+#, python-format
+msgid "Congratulations!  You earned a %(type)s medal!"
+msgstr "Շնորհավո՛ր:  դուք նվաճել եք %(type)s մեդալ:"
+
+#: lessonscreen.py:645
+msgid "You need to practice this lesson more before moving on."
+msgstr "Նախքան առաջ անցելը պետք է պարապեք այս դասը:"
+
+#: lessonscreen.py:648
+msgid "You almost got a medal!  Next time, try not to make as many errors."
+msgstr "Գրեթե մեդալ էիք ստանում:  Մյուս անգամ աշխատեք այդքան սխալ չանել:"
+
+#: lessonscreen.py:651
+msgid "You almost got a medal!  Next time, try to type a little faster."
+msgstr "Գրեթե մեդալ էիք ստանում:  Մյուս անգամ փորձեք փոքր-ինչ արագ տպել:"
+
+#: mainscreen.py:59
+msgid "Next"
+msgstr "Հաջորդ"
+
+#: mainscreen.py:68
+msgid "Previous"
+msgstr "Նախորդ"
+
+#: mainscreen.py:75
+msgid "Start Lesson"
+msgstr "Սկսել դասը"
+
+#: mainscreen.py:185
+msgid ""
+"You earned a medal in this lesson!  Advance to the next one\n"
+"by clicking the Next button."
+msgstr ""
+"Այս դասից Դուք մեդալ նվաճեցիք: Անցեք հաջորդին՝\n"
+"սեղմելով Հաջորդը կոճակը:"
+
+#: mainscreen.py:216
+msgid "No Medal Yet"
+msgstr "Մեդալ դեռ չկա"
+
+#: mainscreen.py:217
+msgid "Bronze Medal"
+msgstr "Բրոնզե մեդալ"
+
+#: mainscreen.py:218
+msgid "Silver Medal"
+msgstr "Արծաթե մեդալ"
+
+#: mainscreen.py:219
+msgid "Gold Medal"
+msgstr "Ոսկե մեդալ"
+
+#: medalscreen.py:56
+msgid ""
+"<span font_desc='Serif Bold Italic 28'>Certificate of Achievement</span>"
+msgstr "<span font_desc='Serif Bold Italic 28'>Ձեռքբերման վկայագիր</span>"
+
+#: medalscreen.py:59
+msgid "<span font_desc='Sans 16'>This certifies that</span>"
+msgstr "<span font_desc='Sans 16'>Սույնով վկայում ենք, որ</span>"
+
+#: medalscreen.py:62
+#, python-format
+msgid "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'><b><u><i>%(nick)s</i></u></b></span>"
+
+#: medalscreen.py:65
+#, python-format
+msgid "<span font_desc='Sans 16'>earned a %(type)s medal in </span>"
+msgstr "<span font_desc='Sans 16'>նվաճել է %(type)s մեդալ </span>"
+
+#: medalscreen.py:68
+#, python-format
+msgid "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+msgstr "<span font_desc='Sans 16'>in <b><u><i>%(lesson)s</i></u></b></span>"
+
+#: medalscreen.py:71
+#, python-format
+msgid "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+msgstr "<span font_desc='Sans 16'>on <b><u><i>%(date)s</i></u></b>.</span>"
+
+#: medalscreen.py:88
+#, python-format
+msgid "<b>Words Per Minute:</b> %(wpm)d"
+msgstr "<b>բառ/րոպե.</b> %(wpm)d"
+
+#: medalscreen.py:97
+#, python-format
+msgid "<b>SCORE:</b> %(score)d"
+msgstr "<b>ՄԻԱՎՈՐ.</b> %(score)d"

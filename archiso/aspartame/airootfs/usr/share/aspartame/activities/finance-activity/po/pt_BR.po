@@ -1,0 +1,332 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-06 08:02+1100\n"
+"PO-Revision-Date: 2019-03-09 00:12+0000\n"
+"Last-Translator: Paulo Francisco <slomp@ufrgs.br>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1552090356.000000\n"
+
+#: activity/activity.info:2 finance.py:85
+msgid "Finance"
+msgstr "Finanças"
+
+#: activity/activity.info:3
+msgid ""
+"Want to wisely manage money? Learn financial planning basics and track your "
+"family's finance, make your own budget and learn how to make every penny "
+"count!"
+msgstr ""
+"Quer gerenciar o dinheiro de maneira inteligente? Aprenda o básico sobre "
+"planejamento financeiro e acompanhe as finanças de sua família, faça seu "
+"próprio orçamento e aprenda como fazer valer cada centavo!"
+
+#: budgetscreen.py:42
+msgid ""
+"The Budget view allows you to set a monthly budget for each expense "
+"category, and to keep track of your\n"
+"budgets. To set a budget, type the amount in the box to the right of the "
+"category."
+msgstr ""
+"A visão de Orçamento permite a você estabelecer um orçamento mensal para "
+"cada categoria de despesa, e acompanhar seus\n"
+"ganhos. Para configurar um orçamento, escreva a quantia na caixa à direita "
+"da categoria."
+
+#: budgetscreen.py:90 registerscreen.py:80
+msgid "Category"
+msgstr "Categoria"
+
+#: budgetscreen.py:94
+msgid "Spent"
+msgstr "Gasto"
+
+#: budgetscreen.py:98 finance.py:195 finance.py:196 finance.py:279
+msgid "Budget"
+msgstr "Orçamento"
+
+#: budgetscreen.py:127 chartscreen.py:160 chartscreen.py:181
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: chartscreen.py:38
+msgid ""
+"The Chart view shows the proportion of your expenses that is in each "
+"category.\n"
+"You can categorize transactions in the Register view."
+msgstr ""
+"A visualização de gráfico mostra a proporção de suas despesas, que estão em "
+"cada categoria.\n"
+"Você pode categorizar transações na tela de Registro."
+
+#: chartscreen.py:94
+msgid "Credit Categories"
+msgstr "Categorias de Receita"
+
+#: chartscreen.py:96
+msgid "Debit Categories"
+msgstr "Categorias de Despesas"
+
+#: finance.py:169
+msgid "Add some credit or debit to get started!"
+msgstr "Adicione alguma receita ou despesa para começar!"
+
+#: finance.py:170
+msgid "Add credit"
+msgstr "Adicionar receita"
+
+#: finance.py:186 finance.py:187 finance.py:277
+msgid "Register"
+msgstr "Registrar"
+
+#: finance.py:203 finance.py:204 finance.py:281
+msgid "Chart"
+msgstr "Gráfico"
+
+#: finance.py:244
+msgid "Export data"
+msgstr "Exportar dados"
+
+#: finance.py:252
+msgid "Export credits by day"
+msgstr "Exportar receitas por dia"
+
+#: finance.py:257
+msgid "Export debits by day"
+msgstr "Exportar despesas por dia"
+
+#: finance.py:262
+msgid "Export credits by month"
+msgstr "Exportar receitas por mês"
+
+#: finance.py:267
+msgid "Export debits by month"
+msgstr "Exportar despesas por mês"
+
+#: finance.py:301 finance.py:382 registerscreen.py:233
+msgid "New Credit"
+msgstr "Nova receita"
+
+#: finance.py:306 finance.py:383 registerscreen.py:240
+msgid "New Debit"
+msgstr "Nova despesa"
+
+#: finance.py:311
+msgid "Erase Transaction"
+msgstr "Apagar transação"
+
+#: finance.py:323
+msgid "Save as Image"
+msgstr "Salvar como imagem"
+
+#: finance.py:345
+msgid "Day"
+msgstr "Dia"
+
+#: finance.py:345
+msgid "Week"
+msgstr "Semana"
+
+#: finance.py:345
+msgid "Month"
+msgstr "Mês"
+
+#: finance.py:346
+msgid "Year"
+msgstr "Ano"
+
+#: finance.py:346 finance.py:461
+msgid "Forever"
+msgstr "Para sempre"
+
+#: finance.py:348
+msgid "Select period"
+msgstr "Selecionar período"
+
+#: finance.py:392
+msgid "Show Credits"
+msgstr "Mostrar Receitas"
+
+#: finance.py:393
+msgid "Show Debits"
+msgstr "Mostrar Despesas"
+
+#. TRANS: representation of the "Day" period
+#: finance.py:446
+msgid "%B %d, %Y"
+msgstr "%B %d, %Y"
+
+#. TRANS: representation of the "Week of" period
+#: finance.py:450
+msgid "Week of"
+msgstr "Semana de"
+
+#: finance.py:450
+msgid " %B %d, %Y"
+msgstr " %B %d, %Y"
+
+#. TRANS: representation of the "Month" period
+#: finance.py:454
+msgid "%B, %Y"
+msgstr "%B, %Y"
+
+#. TRANS: representation of the "Year" period
+#: finance.py:458
+msgid "%Y"
+msgstr "%Y"
+
+#: finance.py:500
+msgid "Balance: "
+msgstr "Saldo: "
+
+#: finance.py:508
+msgid "Starting Balance:"
+msgstr "Saldo Inicial:"
+
+#: finance.py:515
+#, python-format
+msgid "%s in %d credits"
+msgstr "%s de %d receitas"
+
+#: finance.py:519
+#, python-format
+msgid "%s in %d debits"
+msgstr "%s de %d despesas"
+
+#: finance.py:532
+msgid "Previous Month"
+msgstr "Mês Anterior"
+
+#: finance.py:533
+msgid "This Month"
+msgstr "Mês Atual"
+
+#: finance.py:534
+msgid "Next Month"
+msgstr "Próximo Mês"
+
+#: finance.py:536
+msgid "Previous Week"
+msgstr "Semana Anterior"
+
+#: finance.py:537
+msgid "This Week"
+msgstr "Semana Atual"
+
+#: finance.py:538
+msgid "Next Week"
+msgstr "Próxima Semana"
+
+#: finance.py:540
+msgid "Previous Day"
+msgstr "Dia Anterior"
+
+#: finance.py:541
+msgid "This Day"
+msgstr "Dia atual"
+
+#: finance.py:542
+msgid "Next Day"
+msgstr "Próximo Dia"
+
+#: finance.py:544
+msgid "Previous Year"
+msgstr "Ano Anterior"
+
+#: finance.py:545
+msgid "This Year"
+msgstr "Ano atual"
+
+#: finance.py:546
+msgid "Next Year"
+msgstr "Próximo Ano"
+
+#: finance.py:921
+msgid "Chart created"
+msgstr "Gráfico criado"
+
+#: finance.py:921 finance.py:1038
+msgid "Open in the Journal"
+msgstr "Abrir no Diário"
+
+#: finance.py:930
+msgid "Show in Journal"
+msgstr "Exibir no Diário"
+
+#: finance.py:933
+msgid "Ok"
+msgstr "Ok"
+
+#: finance.py:979
+#, python-format
+msgid "%s by %s"
+msgstr "%s por %s"
+
+#: finance.py:1038
+msgid "Exported data"
+msgstr "Dados exportados"
+
+#: helpbutton.py:38
+msgid "Help"
+msgstr "Ajuda"
+
+#: registerscreen.py:37
+msgid ""
+"Welcome to Finance! This activity keeps track of income and expenses for "
+"anything that earns or spends money, like a school club.  To get started, "
+"use the Transaction box to add credits and debits.\n"
+"Once you have entered some transactions, visit the Chart and Budget views to "
+"see more."
+msgstr ""
+"Bem vindo ao Finanças! Esta atividade acompanha as receitas e despesas de "
+"qualquer coisa que ganhe ou gaste dinheiro, como um clube escolar.   Para "
+"começar, use a caixa de Transações para adicionar receitas e despesas.\n"
+"Uma vez que você tenha inserido algumas transações, visite as seções Gráfico "
+"e Orçamento para ver mais."
+
+#: registerscreen.py:92
+msgid "Description"
+msgstr "Descrição"
+
+#: registerscreen.py:100
+msgid "Date"
+msgstr "Data"
+
+#: registerscreen.py:109
+msgid "Amount"
+msgstr "Total"
+
+#~ msgid "Period: "
+#~ msgstr "Período: "
+
+#~ msgid "Show Help"
+#~ msgstr "Mostrar ajuda"
+
+#~ msgid "Transaction"
+#~ msgstr "Transação"
+
+#~ msgid "Period"
+#~ msgstr "Período"
+
+#~ msgid "View"
+#~ msgstr "Ver"
+
+#~ msgid "Previous"
+#~ msgstr "Anterior"
+
+#~ msgid "This"
+#~ msgstr "Este"
+
+#~ msgid "Next"
+#~ msgstr "Próximo"

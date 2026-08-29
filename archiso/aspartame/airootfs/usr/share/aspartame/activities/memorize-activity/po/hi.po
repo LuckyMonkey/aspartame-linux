@@ -1,0 +1,369 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-15 00:31-0400\n"
+"PO-Revision-Date: 2016-05-21 22:24+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1463869477.000000\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "Memorize"
+msgstr "याद करना"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Here you can play games that challenge your memory! But, more importantly, "
+"you can create your own game to test the memory of others!"
+msgstr ""
+"यहाँ आप अपनी याददाश्त को चुनौती देने वाला खेल खेल सकते हैं! लेकिन अधिक "
+"महत्वपूर्ण बात, आप दूसरों की समरण शक्ति को परखने के लिए अपना खुद का खेल बना "
+"सकते हैं!"
+
+#: activity.py:71
+msgid "Play"
+msgstr "खेलिए"
+
+#: activity.py:71
+msgid "Create"
+msgstr "निर्माण करे"
+
+#: activity.py:71
+msgid "Game name:"
+msgstr "नया खेल"
+
+#: activity.py:71
+msgid "Equal pairs"
+msgstr "समान जोड़ियाँ"
+
+#: activity.py:72
+msgid "addition"
+msgstr "जोड़ें"
+
+#: activity.py:72
+msgid "letters"
+msgstr "अक्षर"
+
+#: activity.py:72
+msgid "sounds"
+msgstr "ध्वनि"
+
+#: activity.py:96 activity.py:276
+msgid "Edit game"
+msgstr "खेल संपादन"
+
+#: activity.py:272
+msgid "Play game"
+msgstr "खेल खेलें"
+
+#: createcardpanel.py:82
+msgid "Add as new pair"
+msgstr "नई जोड़ी जोड़े"
+
+#: createcardpanel.py:85
+msgid "Add"
+msgstr "जोड़ें"
+
+#: createcardpanel.py:90
+msgid "Update selected pair"
+msgstr "चुनीगई जोड़ी को अद्यतनीकरण कीजिए"
+
+#: createcardpanel.py:93
+msgid "Update"
+msgstr "अद्यतन"
+
+#: createcardpanel.py:314
+msgid "Preview:"
+msgstr "दृश्य:"
+
+#: createcardpanel.py:330
+msgid "Text:"
+msgstr "पाठ:"
+
+#: createcardpanel.py:342
+msgid "Insert picture"
+msgstr "फ़ोटो प्रविष्ट करें"
+
+#: createcardpanel.py:347
+msgid "Insert sound"
+msgstr "ध्वनि जोड़ें"
+
+#: createcardpanel.py:504
+msgid "Pronounce text during tile flip"
+msgstr "टाइल पलटने के दौरान पाठ बोलें"
+
+#: createtoolbar.py:46 createtoolbar.py:106
+msgid "Match different tiles"
+msgstr "अलग टाइल मैच करें"
+
+#: createtoolbar.py:51 createtoolbar.py:119
+msgid "Mixed tiles game"
+msgstr "मिश्रित टाइल्स का खेल"
+
+#: createtoolbar.py:56
+msgid "Clear all tiles"
+msgstr "सभी टाइल्स को साफ़ करें"
+
+#: createtoolbar.py:76
+msgid "Clear all the tiles from the game?"
+msgstr "खेल से सभी टाइल्स को साफ़ करें?"
+
+#: createtoolbar.py:78
+msgid "Clear"
+msgstr "साफ करें"
+
+#: createtoolbar.py:80
+msgid "Do not clear"
+msgstr "साफ़ न करें"
+
+#: createtoolbar.py:102
+msgid "Match identical tiles"
+msgstr "समान टाइल मैच करें"
+
+#: createtoolbar.py:115
+msgid "Grouped tiles game"
+msgstr "वर्गीकृत टाइल्स का खेल"
+
+#: fontcombobox.py:42
+msgid "Select font"
+msgstr "फ़ॉन्ट चुनें"
+
+#: game.py:94
+msgid "Loading game..."
+msgstr "खेल शूरु हो रहा है..."
+
+#: memorizetoolbar.py:43
+msgid "Addition"
+msgstr "जोड़ें"
+
+#: memorizetoolbar.py:44
+msgid "Letters"
+msgstr "अक्षर"
+
+#: memorizetoolbar.py:45
+msgid "Sounds"
+msgstr "आवाज़"
+
+#: memorizetoolbar.py:60
+msgid "Load demo games"
+msgstr "प्रदर्शन खेल शूरु करे"
+
+#: memorizetoolbar.py:72
+msgid "Change size"
+msgstr "आकार बदलें"
+
+#: memorizetoolbar.py:86
+msgid "Restart Game"
+msgstr "खेल पुनः सेट करें"
+
+#: memorizetoolbar.py:111
+msgid "Discard your modified game?"
+msgstr "अपने संशोधित खेल को छोड़ें?"
+
+#: memorizetoolbar.py:113
+msgid "Discard"
+msgstr "त्यागें"
+
+#: memorizetoolbar.py:115
+msgid "Do not discard"
+msgstr "नही त्यागें"
+
+#: messenger.py:192
+msgid "Receiving game"
+msgstr "खेल ग्रहण हो रहा है"
+
+#: messenger.py:193
+msgid "done"
+msgstr "सम्पन्न"
+
+#: speak/voice.py:36
+msgid "Brazil"
+msgstr "ब्राजील"
+
+#: speak/voice.py:37
+msgid "Swedish"
+msgstr "स्वीडिश"
+
+#: speak/voice.py:38
+msgid "Icelandic"
+msgstr "आइसलैंडिक"
+
+#: speak/voice.py:39
+msgid "Romanian"
+msgstr "रोमानियाई"
+
+#: speak/voice.py:40
+msgid "Swahili"
+msgstr "स्वाहिली"
+
+#: speak/voice.py:41
+msgid "Hindi"
+msgstr "हिन्दी"
+
+#: speak/voice.py:42
+msgid "Dutch"
+msgstr "डच"
+
+#: speak/voice.py:43
+msgid "Latin"
+msgstr "लातिन"
+
+#: speak/voice.py:44
+msgid "Hungarian"
+msgstr "हंगेरियाई"
+
+#: speak/voice.py:45
+msgid "Macedonian"
+msgstr "मकदूनियाई"
+
+#: speak/voice.py:46
+msgid "Welsh"
+msgstr "वेल्श"
+
+#: speak/voice.py:47
+msgid "French"
+msgstr "फ्रांसीसी"
+
+#: speak/voice.py:48
+msgid "Norwegian"
+msgstr "नारवेजियाई"
+
+#: speak/voice.py:49
+msgid "Russian"
+msgstr "रूसी"
+
+#: speak/voice.py:50
+msgid "Afrikaans"
+msgstr "अफ्रीकी"
+
+#: speak/voice.py:51
+msgid "Finnish"
+msgstr "फिनिश"
+
+#: speak/voice.py:52 speak/voice.py:125
+msgid "Default"
+msgstr "डिफ़ॉल्ट"
+
+#: speak/voice.py:53
+msgid "Cantonese"
+msgstr "केंटोनी"
+
+#: speak/voice.py:54
+msgid "Scottish"
+msgstr "स्कॉटिश"
+
+#: speak/voice.py:55
+msgid "Greek"
+msgstr "यूनानी"
+
+#: speak/voice.py:56
+msgid "Vietnam"
+msgstr "विएतनाम"
+
+#: speak/voice.py:57
+msgid "English"
+msgstr "अंग्रेज़ी"
+
+#: speak/voice.py:58
+msgid "Lancashire"
+msgstr "लंकाशायर"
+
+#: speak/voice.py:59
+msgid "Italian"
+msgstr "इतालवी"
+
+#: speak/voice.py:60
+msgid "Portugal"
+msgstr "पुर्तगाल"
+
+#: speak/voice.py:61
+msgid "German"
+msgstr "जर्मन"
+
+#: speak/voice.py:62
+msgid "Whisper"
+msgstr "फुसफुसाएँ"
+
+#: speak/voice.py:63
+msgid "Croatian"
+msgstr "क्रोएशियाई"
+
+#: speak/voice.py:64
+msgid "Czech"
+msgstr "चेक"
+
+#: speak/voice.py:65
+msgid "Slovak"
+msgstr "स्लोवाक"
+
+#: speak/voice.py:66
+msgid "Spanish"
+msgstr "स्पेनी"
+
+#: speak/voice.py:67
+msgid "Polish"
+msgstr "पोलिश"
+
+#: speak/voice.py:68
+msgid "Esperanto"
+msgstr "एस्परेन्तो"
+
+#~ msgid "New game"
+#~ msgstr "नया खेल"
+
+#~ msgid "Load game"
+#~ msgstr "खेल लोड कीजिए"
+
+#~ msgid "Save game"
+#~ msgstr "खेल सुरक्षित रखिए"
+
+#~ msgid "Click for grouped game"
+#~ msgstr "समूह खेल केलिए दबाए"
+
+#~ msgid "Choose memorize game"
+#~ msgstr "मेमोराईज खेल चुने"
+
+#~ msgid "Click for ungrouped game"
+#~ msgstr "असमुहित खेल केलिए दबाए"
+
+#~ msgid "Choose image"
+#~ msgstr "छवि चुने"
+
+#~ msgid "Choose audio"
+#~ msgstr "श्रव्य चुने"

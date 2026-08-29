@@ -1,0 +1,224 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2017-04-02 18:00+0000\n"
+"Last-Translator: Anders <anders.jonsson@norsjovallen.se>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1491156004.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr ""
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "Lägg till foto"
+
+# TODO: Globe -> Speech balloon
+#: toolbar.py:83
+msgid "Globe"
+msgstr "Pratbubbla"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "Tanke"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Viskning"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Utrop"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Ruta"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Lägg till en pratbubbla"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Kurvor"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Rak"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "Markering"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Idé"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Välj en rörelselinje"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "Rotera"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "Ta bort"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "Fet"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Kursiv"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "Textfärg"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Färdig"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Dra bilderna för att ändra ordning"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Återställ till rutstorlek"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr "Dra för att flytta eller ändra storlek med de markerade hörnen"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Välj typsnitt"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr "Lägg till en bild och börja skapa din FotoToon"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "Välj en bild"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "Spara som bild"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "Redigera"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "Visa"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Bildspel"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "Bildspel med tidsangivelser"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "Ställ in bildlängd i bildspel (sekunder)"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Helskärm"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "Text"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Ändra bildordning"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Redigera bakgrundsbild"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "Spara som en bok (PDF)"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "Spara som en film (OGG)"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "Lyckades"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "En bild skapades i dagboken"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "En PDF-fil skapades i dagboken"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "{} som en film"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "En film sparades i dagboken"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "Visa i dagbok"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "Ok"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "Titel:"
+
+#~ msgid "Hello pootle"
+#~ msgstr "Hej pootle"
+
+#~ msgid "Hello again pootle"
+#~ msgstr "Hej igen pootle"
+
+#~ msgid "Hasta la vista, pootle!"
+#~ msgstr "Vi ses snart, pootle!"

@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-22 12:45+1000\n"
+"PO-Revision-Date: 2026-05-19 07:09+0000\n"
+"Last-Translator: NF <rkavt@smartprojects.ge>\n"
+"Language-Team: Georgian <http://weblate.sugarlabs.org/projects/"
+"sugar-activities/implode/ka/>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.4.2\n"
+
+#: activity/activity.info:2
+msgid "Implode"
+msgstr "შიგნით აფეთქება"
+
+#: activity/activity.info:3
+msgid "Implode blocks of the same colour until they are all gone."
+msgstr ""
+
+#: helpwidget.py:216
+msgid "Goal: Clear the board by removing blocks in groups of 3 or more."
+msgstr "დანიშნულება: გაასუფთავეთ დაფა 3-3, ან მეტი ბლოკის ერთდროული მოცილებით."
+
+#: helpwidget.py:242
+msgid "You can't remove groups of one or two blocks."
+msgstr "ერთი, ან ორი ბლოკისგან შემდგარ ჯგუფებს ვერ მოაცილებთ."
+
+#: helpwidget.py:285
+msgid "Blocks fall to fill empty gaps, and they slide to fill empty columns."
+msgstr ""
+"ბლოკები ცვივა ცარიელი ადგილების შესავსებად და ისინი სრიალებს, რომ ცარიელი "
+"სვეტები შეივსოს."
+
+#: helpwidget.py:309
+msgid "If you get stuck, you can undo to try again."
+msgstr "თუ გაიჭედეთ, შეგიძლიათ, ბოლო ქმედება გააუქმოთ და თავიდან სცადოთ."
+
+#: helpwidget.py:359
+msgid "There is always a way to clear the board."
+msgstr "გზა, რომ დაფა გაასუფთაოთ, ყოველთვის არსებობს."
+
+#: implodeactivity.py:168
+msgid "New"
+msgstr "ახალი"
+
+#: implodeactivity.py:169
+msgid "Replay"
+msgstr "თავიდან თამაში"
+
+#: implodeactivity.py:173
+msgid "Undo"
+msgstr "გაუქმება"
+
+#: implodeactivity.py:174
+msgid "Redo"
+msgstr "გამეორება"
+
+#: implodeactivity.py:197
+msgid "Easy"
+msgstr "ადვილი"
+
+#: implodeactivity.py:198
+msgid "Medium"
+msgstr "საშუალო"
+
+#: implodeactivity.py:199
+msgid "Hard"
+msgstr "რთული"
+
+#: implodeactivity.py:208 implodeactivity.py:296
+msgid "Help"
+msgstr "დახმარება"
+
+#: implodeactivity.py:361
+msgid "Done"
+msgstr "მზადაა"
+
+#: implodeactivity.py:408
+msgid "Previous"
+msgstr "წინა"
+
+#: implodeactivity.py:409
+msgid "Again"
+msgstr "კიდევ ერთხელ"
+
+#: implodeactivity.py:411
+msgid "Next"
+msgstr "შემდეგი"
+
+#: implodeactivity.py:440
+msgid "Stuck?  You can still solve the puzzle."
+msgstr "გაიჭედეთ?  ამის ამოხსნა ჯერ კიდევ შესაძლებელია."
+
+#: implodeactivity.py:447
+msgid "Undo some moves"
+msgstr "რამდენიმე სვლის გაუქმება"

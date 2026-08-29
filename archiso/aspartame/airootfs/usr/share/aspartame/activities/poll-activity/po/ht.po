@@ -1,0 +1,331 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-04 00:33-0400\n"
+"PO-Revision-Date: 2011-08-10 06:08+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ht\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n !=1);\n"
+"X-Generator: Pootle 2.0.1\n"
+
+#. TRANS: "name" option from activity.info file
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "Poll"
+msgstr "Sondaj"
+
+#: PollSession.py:502 PollSession.py:586
+#, python-format
+msgid "%(author)s shared a poll '%(title)s' with you."
+msgstr "%(author)s ki pataje sondag la '%(title)s' ak ou."
+
+#: PollSession.py:585
+msgid "New Poll"
+msgstr "Nouvo Sondaj"
+
+#: Widgets.py:59 Widgets.py:497
+msgid "Choose a Poll"
+msgstr "Chwazi yon Sondaj"
+
+#: Widgets.py:63
+msgid "Build a Poll"
+msgstr "Konstwi yo Sondaj"
+
+#: Widgets.py:67 Widgets.py:388
+msgid "Settings"
+msgstr ""
+
+#: Widgets.py:71 Widgets.py:570
+msgid "Lesson Plans"
+msgstr "Plan Leson"
+
+#: Widgets.py:106
+#, fuzzy
+msgid "Build a poll"
+msgstr "Konstwi yo Sondaj"
+
+#: Widgets.py:109
+msgid "Poll Title:"
+msgstr "Tit Sondaj:"
+
+#: Widgets.py:113
+msgid "Question:"
+msgstr "Kesyon:"
+
+#: Widgets.py:118
+msgid "Number of votes to collect:"
+msgstr "Kantite vot ou genyen:"
+
+#: Widgets.py:126
+#, python-format
+msgid "Answer %s:"
+msgstr ""
+
+#: Widgets.py:134 Widgets.py:205
+msgid "Change Image"
+msgstr ""
+
+#: Widgets.py:139
+msgid "Add Image"
+msgstr ""
+
+#: Widgets.py:150
+msgid "Step 1: Preview"
+msgstr "Etap 1: Gade'l"
+
+#: Widgets.py:154
+msgid "Step 2: Save"
+msgstr "Etap 2: kenbe'l"
+
+#: Widgets.py:209 Widgets.py:484 poll.py:380
+msgid "Poll Activity"
+msgstr ""
+
+#: Widgets.py:210
+msgid "Your selection is not an image"
+msgstr ""
+
+#: Widgets.py:394
+msgid "Show answers while voting"
+msgstr ""
+
+#: Widgets.py:399
+msgid "Remember last vote"
+msgstr ""
+
+#: Widgets.py:406
+msgid "Play a sound when make a vote"
+msgstr ""
+
+#: Widgets.py:412
+msgid "Use image in answer"
+msgstr ""
+
+#: Widgets.py:417
+msgid "Image Size: "
+msgstr ""
+
+#: Widgets.py:445
+msgid "Save"
+msgstr ""
+
+#: Widgets.py:485
+msgid "The settings have been saved"
+msgstr ""
+
+#: Widgets.py:536
+msgid "VOTE"
+msgstr "VOT"
+
+#: Widgets.py:539
+msgid "SEE RESULTS"
+msgstr "GADE RESILTA YO"
+
+#: Widgets.py:546
+msgid "DELETE"
+msgstr "EFASE"
+
+#: Widgets.py:560
+msgid "Introduction"
+msgstr "Entwodiksyon"
+
+#: Widgets.py:560
+msgid "Lesson 1"
+msgstr "Leson 1"
+
+#: Widgets.py:560
+msgid "Lesson 2"
+msgstr "Leson 2"
+
+#: Widgets.py:561
+msgid "Lesson 3"
+msgstr "Leson 3"
+
+#: Widgets.py:561
+msgid "Lesson 4"
+msgstr "Leson 4"
+
+#: Widgets.py:725
+msgid "votes"
+msgstr "vot yo"
+
+#: Widgets.py:725
+msgid "(votes left to collect)"
+msgstr ""
+
+#: Widgets.py:733 poll.py:476
+msgid "Vote"
+msgstr "Vot"
+
+#: Widgets.py:739
+msgid "Edit Poll"
+msgstr "Korije Sondaj la"
+
+#: Widgets.py:744
+msgid "Save Poll"
+msgstr "Kenbe Sondaj la"
+
+#: poll.py:279 poll.py:370 poll.py:480
+msgid "VOTE!"
+msgstr "VOT!"
+
+#: poll.py:282 poll.py:373 poll.py:483
+msgid "Poll Preview"
+msgstr "Apesi Sodaj la"
+
+#: poll.py:381
+msgid "To vote you have to select first one option"
+msgstr ""
+
+#: poll.py:477
+#, python-format
+msgid "Somebody voted on %s"
+msgstr "Kèk moun vote sou %s"
+
+#: poll.py:564 poll.py:599
+msgid "Joined"
+msgstr "Vinn jwenn"
+
+#: poll.py:604
+msgid "Left"
+msgstr "Goch"
+
+#~ msgid "Favorite Color"
+#~ msgstr "Koulè ou pi renmen"
+
+#~ msgid "What is your favorite color?"
+#~ msgstr "Ki koulè ou pi renmen?"
+
+#~ msgid "Orange"
+#~ msgstr "Oranj"
+
+#~ msgid "None of the above"
+#~ msgstr "Anyen ki ap pi wo"
+
+#~ msgid "Close Lessons"
+#~ msgstr "Fèmen Leson"
+
+#~ msgid "Answer"
+#~ msgstr "Repons"
+
+#~ msgid "Green"
+#~ msgstr "Vè"
+
+#~ msgid "Red"
+#~ msgstr "Wouj"
+
+#~ msgid "Blue"
+#~ msgstr "Ble"
+
+#~ msgid "Chinese (simplified)"
+#~ msgstr "Chinwa (Senp)"
+
+#~ msgid "Chinese (traditional)"
+#~ msgstr "Chinwa (tradisyonel)"
+
+#~ msgid "Czech"
+#~ msgstr "Tchèk"
+
+#~ msgid "Danish"
+#~ msgstr "Danwa"
+
+#~ msgid "Dutch"
+#~ msgstr "Nealandè"
+
+#~ msgid "English"
+#~ msgstr "Anglè"
+
+#~ msgid "English - Great Britain"
+#~ msgstr "Anglè - Grand-Bretay"
+
+#~ msgid "English - U.S."
+#~ msgstr "Anglè - Etazini"
+
+#~ msgid "Finnish"
+#~ msgstr "Finnwa"
+
+#~ msgid "French"
+#~ msgstr "Fransè"
+
+#~ msgid "German"
+#~ msgstr "Alman"
+
+#~ msgid "Hungarian"
+#~ msgstr "Ongwa"
+
+#~ msgid "Italian"
+#~ msgstr "Italyen"
+
+#~ msgid "Japanese"
+#~ msgstr "Japonè"
+
+#~ msgid "Korean"
+#~ msgstr "Koreyen"
+
+#~ msgid "Norwegian"
+#~ msgstr "Nòvejyen"
+
+#~ msgid "Polish"
+#~ msgstr "Polonè"
+
+#~ msgid "Portuguese"
+#~ msgstr "Pòtigè"
+
+#~ msgid "Portuguese - Brazilian"
+#~ msgstr "Pòtigè - Brezilyen"
+
+#~ msgid "Russian"
+#~ msgstr "Ris"
+
+#~ msgid "Slovak"
+#~ msgstr "Slovak"
+
+#~ msgid "Spanish"
+#~ msgstr "Pangnol"
+
+#~ msgid "Swedish"
+#~ msgstr "Souedwa"
+
+#~ msgid "Turkish"
+#~ msgstr "Tik"

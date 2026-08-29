@@ -1,0 +1,11 @@
+[Activity]
+name = Across and Down
+activity_version = 25
+bundle_id = mulawa.AcrossDown
+icon = activity
+show_launcher = yes
+exec = sugar-activity3 activity.PeterActivity
+license = GPLv3+
+repository = https://github.com/sugarlabs/across-and-down-activity.git
+summary = Classic crossword type puzzle game, to make words up out of letters already provided on the board.  
+tags = Game

@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-24 17:39+1100\n"
+"PO-Revision-Date: 2017-04-06 17:24+0000\n"
+"Last-Translator: yurchor <yurchor@ukr.net>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1491499490.000000\n"
+
+#: activity/activity.info:2 PortfolioActivity.py:746
+msgid "Portfolio"
+msgstr "Портфоліо"
+
+#: activity/activity.info:3
+msgid "create a slide show from Sugar Journal entries that have been 'starred'"
+msgstr ""
+"Створіть показ слайдів на основі записів Журналу Sugar, які було позначено "
+"зірками"
+
+#: collabwrapper.py:178
+msgid "Joining activity..."
+msgstr "Долучаємося до дії…"
+
+#: collabwrapper.py:179 collabwrapper.py:191
+msgid "Please wait for the connection..."
+msgstr "Будь ласка, зачекайте, доки буде встановлено з’єднання…"
+
+#: collabwrapper.py:190
+msgid "Resuming shared activity..."
+msgstr "Відновлюємо спільну дію…"
+
+#: PortfolioActivity.py:90
+msgid "2 seconds"
+msgstr "2 секунди"
+
+#: PortfolioActivity.py:90
+msgid "10 seconds"
+msgstr "10 секунд"
+
+#: PortfolioActivity.py:90
+msgid "30 seconds"
+msgstr "30 секунд"
+
+#: PortfolioActivity.py:90
+msgid "1 minute"
+msgstr "1 хвилина"
+
+#: PortfolioActivity.py:481
+msgid "Enter comments here."
+msgstr "Тут можна ввести коментарі."
+
+#: PortfolioActivity.py:509
+msgid "Adjust"
+msgstr "Скоригувати"
+
+#: PortfolioActivity.py:518
+msgid "Fullscreen"
+msgstr "На весь екран"
+
+#: PortfolioActivity.py:523
+msgid "Autoplay"
+msgstr "Автовідтворення"
+
+#: PortfolioActivity.py:525 PortfolioActivity.py:535
+msgid "Adjust playback speed"
+msgstr "Скоригувати швидкість відтворення"
+
+#: PortfolioActivity.py:543
+msgid "Refresh"
+msgstr "Оновити"
+
+#: PortfolioActivity.py:551
+msgid "Slide view"
+msgstr "Перегляд слайдів"
+
+#: PortfolioActivity.py:556
+msgid "Thumbnail view"
+msgstr "Перегляд мініатюр"
+
+#: PortfolioActivity.py:563
+msgid "Save as PDF"
+msgstr "Зберегти як PDF"
+
+#: PortfolioActivity.py:568
+msgid "Save as presentation"
+msgstr "Зберегти як презентацію"
+
+#: PortfolioActivity.py:782
+msgid "Do you have any items in your Journal starred?"
+msgstr "Чи є у вашому Журналі позначені зірочками записи?"
+
+#: PortfolioActivity.py:834
+msgid "This project is about..."
+msgstr "Цей проект присвячено…"
+
+#: PortfolioActivity.py:1275
+msgid "Save recording"
+msgstr "Зберегти запи"
+
+#: PortfolioActivity.py:1331
+#, python-format
+msgid "audio note for %s"
+msgstr "звукова нотатка щодо %s"
+
+#: PortfolioActivity.py:1604
+msgid "Please wait."
+msgstr "Будь ласка, зачекайте."
+
+#: exportpdf.py:70
+msgid "untitled"
+msgstr "без назви"

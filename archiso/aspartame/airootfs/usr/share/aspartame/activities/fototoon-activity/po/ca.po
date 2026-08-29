@@ -1,0 +1,225 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# MARISELLE <maber56>, 2013.
+# MARISELLE <maber56>, 2013.
+# MARISELLE <maber56>, 2013.
+# User <juneleonora@yahoo.com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2015-09-20 17:28+0000\n"
+"Last-Translator: Robert <rbuj@fedoraproject.org>\n"
+"Language-Team: JuneLeonora\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1442770117.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr ""
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "Afegeix una foto"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "Globus"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "Pensament"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Xiuxiueig"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Exclamació"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Requadre"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Afegeix un globus"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Corbes"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Recte"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "Ressalta"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Idea"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Tria una línia en moviment"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "Gira"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "Suprimeix"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "Negreta"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Itàlica"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "Color del text"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Fet"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Arrossegueu les imatges per reordenar-les"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Restableix a la mida del requadre"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr ""
+"Arrossegueu-ho per a moure-ho o redimensioneu-ho mitjançant les vores "
+"marcades"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Selecciona el tipus de lletra"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr ""
+"Afegiu una imatge i comenceu la creació de la vostra historieta il·lustrada"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "Tria una imatge"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "Desa-ho com una imatge"
+
+# well-spelled: PNG
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "Edita"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "Visualitza"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Projecció de diapositives"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "Projecció de diapositives cronometrada"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr ""
+"Estableix la durada de la imatge en la projecció de diapositives (segons)"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Pantalla completa"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "Text"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Canvia l'ordre de les imatges"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Edita la imatge de fons"
+
+# well-spelled: PDF
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "Desa-ho com un llibre (PDF)"
+
+# well-spelled: OGG
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "Desa-ho com una pel·lícula (OGG)"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "Correcte"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "Es va crear una imatge al diari"
+
+# well-spelled: PDF
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "Es va crear un PDF al diari"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "{} com una pel·lícula"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "Es va desar una pel·lícula al diari"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "Mostra-ho al diari"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "D'acord"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "Títol:"

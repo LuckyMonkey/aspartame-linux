@@ -1,0 +1,12 @@
+[Activity]
+name = Level
+bundle_id = net.flossmanuals.LevelActivity
+icon = Level
+exec = sugar-activity LevelActivity.LevelActivity
+show_launcher = yes
+activity_version = 3
+license = GPLv2+
+repository = https://github.com/sugarlabs/level-activity.git
+url = https://help.sugarlabs.org/en/level_tool.html
+tags = Maths;Science
+summary = Check inclination of surface with respect to ground.

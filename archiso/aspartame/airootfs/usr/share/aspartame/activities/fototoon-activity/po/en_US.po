@@ -1,0 +1,201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-30 03:05-0500\n"
+"PO-Revision-Date: 2014-01-08 03:59+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "FotoToon"
+msgstr "FotoToon"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Select font"
+
+#: historietaactivity.py:37 historietaactivity.py:126
+msgid "Save as Image"
+msgstr "Save as Image"
+
+#: historietaactivity.py:37
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:54
+msgid "Edit"
+msgstr "Edit"
+
+#: historietaactivity.py:61
+msgid "View"
+msgstr "View"
+
+#: historietaactivity.py:65
+msgid "Slideshow"
+msgstr "Slideshow"
+
+#: historietaactivity.py:71
+msgid "Fullscreen"
+msgstr "Fullscreen"
+
+#: historietaactivity.py:89
+msgid "Text"
+msgstr "Text"
+
+#: historietaactivity.py:95
+msgid "Change image order"
+msgstr "Change image order"
+
+#: historietaactivity.py:101
+msgid "Edit background image"
+msgstr "Edit background image"
+
+#: historietaactivity.py:133
+msgid "Save as a Book (PDF)"
+msgstr "Save as a Book (PDF)"
+
+#: historietaactivity.py:273 historietaactivity.py:328
+msgid "Success"
+msgstr "Success"
+
+#: historietaactivity.py:274
+msgid "A image was created in the Journal"
+msgstr "A image was created in the Journal"
+
+#: historietaactivity.py:329
+msgid "A PDF was created in the Journal"
+msgstr "A PDF was created in the Journal"
+
+#: historietaactivity.py:336
+msgid "Show in Journal"
+msgstr "Show in Journal"
+
+#: historietaactivity.py:338
+msgid "Ok"
+msgstr "Ok"
+
+#: historietaactivity.py:609
+msgid "Title:"
+msgstr "Title:"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Cancel"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Done"
+
+#: reorderwindow.py:69
+msgid "Drag the images to reorder"
+msgstr "Drag the images to reorder"
+
+#: reorderwindow.py:399
+msgid "Drag to move or resize using the marked corners"
+msgstr "Drag to move or resize using the marked corners"
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "Add Photo"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "Globe"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "Think"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Whisper"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Exclamation"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Box"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Add a globe"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Curves"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Straight"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "Highlight"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Idea"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Choose a movement line"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "Turn"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "Delete"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "Bold"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Italic"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "Text Color"
+
+#~ msgid "Add Globe"
+#~ msgstr "Add Globe"
+
+#~ msgid "Add Think"
+#~ msgstr "Add Think"
+
+#~ msgid "Add Whisper"
+#~ msgstr "Add Whisper"
+
+#~ msgid "Add Exclamation"
+#~ msgstr "Add Exclamation"
+
+#~ msgid "Add Box"
+#~ msgstr "Add Box"
+
+#~ msgid "Choose image"
+#~ msgstr "Choose image"

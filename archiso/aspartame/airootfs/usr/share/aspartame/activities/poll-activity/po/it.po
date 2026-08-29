@@ -1,0 +1,329 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-04 00:33-0400\n"
+"PO-Revision-Date: 2013-11-14 22:49+0200\n"
+"Last-Translator: arosella <arosella@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "Poll"
+msgstr "Sondaggio"
+
+#: PollSession.py:502 PollSession.py:586
+#, python-format
+msgid "%(author)s shared a poll '%(title)s' with you."
+msgstr "%(author)s ha condiviso il Sondaggio '%(title)s' con te."
+
+#: PollSession.py:585
+msgid "New Poll"
+msgstr "Nuovo Sondaggio"
+
+#: Widgets.py:59 Widgets.py:497
+msgid "Choose a Poll"
+msgstr "Scegli un Sondaggio"
+
+#: Widgets.py:63
+msgid "Build a Poll"
+msgstr "Costruisci Sondaggio"
+
+#: Widgets.py:67 Widgets.py:388
+msgid "Settings"
+msgstr "Configurazioni"
+
+#: Widgets.py:71 Widgets.py:570
+msgid "Lesson Plans"
+msgstr "Sommario Guida"
+
+#: Widgets.py:106
+msgid "Build a poll"
+msgstr "Costruisci Sondaggio"
+
+#: Widgets.py:109
+msgid "Poll Title:"
+msgstr "Titolo del Sondaggio:"
+
+#: Widgets.py:113
+msgid "Question:"
+msgstr "Domanda:"
+
+#: Widgets.py:118
+msgid "Number of votes to collect:"
+msgstr "Numero di voti da raccogliere:"
+
+#: Widgets.py:126
+#, python-format
+msgid "Answer %s:"
+msgstr "Risposta %s:"
+
+#: Widgets.py:134 Widgets.py:205
+msgid "Change Image"
+msgstr "Cambia immagine"
+
+#: Widgets.py:139
+msgid "Add Image"
+msgstr "Aggiungi immagine"
+
+#: Widgets.py:150
+msgid "Step 1: Preview"
+msgstr "Passo 1: Anteprima"
+
+#: Widgets.py:154
+msgid "Step 2: Save"
+msgstr "Passo 2: Salvataggio"
+
+#: Widgets.py:209 Widgets.py:484 poll.py:380
+msgid "Poll Activity"
+msgstr "Attività Votazione"
+
+#: Widgets.py:210
+msgid "Your selection is not an image"
+msgstr "La tua selezione non è una immagine"
+
+#: Widgets.py:394
+msgid "Show answers while voting"
+msgstr "Mostra le risposte durante la votazione"
+
+#: Widgets.py:399
+msgid "Remember last vote"
+msgstr "Ricorda l'ultimo voto"
+
+#: Widgets.py:406
+msgid "Play a sound when make a vote"
+msgstr "Riproduci un suono quando si vota"
+
+#: Widgets.py:412
+msgid "Use image in answer"
+msgstr "Utilizza una immagine nella risposta"
+
+#: Widgets.py:417
+msgid "Image Size: "
+msgstr "Dimensione Immagine: "
+
+#: Widgets.py:445
+msgid "Save"
+msgstr "Salva"
+
+#: Widgets.py:485
+msgid "The settings have been saved"
+msgstr "Le configurazioni sono state salvate"
+
+#: Widgets.py:536
+msgid "VOTE"
+msgstr "VOTA"
+
+#: Widgets.py:539
+msgid "SEE RESULTS"
+msgstr "RISULTATI"
+
+#: Widgets.py:546
+msgid "DELETE"
+msgstr "CANCELLA"
+
+#: Widgets.py:560
+msgid "Introduction"
+msgstr "Introduzione"
+
+#: Widgets.py:560
+msgid "Lesson 1"
+msgstr "Lezione 1"
+
+#: Widgets.py:560
+msgid "Lesson 2"
+msgstr "Lezione 2"
+
+#: Widgets.py:561
+msgid "Lesson 3"
+msgstr "Lezione 3"
+
+#: Widgets.py:561
+msgid "Lesson 4"
+msgstr "Lezione 4"
+
+#: Widgets.py:725
+msgid "votes"
+msgstr "voti"
+
+#: Widgets.py:725
+msgid "(votes left to collect)"
+msgstr "(voti rimasti da raccogliere)"
+
+#: Widgets.py:733 poll.py:476
+msgid "Vote"
+msgstr "Vota"
+
+#: Widgets.py:739
+msgid "Edit Poll"
+msgstr "Modifica Sondaggio"
+
+#: Widgets.py:744
+msgid "Save Poll"
+msgstr "Salva Sondaggio"
+
+#: poll.py:279 poll.py:370 poll.py:480
+msgid "VOTE!"
+msgstr "VOTA!"
+
+#: poll.py:282 poll.py:373 poll.py:483
+msgid "Poll Preview"
+msgstr "Anteprima Sondaggio"
+
+#: poll.py:381
+msgid "To vote you have to select first one option"
+msgstr "Per votare dovete selezionare una opzione"
+
+#: poll.py:477
+#, python-format
+msgid "Somebody voted on %s"
+msgstr "Qualcuno a votato su %s"
+
+#: poll.py:564 poll.py:599
+msgid "Joined"
+msgstr "Collegato"
+
+#: poll.py:604
+msgid "Left"
+msgstr "Sinistra"
+
+#~ msgid "Choose image"
+#~ msgstr "Scegli immagine"
+
+#~ msgid "Favorite Color"
+#~ msgstr "Colore preferito"
+
+#~ msgid "What is your favorite color?"
+#~ msgstr "Quale è il tuo colore preferito?"
+
+#~ msgid "Orange"
+#~ msgstr "Arancione"
+
+#~ msgid "None of the above"
+#~ msgstr "Nessuno dei precedenti"
+
+#~ msgid "Close Lessons"
+#~ msgstr "Chiudi Guida"
+
+#~ msgid "Answer"
+#~ msgstr "Risposta"
+
+#~ msgid "Green"
+#~ msgstr "Verde"
+
+#~ msgid "Red"
+#~ msgstr "Rosso"
+
+#~ msgid "Blue"
+#~ msgstr "Blu"
+
+#~ msgid "Chinese (simplified)"
+#~ msgstr "Cinese (semplificato)"
+
+#~ msgid "Chinese (traditional)"
+#~ msgstr "Cinese (tradizionale)"
+
+#~ msgid "Czech"
+#~ msgstr "Ceco"
+
+#~ msgid "Danish"
+#~ msgstr "Danese"
+
+#~ msgid "Dutch"
+#~ msgstr "Olandese"
+
+#~ msgid "English"
+#~ msgstr "Inglese"
+
+#~ msgid "English - Great Britain"
+#~ msgstr "Inglese - Regno Unito"
+
+#~ msgid "English - U.S."
+#~ msgstr "Inglese - U.S.A."
+
+#~ msgid "Finnish"
+#~ msgstr "Finlandese"
+
+#~ msgid "French"
+#~ msgstr "Francese"
+
+#~ msgid "German"
+#~ msgstr "Tedesco"
+
+#~ msgid "Hungarian"
+#~ msgstr "Ungherese"
+
+#~ msgid "Italian"
+#~ msgstr "Italiano"
+
+#~ msgid "Japanese"
+#~ msgstr "Giapponese"
+
+#~ msgid "Korean"
+#~ msgstr "Coreano"
+
+#~ msgid "Norwegian"
+#~ msgstr "Norvegese"
+
+#~ msgid "Polish"
+#~ msgstr "Polacco"
+
+#~ msgid "Portuguese"
+#~ msgstr "Portoghese"
+
+#~ msgid "Portuguese - Brazilian"
+#~ msgstr "Portoghese -Brasiliano"
+
+#~ msgid "Russian"
+#~ msgstr "Russo"
+
+#~ msgid "Slovak"
+#~ msgstr "Slovacco"
+
+#~ msgid "Spanish"
+#~ msgstr "Spagnolo"
+
+#~ msgid "Swedish"
+#~ msgstr "Svedese"
+
+#~ msgid "Turkish"
+#~ msgstr "Turco"

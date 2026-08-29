@@ -1,0 +1,40 @@
+6
+
+* Python3 version
+  - Fix Collaboration in old builds (Andres Ambrois)
+  - Adding languages (Pootle translation push)
+  - Add support for gamepad keys (Andres Ambrois)
+  - Port to GTK+3 (Cristian Garcia)
+  - Fixing draw problem (Cristian Garcia)
+  - Add license and repository metadata (Shivam Chadha)
+  - translate.sugarlabs.org synchronisation (Yash Agrawal, Jui Pradhan)
+  - Regenerate POT file (Yash Agrawal, Jui Pradhan)
+  - Fix PyGIWarnings (Yash Agarwal)
+  - Fix NameError (Rahul Bothra)
+  - Port Telepathy static bindings to TelepathyGLib (Ibiam Chihurumnaya)
+  - Flake8 fixes (Ibiam Chihurumnaya)
+  - Update README (rdrsadhu, James Cameron)
+  - Port to python3 (Srevin Saju)
+
+5
+
+4
+  - Fixed problem with sugartubeconnection import on old bilds (needs testing)
+  - Nate Ridderman: Change references to 'Whites' and 'Blacks' to 'White' and 'Black'
+  - Allow GnuGo to pick up game state at any point in time, including resuming from Journal
+  - Mark territories at game end with pretty crosses. (Thanks Nate!)
+  - Minor code cleanups. 
+  - Added licensing information to activity.info (GPLv2 or later)
+2
+* Almost complete rewrite by aa. New features: 
+  - Cleaner code
+  - Save and resume games from Journal
+  - Different Board sizes
+  - Restart game button
+  - Better collaboration (turn enforcement, notifications)
+  - Pass and Undo in hotseat (not shared) mode. 
+  - Full Spanish translation
+
+1
+* New activity PlayGo written by Gerard J. Cerchio (www.circlesoft.com)
+

@@ -1,0 +1,13 @@
+[Activity]
+name = FotoToon
+bundle_id = org.eq.FotoToon
+icon = historieta
+exec = sugar-activity3 historietaactivity.HistorietaActivity
+show_launcher = yes
+activity_version = 26
+mime_types = application/x-fototoon-activity;
+summary = Interested in telling a story? Easy! Use your pictures and your imagination to create your own comics!
+categories = media language art
+repository = https://github.com/sugarlabs/fototoon-activity.git
+max_participants = 1
+license = GPLv3+

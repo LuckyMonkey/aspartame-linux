@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# User <juneleonora@yahoo.com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-09 00:33-0400\n"
+"PO-Revision-Date: 2013-09-02 16:25-0400\n"
+"Last-Translator: User <juneleonora@yahoo.com>\n"
+"Language-Team: JuneLeonora\n"
+"Language: pap\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: activity/activity.info:2
+msgid "Implode"
+msgstr "Implotá"
+
+#: helpwidget.py:207
+msgid "Goal: Clear the board by removing blocks in groups of 3 or more."
+msgstr "Meta: Limpia e bòrchi kitando blòki den grupo di 3 of mas."
+
+#: helpwidget.py:232
+msgid "You can't remove groups of one or two blocks."
+msgstr "Bo no por kita grupo di un of dos blòki."
+
+#: helpwidget.py:275
+msgid "Blocks fall to fill empty gaps, and they slide to fill empty columns."
+msgstr "Blòki ta kai pa yena buraku bashí, i nan ta skùif pa yena kolòm bashí."
+
+#: helpwidget.py:298
+msgid "If you get stuck, you can undo to try again."
+msgstr "Si bo pega, bo por deshasí pa purba atrobe."
+
+#: helpwidget.py:346
+msgid "There is always a way to clear the board."
+msgstr "Semper tin un manera pa limpia e bòrchi."
+
+#: implodeactivity.py:162
+msgid "New"
+msgstr "Nobo"
+
+#: implodeactivity.py:163
+msgid "Replay"
+msgstr "Bolbé tok´é"
+
+#: implodeactivity.py:167
+msgid "Undo"
+msgstr "Deshasí"
+
+#: implodeactivity.py:168
+msgid "Redo"
+msgstr "Rehasí"
+
+#: implodeactivity.py:189
+msgid "Easy"
+msgstr "Fásil"
+
+#: implodeactivity.py:190
+msgid "Medium"
+msgstr "Medio"
+
+#: implodeactivity.py:191
+msgid "Hard"
+msgstr "Difísil"
+
+#: implodeactivity.py:204 implodeactivity.py:263
+msgid "Help"
+msgstr "Ayudo"
+
+#: implodeactivity.py:327
+msgid "Done"
+msgstr "Kla"
+
+#: implodeactivity.py:374
+msgid "Previous"
+msgstr "Anterior"
+
+#: implodeactivity.py:375
+msgid "Again"
+msgstr "Atrobe"
+
+#: implodeactivity.py:376
+msgid "Next"
+msgstr "Siguiente"
+
+#: implodeactivity.py:404
+msgid "Stuck?  You can still solve the puzzle."
+msgstr "Pegá? Ainda bo por solushoná e pùzel."
+
+#: implodeactivity.py:411
+msgid "Undo some moves"
+msgstr "Deshasí algun moveshon"
+
+#~ msgid "Game"
+#~ msgstr "Wega"

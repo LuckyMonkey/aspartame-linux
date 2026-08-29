@@ -1,0 +1,10 @@
+[Activity]
+name = Appel Haken
+activity_version = 25
+host_version = 1
+bundle_id = mulawa.AppelHaken
+icon = activity
+show_launcher = yes
+exec = sugar-activity3 activity.PeterActivity
+license = GPLv3+
+repository = https://github.com/sugarlabs/appel-haken-activity.git

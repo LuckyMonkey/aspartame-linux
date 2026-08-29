@@ -1,0 +1,7 @@
+[Activity]
+name = Mastermind
+bundle_id = org.laptop.Mastermind
+icon = icon
+exec = sugar-activity3 activity.Mastermind
+license = GPLv3+
+activity_version = 1

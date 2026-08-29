@@ -1,0 +1,234 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2015-02-09 19:14+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1423509293.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr "FotoToon"
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "Add Photo"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "Globe"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "Think"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Whisper"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Exclamation"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Box"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Add a globe"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Curves"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Straight"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "Highlight"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Idea"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Choose a movement line"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "Turn"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "Delete"
+
+#: toolbar.py:259
+msgid "Bold"
+msgstr "Bold"
+
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Italic"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "Text Colour"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Cancel"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Done"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Drag the images to reorder"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "Reset to box size"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr "Drag to move or resize using the marked corners"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Select font"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr "Add an image and start creating your FotoToon"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "Choose an image"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "Save as Image"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "Edit"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "View"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Slideshow"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "Slideshow with Timings"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "Set Image Duration in Slideshow (Seconds)"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Fullscreen"
+
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "Text"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Change image order"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Edit background image"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "Save as a Book (PDF)"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "Save as a Movie (OGG)"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "Success"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "A image was created in the Journal"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "A PDF was created in the Journal"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "{} as a movie"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "A movie was saved in the Journal"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "Show in Journal"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "Ok"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "Title:"
+
+#~ msgid "Add Globe"
+#~ msgstr "Add Globe"
+
+#~ msgid "Add Think"
+#~ msgstr "Add Think"
+
+#~ msgid "Add Whisper"
+#~ msgstr "Add Whisper"
+
+#~ msgid "Add Exclamation"
+#~ msgstr "Add Exclamation"
+
+#~ msgid "Add Box"
+#~ msgstr "Add Box"
+
+#~ msgid "Choose image"
+#~ msgstr "Choose image"

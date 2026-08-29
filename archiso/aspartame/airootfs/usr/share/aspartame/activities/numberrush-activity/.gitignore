@@ -1,0 +1,7 @@
+*.pyc
+*.py~
+*.xo
+*.pyo
+*.pkl
+dist
+locale

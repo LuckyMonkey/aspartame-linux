@@ -1,0 +1,5 @@
+*.xo
+*.pyc
+.DS_Store
+locale
+dist

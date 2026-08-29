@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-24 17:39+1100\n"
+"PO-Revision-Date: 2017-08-22 09:10+0000\n"
+"Last-Translator: denish <mofistone@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ach\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1503393026.000000\n"
+
+#: activity/activity.info:2 PortfolioActivity.py:746
+msgid "Portfolio"
+msgstr ""
+
+#: activity/activity.info:3
+msgid "create a slide show from Sugar Journal entries that have been 'starred'"
+msgstr ""
+"cwe neno ma woto ki bot jami me Journal me Sugar ma kiketo 'lacer' ii gi"
+
+#: collabwrapper.py:178
+msgid "Joining activity..."
+msgstr "Donyo i tic..."
+
+#: collabwrapper.py:179 collabwrapper.py:191
+msgid "Please wait for the connection..."
+msgstr "Tim ber i kur kube..."
+
+#: collabwrapper.py:190
+msgid "Resuming shared activity..."
+msgstr "Dwogo cen i tic anywaka..."
+
+#: PortfolioActivity.py:90
+msgid "2 seconds"
+msgstr "Ceken 2"
+
+#: PortfolioActivity.py:90
+msgid "10 seconds"
+msgstr "Ceken 10"
+
+#: PortfolioActivity.py:90
+msgid "30 seconds"
+msgstr "Ceken 10"
+
+#: PortfolioActivity.py:90
+msgid "1 minute"
+msgstr "Dakika 1"
+
+#: PortfolioActivity.py:481
+msgid "Enter comments here."
+msgstr "Ket tam amia kany."
+
+#: PortfolioActivity.py:509
+msgid "Adjust"
+msgstr "Yubi"
+
+#: PortfolioActivity.py:518
+msgid "Fullscreen"
+msgstr "Wang kio ma opong"
+
+#: PortfolioActivity.py:523
+msgid "Autoplay"
+msgstr "Tuk pire kene"
+
+#: PortfolioActivity.py:525 PortfolioActivity.py:535
+msgid "Adjust playback speed"
+msgstr "Yub dwiro me tuko pire kene"
+
+#: PortfolioActivity.py:543
+msgid "Refresh"
+msgstr "Nwo cako"
+
+#: PortfolioActivity.py:551
+msgid "Slide view"
+msgstr "Neno ma woto"
+
+#: PortfolioActivity.py:556
+msgid "Thumbnail view"
+msgstr "Neno me cal"
+
+#: PortfolioActivity.py:563
+msgid "Save as PDF"
+msgstr "Gwok calo PDF"
+
+#: PortfolioActivity.py:568
+msgid "Save as presentation"
+msgstr ""
+
+#: PortfolioActivity.py:782
+msgid "Do you have any items in your Journal starred?"
+msgstr "Itye ki gin mo i Journal ni ma kiketo lacer iye?"
+
+#: PortfolioActivity.py:834
+msgid "This project is about..."
+msgstr "Purujek man tye ikom..."
+
+#: PortfolioActivity.py:1275
+msgid "Save recording"
+msgstr "Gwok ma ki mako"
+
+#: PortfolioActivity.py:1331
+#, python-format
+msgid "audio note for %s"
+msgstr "ngec me dwon pi %s"
+
+#: PortfolioActivity.py:1604
+msgid "Please wait."
+msgstr "Tim ber ikur."
+
+#: exportpdf.py:70
+msgid "untitled"
+msgstr "wiye pe tye"

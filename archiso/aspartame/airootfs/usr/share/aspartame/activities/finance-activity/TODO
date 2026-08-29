@@ -1,0 +1,39 @@
+Finance
+
+Next Release
+- Auto-complete item names, categories.
+- Drop down categories list.
+- Finish budget screen.
+- Load and save data from journal.
+- Remove sharing icons from toolbar.
+- Get real toolbar icons.
+- Figure out screen switching.
+- Keyboard shortcuts: New Item, Delete Item, Next Period, Previous Period, This Period.
+- New transaction & Delete transaction disabled unless view is Register screen.
+- Enter a lot of sample data.
+- Sort visible transactions by date.
+- Fix header display for different periods.
+- Generate translation files.
+- Attempt to use locale module to render monetary values.
+- Change period: week, month, year, all time.
+- Split source code into file-per-screen.
+- Sort budget categories alphabetically.
+- Context sensitive help text, triggered by a toggle button.  Pops up help text at the top.
+- Add some kind of 'No budget set' indicator in budget screen.
+- Make budget screen show current date relative to period (pace marker).
+- Make budget bar reflect period.  
++ Add budget period combobox.
++ Support Goals, aka budgets for income.
++ Alerts for current period at the bottom of the screen: Negative balance, Over budget, etc.
++ Rework chart screen to allow clicking on wedges, display details for selected wedge.
++ Draw lines from wedges to category names in chart screen.
++ Select between income and expenses in Chart view.
++ When hovering over a category in any context (chart, etc) hilite the label.
++ Allow clicking on category labels to initiate filter + switch to register view.
+
+Future
++ Filter by name, category.  Put search term next to period in header. 
++ Implement multiple selection and deletion.
++ Bind erase key, or is it backspace on the XO?
++ History screen: Line graph view of categories, income, expenses, budgets, rate of change.
++ Automatic budget button based on history.

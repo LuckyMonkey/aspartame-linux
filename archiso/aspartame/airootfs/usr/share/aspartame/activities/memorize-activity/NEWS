@@ -1,0 +1,194 @@
+59
+
+* Explain icon (James Cameron),
+* Fix TypeError due to bool arguments in ElementTree (Shaan Subbaiah),
+* Fix use of getchildren with Element object (Chihurumnaya Ibiam),
+* code cleanup (Sparsh Goenka),
+* Load demo game if all cards cleared in edit-game (Sparsh Goenka),
+* translate.sugarlabs.org synchronization (Chihurumnaya Ibiam),
+* Remove new line character from translated string (Chihurumnaya Ibiam),
+* Use python3 in setup.py (Chihurumnaya Ibiam),
+
+
+58
+
+* Fix card-image for sound cards (Martin Abente),
+* Remove empty locale files (James Cameron),
+
+57
+
+* Port to TelepathyGLib (James Cameron),
+* Port from ExportedGObject and Tubes to CollabWrapper (James Cameron),
+* Add momentary blank on game reload (James Cameron),
+* Report failure to write model (James Cameron),
+* Port to Python 3 (James Cameron),
+
+56
+
+* Add screenshots and metadata (sdziuda),
+* Fix PyGIWarning for Gdk (Aniket Mathur),
+* Add centre tile for 5x5 size (Swarup N),
+* Port to sugar3.speech (Swarup N),
+* flake8 fixes (James Cameron),
+* Fix fail to start when LANG es_PY.utf8 (James Cameron),
+
+55
+
+* Fix GtkBox warnings (Yash Agrawal),
+* Do not set locale to C (James Cameron),
+* Document the PyGObject binding dependencies (James Cameron),
+* Change import order (James Cameron),
+* Port from GObject to GLib (James Cameron),
+* Rename SvgCard to Card (James Cameron),
+* Fix license address (James Cameron),
+* Add missing copyright (James Cameron),
+* New translations for pt_BR (Paulo Francisco),
+* Regenerate POT file (James Cameron),
+
+54
+
+* Fix fail to start when used with espeak-ng 1.49.2 (James Cameron),
+
+53
+
+* Port to espeak-ng (James Cameron),
+* Updated translations (Chris Leonard et al),
+
+34
+
+* Skip full flipping animation if second speaking card is correct
+* Typo in Memorize #1233
+* Can't play a shared memorize game #1503
+* Pass parent to ObjectChooser
+
+33
+
+* Add Speak feature, create speaking tiles
+* #1030 Fonts wrap on memorize tiles
+
+30
+
+* Make activity screen resolution independent
+* OLPC#6618 Update-pair-button's sensitivity reflects to selected pair
+* OLPC#5242 Suppress wrong positions in players list
+
+29
+
+28
+
+27
+
+26
+
+* Fix sound issue when using Memorize with non-US language more: #3165
+
+25
+
+* Add 43 .po and .mo files from pootle users
+
+24
+
+* Change temp folder permisson to allow activity access
+* Fix the mime-type folder location
+
+23
+
+* Add support do ogg Record files
+* Changed drumgit sound to 16KHz as ogg Record files
+* Add application-x-memorize-project mime-type icon
+
+22
+
+* Brought the drumgit game back (erikos)
+* Release sound device when not in focus (erikos)
+
+21
+
+* Temp folders changed for Rainbow compliance #4872, #5069
+* Fix in mode flag which was broken sharing mode #4752
+
+20
+
+* Changes to Memorize use environ['SUGAR_ACTIVITY_ROOT']
+
+19
+
+* New pot files for create game mode
+* Allow kids create their own games using text, audio and images #3311
+* When a player join an already started game, it receives the game state #3471
+* Added support to be able to play wav and aiff format (erikos)
+* Games tab renamed to Play (Muriel)
+* New icon and tooltip for reset game button #3965 (Muriel)
+* Only enable add-pair/update-pair buttons when the card has content (Muriel)
+* Import pictures and audio from journal (Muriel)
+* Create mode read/write in datastore (Muriel)
+* New memorize game file format based on zip file (Muriel)
+* New icons to create mode (Muriel)
+* New system to svgcards using cache, decreasing memory usage #3106 (Muriel)
+* Adopt to actvivity launch changes (erikos)
+* Start on game toolbar (erikos)
+* Do not set title #3061 (erikos)
+* Fix for memorize accepts clicks when it should not #3727 (erikos) 
+
+18
+
+* Fix for #3160: all games have a complete 6x6 grid (Muriel)
+
+17
+
+* New activity icon, Fix for #2829 (erikos)
+
+16
+
+* Internacionalization for activity name, games tab, and standard game set names. Fix for #3068 (Muriel)
+* Card code cleaned and with some otmizations (Muriel)
+* Letters1 and Letters2 merged in Letters (Muriel)
+
+15
+
+* Fix for high memory consumption #3106
+  After deleting a pixbuf you have to call the garbage collector 
+  manualy to free the memory.(erikos)
+
+* Only try to connect to presence service when offline.
+  Fix for #3099 (erikos)
+
+14
+
+13
+
+* Use sugar's tubeconn.py. (erikos)
+
+12
+
+* Removed absolute path for game icons and sounds
+which was cauing problems when a game is shared between
+an XO and a sugar-jhbuild emulator (erikos)
+
+* Free the audio device when not in focus (erikos)
+
+* Memorize now uses the ogg vorbis format to play sounds 
+and shrinkd it's size by the factor of six (erikos)
+
+* Fix bugs on display back card labels and add code to consider text alignment (Muriel)
+
+* Fixes in the model for writing the game config to xml (erikos)
+
+* Changed the sounds to use 22Khz and converted them to ogg vorbis (erikos) 
+
+* Added sound to the games: letters1, letters2, numbers and phonemes (Muriel)
+
+* New card text render and new game Capitals (Muriel)
+* Added global align parameter for text displayed on cards (Muriel)
+
+* Added support for sound to the memorize activity using csound (erikos)
+
+* Fixes for leaving and joining of buddies (erikos)
+* Added new model which handles config files for games in xml
+* Adopted the ui to use the model
+* Adopted the dbus methods to send the new grid when a game changes
+
+* Starting to merge the memosono game and the memorize game into one activity. (erikos)
+  Activity is known now as 'memorize'
+
+* First version of the collaborated memosono. (erikos)

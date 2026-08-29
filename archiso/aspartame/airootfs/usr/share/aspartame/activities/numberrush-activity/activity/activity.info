@@ -1,0 +1,10 @@
+[Activity]
+name = NumberRush
+bundle_id = org.sugarlabs.NumRush
+icon = activity-NumRush
+exec = sugar-activity3 XActivity.XActivity
+show_launcher = yes 
+activity_version = 4
+license = GPLv2+
+summary = play game
+repository = https://github.com/Gr33nMayhem/NumberRush.git

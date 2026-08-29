@@ -1,0 +1,524 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-15 00:31-0400\n"
+"PO-Revision-Date: 2013-06-17 07:50+0200\n"
+"Last-Translator: AlanJAS <alanjas@hotmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "Memorize"
+msgstr "Memorizar"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Here you can play games that challenge your memory! But, more importantly, "
+"you can create your own game to test the memory of others!"
+msgstr ""
+"¡Aquí puedes jugar juegos que desafían tu memoria! Pero, más lo importante, "
+"es que puedes crear tu propio juego para poner a prueba la memoria de los "
+"demás!"
+
+#: activity.py:71
+msgid "Play"
+msgstr "Jugar"
+
+#: activity.py:71
+msgid "Create"
+msgstr "Crear"
+
+#: activity.py:71
+msgid "Game name:"
+msgstr "Nombre del juego:"
+
+#: activity.py:71
+msgid "Equal pairs"
+msgstr "Pares iguales"
+
+#: activity.py:72
+msgid "addition"
+msgstr "adición"
+
+#: activity.py:72
+msgid "letters"
+msgstr "letras"
+
+#: activity.py:72
+msgid "sounds"
+msgstr "sonidos"
+
+#: activity.py:96 activity.py:276
+msgid "Edit game"
+msgstr "Editar juego"
+
+#: activity.py:272
+msgid "Play game"
+msgstr "Jugar"
+
+#: createcardpanel.py:82
+msgid "Add as new pair"
+msgstr "Añadir un nuevo par"
+
+#: createcardpanel.py:85
+msgid "Add"
+msgstr "Añadir"
+
+#: createcardpanel.py:90
+msgid "Update selected pair"
+msgstr "Actualizar par seleccionado"
+
+#: createcardpanel.py:93
+msgid "Update"
+msgstr "Actualizar"
+
+#: createcardpanel.py:314
+msgid "Preview:"
+msgstr "Vista previa:"
+
+#: createcardpanel.py:330
+msgid "Text:"
+msgstr "Texto:"
+
+#: createcardpanel.py:342
+msgid "Insert picture"
+msgstr "Insertar imagen"
+
+#: createcardpanel.py:347
+msgid "Insert sound"
+msgstr "Insertar sonido"
+
+#: createcardpanel.py:504
+msgid "Pronounce text during tile flip"
+msgstr "Pronunciar texto mientras voltea la carta"
+
+#: createtoolbar.py:46 createtoolbar.py:106
+msgid "Match different tiles"
+msgstr "Igualar fichas diferentes"
+
+#: createtoolbar.py:51 createtoolbar.py:119
+msgid "Mixed tiles game"
+msgstr "Juego de fichas mixtas"
+
+#: createtoolbar.py:56
+msgid "Clear all tiles"
+msgstr "Limpiar todas las fichas"
+
+#: createtoolbar.py:76
+msgid "Clear all the tiles from the game?"
+msgstr "¿Limpiar todas las piezas del juego?"
+
+#: createtoolbar.py:78
+msgid "Clear"
+msgstr "Limpiar"
+
+#: createtoolbar.py:80
+msgid "Do not clear"
+msgstr "No Limpiar"
+
+#: createtoolbar.py:102
+msgid "Match identical tiles"
+msgstr "Iguala fichas idénticas"
+
+#: createtoolbar.py:115
+msgid "Grouped tiles game"
+msgstr "Juego de fichas agrupadas"
+
+#: fontcombobox.py:42
+msgid "Select font"
+msgstr "Seleccionar fuente"
+
+#: game.py:94
+msgid "Loading game..."
+msgstr "Cargando juego..."
+
+#: memorizetoolbar.py:43
+msgid "Addition"
+msgstr "Adición"
+
+#: memorizetoolbar.py:44
+msgid "Letters"
+msgstr "Letras"
+
+#: memorizetoolbar.py:45
+msgid "Sounds"
+msgstr "Sonidos"
+
+# How about "Cargar juegos de demostración".  Demo might not be readily understood in all locales.
+#: memorizetoolbar.py:60
+msgid "Load demo games"
+msgstr "Cargar juegos de demostración"
+
+#: memorizetoolbar.py:72
+msgid "Change size"
+msgstr "Cambiar tamaño"
+
+#: memorizetoolbar.py:86
+msgid "Restart Game"
+msgstr "Reiniciar Juego"
+
+#: memorizetoolbar.py:111
+msgid "Discard your modified game?"
+msgstr "¿Descartar tu juego modificado?"
+
+#: memorizetoolbar.py:113
+msgid "Discard"
+msgstr "Descartar"
+
+#: memorizetoolbar.py:115
+msgid "Do not discard"
+msgstr "No descartar"
+
+#: messenger.py:192
+msgid "Receiving game"
+msgstr "Recibiendo juego"
+
+#: messenger.py:193
+msgid "done"
+msgstr "hecho"
+
+#: speak/voice.py:36
+msgid "Brazil"
+msgstr "Portugués - Brasileño"
+
+#: speak/voice.py:37
+msgid "Swedish"
+msgstr "Sueco"
+
+#: speak/voice.py:38
+msgid "Icelandic"
+msgstr "Islandés"
+
+#: speak/voice.py:39
+msgid "Romanian"
+msgstr "Rumano"
+
+#: speak/voice.py:40
+msgid "Swahili"
+msgstr "Swahili"
+
+#: speak/voice.py:41
+msgid "Hindi"
+msgstr "Hindi"
+
+#: speak/voice.py:42
+msgid "Dutch"
+msgstr "Holandés"
+
+#: speak/voice.py:43
+msgid "Latin"
+msgstr "Latín"
+
+#: speak/voice.py:44
+msgid "Hungarian"
+msgstr "Húngaro"
+
+#: speak/voice.py:45
+msgid "Macedonian"
+msgstr "Macedonio"
+
+#: speak/voice.py:46
+msgid "Welsh"
+msgstr "Galés"
+
+#: speak/voice.py:47
+msgid "French"
+msgstr "Francés"
+
+#: speak/voice.py:48
+msgid "Norwegian"
+msgstr "Noruego"
+
+#: speak/voice.py:49
+msgid "Russian"
+msgstr "Ruso"
+
+#: speak/voice.py:50
+msgid "Afrikaans"
+msgstr "Afrikáans"
+
+#: speak/voice.py:51
+msgid "Finnish"
+msgstr "Finés"
+
+#: speak/voice.py:52 speak/voice.py:125
+msgid "Default"
+msgstr "Predeterminada"
+
+#: speak/voice.py:53
+msgid "Cantonese"
+msgstr "Cantonés"
+
+#: speak/voice.py:54
+msgid "Scottish"
+msgstr "Escocés"
+
+#: speak/voice.py:55
+msgid "Greek"
+msgstr "Griego"
+
+#: speak/voice.py:56
+msgid "Vietnam"
+msgstr "Vietnamita"
+
+#: speak/voice.py:57
+msgid "English"
+msgstr "Inglés"
+
+#: speak/voice.py:58
+msgid "Lancashire"
+msgstr "Lancashire"
+
+#: speak/voice.py:59
+msgid "Italian"
+msgstr "Italiano"
+
+#: speak/voice.py:60
+msgid "Portugal"
+msgstr "Portugués"
+
+#: speak/voice.py:61
+msgid "German"
+msgstr "Alemán"
+
+#: speak/voice.py:62
+msgid "Whisper"
+msgstr "Susurro"
+
+#: speak/voice.py:63
+msgid "Croatian"
+msgstr "Croata"
+
+#: speak/voice.py:64
+msgid "Czech"
+msgstr "Checo"
+
+#: speak/voice.py:65
+msgid "Slovak"
+msgstr "Eslovaco"
+
+#: speak/voice.py:66
+msgid "Spanish"
+msgstr "Español"
+
+#: speak/voice.py:67
+msgid "Polish"
+msgstr "Polaco"
+
+#: speak/voice.py:68
+msgid "Esperanto"
+msgstr "Esperanto"
+
+#~ msgid "New game"
+#~ msgstr "Nuevo juego"
+
+#~ msgid "Load game"
+#~ msgstr "Cargar Juego"
+
+#~ msgid "Save game"
+#~ msgstr "Guardar juego"
+
+#~ msgid "Click for grouped game"
+#~ msgstr "Click para juego en grupo"
+
+#~ msgid "Choose memorize game"
+#~ msgstr "Escoger juego de memoria"
+
+#~ msgid "Click for ungrouped game"
+#~ msgstr "Click para juego sin grupo"
+
+#~ msgid "Set equal pairs"
+#~ msgstr "Seleccionar pares iguales"
+
+#~ msgid "Set grouped game"
+#~ msgstr "Seleccionar juego por grupos"
+
+#~ msgid "Clear current game"
+#~ msgstr "Limpiar el juego"
+
+#~ msgid "Set non equal pairs"
+#~ msgstr "Seleccionar pares distintos"
+
+#~ msgid "Set ungrouped game"
+#~ msgstr "Seleccionar juego sin grupos"
+
+#~ msgid "Pronounce text while fliping tile"
+#~ msgstr "Pronuncia el texto mientras das la vuelta a la carta"
+
+#~ msgid "Choose image"
+#~ msgstr "Escoger imagen"
+
+#~ msgid "Choose audio"
+#~ msgstr "Escoger audio"
+
+#~ msgid "capitals"
+#~ msgstr "capitales"
+
+#, fuzzy
+#~ msgid "drumgit"
+#~ msgstr "drumgit"
+
+#~ msgid "numbers"
+#~ msgstr "números"
+
+#~ msgid "phonemes"
+#~ msgstr "fonemas"

@@ -1,0 +1,241 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2017-10-04 01:23+0000\n"
+"Last-Translator: EdgarQuispeChambi <equispe7@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ayc\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1507080192.000000\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr "Foto katuqata wakichaña"
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"¿Foto wakichatampi yatiña wakichaña? ¡Phisnawa! ¡Foto katuqatama ukata "
+"amuyumampi juma pachpa foto wakichatama wakichasma!"
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "Uñanaqa rixita yapxataña"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "Globo phusata"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "lup'iña"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "Ñusuqiña"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "Jach'ata arsuña"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "Kajuna"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "Globo phusantata yapxataña"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "Q'iwinaka"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "Chiqa"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "Qhananchata"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "Amuyu"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "Muyuyiri chiqa ajllma"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "Muyuyaña"
+
+#  "Borrar"
+#: toolbar.py:141
+msgid "Delete"
+msgstr "Chhaqtayaña"
+
+#  "Negrita"
+#: toolbar.py:259
+msgid "Bold"
+msgstr "Qhananchata"
+
+#  "Italica"
+#: toolbar.py:264
+msgid "Italic"
+msgstr "Alt'ata qillqanaka"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "Qillqata samipa"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr "Tukuyaña"
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr "Wakichata"
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr "Rixitanaka wakichañataki waythapma"
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr "imaña wakichata mayampi jaktayma"
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr ""
+"ch'ikunchata wit'unaka unxtayañataki jani ukaxa machaqachañataki wayt'ma"
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "Qillqa thaqaña"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr "Maya rixsutxaru jumana FotoToon rixitama wakichma"
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr "Maya rixita katuña"
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "Rixitjama imaña"
+
+#  "PNG"
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG wakichata"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr "Chiqachaña"
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "Uñjäwi"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "Nayranchaña"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr "Jani kunatjama uñachayaña"
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr "Rixita uñachayaña wakichata chimpuña"
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "Maypacha uñjäwi"
+
+#  "Texto"
+#: historietaactivity.py:189
+msgid "Text"
+msgstr "Qillqata"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr "Rixitanaka siqita mayjt'ayaña"
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr "Qhipäxa rixita chiqachaña"
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "(PDF) qillqatjama panka imaña"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr "OGG wakichatjama uñtaña imaña"
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "Nayrankaña"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "Sapüru luräwiru maya rixitawa uñstayasi"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "Sapüru luräwiru maya PDF wakichatawa uñstayasi"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr "{} uñch'ukiña wakichatjama"
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr "Sapüru luräwiru maya wakisiri rixitawa qhana uñstayasi"
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "Sapüru luräwiru uñachayaña"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "Ok Walikiwa"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "P'iqinchäwi:"
+
+#~ msgid "Add Globe"
+#~ msgstr "Arunchaña yapxataña"
+
+#~ msgid "Add Think"
+#~ msgstr "Amuyt'äwi yapxataña"
+
+#~ msgid "Add Whisper"
+#~ msgstr "Chhipisiña yapxataña"
+
+#~ msgid "Add Exclamation"
+#~ msgstr "Jallalläwi yapxataña"
+
+#~ msgid "Add Box"
+#~ msgstr "Imaña yapxataña"
+
+#  "Elegir Imagen"
+#~ msgid "Choose image"
+#~ msgstr "Uñjasiwi ajlliña"

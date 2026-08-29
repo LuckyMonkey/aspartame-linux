@@ -1,0 +1,36 @@
+26
+
+* use math.gcd, supports Python 3.9 (Ibiam Chihurumnaya),
+* remove unused metadata key (James Cameron),
+* new translations (Besnik),
+
+25
+
+* Fix title box vertical position (Martin Abente Lahaye),
+* Fix drawing comic boxes (Martin Abente Lahaye),
+* Fix text rendering (Martin Abente Lahaye),
+
+24
+
+* Fix image delete (James Cameron),
+* Avoid save as movie when GStreamer bugs present (James Cameron),
+* New translations (Chris Leonard et al),
+* Port to Python 3 (Ibiam Chihurumnaya),
+* Use activity.get_activity_root (Ibiam Chihurumnaya),
+* Demote unnecessary errors (Ibiam Chihurumnaya),
+* Fix flake8 warnings (James Cameron),
+* Fix repository metadata (James Cameron),
+* Remove empty translations (James Cameron).
+
+23
+
+* Fix warnings and errors (James Cameron),
+* Update POT file (James Cameron),
+* New translations (Chris Leonard et al),
+
+22.1
+
+* Simplify draw of globe (Gonzalo Odiard),
+* Fix permutation of point values on globe rotation (Gonzalo Odiard),
+* Remove an editor backup file (James Cameron),
+* Fix repository pointer (James Cameron).

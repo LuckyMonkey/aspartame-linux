@@ -1,0 +1,380 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-15 00:31-0400\n"
+"PO-Revision-Date: 2013-06-17 16:49+0200\n"
+"Last-Translator: whe <heppew@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "Memorize"
+msgstr "Onthouden"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Here you can play games that challenge your memory! But, more importantly, "
+"you can create your own game to test the memory of others!"
+msgstr ""
+"Hier kun je spellen spelen die je geheugen uitdagen! Maar, belangrijker, je "
+"kunt je eigen spel maken oom het geheugen van anderen te testen!"
+
+#: activity.py:71
+msgid "Play"
+msgstr "Speel"
+
+#: activity.py:71
+msgid "Create"
+msgstr "Maken"
+
+#: activity.py:71
+msgid "Game name:"
+msgstr "Spelnaam:"
+
+#: activity.py:71
+msgid "Equal pairs"
+msgstr "Gelijke paren"
+
+#: activity.py:72
+msgid "addition"
+msgstr "optelling"
+
+#: activity.py:72
+msgid "letters"
+msgstr "letters"
+
+#: activity.py:72
+msgid "sounds"
+msgstr "geluiden"
+
+#: activity.py:96 activity.py:276
+msgid "Edit game"
+msgstr "Bewerk spel"
+
+#: activity.py:272
+msgid "Play game"
+msgstr "Speel spel"
+
+#: createcardpanel.py:82
+msgid "Add as new pair"
+msgstr "Toevoegen als nieuw paar"
+
+#: createcardpanel.py:85
+msgid "Add"
+msgstr "Toevoegen"
+
+#: createcardpanel.py:90
+msgid "Update selected pair"
+msgstr "Geselecteerd paar vernieuwen"
+
+#: createcardpanel.py:93
+msgid "Update"
+msgstr "Bijwerken"
+
+#: createcardpanel.py:314
+msgid "Preview:"
+msgstr "Bekijken:"
+
+#: createcardpanel.py:330
+msgid "Text:"
+msgstr "Tekst:"
+
+#: createcardpanel.py:342
+msgid "Insert picture"
+msgstr "Afbeelding invoegen"
+
+#: createcardpanel.py:347
+msgid "Insert sound"
+msgstr "Geluid invoegen"
+
+#: createcardpanel.py:504
+msgid "Pronounce text during tile flip"
+msgstr "Spreek de tekst uit gedurende de tegel omslag"
+
+#: createtoolbar.py:46 createtoolbar.py:106
+msgid "Match different tiles"
+msgstr "Pas verschillende tegels"
+
+#: createtoolbar.py:51 createtoolbar.py:119
+msgid "Mixed tiles game"
+msgstr "Meng tegelspel"
+
+#: createtoolbar.py:56
+msgid "Clear all tiles"
+msgstr "Wis alle tegels"
+
+#: createtoolbar.py:76
+msgid "Clear all the tiles from the game?"
+msgstr "Wis alle tegels van het spel?"
+
+#: createtoolbar.py:78
+msgid "Clear"
+msgstr "Wissen"
+
+#: createtoolbar.py:80
+msgid "Do not clear"
+msgstr "Niet wissen"
+
+#: createtoolbar.py:102
+msgid "Match identical tiles"
+msgstr "Pas identieke tegels"
+
+#: createtoolbar.py:115
+msgid "Grouped tiles game"
+msgstr "Groepeer tegel spel"
+
+#: fontcombobox.py:42
+msgid "Select font"
+msgstr "Selecteer lettertype"
+
+#: game.py:94
+msgid "Loading game..."
+msgstr "Laad spel..."
+
+#: memorizetoolbar.py:43
+msgid "Addition"
+msgstr "Optelling"
+
+#: memorizetoolbar.py:44
+msgid "Letters"
+msgstr "Letters"
+
+#: memorizetoolbar.py:45
+msgid "Sounds"
+msgstr "Geluiden"
+
+#: memorizetoolbar.py:60
+msgid "Load demo games"
+msgstr "Laad demo spellen"
+
+#: memorizetoolbar.py:72
+msgid "Change size"
+msgstr "Verander gtrootte"
+
+#: memorizetoolbar.py:86
+msgid "Restart Game"
+msgstr "Herstart spel"
+
+#: memorizetoolbar.py:111
+msgid "Discard your modified game?"
+msgstr "Negeer je gewijzigde spel?"
+
+#: memorizetoolbar.py:113
+msgid "Discard"
+msgstr "Negeer"
+
+#: memorizetoolbar.py:115
+msgid "Do not discard"
+msgstr "Negeer niet"
+
+#: messenger.py:192
+msgid "Receiving game"
+msgstr "Spel ontvangen"
+
+#: messenger.py:193
+msgid "done"
+msgstr "klaar"
+
+#: speak/voice.py:36
+msgid "Brazil"
+msgstr "Braziliaans"
+
+#: speak/voice.py:37
+msgid "Swedish"
+msgstr "Zweeds"
+
+#: speak/voice.py:38
+msgid "Icelandic"
+msgstr "Ijslands"
+
+#: speak/voice.py:39
+msgid "Romanian"
+msgstr "Roemeens"
+
+#: speak/voice.py:40
+msgid "Swahili"
+msgstr "Swahili"
+
+#: speak/voice.py:41
+msgid "Hindi"
+msgstr "Hindi"
+
+#: speak/voice.py:42
+msgid "Dutch"
+msgstr "Nederlands"
+
+#: speak/voice.py:43
+msgid "Latin"
+msgstr "Latijns"
+
+#: speak/voice.py:44
+msgid "Hungarian"
+msgstr "Hongaars"
+
+#: speak/voice.py:45
+msgid "Macedonian"
+msgstr "Macedonisch"
+
+#: speak/voice.py:46
+msgid "Welsh"
+msgstr "Welsh"
+
+#: speak/voice.py:47
+msgid "French"
+msgstr "Frans"
+
+#: speak/voice.py:48
+msgid "Norwegian"
+msgstr "Noors"
+
+#: speak/voice.py:49
+msgid "Russian"
+msgstr "Russisch"
+
+#: speak/voice.py:50
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#: speak/voice.py:51
+msgid "Finnish"
+msgstr "Fins"
+
+#: speak/voice.py:52 speak/voice.py:125
+msgid "Default"
+msgstr "Standaard"
+
+#: speak/voice.py:53
+msgid "Cantonese"
+msgstr "Kantonees"
+
+#: speak/voice.py:54
+msgid "Scottish"
+msgstr "Schots"
+
+#: speak/voice.py:55
+msgid "Greek"
+msgstr "Grieks"
+
+#: speak/voice.py:56
+msgid "Vietnam"
+msgstr "Vietnamees"
+
+#: speak/voice.py:57
+msgid "English"
+msgstr "Engels"
+
+#: speak/voice.py:58
+msgid "Lancashire"
+msgstr "Lancashire"
+
+#: speak/voice.py:59
+msgid "Italian"
+msgstr "Italiaans"
+
+#: speak/voice.py:60
+msgid "Portugal"
+msgstr "Portugees"
+
+#: speak/voice.py:61
+msgid "German"
+msgstr "Duits"
+
+#: speak/voice.py:62
+msgid "Whisper"
+msgstr "Fluister"
+
+#: speak/voice.py:63
+msgid "Croatian"
+msgstr "Kroatisch"
+
+#: speak/voice.py:64
+msgid "Czech"
+msgstr "Tsjechisch"
+
+#: speak/voice.py:65
+msgid "Slovak"
+msgstr "Slowaaks"
+
+#: speak/voice.py:66
+msgid "Spanish"
+msgstr "Spaans"
+
+#: speak/voice.py:67
+msgid "Polish"
+msgstr "Pools"
+
+#: speak/voice.py:68
+msgid "Esperanto"
+msgstr "Esperanto"
+
+#~ msgid "New game"
+#~ msgstr "Nieuw spel"
+
+#~ msgid "Load game"
+#~ msgstr "Laad spel"
+
+#~ msgid "Save game"
+#~ msgstr "Spel opslaan"
+
+#~ msgid "Click for grouped game"
+#~ msgstr "Kies groepsspel"
+
+#~ msgid "Choose memorize game"
+#~ msgstr "Kies geheugenspel"
+
+#~ msgid "Click for ungrouped game"
+#~ msgstr "Kies niet-groepsspel"
+
+#~ msgid "Pronounce text while fliping tile"
+#~ msgstr "Tekst uitspreken bij omdraaien van tegel"
+
+#~ msgid "Choose image"
+#~ msgstr "Kies afbeelding"
+
+#~ msgid "Choose audio"
+#~ msgstr "Kies geluid"
+
+#~ msgid "numbers"
+#~ msgstr "nummers"
+
+#~ msgid "phonemes"
+#~ msgstr "klanken"

@@ -1,0 +1,248 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-04 00:33-0400\n"
+"PO-Revision-Date: 2012-05-22 03:00+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "Poll"
+msgstr ""
+
+#: PollSession.py:502 PollSession.py:586
+#, python-format
+msgid "%(author)s shared a poll '%(title)s' with you."
+msgstr ""
+
+#: PollSession.py:585
+msgid "New Poll"
+msgstr ""
+
+#: Widgets.py:59 Widgets.py:497
+msgid "Choose a Poll"
+msgstr ""
+
+#: Widgets.py:63
+msgid "Build a Poll"
+msgstr ""
+
+#: Widgets.py:67 Widgets.py:388
+msgid "Settings"
+msgstr ""
+
+#: Widgets.py:71 Widgets.py:570
+msgid "Lesson Plans"
+msgstr ""
+
+#: Widgets.py:106
+msgid "Build a poll"
+msgstr ""
+
+#: Widgets.py:109
+msgid "Poll Title:"
+msgstr ""
+
+#: Widgets.py:113
+#, fuzzy
+msgid "Question:"
+msgstr "Pertanyaan:"
+
+#: Widgets.py:118
+msgid "Number of votes to collect:"
+msgstr ""
+
+#: Widgets.py:126
+#, python-format
+msgid "Answer %s:"
+msgstr ""
+
+#: Widgets.py:134 Widgets.py:205
+msgid "Change Image"
+msgstr ""
+
+#: Widgets.py:139
+msgid "Add Image"
+msgstr ""
+
+#: Widgets.py:150
+msgid "Step 1: Preview"
+msgstr ""
+
+#: Widgets.py:154
+msgid "Step 2: Save"
+msgstr ""
+
+#: Widgets.py:209 Widgets.py:484 poll.py:380
+msgid "Poll Activity"
+msgstr ""
+
+#: Widgets.py:210
+msgid "Your selection is not an image"
+msgstr ""
+
+#: Widgets.py:394
+msgid "Show answers while voting"
+msgstr ""
+
+#: Widgets.py:399
+msgid "Remember last vote"
+msgstr ""
+
+#: Widgets.py:406
+msgid "Play a sound when make a vote"
+msgstr ""
+
+#: Widgets.py:412
+msgid "Use image in answer"
+msgstr ""
+
+#: Widgets.py:417
+msgid "Image Size: "
+msgstr ""
+
+#: Widgets.py:445
+msgid "Save"
+msgstr "Simpan"
+
+#: Widgets.py:485
+msgid "The settings have been saved"
+msgstr ""
+
+#: Widgets.py:536
+msgid "VOTE"
+msgstr ""
+
+#: Widgets.py:539
+msgid "SEE RESULTS"
+msgstr ""
+
+#: Widgets.py:546
+#, fuzzy
+msgid "DELETE"
+msgstr "HAPUS"
+
+#: Widgets.py:560
+#, fuzzy
+msgid "Introduction"
+msgstr "Perkenalan"
+
+#: Widgets.py:560
+msgid "Lesson 1"
+msgstr ""
+
+#: Widgets.py:560
+msgid "Lesson 2"
+msgstr ""
+
+#: Widgets.py:561
+msgid "Lesson 3"
+msgstr ""
+
+#: Widgets.py:561
+msgid "Lesson 4"
+msgstr ""
+
+#: Widgets.py:725
+msgid "votes"
+msgstr ""
+
+#: Widgets.py:725
+msgid "(votes left to collect)"
+msgstr ""
+
+#: Widgets.py:733 poll.py:476
+msgid "Vote"
+msgstr ""
+
+#: Widgets.py:739
+msgid "Edit Poll"
+msgstr ""
+
+#: Widgets.py:744
+msgid "Save Poll"
+msgstr ""
+
+#: poll.py:279 poll.py:370 poll.py:480
+msgid "VOTE!"
+msgstr ""
+
+#: poll.py:282 poll.py:373 poll.py:483
+msgid "Poll Preview"
+msgstr ""
+
+#: poll.py:381
+msgid "To vote you have to select first one option"
+msgstr ""
+
+#: poll.py:477
+#, python-format
+msgid "Somebody voted on %s"
+msgstr ""
+
+#: poll.py:564 poll.py:599
+#, fuzzy
+msgid "Joined"
+msgstr "Bergabung"
+
+#: poll.py:604
+#, fuzzy
+msgid "Left"
+msgstr "Kiri"
+
+#, fuzzy
+#~ msgid "Answer"
+#~ msgstr "Jawab"
+
+#, fuzzy
+#~ msgid "Green"
+#~ msgstr "Hijau"
+
+#, fuzzy
+#~ msgid "Red"
+#~ msgstr "Merah"
+
+#, fuzzy
+#~ msgid "Blue"
+#~ msgstr "Biru"

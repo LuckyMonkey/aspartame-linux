@@ -1,0 +1,235 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-25 11:58+1000\n"
+"PO-Revision-Date: 2018-02-04 20:36+0000\n"
+"Last-Translator: Besnik_b <besnik@programeshqip.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sq\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1517776583.000000\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Merrni Libra"
+
+#: activity/activity.info:3
+msgid ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+msgstr ""
+"Ju duhen libra? Të gjithëve na duhen! Kjo veprimtari ju lejon të kërkoni dhe "
+"merrni libra nga mjaft burime të ndryshime. Futjuni leximit!"
+
+#: GetIABooksActivity.py:245 GetIABooksActivity.py:477
+#: GetIABooksActivity.py:481 GetIABooksActivity.py:616
+msgid "Catalogs"
+msgstr "Katalogë"
+
+#: GetIABooksActivity.py:259
+msgid "Any language"
+msgstr "Çfarëdo gjuhe"
+
+#: GetIABooksActivity.py:308 GetIABooksActivity.py:819
+msgid "Performing lookup, please wait..."
+msgstr "Po kryhet kërkimi, ju lutemi, pritni…"
+
+#: GetIABooksActivity.py:348
+msgid "My books"
+msgstr "Librat e mi"
+
+#: GetIABooksActivity.py:362
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "Vëllim %.2f GB"
+
+#: GetIABooksActivity.py:534
+msgid "Format:"
+msgstr "Format:"
+
+#: GetIABooksActivity.py:547
+msgid "Get Book"
+msgstr "Merrni Libër"
+
+#: GetIABooksActivity.py:587
+msgid "Enter words from the Author or Title to begin search."
+msgstr "Shkruani fjalë nga Autori apo Titulli për të filluar kërkimin."
+
+#: GetIABooksActivity.py:639
+msgid "Selected book"
+msgstr "Libër i përzgjedhur"
+
+#: GetIABooksActivity.py:658
+msgid "Title:\t\t"
+msgstr "Titull:\t\t"
+
+#: GetIABooksActivity.py:660
+msgid "Author:\t\t"
+msgstr "Autor:\t\t"
+
+#: GetIABooksActivity.py:664
+msgid "Summary:\t"
+msgstr "Përmbledhje:\t"
+
+#: GetIABooksActivity.py:673
+msgid "Language:\t"
+msgstr "Gjuhë:\t"
+
+#: GetIABooksActivity.py:674
+msgid "Publisher:\t"
+msgstr "Botues:\t"
+
+#: GetIABooksActivity.py:804
+msgid "You must enter at least 3 letters."
+msgstr "Duhet të jepni e pakta 3 shkronja."
+
+#: GetIABooksActivity.py:832
+msgid "Could not reach the server. Maybe you are not connected to the network"
+msgstr "S’u kap dot shërbyesi. Ndoshta s’jeni i lidhur në rrjet"
+
+#: GetIABooksActivity.py:836
+msgid "There was an error downloading the list."
+msgstr "Pati një gabim në shkarkimin e listës."
+
+#: GetIABooksActivity.py:838
+#, python-format
+msgid "New catalog list %s was found"
+msgstr "U gjet listë e re %s katalogësh"
+
+#: GetIABooksActivity.py:842
+msgid "Sorry, no books could be found."
+msgstr "Na ndjeni, s’u gjet ndonjë libër."
+
+#: GetIABooksActivity.py:856
+msgid "Sorry, we only found english books."
+msgstr "Na ndjeni, gjetëm vetëm libra anglisht."
+
+#: GetIABooksActivity.py:980
+#, python-format
+msgid ""
+"Error: Could not download %s. The path in the catalog seems to be incorrect."
+msgstr "Gabim: S’u shkarkua dot %s. Shtegu në katalog duket të jetë i pasaktë."
+
+#: GetIABooksActivity.py:986
+#, python-format
+msgid "Error: Could not download %s. The other end sent an empty file."
+msgstr "Gabim: S’u shkarkua dot %s. Ana tjetër dërgoi një kartelë të zbrazët."
+
+#: GetIABooksActivity.py:992
+#, python-format
+msgid ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+msgstr ""
+"Gabim: S’u shkarkua dot %s. Ana tjetër dërgoi tekst/html, në vend se libër."
+
+#: GetIABooksActivity.py:1054
+msgid "Download completed"
+msgstr "Shkarkim i plotësuar"
+
+#: GetIABooksActivity.py:1066
+#, python-format
+msgid "Open with %s"
+msgstr "Hape me %s"
+
+#: GetIABooksActivity.py:1070
+msgid "Show in Journal"
+msgstr "Shfaqe në Ditar"
+
+#: GetIABooksActivity.py:1075
+msgid "Ok"
+msgstr "Ok"
+
+#: listview.py:35
+msgid "Title"
+msgstr "Titull"
+
+#: listview.py:37
+msgid "Author"
+msgstr "Autor"
+
+#: listview.py:39
+msgid "Publisher"
+msgstr "Botues"
+
+#: listview.py:41
+msgid "Language"
+msgstr "Gjuhë"
+
+#: listview.py:43
+msgid "Publish Date"
+msgstr "Datë Botimi"
+
+#~ msgid "Error"
+#~ msgstr "Gabim"
+
+#~ msgid "Connection timed out for "
+#~ msgstr "Mbaroi koha e lidhjes për "
+
+#, python-format
+#~ msgid ""
+#~ "Error: Could not download %s. The path in the catalog seems to be incorrect"
+#~ msgstr "Gabim: S’u shkarkua dot %s. Shtegu në katalog duket se është i pasaktë"
+
+#~ msgid "Books"
+#~ msgstr "Libra"
+
+#~ msgid "Link:\t\t"
+#~ msgstr "Lidhja:\t\t"
+
+#~ msgid "You must enter at least one search word."
+#~ msgstr "Ju duhet të shënoni në të paktën një fjalë të kërkimit."
+
+#, python-format
+#~ msgid ""
+#~ "Error: Could not download %s . The path in the catalog seems to be incorrect"
+#~ msgstr ""
+#~ "Gabim: Nuk mund të shkarkoni %s. Kalimi në katalogun duket të jetë e pasaktë"
+
+#, python-format
+#~ msgid "Success: %s was added to Journal."
+#~ msgstr "Suksesi: %s është shtuar në Protokoll."

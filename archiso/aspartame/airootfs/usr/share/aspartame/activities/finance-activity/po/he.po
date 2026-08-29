@@ -1,0 +1,332 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-06 08:02+1100\n"
+"PO-Revision-Date: 2018-02-11 14:51+0000\n"
+"Last-Translator: Yaron <sh.yaron@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1518360689.000000\n"
+
+#: activity/activity.info:2 finance.py:85
+msgid "Finance"
+msgstr "כספים"
+
+#: activity/activity.info:3
+msgid ""
+"Want to wisely manage money? Learn financial planning basics and track your "
+"family's finance, make your own budget and learn how to make every penny "
+"count!"
+msgstr ""
+"תמיד רצית לדעת כיצד להתנהל כלכלית בחכמה? ניתן ללמוד את יסודות התכנון הכלכלי "
+"ולעקוב אחר כלכלת המשפחה שלך, להגדיר תקציב משלך וללמוד איך לנהל כל שקל ושקל!"
+
+#: budgetscreen.py:42
+msgid ""
+"The Budget view allows you to set a monthly budget for each expense "
+"category, and to keep track of your\n"
+"budgets. To set a budget, type the amount in the box to the right of the "
+"category."
+msgstr ""
+"תצוגת התקציב מאפשרת לך להגדיר תקציב חודשי לכל קטגוריית הוצאות ולעקוב אחר "
+"התקציבים שלך.\n"
+"כדי להגדיר תקציב, יש להגדיר את הסכום בתיבה שמימין לקטגוריה."
+
+#: budgetscreen.py:90 registerscreen.py:80
+msgid "Category"
+msgstr "קטגוריה"
+
+#: budgetscreen.py:94
+msgid "Spent"
+msgstr "נוצלו"
+
+#: budgetscreen.py:98 finance.py:195 finance.py:196 finance.py:279
+msgid "Budget"
+msgstr "תקציב"
+
+#: budgetscreen.py:127 chartscreen.py:160 chartscreen.py:181
+msgid "Unknown"
+msgstr "לא ידוע"
+
+#: chartscreen.py:38
+msgid ""
+"The Chart view shows the proportion of your expenses that is in each "
+"category.\n"
+"You can categorize transactions in the Register view."
+msgstr ""
+"תצוגת התרשים מציגה את יחס ההוצאות שלך בכל קטגוריה.\n"
+"ניתן לסווג את ההעברות בתצוגת הרישום."
+
+#: chartscreen.py:94
+msgid "Credit Categories"
+msgstr "קטגוריות אשראי"
+
+#: chartscreen.py:96
+msgid "Debit Categories"
+msgstr "קטגוריות חיוב מיידי"
+
+#: finance.py:169
+msgid "Add some credit or debit to get started!"
+msgstr "יש להוסיף כרטיס אשראי או חיוב מיידי כלשהו כדי להתחיל!"
+
+#: finance.py:170
+msgid "Add credit"
+msgstr "הוספת אשראי"
+
+#: finance.py:186 finance.py:187 finance.py:277
+msgid "Register"
+msgstr "רישום"
+
+#: finance.py:203 finance.py:204 finance.py:281
+msgid "Chart"
+msgstr "תרשים"
+
+#: finance.py:244
+msgid "Export data"
+msgstr "ייצוא נתונים"
+
+#: finance.py:252
+msgid "Export credits by day"
+msgstr "ייצוא כרטיסי אשראי לפי יום"
+
+#: finance.py:257
+msgid "Export debits by day"
+msgstr "ייצוא כרטיסי חיוב מיידי לפי יום"
+
+#: finance.py:262
+msgid "Export credits by month"
+msgstr "ייצוא כרטיסי אשראי לפי חודש"
+
+#: finance.py:267
+msgid "Export debits by month"
+msgstr "ייצוא כרטיסי חיוב מיידי לפי יום"
+
+#: finance.py:301 finance.py:382 registerscreen.py:233
+msgid "New Credit"
+msgstr "כרטיס אשראי חדש"
+
+#: finance.py:306 finance.py:383 registerscreen.py:240
+msgid "New Debit"
+msgstr "כרטיס חיוב מיידי חדש"
+
+#: finance.py:311
+msgid "Erase Transaction"
+msgstr "מחיקת העברה"
+
+#: finance.py:323
+msgid "Save as Image"
+msgstr "שמירה כתמונה"
+
+#: finance.py:345
+msgid "Day"
+msgstr "יום"
+
+#: finance.py:345
+msgid "Week"
+msgstr "שבוע"
+
+#: finance.py:345
+msgid "Month"
+msgstr "חודש"
+
+#: finance.py:346
+msgid "Year"
+msgstr "שנה"
+
+#: finance.py:346 finance.py:461
+msgid "Forever"
+msgstr "לנצח"
+
+#: finance.py:348
+msgid "Select period"
+msgstr "בחירת תקופה"
+
+#: finance.py:392
+msgid "Show Credits"
+msgstr "הצגת כרטיסי אשראי"
+
+#: finance.py:393
+msgid "Show Debits"
+msgstr "הצגת כרטיסי חיוב מיידי"
+
+#. TRANS: representation of the "Day" period
+#: finance.py:446
+msgid "%B %d, %Y"
+msgstr "%d ב%B,‏ %Y"
+
+#. TRANS: representation of the "Week of" period
+#: finance.py:450
+msgid "Week of"
+msgstr "שבוע"
+
+#: finance.py:450
+msgid " %B %d, %Y"
+msgstr " %d ב%B,‏ %Y"
+
+#. TRANS: representation of the "Month" period
+#: finance.py:454
+msgid "%B, %Y"
+msgstr "%B, %Y"
+
+#. TRANS: representation of the "Year" period
+#: finance.py:458
+msgid "%Y"
+msgstr "%Y"
+
+#: finance.py:500
+msgid "Balance: "
+msgstr "מאזן: "
+
+#: finance.py:508
+msgid "Starting Balance:"
+msgstr "מאזן פתיחה:"
+
+#: finance.py:515
+#, python-format
+msgid "%s in %d credits"
+msgstr "%s ב־%d כרטיסי אשראי"
+
+#: finance.py:519
+#, python-format
+msgid "%s in %d debits"
+msgstr "%s ב־%d כרטיסי חיוב מיידי"
+
+#: finance.py:532
+msgid "Previous Month"
+msgstr "החודש הקודם"
+
+#: finance.py:533
+msgid "This Month"
+msgstr "החודש"
+
+#: finance.py:534
+msgid "Next Month"
+msgstr "החודש הבא"
+
+#: finance.py:536
+msgid "Previous Week"
+msgstr "השבוע הקודם"
+
+#: finance.py:537
+msgid "This Week"
+msgstr "השבוע"
+
+#: finance.py:538
+msgid "Next Week"
+msgstr "השבוע הבא"
+
+#: finance.py:540
+msgid "Previous Day"
+msgstr "אתמול"
+
+#: finance.py:541
+msgid "This Day"
+msgstr "היום"
+
+#: finance.py:542
+msgid "Next Day"
+msgstr "מחר"
+
+#: finance.py:544
+msgid "Previous Year"
+msgstr "השנה הקודמת"
+
+#: finance.py:545
+msgid "This Year"
+msgstr "השנה"
+
+#: finance.py:546
+msgid "Next Year"
+msgstr "השנה הבאה"
+
+#: finance.py:921
+msgid "Chart created"
+msgstr "נוצר תרשים"
+
+#: finance.py:921 finance.py:1038
+msgid "Open in the Journal"
+msgstr "פתיחה ביומן"
+
+#: finance.py:930
+msgid "Show in Journal"
+msgstr "הצגה ביומן"
+
+#: finance.py:933
+msgid "Ok"
+msgstr "אישור"
+
+#: finance.py:979
+#, python-format
+msgid "%s by %s"
+msgstr "%s לפי %s"
+
+#: finance.py:1038
+msgid "Exported data"
+msgstr "נתונים שיוצאו"
+
+#: helpbutton.py:38
+msgid "Help"
+msgstr "עזרה"
+
+#: registerscreen.py:37
+msgid ""
+"Welcome to Finance! This activity keeps track of income and expenses for "
+"anything that earns or spends money, like a school club.  To get started, "
+"use the Transaction box to add credits and debits.\n"
+"Once you have entered some transactions, visit the Chart and Budget views to "
+"see more."
+msgstr ""
+"ברוך בואך לתכנית כספים! פעילות זו מסייעת במעקב אחר ההכנסות וההוצאות לכל מהלך "
+"של רווח או השקעה של כסף, כמו חוג בית ספרי.  כדי להתחיל יש להשתמש בתיבת "
+"ההעברות כדי להוסיף כרטיסי אשראי וחיוב מיידי.\n"
+"לאחר הוספת מספר העברות, יש לבקר בתצוגות התרשים והתקציב כדי לראות עוד."
+
+#: registerscreen.py:92
+msgid "Description"
+msgstr "תיאור"
+
+#: registerscreen.py:100
+msgid "Date"
+msgstr "תאריך"
+
+#: registerscreen.py:109
+msgid "Amount"
+msgstr "סכום"

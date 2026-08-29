@@ -1,0 +1,21 @@
+24
+
+* Replace flashing anim with smooth sliding anim. (Sparsh Goenka)
+* Keep question frame static at corner. (Sparsh Goenka)
+* Make code more efficient and compact. (Sparsh Goenka)
+
+23
+
+* flake8 fixes (Jui Pradhan)
+* Added README.md and screenshots (Jui Pradhan)
+* Update Sugargame to v1.3 (Jui Pradhan)
+* Port to Python3 (Jui Pradhan)
+* Set PEP8 (Rahul Bothra)
+* Update to sugargame v1.2 (Rahul Bothra)
+* Port to Gtk+3 (Yash Agrawal)
+* Completed source copyright (Yash Agrawal)
+* Add COPYING and update metadata(pipix51)
+
+1
+
+* Initial release.

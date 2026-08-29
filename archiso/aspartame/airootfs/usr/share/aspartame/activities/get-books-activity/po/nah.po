@@ -1,0 +1,181 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-25 11:58+1000\n"
+"PO-Revision-Date: 2014-05-20 18:51+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nah\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Tipias amochtli"
+
+#: activity/activity.info:3
+msgid ""
+"Need books? We all do! This activity lets you search and retrieve books from "
+"many different sources. Start reading!"
+msgstr ""
+"¿Ti neki amochtli? ¡Nochi ti tekiuian! Pan inin tekipanol ti uelis titemos "
+"uan ti pias amochuen tlen uala miyaj kampa. ¡Xipeua amapoua!"
+
+#: GetIABooksActivity.py:245 GetIABooksActivity.py:477
+#: GetIABooksActivity.py:481 GetIABooksActivity.py:616
+msgid "Catalogs"
+msgstr "Amochtlaixnextili"
+
+#: GetIABooksActivity.py:259
+msgid "Any language"
+msgstr "Amo san se tlajtoli"
+
+#: GetIABooksActivity.py:308 GetIABooksActivity.py:819
+msgid "Performing lookup, please wait..."
+msgstr "Ki temoua tlen titlali, ti chia..."
+
+#: GetIABooksActivity.py:348
+msgid "My books"
+msgstr "No amochuen"
+
+#: GetIABooksActivity.py:362
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "%.2f GB Volumen"
+
+#: GetIABooksActivity.py:534
+msgid "Format:"
+msgstr "Amaisuatl"
+
+#: GetIABooksActivity.py:547
+msgid "Get Book"
+msgstr "Ti pias se amochtli"
+
+#: GetIABooksActivity.py:587
+msgid "Enter words from the Author or Title to begin search."
+msgstr ""
+"Xi tlali tlajkuilo tlen tejtos tlen ki chujki tlan itokax tlen tlajkuilol "
+"pan peualtis ki temouas"
+
+#: GetIABooksActivity.py:639
+msgid "Selected book"
+msgstr "Tlapejpentli amochtli"
+
+#: GetIABooksActivity.py:658
+msgid "Title:\t\t"
+msgstr "Título:\t\t"
+
+#: GetIABooksActivity.py:660
+msgid "Author:\t\t"
+msgstr "Tlen ki tlajkuilo:\t\t"
+
+#: GetIABooksActivity.py:664
+msgid "Summary:\t"
+msgstr "Sumario:\t"
+
+#: GetIABooksActivity.py:673
+msgid "Language:\t"
+msgstr "Tlajtoli:\t"
+
+#: GetIABooksActivity.py:674
+msgid "Publisher:\t"
+msgstr "tlen ki kualchichiua:\t"
+
+#: GetIABooksActivity.py:804
+msgid "You must enter at least 3 letters."
+msgstr "Ti pia ti tlalis tlen axkensin 3 tlajkuilol"
+
+#: GetIABooksActivity.py:832
+msgid "Could not reach the server. Maybe you are not connected to the network"
+msgstr ""
+"Amo uelki mo sasalo ka tlachijketl. Uistel amo ti sasalojtoj ka tlanechikoli"
+
+#: GetIABooksActivity.py:836
+msgid "There was an error downloading the list."
+msgstr "Ki pixki se kuapopolistli keman tlatemouiyaya tokayotlpouali."
+
+#: GetIABooksActivity.py:838
+#, python-format
+#, python-format, fuzzy
+msgid "New catalog list %s was found"
+msgstr "Yankuik tokayopouali tlen amochtlaixkopinal pantijtoj"
+
+#: GetIABooksActivity.py:842
+msgid "Sorry, no books could be found."
+msgstr "Ti matin, amo uelki mo panti amochuen."
+
+#: GetIABooksActivity.py:856
+msgid "Sorry, we only found english books."
+msgstr "Ti matin, san ti pantijken amocuen pan ingles."
+
+#: GetIABooksActivity.py:980
+#, python-format
+msgid ""
+"Error: Could not download %s. The path in the catalog seems to be incorrect."
+msgstr ""
+
+#: GetIABooksActivity.py:986
+#, python-format
+msgid "Error: Could not download %s. The other end sent an empty file."
+msgstr ""
+
+#: GetIABooksActivity.py:992
+#, python-format
+msgid ""
+"Error: Could not download %s. The other end sent text/html instead of a book."
+msgstr ""
+
+#: GetIABooksActivity.py:1054
+msgid "Download completed"
+msgstr ""
+
+#: GetIABooksActivity.py:1066
+#, python-format
+msgid "Open with %s"
+msgstr ""
+
+#: GetIABooksActivity.py:1070
+msgid "Show in Journal"
+msgstr "Kixnextis poualistli"
+
+#: GetIABooksActivity.py:1075
+msgid "Ok"
+msgstr "Ok"
+
+#: listview.py:35
+msgid "Title"
+msgstr "Tokax tlajkuilol"
+
+#: listview.py:37
+msgid "Author"
+msgstr "Tlen kichijki"
+
+#: listview.py:39
+msgid "Publisher"
+msgstr "Tlen ki kualchichiua"
+
+#: listview.py:41
+msgid "Language"
+msgstr "Tlajtoli"
+
+#: listview.py:43
+msgid "Publish Date"
+msgstr "Tonalpouali tlen mo tlali"
+
+#~ msgid "Error"
+#~ msgstr "Kuapopolistli"
+
+#~ msgid "Connection timed out for "
+#~ msgstr "Mo polo tlen sasalojtoya tlen "
+
+#, python-format
+#~ msgid "Error: Could not download %s. "
+#~ msgstr "Kuapolistli: Amo uelki temoltis %s. "

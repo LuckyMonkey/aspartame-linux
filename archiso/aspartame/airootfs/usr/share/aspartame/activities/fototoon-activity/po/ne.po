@@ -1,0 +1,236 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-21 16:04+1000\n"
+"PO-Revision-Date: 2013-12-11 04:15+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.1\n"
+
+#: activity/activity.info:2
+msgid "FotoToon"
+msgstr "फटो टुन"
+
+#: activity/activity.info:3
+msgid ""
+"Interested in telling a story? Easy! Use your pictures and your imagination "
+"to create your own comics!"
+msgstr ""
+"कथा भन्ने रूची छ? सजिलो छ! आफैँले कमिकहरू तयार गर्न तपाईँका फोटाहरू र "
+"कल्पनाशक्तिको प्रयोग गर्नुहोस् !"
+
+#: toolbar.py:79
+msgid "Add Photo"
+msgstr "फोटो थप"
+
+#: toolbar.py:83
+msgid "Globe"
+msgstr "ग्लोब"
+
+#: toolbar.py:83
+msgid "Think"
+msgstr "सोच"
+
+#: toolbar.py:84
+msgid "Whisper"
+msgstr "ह्विस्पर"
+
+#: toolbar.py:84
+msgid "Exclamation"
+msgstr "विस्मयादिबोधक"
+
+#: toolbar.py:85
+msgid "Box"
+msgstr "बाकस"
+
+#: toolbar.py:88
+msgid "Add a globe"
+msgstr "ग्लोब थप"
+
+#: toolbar.py:107
+msgid "Curves"
+msgstr "वक्रता"
+
+#: toolbar.py:107
+msgid "Straight"
+msgstr "सिधा"
+
+#: toolbar.py:108
+msgid "Highlight"
+msgstr "हाइलाइट"
+
+#: toolbar.py:108
+msgid "Idea"
+msgstr "विचार"
+
+#: toolbar.py:111
+msgid "Choose a movement line"
+msgstr "मुभमेन्ट लाइन चयन गर"
+
+#: toolbar.py:134
+msgid "Turn"
+msgstr "घुमाउनुहोस्"
+
+#: toolbar.py:141
+msgid "Delete"
+msgstr "मेटाउ"
+
+#: toolbar.py:259
+#, fuzzy
+msgid "Bold"
+msgstr "ደማቅ"
+
+#: toolbar.py:264
+#, fuzzy
+msgid "Italic"
+msgstr "አይታሊክ ማድረጊያ"
+
+#: toolbar.py:278
+msgid "Text Color"
+msgstr "पाठको रङ"
+
+#: reorderwindow.py:54
+msgid "Cancel"
+msgstr ""
+
+#: reorderwindow.py:59
+msgid "Done"
+msgstr ""
+
+#: reorderwindow.py:74
+msgid "Drag the images to reorder"
+msgstr ""
+
+#: reorderwindow.py:446
+msgid "Reset to box size"
+msgstr ""
+
+#: reorderwindow.py:457
+msgid "Drag to move or resize using the marked corners"
+msgstr ""
+
+#: fontcombobox.py:90
+msgid "Select font"
+msgstr "फण्ट चयन गर्नुहोस्"
+
+#: historietaactivity.py:78
+msgid "Add an image and start creating your FotoToon"
+msgstr ""
+
+#: historietaactivity.py:89
+msgid "Choose an image"
+msgstr ""
+
+#: historietaactivity.py:103 historietaactivity.py:225
+msgid "Save as Image"
+msgstr "तस्बिरको रूपमा सेभ गर"
+
+#: historietaactivity.py:103
+msgid "PNG"
+msgstr "PNG"
+
+#: historietaactivity.py:121
+msgid "Edit"
+msgstr ""
+
+#: historietaactivity.py:128
+msgid "View"
+msgstr "दृश्य"
+
+#: historietaactivity.py:132
+msgid "Slideshow"
+msgstr "स्लाइडसो"
+
+#: historietaactivity.py:139
+msgid "Slideshow with Timings"
+msgstr ""
+
+#: historietaactivity.py:146
+msgid "Set Image Duration in Slideshow (Seconds)"
+msgstr ""
+
+#: historietaactivity.py:171
+msgid "Fullscreen"
+msgstr "पुरास्क्रिन"
+
+#: historietaactivity.py:189
+#, fuzzy
+msgid "Text"
+msgstr "ጽሑፍ"
+
+#: historietaactivity.py:194
+msgid "Change image order"
+msgstr ""
+
+#: historietaactivity.py:200
+msgid "Edit background image"
+msgstr ""
+
+#: historietaactivity.py:232
+msgid "Save as a Book (PDF)"
+msgstr "किताब (PDF) को रूपमा सेभ गर"
+
+#: historietaactivity.py:239
+msgid "Save as a Movie (OGG)"
+msgstr ""
+
+#: historietaactivity.py:395 historietaactivity.py:451
+#: historietaactivity.py:504
+msgid "Success"
+msgstr "सफल"
+
+#: historietaactivity.py:396
+msgid "A image was created in the Journal"
+msgstr "जर्नलमा एउटा तस्बिर तयार गरियो"
+
+#: historietaactivity.py:452
+msgid "A PDF was created in the Journal"
+msgstr "जर्नलमा एउटा PDF तयार गरियो"
+
+#: historietaactivity.py:498
+msgid "{} as a movie"
+msgstr ""
+
+#: historietaactivity.py:505
+msgid "A movie was saved in the Journal"
+msgstr ""
+
+#: historietaactivity.py:513
+msgid "Show in Journal"
+msgstr "जर्नलमा देखाऊ"
+
+#: historietaactivity.py:515
+msgid "Ok"
+msgstr "ठीक"
+
+#: historietaactivity.py:799
+msgid "Title:"
+msgstr "शिर्षक:"
+
+#~ msgid "Add Globe"
+#~ msgstr "विश्व  थप"
+
+#~ msgid "Add Think"
+#~ msgstr "थिंक  थप"
+
+#~ msgid "Add Whisper"
+#~ msgstr "विइस्पर थप"
+
+#~ msgid "Add Exclamation"
+#~ msgstr "विस्मय थप"
+
+#~ msgid "Add Box"
+#~ msgstr "बाकस थप"
+
+#~ msgid "Choose image"
+#~ msgstr "चित्र छान"
