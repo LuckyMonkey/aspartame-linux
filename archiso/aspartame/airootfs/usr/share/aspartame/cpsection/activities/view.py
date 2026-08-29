@@ -80,6 +80,8 @@ class ActivityManager(SectionView):
         for child in self._list.get_children():
             self._list.remove(child)
         self._rows = {}
+        self._column_groups = [Gtk.SizeGroup(Gtk.SizeGroupMode.HORIZONTAL)
+                               for _ in range(4)]
         ratings = model.load_ratings()
         activities = model.list_activities()
         self._count_label.set_text(_('%d installed Activities') % len(activities))
@@ -100,6 +102,7 @@ class ActivityManager(SectionView):
             label.set_halign(Gtk.Align.FILL)
             label.set_size_request(width, -1)
             header.attach(label, actual_column, 0, 1, 1)
+            self._column_groups[column].add_widget(label)
             if column < 3:
                 divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
                 divider.set_size_request(3, -1)
@@ -143,6 +146,7 @@ class ActivityManager(SectionView):
         labels.set_size_request(360, -1)
         name = Gtk.Label(label=activity['name'])
         name.set_xalign(0)
+        name.set_max_width_chars(36)
         name.set_tooltip_text(_('Activity name: %s') % activity['name'])
         if aspartame_help and help_id:
             aspartame_help.guard(name, help_id)
@@ -153,10 +157,13 @@ class ActivityManager(SectionView):
                                    activity['version'] or _('unknown')))
         detail = Gtk.Label(label=detail_text)
         detail.set_xalign(0)
+        detail.set_width_chars(48)
+        detail.set_max_width_chars(48)
         detail.set_ellipsize(3)
         detail.set_tooltip_text(activity.get('url') or activity['path'])
         labels.pack_start(detail, False, False, 0)
         grid.attach(labels, 0, 0, 1, 1)
+        self._column_groups[0].add_widget(labels)
         self._add_table_divider(grid, 1)
 
         rating_box = Gtk.Box(spacing=2)
@@ -183,6 +190,7 @@ class ActivityManager(SectionView):
             face_buttons.append(face_button)
             rating_box.pack_start(face_button, False, False, 0)
         grid.attach(rating_box, 2, 0, 1, 1)
+        self._column_groups[1].add_widget(rating_box)
         self._add_table_divider(grid, 3)
 
         version = activity['version'] or _('version unknown')
@@ -192,6 +200,7 @@ class ActivityManager(SectionView):
         detail_version.set_size_request(120, -1)
         detail_version.set_tooltip_text(activity['path'])
         grid.attach(detail_version, 4, 0, 1, 1)
+        self._column_groups[2].add_widget(detail_version)
         self._add_table_divider(grid, 5)
 
         remove = Gtk.Button(label=_('Remove'))
@@ -203,6 +212,7 @@ class ActivityManager(SectionView):
         remove.set_size_request(100, -1)
         remove.set_halign(Gtk.Align.CENTER)
         grid.attach(remove, 6, 0, 1, 1)
+        self._column_groups[3].add_widget(remove)
 
         self._rows[activity['id']] = (activity['id'], face_buttons)
         return row
