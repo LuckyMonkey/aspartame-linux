@@ -67,7 +67,10 @@ class ActivityManager(SectionView):
         for activity in activities:
             row = self._make_row(activity, ratings.get(activity['id'], 0))
             self._list.add(row)
-        self._list.show_all()
+        # Sugar shows the section container, not its child widgets.
+        # Explicitly reveal this section so it cannot appear as a blank panel.
+        self.show_all()
+        self._empty.set_visible(not activities)
 
     def apply(self):
         for activity_id, combo in self._rows.values():
