@@ -1,0 +1,378 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-15 00:31-0400\n"
+"PO-Revision-Date: 2016-04-20 20:13+0000\n"
+"Last-Translator: Anna <leonteva.anna.e@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1461183207.000000\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "Memorize"
+msgstr "Запомнить"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Here you can play games that challenge your memory! But, more importantly, "
+"you can create your own game to test the memory of others!"
+msgstr ""
+"Здесь вы можете играть в игры, которые бросают вызов вашей памяти! Но более "
+"важно то, что вы можете создавать свои собственные игры для проверки памяти "
+"у других игроков!"
+
+#: activity.py:71
+msgid "Play"
+msgstr "Играть"
+
+#: activity.py:71
+msgid "Create"
+msgstr "Создать"
+
+#: activity.py:71
+msgid "Game name:"
+msgstr "Название игры:"
+
+#: activity.py:71
+msgid "Equal pairs"
+msgstr "Равные пары"
+
+#: activity.py:72
+msgid "addition"
+msgstr "дополнение"
+
+#: activity.py:72
+msgid "letters"
+msgstr "буквы"
+
+#: activity.py:72
+msgid "sounds"
+msgstr "звуки"
+
+#: activity.py:96 activity.py:276
+msgid "Edit game"
+msgstr "Редактировать игру"
+
+#: activity.py:272
+msgid "Play game"
+msgstr "Играть в игру"
+
+#: createcardpanel.py:82
+msgid "Add as new pair"
+msgstr "Добавить как новую пару"
+
+#: createcardpanel.py:85
+msgid "Add"
+msgstr "Добавить"
+
+#: createcardpanel.py:90
+msgid "Update selected pair"
+msgstr "Обновить выделенную пару"
+
+#: createcardpanel.py:93
+msgid "Update"
+msgstr "Обновить"
+
+#: createcardpanel.py:314
+msgid "Preview:"
+msgstr "Преварительный просмотр:"
+
+#: createcardpanel.py:330
+msgid "Text:"
+msgstr "Текст:"
+
+#: createcardpanel.py:342
+msgid "Insert picture"
+msgstr "Вставить картинку"
+
+#: createcardpanel.py:347
+msgid "Insert sound"
+msgstr "Вставить звук"
+
+#: createcardpanel.py:504
+msgid "Pronounce text during tile flip"
+msgstr "Произнесите текст во время переворота плитки"
+
+#: createtoolbar.py:46 createtoolbar.py:106
+msgid "Match different tiles"
+msgstr "Сравните разные плитки"
+
+#: createtoolbar.py:51 createtoolbar.py:119
+msgid "Mixed tiles game"
+msgstr "Игра со смешанными плитками"
+
+#: createtoolbar.py:56
+msgid "Clear all tiles"
+msgstr "Очистить все плитки"
+
+#: createtoolbar.py:76
+msgid "Clear all the tiles from the game?"
+msgstr "Удалить все плитки из игры?"
+
+#: createtoolbar.py:78
+msgid "Clear"
+msgstr "Очистить"
+
+#: createtoolbar.py:80
+msgid "Do not clear"
+msgstr "Не очищать"
+
+#: createtoolbar.py:102
+msgid "Match identical tiles"
+msgstr "Сравните одинаковые плитки"
+
+#: createtoolbar.py:115
+msgid "Grouped tiles game"
+msgstr "Групповая игра в плитки"
+
+#: fontcombobox.py:42
+msgid "Select font"
+msgstr "Выбрать шрифт"
+
+#: game.py:94
+msgid "Loading game..."
+msgstr "Загрузка игры..."
+
+#: memorizetoolbar.py:43
+msgid "Addition"
+msgstr "Дополнение"
+
+#: memorizetoolbar.py:44
+msgid "Letters"
+msgstr "Буквы"
+
+#: memorizetoolbar.py:45
+msgid "Sounds"
+msgstr "Звуки"
+
+#: memorizetoolbar.py:60
+msgid "Load demo games"
+msgstr "Загрузить демонстрацию игры"
+
+#: memorizetoolbar.py:72
+msgid "Change size"
+msgstr "Изменить размер"
+
+#: memorizetoolbar.py:86
+msgid "Restart Game"
+msgstr "Перезапустить игру"
+
+#: memorizetoolbar.py:111
+msgid "Discard your modified game?"
+msgstr "Избавиться от вашей измененной игры?"
+
+#: memorizetoolbar.py:113
+msgid "Discard"
+msgstr "Выбросить"
+
+#: memorizetoolbar.py:115
+msgid "Do not discard"
+msgstr "Не выбрасывать"
+
+#: messenger.py:192
+msgid "Receiving game"
+msgstr "Получение игры"
+
+#: messenger.py:193
+msgid "done"
+msgstr "готово"
+
+#: speak/voice.py:36
+msgid "Brazil"
+msgstr "Бразильский"
+
+#: speak/voice.py:37
+msgid "Swedish"
+msgstr "Шведский"
+
+#: speak/voice.py:38
+msgid "Icelandic"
+msgstr "Исландский"
+
+#: speak/voice.py:39
+msgid "Romanian"
+msgstr "Румынский"
+
+#: speak/voice.py:40
+msgid "Swahili"
+msgstr "Суахили"
+
+#: speak/voice.py:41
+msgid "Hindi"
+msgstr "Хинди"
+
+#: speak/voice.py:42
+msgid "Dutch"
+msgstr "Голландский"
+
+#: speak/voice.py:43
+msgid "Latin"
+msgstr "Латинский"
+
+#: speak/voice.py:44
+msgid "Hungarian"
+msgstr "Венгерский"
+
+#: speak/voice.py:45
+msgid "Macedonian"
+msgstr "Македонский"
+
+#: speak/voice.py:46
+msgid "Welsh"
+msgstr "Валлийский"
+
+#: speak/voice.py:47
+msgid "French"
+msgstr "Французский"
+
+#: speak/voice.py:48
+msgid "Norwegian"
+msgstr "Норвежский"
+
+#: speak/voice.py:49
+msgid "Russian"
+msgstr "Русский"
+
+#: speak/voice.py:50
+msgid "Afrikaans"
+msgstr "Африкаанс"
+
+#: speak/voice.py:51
+msgid "Finnish"
+msgstr "Финский"
+
+#: speak/voice.py:52 speak/voice.py:125
+msgid "Default"
+msgstr "По умолчанию"
+
+#: speak/voice.py:53
+msgid "Cantonese"
+msgstr "Кантон"
+
+#: speak/voice.py:54
+msgid "Scottish"
+msgstr "Шотландский"
+
+#: speak/voice.py:55
+msgid "Greek"
+msgstr "Греческий"
+
+#: speak/voice.py:56
+msgid "Vietnam"
+msgstr "Вьетнамский"
+
+#: speak/voice.py:57
+msgid "English"
+msgstr "Английский"
+
+#: speak/voice.py:58
+msgid "Lancashire"
+msgstr "Ланкашир"
+
+#: speak/voice.py:59
+msgid "Italian"
+msgstr "Итальянский"
+
+#: speak/voice.py:60
+msgid "Portugal"
+msgstr "Португальский"
+
+#: speak/voice.py:61
+msgid "German"
+msgstr "Немецкий"
+
+#: speak/voice.py:62
+msgid "Whisper"
+msgstr "Шепот"
+
+#: speak/voice.py:63
+msgid "Croatian"
+msgstr "Хорватский"
+
+#: speak/voice.py:64
+msgid "Czech"
+msgstr "Чешский"
+
+#: speak/voice.py:65
+msgid "Slovak"
+msgstr "Словацкий"
+
+#: speak/voice.py:66
+msgid "Spanish"
+msgstr "Испанский"
+
+#: speak/voice.py:67
+msgid "Polish"
+msgstr "Польский"
+
+#: speak/voice.py:68
+msgid "Esperanto"
+msgstr "Эсперанто"
+
+#~ msgid "New game"
+#~ msgstr "Новая игра"
+
+#~ msgid "Load game"
+#~ msgstr "Загрузка игры"
+
+#~ msgid "Save game"
+#~ msgstr "Сохранить игру"
+
+#~ msgid "Click for grouped game"
+#~ msgstr "Клинуть для групповой игры"
+
+#, fuzzy
+#~ msgid "Choose memorize game"
+#~ msgstr "Выбрать игру для заучивания"
+
+#, fuzzy
+#~ msgid "Click for ungrouped game"
+#~ msgstr "Кликнуть для разгруппировки"
+
+#~ msgid "Choose image"
+#~ msgstr "Выбрать изображение"
+
+#~ msgid "Choose audio"
+#~ msgstr "Выбрать звук"
+
+#~ msgid "numbers"
+#~ msgstr "числа"
+
+#~ msgid "phonemes"
+#~ msgstr "фонемы"

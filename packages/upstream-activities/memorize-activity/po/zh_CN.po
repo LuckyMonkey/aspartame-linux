@@ -1,0 +1,381 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: Memorize\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-15 00:31-0400\n"
+"PO-Revision-Date: 2013-06-17 15:21+0200\n"
+"Last-Translator: lite <litekok@gmail.com>\n"
+"Language-Team: Yuan CHAO <yuanchao@gmail.com>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "Memorize"
+msgstr "记忆力"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Here you can play games that challenge your memory! But, more importantly, "
+"you can create your own game to test the memory of others!"
+msgstr "在这里，你可以通过玩挑战你记忆的游戏！但是，更重要的是，你可以创建自己的游戏来测试别人的记忆！"
+
+#: activity.py:71
+msgid "Play"
+msgstr "玩"
+
+#: activity.py:71
+msgid "Create"
+msgstr "开始新游戏"
+
+#: activity.py:71
+msgid "Game name:"
+msgstr "游戏名称："
+
+#: activity.py:71
+msgid "Equal pairs"
+msgstr "等同配对"
+
+#: activity.py:72
+msgid "addition"
+msgstr "加法"
+
+#: activity.py:72
+msgid "letters"
+msgstr "字母"
+
+#: activity.py:72
+msgid "sounds"
+msgstr "声音"
+
+#: activity.py:96 activity.py:276
+msgid "Edit game"
+msgstr "编辑游戏"
+
+#: activity.py:272
+msgid "Play game"
+msgstr "玩游戏"
+
+#: createcardpanel.py:82
+msgid "Add as new pair"
+msgstr "添加新配对"
+
+#: createcardpanel.py:85
+msgid "Add"
+msgstr "添加"
+
+#: createcardpanel.py:90
+msgid "Update selected pair"
+msgstr "更新选定的配对"
+
+#: createcardpanel.py:93
+msgid "Update"
+msgstr "更新"
+
+#: createcardpanel.py:314
+msgid "Preview:"
+msgstr "预览:"
+
+#: createcardpanel.py:330
+msgid "Text:"
+msgstr "文字:"
+
+#: createcardpanel.py:342
+msgid "Insert picture"
+msgstr "插入图片"
+
+#: createcardpanel.py:347
+msgid "Insert sound"
+msgstr "插入声音"
+
+#: createcardpanel.py:504
+msgid "Pronounce text during tile flip"
+msgstr "翻页时发音"
+
+#: createtoolbar.py:46 createtoolbar.py:106
+msgid "Match different tiles"
+msgstr "配对不同小板"
+
+#: createtoolbar.py:51 createtoolbar.py:119
+msgid "Mixed tiles game"
+msgstr "混合小板游戏"
+
+#: createtoolbar.py:56
+msgid "Clear all tiles"
+msgstr "清除所有小板"
+
+#: createtoolbar.py:76
+msgid "Clear all the tiles from the game?"
+msgstr "清除游戏中所有的小板？"
+
+#: createtoolbar.py:78
+msgid "Clear"
+msgstr "清除"
+
+#: createtoolbar.py:80
+msgid "Do not clear"
+msgstr "不要清除"
+
+#: createtoolbar.py:102
+msgid "Match identical tiles"
+msgstr "配对相同的小板"
+
+#: createtoolbar.py:115
+msgid "Grouped tiles game"
+msgstr "分组小板游戏"
+
+#: fontcombobox.py:42
+msgid "Select font"
+msgstr "选择字体"
+
+#: game.py:94
+msgid "Loading game..."
+msgstr "游戏加载中..."
+
+#: memorizetoolbar.py:43
+msgid "Addition"
+msgstr "加法"
+
+#: memorizetoolbar.py:44
+msgid "Letters"
+msgstr "字母"
+
+#: memorizetoolbar.py:45
+msgid "Sounds"
+msgstr "声音"
+
+#: memorizetoolbar.py:60
+msgid "Load demo games"
+msgstr "示范游戏加载中..."
+
+#: memorizetoolbar.py:72
+msgid "Change size"
+msgstr "改变大小"
+
+#: memorizetoolbar.py:86
+msgid "Restart Game"
+msgstr "重新开始"
+
+#: memorizetoolbar.py:111
+msgid "Discard your modified game?"
+msgstr "丢弃修改过的游戏吗？"
+
+#: memorizetoolbar.py:113
+msgid "Discard"
+msgstr "丢弃"
+
+#: memorizetoolbar.py:115
+msgid "Do not discard"
+msgstr "不要丢弃"
+
+#: messenger.py:192
+msgid "Receiving game"
+msgstr "游戏接收中"
+
+#: messenger.py:193
+msgid "done"
+msgstr "完成"
+
+#: speak/voice.py:36
+msgid "Brazil"
+msgstr "巴西语"
+
+#: speak/voice.py:37
+msgid "Swedish"
+msgstr "瑞典语"
+
+#: speak/voice.py:38
+msgid "Icelandic"
+msgstr "冰岛语"
+
+#: speak/voice.py:39
+msgid "Romanian"
+msgstr "罗马尼亚语"
+
+#: speak/voice.py:40
+msgid "Swahili"
+msgstr "斯瓦希里语"
+
+#: speak/voice.py:41
+msgid "Hindi"
+msgstr "印地语"
+
+#: speak/voice.py:42
+msgid "Dutch"
+msgstr "荷兰语"
+
+#: speak/voice.py:43
+msgid "Latin"
+msgstr "拉丁语"
+
+#: speak/voice.py:44
+msgid "Hungarian"
+msgstr "匈牙利语"
+
+#: speak/voice.py:45
+msgid "Macedonian"
+msgstr "马其顿语"
+
+#: speak/voice.py:46
+msgid "Welsh"
+msgstr "威尔士语"
+
+#: speak/voice.py:47
+msgid "French"
+msgstr "法语"
+
+#: speak/voice.py:48
+msgid "Norwegian"
+msgstr "新挪威语"
+
+#: speak/voice.py:49
+msgid "Russian"
+msgstr "俄语"
+
+#: speak/voice.py:50
+msgid "Afrikaans"
+msgstr "南非荷兰语"
+
+#: speak/voice.py:51
+msgid "Finnish"
+msgstr "芬兰语"
+
+#: speak/voice.py:52 speak/voice.py:125
+msgid "Default"
+msgstr "默认"
+
+#: speak/voice.py:53
+msgid "Cantonese"
+msgstr "粤语"
+
+#: speak/voice.py:54
+msgid "Scottish"
+msgstr "苏格兰语"
+
+#: speak/voice.py:55
+msgid "Greek"
+msgstr "现代希腊语"
+
+#: speak/voice.py:56
+msgid "Vietnam"
+msgstr "越南语"
+
+#: speak/voice.py:57
+msgid "English"
+msgstr "英语"
+
+#: speak/voice.py:58
+msgid "Lancashire"
+msgstr "兰开夏郡"
+
+#: speak/voice.py:59
+msgid "Italian"
+msgstr "意大利语"
+
+#: speak/voice.py:60
+msgid "Portugal"
+msgstr "葡萄牙语"
+
+#: speak/voice.py:61
+msgid "German"
+msgstr "德语"
+
+#: speak/voice.py:62
+msgid "Whisper"
+msgstr "悄悄话"
+
+#: speak/voice.py:63
+msgid "Croatian"
+msgstr "克罗地亚语"
+
+#: speak/voice.py:64
+msgid "Czech"
+msgstr "捷克语"
+
+#: speak/voice.py:65
+msgid "Slovak"
+msgstr "斯洛伐克语"
+
+#: speak/voice.py:66
+msgid "Spanish"
+msgstr "西班牙语"
+
+#: speak/voice.py:67
+msgid "Polish"
+msgstr "波兰语"
+
+#: speak/voice.py:68
+msgid "Esperanto"
+msgstr "世界语"
+
+#~ msgid "New game"
+#~ msgstr "新游戏"
+
+#~ msgid "Load game"
+#~ msgstr "载入游戏"
+
+#~ msgid "Save game"
+#~ msgstr "保存游戏"
+
+#~ msgid "Click for grouped game"
+#~ msgstr "点选团体游戏"
+
+#~ msgid "Choose memorize game"
+#~ msgstr "选择记忆游戏"
+
+#~ msgid "Click for ungrouped game"
+#~ msgstr "点菜单人游戏"
+
+#~ msgid "Choose image"
+#~ msgstr "选择图片"
+
+#~ msgid "Choose audio"
+#~ msgstr "选择音频"
+
+#~ msgid "capitals"
+#~ msgstr "大写字母"
+
+#~ msgid "drumgit"
+#~ msgstr "打击乐器"
+
+#~ msgid "numbers"
+#~ msgstr "数字"
+
+#~ msgid "phonemes"
+#~ msgstr "音符"

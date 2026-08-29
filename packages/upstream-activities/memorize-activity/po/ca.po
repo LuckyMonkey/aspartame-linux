@@ -1,0 +1,392 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# !! cal una altra traducció o potser deixar-la així
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-15 00:31-0400\n"
+"PO-Revision-Date: 2015-09-11 20:56+0000\n"
+"Last-Translator: Robert <rbuj@fedoraproject.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1442005018.000000\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "Memorize"
+msgstr "Memorització"
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid ""
+"Here you can play games that challenge your memory! But, more importantly, "
+"you can create your own game to test the memory of others!"
+msgstr ""
+"Aquí podreu jugar a jocs que desafiïn la vostra memòria! Però, el més "
+"important, podreu crear el vostre propi joc per posar a prova la memòria "
+"dels altres!"
+
+#: activity.py:71
+msgid "Play"
+msgstr "Juga"
+
+#: activity.py:71
+msgid "Create"
+msgstr "Crea"
+
+#: activity.py:71
+msgid "Game name:"
+msgstr "Nom del joc:"
+
+#: activity.py:71
+msgid "Equal pairs"
+msgstr "Parelles iguals"
+
+#: activity.py:72
+msgid "addition"
+msgstr "addició"
+
+#: activity.py:72
+msgid "letters"
+msgstr "lletres"
+
+#: activity.py:72
+msgid "sounds"
+msgstr "sons"
+
+#: activity.py:96 activity.py:276
+msgid "Edit game"
+msgstr "Edita el joc"
+
+#: activity.py:272
+msgid "Play game"
+msgstr "Juga al joc"
+
+#: createcardpanel.py:82
+msgid "Add as new pair"
+msgstr "Afegeix com a nova parella"
+
+#: createcardpanel.py:85
+msgid "Add"
+msgstr "Afegeix"
+
+#: createcardpanel.py:90
+msgid "Update selected pair"
+msgstr "Actualitza la parella seleccionada"
+
+#: createcardpanel.py:93
+msgid "Update"
+msgstr "Actualitza"
+
+#: createcardpanel.py:314
+msgid "Preview:"
+msgstr "Vista prèvia:"
+
+#: createcardpanel.py:330
+msgid "Text:"
+msgstr "Text:"
+
+#: createcardpanel.py:342
+msgid "Insert picture"
+msgstr "Insereix una imatge"
+
+#: createcardpanel.py:347
+msgid "Insert sound"
+msgstr "Insereix un so"
+
+#: createcardpanel.py:504
+msgid "Pronounce text during tile flip"
+msgstr "Pronuncia el text mentre el bloc gira"
+
+#: createtoolbar.py:46 createtoolbar.py:106
+msgid "Match different tiles"
+msgstr "Emparella les diferents caselles"
+
+#: createtoolbar.py:51 createtoolbar.py:119
+msgid "Mixed tiles game"
+msgstr "Joc de caselles barrejades"
+
+#: createtoolbar.py:56
+msgid "Clear all tiles"
+msgstr "Neteja totes les caselles"
+
+#: createtoolbar.py:76
+msgid "Clear all the tiles from the game?"
+msgstr "Neteja totes les caselles del joc?"
+
+#: createtoolbar.py:78
+msgid "Clear"
+msgstr "Neteja"
+
+#: createtoolbar.py:80
+msgid "Do not clear"
+msgstr "No ho netegis"
+
+#: createtoolbar.py:102
+msgid "Match identical tiles"
+msgstr "Emparella les caselles que siguin iguals"
+
+#: createtoolbar.py:115
+msgid "Grouped tiles game"
+msgstr "Joc d'agrupació de caselles"
+
+#: fontcombobox.py:42
+msgid "Select font"
+msgstr "Selecciona el tipus de lletra"
+
+#: game.py:94
+msgid "Loading game..."
+msgstr "S'està carregant el joc..."
+
+#: memorizetoolbar.py:43
+msgid "Addition"
+msgstr "Addició"
+
+#: memorizetoolbar.py:44
+msgid "Letters"
+msgstr "Lletres"
+
+#: memorizetoolbar.py:45
+msgid "Sounds"
+msgstr "Sons"
+
+#: memorizetoolbar.py:60
+msgid "Load demo games"
+msgstr "Carrega els jocs de demostració"
+
+#: memorizetoolbar.py:72
+msgid "Change size"
+msgstr "Canvia la mida"
+
+#: memorizetoolbar.py:86
+msgid "Restart Game"
+msgstr "Reinicia el joc"
+
+#: memorizetoolbar.py:111
+msgid "Discard your modified game?"
+msgstr "Descartar el joc modificat?"
+
+#: memorizetoolbar.py:113
+msgid "Discard"
+msgstr "Descarta"
+
+#: memorizetoolbar.py:115
+msgid "Do not discard"
+msgstr "No ho descartis"
+
+#: messenger.py:192
+msgid "Receiving game"
+msgstr "S'està rebent el joc"
+
+#: messenger.py:193
+msgid "done"
+msgstr "fet"
+
+#: speak/voice.py:36
+msgid "Brazil"
+msgstr "Brasil"
+
+#: speak/voice.py:37
+msgid "Swedish"
+msgstr "Suec"
+
+#: speak/voice.py:38
+msgid "Icelandic"
+msgstr "Islandès"
+
+#: speak/voice.py:39
+msgid "Romanian"
+msgstr "Romanès"
+
+#: speak/voice.py:40
+msgid "Swahili"
+msgstr "Suahili"
+
+#: speak/voice.py:41
+msgid "Hindi"
+msgstr "Hindi"
+
+#: speak/voice.py:42
+msgid "Dutch"
+msgstr "Holandès"
+
+#: speak/voice.py:43
+msgid "Latin"
+msgstr "Llatí"
+
+#: speak/voice.py:44
+msgid "Hungarian"
+msgstr "Hongarès"
+
+#: speak/voice.py:45
+msgid "Macedonian"
+msgstr "Macedoni"
+
+#: speak/voice.py:46
+msgid "Welsh"
+msgstr "Gal·lès"
+
+#: speak/voice.py:47
+msgid "French"
+msgstr "Francès"
+
+#: speak/voice.py:48
+msgid "Norwegian"
+msgstr "Noruec"
+
+#: speak/voice.py:49
+msgid "Russian"
+msgstr "Rus"
+
+#: speak/voice.py:50
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#: speak/voice.py:51
+msgid "Finnish"
+msgstr "Finès"
+
+#: speak/voice.py:52 speak/voice.py:125
+msgid "Default"
+msgstr "Predeterminat"
+
+#: speak/voice.py:53
+msgid "Cantonese"
+msgstr "Cantonès"
+
+#: speak/voice.py:54
+msgid "Scottish"
+msgstr "Escocès"
+
+#: speak/voice.py:55
+msgid "Greek"
+msgstr "Grec"
+
+#: speak/voice.py:56
+msgid "Vietnam"
+msgstr "Vietnamita"
+
+#: speak/voice.py:57
+msgid "English"
+msgstr "Anglès"
+
+#: speak/voice.py:58
+msgid "Lancashire"
+msgstr "Lancashireà"
+
+#: speak/voice.py:59
+msgid "Italian"
+msgstr "Italià"
+
+#: speak/voice.py:60
+msgid "Portugal"
+msgstr "Portuguès"
+
+#: speak/voice.py:61
+msgid "German"
+msgstr "Alemany"
+
+#: speak/voice.py:62
+msgid "Whisper"
+msgstr "Xiuxiueja"
+
+#: speak/voice.py:63
+msgid "Croatian"
+msgstr "Croat"
+
+#: speak/voice.py:64
+msgid "Czech"
+msgstr "Txec"
+
+#: speak/voice.py:65
+msgid "Slovak"
+msgstr "Eslovac"
+
+#: speak/voice.py:66
+msgid "Spanish"
+msgstr "Castellà"
+
+#: speak/voice.py:67
+msgid "Polish"
+msgstr "Polonès"
+
+#: speak/voice.py:68
+msgid "Esperanto"
+msgstr "Esperanto"
+
+#~ msgid "New game"
+#~ msgstr "Joc nou"
+
+# Carrega el joc o carreja un joc_
+#~ msgid "Load game"
+#~ msgstr "Carrega el joc"
+
+#~ msgid "Save game"
+#~ msgstr "Desa el joc"
+
+#~ msgid "Click for grouped game"
+#~ msgstr "Clic per agrupar el joc"
+
+#~ msgid "Choose memorize game"
+#~ msgstr "Tria el joc de memòria"
+
+#~ msgid "Click for ungrouped game"
+#~ msgstr "Clic per desagrupar el joc"
+
+#~ msgid "Choose image"
+#~ msgstr "Tria una imatge"
+
+#~ msgid "Choose audio"
+#~ msgstr "Tria un àudio"
+
+#~ msgid "capitals"
+#~ msgstr "Majúscules"
+
+# !! cal una altra traducció o potser deixar-la així
+#~ msgid "drumgit"
+#~ msgstr "drumgit"
+
+#~ msgid "numbers"
+#~ msgstr "números"
+
+#~ msgid "phonemes"
+#~ msgstr "fonemes"
