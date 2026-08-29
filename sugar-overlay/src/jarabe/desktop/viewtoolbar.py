@@ -143,8 +143,36 @@ class ViewToolbar(Gtk.Toolbar):
             'toggled', self.__view_button_toggled_cb, self._list_view_index)
         self.insert(self._list_button, -1)
 
+        help_css = Gtk.CssProvider()
+        help_css.load_from_data(b'''
+            .aspartame-help-button {
+                min-width: 56px;
+                min-height: 56px;
+                padding: 0;
+                border-radius: 28px;
+                border: 2px solid #ffffff;
+                background-color: #202b31;
+            }
+            .aspartame-help-button label {
+                color: #ffffff;
+            }
+            .aspartame-help-button.aspartame-help-active {
+                border-color: #202b31;
+                background-color: #ffffff;
+            }
+            .aspartame-help-button.aspartame-help-active label {
+                color: #202b31;
+            }
+        ''')
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(), help_css,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
         self._help_button = Gtk.ToolButton.new(None, '?')
+        self._help_button.get_style_context().add_class(
+            'aspartame-help-button')
         self._help_button.set_is_important(True)
+        self._help_button.set_size_request(56, 56)
         self._help_button.set_tooltip_text(
             "What is this? - Learn what something on the screen does.")
         self._help_button.connect('button-press-event',
@@ -152,8 +180,8 @@ class ViewToolbar(Gtk.Toolbar):
         help_label = self._help_button.get_child()
         if isinstance(help_label, Gtk.Label):
             help_label.set_markup('<span size="xx-large" weight="bold">?</span>')
-            help_label.set_margin_start(8)
-            help_label.set_margin_end(8)
+            help_label.set_halign(Gtk.Align.CENTER)
+            help_label.set_valign(Gtk.Align.CENTER)
         self.insert(self._help_button, -1)
         self._help_button.show_all()
         GLib.idle_add(self._install_help_key_handler)
@@ -164,11 +192,20 @@ class ViewToolbar(Gtk.Toolbar):
 
     def __help_clicked_cb(self, _button, _event):
         active = aspartame_help.toggle()
-        self._help_button.set_tooltip_text(
-            "What is this? - Click something to learn what it does."
-            if active else
-            "What is this? - Learn what something on the screen does.")
+        self._set_help_button_active(active)
         return True
+
+    def _set_help_button_active(self, active):
+        context = self._help_button.get_style_context()
+        if active:
+            context.add_class('aspartame-help-active')
+            self._help_button.set_tooltip_text(
+                "What is this? - Click something to learn what it does.")
+        else:
+            context.remove_class('aspartame-help-active')
+            self._help_button.set_tooltip_text(
+                "What is this? - Learn what something on the screen does.")
+        self._help_button.queue_draw()
 
     def _install_help_key_handler(self):
         window = self.get_toplevel()
@@ -179,8 +216,7 @@ class ViewToolbar(Gtk.Toolbar):
     def __help_key_press_cb(self, _window, event):
         if event.keyval == Gdk.KEY_Escape and aspartame_help.is_active():
             aspartame_help.escape()
-            self._help_button.set_tooltip_text(
-                "What is this? - Learn what something on the screen does.")
+            self._set_help_button_active(False)
             return True
         return False
 

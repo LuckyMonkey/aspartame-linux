@@ -31,9 +31,9 @@ class ActivityManager(SectionView):
                 padding: 5px 0;
             }
             .aspartame-rating-face {
-                font-size: 21px;
-                min-width: 34px;
-                min-height: 34px;
+                font-size: 28px;
+                min-width: 42px;
+                min-height: 42px;
                 padding: 0;
                 border: none;
                 background: transparent;
@@ -141,7 +141,7 @@ class ActivityManager(SectionView):
         labels.set_halign(Gtk.Align.FILL)
         name = Gtk.Label(label=activity['name'])
         name.set_xalign(0)
-        name.set_max_width_chars(36)
+        name.set_markup('<b><big>%s</big></b>' % activity['name'])
         name.set_tooltip_text(_('Activity name: %s') % activity['name'])
         if aspartame_help and help_id:
             aspartame_help.guard(name, help_id)
@@ -155,6 +155,7 @@ class ActivityManager(SectionView):
         detail.set_hexpand(True)
         detail.set_halign(Gtk.Align.FILL)
         detail.set_line_wrap(True)
+        detail.set_ellipsize(0)
         detail.set_tooltip_text(activity.get('url') or activity['path'])
         labels.pack_start(detail, False, False, 0)
         grid.attach(labels, 0, 0, 1, 1)
