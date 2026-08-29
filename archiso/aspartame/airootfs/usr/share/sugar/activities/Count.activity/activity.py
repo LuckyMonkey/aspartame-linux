@@ -41,7 +41,12 @@ class CountActivity(activity.Activity):
 
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         root.set_border_width(12)
+        root.set_name("count-root")
+        css = Gtk.CssProvider()
+        css.load_from_data(b"#count-root { background: #eeeeee; color: #222222; } .count-cell { background: #ffffff; border: 2px solid #777777; border-radius: 4px; color: #333333; font-size: 22px; } .count-cell:checked { background: #444444; color: #ffffff; } .count-heading { font-weight: bold; font-size: 18px; }")
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self.summary = Gtk.Label()
+        self.summary.get_style_context().add_class("count-heading")
         self.summary.set_xalign(0)
         root.pack_start(self.summary, False, False, 0)
         controls = Gtk.Box(spacing=6)
@@ -94,6 +99,7 @@ class CountActivity(activity.Activity):
             for x in range(self.width):
                 button = Gtk.ToggleButton(label="●")
                 button.set_active(layer[y][x])
+                button.get_style_context().add_class("count-cell")
                 button.set_size_request(54, 54)
                 button.set_tooltip_text(_("Cell %d, %d") % (x + 1, y + 1))
                 button.connect("toggled", self._cell_toggled, x, y)
