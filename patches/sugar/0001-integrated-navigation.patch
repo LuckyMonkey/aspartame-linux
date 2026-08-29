@@ -63,7 +63,7 @@
          self._set_zoom_level(kwargs['new_level'])
  
 --- jarabe/desktop/viewtoolbar.py	2026-08-29 00:56:53.763206405 -0400
-+++ jarabe/desktop/viewtoolbar.py	2026-08-29 06:59:13.018142831 -0400
++++ jarabe/desktop/viewtoolbar.py	2026-08-29 07:00:57.821135668 -0400
 @@ -22,6 +22,8 @@
  from gettext import gettext as _
  import logging
@@ -81,16 +81,18 @@
  
          self._favorites_views_indicies = []
          for i in range(desktop.get_number_of_views()):
-@@ -78,7 +81,21 @@
+@@ -78,7 +81,23 @@
          tool_item.add(self.search_entry)
          self.search_entry.show()
  
 -        self._add_separator(expand=True)
 +        self._clock_item = Gtk.ToolItem()
-+        self._clock_item.set_expand(True)
++        self._clock_item.set_expand(False)
 +        self._clock_item.set_size_request(300, -1)
 +        self._clock_alignment = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
 +        self._clock_label = Gtk.Label()
++        self._clock_label.set_width_chars(8)
++        self._clock_label.set_justify(Gtk.Justification.CENTER)
 +        self._clock_label.set_xalign(0.5)
 +        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">--:--</span>')
 +        self._clock_label.set_margin_start(style.DEFAULT_PADDING)
@@ -104,7 +106,7 @@
  
          self._button_box = Gtk.HBox()
          self._favorites_buttons = []
-@@ -104,6 +121,8 @@
+@@ -104,6 +123,8 @@
      def _add_favorites_button(self, i):
          logging.debug('adding FavoritesButton %d' % (i))
          self._favorites_buttons.append(FavoritesButton(i))
@@ -113,7 +115,7 @@
          self._favorites_buttons[i].connect('toggled',
                                             self.__view_button_toggled_cb,
                                             self._favorites_views_indicies[i])
-@@ -122,6 +141,10 @@
+@@ -122,6 +143,10 @@
              self._favorites_buttons[i].hide()
          self._list_button.hide()
  

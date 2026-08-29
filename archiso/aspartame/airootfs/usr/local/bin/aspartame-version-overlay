@@ -2,7 +2,7 @@
 from gi.repository import Gdk
 from gi.repository import Gtk
 
-VERSION = 'Aspartame UI v0.0.5'
+VERSION = 'Aspartame UI v0.0.6'
 
 
 def main():
