@@ -1,0 +1,283 @@
+--- jarabe/frame/zoomtoolbar.py
++++ jarabe/frame/zoomtoolbar.py
+@@ -13,7 +13,6 @@
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-
+ from gettext import gettext as _
+ import logging
+ 
+@@ -25,6 +24,7 @@
+ from sugar3.graphics.palette import Palette
+ from sugar3.graphics.radiotoolbutton import RadioToolButton
+ 
++from jarabe.journal import journalactivity
+ from jarabe.frame.frameinvoker import FrameWidgetInvoker
+ from jarabe.model import shell
+ 
+@@ -40,6 +40,7 @@
+ 
+         # we shouldn't be mirrored in RTL locales
+         self.set_direction(Gtk.TextDirection.LTR)
++        self.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
+ 
+         # ask not to be collapsed if possible
+         self.set_size_request(4 * style.GRID_CELL_SIZE, -1)
+@@ -62,6 +63,14 @@
+                              _('F4'),
+                              shell.ShellModel.ZOOM_ACTIVITY)
+ 
++        self._journal_button = Gtk.ToolButton.new(None, _('Journal'))
++        self._journal_button.set_icon_name('activity-journal')
++        self._journal_button.set_is_important(True)
++        self._journal_button.set_tooltip_text(_('Journal'))
++        self._journal_button.connect('clicked', self.__journal_clicked_cb)
++        self.add(self._journal_button)
++        self._journal_button.show()
++
+         shell_model = shell.get_model()
+         self._set_zoom_level(shell_model.zoom_level)
+         shell_model.zoom_level_changed.connect(self.__zoom_level_changed_cb)
+@@ -74,6 +83,8 @@
+ 
+         button = RadioToolButton(icon_name=icon_name, group=group,
+                                  accelerator=accelerator)
++        Gtk.RadioToolButton.set_label(button, label)
++        button.props.label_widget = None
+         button.connect('clicked', self.__level_clicked_cb, zoom_level)
+         self.add(button)
+         button.show()
+@@ -92,6 +103,13 @@
+         shell.get_model().set_zoom_level(level)
+         self.emit('level-clicked')
+ 
++    def __journal_clicked_cb(self, _button):
++        journalactivity.get_journal().show_journal()
++
++    def __update_clock_cb(self):
++        self._clock_label.set_text(datetime.now().strftime('%H:%M'))
++        return True
++
+     def __zoom_level_changed_cb(self, **kwargs):
+         self._set_zoom_level(kwargs['new_level'])
+ 
+--- jarabe/desktop/viewtoolbar.py
++++ jarabe/desktop/viewtoolbar.py
+@@ -22,6 +22,8 @@
+ from gettext import gettext as _
+ import logging
+ 
++from datetime import datetime
++
+ from gi.repository import Gtk
+ from gi.repository import GObject
+ from gi.repository import GLib
+@@ -48,6 +50,7 @@
+ 
+     def __init__(self):
+         Gtk.Toolbar.__init__(self)
++        self.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
+ 
+         self._favorites_views_indicies = []
+         for i in range(desktop.get_number_of_views()):
+@@ -78,7 +81,18 @@
+         tool_item.add(self.search_entry)
+         self.search_entry.show()
+ 
+-        self._add_separator(expand=True)
++        self._clock_item = Gtk.ToolItem()
++        self._clock_item.set_expand(True)
++        self._clock_label = Gtk.Label()
++        self._clock_label.set_xalign(0.5)
++        self._clock_label.set_markup('<span size="xxx-large" weight="bold">--:--</span>')
++        self._clock_label.set_margin_start(style.DEFAULT_PADDING)
++        self._clock_label.set_margin_end(style.DEFAULT_PADDING)
++        self._clock_item.add(self._clock_label)
++        self.insert(self._clock_item, -1)
++        self._clock_item.show_all()
++        self.__update_clock_cb()
++        GLib.timeout_add_seconds(30, self.__update_clock_cb)
+ 
+         self._button_box = Gtk.HBox()
+         self._favorites_buttons = []
+@@ -104,6 +118,8 @@
+     def _add_favorites_button(self, i):
+         logging.debug('adding FavoritesButton %d' % (i))
+         self._favorites_buttons.append(FavoritesButton(i))
++        self._favorites_buttons[i].set_label(desktop.get_view_labels()[i])
++        self._favorites_buttons[i].set_is_important(True)
+         self._favorites_buttons[i].connect('toggled',
+                                            self.__view_button_toggled_cb,
+                                            self._favorites_views_indicies[i])
+@@ -122,6 +138,10 @@
+             self._favorites_buttons[i].hide()
+         self._list_button.hide()
+ 
++    def __update_clock_cb(self):
++        self._clock_label.set_markup('<span size="xxx-large" weight="bold">%s</span>' % datetime.now().strftime('%H:%M'))
++        return True
++
+     def clear_query(self):
+         self.search_entry.props.text = ''
+ 
+--- jarabe/desktop/meshbox.py
++++ jarabe/desktop/meshbox.py
+@@ -18,9 +18,15 @@
+ 
+ from gettext import gettext as _
+ import logging
++import ipaddress
++import os
++import subprocess
++
++from datetime import datetime
+ 
+ import dbus
+ from gi.repository import GObject
++from gi.repository import Gtk
+ from gi.repository import Gio
+ 
+ from sugar3.graphics.icon import Icon
+@@ -371,6 +377,19 @@
+         ViewContainer.__init__(self, layout, owner_icon)
+         self.set_can_focus(False)
+ 
++        self._scan_button = Gtk.Button()
++        
++        self._scan_button.set_tooltip_text(_('Scan this network'))
++        self._scan_button.set_image(Gtk.Image.new_from_file('/usr/share/icons/hicolor/scalable/actions/aspartame-network-scan.svg' if os.path.exists('/usr/share/icons/hicolor/scalable/actions/aspartame-network-scan.svg') else '/mnt/aspartame-dev/icons/aspartame-network-scan.svg'))
++        self._scan_button.set_always_show_image(True)
++        self._scan_button.connect('clicked', self.__scan_clicked_cb)
++        self._scan_button.get_style_context().add_class('aspartame-scan-button')
++        css = Gtk.CssProvider()
++        css.load_from_data(b'.aspartame-scan-button { min-width: 76px; min-height: 76px; border-radius: 38px; padding: 8px; }')
++        self._scan_button.get_style_context().add_provider(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++        self.add(self._scan_button)
++        self._scan_button.show_all()
++
+         self.wireless_networks = {}
+         self._adhoc_manager = None
+         self._adhoc_networks = []
+@@ -402,6 +421,51 @@
+         netmgr_observer = NetworkManagerObserver(self)
+         netmgr_observer.listen()
+ 
++    def do_size_allocate(self, allocation):
++        ViewContainer.do_size_allocate(self, allocation)
++        button_allocation = Gtk.Allocation()
++        button_allocation.x = style.GRID_CELL_SIZE
++        button_allocation.y = style.GRID_CELL_SIZE
++        button_allocation.width = 76
++        button_allocation.height = 76
++        self._scan_button.size_allocate(button_allocation)
++
++    def __scan_clicked_cb(self, _button):
++        try:
++            addresses = subprocess.check_output(['ip', '-o', '-4', 'addr', 'show', 'scope', 'global'], text=True, timeout=5)
++            network = None
++            for line in addresses.splitlines():
++                fields = line.split()
++                if 'inet' in fields:
++                    network = str(ipaddress.ip_interface(fields[fields.index('inet') + 1]).network)
++                    break
++            if network is None:
++                raise RuntimeError('no active IPv4 network')
++            output = subprocess.check_output(['nmap', '-sn', '-T3', network], stderr=subprocess.STDOUT, text=True, timeout=45)
++        except Exception as error:
++            output = _('Scan failed: %s') % error
++        dialog = Gtk.Dialog(title=_('Neighborhood scan'), transient_for=self.get_toplevel(), flags=Gtk.DialogFlags.MODAL)
++        dialog.add_button(_('Close'), Gtk.ResponseType.CLOSE)
++        dialog.add_button(_('Save report'), Gtk.ResponseType.APPLY)
++        text_view = Gtk.TextView()
++        text_view.set_editable(False)
++        text_view.set_cursor_visible(False)
++        text_view.set_monospace(True)
++        text_view.get_buffer().set_text(output)
++        scroll = Gtk.ScrolledWindow()
++        scroll.set_size_request(900, 520)
++        scroll.add(text_view)
++        dialog.get_content_area().pack_start(scroll, True, True, 0)
++        dialog.show_all()
++        response = dialog.run()
++        if response == Gtk.ResponseType.APPLY:
++            report_dir = os.path.expanduser('~/Downloads')
++            os.makedirs(report_dir, exist_ok=True)
++            report_path = os.path.join(report_dir, 'neighborhood-scan-%s.txt' % datetime.now().strftime('%Y%m%d-%H%M%S'))
++            with open(report_path, 'w', encoding='utf-8') as report_file:
++                report_file.write(output)
++        dialog.destroy()
++
+     def _buddy_added_cb(self, model, buddy_model):
+         self._add_buddy(buddy_model)
+ 
+--- jarabe/intro/window.py
++++ jarabe/intro/window.py
+@@ -57,6 +57,8 @@
+     if colors is None:
+         colors = XoColor()
+     settings.set_string('color', colors.to_string())
++    if not settings.get_string('group-label'):
++        settings.set_string('group-label', 'Aspartame')
+ 
+     genderpicker.save_gender(user_profile.gender)
+ 
+@@ -252,7 +254,7 @@
+ class _IntroBox(Gtk.VBox):
+     done_signal = GObject.Signal('done', arg_types=([object]))
+ 
+-    PAGES = ["NAME", "COLOR", "GENDER", "AGE"]
++    PAGES = ["COLOR"]
+ 
+     PAGE_FIRST = 0
+     PAGE_LAST = len(PAGES) - 1
+@@ -271,7 +273,7 @@
+ 
+         settings = Gio.Settings.new('org.sugarlabs.user')
+ 
+-        if 'default-gender' in settings.list_keys():
++        if False and 'default-gender' in settings.list_keys():
+             default_gender = settings.get_string('default-gender')
+             if default_gender == 'disabled':
+                 self.PAGES[self.PAGES.index("GENDER")] = False
+@@ -282,7 +284,7 @@
+ 
+         default_nick = settings.get_string('default-nick')
+         if default_nick != 'disabled':
+-            self._page += 1
++            self._page = self.PAGES.index("COLOR")
+             if default_nick == 'system':
+                 pwd_entry = pwd.getpwuid(os.getuid())
+                 default_nick = (pwd_entry.pw_gecos.split(',')[0] or
+@@ -291,7 +293,7 @@
+ 
+         # XXX should also consider whether or not there is a nick
+         nick = settings.get_string('nick')
+-        if start_on_age_page and nick:
++        if False and start_on_age_page and nick:
+             self._page = self.PAGES.index("AGE")
+ 
+         self._setup_page()
+@@ -318,12 +320,7 @@
+                 self._age_page.update_color(self._color_page.get_color())
+             self._current_page = self._age_page
+ 
+-        setup_methods = [
+-            _setup_name_page,
+-            _setup_color_page,
+-            _setup_gender_page,
+-            _setup_age_page
+-        ]
++        setup_methods = [_setup_color_page]
+ 
+         setup_methods[self._page](self)
+         self.pack_start(self._current_page, True, True, 0)
+@@ -399,7 +396,7 @@
+ 
+     def done(self):
+         user_profile = UserProfile()
+-        user_profile.nickname = self._name_page.get_name()
++        user_profile.nickname = os.environ.get('SUGAR_PROFILE_NAME', 'Aspartame')
+         user_profile.colors = self._color_page.get_color()
+         user_profile.gender = self._gender_page.get_gender()
+         user_profile.age = self._age_page.get_age()

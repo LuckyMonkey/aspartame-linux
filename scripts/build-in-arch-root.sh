@@ -5,6 +5,14 @@ if test "$(id -u)" -ne 0; then
     exec sudo -- "$0" "$@"
 fi
 
+# Never create or clean build mounts in the host mount namespace.  Without
+# this boundary, an interrupted cleanup can see through a bind mount and
+# detach host mounts such as /sys/fs/cgroup or /run/user.
+if test "${ASPARTAME_MOUNT_NAMESPACE:-0}" != 1; then
+    export ASPARTAME_MOUNT_NAMESPACE=1
+    exec unshare --mount --propagation private "$0" "$@"
+fi
+
 build_area=${BUILD_ROOT:-/media/freezer/SteamLibrary/vms/aspartame-build}
 build_root=${ARCH_ROOT:-$build_area/root.x86_64}
 project_root=${PROJECT_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}

@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+
+prefix=${ASPARTAME_CONDA_PREFIX:-"$HOME/.aspartame/miniconda3"}
+cache=${ASPARTAME_CONDA_CACHE:-"$HOME/.cache/aspartame"}
+url=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+if test -x "$prefix/bin/conda"; then
+    echo "Miniconda already installed at $prefix"
+    exit 0
+fi
+
+mkdir -p "$cache" "$(dirname "$prefix")"
+installer="$cache/Miniconda3-latest-Linux-x86_64.sh"
+curl -fL --retry 3 -o "$installer" "$url"
+expected=$(curl -fsSL "$url.sha256" | awk '{print $1}')
+actual=$(sha256sum "$installer" | awk '{print $1}')
+test -n "$expected" && test "$expected" = "$actual"
+sh "$installer" -b -p "$prefix"
+"$prefix/bin/conda" config --system --set auto_activate_base false
+echo "Installed Miniconda at $prefix"
+echo "Open a new shell, or export PATH=\"$prefix/bin:\$PATH\""

@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if test "$(id -u)" -ne 0; then
+    exec sudo -- "$0" "$@"
+fi
+
+# Keep bootstrap mounts and their cleanup private to this process tree. This
+# prevents an interrupted bootstrap from touching host mounts or user services.
+if test "${ASPARTAME_MOUNT_NAMESPACE:-0}" != 1; then
+    export ASPARTAME_MOUNT_NAMESPACE=1
+    exec unshare --mount --propagation private "$0" "$@"
+fi
+
 build_root=${ASPARTAME_BUILD_ROOT:-/media/freezer/SteamLibrary/vms/aspartame-build/root.x86_64}
 project_root=${ASPARTAME_PROJECT_ROOT:-/home/freezer/Projects/aspartame}
 mount_point="$build_root/mnt/aspartame"

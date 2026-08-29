@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+exec ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+    -p "${SSH_PORT:-2222}" "${SSH_USER:-root}@127.0.0.1" "$@"

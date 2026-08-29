@@ -16,6 +16,7 @@ mesa
 libglvnd
 xorg-server
 xorg-xinit
+xorg-xrandr
 xf86-input-libinput
 metacity
 dbus
@@ -26,6 +27,7 @@ xdg-user-dirs
 xdg-utils
 firefox
 xterm
+fastfetch
 file
 unzip
 tar
@@ -49,3 +51,13 @@ sugar-activity-paint
 sugar-activity-jukebox
 sugar-activity-read
 sugar-activity-record
+openssh
+nmap
+tcpdump
+bind
+htop
+git
+nano
+python-pip
+python-pipx
+python-virtualenv
