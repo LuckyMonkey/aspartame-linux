@@ -89,10 +89,12 @@ PY
 printf '\nRuntime imports\n'
 run_as_shell_user /usr/local/bin/aspartame-sugar-imports
 
+clock_format=$(run_as_shell_user gsettings get org.aspartame.clock format 2>/dev/null || echo unavailable)
 printf '\nStyling\n'
 printf '  Sugar scaling:      %s\n' "$sugar_scaling"
 printf '  Shell GTK theme:    sugar-%s (set by jarabe.main)\n' "$sugar_scaling"
 printf '  Sugar icon theme:   sugar (set by jarabe.main)\n'
+printf '  Clock format:        %s (blank follows locale)\n' "$clock_format"
 printf '  GTK2 compatibility: %s\n' "$(get_env GTK2_RC_FILES)"
 printf '  Theme CSS:          /usr/share/themes/sugar-%s/gtk-3.0/gtk.css\n' "$sugar_scaling"
 printf '  Artwork icons:      /usr/share/icons/sugar/scalable\n'

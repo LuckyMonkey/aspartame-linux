@@ -45,6 +45,8 @@ done
 
 test -f "$root/docs/SUGAR-DEVELOPMENT.md"
 test -f "$root/docs/SUGAR-STYLING.md"
+test -f "$root/sugar-overlay/extensions.list"
+test -f "$root/archiso/aspartame/airootfs/usr/share/glib-2.0/schemas/org.aspartame.clock.gschema.xml"
 grep -qx 'exec /usr/local/bin/aspartame-x-session' \
     "$root/archiso/aspartame/airootfs/etc/skel/.xinitrc"
 
@@ -58,6 +60,16 @@ path = Path(sys.argv[1])
 compile(path.read_text(encoding="utf-8"), str(path), "exec")
 PY
 done < "$root/sugar-overlay/files.list"
+while IFS= read -r relative; do
+    test -n "$relative" || continue
+    test -f "$root/archiso/aspartame/airootfs/usr/share/sugar/extensions/$relative"
+    python3 - "$root/archiso/aspartame/airootfs/usr/share/sugar/extensions/$relative" <<'PY'
+from pathlib import Path
+import sys
+path = Path(sys.argv[1])
+compile(path.read_text(encoding="utf-8"), str(path), "exec")
+PY
+done < "$root/sugar-overlay/extensions.list"
 
 for command in sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-patch-check; do
     grep -q "^$command:" "$root/Makefile"

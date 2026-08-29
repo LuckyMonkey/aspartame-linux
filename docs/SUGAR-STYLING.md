@@ -124,9 +124,7 @@ and writes the shell's process-local `gtk-font-name`. The inspected values were
 `Sans Serif`, size `10.0`. Font changes made through that path apply at shell
 startup; restart Sugar to verify them consistently.
 
-The v0.0.14 clock intentionally inherits Sugar's active font and follows the active LC_TIME hour convention (12- or 24-hour) while always omitting seconds. It uses Pango
-markup only for `xx-large` and bold weight, preserving the family selected by
-Sugar.
+The v0.0.14 clock intentionally inherits Sugar's active font and follows the active `LC_TIME` hour convention (12- or 24-hour) while always omitting seconds. It reads the optional `org.aspartame.clock` `format` key; blank means locale-derived hours and minutes, while a custom strftime format is rendered after markup escaping. The widget continues to use Pango markup only for `xx-large` and bold weight, preserving the family selected by Sugar.
 
 ### 7. Scoped runtime CSS providers
 

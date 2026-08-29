@@ -25,6 +25,7 @@ import locale
 import logging
 
 from gi.repository import Gtk
+from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import GLib
 
@@ -111,6 +112,9 @@ class ViewToolbar(Gtk.Toolbar):
         if self._clock_render_label is not None:
             self._clock_render_label.set_margin_top(6)
         self._clock_item.get_child().set_margin_end(2 * style.GRID_CELL_SIZE)
+        self._clock_settings = Gio.Settings.new("org.aspartame.clock")
+        self._clock_settings.connect("changed::format",
+                                     self.__clock_format_changed_cb)
         self.__update_clock_cb()
         GLib.timeout_add_seconds(30, self.__update_clock_cb)
 
@@ -167,15 +171,25 @@ class ViewToolbar(Gtk.Toolbar):
         return None
 
 
+    def __clock_format_changed_cb(self, settings, key):
+        self.__update_clock_cb()
+
     def __update_clock_cb(self):
         locale.setlocale(locale.LC_TIME, "")
-        time_format = locale.nl_langinfo(locale.T_FMT)
-        if "%I" in time_format or "%p" in time_format:
-            text = datetime.now().strftime("%I:%M %p").lstrip("0")
+        clock_format = self._clock_settings.get_string("format")
+        if clock_format:
+            text = datetime.now().strftime(clock_format)
         else:
-            text = datetime.now().strftime("%H:%M")
+            time_format = locale.nl_langinfo(locale.T_FMT)
+            if "%I" in time_format or "%p" in time_format:
+                text = datetime.now().strftime("%I:%M %p").lstrip("0")
+            else:
+                text = datetime.now().strftime("%H:%M")
+        escaped_text = GLib.markup_escape_text(text)
         if self._clock_render_label is not None:
-            self._clock_render_label.set_markup("<span size=\"xx-large\" weight=\"bold\">%s</span>" % text)
+            self._clock_render_label.set_markup(
+                "<span size=\"xx-large\" weight=\"bold\">%s</span>" %
+                escaped_text)
         else:
             self._clock_item.set_label(text)
         return True

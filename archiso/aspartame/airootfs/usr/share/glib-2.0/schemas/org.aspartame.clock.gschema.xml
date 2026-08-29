@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.aspartame.clock" path="/org/aspartame/clock/">
+    <key name="format" type="s">
+      <default>''</default>
+      <summary>Frame clock format</summary>
+      <description>strftime format for the Sugar Frame clock. An empty value follows the locale and shows hours and minutes.</description>
+    </key>
+  </schema>
+</schemalist>

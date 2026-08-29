@@ -84,6 +84,7 @@ EOF
 site_packages=$(python3 -c 'import sugar3, os; print(os.path.dirname(sugar3.__file__))')
 patch -d "$(dirname "$site_packages")" -p0 < \
     /usr/share/aspartame/0001-integrated-navigation.patch
+glib-compile-schemas /usr/share/glib-2.0/schemas
 cat > /usr/local/bin/aspartame-session <<'EOF'
 #!/bin/sh
 set -eu

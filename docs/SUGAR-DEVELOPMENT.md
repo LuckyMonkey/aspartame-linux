@@ -28,6 +28,11 @@ make sugar-session-restart
 That command intentionally ends Xorg, the session D-Bus, Metacity, Sugar, and
 running Activities. It does not unmount or format the persistent home volume.
 
+## Clock format settings
+
+The existing native Date & Time Control Panel now includes a `Clock format` text field. It writes the persistent `org.aspartame.clock` GSettings key through the normal Apply/Cancel model. Leave it blank to use the active `LC_TIME` locale with hours and minutes; examples include `%H:%M` and `%I:%M %p`. The Frame clock observes this key and refreshes without restarting Sugar. Invalid strftime formats disable Apply. This is intentionally a text field now; a future drag-and-drop formatter must preserve the same setting boundary and Sugar Frame ownership.
+
+
 ## What starts Sugar
 
 No display manager participates. The live development image uses this chain:
@@ -192,7 +197,7 @@ are Aspartame-owned development infrastructure copied from this repository.
 | Running/current Activity | `CurrentActivityIcon`; `jarabe.model.shell.Activity` and `ShellModel` | Wnck/X11 window tracking and Activity metadata | shell |
 | Launch/resume | favorites/Home callbacks, `jarabe.model.shell`, Sugar activity factory and Journal object IDs | D-Bus, Journal datastore, bundle registry, X11 | shell; Activity process is separate |
 | Home search | `jarabe.desktop.viewtoolbar.ViewToolbar` and `HomeBox` query callbacks | `IconEntry`, delayed GLib search callback | shell |
-| Aspartame clock | `jarabe.desktop.viewtoolbar.ViewToolbar` | native `Gtk.ToolButton`/internal `Gtk.Label`; local scoped CSS provider; locale-aware `datetime.now()` | shell |
+| Aspartame clock | `jarabe.desktop.viewtoolbar.ViewToolbar` | native `Gtk.ToolButton`/internal `Gtk.Label`; local scoped CSS provider; locale-aware persistent `org.aspartame.clock` format plus locale-aware `datetime.now()` | shell |
 | Frame | `jarabe.frame.frame.Frame` | four `FrameWindow` panels, trays, animator, palettes | shell |
 | Frame activation | `jarabe.frame.eventarea.EventArea`; `jarabe.view.keyhandler.KeyHandler` | invisible edge/corner X windows; `org.sugarlabs.frame`; F6 calls `Frame.notify_key_press()` | shell |
 | Frame navigation | `jarabe.frame.zoomtoolbar.ZoomToolbar` | Sugar toolbar/radio buttons; emits zoom levels | shell |

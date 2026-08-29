@@ -5,6 +5,9 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/sugar-vm.sh"
 source "$project_root/sugar-overlay/UPSTREAM"
 overlay_root="$project_root/sugar-overlay/src"
 files_list="$project_root/sugar-overlay/files.list"
+extension_files_list="$project_root/sugar-overlay/extensions.list"
+extension_root="$project_root/archiso/aspartame/airootfs/usr/share/sugar/extensions"
+clock_schema="$project_root/archiso/aspartame/airootfs/usr/share/glib-2.0/schemas/org.aspartame.clock.gschema.xml"
 version_file="$project_root/archiso/aspartame/airootfs/usr/share/aspartame/ui-version"
 marker_file="$project_root/archiso/aspartame/airootfs/usr/local/bin/aspartame-version-overlay"
 share_root=${DEV_SHARE:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev}
@@ -28,6 +31,17 @@ path = Path(sys.argv[1])
 compile(path.read_text(encoding="utf-8"), str(path), "exec")
 PY
 done < "$files_list"
+while IFS= read -r relative; do
+    test -n "$relative" || continue
+    python3 - "$extension_root/$relative" <<'PY'
+from pathlib import Path
+import sys
+path = Path(sys.argv[1])
+compile(path.read_text(encoding="utf-8"), str(path), "exec")
+PY
+done < "$extension_files_list"
+printf '  Date & Time extension syntax ... PASS\n'
+
 printf '  Python syntax ........ PASS\n'
 "$project_root/scripts/sugar-patch.sh" check >/dev/null
 printf '  overlay/patch sync ... PASS\n'
@@ -75,7 +89,14 @@ while IFS= read -r relative; do
     test -n "$relative" || continue
     sudo install -D -m 0644 "$overlay_root/$relative" "$share_root/sugar/src/$relative"
 done < "$files_list"
+
 sudo install -m 0644 "$files_list" "$share_root/sugar/files.list"
+sudo install -m 0644 "$extension_files_list" "$share_root/extensions.list"
+while IFS= read -r relative; do
+    test -n "$relative" || continue
+    sudo install -D -m 0644 "$extension_root/$relative" "$share_root/extensions/$relative"
+done < "$extension_files_list"
+sudo install -D -m 0644 "$clock_schema" "$share_root/schemas/org.aspartame.clock.gschema.xml"
 sudo install -D -m 0644 "$version_file" "$share_root/ui-version"
 sudo install -D -m 0755 "$project_root/archiso/aspartame/airootfs/etc/skel/.xinitrc" "$share_root/tools/aspartame-xinitrc"
 sudo install -D -m 0755 "$marker_file" "$share_root/tools/aspartame-version-overlay"
@@ -98,6 +119,12 @@ if ! grep -qx 'exec /usr/local/bin/aspartame-x-session' /home/aspartame/.xinitrc
 fi
 install -m 0755 /mnt/aspartame-dev/tools/aspartame-version-overlay \
     /usr/local/bin/aspartame-version-overlay
+install -m 0644 /mnt/aspartame-dev/schemas/org.aspartame.clock.gschema.xml /usr/share/glib-2.0/schemas/org.aspartame.clock.gschema.xml
+while IFS= read -r relative; do
+    test -n "$relative" || continue
+    install -D -m 0644 "/mnt/aspartame-dev/extensions/$relative" "/usr/share/sugar/extensions/$relative"
+done < /mnt/aspartame-dev/extensions.list
+glib-compile-schemas /usr/share/glib-2.0/schemas
 install -d -o aspartame -g aspartame /home/aspartame/.cache
 pkill -u aspartame -f /usr/local/bin/aspartame-version-overlay || true
 runuser -u aspartame -- sh -c \
@@ -122,6 +149,25 @@ if test "$host_manifest" != "$remote_manifest"; then
     exit 11
 fi
 printf '  source hashes ........ PASS\n'
+host_extension_manifest=$(while IFS= read -r relative; do
+    test -n "$relative" || continue
+    printf '%s  %s\n' "$(sha256sum "$extension_root/$relative" | awk '{print $1}')" "$relative"
+done < "$extension_files_list")
+remote_extension_manifest=$(vm_ssh bash -s <<'REMOTE'
+set -euo pipefail
+while IFS= read -r relative; do
+    test -n "$relative" || continue
+    printf '%s  %s\n' "$(sha256sum "/mnt/aspartame-dev/extensions/$relative" | awk '{print $1}')" "$relative"
+done < /mnt/aspartame-dev/extensions.list
+REMOTE
+)
+if test "$host_extension_manifest" != "$remote_extension_manifest"; then
+    echo '  extension hashes ....... FAIL' >&2
+    diff -u <(printf '%s\n' "$host_extension_manifest") <(printf '%s\n' "$remote_extension_manifest") || true
+    exit 13
+fi
+printf '  extension hashes ...... PASS\n'
+
 
 old_state=$(vm_ssh /usr/local/bin/aspartame-sugar-state)
 printf '\nPrevious runtime:\n  %s\n' "$old_state"
