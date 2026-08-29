@@ -1,0 +1,225 @@
+Aspartame Neighborhood Board — Feature Runbook
+
+Working name: Board / Bulletin Board
+Purpose: Give every machine/person in Sugar Neighborhood an intentionally public surface where objects can be left for other nearby/trusted users.
+
+Core metaphor
+
+A computer is a place in Neighborhood.
+
+Selecting a machine does not expose its filesystem. It exposes its Bulletin Board: a small public space containing only things its owner deliberately put there.
+
+If it isn't on the Board, it isn't visible.
+
+Think Wii Message Board + corkboard + “Gone Fishing” note, expressed through Sugar's object/spatial model.
+
+User experience
+
+Each Neighborhood identity/device has a Board.
+
+A Board may contain:
+
+Sticky notes / status messages
+Journal objects
+Files and folders
+Photos
+Audio/video
+URLs
+Activity objects/documents
+Invitations to collaborate
+Potentially services such as a shared printer
+
+Example:
+
+             Charlie's Board
+
+ ┌─────────────────┐       🎵
+ │ Gone fishing    │    Lake Mix
+ │ Back Sunday     │
+ └─────────────────┘
+
+       📷                    📁
+   Sunset.jpg          Aspartame Stuff
+
+                 🔗
+              fridge.run
+
+Objects should look and behave like Sugar objects, not generic SMB files.
+
+Posting
+
+The natural interaction should be spatial:
+
+Journal object
+      ↓ drag
+     My XO
+      ↓
+  Put on Board
+
+Other possible entry points:
+
+Object palette → Put on Board
+Journal → Share → Board
+Board → Add…
+
+But dragging something onto your own XO should be the canonical Sugar interaction if practical.
+
+Removing it from the Board makes it private again.
+
+Privacy model
+
+Private by default.
+
+Nothing in $HOME, Journal, attached storage, etc. becomes visible merely because another computer can see the machine in Neighborhood.
+
+Board visibility is an explicit allowlist:
+
+My computer
+├── Journal      PRIVATE
+├── Documents    PRIVATE
+├── Pictures     PRIVATE
+├── Downloads    PRIVATE
+│
+└── Board        SHARED
+      ├── note
+      ├── sunset.jpg
+      └── lake-mix.ogg
+
+Removing an object from the Board should revoke ordinary Board access to it.
+
+Conventional SMB/SFTP filesystem sharing can exist as an advanced, separate capability. It must not redefine what Board means.
+
+Neighborhood integration
+
+Neighborhood answers:
+
+What's around me?
+
+A person/device appears as the normal Sugar Neighborhood object.
+
+Selecting it should prioritize:
+
+Freezer
+
+Board
+──────────────
+📌 Gone fishing
+📷 sunset.jpg
+🎵 lake-mix.ogg
+
+Last seen: Now
+
+Technical information such as hostname, IP, MAC address, discovered services, SMB, SSH, etc. belongs in Details, not on the primary surface.
+
+Offline machines
+
+Remember enough Board metadata to preserve the spatial/social feeling:
+
+Freezer
+Offline
+
+Last seen yesterday
+
+📌 Gone fishing — back Sunday
+
+Cached objects should be visually distinguishable from currently available objects. Don't imply that an offline file can still be retrieved unless it has actually been cached locally.
+
+Object semantics
+
+The Board should not flatten everything into “downloadable file.”
+
+A posted object retains its identity.
+
+Examples:
+
+JPEG       → View / Copy to Journal
+URL        → Browse
+Audio      → Listen / Copy
+Document   → Resume/Open / Copy
+Folder     → Browse
+Note       → Read
+Activity   → Resume/Join if supported
+Invitation → Join
+Printer    → Print
+
+This gives Sugar Activities the opportunity to understand Board objects rather than having Board itself implement every file type.
+
+Implementation philosophy
+
+The user should never need to understand the underlying sharing protocol.
+
+Internally, use boring, proven infrastructure wherever possible:
+
+Sugar Board UI
+      ↓
+Board metadata / object manifest
+      ↓
+Aspartame sharing service
+      ↓
+mDNS/DNS-SD discovery
+      +
+object transport
+
+Transport can eventually be SMB, HTTP/WebDAV, or another appropriate existing protocol. Do not invent a complicated custom network protocol merely to preserve the metaphor.
+
+The Board is the Sugar abstraction over the transport.
+
+Discovery should integrate naturally with Neighborhood.
+
+Important distinction
+
+Do not turn this into:
+
+Neighborhood
+  → Freezer
+      → Network Shares
+          → Public
+              → files
+
+That's a network browser.
+
+The intended model is:
+
+Neighborhood
+      ↓
+   Freezer
+      ↓
+    Board
+      ↓
+Things Freezer deliberately
+left out for other people
+
+The distinction is fundamental.
+
+Initial MVP
+
+Build this incrementally:
+
+Every local identity has a Board.
+Board is empty/private-by-default.
+User can create a text sticky note.
+User can place/remove a Journal/file object.
+Board advertises itself through local service discovery.
+Another Aspartame machine sees the device in Neighborhood.
+Opening it displays its Board.
+Remote objects can be inspected and copied locally.
+Removing an object revokes future retrieval.
+Offline/stale state is represented correctly.
+
+Only after that works should Board gain collaboration, printers, richer permissions, VPN/remote Boards, etc.
+
+Design laws
+
+Board is not a filesystem.
+Neighborhood is not a network browser.
+Sharing is explicit.
+Nothing is exposed by default.
+Objects retain their meaning.
+Underlying protocols remain implementation details.
+Prefer spatial/direct manipulation over configuration dialogs.
+Offline state must be truthful.
+Advanced Linux sharing remains possible without contaminating the simple model.
+
+One-sentence specification
+
+Every Aspartame machine is a place in Neighborhood with a Bulletin Board; users explicitly place objects on their Board for others to discover and interact with, while everything not placed there remains private.
