@@ -81,6 +81,13 @@ RemainAfterExit=yes
 [Install]
 WantedBy=local-fs.target
 EOF
+# Install Aspartame Control Panel sections after pacman has installed Sugar.
+# Keeping overrides out of the initial airootfs avoids file collisions with
+# files owned by the current Arch sugar package.
+install -d /usr/share/sugar/extensions/cpsection
+chmod 0755 /usr/local/libexec/aspartame-remove-activity
+cp -a /usr/share/aspartame/cpsection/. /usr/share/sugar/extensions/cpsection/
+
 site_packages=$(python3 -c 'import sugar3, os; print(os.path.dirname(sugar3.__file__))')
 patch -d "$(dirname "$site_packages")" -p0 < \
     /usr/share/aspartame/0001-integrated-navigation.patch
