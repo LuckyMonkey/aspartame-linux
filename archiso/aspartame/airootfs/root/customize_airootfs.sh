@@ -106,7 +106,24 @@ chmod 0755 /usr/local/bin/aspartame-dev-mount
 cat > /usr/local/bin/aspartame-restart-sugar <<'EOF'
 #!/bin/sh
 set -eu
-pkill -TERM -u "${USER:-aspartame}" -f '(^|/)(sugar|jarabe.main)( |$)' 2>/dev/null || true
+old_pid=$(pgrep -u "${USER:-aspartame}" -f "^python3 -m jarabe\.main$" | head -n 1 || true)
+if test -n "$old_pid"; then
+    kill -TERM "$old_pid" 2>/dev/null || true
+    for _ in 1 2 3 4 5 6 7 8 9 10; do
+        test -d "/proc/$old_pid" || break
+        sleep 1
+    done
+fi
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+    new_pid=$(pgrep -u "${USER:-aspartame}" -f "^python3 -m jarabe\.main$" | head -n 1 || true)
+    if test -n "$new_pid" && test "$new_pid" != "$old_pid"; then
+        echo "Sugar restarted: $old_pid -> $new_pid"
+        exit 0
+    fi
+    sleep 1
+done
+echo "Sugar did not restart within 10 seconds" >&2
+exit 1
 EOF
 chmod 0755 /usr/local/bin/aspartame-restart-sugar
 
