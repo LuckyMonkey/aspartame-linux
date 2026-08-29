@@ -15,6 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from gettext import gettext as _
 import logging
+import sys
+
+from gi.repository import Gdk
 
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -28,6 +31,9 @@ from jarabe.journal import journalactivity
 from jarabe.frame.frameinvoker import FrameWidgetInvoker
 from jarabe.model import shell
 
+sys.path.insert(0, '/usr/share/aspartame')
+import aspartame_help
+
 
 class ZoomToolbar(Gtk.Toolbar):
     __gsignals__ = {
@@ -37,6 +43,7 @@ class ZoomToolbar(Gtk.Toolbar):
 
     def __init__(self):
         Gtk.Toolbar.__init__(self)
+        aspartame_help.set_active(False)
 
         # we shouldn't be mirrored in RTL locales
         self.set_direction(Gtk.TextDirection.LTR)
@@ -71,6 +78,24 @@ class ZoomToolbar(Gtk.Toolbar):
         self.add(self._journal_button)
         self._journal_button.show()
 
+        spacer = Gtk.SeparatorToolItem()
+        spacer.set_expand(True)
+        self.add(spacer)
+        spacer.show()
+        self._help_button = Gtk.ToolButton.new(None, '?')
+        self._help_button.set_is_important(True)
+        self._help_button.set_tooltip_text("What is this? - Learn what something on the screen does.")
+        self._help_button.connect('button-press-event', self.__help_clicked_cb)
+        self.add(self._help_button)
+        self._help_button.show()
+        GLib.idle_add(self._install_help_key_handler)
+
+        aspartame_help.guard(self._mesh_button, 'org.aspartame.shell.neighborhood')
+        aspartame_help.guard(self._groups_button, 'org.aspartame.shell.group')
+        aspartame_help.guard(self._home_button, 'org.aspartame.shell.home')
+        aspartame_help.guard(self._activity_button, 'org.aspartame.shell.frame')
+        aspartame_help.guard(self._journal_button, 'org.aspartame.shell.journal')
+
         shell_model = shell.get_model()
         self._set_zoom_level(shell_model.zoom_level)
         shell_model.zoom_level_changed.connect(self.__zoom_level_changed_cb)
@@ -95,6 +120,27 @@ class ZoomToolbar(Gtk.Toolbar):
         button.set_palette(palette)
 
         return button
+
+    def __help_clicked_cb(self, _button, _event):
+        active = aspartame_help.toggle()
+        self._help_button.set_tooltip_text(
+            "What is this? - Click something to learn what it does."
+            if active else
+            "What is this? - Learn what something on the screen does.")
+        return True
+
+    def _install_help_key_handler(self):
+        window = self.get_toplevel()
+        if isinstance(window, Gtk.Window):
+            window.connect('key-press-event', self.__help_key_press_cb)
+        return False
+
+    def __help_key_press_cb(self, _window, event):
+        if event.keyval == Gdk.KEY_Escape and aspartame_help.is_active():
+            aspartame_help.escape()
+            self._help_button.set_tooltip_text("What is this? - Learn what something on the screen does.")
+            return True
+        return False
 
     def __level_clicked_cb(self, button, level):
         if not button.get_active():

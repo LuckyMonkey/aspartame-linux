@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import sys
 
 from gi import require_version
 require_version("Gdk", "3.0")
@@ -9,6 +10,12 @@ from gi.repository import Gdk, Gtk
 from sugar3.activity import activity
 from sugar3.activity.widgets import ActivityToolbarButton, StopButton
 from sugar3.graphics.toolbarbox import ToolbarBox
+
+sys.path.insert(0, "/usr/share/aspartame")
+try:
+    import aspartame_help
+except ImportError:
+    aspartame_help = None
 
 
 class CountActivity(activity.Activity):
@@ -44,6 +51,8 @@ class CountActivity(activity.Activity):
         self.total = Gtk.Label()
         self.total.set_name("org.aspartame.count.total")
         self.total.set_tooltip_text("The number of things represented across every layer.")
+        if aspartame_help:
+            aspartame_help.guard(self.total, "org.aspartame.count.total")
         self.total.get_style_context().add_class("count-total")
         self.root.pack_start(self.total, False, False, 0)
         total_hint = Gtk.Label(label="total")
@@ -56,6 +65,8 @@ class CountActivity(activity.Activity):
         self.stack.set_hexpand(True)
         self.stack.set_vexpand(True)
         self.stack.set_tooltip_text("Click an empty place to add a box; click a box to remove it. Drag to add several boxes.")
+        if aspartame_help:
+            aspartame_help.guard(self.stack, "org.aspartame.count.stack")
         self.stack.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
                               Gdk.EventMask.BUTTON_RELEASE_MASK |
                               Gdk.EventMask.POINTER_MOTION_MASK)
@@ -68,6 +79,8 @@ class CountActivity(activity.Activity):
         self.layer_count = Gtk.Label()
         self.layer_count.set_name("org.aspartame.count.current-layer")
         self.layer_count.get_style_context().add_class("count-layer-count")
+        if aspartame_help:
+            aspartame_help.guard(self.layer_count, "org.aspartame.count.current-layer")
         self.root.pack_start(self.layer_count, False, False, 0)
         self.layer_total = Gtk.Label()
         self.layer_total.get_style_context().add_class("count-hint")
@@ -124,6 +137,8 @@ class CountActivity(activity.Activity):
         button.set_tooltip_text(tooltip)
         button.get_style_context().add_class("count-symbol")
         button.connect("clicked", callback)
+        if aspartame_help:
+            aspartame_help.guard(button, name)
         box.pack_start(button, False, False, 0)
         return button
 
@@ -133,6 +148,8 @@ class CountActivity(activity.Activity):
         button.set_tooltip_text(tooltip)
         button.get_style_context().add_class("count-action")
         button.connect("clicked", callback)
+        if aspartame_help:
+            aspartame_help.guard(button, name)
         box.pack_start(button, False, False, 0)
         return button
 
