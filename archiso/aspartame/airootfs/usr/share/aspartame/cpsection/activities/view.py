@@ -1,7 +1,7 @@
 from gettext import gettext as _
 import sys
 
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
 from sugar3.graphics import style
 from jarabe.controlpanel.sectionview import SectionView
@@ -86,7 +86,7 @@ class ActivityManager(SectionView):
         self._empty.set_visible(not activities)
         header = Gtk.Grid()
         header.set_border_width(style.DEFAULT_SPACING)
-        header.set_column_spacing(style.DEFAULT_SPACING)
+        header.set_column_spacing(0)
         header.set_hexpand(True)
         header.get_style_context().add_class('aspartame-table-header')
         for column, (text, width, align) in enumerate((
@@ -102,7 +102,9 @@ class ActivityManager(SectionView):
             header.attach(label, actual_column, 0, 1, 1)
             if column < 3:
                 divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
-                divider.set_size_request(2, -1)
+                divider.set_size_request(3, -1)
+                divider.set_vexpand(True)
+                divider.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0.45, 0.55, 0.60, 1.0))
                 divider.get_style_context().add_class('aspartame-table-divider')
                 header.attach(divider, actual_column + 1, 0, 1, 1)
         self._list.add(header)
@@ -133,7 +135,7 @@ class ActivityManager(SectionView):
         row.get_style_context().add_class('aspartame-activity-row')
         grid = Gtk.Grid()
         grid.set_border_width(style.DEFAULT_SPACING)
-        grid.set_column_spacing(style.DEFAULT_SPACING)
+        grid.set_column_spacing(0)
         grid.set_hexpand(True)
         row.add(grid)
 
@@ -207,7 +209,9 @@ class ActivityManager(SectionView):
 
     def _add_table_divider(self, grid, column):
         divider = Gtk.Separator(orientation=Gtk.Orientation.VERTICAL)
-        divider.set_size_request(2, -1)
+        divider.set_size_request(3, -1)
+        divider.set_vexpand(True)
+        divider.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0.45, 0.55, 0.60, 1.0))
         divider.get_style_context().add_class('aspartame-table-divider')
         grid.attach(divider, column, 0, 1, 1)
 
