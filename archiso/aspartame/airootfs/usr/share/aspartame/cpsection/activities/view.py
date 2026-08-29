@@ -133,7 +133,7 @@ class ActivityManager(SectionView):
         row.get_style_context().add_class('aspartame-activity-row')
         grid = Gtk.Grid()
         grid.set_border_width(style.DEFAULT_SPACING)
-        grid.set_column_spacing(style.DEFAULT_SPACING * 2)
+        grid.set_column_spacing(style.DEFAULT_SPACING)
         grid.set_hexpand(True)
         row.add(grid)
 
