@@ -75,21 +75,19 @@ class ActivityManager(SectionView):
         activities = model.list_activities()
         self._count_label.set_text(_('%d installed Activities') % len(activities))
         self._empty.set_visible(not activities)
-        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=style.DEFAULT_SPACING)
+        header = Gtk.Grid()
         header.set_border_width(style.DEFAULT_SPACING)
+        header.set_column_spacing(style.DEFAULT_SPACING * 2)
         header.set_hexpand(True)
-        for text, width, align in (
-                (_('Activity'), 280, 0),
-                (_('Quality'), 235, 0.5),
-                (_('Version'), 0, 0),
-                (_('Actions'), 92, 0.5)):
+        for column, (text, width, align) in enumerate((
+                (_('Activity'), 360, 0),
+                (_('Rating'), 250, 0.5),
+                (_('Version'), 120, 0),
+                (_('Actions'), 100, 0.5))):
             label = Gtk.Label(label=text)
             label.set_xalign(align)
-            if width:
-                label.set_size_request(width, -1)
-            else:
-                label.set_hexpand(True)
-            header.pack_start(label, False, False, 0)
+            label.set_size_request(width, -1)
+            header.attach(label, column, 0, 1, 1)
         self._list.add(header)
         for activity in activities:
             help_id = None
@@ -116,13 +114,14 @@ class ActivityManager(SectionView):
     def _make_row(self, activity, rating, help_id=None):
         row = Gtk.ListBoxRow()
         row.get_style_context().add_class('aspartame-activity-row')
-        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=style.DEFAULT_SPACING)
-        box.set_border_width(style.DEFAULT_SPACING)
-        box.set_hexpand(True)
-        row.add(box)
+        grid = Gtk.Grid()
+        grid.set_border_width(style.DEFAULT_SPACING)
+        grid.set_column_spacing(style.DEFAULT_SPACING * 2)
+        grid.set_hexpand(True)
+        row.add(grid)
 
         labels = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        labels.set_size_request(280, -1)
+        labels.set_size_request(360, -1)
         name = Gtk.Label(label=activity['name'])
         name.set_xalign(0)
         name.set_tooltip_text(_('Activity name: %s') % activity['name'])
@@ -138,10 +137,10 @@ class ActivityManager(SectionView):
         detail.set_ellipsize(3)
         detail.set_tooltip_text(activity.get('url') or activity['path'])
         labels.pack_start(detail, False, False, 0)
-        box.pack_start(labels, False, False, 0)
+        grid.attach(labels, 0, 0, 1, 1)
 
         rating_box = Gtk.Box(spacing=2)
-        rating_box.set_size_request(235, -1)
+        rating_box.set_size_request(250, -1)
         rating_box.set_halign(Gtk.Align.CENTER)
         faces = ('\u2639', '\U0001f641', '\U0001f610', '\U0001f642', '\u263a')
         labels_for_faces = ('Broken', 'Bad', 'Needs work', 'Good', 'Perfect')
@@ -163,14 +162,14 @@ class ActivityManager(SectionView):
                 aspartame_help.guard(face_button, help_id)
             face_buttons.append(face_button)
             rating_box.pack_start(face_button, False, False, 0)
-        box.pack_start(rating_box, False, False, 0)
+        grid.attach(rating_box, 1, 0, 1, 1)
 
         version = activity['version'] or _('version unknown')
         detail_version = Gtk.Label(label=version)
         detail_version.set_xalign(0)
         detail_version.set_size_request(120, -1)
         detail_version.set_tooltip_text(activity['path'])
-        box.pack_start(detail_version, False, False, 0)
+        grid.attach(detail_version, 2, 0, 1, 1)
 
         remove = Gtk.Button(label=_('Remove'))
         remove.set_tooltip_text(_('Remove this Activity for this user.'))
@@ -178,7 +177,8 @@ class ActivityManager(SectionView):
         if not activity['user']:
             remove.set_tooltip_text(_('System Activities cannot be removed from this user session.'))
         remove.connect('clicked', self._remove_clicked, activity)
-        box.pack_start(remove, False, False, 0)
+        remove.set_size_request(100, -1)
+        grid.attach(remove, 3, 0, 1, 1)
 
         self._rows[activity['id']] = (activity['id'], face_buttons)
         return row
