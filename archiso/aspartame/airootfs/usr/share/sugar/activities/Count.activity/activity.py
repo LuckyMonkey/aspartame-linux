@@ -239,3 +239,7 @@ class CountActivity(activity.Activity):
         self.height = int(state["height"])
         self.layers = state["layers"]
         self.current_layer = min(int(state.get("current_layer", 0)), len(self.layers) - 1)
+
+    def _load(self):
+        """Load the Journal document when launching a new instance."""
+        return
