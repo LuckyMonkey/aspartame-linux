@@ -19,7 +19,7 @@ class ActivityManager(SectionView):
         self.set_spacing(style.DEFAULT_SPACING)
 
         title = Gtk.Label()
-        title.set_markup('<b>%s</b>' % _('Activities'))
+        title.set_markup('<b>%s</b>' % _('Activity Manager'))
         title.set_xalign(0)
         self.pack_start(title, False, False, 0)
 
@@ -28,10 +28,16 @@ class ActivityManager(SectionView):
         description.set_line_wrap(True)
         self.pack_start(description, False, False, 0)
 
+        self._count_label = Gtk.Label()
+        self._count_label.set_xalign(0)
+        self.pack_start(self._count_label, False, False, 0)
+
         self._scroller = Gtk.ScrolledWindow()
         self._scroller.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self._scroller.set_min_content_height(420)
         self._list = Gtk.ListBox()
         self._list.set_selection_mode(Gtk.SelectionMode.NONE)
+        self._list.set_vexpand(True)
         self._scroller.add(self._list)
         self.pack_start(self._scroller, True, True, 0)
 
@@ -46,7 +52,18 @@ class ActivityManager(SectionView):
         self._rows = {}
         ratings = model.load_ratings()
         activities = model.list_activities()
+        self._count_label.set_text(_('%d installed Activities') % len(activities))
         self._empty.set_visible(not activities)
+        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=style.DEFAULT_SPACING)
+        header.set_border_width(style.DEFAULT_SPACING)
+        header.set_hexpand(True)
+        for text, expand in ((_('Activity'), True), (_('Version'), True),
+                             (_('Quality'), False), (_('Actions'), False)):
+            label = Gtk.Label(label=text)
+            label.set_xalign(0)
+            label.set_hexpand(expand)
+            header.pack_start(label, expand, expand, 0)
+        self._list.add(header)
         for activity in activities:
             row = self._make_row(activity, ratings.get(activity['id'], 0))
             self._list.add(row)
@@ -65,6 +82,7 @@ class ActivityManager(SectionView):
         row = Gtk.ListBoxRow()
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=style.DEFAULT_SPACING)
         box.set_border_width(style.DEFAULT_SPACING)
+        box.set_hexpand(True)
         row.add(box)
 
         labels = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)

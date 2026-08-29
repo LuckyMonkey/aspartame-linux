@@ -3,4 +3,4 @@ from gettext import gettext as _
 
 CLASS = 'ActivityManager'
 ICON = 'module-updater'
-TITLE = _('Activities')
+TITLE = _('Activity Manager')
