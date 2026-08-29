@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL = ROOT / 'archiso/aspartame/airootfs/usr/share/sugar/extensions/cpsection/activities'
+MODEL = ROOT / 'archiso/aspartame/airootfs/usr/share/aspartame/cpsection/activities'
 import sys
 sys.path.insert(0, str(MODEL.parent))
 from activities import model
