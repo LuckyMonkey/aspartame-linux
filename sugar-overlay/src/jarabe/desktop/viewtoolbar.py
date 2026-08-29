@@ -23,8 +23,10 @@ from gettext import gettext as _
 from datetime import datetime
 import locale
 import logging
+import sys
 
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import GLib
@@ -35,6 +37,9 @@ from sugar3.graphics.radiotoolbutton import RadioToolButton
 
 from jarabe.desktop import favoritesview
 from jarabe.model import desktop
+
+sys.path.insert(0, '/usr/share/aspartame')
+import aspartame_help
 
 _AUTOSEARCH_TIMEOUT = 1000
 
@@ -51,6 +56,7 @@ class ViewToolbar(Gtk.Toolbar):
 
     def __init__(self):
         Gtk.Toolbar.__init__(self)
+        aspartame_help.set_active(False)
         self.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
 
         self._favorites_views_indicies = []
@@ -137,7 +143,46 @@ class ViewToolbar(Gtk.Toolbar):
             'toggled', self.__view_button_toggled_cb, self._list_view_index)
         self.insert(self._list_button, -1)
 
+        self._help_button = Gtk.ToolButton.new(None, '?')
+        self._help_button.set_is_important(True)
+        self._help_button.set_tooltip_text(
+            "What is this? - Learn what something on the screen does.")
+        self._help_button.connect('button-press-event',
+                                  self.__help_clicked_cb)
+        help_label = self._help_button.get_child()
+        if isinstance(help_label, Gtk.Label):
+            help_label.set_markup('<span size="xx-large" weight="bold">?</span>')
+            help_label.set_margin_start(8)
+            help_label.set_margin_end(8)
+        self.insert(self._help_button, -1)
+        self._help_button.show_all()
+        GLib.idle_add(self._install_help_key_handler)
+
+        aspartame_help.guard(self._list_button, 'org.aspartame.shell.frame')
+
         self._add_separator()
+
+    def __help_clicked_cb(self, _button, _event):
+        active = aspartame_help.toggle()
+        self._help_button.set_tooltip_text(
+            "What is this? - Click something to learn what it does."
+            if active else
+            "What is this? - Learn what something on the screen does.")
+        return True
+
+    def _install_help_key_handler(self):
+        window = self.get_toplevel()
+        if isinstance(window, Gtk.Window):
+            window.connect('key-press-event', self.__help_key_press_cb)
+        return False
+
+    def __help_key_press_cb(self, _window, event):
+        if event.keyval == Gdk.KEY_Escape and aspartame_help.is_active():
+            aspartame_help.escape()
+            self._help_button.set_tooltip_text(
+                "What is this? - Learn what something on the screen does.")
+            return True
+        return False
 
     def _add_favorites_button(self, i):
         logging.debug('adding FavoritesButton %d' % (i))
