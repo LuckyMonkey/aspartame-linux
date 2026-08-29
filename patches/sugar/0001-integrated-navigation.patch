@@ -63,7 +63,7 @@
          self._set_zoom_level(kwargs['new_level'])
  
 --- jarabe/desktop/viewtoolbar.py	2026-08-29 00:56:53.763206405 -0400
-+++ jarabe/desktop/viewtoolbar.py	2026-08-29 07:07:24.181899535 -0400
++++ jarabe/desktop/viewtoolbar.py	2026-08-29 07:10:01.161067814 -0400
 @@ -20,6 +20,7 @@
  # along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
@@ -81,7 +81,7 @@
  
          self._button_box = Gtk.HBox()
          self._favorites_buttons = []
-@@ -101,6 +102,26 @@
+@@ -101,6 +102,33 @@
  
          self._add_separator()
  
@@ -89,14 +89,21 @@
 +        clock_item = Gtk.ToolItem()
 +        clock_item.set_expand(True)
 +        clock_alignment = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
++        clock_alignment.set_size_request(220, -1)
 +        self._clock_label = Gtk.Label()
 +        self._clock_label.set_justify(Gtk.Justification.CENTER)
 +        self._clock_label.set_xalign(0.5)
++        self._clock_label.set_size_request(180, -1)
++        self._clock_label.set_hexpand(True)
++        self._clock_label.get_style_context().add_class("aspartame-clock")
 +        self._clock_label.set_markup('<span size="xxx-large" weight="bold" foreground="#ffffff">--:--</span>')
 +        clock_alignment.add(self._clock_label)
 +        clock_item.add(clock_alignment)
 +        self.insert(clock_item, -1)
 +        clock_item.show_all()
++        clock_css = Gtk.CssProvider()
++        clock_css.load_from_data(b".aspartame-clock { color: #ffffff; background-color: #333333; padding: 2px 12px; }")
++        self._clock_label.get_style_context().add_provider(clock_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 +        self.__update_clock_cb()
 +        GLib.timeout_add_seconds(30, self.__update_clock_cb)
 +
