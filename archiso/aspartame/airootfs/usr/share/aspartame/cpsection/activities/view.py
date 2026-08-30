@@ -192,10 +192,13 @@ class ActivityManager(SectionView):
         face_root = '/usr/share/aspartame/activity-manager/faces'
         for index, (face, face_label) in enumerate(zip(faces, labels_for_faces), 1):
             if group is None:
-                face_button = Gtk.RadioButton.new_with_label(None, face)
+                # The face is the complete control.  Passing the SVG filename
+                # as a RadioButton label made GTK render e.g. "good.svg"
+                # beside every rating image.
+                face_button = Gtk.RadioButton.new(None)
                 group = face_button
             else:
-                face_button = Gtk.RadioButton.new_with_label_from_widget(group, face)
+                face_button = Gtk.RadioButton.new_from_widget(group)
             face_button.set_mode(False)
             face_button.set_relief(Gtk.ReliefStyle.NONE)
             face_button.set_can_focus(False)
