@@ -1,9 +1,6 @@
-# Aspartame
-
 ![Aspartame banner](aspartame.png)
 
 **Sugar on Arch.**
-
 Aspartame is an Arch-derived desktop distribution with Sugar as its primary
 interaction model. It preserves Home, Activities, Journal, Frame, Group,
 Neighborhood, palettes, and Sugar's color/state semantics while building a
