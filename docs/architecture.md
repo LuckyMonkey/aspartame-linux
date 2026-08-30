@@ -16,6 +16,14 @@ Metacity, and Activities. Aspartame's modified `jarabe` source is isolated under
 `sugar-overlay/`, converted reproducibly into the ISO patch, and synchronized
 to a generated QEMU development tree. Pacman-owned files are not live-edited.
 
+## Current visual slice
+
+![Activity Manager](screenshots/activity-manager-v0.0.15.png)
+
+![Count Activity](screenshots/count-v0.0.14.png)
+
+These are reference captures of the current Sugar-based vertical slice, not substitutes for runtime tests.
+
 The authoritative runtime/process/import/development map is
 [SUGAR-DEVELOPMENT.md](SUGAR-DEVELOPMENT.md). The visual layer map is
 [SUGAR-STYLING.md](SUGAR-STYLING.md).

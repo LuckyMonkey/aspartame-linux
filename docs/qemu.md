@@ -27,6 +27,12 @@ qemu-system-x86_64
   -device qemu-xhci -device usb-tablet
 ```
 
+## Reference VM appearance
+
+![Sugar Home in QEMU](screenshots/home-v0.0.15.png)
+
+The repository's [screenshot gallery](screenshots/README.md) records the Activity Manager and Count views as well.
+
 ## Development control
 
 SSH is forwarded only on host loopback:

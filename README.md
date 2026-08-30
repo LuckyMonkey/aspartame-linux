@@ -1,5 +1,7 @@
 # Aspartame
 
+![Aspartame banner](aspartame.png)
+
 **Sugar on Arch.**
 
 Aspartame is an Arch-derived desktop distribution with Sugar as its primary
@@ -33,7 +35,16 @@ RAM=8192 CPUS=4 make run
 
 ## Screenshots
 
-See the [QEMU VM screenshot gallery](docs/screenshots/README.md) for representative Sugar Home, Activity Manager, and Count views.
+The current QEMU reference session:
+
+![Sugar Home](docs/screenshots/home-v0.0.15.png)
+
+![Activity Manager](docs/screenshots/activity-manager-v0.0.15.png)
+
+![Count Activity](docs/screenshots/count-v0.0.14.png)
+
+See the [QEMU VM screenshot gallery](docs/screenshots/README.md) for captions,
+capture details, and the complete representative set.
 
 ## Sugar development
 
