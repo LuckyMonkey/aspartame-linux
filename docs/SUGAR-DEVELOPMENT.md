@@ -118,6 +118,27 @@ Changes that normally need only `make sugar-reload`:
   changes;
 - shell startup theme/font logic.
 
+## Opening Settings reliably
+
+Use:
+
+    make sugar-open-control-panel
+
+This launches the supported guest wrapper `/usr/bin/sugar-control-panel` with
+the live Sugar shell's `DISPLAY`, Xauthority, D-Bus session, Sugar profile,
+and extension path. The extension path is important: Control Panel discovers
+sections by importing `cpsection` modules from that path. A direct Python
+snippet that constructs `ControlPanel` without this environment can show a
+blank or incomplete panel, or fail with `ModuleNotFoundError: cpsection`.
+
+The Control Panel is an undecorated, centered modal window by design in the
+current Sugar implementation. The helper fixes the launch path; it does not
+turn that intentional Sugar surface into a conventional settings window.
+
+The helper refuses to launch if the Sugar shell is not running and does not
+start a second panel when one is already present. Its guest-side diagnostic
+log is `/tmp/aspartame-control-panel.log`.
+
 Changes that require `make sugar-session-restart`:
 
 - `aspartame-x-session`, `.xinitrc`, Xorg, login/session environment, or
