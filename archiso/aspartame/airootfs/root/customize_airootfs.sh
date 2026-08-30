@@ -170,3 +170,15 @@ systemctl disable sshd.socket sshd.service 2>/dev/null || true
 systemctl mask sshd.socket 2>/dev/null || true
 systemctl enable aspartame-sshd.service
 systemctl enable aspartame-persistent-home.service aspartame-dev-share.service
+
+# These diagnostics are part of the developer-facing image surface.  The
+# profile copies regular files with conservative modes, so restore their
+# executable bit explicitly in the final airootfs.
+chmod 0755 \
+    /usr/local/bin/aspartame-sugar-info \
+    /usr/local/bin/aspartame-sugar-health \
+    /usr/local/bin/aspartame-sugar-logs \
+    /usr/local/bin/aspartame-sugar-state \
+    /usr/local/bin/aspartame-sugar-imports \
+    /usr/local/bin/aspartame-x-session \
+    /usr/local/bin/aspartame-restart-sugar
