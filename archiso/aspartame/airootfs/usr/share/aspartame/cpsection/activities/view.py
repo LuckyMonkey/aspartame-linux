@@ -1,5 +1,6 @@
 from gettext import gettext as _
 import sys
+from xml.sax.saxutils import escape
 
 from gi.repository import Gtk
 
