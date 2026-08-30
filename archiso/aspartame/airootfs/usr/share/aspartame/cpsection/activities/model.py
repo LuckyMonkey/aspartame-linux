@@ -14,6 +14,9 @@ RATINGS = (_('Broken'), _('Bad'), _('Needs work'), _('Good'), _('Perfect'))
 RATING_FILE = os.path.expanduser('~/.config/aspartame/activity-ratings.json')
 ACTIVITY_ROOTS = (
     '/usr/share/sugar/activities',
+    # Aspartame's bundled canonical/third-party Activities live separately
+    # from Sugar's package-owned Activity directory.
+    '/usr/share/aspartame/activities',
     '/usr/local/share/sugar/activities',
     os.path.expanduser('~/.local/share/sugar/activities'),
 )
@@ -34,7 +37,7 @@ def _read_info(path):
         'name': section.get('name', bundle_id),
         'icon': section.get('icon', ''),
         'version': section.get('activity_version', section.get('version', '')),
-        'summary': section.get('summary', ''),
+        'summary': section.get('summary', '').strip(),
         'url': section.get('url', ''),
         'path': path,
         'user': path.startswith(os.path.expanduser('~')),

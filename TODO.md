@@ -10,8 +10,8 @@ milestone so future sessions can resume without relying on chat history.
 - [x] Extract the five-face control into a reusable `FaceRating` widget.
 - [x] Keep the selected face visually distinct with a dark circular selection.
 - [ ] Verify the revised Activity Manager visually after the next ISO rebuild.
-- [ ] Add Activity icons and metadata fallbacks for every installed bundle.
-- [ ] Add missing descriptions from Activity metadata or reviewed local help.
+- [x] Add Activity icons and metadata fallbacks for every installed bundle.
+- [x] Add a friendly fallback for Activities with missing descriptions.
 - [ ] Confirm compact Remove pills remain discoverable and accessible.
 - [ ] Add focused UI tests for face selection, icon fallback, and row layout.
 

@@ -177,7 +177,7 @@ class ActivityManager(SectionView):
                     icon_path = candidate
                     break
         icon = (Gtk.Image.new_from_file(icon_path) if icon_path else
-                Gtk.Image.new_from_icon_name('application-x-executable', Gtk.IconSize.DIALOG))
+                Gtk.Image.new_from_icon_name('activity-generic', Gtk.IconSize.DIALOG))
         icon.set_pixel_size(42)
         icon.set_tooltip_text(_('Icon for %s') % activity['name'])
         identity.pack_start(icon, False, False, 0)
@@ -193,9 +193,7 @@ class ActivityManager(SectionView):
             aspartame_help.guard(name, help_id)
         labels.pack_start(name, False, False, 0)
         summary = activity.get('summary', '')
-        detail_text = summary or (_('%s, version %s') %
-                                  (activity['name'],
-                                   activity['version'] or _('unknown')))
+        detail_text = summary or _('Open this Activity to begin.')
         detail = Gtk.Label(label=detail_text)
         detail.set_xalign(0)
         detail.set_hexpand(True)

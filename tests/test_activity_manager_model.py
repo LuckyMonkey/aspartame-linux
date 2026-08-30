@@ -30,6 +30,20 @@ class ActivityManagerModelTests(unittest.TestCase):
             result = model.list_activities((str(root),))
             self.assertEqual(result[0]['id'], 'org.aspartame.Count')
             self.assertEqual(result[0]['version'], '7')
+            self.assertEqual(result[0]['icon'], '')
+
+    def test_activity_metadata_preserves_icon_and_cleans_summary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'activities'
+            activity = root / 'Example.activity' / 'activity'
+            activity.mkdir(parents=True)
+            (activity / 'activity.info').write_text(
+                '[Activity]\nname = Example\nbundle_id = org.example.Activity\n'
+                'icon = activity-generic\nsummary =   A useful thing.  \n',
+                encoding='utf-8')
+            result = model.list_activities((str(root),))
+            self.assertEqual(result[0]['icon'], 'activity-generic')
+            self.assertEqual(result[0]['summary'], 'A useful thing.')
 
     def test_ratings_are_persistent_and_validated(self):
         with tempfile.TemporaryDirectory() as directory:
