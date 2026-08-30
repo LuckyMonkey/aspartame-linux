@@ -31,6 +31,10 @@ Override QEMU defaults with environment variables:
 RAM=8192 CPUS=4 make run
 ```
 
+## Screenshots
+
+See the [QEMU VM screenshot gallery](docs/screenshots/README.md) for representative Sugar Home, Activity Manager, and Count views.
+
 ## Sugar development
 
 The repository now has one deterministic Sugar development loop:
