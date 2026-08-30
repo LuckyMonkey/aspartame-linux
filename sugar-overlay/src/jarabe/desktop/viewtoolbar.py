@@ -180,7 +180,6 @@ class ViewToolbar(Gtk.Toolbar):
                                   self.__help_clicked_cb)
         help_label = Gtk.Label()
         help_label.set_markup('<span size="xx-large" weight="bold">?</span>')
-        help_label.set_family('sans')
         help_label.set_halign(Gtk.Align.CENTER)
         help_label.set_valign(Gtk.Align.CENTER)
         self._help_button.add(help_label)

@@ -33,7 +33,6 @@ class ActivityManager(SectionView):
             }
             .aspartame-rating-face {
                 font-size: 36px;
-                font-family: "Noto Color Emoji", "Noto Emoji", sans-serif;
                 min-width: 56px;
                 min-height: 56px;
                 padding: 0;
@@ -201,7 +200,6 @@ class ActivityManager(SectionView):
             face_button.get_style_context().add_class('aspartame-rating-face')
             face_label_widget = face_button.get_child()
             if isinstance(face_label_widget, Gtk.Label):
-                face_label_widget.set_family('Noto Color Emoji')
                 face_label_widget.set_markup('<span size="xx-large">%s</span>' % face)
             face_button.set_tooltip_text(_('%s: %s') % (face_label, activity['name']))
             face_button.set_active(rating == index)
