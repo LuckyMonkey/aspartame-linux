@@ -32,3 +32,11 @@ remove action, and a contextual-help target. Activity metadata records the
 bundle ID and any upstream help or repository URL declared by activity.info.
 The maintained source inventory is documented in
 docs/ACTIVITY-SOURCES.md.
+
+## Unicode and emoji
+
+The image includes Arch's signed `noto-fonts-emoji` package. It provides
+modern Unicode emoji glyphs to GTK/Pango applications without changing
+Aspartame's Sugar icon semantics. Activities may still use flat SVG artwork
+when a stable monochrome or state-aware symbol is more appropriate than a
+font glyph.
