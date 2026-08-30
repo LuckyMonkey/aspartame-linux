@@ -8,7 +8,7 @@ fi
 
 path=$(realpath -- "$1")
 case "$path" in
-    /usr/share/sugar/activities/*.activity|/usr/local/share/sugar/activities/*.activity)
+    /usr/share/sugar/activities/*.activity|/usr/share/aspartame/activities/*.activity|/usr/local/share/sugar/activities/*.activity)
         ;;
     *)
         echo 'refusing to remove an Activity outside the managed system directories' >&2

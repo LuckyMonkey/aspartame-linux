@@ -15,11 +15,12 @@ per-user five-level quality rating (`Broken`, `Bad`, `Needs work`, `Good`, or
 recoverable Remove action.
 
 User-local bundles are moved to `~/.local/share/aspartame/removed-activities`.
-System bundles use the fixed `pkexec` helper
+System and bundled Aspartame bundles use the fixed `pkexec` helper
 `/usr/local/libexec/aspartame-remove-activity` and are moved to
 `/var/lib/aspartame/removed-activities`; they are never recursively deleted.
-The Sugar shell/activity registry may need a shell or full session restart
-before a removed system bundle disappears from Home.
+The Remove button requests administrator approval for these bundles. The
+Sugar shell/activity registry may need a shell or full session restart before
+a removed system bundle disappears from Home.
 
 The Activity Manager presents those same five numeric values as a centered
 face scale: frowning face = Broken, unhappy face = Bad, neutral face = Needs

@@ -16,7 +16,7 @@ if [ -z "$shell_pid" ]; then
     exit 1
 fi
 
-if pgrep -u aspartame -f 'sugar-control-panel|jarabe\.controlpanel\.gui|ControlPanel' >/dev/null 2>&1; then
+if pgrep -u aspartame -f 'jarabe\.controlpanel\.gui|ControlPanel' >/dev/null 2>&1; then
     echo "Control Panel is already running in the Sugar session."
     exit 0
 fi
@@ -42,7 +42,7 @@ runuser -u aspartame -- env \
     GTK2_RC_FILES="$(getenv GTK2_RC_FILES)" \
     XDG_CURRENT_DESKTOP="$(getenv XDG_CURRENT_DESKTOP)" \
     XDG_SESSION_DESKTOP="$(getenv XDG_SESSION_DESKTOP)" \
-    nohup /usr/bin/sugar-control-panel >"$log" 2>&1 < /dev/null &
-echo "Control Panel launched through /usr/bin/sugar-control-panel."
+    nohup python3 -c 'import dbus.mainloop.glib; dbus.mainloop.glib.DBusGMainLoop(set_as_default=True); from gi.repository import Gtk; from jarabe.controlpanel.gui import ControlPanel; panel=ControlPanel(); panel.show_all(); Gtk.main()' >"$log" 2>&1 < /dev/null &
+echo "Graphical Control Panel launched with Sugar's ControlPanel class."
 echo "Guest log: $log"
 REMOTE

@@ -22,6 +22,11 @@ ACTIVITY_ROOTS = (
 )
 QUARANTINE_ROOT = os.path.expanduser('~/.local/share/aspartame/removed-activities')
 SYSTEM_REMOVER = '/usr/local/libexec/aspartame-remove-activity'
+MANAGED_SYSTEM_ROOTS = (
+    '/usr/share/sugar/activities',
+    '/usr/share/aspartame/activities',
+    '/usr/local/share/sugar/activities',
+)
 
 
 def _read_info(path):
@@ -91,7 +96,7 @@ def remove_activity(path, quarantine=QUARANTINE_ROOT):
         raise ValueError(_('That Activity bundle is not valid.'))
     if not path.startswith(user_root + os.sep):
         if not any(path.startswith(os.path.realpath(root) + os.sep)
-                   for root in ACTIVITY_ROOTS[:2]):
+                   for root in MANAGED_SYSTEM_ROOTS):
             raise PermissionError(_('That Activity is outside a managed Activity folder.'))
         result = subprocess.run(
             ['pkexec', SYSTEM_REMOVER, path], capture_output=True, text=True)

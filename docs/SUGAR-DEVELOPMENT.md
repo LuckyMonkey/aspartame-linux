@@ -124,12 +124,14 @@ Use:
 
     make sugar-open-control-panel
 
-This launches the supported guest wrapper `/usr/bin/sugar-control-panel` with
-the live Sugar shell's `DISPLAY`, Xauthority, D-Bus session, Sugar profile,
-and extension path. The extension path is important: Control Panel discovers
-sections by importing `cpsection` modules from that path. A direct Python
-snippet that constructs `ControlPanel` without this environment can show a
-blank or incomplete panel, or fail with `ModuleNotFoundError: cpsection`.
+This launches Sugar's graphical `ControlPanel` class with the live Sugar
+shell's `DISPLAY`, Xauthority, D-Bus session, Sugar profile, and extension
+path. The extension path is important: Control Panel discovers sections by
+importing `cpsection` modules from that path. A direct Python snippet that
+constructs `ControlPanel` without this environment can show a blank or
+incomplete panel, or fail with `ModuleNotFoundError: cpsection`. The separate
+`/usr/bin/sugar-control-panel` command is a command-line settings utility and
+prints usage when invoked without options; it is not the graphical launcher.
 
 The Control Panel is an undecorated, centered modal window by design in the
 current Sugar implementation. The helper fixes the launch path; it does not

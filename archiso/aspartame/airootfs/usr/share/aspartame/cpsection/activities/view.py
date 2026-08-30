@@ -229,9 +229,8 @@ class ActivityManager(SectionView):
         remove = Gtk.Button(label=_('Remove'))
         remove.get_style_context().add_class('aspartame-remove-button')
         remove.set_tooltip_text(_('Remove this Activity for this user.'))
-        remove.set_sensitive(activity['user'])
         if not activity['user']:
-            remove.set_tooltip_text(_('System Activities cannot be removed from this user session.'))
+            remove.set_tooltip_text(_('Remove this system Activity with administrator approval.'))
         remove.connect('clicked', self._remove_clicked, activity)
         remove.set_size_request(72, -1)
         remove.set_halign(Gtk.Align.END)

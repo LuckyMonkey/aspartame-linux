@@ -72,6 +72,12 @@ class ActivityManagerModelTests(unittest.TestCase):
                 else:
                     os.environ['HOME'] = old_home
 
+    def test_system_activity_paths_are_managed_by_remover_policy(self):
+        self.assertIn('/usr/share/sugar/activities', model.MANAGED_SYSTEM_ROOTS)
+        self.assertIn('/usr/share/aspartame/activities', model.MANAGED_SYSTEM_ROOTS)
+        self.assertIn('/usr/local/share/sugar/activities', model.MANAGED_SYSTEM_ROOTS)
+        self.assertTrue(model.SYSTEM_REMOVER.endswith('aspartame-remove-activity'))
+
 
 if __name__ == '__main__':
     unittest.main()
