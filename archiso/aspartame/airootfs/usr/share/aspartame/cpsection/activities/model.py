@@ -32,6 +32,7 @@ def _read_info(path):
     return {
         'id': bundle_id,
         'name': section.get('name', bundle_id),
+        'icon': section.get('icon', ''),
         'version': section.get('activity_version', section.get('version', '')),
         'summary': section.get('summary', ''),
         'url': section.get('url', ''),

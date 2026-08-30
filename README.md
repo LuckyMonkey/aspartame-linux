@@ -77,5 +77,7 @@ Start with:
 - [Sugar styling](docs/SUGAR-STYLING.md)
 - [known issues](docs/known-issues.md)
 
+The durable engineering backlog is in [TODO.md](TODO.md).
+
 The live image's autologin and root development password are for QEMU
 engineering only and are not an installed-system security model.

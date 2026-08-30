@@ -9,6 +9,7 @@ from sugar3.graphics import style
 from jarabe.controlpanel.sectionview import SectionView
 
 from . import model
+from .rating_faces import FaceRating
 
 sys.path.insert(0, '/usr/share/aspartame')
 try:
@@ -33,31 +34,40 @@ class ActivityManager(SectionView):
                 padding: 5px 0;
             }
             .aspartame-rating-face {
-                font-size: 36px;
-                min-width: 56px;
-                min-height: 56px;
+                min-width: 58px;
+                min-height: 58px;
                 padding: 0;
                 border: none;
-                border-radius: 28px;
+                border-radius: 29px;
                 background: transparent;
                 box-shadow: none;
             }
             .aspartame-rating-face.aspartame-rating-selected {
-                border: 2px solid #30383c;
-                background-color: #e6eef1;
+                border: 2px solid #202b31;
+                background-color: #202b31;
             }
             .aspartame-remove-button {
-                min-width: 92px;
-                min-height: 38px;
-                padding: 4px 14px;
-                border: 0;
-                border-radius: 20px;
-                background-color: #202b31;
-                color: #ffffff;
+                min-width: 68px;
+                min-height: 28px;
+                padding: 1px 8px;
+                border: 1px solid #9aa8ae;
+                border-radius: 14px;
+                background-color: #e6eef1;
+                color: #65747a;
             }
             .aspartame-remove-button label {
-                color: #ffffff;
+                color: #65747a;
                 font-weight: bold;
+            }
+            .aspartame-remove-button:hover,
+            .aspartame-remove-button:active {
+                background-color: #202b31;
+                border-color: #202b31;
+                color: #ffffff;
+            }
+            .aspartame-remove-button:hover label,
+            .aspartame-remove-button:active label {
+                color: #ffffff;
             }
             .aspartame-table-header {
                 background-color: #e6eef1;
@@ -111,10 +121,10 @@ class ActivityManager(SectionView):
         header.set_hexpand(True)
         header.get_style_context().add_class('aspartame-table-header')
         for column, (text, width, align) in enumerate((
-                (_('Version'), 120, 0.5),
-                (_('Activity'), 360, 0.0),
-                (_('Rating'), 250, 0.5),
-                (_('Actions'), 100, 1.0))):
+                (_('Version'), 140, 0.5),
+                (_('Activity'), 430, 0.0),
+                (_('Rating'), 330, 0.5),
+                (_('Actions'), 90, 1.0))):
             actual_column = column
             label = Gtk.Label(label=text)
             label.set_xalign(align)
@@ -155,8 +165,24 @@ class ActivityManager(SectionView):
         grid.set_hexpand(True)
         row.add(grid)
 
+        identity = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        identity.set_hexpand(True)
+        identity.set_halign(Gtk.Align.FILL)
+        icon_name = activity.get('icon', '')
+        icon_path = None
+        if icon_name:
+            for suffix in ('.svg', '.png'):
+                candidate = os.path.join(activity['path'], 'activity', icon_name + suffix)
+                if os.path.isfile(candidate):
+                    icon_path = candidate
+                    break
+        icon = (Gtk.Image.new_from_file(icon_path) if icon_path else
+                Gtk.Image.new_from_icon_name('application-x-executable', Gtk.IconSize.DIALOG))
+        icon.set_pixel_size(42)
+        icon.set_tooltip_text(_('Icon for %s') % activity['name'])
+        identity.pack_start(icon, False, False, 0)
+
         labels = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        labels.set_size_request(360, -1)
         labels.set_hexpand(True)
         labels.set_halign(Gtk.Align.FILL)
         name = Gtk.Label(label=activity['name'])
@@ -178,44 +204,16 @@ class ActivityManager(SectionView):
         detail.set_ellipsize(0)
         detail.set_tooltip_text(activity.get('url') or activity['path'])
         labels.pack_start(detail, False, False, 0)
-        grid.attach(labels, 1, 0, 1, 1)
-        self._column_groups[1].add_widget(labels)
+        identity.pack_start(labels, True, True, 0)
+        grid.attach(identity, 1, 0, 1, 1)
+        self._column_groups[1].add_widget(identity)
 
-        rating_box = Gtk.Box(spacing=2)
-        rating_box.set_size_request(250, -1)
-        rating_box.set_hexpand(False)
+        rating_box = FaceRating(rating=rating, context=activity['name'])
+        rating_box.set_size_request(330, -1)
         rating_box.set_halign(Gtk.Align.CENTER)
-        faces = ('broken.svg', 'bad.svg', 'needs-work.svg', 'good.svg', 'perfect.svg')
-        labels_for_faces = ('Broken', 'Bad', 'Needs work', 'Good', 'Perfect')
-        group = None
-        face_buttons = []
-        face_root = '/usr/share/aspartame/activity-manager/faces'
-        for index, (face, face_label) in enumerate(zip(faces, labels_for_faces), 1):
-            if group is None:
-                # The face is the complete control.  Passing the SVG filename
-                # as a RadioButton label made GTK render e.g. "good.svg"
-                # beside every rating image.
-                face_button = Gtk.RadioButton.new(None)
-                group = face_button
-            else:
-                face_button = Gtk.RadioButton.new_from_widget(group)
-            face_button.set_mode(False)
-            face_button.set_relief(Gtk.ReliefStyle.NONE)
-            face_button.set_can_focus(False)
-            face_button.get_style_context().add_class('aspartame-rating-face')
-            face_image = Gtk.Image.new_from_file(os.path.join(face_root, face))
-            face_image.set_pixel_size(42)
-            face_button.set_image(face_image)
-            face_button.set_always_show_image(True)
-            face_button.set_tooltip_text(_('%s: %s') % (face_label, activity['name']))
-            face_button.set_active(rating == index)
-            face_button.connect('toggled', self._face_toggled,
-                                activity['id'], index)
-            if aspartame_help and help_id:
-                aspartame_help.guard(face_button, help_id)
-            face_buttons.append(face_button)
-            rating_box.pack_start(face_button, False, False, 0)
-        self._refresh_face_appearance(face_buttons)
+        rating_box.connect('rating-changed', self._face_rating_changed, activity['id'])
+        if aspartame_help and help_id:
+            aspartame_help.guard(rating_box, help_id)
         grid.attach(rating_box, 2, 0, 1, 1)
         self._column_groups[2].add_widget(rating_box)
 
@@ -225,7 +223,7 @@ class ActivityManager(SectionView):
         detail_version.set_xalign(0.5)
         detail_version.set_halign(Gtk.Align.FILL)
         detail_version.set_hexpand(False)
-        detail_version.set_size_request(120, -1)
+        detail_version.set_size_request(140, -1)
         detail_version.set_tooltip_text(activity['path'])
         grid.attach(detail_version, 0, 0, 1, 1)
         self._column_groups[0].add_widget(detail_version)
@@ -237,28 +235,16 @@ class ActivityManager(SectionView):
         if not activity['user']:
             remove.set_tooltip_text(_('System Activities cannot be removed from this user session.'))
         remove.connect('clicked', self._remove_clicked, activity)
-        remove.set_size_request(100, -1)
+        remove.set_size_request(72, -1)
         remove.set_halign(Gtk.Align.END)
         grid.attach(remove, 3, 0, 1, 1)
         self._column_groups[3].add_widget(remove)
 
-        self._rows[activity['id']] = (activity['id'], face_buttons)
+        self._rows[activity['id']] = (activity['id'], rating_box)
         return row
 
-    def _refresh_face_appearance(self, buttons):
-        for face_button in buttons:
-            image = face_button.get_image()
-            if image is not None:
-                image.set_opacity(1.0 if face_button.get_active() else 0.38)
-            context = face_button.get_style_context()
-            if face_button.get_active():
-                context.add_class('aspartame-rating-selected')
-            else:
-                context.remove_class('aspartame-rating-selected')
-
-    def _face_toggled(self, button, activity_id, rating):
-        self._refresh_face_appearance(button.get_parent().get_children())
-        if button.get_active():
+    def _face_rating_changed(self, rating_box, rating, activity_id):
+        if rating:
             model.save_rating(activity_id, rating)
 
     def _remove_clicked(self, _button, activity):
