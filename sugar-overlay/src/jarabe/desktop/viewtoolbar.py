@@ -168,22 +168,26 @@ class ViewToolbar(Gtk.Toolbar):
             Gdk.Screen.get_default(), help_css,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-        self._help_button = Gtk.ToolButton.new(None, '?')
+        self._help_button = Gtk.Button()
         self._help_button.get_style_context().add_class(
             'aspartame-help-button')
-        self._help_button.set_is_important(True)
+        self._help_button.set_relief(Gtk.ReliefStyle.NONE)
+        self._help_button.set_focus_on_click(True)
         self._help_button.set_size_request(72, 72)
         self._help_button.set_tooltip_text(
             "What is this? - Learn what something on the screen does.")
         self._help_button.connect('button-press-event',
                                   self.__help_clicked_cb)
-        help_label = self._help_button.get_child()
-        if isinstance(help_label, Gtk.Label):
-            help_label.set_markup('<span size="xx-large" weight="bold">?</span>')
-            help_label.set_halign(Gtk.Align.CENTER)
-            help_label.set_valign(Gtk.Align.CENTER)
-        self.insert(self._help_button, -1)
-        self._help_button.show_all()
+        help_label = Gtk.Label()
+        help_label.set_markup('<span size="xx-large" weight="bold">?</span>')
+        help_label.set_halign(Gtk.Align.CENTER)
+        help_label.set_valign(Gtk.Align.CENTER)
+        self._help_button.add(help_label)
+        help_toolitem = Gtk.ToolItem()
+        help_toolitem.set_border_width(2)
+        help_toolitem.add(self._help_button)
+        self.insert(help_toolitem, -1)
+        help_toolitem.show_all()
         GLib.idle_add(self._install_help_key_handler)
 
         aspartame_help.guard(self._list_button, 'org.aspartame.shell.frame')

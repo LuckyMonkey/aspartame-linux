@@ -32,16 +32,30 @@ class ActivityManager(SectionView):
             }
             .aspartame-rating-face {
                 font-size: 36px;
-                min-width: 52px;
-                min-height: 52px;
+                min-width: 56px;
+                min-height: 56px;
                 padding: 0;
                 border: none;
+                border-radius: 28px;
                 background: transparent;
                 box-shadow: none;
-                opacity: 0.42;
             }
-            .aspartame-rating-face:checked {
-                opacity: 1;
+            .aspartame-rating-face.aspartame-rating-selected {
+                border: 2px solid #30383c;
+                background-color: #e6eef1;
+            }
+            .aspartame-remove-button {
+                min-width: 92px;
+                min-height: 38px;
+                padding: 4px 14px;
+                border: 0;
+                border-radius: 20px;
+                background-color: #202b31;
+                color: #ffffff;
+            }
+            .aspartame-remove-button label {
+                color: #ffffff;
+                font-weight: bold;
             }
             .aspartame-table-header {
                 background-color: #e6eef1;
@@ -145,7 +159,7 @@ class ActivityManager(SectionView):
         labels.set_halign(Gtk.Align.FILL)
         name = Gtk.Label(label=activity['name'])
         name.set_xalign(0)
-        name.set_markup('<b><big>%s</big></b>' % activity['name'])
+        name.set_markup('<b><big>%s</big></b>' % escape(activity['name']))
         name.set_tooltip_text(_('Activity name: %s') % activity['name'])
         if aspartame_help and help_id:
             aspartame_help.guard(name, help_id)
@@ -169,7 +183,7 @@ class ActivityManager(SectionView):
         rating_box.set_size_request(250, -1)
         rating_box.set_hexpand(False)
         rating_box.set_halign(Gtk.Align.CENTER)
-        faces = ('\u2639', '\U0001f641', '\U0001f610', '\U0001f642', '\u263a')
+        faces = ('\U0001f62b', '\U0001f61f', '\U0001f610', '\U0001f642', '\U0001f604')
         labels_for_faces = ('Broken', 'Bad', 'Needs work', 'Good', 'Perfect')
         group = None
         face_buttons = []
@@ -194,11 +208,13 @@ class ActivityManager(SectionView):
                 aspartame_help.guard(face_button, help_id)
             face_buttons.append(face_button)
             rating_box.pack_start(face_button, False, False, 0)
+        self._refresh_face_appearance(face_buttons)
         grid.attach(rating_box, 2, 0, 1, 1)
         self._column_groups[2].add_widget(rating_box)
 
         version = activity['version'] or _('version unknown')
-        detail_version = Gtk.Label(label=version)
+        detail_version = Gtk.Label()
+        detail_version.set_markup('<b><big>%s</big></b>' % escape(version))
         detail_version.set_xalign(0.5)
         detail_version.set_halign(Gtk.Align.FILL)
         detail_version.set_hexpand(False)
@@ -208,6 +224,7 @@ class ActivityManager(SectionView):
         self._column_groups[0].add_widget(detail_version)
 
         remove = Gtk.Button(label=_('Remove'))
+        remove.get_style_context().add_class('aspartame-remove-button')
         remove.set_tooltip_text(_('Remove this Activity for this user.'))
         remove.set_sensitive(activity['user'])
         if not activity['user']:
@@ -221,7 +238,19 @@ class ActivityManager(SectionView):
         self._rows[activity['id']] = (activity['id'], face_buttons)
         return row
 
+    def _refresh_face_appearance(self, buttons):
+        for face_button in buttons:
+            label = face_button.get_child()
+            if isinstance(label, Gtk.Label):
+                label.set_opacity(1.0 if face_button.get_active() else 0.38)
+            context = face_button.get_style_context()
+            if face_button.get_active():
+                context.add_class('aspartame-rating-selected')
+            else:
+                context.remove_class('aspartame-rating-selected')
+
     def _face_toggled(self, button, activity_id, rating):
+        self._refresh_face_appearance(button.get_parent().get_children())
         if button.get_active():
             model.save_rating(activity_id, rating)
 
