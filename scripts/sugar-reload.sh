@@ -102,6 +102,11 @@ sudo install -D -m 0644 "$clock_schema" "$share_root/schemas/org.aspartame.clock
 sudo install -D -m 0644 "$version_file" "$share_root/ui-version"
 sudo install -D -m 0644 "$project_root/archiso/aspartame/airootfs/usr/share/aspartame/aspartame_help.py" "$share_root/tools/aspartame_help.py"
 sudo install -D -m 0644 "$project_root/docs/universal-help.html" "$share_root/docs/universal-help.html"
+for face in broken bad needs-work good perfect; do
+    sudo install -D -m 0644 \
+        "$project_root/archiso/aspartame/airootfs/usr/share/aspartame/activity-manager/faces/$face.svg" \
+        "$share_root/assets/activity-manager/faces/$face.svg"
+done
 sudo install -D -m 0755 "$project_root/archiso/aspartame/airootfs/etc/skel/.xinitrc" "$share_root/tools/aspartame-xinitrc"
 sudo install -D -m 0755 "$marker_file" "$share_root/tools/aspartame-version-overlay"
 for tool in aspartame-sugar-info aspartame-sugar-health aspartame-sugar-logs aspartame-sugar-state aspartame-sugar-imports aspartame-x-session aspartame-restart-sugar; do
@@ -125,6 +130,10 @@ install -m 0755 /mnt/aspartame-dev/tools/aspartame-version-overlay \
     /usr/local/bin/aspartame-version-overlay
 install -m 0644 /mnt/aspartame-dev/tools/aspartame_help.py /usr/share/aspartame/aspartame_help.py
 install -D -m 0644 /mnt/aspartame-dev/docs/universal-help.html /usr/share/aspartame/docs/universal-help.html
+for face in broken bad needs-work good perfect; do
+    install -D -m 0644 "/mnt/aspartame-dev/assets/activity-manager/faces/$face.svg" \
+        "/usr/share/aspartame/activity-manager/faces/$face.svg"
+done
 install -m 0644 /mnt/aspartame-dev/schemas/org.aspartame.clock.gschema.xml /usr/share/glib-2.0/schemas/org.aspartame.clock.gschema.xml
 while IFS= read -r relative; do
     test -n "$relative" || continue

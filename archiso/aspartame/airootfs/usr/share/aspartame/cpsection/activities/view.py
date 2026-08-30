@@ -1,4 +1,5 @@
 from gettext import gettext as _
+import os
 import sys
 from xml.sax.saxutils import escape
 
@@ -184,10 +185,11 @@ class ActivityManager(SectionView):
         rating_box.set_size_request(250, -1)
         rating_box.set_hexpand(False)
         rating_box.set_halign(Gtk.Align.CENTER)
-        faces = ('\U0001f62b', '\U0001f61f', '\U0001f610', '\U0001f642', '\U0001f604')
+        faces = ('broken.svg', 'bad.svg', 'needs-work.svg', 'good.svg', 'perfect.svg')
         labels_for_faces = ('Broken', 'Bad', 'Needs work', 'Good', 'Perfect')
         group = None
         face_buttons = []
+        face_root = '/usr/share/aspartame/activity-manager/faces'
         for index, (face, face_label) in enumerate(zip(faces, labels_for_faces), 1):
             if group is None:
                 face_button = Gtk.RadioButton.new_with_label(None, face)
@@ -198,9 +200,10 @@ class ActivityManager(SectionView):
             face_button.set_relief(Gtk.ReliefStyle.NONE)
             face_button.set_can_focus(False)
             face_button.get_style_context().add_class('aspartame-rating-face')
-            face_label_widget = face_button.get_child()
-            if isinstance(face_label_widget, Gtk.Label):
-                face_label_widget.set_markup('<span size="xx-large">%s</span>' % face)
+            face_image = Gtk.Image.new_from_file(os.path.join(face_root, face))
+            face_image.set_pixel_size(42)
+            face_button.set_image(face_image)
+            face_button.set_always_show_image(True)
             face_button.set_tooltip_text(_('%s: %s') % (face_label, activity['name']))
             face_button.set_active(rating == index)
             face_button.connect('toggled', self._face_toggled,
@@ -241,9 +244,9 @@ class ActivityManager(SectionView):
 
     def _refresh_face_appearance(self, buttons):
         for face_button in buttons:
-            label = face_button.get_child()
-            if isinstance(label, Gtk.Label):
-                label.set_opacity(1.0 if face_button.get_active() else 0.38)
+            image = face_button.get_image()
+            if image is not None:
+                image.set_opacity(1.0 if face_button.get_active() else 0.38)
             context = face_button.get_style_context()
             if face_button.get_active():
                 context.add_class('aspartame-rating-selected')
