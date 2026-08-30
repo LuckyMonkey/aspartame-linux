@@ -26,3 +26,13 @@ printf 'SHA-256: %s\n' "$(sha256sum "$output_file" | awk '{print $1}')"
 if command -v identify >/dev/null 2>&1; then
     identify "$output_file"
 fi
+
+# Keep OCR beside the image as searchable evidence of what was visible.
+ocr_file="${output_file%.png}.txt"
+if command -v tesseract >/dev/null 2>&1; then
+    tesseract "$output_file" "${output_file%.png}" --psm 11 >/dev/null 2>&1 || true
+    printf 'OCR text: %s\n' "$ocr_file"
+fi
+
+# Capture-only by design. Restarting Sugar belongs to sugar-reload or the
+# full-session restart command, never to screenshot collection.

@@ -14,10 +14,24 @@ make sugar-patch-check
 make sugar-reload
 make sugar-logs
 make sugar-screenshot
+make sugar-visual-check
 ```
 
-A visible change is complete only when `make sugar-reload` passes and a current
-screenshot or direct observation confirms the intended result.
+A visible change is complete only when `make sugar-reload` passes and
+`make sugar-visual-check` produces a current guest-display screenshot. The
+screenshot is captured by `ffmpeg` inside the VM from `DISPLAY=:0`, copied out
+over SSH, and accompanied by OCR text when `tesseract` is available. This does
+not use the host Print Screen shortcut and never restarts Sugar.
+
+For a text-bearing change, require a visible marker explicitly:
+
+```sh
+EXPECT_VISIBLE_TEXT='Aspartame UI v0.0.16' make sugar-visual-check
+```
+
+The command fails if OCR cannot find that text. OCR is evidence, not a perfect
+semantic UI test; screenshots still need visual review for geometry, colors,
+alignment, and interaction state.
 
 Use this only when X itself or the system-owned session launcher changed:
 
