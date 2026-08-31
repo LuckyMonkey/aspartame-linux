@@ -22,3 +22,38 @@
 - Category: `UPSTREAM-SHELL` / Wayland
 - Reproduction: no supported one-command GTK4 session runner is present in this repository yet.
 - Status: open; do not claim GTK4 desktop support until shell, Home, Frame, Journal, and activity lifecycle are exercised.
+
+## GTK4-004 - shell toolkit activityfactory gap
+
+- Category: UPSTREAM-TOOLKIT / UPSTREAM-SHELL
+- Reproduction: jarabe/main.py imports sugar4.activity.activityfactory, but toolkit PR 35 removed the module.
+- Fix: preview-only compatibility surface supplies create_activity_id and set_compositor_fd_getter; create fails explicitly because GTK4 activity launch is not complete.
+- Status: unblocks shell startup imports; activity lifecycle remains blocked.
+
+## GTK4-005 - Telepathy GI missing
+
+- Category: ARCH-PACKAGING
+- Reproduction: shell import failed with ValueError: Namespace TelepathyGLib not available.
+- Fix: installed Ubuntu gir1.2-telepathyglib-0.12 and libtelepathy-glib0t64.
+- Status: resolved in host preview environment.
+
+## GTK4-006 - Xapian Python binding missing
+
+- Category: ARCH-PACKAGING
+- Reproduction: Journal import failed with ModuleNotFoundError: No module named xapian.
+- Fix: installed Ubuntu python3-xapian.
+- Status: resolved in host preview environment.
+
+## GTK4-007 - gwebsockets missing
+
+- Category: ARCH-PACKAGING
+- Reproduction: API socket import failed with ModuleNotFoundError: No module named gwebsockets.
+- Fix: installed Ubuntu python3-gwebsockets.
+- Status: resolved in host preview environment.
+
+## GTK4-008 - preview profile data missing
+
+- Category: ASPARTAME-INTEGRATION
+- Reproduction: fresh isolated profile had no org.sugarlabs schema or group-label data; intro then failed with empty-label/index errors.
+- Fix: launcher contains GSETTINGS_SCHEMA_DIR, SUGAR_GROUP_LABELS, and SUGAR_HOME under the preview runtime.
+- Status: resolved for preview; one test initially omitted SUGAR_HOME, and stable host profile keys were restored from generated backups.

@@ -56,8 +56,7 @@ sugar-gtk4-build:
 	./scripts/sugar-gtk4-build.sh
 
 sugar-gtk4-run:
-	@echo 'GTK4 shell run is not yet supported by the selected upstream migration head.'
-	@exit 2
+	./scripts/sugar-gtk4-run.sh
 
 sugar-gtk4-check:
 	./scripts/sugar-gtk4-check.sh

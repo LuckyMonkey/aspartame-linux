@@ -1,3 +1,13 @@
+# Aspartame
+
+## GTK4 First Pixels milestone
+
+The isolated GTK4 preview has produced its first genuine Sugar-rendered
+pixels in QEMU. This is an early rendering checkpoint; the stable GTK3
+desktop remains the production path while the GTK4 shell continues to develop.
+
+![GTK4 First Pixels](docs/screenshots/gtk4-first-pixels.jpg)
+
 ![Aspartame banner](aspartame.png)
 
 **Sugar on Arch.**

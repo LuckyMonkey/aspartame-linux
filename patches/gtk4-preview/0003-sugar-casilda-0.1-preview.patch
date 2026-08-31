@@ -1,0 +1,13 @@
+diff --git a/src/jarabe/model/shell.py b/src/jarabe/model/shell.py
+index 13acd1ba..b617028d 100644
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -18,7 +18,7 @@ import logging
+ import time
+ 
+ import gi
+-gi.require_version("Casilda", "1.0")
++gi.require_version("Casilda", "0.1")
+ 
+ from gi.repository import Casilda
+ from gi.repository import Gio

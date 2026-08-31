@@ -22,3 +22,11 @@ The selected shell is Sugar PR #1106 head `f84a2d514dbbcab6e30c810b00088f47870e0
 | Activities/Wayland | 🧪 PR work | ❌ not yet runtime-tested |
 
 “More code” is not counted as “ahead” until it runs in a session.
+
+## Verified FIRST PIXELS checkpoint
+
+On 2026-08-31 the pinned GTK4 Jarabe shell stayed alive for 25 seconds under private Xvfb and a DBus session and produced recognizable Sugar profile UI pixels. Capture: /media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization/gtk4/logs/first-pixels-12.png. This is not yet Home, shell stability, or activity lifecycle.
+
+The reproducible wrapper is make sugar-gtk4-run / scripts/sugar-gtk4-run.sh. It contains isolated SUGAR_HOME, GSettings schema data, group-label data, GI typelib and library paths, Python path, Xvfb fallback, and DBus setup.
+
+Preview-only compatibility work uses Casilda 0.3 (Casilda-0.1) because host GTK4 4.14 cannot build the current Casilda 1.x API. Activity launch remains explicitly unsupported by the selected toolkit head.

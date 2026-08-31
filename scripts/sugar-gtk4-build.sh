@@ -12,8 +12,9 @@ repo=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 for patch in "$repo"/patches/gtk4-preview/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*) target="$toolkit" ;;
+        *0001*|*0004*) target="$toolkit" ;;
         *0002*) target="$ext" ;;
+        *0003*) target="$root/sources/sugar" ;;
         *) continue ;;
     esac
     if git -C "$target" apply --check "$patch" >/dev/null 2>&1; then

@@ -1,0 +1,34 @@
+diff --git a/src/sugar4/activity/activityfactory.py b/src/sugar4/activity/activityfactory.py
+new file mode 100644
+--- /dev/null
++++ b/src/sugar4/activity/activityfactory.py
+@@ -0,0 +1,29 @@
++"""Compatibility activity-launch surface for the GTK4 shell preview.
++
++The current GTK4 toolkit branch moved activity launching into the GTK4
++application model but the shell migration still imports this module for
++activity IDs and compositor setup. Keep this small compatibility surface
++until the corresponding upstream shell/toolkit launch work lands.
++"""
++
++import uuid
++
++_compositor_fd_getter = None
++
++
++def create_activity_id():
++    """Return a Sugar-compatible unique activity instance ID."""
++    return uuid.uuid4().hex
++
++
++def set_compositor_fd_getter(getter):
++    """Store the shell compositor hook for future GTK4 activity launch."""
++    global _compositor_fd_getter
++    _compositor_fd_getter = getter
++
++
++def create(*args, **kwargs):
++    """Fail explicitly until GTK4 activity launch integration is complete."""
++    raise NotImplementedError(
++        "GTK4 activity launch integration is not available in this preview"
++    )
