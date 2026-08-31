@@ -15,14 +15,15 @@ make sugar-visual-check
 ## Prepare upstream checkouts
 
 ```sh
-export MODERNIZATION_ROOT=/media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization
-mkdir -p "$MODERNIZATION_ROOT"
-git clone https://github.com/sugarlabs/sugar-toolkit-gtk4.git "$MODERNIZATION_ROOT/sugar-toolkit-gtk4"
-git clone https://github.com/sugarlabs/sugar.git "$MODERNIZATION_ROOT/sugar"
+export MODERNIZATION_ROOT=/media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization/gtk4
+scripts/sugar-gtk4-init.sh "$MODERNIZATION_ROOT"
 ```
 
-Use `scripts/sugar-upstream-sync.sh` afterward. Record commit IDs before
-testing. Do not install either checkout into `/usr`.
+This checks out the selected shell/toolkit integration PR heads, current
+artwork/ext/datastore heads, and five active activity-port heads into a
+separate tree. It writes `$MODERNIZATION_ROOT/PINS.tsv`. Use
+`scripts/sugar-upstream-sync.sh` afterward only to fetch updates; do not
+install either checkout into `/usr`.
 
 ## Probe GTK4 availability
 

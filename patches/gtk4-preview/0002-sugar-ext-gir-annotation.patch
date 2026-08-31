@@ -1,0 +1,18 @@
+diff --git a/src/sugar-fatattr.c b/src/sugar-fatattr.c
+index a7c2a1d..1aca2e8 100644
+--- a/src/sugar-fatattr.c
++++ b/src/sugar-fatattr.c
+@@ -83,10 +83,10 @@ static int set_hidden_attrib(char *pathname)
+ }
+ 
+ /**
+- * Set the FAT HIDDEN attribute.
++ * sugar_fat_set_hidden_attrib:
+  *
+- * sugar_fat_set_hidden_attrib: 
+- * @const char: (file utf8)
++ * Set the FAT HIDDEN attribute.
++ * @file: the file whose attribute should be changed
+  */
+ gboolean sugar_fat_set_hidden_attrib(const char *file)
+ {

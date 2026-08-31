@@ -12,7 +12,7 @@ rg -q '^networkmanager$' "$root/archiso/aspartame/packages.x86_64"
 required_scripts=(
     build-iso.sh run-qemu.sh ssh-asp sugar-info.sh sugar-reload.sh
     sugar-session-restart.sh sugar-logs.sh sugar-screenshot.sh sugar-patch.sh
-    sugar-open-control-panel.sh sugar-upstream-sync.sh sugar-gtk4-smoke.sh
+    sugar-open-control-panel.sh sugar-upstream-sync.sh sugar-gtk4-init.sh sugar-gtk4-build.sh sugar-gtk4-check.sh sugar-gtk4-update.sh sugar-gtk4-smoke.sh
     sugar-modernization-check.sh
 )
 for script in "${required_scripts[@]}"; do
@@ -73,7 +73,7 @@ compile(path.read_text(encoding="utf-8"), str(path), "exec")
 PY
 done < "$root/sugar-overlay/extensions.list"
 
-for command in sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-smoke sugar-modernization-check; do
+for command in sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-init sugar-gtk4-build sugar-gtk4-run sugar-gtk4-smoke sugar-gtk4-check sugar-gtk4-update sugar-modernization-check; do
     grep -q "^$command:" "$root/Makefile"
 done
 

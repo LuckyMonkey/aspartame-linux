@@ -3,7 +3,7 @@ BUILD_ROOT ?= /media/freezer/SteamLibrary/vms/aspartame-build
 OUT_DIR ?= $(BUILD_ROOT)/artifacts/out
 WORK_DIR ?= $(BUILD_ROOT)/artifacts/work
 
-.PHONY: iso run rebuild-run clean test sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-visual-check sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-smoke sugar-modernization-check count-deploy
+.PHONY: iso run rebuild-run clean test sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-visual-check sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-init sugar-gtk4-build sugar-gtk4-run sugar-gtk4-smoke sugar-gtk4-check sugar-gtk4-update sugar-modernization-check count-deploy
 
 iso:
 	./scripts/build-in-arch-root.sh
@@ -48,6 +48,22 @@ sugar-upstream-sync:
 
 sugar-gtk4-smoke:
 	./scripts/sugar-gtk4-smoke.sh
+
+sugar-gtk4-init:
+	./scripts/sugar-gtk4-init.sh
+
+sugar-gtk4-build:
+	./scripts/sugar-gtk4-build.sh
+
+sugar-gtk4-run:
+	@echo 'GTK4 shell run is not yet supported by the selected upstream migration head.'
+	@exit 2
+
+sugar-gtk4-check:
+	./scripts/sugar-gtk4-check.sh
+
+sugar-gtk4-update:
+	./scripts/sugar-gtk4-update.sh
 
 sugar-modernization-check:
 	./scripts/sugar-modernization-check.sh
