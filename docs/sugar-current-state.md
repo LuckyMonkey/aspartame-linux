@@ -1,6 +1,7 @@
 # Current Sugar state — bootstrap research
 
-Research date: 2026-08-28.
+Research date: 2026-08-31. The live QEMU session was rechecked with
+`make sugar-info`.
 
 ## Upstream revisions inspected
 
@@ -29,6 +30,11 @@ The current Sugar runner contains X11/RandR code and explicitly documents that
 it works with Xorg, not Wayland. The bootstrap therefore starts Sugar under
 Xorg. Upstream has a GTK4/Wayland transition effort, but that is future work.
 
+The live session is `sugar 0.121-7` with `sugar-toolkit-gtk3 0.121-7`, GTK
+3.24.52, PyGObject 3.56.3, Python 3.14.7, and Metacity 3.58.1. Its shell
+imports `jarabe` from `/mnt/aspartame-dev/sugar/src`, while `sugar3` remains
+package-owned under `/usr/lib/python3.14/site-packages`.
+
 Current source also shows limited multi-output handling. HiDPI, wallpaper,
 notifications, and modern display behavior remain runtime-test items.
 
@@ -50,9 +56,11 @@ individual Activities, not package existence. The first practical test is an
 official-package image and a recorded first failure. Only then should
 Aspartame add PKGBUILDs or patches.
 
-## Not yet tested
+## Runtime verification
 
-No ISO has been built or booted. Home, Journal, Browse, audio, CUPS runtime,
-network access, HiDPI, multi-monitor behavior, and Activity stability remain
-unverified.
-
+The ISO has been built and booted in QEMU. The live development loop has
+verified the Sugar shell, Home X window, Metacity, the shell D-Bus service,
+SSH control, and 1920×1080 X11 capture. Audio, CUPS, network access, HiDPI,
+multi-monitor behavior, and every Activity remain separate runtime test items.
+The GTK4 probe currently reports incomplete because GTK4 introspection and an
+upstream `sugar-toolkit-gtk4` checkout are not installed on the host.

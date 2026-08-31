@@ -1,0 +1,32 @@
+# Sugar modernization
+
+Aspartame consumes Sugar upstream; it does not define a competing Sugar
+toolkit. The stable image currently uses Arch's packaged Sugar 0.121-7,
+Sugar Toolkit GTK3, Sugar Artwork, and Sugar Datastore. Aspartame's tracked
+overlay contains only reviewable shell and Control Panel changes.
+
+GTK4 work is intentionally isolated. The `stable` path remains the working
+X11/Metacity/GTK3 session. The `gtk4` path means an explicitly selected
+upstream checkout and test environment. `experimental` is for incomplete
+ports and must never silently replace stable packages.
+
+Current upstream starting points:
+
+- [Sugar shell](https://github.com/sugarlabs/sugar)
+- [Sugar Toolkit GTK3](https://github.com/sugarlabs/sugar-toolkit-gtk3)
+- [Sugar Toolkit GTK4](https://github.com/sugarlabs/sugar-toolkit-gtk4)
+- [Sugar Artwork](https://github.com/sugarlabs/sugar-artwork)
+- [Sugar Datastore](https://github.com/sugarlabs/sugar-datastore)
+- [Sugar Labs GTK4 proposals](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md)
+
+Read [GTK4_STATUS.md](GTK4_STATUS.md) before attempting a port.
+
+The stable-path guardrail is:
+
+```sh
+make sugar-modernization-check
+```
+
+It checks the recorded Sugar pin, confirms the stable GTK3 toolkit remains
+selected, flags legacy APIs for deliberate review, and reports X11-sensitive
+code without treating either as an accidental failure.

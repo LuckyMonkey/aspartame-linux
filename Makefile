@@ -3,7 +3,7 @@ BUILD_ROOT ?= /media/freezer/SteamLibrary/vms/aspartame-build
 OUT_DIR ?= $(BUILD_ROOT)/artifacts/out
 WORK_DIR ?= $(BUILD_ROOT)/artifacts/work
 
-.PHONY: iso run rebuild-run clean test sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-visual-check sugar-patch-check sugar-open-control-panel count-deploy
+.PHONY: iso run rebuild-run clean test sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-visual-check sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-smoke sugar-modernization-check count-deploy
 
 iso:
 	./scripts/build-in-arch-root.sh
@@ -42,6 +42,15 @@ sugar-patch-check:
 
 sugar-open-control-panel:
 	./scripts/sugar-open-control-panel.sh
+
+sugar-upstream-sync:
+	./scripts/sugar-upstream-sync.sh $(CHECKOUTS)
+
+sugar-gtk4-smoke:
+	./scripts/sugar-gtk4-smoke.sh
+
+sugar-modernization-check:
+	./scripts/sugar-modernization-check.sh
 
 count-deploy:
 	./scripts/count-deploy.sh

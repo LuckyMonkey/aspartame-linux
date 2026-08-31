@@ -75,6 +75,7 @@ Start with:
 - [Sugar current state](docs/sugar-current-state.md)
 - [Sugar development](docs/SUGAR-DEVELOPMENT.md)
 - [Sugar styling](docs/SUGAR-STYLING.md)
+- [Sugar GTK4 modernization](docs/sugar-modernization/README.md)
 - [known issues](docs/known-issues.md)
 
 The durable engineering backlog is in [TODO.md](TODO.md).
