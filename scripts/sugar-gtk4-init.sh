@@ -14,8 +14,8 @@ clone_at() {
     if [ ! -d "$path/.git" ]; then
         git clone --filter=blob:none --no-checkout "$url" "$path"
     fi
-    git -C "$path" fetch --depth=1 origin "$ref"
-    git -C "$path" checkout --detach "$sha"
+    git -C "$path" fetch --depth=1 origin "$ref" >/dev/null
+    git -C "$path" checkout --detach "$sha" >/dev/null
     printf '%s\t%s\t%s\t%s\n' "$name" "$url" "$ref" \
         "$(git -C "$path" rev-parse HEAD)"
 }
@@ -25,8 +25,8 @@ printf '# name\turl\trequested-ref\tresolved-sha\tdate\n' > "$pins_tmp"
 printf '# name\turl\trequested-ref\tresolved-sha\tdate\n'
 
 declare -a specs=(
-    'sugar|https://github.com/Dev10-sys/sugar.git|refs/heads/gtk4-migration-structured|f84a2d514dbbcab6e30c810b00088f47870e04a5'
-    'sugar-toolkit-gtk4|https://github.com/Inuth0603/sugar-toolkit-gtk4.git|refs/heads/fix-toolbarbox-architecture|74f6a05a4921c27d0892bc22845fd4d4a60f4119'
+    'sugar|https://github.com/sugarlabs/sugar.git|refs/pull/1106/head|f84a2d514dbbcab6e30c810b00088f47870e04a5'
+    'sugar-toolkit-gtk4|https://github.com/sugarlabs/sugar-toolkit-gtk4.git|refs/pull/35/head|74f6a05a4921c27d0892bc22845fd4d4a60f4119'
     'sugar-artwork|https://github.com/sugarlabs/sugar-artwork.git|refs/heads/master|3c4854d3eec0ba9b02a9ad139462fd559e6c027d'
     'sugar-ext|https://github.com/sugarlabs/sugar-ext.git|refs/heads/main|563760e726fb33443dba5a9ce2c67b005da897d2'
     'sugar-datastore|https://github.com/sugarlabs/sugar-datastore.git|refs/heads/master|7aa97e791432d26007a9f16d4214b2085380edec'
