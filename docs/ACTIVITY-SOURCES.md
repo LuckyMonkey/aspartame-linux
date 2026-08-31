@@ -279,3 +279,12 @@ reference material for maintainers and future documentation updates.
 - Local source: archiso/aspartame/airootfs/usr/share/aspartame/activities/words-activity
 - Summary: Decode the world and help the world decode you. Use this translator for access and learn about many different languages!
 - Source repository: https://github.com/sugarlabs/words-activity
+
+## Help
+
+- Bundle ID: org.laptop.HelpActivity
+- Activity version: 20
+- Local source: packages/upstream-activities/help-activity
+- Summary: Having trouble using your computer or an activity? Want to learn more? Just click here!
+- Source repository: https://github.com/sugarlabs/help-activity
+- Upstream revision: 3aa03e300e5bf30afbee529ce5130402a8833640

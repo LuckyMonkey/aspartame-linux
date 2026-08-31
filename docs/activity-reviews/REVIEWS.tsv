@@ -1,0 +1,24 @@
+bundle_id	name	version	source_revision	source_path	format	run_status	rating	notes	last_tested	screenshot
+mulawa.AcrossDown	Across and Down	25	cecbbe6ffef17a65090df9377a5c13afea4bdc74	packages/upstream-activities/across-and-down-activity	native-sugar-bundle	unreviewed				
+mulawa.AppelHaken	Appel Haken	25	1469ef29b90a52be4c69bfb9db9731e090dcb088	packages/upstream-activities/appel-haken-activity	native-sugar-bundle	unreviewed				
+org.sugarlabs.BallAndBrick	BallAndBrick	3	b3ba3a4059530c88edbcaa47749c48417ebf655d	packages/upstream-activities/ball-and-brick-activity	native-sugar-bundle	unreviewed				
+org.laptop.BlockPartyActivity	BlockParty	12	b364cc00797789efc96d632b25ab7ed468bd2821	packages/upstream-activities/block-party-activity	native-sugar-bundle	unreviewed				
+tv.alterna.Clock	Clock	22	9007cee0daece0b928c701be7744a86ce0d59ede	packages/upstream-activities/clock-activity	native-sugar-bundle	unreviewed				
+org.eq.FotoToon	FotoToon	26	775668f65aad58c965dda3e90bd4149616b20c55	packages/upstream-activities/fototoon-activity	native-sugar-bundle	unreviewed				
+com.jotaro.ImplodeActivity	Implode	20	c1a28a2dc95e1992e55f6c589e0bfbf421bf78d0	packages/upstream-activities/implode-activity	native-sugar-bundle	unreviewed				
+mulawa.IQ	IQ	23	0ee8b7ff711f7aad050ba7e4f69df12c0af55574	packages/upstream-activities/iq-activity	native-sugar-bundle	unreviewed				
+org.laptop.JAMClock	JAMClock	3	4c321344eee33cf526e83fbc542cf9cf9475c458	packages/upstream-activities/jam-clock-activity	native-sugar-bundle	unreviewed				
+mulawa.Jumble	Jumble	24	005ab380ea26ad13f89d196af548cdbfdf92f9a2	packages/upstream-activities/jumble-activity	native-sugar-bundle	unreviewed				
+org.laptop.Log	Log	42	cc9d8bb69935bcc908a4f99628bd42b588160745	packages/upstream-activities/log-activity	native-sugar-bundle	unreviewed				
+mulawa.Mancala	Mancala	23	303ec6bb382bdc82f5fd9b345305fc62ca453fc6	packages/upstream-activities/mancala-activity	native-sugar-bundle	unreviewed				
+org.laptop.Mastermind	Mastermind	1	4a79d8ac25642a7aa65a37f821f820fda1ded393	packages/upstream-activities/mastermind-activity	native-sugar-bundle	unreviewed				
+org.sugarlabs.NumRush	NumberRush	4	c0b7c2dd4817c44903e2b8b9477a26363fe74b7f	packages/upstream-activities/numberrush-activity	native-sugar-bundle	unreviewed				
+org.laptop.PlayGo	PlayGo	6	20a3ec94078cc7aa31ede56de37683621d4f2fd5	packages/upstream-activities/playgo-activity	native-sugar-bundle	unreviewed				
+org.worldwideworkshop.PollBuilder	Poll	33	995a42daeacbf924dc6e3dcbf298b8d761f389ab	packages/upstream-activities/poll-activity	native-sugar-bundle	unreviewed				
+org.sugarlabs.PortfolioActivity	Portfolio	52	e25eb768e194de4a3197a434d88d31d59f897a3d	packages/upstream-activities/portfolio-activity	native-sugar-bundle	unreviewed				
+net.coderanger.olpc.reversi	Reversi	4	afef06623f9f9b341862b8c79dbd4c7473c44346	packages/upstream-activities/reversi-activity	native-sugar-bundle	unreviewed				
+org.laptop.community.TypingTurtle	Typing Turtle	32	966ae8eb951ec7f6b80ee9389f28db96c9abf803	packages/upstream-activities/typing-turtle-activity	native-sugar-bundle	unreviewed				
+org.laptop.TurtleArtActivity	TurtleBlocks	220	694599de96648df89f64cb11f2e86bb623cf9602	packages/upstream-activities/turtleart-activity	native-sugar-bundle	unreviewed				
+org.laptop.Memorize	Memorize	59	694599de96648df89f64cb11f2e86bb623cf9602	packages/upstream-activities/memorize-activity	native-sugar-bundle	unreviewed				
+vu.lux.olpc.Maze	Maze	32	694599de96648df89f64cb11f2e86bb623cf9602	packages/upstream-activities/maze-activity	native-sugar-bundle	unreviewed				
+org.laptop.HelpActivity	Help	20	3aa03e300e5bf30afbee529ce5130402a8833640	packages/upstream-activities/help-activity	native-sugar-bundle	needs-work	3	Launches and renders via SSH screenshot; current Arch needs WebKit2 4.1 and missing-LANG fixes; checkout falls back to bundled Spanish HTML.	2026-08-31	reports/screenshots/sugar-20260831-195657-v0.0.15.png

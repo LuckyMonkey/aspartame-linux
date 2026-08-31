@@ -1,0 +1,533 @@
+# Spanish translations for Sugar package.
+# Copyright (C) 2013, SugarLabs
+# This file is distributed under the same license as the Sugar package.
+# Automatically generated, 2015.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Sugar 0.100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-22 23:07-0300\n"
+"PO-Revision-Date: 2015-03-22 23:07-0300\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# 00a46b2f9fc54475abbcc3f6fc77d25c
+#: ../source/troubleshooting_connectivity.rst:3
+msgid "Troubleshooting Connectivity"
+msgstr "Solución de problemas de conectividad"
+
+# 2546188e25104e82b5a51cc71ea60f00
+#: ../source/troubleshooting_connectivity.rst:5
+msgid ""
+"You can look at http://wiki.laptop.org/go/Support_FAQ for many technical "
+"troubleshooting tips, but you should read through all the information on "
+"this page to troubleshoot the wireless connectivity yourself. Understanding "
+"wireless router configuration"
+msgstr ""
+"Puedes buscar en la dirección http://wiki.laptop.org/go/Support_FAQ "
+"para obtener muchas sugerencias técnicas de solución de problemas, pero "
+"debes leer toda la información en esta página para solucionar la "
+"conectividad inalámbrica por ti mismo. Entendiendo la configuración del router inalámbrico "
+
+# 2992d6792a7c49c3aa043d018a1c3076
+#: ../source/troubleshooting_connectivity.rst:7
+msgid ""
+"Connect your router to any computer, and then use a web browser to view the "
+"router's configuration page and change the router's settings."
+msgstr ""
+"Conecta el router a cualquier ordenador, y luego usar un navegador web para "
+"ver la página de configuración del router y cambiar la configuración del "
+"router."
+
+# ffdd1ba17e0e4fa9be07a68524755aaa
+#: ../source/troubleshooting_connectivity.rst:9
+msgid ""
+"Here are some common router manufacturer's administrative addresses, "
+"usernames, and passwords used for configuring router information. To find a "
+"more complete list, you may try visiting another computer that has an "
+"internet connection (for example, the local library) and searching the "
+"Internet for router default logins. Router"
+msgstr ""
+"Aquí hay algunas direcciones administrativas comunes, nombres de usuario y contraseñas de "
+"algunos fabricantes utilizados para configurar la "
+"información del router. Para encontrar una lista más completa, puedes "
+"intentar visitar a otro equipo que tenga una conexión a Internet (por "
+"ejemplo, la biblioteca local) y buscar en Internet las conexiones por "
+"defecto del router. Router"
+
+# 6169796efd144839b1d14ce67e0e1b99
+#: ../source/troubleshooting_connectivity.rst:12
+msgid "Manufacturer"
+msgstr "Fabricante"
+
+# 277365609e8a43908c2aca8de64b84ba
+#: ../source/troubleshooting_connectivity.rst:12
+msgid "Address"
+msgstr "Dirección"
+
+# 6074dfdbf6a44516aadab5a480cf9a6a
+#: ../source/troubleshooting_connectivity.rst:12
+msgid "Username"
+msgstr "Nombre de usuario"
+
+# 461f3ae27117461eba57f5bf65d1550a
+#: ../source/troubleshooting_connectivity.rst:12
+msgid "Password"
+msgstr "Contraseña"
+
+# 0b48d8c087e449aa95de1ad6c1d9b6dd
+#: ../source/troubleshooting_connectivity.rst:14
+msgid "3 Com"
+msgstr "3 Com"
+
+# 9b1479ebeeac4bac863e09928da924d5
+# f99d1a667c8f4f19a1309866c99f8997
+#: ../source/troubleshooting_connectivity.rst:14
+#: ../source/troubleshooting_connectivity.rst:18
+msgid "http://192.168.1.1"
+msgstr "http://192.168.1.1"
+
+# f71c47da8a964beb8c3ec6771e481424
+# 02f3b0d7b6804f08b5e039c2aa4bd2f7
+# 9c0e078ef2904e19a0b2fd3c7c1bde6d
+# eab72197398a413287678d4a8673de71
+# be888fa4a00d467fa2920b507d3b7e39
+# 50e0cccaa28b4fa184543d0b7b811f69
+# d0a771f354724ee2972c919882e4d9c0
+# 48216a7a8713448ebe9c955aa8dec1d0
+#: ../source/troubleshooting_connectivity.rst:14
+#: ../source/troubleshooting_connectivity.rst:16
+#: ../source/troubleshooting_connectivity.rst:18
+#: ../source/troubleshooting_connectivity.rst:20
+#: ../source/troubleshooting_connectivity.rst:22
+msgid "admin"
+msgstr "admin"
+
+# aea1f553369f4bb186de33ea1fad5ed7
+#: ../source/troubleshooting_connectivity.rst:16
+msgid "D-Link"
+msgstr "D-Link"
+
+# 9edc38cd6ae149bda079307ba09baec5
+# c2be4ad079864b49876ec72481ab4434
+#: ../source/troubleshooting_connectivity.rst:16
+#: ../source/troubleshooting_connectivity.rst:22
+msgid "http://192.168.0.1"
+msgstr "http://192.168.0.1"
+
+# 507391821095425a8ba4ec6d0d779648
+#: ../source/troubleshooting_connectivity.rst:18
+msgid "Linksys"
+msgstr "Linksys"
+
+# c1d5216298c14eedaef0ee54922df6cb
+#: ../source/troubleshooting_connectivity.rst:20
+msgid "Broadband"
+msgstr "Broadband"
+
+# 9dfe0f72a7cc4b76af660ed8ee965f73
+#: ../source/troubleshooting_connectivity.rst:20
+msgid "http://192.168.2.1"
+msgstr "http://192.168.2.1"
+
+# 01822b6d048d44c9a1c91160717466cd
+#: ../source/troubleshooting_connectivity.rst:22
+msgid "Netgear"
+msgstr "Netgear"
+
+# 44bbc5017acb4dc389fbffdc59c2fa67
+#: ../source/troubleshooting_connectivity.rst:22
+msgid "password"
+msgstr "password"
+
+# d0825bc7a07a4a658d686e49319c5fd2
+#: ../source/troubleshooting_connectivity.rst:24
+msgid "Gateway2Wire"
+msgstr "Gateway2Wire"
+
+# e4e3ef08f80c46159a6a0df1612bb2ae
+#: ../source/troubleshooting_connectivity.rst:24
+msgid "http://192.168.1.254"
+msgstr "http://192.168.1.254"
+
+# 297716b677b44d0ba061a88e3d009a01
+#: ../source/troubleshooting_connectivity.rst:27
+msgid ""
+"If you are unable to connect a computer to your router to do this, call your"
+" Internet Service Provider and ask them for assistance. They should be able "
+"to access your router remotely, get the needed information for you, and even"
+" make any needed changes."
+msgstr ""
+"Si no puedes conectar el ordenador a tu router para hacer esto, llama a tu "
+"proveedor de servicios de Internet y pídeles ayuda. Deben ser capaces de "
+"acceder a tu router de forma remota, obtener la información necesaria para "
+"ti, e incluso hacer los cambios necesarios."
+
+# 7d58e37c097d46f98c9d51f79ed00c78
+#: ../source/troubleshooting_connectivity.rst:29
+msgid ""
+"Your wireless router settings may contain Wired Equivalent Privacy (WEP) or "
+"Wi-Fi Protected Access (WPA) for security protection. Find out which type of"
+" security it uses and the passphrase either by asking your ISP or by using "
+"the router's configuration pages."
+msgstr ""
+"Tu configuración del router inalámbrico pueden contener Wired Equivalent "
+"Privacy (WEP) o Wi-Fi Protected Access (WPA) para la protección de la "
+"seguridad. Averigua qué tipo de seguridad utiliza y la contraseña, ya "
+"sea preguntando a tu proveedor de Internet o mediante el uso de las "
+"páginas de configuración del router."
+
+# 5a4877d4371d4c3db9eb3c90e8a992a8
+#: ../source/troubleshooting_connectivity.rst:31
+msgid ""
+"Based on the type of security system being used (WPA or WEP), the Wireless "
+"Key type varies. For WPA, you use a Passphrase key (for example, "
+"\"password\", \"tHisisAp4ssword\"). For WEP, use either a Hex key (for "
+"example, \"4f4c504321\", usually all keys that consist of only of 0-9 and "
+"a-f) or its corresponding ASCII key (\"OLPC!\"). 40-bit Hex keys are 10 "
+"letters/numbers long, corresponding to 5 letter/number ASCII keys."
+msgstr ""
+"En base al tipo de sistema de seguridad está utilizando (WPA o WEP), el"
+" tipo Clave Inalámbrica varía. Para WPA, se utiliza una clave frase de paso "
+"(por ejemplo, \"password\", \"tHisisAp4ssword\"). Para WEP, utilice una "
+"clave hexadecimal (por ejemplo, \"4f4c504321\", por lo general todas las "
+"claves que consisten sólo de 0-9 y af) o tu clave ASCII correspondiente "
+"(\"OLPC!\"). Claves hexadecimales de 40 bits tienen 10 letras / números de "
+"largo, correspondiente a 5 teclas ASCII letras / números."
+
+# d33040fb06914baca740e79ba92065bc
+#: ../source/troubleshooting_connectivity.rst:34
+msgid "Common connectivity problems and solutions"
+msgstr "Problemas de conectividad comunes y soluciones"
+
+# 26e016e480ab49c7a8124eeee89df095
+#: ../source/troubleshooting_connectivity.rst:35
+msgid ""
+"Inability to connect with an Access Point from the Neighborhood View is the "
+"most commonly reported symptom. The symptom is usually a flashing circle "
+"icon where the access point circle icon never appears in the Frame or the "
+"circle's menu never contains \"Connected.\" This flashing animation "
+"indicates the XO is trying to connect, but the lack of connection indicators"
+" tells you that it fails to connect. If this happens, try the "
+"troubleshooting suggestions just below. Is the wifi hotspot dot visible in "
+"the Neighborhood View?"
+msgstr ""
+"La incapacidad para conectar con un punto de acceso desde la Vista Vecidario es"
+" el síntoma reportado con mayor frecuencia. El síntoma suele ser un icono de"
+" círculo parpadeante en el icono del círculo del punto de acceso no aparece "
+"nunca en el marco o el menú del círculo nunca contiene \"Conectado.\" Esta "
+"animación intermitente indica la XO está intentando conectarse, pero la "
+"falta de indicadores de conexión te dice que no se puede conectar. Si esto "
+"sucede, prueba las sugerencias de solución de problemas justo debajo. ¿Es el "
+"punto wifi hotspot visible en la Vista Vecindario?"
+
+# f3d458c2ba6b4b06a1288976e487ee82
+#: ../source/troubleshooting_connectivity.rst:37
+msgid ""
+"Go to the Neighborhood View and type the name of your SSID in the Seach box "
+"to highlight your access point. Each circle network icon represents a "
+"Service Set Identifier (SSID). On one of the icons in the Neighborhood View,"
+" you should see your Wi-Fi hotspot's network name."
+msgstr ""
+"Ve a la vista de Vecindario y escribe el nombre de su SSID en el cuadro de"
+" búsqueda para resaltar el punto de acceso. Cada icono circular "
+"representa un identificador de conjunto de servicios (SSID) de la red. En uno de los "
+"iconos en la Vista Vecindario, deberías ver el nombre de red de tu punto de "
+"acceso Wi-Fi."
+
+# 508d48a537fa476ca125d4334fb9ebed
+#: ../source/troubleshooting_connectivity.rst:43
+msgid ""
+"If you cannot see the network name there may be a few reasons for this, so "
+"continue troubleshooting."
+msgstr ""
+"Si no puedes ver el nombre de la red puede haber algunas razones para esto, "
+"así que continuemos buscando la solución."
+
+# ec7f925697f94af8bf62f1617b5e2ea2
+#: ../source/troubleshooting_connectivity.rst:46
+msgid "Is the name of the network a hidden SSID?"
+msgstr "¿Es el nombre de la red un SSID oculto?"
+
+# 7123fb71a2e947a2b26ee5245fdaf471
+#: ../source/troubleshooting_connectivity.rst:48
+msgid ""
+"If your SSID/Network Name is set to be Hidden in the router configuration, "
+"it is not possible for the XO to connect to your wireless network through "
+"the Sugar User Interface."
+msgstr ""
+"Si tu SSID / Nombre de red está configurado para estar oculto en la configuración "
+"del router, no es posible para la XO conectarse a su red inalámbrica a "
+"través de la interfaz de usuario de Sugar."
+
+# f0326e67c4e44b2db7bc6bc013fa951b
+#: ../source/troubleshooting_connectivity.rst:50
+msgid ""
+"You may connect manually by typing commands in the Terminal Activity. To do "
+"so, launch the Terminal Activity and type these commands:"
+msgstr ""
+"Puedes conectarte manualmente escribiendo comandos en la Actividad Terminal. "
+"Para ello, inicia la Actividad Terminal y escribe los siguientes comandos:"
+
+# 4e6d35cf70bd4eaaa6a42319a02ee09a
+#: ../source/troubleshooting_connectivity.rst:58
+msgid ""
+"As an explanation, the su command creates a root process. The iwconfig "
+"command connects to your hidden network (of course, substitute the name of "
+"your access point for the string myhiddennetwork in the above example). "
+"Finally, dhclient asks for an IP address from the access point."
+msgstr ""
+"Como explicación, el comando 'su' crea un proceso de usuario root. El comando iwconfig"
+" se conecta a su red oculta (por supuesto, sustituir el nombre del punto de "
+"acceso para la palabra myhiddennetwork en el ejemplo anterior). Por último, "
+"dhclient pide una dirección IP al punto de acceso."
+
+# b3dde4a381484139b9f417d100eae89c
+#: ../source/troubleshooting_connectivity.rst:61
+msgid "Is your Wi-Fi router filtering connections based on a MAC Address?"
+msgstr ""
+"¿Está el router Wi-Fi filtrando conexiones basadas en una dirección MAC?"
+
+# a8b6d4de48054c64a2b4f8d57a878e74
+#: ../source/troubleshooting_connectivity.rst:63
+msgid ""
+"You can prevent other computers from using your wireless router by "
+"configuring it to filter by MAC Address. A MAC Address is a unique address "
+"embedded in your computer's network adapter. While MAC address filtering is "
+"not a secure method of protecting a network, some routers use it, and it "
+"could prevent your XO from using that access point."
+msgstr ""
+"Puedes evitar que otros equipos utilicen su router inalámbrico "
+"configurándolo para filtrar por dirección MAC. Una dirección MAC es una "
+"dirección única integrada en el adaptador de red de su equipo. Mientras que "
+"el filtrado de direcciones MAC no es un método seguro de protección de una "
+"red, algunos routers lo usan, y podría evitar que tu XO use ese punto de "
+"acceso."
+
+# bbba6aef615648878e1c939430e4cd4c
+#: ../source/troubleshooting_connectivity.rst:65
+msgid ""
+"To fix a filtering problem, you can find the MAC Address and add it to the "
+"list of allowed computers that can connect with the wireless router."
+msgstr ""
+"Para solucionar un problema de filtración, se puede encontrar la dirección "
+"MAC y añadirlo a la lista de equipos permitidos que se pueden conectar con el"
+" router inalámbrico."
+
+# 38e44a4f238a45fb931fbe59f8ba6a94
+#: ../source/troubleshooting_connectivity.rst:67
+msgid "To do so, launch the Terminal Activity and type these commands:"
+msgstr ""
+"Para ello, inicia la Actividad Terminal y escribe los siguientes comandos:"
+
+# 1230feb4156a4deaa3e8b2a57eb84b07
+#: ../source/troubleshooting_connectivity.rst:73
+msgid ""
+"The MAC address is in the first line next to the HWAddr tag: and is in the "
+"form of \"00:17:C4:XX:XX:XX\""
+msgstr ""
+"La dirección MAC se encuentra en la primera línea junto a la etiqueta "
+"HWaddr: y tiene el formato de \"00:17:C4:XX:XX:XX\""
+
+# 2121b95446e743fa8d514b1c5e92502c
+#: ../source/troubleshooting_connectivity.rst:75
+msgid ""
+"In the WiFi router configuration for filtering, add the MAC Address you "
+"found with the ifconfig command."
+msgstr ""
+"En la configuración del router WiFi para filtrar, agregar la dirección MAC "
+"que se encontró con el comando ifconfig."
+
+# c794a64b9033495a965284fef93c4957
+#: ../source/troubleshooting_connectivity.rst:78
+msgid "Is your WiFi router configured to support 802.11b or 802.11g or both?"
+msgstr ""
+"¿Está tu router WiFi configurado para soportar 802.11b, 802.11g o ambos?"
+
+# ce03120de1f94abdb8db7b8d8bfd5704
+#: ../source/troubleshooting_connectivity.rst:80
+msgid ""
+"Read the documentation for your wireless router to determine how to "
+"configure it for 802.11g support, or to determine if it is using the 802.11g"
+" protocol. In this example, the Mode drop-down list is where you would look "
+"for protocol settings. It may not work to have both g and b modes as shown, "
+"so try different configurations to see if another configuration works."
+msgstr ""
+"Lee la documentación de tu router inalámbrico para determinar cómo "
+"configurarlo para soportar 802.11g o para determinar si se está utilizando el"
+" protocolo 802.11g. En este ejemplo, la lista desplegable de Modo es donde "
+"tu debes buscar la configuración de protocolo. Puede que no funcione para tener"
+" ambos modos G y B, como se muestra, a fin de tratar las distintas "
+"configuraciones para ver si otra configuración funciona."
+
+# ec30ab420e404c04b7a5d479458d79e0
+#: ../source/troubleshooting_connectivity.rst:85
+msgid "Are the access point settings not in channels 1, 6, or 11?"
+msgstr "¿Estan los punto de acceso configurados fuera de los canales 1, 6, o 11?"
+
+# 9db03d76c3334f84b55a00d8d8db60b0
+#: ../source/troubleshooting_connectivity.rst:87
+msgid ""
+"Is your access point working on another channel that is not in 1, 6, or 11? "
+"For some older builds, the XO expects to find access points in one of these "
+"three channels, the three non-interfering channels available to 802.11g "
+"wireless protocol."
+msgstr ""
+"Esta tu punto de acceso trabajando en otro canal que no sea el 1, 6, o 11? "
+"Para algunos antiguos versiones, la XO espera encontrar puntos de acceso en "
+"uno de estos tres canales, los tres canales no interferentes disponible para"
+" el protocolo inalámbrico 802.11g."
+
+# c0027facd41342b1bbcb0d9e8a3cded1
+#: ../source/troubleshooting_connectivity.rst:89
+msgid ""
+"Try changing your access point to one of the three channels and check if you"
+" can associate your XO to it. Refer to your access point's documentation for"
+" information on changing the frequency channel that your access point "
+"broadcasts on. This image shows an example of the settings for a wireless "
+"router. The Channel field is where you change the frequency setting."
+msgstr ""
+"Trata de cambiar el punto de acceso a uno de los tres canales y comprobar si"
+" se puede asociar tu XO a el. Consulta la documentación de tu punto de "
+"acceso para obtener información sobre cómo cambiar el frecuencia del canal "
+"que tu punto de acceso difunde. Esta imagen muestra un ejemplo de la "
+"configuración de un router inalámbrico. El campo Canal es donde se cambia el"
+" ajuste de la frecuencia."
+
+# 3fb989ea20ac4663983467e768ed3867
+#: ../source/troubleshooting_connectivity.rst:94
+msgid "Why can't the XO Browse when connected?"
+msgstr "¿Por qué no puede el XO Navegar cuando está conectado?"
+
+# 39a251b989de407ba022c14dfd6a5855
+#: ../source/troubleshooting_connectivity.rst:96
+msgid ""
+"Symptom: Your XO shows that your Internet connection is working, but you "
+"cannot browse or search any pages."
+msgstr ""
+"Síntoma: Tu XO muestra que su conexión a Internet funciona, pero no se puede"
+" navegar o buscar cualquier página."
+
+# 2fc67e494ac040c7bbad88c1852abdfb
+#: ../source/troubleshooting_connectivity.rst:98
+msgid ""
+"Most likely, the XO has failed to receive DNS information from your internet"
+" access point. If this is the case, you would be able to access the Internet"
+" for sites named directly with IP addresses but not their common names. In "
+"other words, http://209.85.133.18 would work but http://www.google.com would"
+" not."
+msgstr ""
+"Lo más probable, es que la XO no ha recibido información de DNS de su punto de "
+"acceso a Internet. Si este es el caso, usted sería capaz de acceder a "
+"Internet para los sitios nombrados directamente con direcciones IP, pero no "
+"con sus nombres comunes. En otras palabras, http://209.85.133.18 debería "
+"funcionar, pero http://www.google.com no lo haría."
+
+# fb08b283235e4fe08a57de59e29565a6
+#: ../source/troubleshooting_connectivity.rst:100
+msgid ""
+"Verify what the XO has received (from the Internet access point) for DNS "
+"information by using the Browse Activity and looking at this URL:"
+msgstr ""
+"Comprueba lo que el XO ha recibido (desde el punto de acceso a Internet) "
+"para obtener información de DNS mediante la Actividad Navegar y buscando en "
+"esta dirección:"
+
+# 5ab2d79e6a434ea6bae911b3019d3c6f
+#: ../source/troubleshooting_connectivity.rst:102
+msgid "file://localhost/etc/resolv.conf"
+msgstr "file://localhost/etc/resolv.conf"
+
+# d544a3f9e2da4e609d663b4fd16c7943
+#: ../source/troubleshooting_connectivity.rst:104
+msgid ""
+"This page should show the IP address of the DNS server assigned by the "
+"Internet access point. If there isn't an IP address on this page, or if the "
+"IP address assigned is wrong, this would account for the behavior you're "
+"seeing."
+msgstr ""
+"Esta página debería mostrar la dirección IP del servidor DNS asignado por el"
+" punto de acceso a Internet. Si no hay una dirección IP en esta página, o si"
+" la dirección IP asignada está mal, esto explicaría el comportamiento que "
+"estamos viendo."
+
+# ec90694d67d146d2b1738ee3ec777c35
+#: ../source/troubleshooting_connectivity.rst:106
+msgid ""
+"If there is no IP address, or the address is wrong, you'll need to determine"
+" why the Internet access point is failing to supply one, but this is likely "
+"to be misconfiguration of the access point."
+msgstr ""
+"Si no hay una dirección IP o la dirección es incorrecta, tendrás que "
+"determinar por qué el punto de acceso a Internet está fallando en "
+"suministrar uno, pero esto es probable que sea una mala configuración del "
+"punto de acceso."
+
+# 320f56c3e7a24613b74207e873b2f08b
+#: ../source/troubleshooting_connectivity.rst:109
+msgid "Connecting to the Internet without wireless access"
+msgstr "Conexión a Internet sin acceso inalámbrico"
+
+# 2c9b07fb80b74128af1a04489832d0b2
+#: ../source/troubleshooting_connectivity.rst:111
+msgid ""
+"If you cannot successfully or consistently connect to the Internet using Wi-"
+"Fi, you can use a USB-to-Ethernet connector to hook up to a wired connection"
+" rather than wireless. Examples of products that have worked for other users"
+" include the Linksys USB100M and the Zoltan Tech USB2.0 Fast Ethernet "
+"adapter, which cost about USD $10-$25."
+msgstr ""
+"Si no puedes conectarte a Internet con éxito o consistentemente mediante Wi-"
+"Fi, puedes utilizar un conector USB a Ethernet para conectarte a una conexión "
+"por cable en lugar de inalámbrica. Ejemplos de productos que han funcionado "
+"para otros usuarios incluyen el Linksys USB100M y el adaptador Zoltan Tech USB2.0 "
+" Fast Ethernet, que cuestan alrededor de USD $10- $25."
+
+# b14c0535bd11403bb8f33474c2cac856
+#: ../source/troubleshooting_connectivity.rst:113
+msgid ""
+"If you want to connect to your XO wirelessly with a dial-up connection, you "
+"can do it with an older version of Apple's Airport Extreme (A1034). Apple no"
+" longer sells them, but they are available on the Internet for between $18 "
+"and $36. Be sure the one you get has a port for the phone line, and "
+"preferably, with a phone cord included. Directions for connecting with it "
+"are on the Wiki at "
+"http://wiki.laptop.org/go/Wifi_Connectivity#Apple_Airport. Connecting while "
+"traveling"
+msgstr ""
+"Si deseas conectar tu XO en forma inalámbrica con una conexión de acceso "
+"telefónico, puede hacerlo con una versión anterior de Airport Extreme de "
+"Apple (A1034). Apple ya no los vende, pero están disponibles en Internet por"
+" entre $ 18 y $ 36. Asegúrate de que el obtengas tiene un puerto para "
+"la línea telefónica, y de preferencia, con un cable de teléfono incluido. "
+"Instrucciones para conectarte usandolo están en la Wiki en "
+"http://wiki.laptop.org/go/Wifi_Connectivity#Apple_Airport. Conexión mientras "
+"viajas"
+
+# 7cc724c5693c44748a172016053418eb
+#: ../source/troubleshooting_connectivity.rst:115
+msgid ""
+"Your XO makes a wonderful traveling companion. You can connect to a wide "
+"variety of public WiFi sites often found in community centers and libraries,"
+" even in restaurants and hotels. All you will need to do is to obtain a "
+"correct password and log on according to the instructions above. Many places"
+" will not require a password to connect and the process will be even easier."
+" Remember, however, that passwords provide an extra layer of internet "
+"security. Without them, you run a slightly higher risk of experiencing some "
+"type of Internet fraud."
+msgstr ""
+"Tu XO es un compañero de viaje maravilloso. Puede conectarse a una amplia "
+"variedad de sitios WiFi públicos que a menudo se encuentran en los centros "
+"comunitarios y bibliotecas, incluso en restaurantes y hoteles. Todo lo que "
+"necesitas hacer es obtener una contraseña correcta y conectarte de acuerdo "
+"con las instrucciones anteriores. Muchos lugares no requieren una contraseña"
+" para conectarse y el proceso será aún más fácil. Recuerda, sin embargo, que"
+" las contraseñas proporcionan una capa adicional de seguridad en Internet. "
+"Sin ellos, se corre un riesgo ligeramente mayor de sufrir algún tipo de "
+"fraude en Internet."

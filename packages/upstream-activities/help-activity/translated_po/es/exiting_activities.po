@@ -1,0 +1,87 @@
+# Spanish translations for Sugar package.
+# Copyright (C) 2013, SugarLabs
+# This file is distributed under the same license as the Sugar package.
+# Automatically generated, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Sugar 0.100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-22 23:07-0300\n"
+"PO-Revision-Date: 2015-03-22 23:07-0300\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# 0391c9a8c2414163a27fb465fbdbf259
+#: ../source/exiting_activities.rst:3
+msgid "Exiting Activities"
+msgstr "Saliendo de las Actividades"
+
+# 1053bdd950fa4fb39ebe573d6cf724b1
+#: ../source/exiting_activities.rst:5
+msgid ""
+"To Exit an Activity, use the touchpad or a mouse to move the cursor to the "
+"close box on the right corner of the Frame and click. Try to have no more "
+"than three Activities open at once."
+msgstr ""
+"Para salir de una actividad, utiliza el touchpad o el ratón para mover el "
+"cursor al boton Parar en la esquina derecha del marco y haza clic en el. "
+"Trata de tener no más de tres actividades abiertas a la vez."
+
+# 929162b71702477cb976e9e357688bc2
+#: ../source/exiting_activities.rst:9
+msgid ""
+"To quit an Activity using a keyboard shortcut, press and hold the **ctrl** "
+"key, and then press the **q** key."
+msgstr ""
+"Para salir de una actividad mediante una combinación de teclas, manten "
+"pulsada la tecla **Ctrl**, y luego presiona la tecla **q**."
+
+# b70a7a553d1140f59ddebe0b57930abf
+#: ../source/exiting_activities.rst:12
+msgid "Scratch"
+msgstr "Scratch"
+
+# f8c174e402884f09b036f6de9fedffa7
+#: ../source/exiting_activities.rst:14
+msgid ""
+"There are some \"Activities\", such as Scratch, that are closed from the "
+"\"File\" menu by selecting \"Quit\" or \"Exit\". These activities may "
+"require a separate step to save your work by clicking on the \"save\" or "
+"\"save as\" command or may also be done by clicking the folder icon with a "
+"downpointing arrow."
+msgstr ""
+"Hay algunos \"Actividades\", tales como Scratch, que se cierran desde el "
+"menú \"Archivo\", seleccionando \"Salir\" o \"Abandonar\". Estas actividades pueden "
+"requerir un paso separado para guardar tu trabajo haciendo clic en "
+"los comando \"Guardar\" o \"Guardar como\" o también se puede hacer haciendo "
+"clic en el icono de la carpeta con una flecha hacia abajo."
+
+# e7c1fe8ce4474b7597123162e04d989e
+#: ../source/exiting_activities.rst:16
+msgid ""
+"In Scratch, for example, you must go to \"File\" then \"Save As\" then give "
+"your project a name next to \"New Filename\" then click \"OK\"."
+msgstr ""
+"En Scratch, por ejemplo, tienes que ir a \"Archivo\" y luego \"Guardar como\" "
+"y luego darle a tu proyecto un nombre al lado de \"Nuevo nombre de archivo\" "
+"y hacer clic en \"Aceptar\"."
+
+# 846701ffd532498696907aab47eebf10
+#: ../source/exiting_activities.rst:21
+msgid "Etoys"
+msgstr "Etoys"
+
+# 25e51166b50d44df99f4174b3ef4cb25
+#: ../source/exiting_activities.rst:23
+msgid ""
+"The Etoys Activity closes by clicking a button that has an ✕ within a white "
+"disc, rather than the stop sign."
+msgstr ""
+"La Actividad Etoys se cierra haciendo click en el boton con una X dentro de "
+"un disco blanco, en vez del icono de Salir."

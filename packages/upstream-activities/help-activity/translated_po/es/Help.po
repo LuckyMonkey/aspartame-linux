@@ -1,0 +1,46 @@
+# Spanish translations for PACKAGE package.
+# Copyright (C) 2015 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2015.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-27 17:33-0300\n"
+"PO-Revision-Date: 2012-09-27 17:33-0300\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: activity/activity.info:2
+msgid "Help"
+msgstr "Ayuda"
+
+#: helpactivity.py:116
+msgid "Back"
+msgstr "Volver"
+
+#: helpactivity.py:123
+msgid "Forward"
+msgstr "Adelante"
+
+#: helpactivity.py:130
+msgid "Home"
+msgstr "Inicio"
+
+#: viewtoolbar.py:34
+msgid "Zoom out"
+msgstr "Alejar"
+
+#: viewtoolbar.py:40
+msgid "Zoom in"
+msgstr "Acercar"
+
+#: viewtoolbar.py:51
+msgid "Fullscreen"
+msgstr "Pantalla Completa"
