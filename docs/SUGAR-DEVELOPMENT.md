@@ -136,6 +136,9 @@ The helper also applies Sugar's `sugar-72`/`sugar-100` GTK theme and `sugar`
 icon theme, matching `jarabe.main.setup_theme()`; omitting that initialization
 causes the Settings icons and visual styling to disappear in the standalone
 process.
+It also imports `dbus.service` before loading the Frame section. The normal
+shell imports this namespace incidentally; the standalone Control Panel must
+initialize it explicitly or Frame settings fail during module discovery.
 
 The Control Panel is an undecorated, centered modal window by design in the
 current Sugar implementation. The helper fixes the launch path; it does not
