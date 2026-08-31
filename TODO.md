@@ -12,6 +12,7 @@ milestone so future sessions can resume without relying on chat history.
 - [ ] Verify the revised Activity Manager visually after the next ISO rebuild.
 - [x] Add Activity icons and metadata fallbacks for every installed bundle.
 - [x] Add a friendly fallback for Activities with missing descriptions.
+- [x] Enable recoverable removal for user and managed system Activities.
 - [ ] Confirm compact Remove pills remain discoverable and accessible.
 - [ ] Add focused UI tests for face selection, icon fallback, and row layout.
 
