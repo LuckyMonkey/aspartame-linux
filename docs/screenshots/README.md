@@ -22,4 +22,16 @@ The Settings → Activity Manager view showing installed Activities and the five
 
 The Count Activity prototype showing its current counting surface.
 
+### GTK4 First Pixels
+
+![GTK4 First Pixels](gtk4-first-pixels.jpg)
+
+The isolated GTK4 Sugar preview reached its first recognizable Sugar-rendered pixels.
+
+### GTK4 / GDK QEMU demo
+
+![GTK4 / GDK demo](../../artifacts/gtk4/qemu-gdk4-demo.png)
+
+A live GTK4 DrawingArea and GDK/Cairo rendering demo running inside QEMU.
+
 The images are reference snapshots, not authoritative UI tests; runtime verification remains in reports/ and the Sugar development workflow.
