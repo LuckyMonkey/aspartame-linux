@@ -132,6 +132,10 @@ constructs `ControlPanel` without this environment can show a blank or
 incomplete panel, or fail with `ModuleNotFoundError: cpsection`. The separate
 `/usr/bin/sugar-control-panel` command is a command-line settings utility and
 prints usage when invoked without options; it is not the graphical launcher.
+The helper also applies Sugar's `sugar-72`/`sugar-100` GTK theme and `sugar`
+icon theme, matching `jarabe.main.setup_theme()`; omitting that initialization
+causes the Settings icons and visual styling to disappear in the standalone
+process.
 
 The Control Panel is an undecorated, centered modal window by design in the
 current Sugar implementation. The helper fixes the launch path; it does not
