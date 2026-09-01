@@ -43,6 +43,7 @@ def main():
     window.present()
     Gdk.Display.get_default().flush()
     started = time.monotonic()
+    shell_seen_at = [None]
     fading = [False]
     opacity = [1.0]
 
@@ -58,6 +59,11 @@ def main():
 
     def check_shell():
         if any(pid != old_pid for pid in shell_pids()):
+            if shell_seen_at[0] is None:
+                shell_seen_at[0] = time.monotonic()
+                return True
+            if time.monotonic() - shell_seen_at[0] < 1.5:
+                return True
             fading[0] = True
             GLib.timeout_add(100, fade)
             return False
