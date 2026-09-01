@@ -16,6 +16,18 @@ The Sugar Home view with the XO-centered Activity layout and Aspartame shell chr
 
 The Settings → Activity Manager view showing installed Activities and the five-level rating column.
 
+### Activity Manager milestone
+
+![Activity Manager milestone](activity-manager-milestone.jpg)
+
+The fixed-column Activity Manager layout keeps activity identity, metadata,
+ratings, and removal actions aligned.
+
+![Wong–Baker activity rating](wong-baker-milestone.jpg)
+
+The reusable five-face control starts with no answer selected and records one
+chosen review rating when the user selects a face.
+
 ### Count
 
 ![Count Activity](count-v0.0.14.png)

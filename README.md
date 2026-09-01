@@ -50,6 +50,33 @@ The current QEMU reference session:
 
 ![Count Activity](docs/screenshots/count-v0.0.14.png)
 
+## Activity Manager milestone
+
+![Activity Manager milestone](docs/screenshots/activity-manager-milestone.jpg)
+
+The Activity Manager is Aspartame's first focused inventory view for the
+installed Sugar Activities. Each row keeps its activity identity, icon,
+version, description, Wong–Baker face rating, and removal action aligned in
+fixed columns so one oversized icon or long description cannot change the
+table layout.
+
+![Wong–Baker activity rating](docs/screenshots/wong-baker-milestone.jpg)
+
+The five faces are a reusable single-choice rating control: Broken, Bad,
+Needs work, Good, and Perfect. An activity begins unrated, with no face
+selected; choosing a face selects exactly one. The rating is stored with the
+activity metadata and remains available across launches. This gives us a
+consistent way to review the installed collection without confusing an
+unanswered review with a negative rating.
+
+This milestone was achieved by keeping the feature inside Sugar's existing
+Control Panel and GTK3 widget conventions. The Activity Manager uses fixed
+GTK layout slots and scaled artwork, while the reusable `FaceRating` widget
+uses independent GTK toggle buttons with one-or-none selection semantics.
+The result preserves existing Activity installation/state data, avoids a new
+desktop panel metaphor, and gives future Activity reviews a shared control
+instead of bespoke rating code.
+
 See the [QEMU VM screenshot gallery](docs/screenshots/README.md) for captions,
 capture details, and the complete representative set.
 
