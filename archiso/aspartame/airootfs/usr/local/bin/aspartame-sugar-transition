@@ -51,7 +51,7 @@ def main():
     def fade():
         if not fading[0]:
             return False
-        opacity[0] = max(0.0, opacity[0] - 0.025)
+        opacity[0] = max(0.0, opacity[0] - 0.0125)
         window.set_opacity(opacity[0])
         if opacity[0] <= 0.0:
             window.destroy()
