@@ -24,14 +24,11 @@ class FaceRating(Gtk.Box):
         self._buttons = []
         self._context = context
         self._face_root = face_root
-        group = None
         for index, (filename, label) in enumerate(
                 zip(FACE_FILES, RATING_LABELS), 1):
-            button = (Gtk.RadioButton.new(None) if group is None else
-                      Gtk.RadioButton.new_from_widget(group))
-            if group is None:
-                group = button
-            button.set_mode(False)
+            # Toggle buttons allow the valid unanswered state: no face
+            # selected. The toggled handler enforces one-or-none selection.
+            button = Gtk.ToggleButton()
             button.set_relief(Gtk.ReliefStyle.NONE)
             button.set_can_focus(False)
             button.get_style_context().add_class('aspartame-rating-face')
@@ -65,9 +62,13 @@ class FaceRating(Gtk.Box):
         if emit:
             self.emit('rating-changed', rating)
 
-    def _button_toggled(self, _button, _rating):
+    def _button_toggled(self, button, _rating):
+        if button.get_active():
+            for other in self._buttons:
+                if other is not button and other.get_active():
+                    other.set_active(False)
         self._refresh_appearance()
-        if _button.get_active():
+        if button.get_active():
             self.emit('rating-changed', self.get_rating())
 
     def _refresh_appearance(self):
