@@ -34,8 +34,11 @@ def main():
     window.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0, 0, 0, 1))
     window.add_events(Gdk.EventMask.BUTTON_PRESS_MASK)
     window.connect('button-press-event', lambda *_args: (window.destroy(), False)[1])
-    window.fullscreen()
     window.show_all()
+    screen = window.get_screen()
+    window.set_default_size(screen.get_width(), screen.get_height())
+    window.get_window().move(0, 0)
+    window.get_window().fullscreen()
     Gdk.Display.get_default().flush()
     started = time.monotonic()
     fading = [False]
@@ -44,7 +47,7 @@ def main():
     def fade():
         if not fading[0]:
             return False
-        opacity[0] = max(0.0, opacity[0] - 0.10)
+        opacity[0] = max(0.0, opacity[0] - 0.25)
         window.set_opacity(opacity[0])
         if opacity[0] <= 0.0:
             window.destroy()
@@ -54,7 +57,7 @@ def main():
     def check_shell():
         if any(pid != old_pid for pid in shell_pids()):
             fading[0] = True
-            GLib.timeout_add(45, fade)
+            GLib.timeout_add(20, fade)
             return False
         if time.monotonic() - started > 20:
             window.destroy()
