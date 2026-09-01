@@ -14,7 +14,7 @@ def shell_pids():
             continue
         try:
             with open('/proc/%s/cmdline' % entry, 'rb') as stream:
-                command = stream.read().split(b'\\0')
+                command = stream.read().split(b'\0')
         except OSError:
             continue
         if command[:3] == [b'python3', b'-m', b'jarabe.main']:
@@ -36,9 +36,11 @@ def main():
     window.connect('button-press-event', lambda *_args: (window.destroy(), False)[1])
     window.show_all()
     screen = window.get_screen()
-    window.set_default_size(screen.get_width(), screen.get_height())
-    window.get_window().move(0, 0)
-    window.get_window().fullscreen()
+    width = screen.get_width()
+    height = screen.get_height()
+    window.resize(width, height)
+    window.move(0, 0)
+    window.present()
     Gdk.Display.get_default().flush()
     started = time.monotonic()
     fading = [False]
