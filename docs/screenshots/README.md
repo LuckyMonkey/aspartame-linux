@@ -11,13 +11,7 @@ These images are captured from the QEMU reference VM at 1920x1080 using ./script
 The Sugar Home view with the XO-centered Activity layout and Aspartame shell chrome.
 
 ### Activity Manager
-
-![Activity Manager](activity-manager-v0.0.15.png)
-
 The Settings → Activity Manager view showing installed Activities and the five-level rating column.
-
-### Activity Manager milestone
-
 ![Activity Manager milestone](activity-manager-milestone.jpg)
 
 The fixed-column Activity Manager layout keeps activity identity, metadata,
