@@ -4,6 +4,7 @@ import sys
 from xml.sax.saxutils import escape
 
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
 
@@ -97,16 +98,50 @@ class ActivityManager(SectionView):
         self._scroller = Gtk.ScrolledWindow()
         self._scroller.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self._scroller.set_min_content_height(420)
+        self._scroller.add_events(Gdk.EventMask.SCROLL_MASK)
+        self._scroller.connect('scroll-event', self._table_scroll_event)
+        self._table_surface = Gtk.EventBox()
+        self._table_surface.set_visible_window(False)
+        self._table_surface.set_hexpand(True)
+        self._table_surface.set_vexpand(True)
+        self._table_surface.add_events(Gdk.EventMask.SCROLL_MASK)
+        self._table_surface.connect('scroll-event', self._table_scroll_event)
         self._list = Gtk.ListBox()
         self._list.set_selection_mode(Gtk.SelectionMode.NONE)
         self._list.set_vexpand(True)
-        self._scroller.add(self._list)
+        self._list.set_hexpand(True)
+        self._list.add_events(Gdk.EventMask.SCROLL_MASK)
+        self._list.connect('scroll-event', self._table_scroll_event)
+        self._table_surface.add(self._list)
+        self._scroller.add(self._table_surface)
         self.pack_start(self._scroller, True, True, 0)
 
         self._empty = Gtk.Label(label=_('No Activities were found.'))
         self._empty.set_xalign(0)
         self.pack_start(self._empty, False, False, 0)
         self.setup()
+
+    def _table_scroll_event(self, _widget, event):
+        adjustment = self._scroller.get_vadjustment()
+        if adjustment is None:
+            return False
+
+        if event.direction == Gdk.ScrollDirection.SMOOTH:
+            _delta_x, delta_y = event.get_scroll_deltas()
+            delta = delta_y
+        elif event.direction == Gdk.ScrollDirection.DOWN:
+            delta = 1.0
+        elif event.direction == Gdk.ScrollDirection.UP:
+            delta = -1.0
+        else:
+            return False
+
+        step = max(adjustment.get_step_increment(), 1.0)
+        lower = adjustment.get_lower()
+        upper = max(lower, adjustment.get_upper() - adjustment.get_page_size())
+        value = adjustment.get_value() + delta * step * 3.0
+        adjustment.set_value(min(max(value, lower), upper))
+        return True
 
     def setup(self):
         for child in self._list.get_children():
