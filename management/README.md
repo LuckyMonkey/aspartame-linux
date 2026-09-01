@@ -43,7 +43,7 @@ GET  /api/v1/catalog
 ```
 
 The enrollment response contains the device token once. Store it securely.
-The server stores only its SHA-256 hash.
+The server stores only its SHA-256 hash.\n\nAfter enrollment, send one visible development check-in:\n\n    ASPARTAME_MDM_TOKEN=token-from-enrollment python3 -m management.agent --url http://127.0.0.1:8787\n\nThe client reports basic platform information only. It does not run commands, inspect private files, or change the device.
 
 This first slice uses a small SQLite database and Python's standard library so
 it can be demonstrated immediately on a clean Arch development image. A

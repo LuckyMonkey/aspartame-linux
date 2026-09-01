@@ -20,7 +20,7 @@ test:
 	./scripts/smoke-test.sh
 
 mdm-check:
-	python3 -m py_compile management/server.py management/test_server.py
+	python3 -m py_compile management/server.py management/agent.py management/test_server.py
 	(cd management && python3 test_server.py)
 
 mdm-run:
