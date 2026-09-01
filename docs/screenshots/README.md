@@ -28,13 +28,9 @@ chosen review rating when the user selects a face.
 
 The Count Activity prototype showing its current counting surface.
 
-### GTK4 First Pixels
-
-![GTK4 First Pixels](gtk4-first-pixels.jpg)
+### GTK4 First Pixels GTK4 / GDK QEMU demo
 
 The isolated GTK4 Sugar preview reached its first recognizable Sugar-rendered pixels.
-
-### GTK4 / GDK QEMU demo
 
 ![GTK4 / GDK demo](../../artifacts/gtk4/qemu-gdk4-demo.png)
 
