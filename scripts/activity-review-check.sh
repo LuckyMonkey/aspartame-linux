@@ -11,6 +11,7 @@ while IFS=$'\t' read -r source bundle; do
     grep -q "^$source[[:space:]]" "$revisions" || { echo "missing revision: $source"; fail=1; }
 done < "$manifest"
 python3 "$root/scripts/activity-review-inventory.py" >/dev/null
+python3 "$root/scripts/activity-contract-check.py"
 python3 - "$reviews" <<'PY'
 import csv, sys
 with open(sys.argv[1], newline="") as stream:

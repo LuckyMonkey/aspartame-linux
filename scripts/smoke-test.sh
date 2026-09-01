@@ -14,7 +14,7 @@ required_scripts=(
     sugar-session-restart.sh sugar-logs.sh sugar-screenshot.sh sugar-patch.sh
     sugar-open-control-panel.sh sugar-upstream-sync.sh sugar-gtk4-init.sh sugar-gtk4-build.sh sugar-gtk4-check.sh sugar-gtk4-update.sh sugar-gtk4-smoke.sh
     sugar-modernization-check.sh
-    activity-review-inventory.py activity-review-check.sh activity-review-capture.sh
+    activity-review-inventory.py activity-review-check.sh activity-review-capture.sh activity-contract-check.py
 )
 for script in "${required_scripts[@]}"; do
     test -x "$root/scripts/$script"
@@ -74,7 +74,7 @@ compile(path.read_text(encoding="utf-8"), str(path), "exec")
 PY
 done < "$root/sugar-overlay/extensions.list"
 
-for command in sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-init sugar-gtk4-build sugar-gtk4-run sugar-gtk4-smoke sugar-gtk4-check sugar-gtk4-update sugar-modernization-check activity-review-inventory activity-review-check activity-review-capture; do
+for command in sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-init sugar-gtk4-build sugar-gtk4-run sugar-gtk4-smoke sugar-gtk4-check sugar-gtk4-update sugar-modernization-check activity-review-inventory activity-review-check activity-review-capture activity-contract-check; do
     grep -q "^$command:" "$root/Makefile"
 done
 
