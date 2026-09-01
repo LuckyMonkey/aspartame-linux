@@ -21,6 +21,7 @@ xf86-input-libinput
 metacity
 dbus
 polkit
+polkit-gnome
 udisks2
 upower
 xdg-user-dirs

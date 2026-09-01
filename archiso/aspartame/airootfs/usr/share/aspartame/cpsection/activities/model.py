@@ -99,7 +99,8 @@ def remove_activity(path, quarantine=QUARANTINE_ROOT):
                    for root in MANAGED_SYSTEM_ROOTS):
             raise PermissionError(_('That Activity is outside a managed Activity folder.'))
         result = subprocess.run(
-            ['pkexec', SYSTEM_REMOVER, path], capture_output=True, text=True)
+            ['pkexec', '--disable-internal-agent', SYSTEM_REMOVER, path],
+            capture_output=True, text=True)
         if result.returncode:
             message = result.stderr.strip() or _('Administrator approval was cancelled.')
             raise PermissionError(message)
