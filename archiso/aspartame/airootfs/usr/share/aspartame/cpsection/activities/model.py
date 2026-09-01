@@ -12,11 +12,11 @@ from gettext import gettext as _
 
 RATINGS = (_('Broken'), _('Bad'), _('Needs work'), _('Good'), _('Perfect'))
 RATING_FILE = os.path.expanduser('~/.config/aspartame/activity-ratings.json')
+# Inventory only installed Activity locations. The Aspartame bundle tree is
+# an image/source staging area and must not reappear after its installed copy
+# has been removed.
 ACTIVITY_ROOTS = (
     '/usr/share/sugar/activities',
-    # Aspartame's bundled canonical/third-party Activities live separately
-    # from Sugar's package-owned Activity directory.
-    '/usr/share/aspartame/activities',
     '/usr/local/share/sugar/activities',
     os.path.expanduser('~/.local/share/sugar/activities'),
 )
