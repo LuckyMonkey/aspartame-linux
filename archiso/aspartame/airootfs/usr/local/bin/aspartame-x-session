@@ -27,7 +27,7 @@ fi
 # receive a normal, scoped authentication dialog instead of failing silently.
 if test -x /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1; then
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 \
-        >/home/aspartame/.cache/polkit-agent.log 2>&1 &
+        >/tmp/aspartame-polkit-agent.log 2>&1 &
 fi
 
 # Ensure the isolated TCP SSH helper is active once networking is available.
