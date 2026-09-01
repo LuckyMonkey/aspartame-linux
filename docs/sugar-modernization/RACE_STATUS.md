@@ -30,3 +30,8 @@ On 2026-08-31 the pinned GTK4 Jarabe shell stayed alive for 25 seconds under pri
 The reproducible wrapper is make sugar-gtk4-run / scripts/sugar-gtk4-run.sh. It contains isolated SUGAR_HOME, GSettings schema data, group-label data, GI typelib and library paths, Python path, Xvfb fallback, and DBus setup.
 
 Preview-only compatibility work uses Casilda 0.3 (Casilda-0.1) because host GTK4 4.14 cannot build the current Casilda 1.x API. Activity launch remains explicitly unsupported by the selected toolkit head.
+
+
+## 2026-09-01 verification
+
+GTK4 checks pass: GTK4/PyGObject loads, 55 toolkit tests pass, sugar-ext native tests pass, and Jarabe starts under private Xvfb/DBus. A recognizable Sugar-rendered screenshot was captured at reports/gtk4/first-pixels-12.png (1280x800). This does not yet prove stable Home, Frame, Journal, or Activity lifecycle. The next blocker is stable Home rendering for 60 seconds. Runtime warnings include software Casilda rendering under Xvfb, Graphene version selection, and private-portal/GVFS noise; these remain visible in the captured run log.
