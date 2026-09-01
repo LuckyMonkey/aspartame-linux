@@ -38,3 +38,5 @@
 - [ ] AI-assisted mechanical ports with upstream references.
 - [ ] Typing, documentation, and accessibility improvements after behavior is
   stable.
+
+- [x] Confirm GTK4 Jarabe remains alive for 60 seconds under isolated Xvfb/DBus. Verified 2026-09-01 with no traceback, crash, SIGILL, or fatal marker. This closes process liveness only; Home/Frame/input still require runtime interaction tests.
