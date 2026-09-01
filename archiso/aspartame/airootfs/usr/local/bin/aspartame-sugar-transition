@@ -79,6 +79,9 @@ def main():
                     polygon_region(list(points),half_width,half_height),0,0)
                 window.move(x,y)
         Gdk.Display.get_default().flush()
+    ready_path = os.environ.get('ASPARTAME_TRANSITION_READY')
+    if ready_path:
+        open(ready_path, 'w').close()
     shape_panels(0.0)
     started=time.monotonic()
     shell_seen_at=[None]

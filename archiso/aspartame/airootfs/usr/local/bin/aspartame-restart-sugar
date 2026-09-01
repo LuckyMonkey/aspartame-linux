@@ -8,8 +8,15 @@ test -n "$old_pid" || { echo "Sugar is not running for $target_user" >&2; exit 1
 # Cover the display before the old shell disappears. A click dismisses the
 # mask immediately; otherwise it fades after the replacement shell appears.
 if test -x /usr/local/bin/aspartame-sugar-transition; then
-    runuser -u "$target_user" -- env DISPLAY="${DISPLAY:-:0}" XAUTHORITY="${XAUTHORITY:-/home/$target_user/.Xauthority}" ASPARTAME_OLD_SUGAR_PID="$old_pid" nohup /usr/local/bin/aspartame-sugar-transition >/tmp/aspartame-sugar-transition.log 2>&1 </dev/null &
-    sleep 0.25
+    ready="/tmp/aspartame-sugar-transition-$old_pid.ready"
+    rm -f "$ready"
+    runuser -u "$target_user" -- env DISPLAY="${DISPLAY:-:0}" XAUTHORITY="${XAUTHORITY:-/home/$target_user/.Xauthority}" ASPARTAME_OLD_SUGAR_PID="$old_pid" ASPARTAME_TRANSITION_READY="$ready" nohup /usr/local/bin/aspartame-sugar-transition >/tmp/aspartame-sugar-transition.log 2>&1 </dev/null &
+    for _ in $(seq 1 30); do
+        test -e "$ready" && break
+        sleep 0.1
+    done
+    test -e "$ready" || echo 'Sugar transition mask did not become ready; continuing safely.' >&2
+    rm -f "$ready"
 fi
 
 kill -TERM "$old_pid"
