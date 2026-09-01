@@ -31,7 +31,7 @@ class ActivityManager(SectionView):
         css.load_from_data(b'''
             .aspartame-activity-row {
                 border-bottom: 1px solid #c8d3d8;
-                padding: 5px 0;
+                padding: 8px 0;
             }
             .aspartame-rating-face {
                 min-width: 58px;
@@ -161,7 +161,7 @@ class ActivityManager(SectionView):
         row.get_style_context().add_class('aspartame-activity-row')
         grid = Gtk.Grid()
         grid.set_border_width(style.DEFAULT_SPACING)
-        grid.set_column_spacing(0)
+        grid.set_column_spacing(style.DEFAULT_SPACING * 2)
         grid.set_hexpand(True)
         row.add(grid)
 
@@ -209,6 +209,8 @@ class ActivityManager(SectionView):
         rating_box = FaceRating(rating=rating, context=activity['name'])
         rating_box.set_size_request(330, -1)
         rating_box.set_halign(Gtk.Align.CENTER)
+        rating_box.set_margin_start(style.DEFAULT_SPACING * 2)
+        rating_box.set_margin_end(style.DEFAULT_SPACING * 2)
         rating_box.connect('rating-changed', self._face_rating_changed, activity['id'])
         if aspartame_help and help_id:
             aspartame_help.guard(rating_box, help_id)
@@ -232,7 +234,7 @@ class ActivityManager(SectionView):
         if not activity['user']:
             remove.set_tooltip_text(_('Remove this system Activity with administrator approval.'))
         remove.connect('clicked', self._remove_clicked, activity)
-        remove.set_size_request(72, -1)
+        remove.set_size_request(64, -1)
         remove.set_halign(Gtk.Align.END)
         grid.attach(remove, 3, 0, 1, 1)
         self._column_groups[3].add_widget(remove)

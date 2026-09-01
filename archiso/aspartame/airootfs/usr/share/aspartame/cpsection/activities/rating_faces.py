@@ -20,7 +20,7 @@ class FaceRating(Gtk.Box):
     }
 
     def __init__(self, rating=0, context='', face_root=FACE_ROOT):
-        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self._buttons = []
         self._context = context
         self._face_root = face_root
@@ -38,7 +38,7 @@ class FaceRating(Gtk.Box):
             image_path = os.path.join(face_root, filename)
             if os.path.isfile(image_path):
                 image = Gtk.Image.new_from_file(image_path)
-                image.set_pixel_size(46)
+                image.set_pixel_size(52)
                 button.set_image(image)
                 button.set_always_show_image(True)
             button.set_tooltip_text(_('%s%s') % (
@@ -74,7 +74,7 @@ class FaceRating(Gtk.Box):
         for button in self._buttons:
             image = button.get_image()
             if image is not None:
-                image.set_opacity(1.0 if button.get_active() else 0.42)
+                image.set_opacity(1.0 if button.get_active() else 0.50)
             context = button.get_style_context()
             if button.get_active():
                 context.add_class('aspartame-rating-selected')
