@@ -4,6 +4,8 @@ import sys
 from xml.sax.saxutils import escape
 
 from gi.repository import Gtk
+from gi.repository import GLib
+from gi.repository import GdkPixbuf
 
 from sugar3.graphics import style
 from jarabe.controlpanel.sectionview import SectionView
@@ -180,8 +182,17 @@ class ActivityManager(SectionView):
                 if os.path.isfile(candidate):
                     icon_path = candidate
                     break
-        icon = (Gtk.Image.new_from_file(icon_path) if icon_path else
-                Gtk.Image.new_from_icon_name('activity-generic', Gtk.IconSize.DIALOG))
+        if icon_path:
+            try:
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                    icon_path, 42, 42, True)
+                icon = Gtk.Image.new_from_pixbuf(pixbuf)
+            except GLib.Error:
+                icon = Gtk.Image.new_from_icon_name(
+                    'activity-generic', Gtk.IconSize.DIALOG)
+        else:
+            icon = Gtk.Image.new_from_icon_name(
+                'activity-generic', Gtk.IconSize.DIALOG)
         icon.set_pixel_size(42)
         icon.set_tooltip_text(_('Icon for %s') % activity['name'])
         icon.set_halign(Gtk.Align.CENTER)
