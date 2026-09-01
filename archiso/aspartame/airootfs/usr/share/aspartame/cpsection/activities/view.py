@@ -32,6 +32,7 @@ class ActivityManager(SectionView):
             .aspartame-activity-row {
                 border-bottom: 1px solid #c8d3d8;
                 padding: 8px 0;
+                min-height: 68px;
             }
             .aspartame-rating-face {
                 min-width: 58px;
@@ -180,7 +181,16 @@ class ActivityManager(SectionView):
                 Gtk.Image.new_from_icon_name('activity-generic', Gtk.IconSize.DIALOG))
         icon.set_pixel_size(42)
         icon.set_tooltip_text(_('Icon for %s') % activity['name'])
-        identity.pack_start(icon, False, False, 0)
+        icon.set_halign(Gtk.Align.CENTER)
+        icon.set_valign(Gtk.Align.CENTER)
+        icon.set_hexpand(False)
+        icon.set_vexpand(False)
+        icon_slot = Gtk.Box()
+        icon_slot.set_size_request(52, 52)
+        icon_slot.set_halign(Gtk.Align.CENTER)
+        icon_slot.set_valign(Gtk.Align.CENTER)
+        icon_slot.pack_start(icon, False, False, 0)
+        identity.pack_start(icon_slot, False, False, 0)
 
         labels = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
         labels.set_hexpand(True)
