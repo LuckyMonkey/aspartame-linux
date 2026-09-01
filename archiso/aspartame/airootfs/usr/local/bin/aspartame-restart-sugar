@@ -5,6 +5,13 @@ target_user=${SUGAR_USER:-aspartame}
 old_pid=$(pgrep -u "$target_user" -f '^python3 -m jarabe\.main$' | head -n 1 || true)
 test -n "$old_pid" || { echo "Sugar is not running for $target_user" >&2; exit 1; }
 
+# Cover the display before the old shell disappears. A click dismisses the
+# mask immediately; otherwise it fades after the replacement shell appears.
+if test -x /usr/local/bin/aspartame-sugar-transition; then
+    runuser -u "$target_user" -- env DISPLAY="${DISPLAY:-:0}" XAUTHORITY="${XAUTHORITY:-/home/$target_user/.Xauthority}" ASPARTAME_OLD_SUGAR_PID="$old_pid" nohup /usr/local/bin/aspartame-sugar-transition >/tmp/aspartame-sugar-transition.log 2>&1 </dev/null &
+    sleep 0.25
+fi
+
 kill -TERM "$old_pid"
 for _ in $(seq 1 50); do
     test -d "/proc/$old_pid" || break
