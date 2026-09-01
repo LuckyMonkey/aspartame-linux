@@ -2,11 +2,14 @@
 from configparser import ConfigParser
 from pathlib import Path
 import csv
+import json
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "packages/upstream-activities/INSTALL-MANIFEST"
 REVISIONS = ROOT / "packages/upstream-activities/REVISION-MANIFEST"
 REVIEWS = ROOT / "docs/activity-reviews/REVIEWS.tsv"
+SUGARIZER_CATALOG = ROOT / "packages/sugarizer/activities.json"
+SUGARIZER_REVISION = ROOT / "packages/sugarizer/REVISION"
 FIELDS = ["bundle_id", "name", "version", "source_revision", "source_path", "format", "run_status", "rating", "notes", "last_tested", "screenshot"]
 
 def read_revisions():
@@ -29,6 +32,21 @@ def read_info(path):
     section = parser["Activity"]
     return section.get("bundle_id", path.name), section.get("name", path.name), section.get("activity_version", "")
 
+def read_sugarizer(old):
+    if not SUGARIZER_CATALOG.exists():
+        return []
+    revision = SUGARIZER_REVISION.read_text().strip()
+    rows = []
+    for activity in json.loads(SUGARIZER_CATALOG.read_text()):
+        prior = old.get(activity["id"], {})
+        rows.append({"bundle_id": activity["id"], "name": activity["name"],
+            "version": str(activity.get("version", "")), "source_revision": revision,
+            "source_path": f"packages/sugarizer/{activity['directory']}",
+            "format": "sugarizer-web", "run_status": prior.get("run_status", "unreviewed"),
+            "rating": prior.get("rating", ""), "notes": prior.get("notes", "catalog only; Sugarizer runtime not installed"),
+            "last_tested": prior.get("last_tested", ""), "screenshot": prior.get("screenshot", "")})
+    return rows
+
 def main():
     old, revisions, rows = read_old(), read_revisions(), []
     for line in MANIFEST.read_text().splitlines():
@@ -44,6 +62,7 @@ def main():
             "run_status": prior.get("run_status", "unreviewed"), "rating": prior.get("rating", ""),
             "notes": prior.get("notes", ""), "last_tested": prior.get("last_tested", ""),
             "screenshot": prior.get("screenshot", "")})
+    rows.extend(read_sugarizer(old))
     with REVIEWS.open("w", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=FIELDS, delimiter="\t", lineterminator="\n")
         writer.writeheader()

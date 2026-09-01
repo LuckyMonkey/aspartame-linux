@@ -16,3 +16,10 @@ Planned review path:
 5. Do not claim native Sugar compatibility without an explicit native bundle.
 
 Initial overlap candidates include Calculate, Gears, Grid Paint, Maze, Memorize, Markdown, Turtle Blocks JS, and Clock.
+
+
+Current catalog snapshot:
+- Source revision: 60ccdbcb004de1a706749c7314edfa0d160288b4
+- Catalog: packages/sugarizer/activities.json
+- Refresh with: git ls-remote https://github.com/llaske/sugarizer.git refs/heads/master, then fetch activities.json at that SHA
+- Import with: make activity-review-inventory
