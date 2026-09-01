@@ -105,9 +105,18 @@ glib-compile-schemas /usr/share/glib-2.0/schemas
 cat > /usr/local/bin/aspartame-session <<'EOF'
 #!/bin/sh
 set -eu
+# The agent must start inside dbus-run-session so it registers on the same
+# per-session bus used by Sugar and pkexec.
+if test -x /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1; then
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1         >/tmp/aspartame-polkit-agent.log 2>&1 &
+    polkit_agent_pid=$!
+fi
 sugar &
 sugar_pid=$!
 wait "$sugar_pid"
+if test -n "${polkit_agent_pid:-}"; then
+    kill "$polkit_agent_pid" 2>/dev/null || true
+fi
 EOF
 chmod 0755 /usr/local/bin/aspartame-session
 ln -sfn /usr/bin/fastfetch /usr/local/bin/neofetch

@@ -23,13 +23,6 @@ if test -d /mnt/aspartame-dev/sugar/src; then
     export PYTHONPATH="/mnt/aspartame-dev/sugar/src${PYTHONPATH:+:$PYTHONPATH}"
 fi
 
-# Start the graphical polkit agent so privileged Activity Manager actions
-# receive a normal, scoped authentication dialog instead of failing silently.
-if test -x /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1; then
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 \
-        >/tmp/aspartame-polkit-agent.log 2>&1 &
-fi
-
 # Ensure the isolated TCP SSH helper is active once networking is available.
 if ! ss -ltn 2>/dev/null | grep -q ':22 '; then
     sudo -n /usr/local/sbin/aspartame-start-sshd \
