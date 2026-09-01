@@ -23,8 +23,9 @@ def shell_pids():
 
 def main():
     old_pid = os.environ.get('ASPARTAME_OLD_SUGAR_PID', '')
-    window = Gtk.Window(type=Gtk.WindowType.POPUP)
+    window = Gtk.Window()
     window.set_decorated(False)
+    window.set_type_hint(Gdk.WindowTypeHint.SPLASHSCREEN)
     window.set_skip_taskbar_hint(True)
     window.set_accept_focus(False)
     window.set_can_focus(False)
@@ -50,7 +51,7 @@ def main():
     def fade():
         if not fading[0]:
             return False
-        opacity[0] = max(0.0, opacity[0] - 0.05)
+        opacity[0] = max(0.0, opacity[0] - 0.025)
         window.set_opacity(opacity[0])
         if opacity[0] <= 0.0:
             window.destroy()
@@ -62,10 +63,10 @@ def main():
             if shell_seen_at[0] is None:
                 shell_seen_at[0] = time.monotonic()
                 return True
-            if time.monotonic() - shell_seen_at[0] < 1.5:
+            if time.monotonic() - shell_seen_at[0] < 0.4:
                 return True
             fading[0] = True
-            GLib.timeout_add(100, fade)
+            GLib.timeout_add(50, fade)
             return False
         if time.monotonic() - started > 20:
             window.destroy()
