@@ -160,13 +160,16 @@ class ActivityManager(SectionView):
     def _make_row(self, activity, rating, help_id=None):
         row = Gtk.ListBoxRow()
         row.get_style_context().add_class('aspartame-activity-row')
+        row.set_size_request(-1, 84)
         grid = Gtk.Grid()
+        grid.set_size_request(-1, 68)
         grid.set_border_width(style.DEFAULT_SPACING)
         grid.set_column_spacing(style.DEFAULT_SPACING * 2)
         grid.set_hexpand(True)
         row.add(grid)
 
         identity = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        identity.set_size_request(-1, 52)
         identity.set_hexpand(True)
         identity.set_halign(Gtk.Align.FILL)
         icon_name = activity.get('icon', '')
@@ -193,6 +196,7 @@ class ActivityManager(SectionView):
         identity.pack_start(icon_slot, False, False, 0)
 
         labels = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        labels.set_size_request(-1, 52)
         labels.set_hexpand(True)
         labels.set_halign(Gtk.Align.FILL)
         name = Gtk.Label(label=activity['name'])
