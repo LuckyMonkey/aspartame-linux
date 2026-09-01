@@ -107,17 +107,6 @@ class ActivityManager(SectionView):
         self._empty.set_xalign(0)
         self.pack_start(self._empty, False, False, 0)
         self.setup()
-        success_dialog = Gtk.MessageDialog(
-            transient_for=self.get_toplevel(),
-            flags=Gtk.DialogFlags.MODAL,
-            message_type=Gtk.MessageType.INFO,
-            buttons=Gtk.ButtonsType.CLOSE,
-            text=_('Activity removed'))
-        success_dialog.format_secondary_text(
-            _('%s was moved to the recoverable Activity quarantine.') %
-            activity['name'])
-        success_dialog.run()
-        success_dialog.destroy()
 
     def setup(self):
         for child in self._list.get_children():
@@ -313,3 +302,14 @@ class ActivityManager(SectionView):
             error_dialog.destroy()
             return
         self.setup()
+        success_dialog = Gtk.MessageDialog(
+            transient_for=self.get_toplevel(),
+            flags=Gtk.DialogFlags.MODAL,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.CLOSE,
+            text=_('Activity removed'))
+        success_dialog.format_secondary_text(
+            _('%s was moved to the recoverable Activity quarantine.') %
+            activity['name'])
+        success_dialog.run()
+        success_dialog.destroy()
