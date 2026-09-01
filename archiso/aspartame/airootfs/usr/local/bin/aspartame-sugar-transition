@@ -60,6 +60,7 @@ def main():
         for window,_,_ in windows:
             if window.get_window() is not None:
                 window.destroy()
+        Gtk.main_quit()
         return False
     for window,_,_ in windows:
         window.connect('button-press-event', close_all)
@@ -90,7 +91,7 @@ def main():
     def animate():
         if not animation_started[0]:
             return False
-        progress[0]=min(1.0,progress[0]+0.025)
+        progress[0]=min(1.0,progress[0]+0.00625)
         shape_panels(progress[0])
         if progress[0]>=1.0:
             close_all()
@@ -104,7 +105,7 @@ def main():
             if time.monotonic()-shell_seen_at[0] < 0.4:
                 return True
             animation_started[0]=True
-            GLib.timeout_add(50,animate)
+            GLib.timeout_add(25,animate)
             return False
         if time.monotonic()-started > 20:
             close_all()
