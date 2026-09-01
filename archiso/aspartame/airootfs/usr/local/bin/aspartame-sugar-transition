@@ -2,7 +2,6 @@
 """Compositor-free angled aperture reveal for a Sugar shell reload."""
 import os
 import time
-import cairo
 import gi
 gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
@@ -21,23 +20,6 @@ def shell_pids():
         if command[:3] == [b'python3', b'-m', b'jarabe.main']:
             result.append(entry)
     return result
-
-def polygon_region(points, width, height):
-    region=cairo.Region()
-    for y in range(height):
-        intersections=[]
-        for (x1,y1),(x2,y2) in zip(points, points[1:]+points[:1]):
-            if y1 == y2:
-                continue
-            if min(y1,y2) <= y < max(y1,y2):
-                intersections.append(x1 + (y-y1)*(x2-x1)/(y2-y1))
-        intersections.sort()
-        for left,right in zip(intersections[::2], intersections[1::2]):
-            x=max(0,int(left))
-            end=min(width,int(right)+1)
-            if end > x:
-                region.union(cairo.Region(cairo.RectangleInt(x,y,end-x,1)))
-    return region
 
 def main():
     old_pid=os.environ.get('ASPARTAME_OLD_SUGAR_PID','')
@@ -66,24 +48,19 @@ def main():
         window.connect('button-press-event', close_all)
         window.show_all()
         window.resize(half_width,half_height)
-    def shape_panels(progress):
-        gap=int(min(half_width,half_height)*0.86*progress)
-        polygons=(
-            ((0,0),(half_width,0),(half_width-gap,half_height-gap),(0,half_height)),
-            ((0,0),(half_width,0),(half_width,half_height),(gap,half_height-gap)),
-            ((0,0),(half_width-gap,gap),(half_width,half_height),(0,half_height)),
-            ((gap,gap),(half_width,0),(half_width,half_height),(0,half_height)),
-        )
-        for (window,x,y),points in zip(windows,polygons):
+    def move_panels(progress):
+        distance=int(max(width,height)*progress)
+        destinations=((-distance,-distance),(half_width+distance,-distance),
+                      (-distance,half_height+distance),
+                      (half_width+distance,half_height+distance))
+        for (window,_,_), (x,y) in zip(windows,destinations):
             if window.get_window() is not None:
-                window.get_window().shape_combine_region(
-                    polygon_region(list(points),half_width,half_height),0,0)
                 window.move(x,y)
         Gdk.Display.get_default().flush()
     ready_path = os.environ.get('ASPARTAME_TRANSITION_READY')
     if ready_path:
         open(ready_path, 'w').close()
-    shape_panels(0.0)
+    move_panels(0.0)
     started=time.monotonic()
     shell_seen_at=[None]
     animation_started=[False]
@@ -92,7 +69,7 @@ def main():
         if not animation_started[0]:
             return False
         progress[0]=min(1.0,progress[0]+0.00625)
-        shape_panels(progress[0])
+        move_panels(progress[0])
         if progress[0]>=1.0:
             close_all()
             return False
