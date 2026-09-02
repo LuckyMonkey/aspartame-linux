@@ -51,9 +51,19 @@ def _read_info(path):
     }
 
 
+def _root_priority(root):
+    root = os.path.realpath(root)
+    if root == os.path.realpath(os.path.expanduser("~/.local/share/sugar/activities")):
+        return 0
+    if root == os.path.realpath("/usr/local/share/sugar/activities"):
+        return 1
+    return 2
+
+
 def list_activities(roots=ACTIVITY_ROOTS):
-    """Return installed Activity metadata, sorted for a stable UI."""
+    """Return installed Activity metadata, preferring user overrides."""
     found = {}
+    priorities = {}
     for root in roots:
         if not os.path.isdir(root):
             continue
@@ -66,8 +76,12 @@ def list_activities(roots=ACTIVITY_ROOTS):
             except (OSError, UnicodeError, configparser.Error) as error:
                 LOG.warning("Skipping malformed Activity metadata %s: %s", path, error)
                 continue
-            if info and info['id'] not in found:
-                found[info['id']] = info
+            if info:
+                priority = _root_priority(root)
+                if (info['id'] not in found or
+                        priority < priorities[info['id']]):
+                    found[info['id']] = info
+                    priorities[info['id']] = priority
     return sorted(found.values(), key=lambda item: item['name'].lower())
 
 

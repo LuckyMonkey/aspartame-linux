@@ -48,6 +48,29 @@ class ActivityManagerModelTests(unittest.TestCase):
             result = model.list_activities((str(root),))
             self.assertEqual([item["name"] for item in result], ["Good"])
 
+    def test_user_copy_wins_over_system_copy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory) / "home"
+            system = Path(directory) / "system"
+            user = home / ".local/share/sugar/activities"
+            for root, name in ((system, "System Copy"), (user, "User Copy")):
+                activity = root / "same.activity" / "activity"
+                activity.mkdir(parents=True)
+                (activity / "activity.info").write_text(
+                    "[Activity]" + chr(10) + "name = " + name + chr(10) +
+                    "bundle_id = org.example.Same" + chr(10),
+                    encoding="utf-8")
+            old_home = os.environ.get("HOME")
+            os.environ["HOME"] = str(home)
+            try:
+                result = model.list_activities((str(system), str(user)))
+            finally:
+                if old_home is None:
+                    os.environ.pop("HOME", None)
+                else:
+                    os.environ["HOME"] = old_home
+            self.assertEqual(result[0]["name"], "User Copy")
+
     def test_activity_metadata_preserves_icon_and_cleans_summary(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / 'activities'
