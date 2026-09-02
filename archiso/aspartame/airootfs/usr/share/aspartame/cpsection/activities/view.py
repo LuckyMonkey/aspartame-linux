@@ -307,8 +307,6 @@ class ActivityManager(SectionView):
             model.save_rating(activity_id, rating)
         else:
             model.clear_rating(activity_id)
-        else:
-            model.clear_rating(activity_id)
 
     def _remove_clicked(self, _button, activity):
         dialog = Gtk.MessageDialog(
