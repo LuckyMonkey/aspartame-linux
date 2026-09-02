@@ -103,6 +103,8 @@ patch -d "$(dirname "$site_packages")" -p0 < \
     /usr/share/aspartame/0001-integrated-navigation.patch
 install -D -m 0644 /usr/share/aspartame/select_a_thing.py \
     "$site_packages/jarabe/select_a_thing.py"
+install -D -m 0644 /usr/share/aspartame/sitecustomize.py \
+    "$site_packages/sitecustomize.py"
 glib-compile-schemas /usr/share/glib-2.0/schemas
 cat > /usr/local/bin/aspartame-session <<'EOF'
 #!/bin/sh

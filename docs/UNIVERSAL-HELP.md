@@ -69,12 +69,19 @@ objects are still selectable: their accessible name/description or tooltip is
 used when available; otherwise the user gets a safe missing-help message and
 developers get a log entry. No GTK class names are shown to users.
 
-This first shell integration covers the Home/Frame windows and provides the
-public `select_a_thing.install_window(window)` API for Activity-window
-integration. Activity processes are separate GTK processes, so complete
-cross-process selection requires the next Activity base-class hook or an
-AT-SPI bridge; this limitation is intentional and documented rather than
-pretended away.
+The shell integration covers Home/Frame windows. A small `sitecustomize.py`
+hook also wraps the upstream Sugar toolkit `Window` constructor when the
+Aspartame path is present, so Activity processes automatically call the same
+public `select_a_thing.install_window(window)` API. This is deliberately a
+bridge at Sugar's existing window boundary, not a replacement toolkit or a
+patch in every Activity.
+
+The remaining system-wide limitation is non-Sugar GTK applications: they do
+not inherit the Sugar toolkit hook. The future AT-SPI bridge can extend the
+same selector to those applications without changing its semantic registry.
+Activity windows still need semantic metadata for rich explanations; without
+it, Select-a-Thing provides the accessible name/tooltip or a safe missing-help
+message rather than inventing meaning.
 
 Missing metadata is safe: the user sees "There isn't an explanation for this
 yet." and developers receive a log entry. GTK containers are not registered

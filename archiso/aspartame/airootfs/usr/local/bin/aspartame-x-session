@@ -20,7 +20,7 @@ for _ in 1 2 3 4 5; do
     sleep 1
 done
 if test -d /mnt/aspartame-dev/sugar/src; then
-    export PYTHONPATH="/mnt/aspartame-dev/sugar/src${PYTHONPATH:+:$PYTHONPATH}"
+    export PYTHONPATH="/usr/share/aspartame:/mnt/aspartame-dev/sugar/src${PYTHONPATH:+:$PYTHONPATH}"
 fi
 
 # Ensure the isolated TCP SSH helper is active once networking is available.

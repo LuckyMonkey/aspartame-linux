@@ -102,6 +102,7 @@ sudo install -D -m 0644 "$clock_schema" "$share_root/schemas/org.aspartame.clock
 sudo install -D -m 0644 "$version_file" "$share_root/ui-version"
 sudo install -D -m 0644 "$project_root/archiso/aspartame/airootfs/usr/share/aspartame/aspartame_help.py" "$share_root/tools/aspartame_help.py"
 sudo install -D -m 0644 "$project_root/sugar-overlay/src/jarabe/select_a_thing.py" "$share_root/sugar/src/jarabe/select_a_thing.py"
+sudo install -D -m 0644 "$project_root/sugar-overlay/src/sitecustomize.py" "$share_root/tools/sitecustomize.py"
 selector_hash=$(sha256sum "$project_root/sugar-overlay/src/jarabe/select_a_thing.py" | awk '{print $1}')
 remote_selector_hash=$(vm_ssh sha256sum /mnt/aspartame-dev/sugar/src/jarabe/select_a_thing.py | awk '{print $1}')
 test "$selector_hash" = "$remote_selector_hash"
@@ -134,6 +135,7 @@ fi
 install -m 0755 /mnt/aspartame-dev/tools/aspartame-version-overlay \
     /usr/local/bin/aspartame-version-overlay
 install -m 0644 /mnt/aspartame-dev/tools/aspartame_help.py /usr/share/aspartame/aspartame_help.py
+install -m 0644 /mnt/aspartame-dev/tools/sitecustomize.py /usr/share/aspartame/sitecustomize.py
 install -D -m 0644 /mnt/aspartame-dev/docs/universal-help.html /usr/share/aspartame/docs/universal-help.html
 for face in broken bad needs-work good perfect; do
     install -D -m 0644 "/mnt/aspartame-dev/assets/activity-manager/faces/$face.svg" \
