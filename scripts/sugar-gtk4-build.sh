@@ -13,7 +13,7 @@ repo=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 for patch in "$repo"/patches/gtk4-preview/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*) target="$toolkit" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*|*0005*|*0007*|*0008*|*0009*|*0010*|*0011*) target="$root/sources/sugar" ;;

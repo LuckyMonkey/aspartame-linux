@@ -9,7 +9,7 @@ def test_palette_menu_item_compatibility_patch_maps_old_calls_to_gtk4_image_api(
 
 def test_gtk4_build_applies_palette_compatibility_to_toolkit():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "*0013*|*0015*) target=\"$toolkit\"" in build
+    assert "*0013*|*0015*|*0016*) target=\"$toolkit\"" in build
 
 
 def test_cell_renderer_props_compatibility_patch_targets_toolkit_boundary():
@@ -18,7 +18,15 @@ def test_cell_renderer_props_compatibility_patch_targets_toolkit_boundary():
     assert "class _CellRendererIconProps" in patch
     assert "self.props = _CellRendererIconProps(self)" in patch
     assert "def connect(self, signal_name, callback, *user_data):" in patch
-    assert "0015*) target=\"$toolkit\"" in build
+    assert "0015*|*0016*) target=\"$toolkit\"" in build
+
+
+def test_gtk4_cell_renderer_uses_native_gobject_boundary():
+    patch = (ROOT / "patches/gtk4-preview/0016-toolkit-cell-renderer-gobject.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "class CellRendererIcon(Gtk.CellRenderer):" in patch
+    assert "file = GObject.Property" in patch
+    assert "0016*) target=\"$toolkit\"" in build
     assert "GTK3-property compatibility" in patch
 
 

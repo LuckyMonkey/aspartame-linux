@@ -1,0 +1,210 @@
+--- a/src/sugar4/graphics/icon.py
++++ b/src/sugar4/graphics/icon.py
+@@ -717,6 +717,10 @@
+     file_name = GObject.Property(
+         type=str, default=None, getter=get_file_name, setter=set_file_name
+     )
++    # Legacy Sugar callers use ``props.file`` for an icon path.
++    file = GObject.Property(
++        type=str, default=None, getter=get_file_name, setter=set_file_name
++    )
+     pixel_size = GObject.Property(
+         type=int,
+         default=STANDARD_ICON_SIZE,
+@@ -989,7 +993,79 @@
+ 
+ 
+ # Simplified cell renderer for list/tree view compatibility
+-class CellRendererIcon:
++def _renderer_get_size(renderer):
++    return renderer._buffer.width
++
++
++def _renderer_set_size(renderer, value):
++    renderer.set_size(value)
++
++
++def _renderer_get_icon_name(renderer):
++    return renderer._buffer.icon_name
++
++
++def _renderer_set_icon_name(renderer, value):
++    renderer.set_icon_name(value)
++
++
++def _renderer_get_file_name(renderer):
++    return renderer._buffer.file_name
++
++
++def _renderer_set_file_name(renderer, value):
++    renderer.set_file_name(value)
++
++
++def _renderer_get_fill_color(renderer):
++    return renderer._buffer.fill_color
++
++
++def _renderer_set_fill_color(renderer, value):
++    renderer.set_fill_color(value)
++
++
++def _renderer_get_stroke_color(renderer):
++    return renderer._buffer.stroke_color
++
++
++def _renderer_set_stroke_color(renderer, value):
++    renderer.set_stroke_color(value)
++
++
++def _renderer_get_xo_color(renderer):
++    return renderer._xo_color
++
++
++def _renderer_set_xo_color(renderer, value):
++    renderer.set_xo_color(value)
++
++
++def _renderer_get_prelit_fill_color(renderer):
++    return renderer._prelit_fill_color
++
++
++def _renderer_set_prelit_fill_color(renderer, value):
++    renderer._prelit_fill_color = value
++
++
++def _renderer_get_prelit_stroke_color(renderer):
++    return renderer._prelit_stroke_color
++
++
++def _renderer_set_prelit_stroke_color(renderer, value):
++    renderer._prelit_stroke_color = value
++
++
++def _renderer_get_buddy(renderer):
++    return getattr(renderer, "_buddy", None)
++
++
++def _renderer_set_buddy(renderer, value):
++    renderer._buddy = value
++
++
++class CellRendererIcon(Gtk.CellRenderer):
+     """
+     Icon renderer for use in list/tree views.
+ 
+@@ -999,24 +1075,53 @@
+     Note: Consider using modern list/tree widget patterns instead.
+     """
+ 
++    __gsignals__ = {
++        "clicked": (GObject.SignalFlags.RUN_FIRST, None, (str,)),
++    }
++
++    size = GObject.Property(
++        type=int, getter=_renderer_get_size, setter=_renderer_set_size
++    )
++    icon_name = GObject.Property(
++        type=str, getter=_renderer_get_icon_name, setter=_renderer_set_icon_name
++    )
++    file_name = GObject.Property(
++        type=str, getter=_renderer_get_file_name, setter=_renderer_set_file_name
++    )
++    fill_color = GObject.Property(
++        type=str, getter=_renderer_get_fill_color, setter=_renderer_set_fill_color
++    )
++    stroke_color = GObject.Property(
++        type=str, getter=_renderer_get_stroke_color, setter=_renderer_set_stroke_color
++    )
++    xo_color = GObject.Property(
++        type=GObject.TYPE_PYOBJECT,
++        getter=_renderer_get_xo_color,
++        setter=_renderer_set_xo_color,
++    )
++    prelit_fill_color = GObject.Property(
++        type=str,
++        getter=_renderer_get_prelit_fill_color,
++        setter=_renderer_set_prelit_fill_color,
++    )
++    prelit_stroke_color = GObject.Property(
++        type=str,
++        getter=_renderer_get_prelit_stroke_color,
++        setter=_renderer_set_prelit_stroke_color,
++    )
++    buddy = GObject.Property(
++        type=GObject.TYPE_PYOBJECT,
++        getter=_renderer_get_buddy,
++        setter=_renderer_set_buddy,
++    )
++
+     def __init__(self):
++        Gtk.CellRenderer.__init__(self)
+         self._buffer = _IconBuffer()
+         self._buffer.cache = True
+         self._xo_color = None
+         self._prelit_fill_color = None
+         self._prelit_stroke_color = None
+-        self.props = _CellRendererIconProps(self)
+-        self._signals = {}
+-
+-    def connect(self, signal_name, callback, *user_data):
+-        """Keep legacy renderer callbacks available during GTK4 migration."""
+-        handlers = self._signals.setdefault(signal_name, [])
+-        handlers.append((callback, user_data))
+-        return len(handlers)
+-
+-    def emit(self, signal_name, *args):
+-        for callback, user_data in self._signals.get(signal_name, []):
+-            callback(self, *args, *user_data)
+ 
+     def set_icon_name(self, icon_name: str):
+         self._buffer.icon_name = icon_name
+@@ -1044,49 +1149,6 @@
+             self._buffer.stroke_color = self._xo_color.get_stroke_color()
+ 
+         return self._buffer.get_surface(sensitive)
+-
+-
+-class _CellRendererIconProps:
+-    """Small GTK3-property compatibility surface for legacy callers.
+-
+-    GTK4 no longer provides GtkCellRenderer, but Journal and a few other
+-    Sugar views still configure icon renderers through ``renderer.props``.
+-    Keep that compatibility at the toolkit boundary while the views migrate
+-    to native GTK4 list widgets.
+-    """
+-
+-    def __init__(self, renderer):
+-        object.__setattr__(self, "_renderer", renderer)
+-        self.width = renderer._buffer.width
+-        self.height = renderer._buffer.height
+-        self.size = renderer._buffer.width
+-        self.icon_name = None
+-        self.file_name = None
+-        self.mode = None
+-
+-    def __setattr__(self, name, value):
+-        renderer = object.__getattribute__(self, "_renderer")
+-        if name == "width":
+-            renderer._buffer.width = value
+-        elif name == "height":
+-            renderer._buffer.height = value
+-        elif name == "size":
+-            renderer.set_size(value)
+-        elif name == "icon_name":
+-            renderer.set_icon_name(value)
+-        elif name == "file_name":
+-            renderer.set_file_name(value)
+-        elif name == "fill_color":
+-            renderer.set_fill_color(value)
+-        elif name == "stroke_color":
+-            renderer.set_stroke_color(value)
+-        elif name == "xo_color":
+-            renderer.set_xo_color(value)
+-        elif name == "prelit_fill_color":
+-            renderer._prelit_fill_color = value
+-        elif name == "prelit_stroke_color":
+-            renderer._prelit_stroke_color = value
+-        object.__setattr__(self, name, value)
+ 
+ 
+ # Utility functions

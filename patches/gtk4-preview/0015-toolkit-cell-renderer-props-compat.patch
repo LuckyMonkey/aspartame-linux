@@ -1,6 +1,6 @@
 --- a/src/sugar4/graphics/icon.py
 +++ b/src/sugar4/graphics/icon.py
-@@ -1005,6 +1005,19 @@ class CellRendererIcon:
+@@ -1005,6 +1005,18 @@ class CellRendererIcon:
          self._xo_color = None
          self._prelit_fill_color = None
          self._prelit_stroke_color = None
@@ -19,7 +19,7 @@
 +
      def set_icon_name(self, icon_name: str):
          self._buffer.icon_name = icon_name
-@@ -1034,6 +1035,49 @@ class CellRendererIcon:
+@@ -1034,4 +1035,47 @@ class CellRendererIcon:
          return self._buffer.get_surface(sensitive)
  
  
