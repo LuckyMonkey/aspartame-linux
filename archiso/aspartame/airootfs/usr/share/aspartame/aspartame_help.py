@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 import logging
 from pathlib import Path
+import shutil
+import subprocess
 
 
 LOG = logging.getLogger(__name__)
@@ -187,22 +189,45 @@ def _show_explanation(widget, target_data):
     invoker.attach_tool(widget)
     palette.props.invoker = invoker
     palette.popup(immediate=True)
+    _speak(target_data.explanation)
+
+
+def _speak(text):
+    """Speak help when an optional local speech command is available."""
+    command = shutil.which('spd-say') or shutil.which('espeak-ng')
+    if command:
+        try:
+            subprocess.Popen([command, text],
+                             stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL,
+                             start_new_session=True)
+        except OSError:
+            LOG.debug('Optional speech helper could not be started',
+                      exc_info=True)
 
 
 def _open_documentation(_button, documentation):
     from gi.repository import Gio
     uri = 'file:///usr/share/aspartame/docs/universal-help.html#' + documentation.split('#', 1)[-1]
+    # Help Activity is preferred when present; the local document remains a
+    # reliable offline fallback on minimal images.
+    if shutil.which('sugar-activity'):
+        try:
+            subprocess.Popen(['sugar-activity', 'org.laptop.HelpActivity'],
+                             start_new_session=True)
+            return
+        except OSError:
+            LOG.exception('Unable to start the Help Activity')
     Gio.AppInfo.launch_default_for_uri(uri, None)
 
 
 def install_window(window):
-    """Add a conservative fallback for visible widgets without metadata."""
+    """Install Jarabe's separate, system-wide Select-a-Thing layer."""
     if getattr(window, '_aspartame_help_window_installed', False):
         return
     window._aspartame_help_window_installed = True
-    window.add_events(1 << 8)
-    window.connect('button-press-event', _window_button_press)
-    window.connect('key-press-event', _window_key_press)
+    from jarabe import select_a_thing
+    select_a_thing.install_window(window)
 
 
 def _window_button_press(window, event):

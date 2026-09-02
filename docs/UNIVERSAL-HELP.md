@@ -2,10 +2,17 @@
 
 ## Purpose
 
-What's This? is a Sugar shell capability, not a Help Activity. The user
-activates ?, then clicks an unfamiliar control. The click is consumed, the
-control does not activate, and a short plain-language explanation opens in a
-Sugar palette. See more... opens the matching local documentation anchor.
+Select-a-Thing is a Jarabe shell capability, not a Help Activity. It is the
+accessibility interaction layer: it lets a person select a visible object by
+pointer or keyboard without activating it. The help registry then supplies
+plain-language meaning, and the separate Help Activity is only the deeper
+documentation reader.
+
+The user activates `?`, selects an unfamiliar thing, and the original action is
+consumed. A short explanation opens in a Sugar palette. `See more…` opens the
+Help Activity when it is installed, with the local offline document as the
+fallback. Optional speech-dispatcher/espeak output reads the explanation
+aloud; speech is not required for the visual or keyboard path.
 
 ## Archaeology
 
@@ -48,15 +55,26 @@ consume. Do not derive user-facing text from GTK class names.
 
 ## Interaction
 
-The shell ? control stores a short-lived mode marker in
-/tmp/aspartame-whats-this. Registered widgets install a button-press guard.
-When the marker exists, the guard shows the target palette and returns True,
-preventing the ordinary GTK clicked/activate path. A successful lookup clears
-the marker. Escape clears it too. Shell startup clears stale state.
+The shell `?` control stores a short-lived mode marker in
+`/tmp/aspartame-whats-this`. `jarabe/select_a_thing.py` is the separate Jarabe
+implementation. It installs a generic GTK event handler on each registered
+Sugar shell window, consumes pointer/key events before normal activation, and
+walks focusable/semantic widgets for Tab, Shift+Tab, arrows, Enter, Space, and
+Escape. Pointer selection climbs to the nearest meaningful semantic target, so
+children do not steal an explanation from a registered parent.
 
-This first implementation covers existing Frame navigation controls and Count
-controls. The most specific nested widget wins because guards are attached to
-the actual control rather than its containing Activity.
+Registered controls use `aspartame_help.guard()` for stable metadata and
+backward-compatible per-control activation guards. Unregistered focusable
+objects are still selectable: their accessible name/description or tooltip is
+used when available; otherwise the user gets a safe missing-help message and
+developers get a log entry. No GTK class names are shown to users.
+
+This first shell integration covers the Home/Frame windows and provides the
+public `select_a_thing.install_window(window)` API for Activity-window
+integration. Activity processes are separate GTK processes, so complete
+cross-process selection requires the next Activity base-class hook or an
+AT-SPI bridge; this limitation is intentional and documented rather than
+pretended away.
 
 Missing metadata is safe: the user sees "There isn't an explanation for this
 yet." and developers receive a log entry. GTK containers are not registered
@@ -77,8 +95,9 @@ example, common problems, related concepts, and technical detail where useful.
 The ? control is placed inside the existing Frame toolbar and does not create
 a panel or taskbar. Its tooltip explains the mode before activation. The mode
 is also represented by changed tooltip text and behavior, not color alone.
-Escape is handled at the shell window level. Stable semantic IDs leave room
-for keyboard focus and screen-reader integration later.
+Escape is handled at the shell window level. Stable semantic IDs give keyboard focus and screen-reader tooling a shared
+semantic boundary. Select-a-Thing is keyboard reachable through the `?`
+control and consumes activation while active.
 
 This pass does not make every arbitrary widget help-aware. It also uses a
 temporary marker rather than a new D-Bus service, so the mode is local to the

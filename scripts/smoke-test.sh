@@ -49,6 +49,9 @@ done
 test -f "$root/docs/SUGAR-DEVELOPMENT.md"
 test -f "$root/docs/SUGAR-STYLING.md"
 test -f "$root/sugar-overlay/extensions.list"
+test -f "$root/sugar-overlay/src/jarabe/select_a_thing.py"
+python3 -m py_compile "$root/sugar-overlay/src/jarabe/select_a_thing.py"
+test -f "$root/archiso/aspartame/airootfs/usr/share/aspartame/select_a_thing.py"
 test -f "$root/archiso/aspartame/airootfs/usr/share/glib-2.0/schemas/org.aspartame.clock.gschema.xml"
 grep -qx 'exec /usr/local/bin/aspartame-x-session' \
     "$root/archiso/aspartame/airootfs/etc/skel/.xinitrc"

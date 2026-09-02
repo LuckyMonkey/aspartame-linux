@@ -71,3 +71,11 @@ def test_register_target_sets_keyboard_accessible_metadata():
     assert widget.focus is True
     assert widget.accessible.name == "Example"
     assert widget.accessible.description == "Explain the example."
+
+
+def test_select_a_thing_is_a_separate_jarabe_component():
+    source = (MODULE.parents[6] / "sugar-overlay/src/jarabe/select_a_thing.py").read_text()
+    assert "def install_window(window):" in source
+    assert "EventType.BUTTON_PRESS" in source
+    assert "Gdk.KEY_Tab" in source
+    assert "return True" in source

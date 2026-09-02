@@ -101,6 +101,11 @@ done < "$extension_files_list"
 sudo install -D -m 0644 "$clock_schema" "$share_root/schemas/org.aspartame.clock.gschema.xml"
 sudo install -D -m 0644 "$version_file" "$share_root/ui-version"
 sudo install -D -m 0644 "$project_root/archiso/aspartame/airootfs/usr/share/aspartame/aspartame_help.py" "$share_root/tools/aspartame_help.py"
+sudo install -D -m 0644 "$project_root/sugar-overlay/src/jarabe/select_a_thing.py" "$share_root/sugar/src/jarabe/select_a_thing.py"
+selector_hash=$(sha256sum "$project_root/sugar-overlay/src/jarabe/select_a_thing.py" | awk '{print $1}')
+remote_selector_hash=$(vm_ssh sha256sum /mnt/aspartame-dev/sugar/src/jarabe/select_a_thing.py | awk '{print $1}')
+test "$selector_hash" = "$remote_selector_hash"
+printf '  selector hash ........ PASS\n'
 sudo install -D -m 0644 "$project_root/docs/universal-help.html" "$share_root/docs/universal-help.html"
 for face in broken bad needs-work good perfect; do
     sudo install -D -m 0644 \
@@ -184,6 +189,18 @@ if test "$host_extension_manifest" != "$remote_extension_manifest"; then
 fi
 printf '  extension hashes ...... PASS\n'
 
+# Health checks must describe this reload, not stale failures from an older
+# attempt. Preserve the old log, then start a fresh shell log for evidence.
+vm_ssh bash -s -- "$timestamp" <<'REMOTE_LOG'
+set -euo pipefail
+stamp=$1
+log=/home/aspartame/.sugar/default/logs/shell.log
+if test -f "$log"; then
+    cp -p "$log" "$log.pre-reload-$stamp"
+    : > "$log"
+    chown aspartame:aspartame "$log"
+fi
+REMOTE_LOG
 
 old_state=$(vm_ssh /usr/local/bin/aspartame-sugar-state)
 printf '\nPrevious runtime:\n  %s\n' "$old_state"

@@ -23,6 +23,14 @@ milestone so future sessions can resume without relying on chat history.
 - [ ] Show kernel, desktop, graphics, memory, storage, and build information.
 - [ ] Use fastfetch/neofetch-style data only as an input, not as a raw UI dump.
 - [ ] Keep the information readable, Sugar-styled, and offline-capable.
+- [ ] Build a small read-only system inventory provider for About Computer:
+  distro/os-release, kernel, CPU, memory, storage, graphics, display,
+  desktop/session, Sugar/Aspartame versions, and capability notes.
+- [ ] Capture fetch-style output at runtime and map it into labeled About
+  sections; never shell out to an untrusted command or dump terminal output
+  directly into the UI.
+- [ ] Verify the inventory refreshes after hardware/display changes and remains
+  usable when optional fetch tools are not installed.
 
 ## Next milestone: Settings architecture
 
@@ -36,11 +44,17 @@ milestone so future sessions can resume without relying on chat history.
 
 ## Help and discoverability
 
+- [ ] Make Select-a-Thing a shell-wide, reusable interaction layer for both
+  pointer and keyboard users; Activity windows must be able to opt in through
+  the same API without duplicating help logic.
 - [ ] Repair What's This? interception so help clicks do not activate targets.
 - [ ] Ensure every registered target has a tooltip and offline “See more…” page.
 - [ ] Add missing-help diagnostics without exposing technical IDs to users.
 - [ ] Add Activity Manager, About, Settings, and face-rating help metadata.
 - [ ] Verify keyboard access and Escape/toggle behavior.
+- [ ] Add spoken help integration through the existing accessibility/speech
+  boundary after semantic selection is reliable; do not make speech a hard
+  dependency for ordinary help mode.
 
 ## Activity quality pass
 

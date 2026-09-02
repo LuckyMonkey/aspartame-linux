@@ -88,16 +88,26 @@ class ViewToolbar(Gtk.Toolbar):
         tool_item.add(self.search_entry)
         self.search_entry.show()
 
-        self._clock_item = Gtk.ToolButton.new(None, "--:--")
+        # Use an expanding, centered tool item rather than a ToolButton.
+        # ToolButton aligns its label from the left and makes the clock appear
+        # displaced when the surrounding controls change width.
+        self._clock_item = Gtk.ToolItem()
         self._clock_item.set_expand(True)
-        self._clock_item.set_is_important(True)
+        clock_box = Gtk.Box()
+        clock_box.set_hexpand(True)
+        clock_box.set_halign(Gtk.Align.FILL)
+        self._clock_render_label = Gtk.Label(label="--:--")
+        self._clock_render_label.set_hexpand(True)
+        self._clock_render_label.set_halign(Gtk.Align.CENTER)
+        self._clock_render_label.set_valign(Gtk.Align.CENTER)
+        self._clock_render_label.set_can_focus(False)
+        self._clock_render_label.get_style_context().add_class(
+            'aspartame-clock-button')
+        clock_box.pack_start(self._clock_render_label, True, True, 0)
+        self._clock_item.add(clock_box)
         self.insert(self._clock_item, -1)
         self._clock_item.show_all()
-        self._clock_button = self._clock_item.get_child()
-        self._clock_button.set_can_focus(False)
-        self._clock_button.set_relief(Gtk.ReliefStyle.NONE)
-        self._clock_button.get_style_context().add_class(
-            'aspartame-clock-button')
+        self._clock_button = self._clock_render_label
         clock_css = Gtk.CssProvider()
         clock_css.load_from_data(b'''
             .aspartame-clock-button,
@@ -114,10 +124,8 @@ class ViewToolbar(Gtk.Toolbar):
         ''')
         self._clock_button.get_style_context().add_provider(
             clock_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-        self._clock_render_label = self.__find_clock_label(self._clock_item)
-        if self._clock_render_label is not None:
-            self._clock_render_label.set_margin_top(6)
-        self._clock_item.get_child().set_margin_end(2 * style.GRID_CELL_SIZE)
+        self._clock_render_label.set_margin_top(0)
+        self._clock_render_label.set_margin_bottom(0)
         self._clock_settings = Gio.Settings.new("org.aspartame.clock")
         self._clock_settings.connect("changed::format",
                                      self.__clock_format_changed_cb)
@@ -149,10 +157,10 @@ class ViewToolbar(Gtk.Toolbar):
             .aspartame-help-button:hover,
             .aspartame-help-button:focus,
             .aspartame-help-button:active {
-                min-width: 72px;
-                min-height: 72px;
+                min-width: 52px;
+                min-height: 52px;
                 padding: 0;
-                border-radius: 36px;
+                border-radius: 26px;
                 border: 0;
                 background: #ffffff;
                 background-image: none;
@@ -178,7 +186,7 @@ class ViewToolbar(Gtk.Toolbar):
             'aspartame-help-button')
         self._help_button.set_relief(Gtk.ReliefStyle.NONE)
         self._help_button.set_focus_on_click(True)
-        self._help_button.set_size_request(72, 72)
+        self._help_button.set_size_request(52, 52)
         self._help_button.set_tooltip_text(
             "What is this? - Learn what something on the screen does.")
         aspartame_help.register_target(
@@ -283,8 +291,6 @@ class ViewToolbar(Gtk.Toolbar):
             self._clock_render_label.set_markup(
                 "<span size=\"xx-large\" weight=\"bold\">%s</span>" %
                 escaped_text)
-        else:
-            self._clock_item.set_label(text)
         return True
 
 
