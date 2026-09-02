@@ -1,0 +1,69 @@
+--- a/src/sugar4/graphics/icon.py
++++ b/src/sugar4/graphics/icon.py
+@@ -1005,6 +1005,19 @@ class CellRendererIcon:
+         self._xo_color = None
+         self._prelit_fill_color = None
+         self._prelit_stroke_color = None
++        self.props = _CellRendererIconProps(self)
++        self._signals = {}
+ 
++    def connect(self, signal_name, callback, *user_data):
++        """Keep legacy renderer callbacks available during GTK4 migration."""
++        handlers = self._signals.setdefault(signal_name, [])
++        handlers.append((callback, user_data))
++        return len(handlers)
++
++    def emit(self, signal_name, *args):
++        for callback, user_data in self._signals.get(signal_name, []):
++            callback(self, *args, *user_data)
++
+     def set_icon_name(self, icon_name: str):
+         self._buffer.icon_name = icon_name
+@@ -1034,6 +1035,49 @@ class CellRendererIcon:
+         return self._buffer.get_surface(sensitive)
+ 
+ 
++class _CellRendererIconProps:
++    """Small GTK3-property compatibility surface for legacy callers.
++
++    GTK4 no longer provides GtkCellRenderer, but Journal and a few other
++    Sugar views still configure icon renderers through ``renderer.props``.
++    Keep that compatibility at the toolkit boundary while the views migrate
++    to native GTK4 list widgets.
++    """
++
++    def __init__(self, renderer):
++        object.__setattr__(self, "_renderer", renderer)
++        self.width = renderer._buffer.width
++        self.height = renderer._buffer.height
++        self.size = renderer._buffer.width
++        self.icon_name = None
++        self.file_name = None
++        self.mode = None
++
++    def __setattr__(self, name, value):
++        renderer = object.__getattribute__(self, "_renderer")
++        if name == "width":
++            renderer._buffer.width = value
++        elif name == "height":
++            renderer._buffer.height = value
++        elif name == "size":
++            renderer.set_size(value)
++        elif name == "icon_name":
++            renderer.set_icon_name(value)
++        elif name == "file_name":
++            renderer.set_file_name(value)
++        elif name == "fill_color":
++            renderer.set_fill_color(value)
++        elif name == "stroke_color":
++            renderer.set_stroke_color(value)
++        elif name == "xo_color":
++            renderer.set_xo_color(value)
++        elif name == "prelit_fill_color":
++            renderer._prelit_fill_color = value
++        elif name == "prelit_stroke_color":
++            renderer._prelit_stroke_color = value
++        object.__setattr__(self, name, value)
++
++
+ # Utility functions
