@@ -499,3 +499,14 @@
  
      def do_get_preferred_size(self):
          size = self._calculate_size()
+--- jarabe/desktop/grid.py
++++ jarabe/desktop/grid.py
+@@ -199,7 +199,7 @@
+         for c in self._children:
+             intersects_, intersection = Gdk.rectangle_intersect(
+                 child_rect, self._child_rects[c])
+-            if c != child and intersection.width > 0:
++            if c != child and intersection.width > 0 and intersection.height > 0:
+                 collision_found = True
+                 if (c not in self._locked_children and
+                         c not in self._collisions):
