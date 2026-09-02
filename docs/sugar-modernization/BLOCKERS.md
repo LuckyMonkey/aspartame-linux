@@ -78,3 +78,83 @@
 - Reproduction: private preview DBus session has no `org.freedesktop.Telepathy.AccountManager`; eager `MeshBox`/`FriendsTray` construction aborts before Home is installed.
 - Fix: defer Group/Neighborhood construction and make FriendsTray degrade to the owner-only tray when collaboration is unavailable.
 - Status: default Home path unblocked; collaboration remains untested.
+
+## GTK4-012 — obsolete host stack cannot represent current Casilda
+
+- Category: `CASILDA` / `ARCH-PACKAGING`
+- Reproduction: current Casilda main requires GTK 4.22.2 and wlroots 0.20; the
+  abandoned Ubuntu-host preview had GTK 4.14 and used Casilda 0.3.
+- Root cause: the experiment ran in the wrong environment and could not test
+  the current upstream compositor.
+- Fix: build Casilda `cecb869` against stock Arch guest GTK 4.22.4 and
+  wlroots 0.20.2 in an isolated guest prefix.
+- Verification: `Casilda-1.0.typelib` imports and `wayland-info` connects to
+  the live `wayland-sugar` socket.
+- Status: resolved; host approach retired.
+
+## GTK4-013 — Arch splits `glib-mkenums` into `glib2-devel`
+
+- Category: `ARCH-PACKAGING`
+- Reproduction: sugar-ext Meson configuration fails because `glib-mkenums`
+  is absent when only `glib2` is installed.
+- Root cause: current Arch packages the development generator separately.
+- Fix: add `glib2-devel` to the Aspartame ISO development profile.
+- Verification: sugar-ext builds, installs its GIR/typelib, and passes five
+  native tests.
+- Status: resolved.
+
+## GTK4-014 — shell distribution target references a missing icon
+
+- Category: `UPSTREAM-SHELL`
+- Reproduction: after successful `autogen.sh`, `make` stops because
+  `data/icons/Makefile.am` lists absent `list-add.svg`.
+- Root cause: the PR source manifest and checkout contents disagree.
+- Fix: FIRST PIXELS stages the Python shell data/extensions after generating
+  `jarabe/config.py`; it does not manufacture an icon or alter `/usr`.
+- Upstream candidate: yes; correct the source distribution manifest or add
+  the intended artwork upstream.
+- Status: runtime unblocked; upstream packaging defect remains open.
+
+## GTK4-015 — toolkit and datastore disagree on the D-Bus service name
+
+- Category: `DBUS` / `DATASTORE`
+- Reproduction: Favorites calls `sugar4.datastore.find`; D-Bus reports that
+  `org.laptop.sugar4.DataStore` has no owner while the launched service owns
+  `org.laptop.sugar.DataStore`.
+- Root cause: toolkit PR naming changed without a matching datastore service
+  contract in the pinned source.
+- Status: open; this is the first shell-stability blocker after FIRST PIXELS.
+
+## GTK4-016 — private session omits locale variables
+
+- Category: `ASPARTAME-INTEGRATION`
+- Reproduction: Journal date rendering raises `KeyError: 'LANG'` in
+  `sugar4.util.timestamp_to_elapsed_string`.
+- Root cause: the preview launcher constructs a private environment without
+  propagating a normalized locale.
+- Status: open; fix in the launcher, not with a shell source workaround.
+
+## GTK4-017 — D-Bus activation inherits the caller's runtime directory
+
+- Category: `DBUS` / `ASPARTAME-INTEGRATION`
+- Reproduction: activated Telepathy/GVFS processes running as uid 1000 try to
+  create `/run/user/0/dconf` and receive permission errors.
+- Root cause: `XDG_RUNTIME_DIR` is applied to the command *inside*
+  `dbus-run-session`, after the private bus has captured its activation
+  environment.
+- Status: open; sanitize the environment before creating the private bus.
+
+## GTK4-018 — GTK4 co-installation breaks stable GTK3 Activity startup
+
+- Category: `GI/INTROSPECTION` / `ASPARTAME-INTEGRATION`
+- Reproduction: after installing GTK4, launch Terminal, Write, or Image Viewer
+  from stable Sugar. Each fresh process fails because GDK 4 is already loaded.
+- Root cause: Aspartame's `sitecustomize` imported `sugar3.graphics.window`
+  before declaring the GTK/GDK 3 namespace. With both typelibs installed,
+  PyGObject selected GDK 4.
+- Fix: the GTK3-only hook now requires `Gdk` and `Gtk` 3.0 before importing
+  Sugar. Both ISO and development-overlay copies are synchronized.
+- Regression coverage: `test_activity_window_bridge_uses_sugar_window_boundary`.
+- Verification: the standard runtime probe reports GTK 3.24.52 without a GI
+  traceback, and a fresh packaged Terminal Activity process rendered visibly.
+- Status: resolved; stable GTK3 and isolated GTK4 can coexist.

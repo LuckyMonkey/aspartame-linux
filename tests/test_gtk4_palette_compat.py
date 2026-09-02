@@ -41,5 +41,8 @@ def test_gtk4_build_stages_and_launcher_starts_datastore_preview():
     run = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     session = (ROOT / "scripts/sugar-gtk4-session.sh").read_text()
     assert "0014*) target=\"$root/sources/sugar-datastore\"" in build
-    assert "carquinyol/metadatareader.cpython-312-x86_64-linux-gnu.so" in run
+    assert "python_version=$($venv/bin/python" in build
+    assert "metadatareader$python_ext_suffix" in build
+    assert "metadata_reader=$(find" in run
+    assert "-name 'metadatareader*.so'" in run
     assert "org.laptop.sugar.DataStore" in session

@@ -2,9 +2,13 @@
 
 ## P0 — boot/session startup
 
-- [ ] Identify an upstream GTK4 shell branch that can start a complete Sugar
-  session. Scope: shell/session. Depends on Sugar shell migration. Test with
-  an isolated VM. Completion: Home, D-Bus, and clean shutdown work.
+- [x] Select and pin Sugar PR #1106 and reach real Jarabe pixels in the
+  Aspartame VM with embedded Casilda 1.5. This proves startup, not a complete
+  session.
+- [ ] Align the toolkit/datastore D-Bus service contract.
+- [ ] Propagate locale and runtime-directory state before private D-Bus starts.
+- [ ] Hold the corrected Home shell alive for 60 seconds without fatal
+  tracebacks.
 - [ ] Remove any GTK3-only shell import from the selected upstream branch.
   Downstream only until upstream has a supported pattern.
 
@@ -25,13 +29,14 @@
 
 ## P4 — Wayland/backend neutrality
 
-- [ ] Test the upstream Casilda/Wayland path when shell support exists.
+- [x] Build Casilda 1.5 against guest Arch wlroots 0.20 and verify the private
+  `wayland-sugar` socket/protocol registry.
 - [ ] Remove accidental new X11 dependencies from migrated code.
 
 ## P5 — cleanup and packaging
 
 - [ ] Track Python/GTK API deprecations and Arch package drift.
-- [ ] Add matching GTK4 package profile only when upstream shell is bootable.
+- [x] Add the guest-only GTK4/Casilda build dependencies to the ISO profile.
 
 ## P6 — optional modernization
 

@@ -1,20 +1,30 @@
 # GTK4 race status
 
-Checked 2026-08-31. The preview is isolated on SteamLibrary and cannot overwrite the working GTK3 path.
+Checked 2026-09-02. The active preview runs only inside the Aspartame QEMU
+development guest. Its source, prefix, profile, D-Bus session, and runtime are
+isolated from package-owned GTK3 Sugar.
 
 ## Current milestone
 
-🟡 GTK4 Home startup reached: the isolated preview now gets past profile setup,
-Home construction, and optional collaboration dependencies. Default Favorites
-Home is visible and the shell process remains alive for at least 12 seconds.
-List View, Frame interaction, and activity launch are not yet claimed.
+🟡 **FIRST PIXELS (Arch VM):** pinned GTK4 Jarabe creates a real Sugar window
+on the 1920x1080 guest desktop. The shell remained alive beyond 140 seconds.
+Casilda 1.5.0 created the private `wayland-sugar` socket, and `wayland-info`
+confirmed compositor, seat, pointer, keyboard, data-device, XDG shell, output,
+viewport, and fractional-scale protocols.
 
-✅ Official GTK4 PyGObject 4.14.5 loads. ✅ `sugar4` imports from the pinned toolkit checkout. ✅ `sugar-ext` C libraries, GIR generation, and five Meson tests build/pass after a local gtk-doc correction. ❌ A complete GTK4 Sugar shell has not booted.
+This proves Jarabe pixels and the embedded Wayland boundary, not a usable GTK4
+desktop. Favorites and the XO render, but datastore name mismatch and missing
+locale propagation produce runtime tracebacks. Frame, Journal, and activity
+lifecycle are not claimed. Stable GTK3 continued running behind the preview.
+After GTK4 installation exposed an ambiguous GI default, the GTK3-only
+Select-a-Thing startup hook was made explicit about GTK/GDK 3; a fresh Terminal
+Activity then launched and rendered normally.
 
 ## Pinned heads
 
-See the external preview pin file: `/media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization/gtk4/PINS.tsv`.
+See the guest pin file: `/home/aspartame/Development/gtk4-preview/PINS.tsv`.
 The selected shell is Sugar PR #1106 head `f84a2d514dbbcab6e30c810b00088f47870e04a5`; toolkit is PR #35 head `74f6a05a4921c27d0892bc22845fd4d4a60f4119`.
+Casilda is pinned to `cecb869ce390e13ebdecdca9953731d3a3f3aa73`.
 
 ## Scorecard
 
@@ -22,20 +32,35 @@ The selected shell is Sugar PR #1106 head `f84a2d514dbbcab6e30c810b00088f47870e0
 |---|---|---|
 | GTK4 toolkit import | ✅ | ✅ |
 | Toolkit icon tests | 🧪 | ✅ 55/55 |
-| sugar-ext build/tests | 🧪 | 🧪 C build/tests pass; typelib correction local |
-| Shell startup/Home/Frame/Journal | ❌ incomplete | ❌ not yet attempted successfully |
-| Activities/Wayland | 🧪 PR work | ❌ not yet runtime-tested |
+| sugar-ext build/tests | 🧪 | ✅ build/install and 5 native tests |
+| Casilda compositor | 🧪 PR work | ✅ 1.5.0 socket and protocols live |
+| Shell startup | ❌ incomplete | 🟡 real Jarabe window visible |
+| Home | 🧪 PR work | 🧪 Favorites/XO render; datastore error |
+| Frame/Journal | 🧪 PR work | ❌ not usable yet |
+| GTK4 activity lifecycle | 🧪 PR work | ❌ not runtime-tested |
 
 “More code” is not counted as “ahead” until it runs in a session.
 
-## Verified FIRST PIXELS checkpoint
+## Verified 2026-09-02 Arch VM FIRST PIXELS checkpoint
 
-On 2026-08-31 the pinned GTK4 Jarabe shell stayed alive for 25 seconds under private Xvfb and a DBus session and produced recognizable Sugar profile UI pixels. Capture: /media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization/gtk4/logs/first-pixels-12.png. This is not yet Home, shell stability, or activity lifecycle.
+Evidence: `reports/gtk4/first-pixels-arch-vm-20260902.png` (1920x1080,
+SHA-256 `c93ff7a0cdb38a72a27b42c77ccb9714f4061f47d395d73e9cb47932a916095f`).
 
-The reproducible wrapper is make sugar-gtk4-run / scripts/sugar-gtk4-run.sh. It contains isolated SUGAR_HOME, GSettings schema data, group-label data, GI typelib and library paths, Python path, Xvfb fallback, and DBus setup.
+Runtime versions: Python 3.14.7, GTK 4.22.4, PyGObject 3.56.3,
+GLib 2.88.3, Wayland 1.26.0, wlroots 0.20.2, Meson 1.12.0, and
+Casilda 1.5.0. The outer preview window uses the guest's existing X11 desktop;
+Casilda is the embedded compositor for Sugar's private Wayland activity
+surfaces. No Wayland package or service was installed on the host.
 
-Preview-only compatibility work uses Casilda 0.3 (Casilda-0.1) because host GTK4 4.14 cannot build the current Casilda 1.x API. Activity launch remains explicitly unsupported by the selected toolkit head.
+The screenshot boundary is also useful for future transitions: Casilda renders
+embedded clients through its GTK4 snapshot path. Internal GSK opacity,
+clipping, and transforms are compatible with that boundary; Aspartame must not
+depend on transparent native top-level windows. No transition work is part of
+this checkpoint.
 
+The older `reports/gtk4/first-pixels-12.png` Xvfb result is retained as
+historical evidence only. The VM-native Casilda 1.5 result supersedes its host
+dependency assumptions.
 
 ## 2026-09-01 verification
 
@@ -73,9 +98,10 @@ The GTK4 preview toolkit now provides the upstream migration name
 method for shell code that has not yet been ported. This removes the runtime
 crashes previously seen in network and Journal toolbox construction. The
 pinned sugar-datastore source is staged in the isolated prefix: its small
-`metadatareader` extension is compiled for the host Python and its remaining
+`metadatareader` extension is compiled for the preview Python and its remaining
 `env`, `mime`, and `logger` imports use `sugar4`. The preview launcher starts
-the service on the private D-Bus session and reports `datastore: ready`.
+the service on the private D-Bus session, but the service currently owns the
+GTK3 name while `sugar4` asks for the GTK4 name.
 
 Journal proceeds farther after this checkpoint but still fails in its legacy
 GTK3-style `CellRendererFavorite` (`props` is unavailable under GTK4). That

@@ -4,10 +4,13 @@ from pathlib import Path
 ROOT = Path(__file__).parents[1]
 
 
-def test_gtk4_launcher_stages_shell_runtime_data():
+def test_gtk4_build_stages_shell_runtime_data_before_launch():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     launcher = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     assert 'SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults"' in launcher
-    assert 'ln -sfn "$shell/extensions" "$prefix/share/sugar/extensions"' in launcher
+    assert 'cp -a "$shell/extensions/." "$prefix/share/sugar/extensions/"' in build
+    assert 'test -d "$prefix/share/sugar/extensions"' in launcher
+    assert 'ln -sfn "$shell/extensions"' not in launcher
 
 
 def test_gtk4_home_preview_patches_are_ordered_and_targeted():

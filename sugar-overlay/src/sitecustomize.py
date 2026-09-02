@@ -10,6 +10,10 @@ import logging
 _LOG = logging.getLogger(__name__)
 
 try:
+    import gi
+    gi.require_version("Gdk", "3.0")
+    gi.require_version("Gtk", "3.0")
+
     from sugar3.graphics import window as sugar_window
 
     _original_init = sugar_window.Window.__init__

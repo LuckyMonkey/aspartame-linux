@@ -83,6 +83,8 @@ def test_select_a_thing_is_a_separate_jarabe_component():
 
 def test_activity_window_bridge_uses_sugar_window_boundary():
     source = (MODULE.parents[6] / "sugar-overlay/src/sitecustomize.py").read_text()
+    assert 'gi.require_version("Gdk", "3.0")' in source
+    assert 'gi.require_version("Gtk", "3.0")' in source
     assert "sugar3.graphics import window" in source
     assert "select_a_thing.install_window(self)" in source
     assert "Window.__init__" in source
