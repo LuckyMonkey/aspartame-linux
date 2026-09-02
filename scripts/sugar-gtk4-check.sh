@@ -3,6 +3,24 @@ set -u
 root=${GTK4_ROOT:-/media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization/gtk4}
 toolkit="$root/sources/sugar-toolkit-gtk4"; venv="$root/venv"; fail=0
 echo "Aspartame GTK4 preview checks"
+backend=${GTK4_BACKEND:-wayland}
+case "$backend" in
+    wayland)
+        if [ -n "${WAYLAND_DISPLAY:-}" ] && [ -S "${XDG_RUNTIME_DIR:-}/$WAYLAND_DISPLAY" ]; then
+            echo "outer Wayland compositor: PASS ($WAYLAND_DISPLAY)"
+        else
+            echo "outer Wayland compositor: FAIL (set WAYLAND_DISPLAY and provide its socket)"
+            fail=$((fail+1))
+        fi
+        ;;
+    x11)
+        [ -n "${DISPLAY:-}" ] && echo "explicit X11 diagnostic backend: PASS ($DISPLAY)" || { echo "explicit X11 diagnostic backend: FAIL"; fail=$((fail+1)); }
+        ;;
+    *)
+        echo "GTK4_BACKEND must be wayland or x11 (got: $backend)"
+        fail=$((fail+1))
+        ;;
+esac
 [ -f "$root/PINS.tsv" ] && echo "pins: PASS" || { echo "pins: FAIL"; fail=$((fail+1)); }
 if [ -x "$venv/bin/python" ]; then PYTHONPATH="$toolkit/src${PYTHONPATH:+:$PYTHONPATH}" "$venv/bin/python" -c 'import gi; gi.require_version("Gtk", "4.0"); from gi.repository import Gtk; import sugar4; print("GTK4/PyGObject/sugar4: PASS", "%d.%d.%d" % (Gtk.get_major_version(), Gtk.get_minor_version(), Gtk.get_micro_version()), sugar4.__file__)' || fail=$((fail+1)); else echo "preview venv: FAIL"; fail=$((fail+1)); fi
 if [ -d "$toolkit/.git" ]; then PYTHONPATH="$toolkit/src${PYTHONPATH:+:$PYTHONPATH}" "$venv/bin/python" -m pytest -q "$toolkit/tests/test_icon.py" "$toolkit/tests/test_iconentry.py" || fail=$((fail+1)); else echo "toolkit checkout: FAIL"; fail=$((fail+1)); fi

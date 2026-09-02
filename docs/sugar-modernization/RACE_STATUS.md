@@ -80,3 +80,19 @@ the service on the private D-Bus session and reports `datastore: ready`.
 Journal proceeds farther after this checkpoint but still fails in its legacy
 GTK3-style `CellRendererFavorite` (`props` is unavailable under GTK4). That
 is the next Journal-specific port blocker, not part of this checkpoint.
+
+
+## 2026-09-02 Wayland-first launcher checkpoint
+
+The isolated launcher now defaults to `GTK4_BACKEND=wayland` and validates an
+outer `WAYLAND_DISPLAY` socket before starting Jarabe. It links that socket
+into the private preview runtime so the preview's private `XDG_RUNTIME_DIR`
+does not redirect GTK to a nonexistent socket. `GTK4_BACKEND=x11` remains an
+explicit diagnostic fallback.
+
+The Wayland path was not runnable on this host during this checkpoint: the
+active desktop is X11 (`DISPLAY=:0.0`), no outer Wayland socket exists, and the
+host lacks Weston/Cage. Installing Weston requires an interactive sudo
+credential and was therefore not attempted automatically. The first
+remaining environment blocker is an outer Wayland compositor; no GTK4 source
+or stable GTK3 files were changed to hide that limitation.
