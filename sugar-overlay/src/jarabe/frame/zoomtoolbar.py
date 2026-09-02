@@ -24,6 +24,10 @@ from sugar3.graphics import style
 from sugar3.graphics.palette import Palette
 from sugar3.graphics.radiotoolbutton import RadioToolButton
 
+import sys
+sys.path.insert(0, '/usr/share/aspartame')
+import aspartame_help
+
 from jarabe.journal import journalactivity
 from jarabe.frame.frameinvoker import FrameWidgetInvoker
 from jarabe.model import shell
@@ -68,6 +72,8 @@ class ZoomToolbar(Gtk.Toolbar):
         self._journal_button.set_is_important(True)
         self._journal_button.set_tooltip_text(_('Journal'))
         self._journal_button.connect('clicked', self.__journal_clicked_cb)
+        aspartame_help.guard(self._journal_button,
+                             'org.aspartame.shell.journal')
         self.add(self._journal_button)
         self._journal_button.show()
 
@@ -86,6 +92,13 @@ class ZoomToolbar(Gtk.Toolbar):
         Gtk.RadioToolButton.set_label(button, label)
         button.props.label_widget = None
         button.connect('clicked', self.__level_clicked_cb, zoom_level)
+        help_ids = {
+            shell.ShellModel.ZOOM_MESH: 'org.aspartame.shell.neighborhood',
+            shell.ShellModel.ZOOM_GROUP: 'org.aspartame.shell.group',
+            shell.ShellModel.ZOOM_HOME: 'org.aspartame.shell.home',
+            shell.ShellModel.ZOOM_ACTIVITY: 'org.aspartame.shell.activity',
+        }
+        aspartame_help.guard(button, help_ids[zoom_level])
         self.add(button)
         button.show()
 

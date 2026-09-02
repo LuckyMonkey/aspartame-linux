@@ -43,11 +43,21 @@ _TARGETS = {
         'See the people you are working with.',
         'This shows the people you have deliberately joined for shared work.',
         'shell#group'),
+    'org.aspartame.shell.activity': Target(
+        'org.aspartame.shell.activity', 'Activity',
+        'Work on the activity you have open.',
+        'This is the activity you are using right now. Close it when you are ready to return to Home.',
+        'shell#activity'),
     'org.aspartame.shell.frame': Target(
         'org.aspartame.shell.frame', 'Frame',
         'Reach Sugar navigation and useful actions.',
         'The Frame appears around the edge when you need it. It gives you a way to move through Sugar without covering your activity.',
         'shell#frame'),
+    'org.aspartame.shell.list': Target(
+        'org.aspartame.shell.list', 'List view',
+        'See your activities in a list.',
+        'List view shows the activities on your computer in a compact list so you can find one by name.',
+        'shell#list'),
     'org.aspartame.count': Target(
         'org.aspartame.count', 'Count',
         'Count things arranged in rows, stacks, and layers.',
@@ -96,6 +106,16 @@ def register_target(widget, target_id, **metadata):
                              metadata.get('documentation'))
         _TARGETS[target_id] = target_data
     widget._aspartame_help_id = target_id
+    try:
+        widget.set_can_focus(True)
+    except (AttributeError, TypeError):
+        pass
+    try:
+        accessible = widget.get_accessible()
+        accessible.set_name(target_data.title)
+        accessible.set_description(target_data.short_description)
+    except (AttributeError, TypeError):
+        LOG.debug("Accessibility metadata unavailable for %s", target_id)
     return target_data
 
 
@@ -175,17 +195,60 @@ def _open_documentation(_button, documentation):
     Gio.AppInfo.launch_default_for_uri(uri, None)
 
 
+def install_window(window):
+    """Add a conservative fallback for visible widgets without metadata."""
+    if getattr(window, '_aspartame_help_window_installed', False):
+        return
+    window._aspartame_help_window_installed = True
+    window.add_events(1 << 8)
+    window.connect('button-press-event', _window_button_press)
+    window.connect('key-press-event', _window_key_press)
+
+
+def _window_button_press(window, event):
+    if not is_active():
+        return False
+    from gi.repository import Gtk
+    widget = Gtk.get_event_widget(event)
+    while widget is not None:
+        target_id = getattr(widget, '_aspartame_help_id', None)
+        if target_id:
+            _explain_widget(widget)
+            return True
+        widget = widget.get_parent()
+    _show_missing(window)
+    set_active(False)
+    LOG.info("No contextual-help metadata for clicked widget")
+    return True
+
+
+def _window_key_press(window, event):
+    if is_active() and event.keyval == 65307:
+        escape()
+        return True
+    return False
+
+
 def guard(widget, target_id):
-    """Intercept pointer activation only while What's This? is active."""
+    """Intercept pointer and keyboard activation while help mode is active."""
     register_target(widget, target_id)
     widget.add_events(1 << 8)  # GDK_BUTTON_PRESS_MASK; avoids a Gdk import here.
     widget.connect('button-press-event', _guard_button_press)
+    try:
+        widget.connect('activate', _guard_activate)
+    except (TypeError, ValueError):
+        pass
     return widget
 
 
-def _guard_button_press(widget, _event):
+def _guard_activate(widget):
     if not is_active():
         return False
+    _explain_widget(widget)
+    return True
+
+
+def _explain_widget(widget):
     target_id = getattr(widget, '_aspartame_help_id', None)
     target_data = target(target_id)
     if target_data is None:
@@ -194,6 +257,12 @@ def _guard_button_press(widget, _event):
     else:
         _show_explanation(widget, target_data)
     set_active(False)
+
+
+def _guard_button_press(widget, _event):
+    if not is_active():
+        return False
+    _explain_widget(widget)
     return True
 
 

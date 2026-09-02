@@ -145,20 +145,25 @@ class ViewToolbar(Gtk.Toolbar):
 
         help_css = Gtk.CssProvider()
         help_css.load_from_data(b'''
-            .aspartame-help-button {
+            .aspartame-help-button,
+            .aspartame-help-button:hover,
+            .aspartame-help-button:focus,
+            .aspartame-help-button:active {
                 min-width: 72px;
                 min-height: 72px;
                 padding: 0;
                 border-radius: 36px;
-                border: 2px solid #30383c;
-                background-color: #ffffff;
+                border: 0;
+                background: #ffffff;
+                background-image: none;
+                box-shadow: none;
             }
             .aspartame-help-button label {
-                color: #30383c;
+                color: #58636a;
+                margin: 0;
             }
             .aspartame-help-button.aspartame-help-active {
-                border-color: #ffffff;
-                background-color: #30383c;
+                background: #58636a;
             }
             .aspartame-help-button.aspartame-help-active label {
                 color: #ffffff;
@@ -176,10 +181,12 @@ class ViewToolbar(Gtk.Toolbar):
         self._help_button.set_size_request(72, 72)
         self._help_button.set_tooltip_text(
             "What is this? - Learn what something on the screen does.")
+        aspartame_help.register_target(
+            self._help_button, 'org.aspartame.shell.help')
         self._help_button.connect('button-press-event',
                                   self.__help_clicked_cb)
         help_label = Gtk.Label()
-        help_label.set_markup('<span size="xx-large" weight="bold">?</span>')
+        help_label.set_markup('<span size="42000" weight="bold">?</span>')
         help_label.set_halign(Gtk.Align.CENTER)
         help_label.set_valign(Gtk.Align.CENTER)
         self._help_button.add(help_label)
@@ -190,7 +197,7 @@ class ViewToolbar(Gtk.Toolbar):
         help_toolitem.show_all()
         GLib.idle_add(self._install_help_key_handler)
 
-        aspartame_help.guard(self._list_button, 'org.aspartame.shell.frame')
+        aspartame_help.guard(self._list_button, 'org.aspartame.shell.list')
 
         self._add_separator()
 
@@ -214,6 +221,7 @@ class ViewToolbar(Gtk.Toolbar):
     def _install_help_key_handler(self):
         window = self.get_toplevel()
         if isinstance(window, Gtk.Window):
+            aspartame_help.install_window(window)
             window.connect('key-press-event', self.__help_key_press_cb)
         return False
 
@@ -370,6 +378,15 @@ class FavoritesButton(RadioToolButton):
         self.props.accelerator = _('<Ctrl>%d' % (favorite_view + 1))
         self.props.group = None
         self.props.icon_name = desktop.get_view_icons()[favorite_view]
+        view_help_ids = {
+            'zoom-neighborhood': 'org.aspartame.shell.neighborhood',
+            'zoom-groups': 'org.aspartame.shell.group',
+            'zoom-home': 'org.aspartame.shell.home',
+            'zoom-activity': 'org.aspartame.shell.activity',
+        }
+        help_id = view_help_ids.get(self.props.icon_name)
+        if help_id:
+            aspartame_help.guard(self, help_id)
 
         favorites_settings = favoritesview.get_settings(favorite_view)
         self._layout = favorites_settings.layout

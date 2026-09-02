@@ -35,3 +35,39 @@ def test_mode_marker_can_be_toggled(tmp_path):
         assert not help_module.is_active()
     finally:
         help_module.MODE_FILE = original
+
+
+class FakeAccessible:
+    def __init__(self):
+        self.name = None
+        self.description = None
+
+    def set_name(self, value):
+        self.name = value
+
+    def set_description(self, value):
+        self.description = value
+
+
+class FakeWidget:
+    def __init__(self):
+        self.accessible = FakeAccessible()
+        self.focus = None
+
+    def set_can_focus(self, value):
+        self.focus = value
+
+    def get_accessible(self):
+        return self.accessible
+
+
+def test_register_target_sets_keyboard_accessible_metadata():
+    widget = FakeWidget()
+    target = help_module.register_target(
+        widget, "org.aspartame.test.accessible",
+        title="Example", short_description="Explain the example.",
+        explanation="This explains the example.")
+    assert target.title == "Example"
+    assert widget.focus is True
+    assert widget.accessible.name == "Example"
+    assert widget.accessible.description == "Explain the example."
