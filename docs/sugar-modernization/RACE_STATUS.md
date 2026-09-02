@@ -66,3 +66,17 @@ Jarabe process remained alive. Evidence: `reports/gtk4/home-search-20260902.png`
 The list renderer remains legacy GTK3-style code under the GTK4 preview.
 Journal and network startup also still report separate `PaletteMenuItem` API
 errors; those are not part of this milestone.
+## 2026-09-02 palette and datastore checkpoint
+
+The GTK4 preview toolkit now provides the upstream migration name
+`PaletteMenuItem.set_image()` plus a narrow `set_icon_widget()` compatibility
+method for shell code that has not yet been ported. This removes the runtime
+crashes previously seen in network and Journal toolbox construction. The
+pinned sugar-datastore source is staged in the isolated prefix: its small
+`metadatareader` extension is compiled for the host Python and its remaining
+`env`, `mime`, and `logger` imports use `sugar4`. The preview launcher starts
+the service on the private D-Bus session and reports `datastore: ready`.
+
+Journal proceeds farther after this checkpoint but still fails in its legacy
+GTK3-style `CellRendererFavorite` (`props` is unavailable under GTK4). That
+is the next Journal-specific port blocker, not part of this checkpoint.

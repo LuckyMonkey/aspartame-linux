@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+project_root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 root=${GTK4_ROOT:-/media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization/gtk4}
 shell="$root/sources/sugar"
 toolkit="$root/sources/sugar-toolkit-gtk4"
+datastore="$root/sources/sugar-datastore"
+datastore_site="$root/prefix/lib/python3.12/site-packages"
 prefix="$root/prefix"
 runroot="$root/runtime-first-pixels"
 log="$root/logs/gtk4-shell-$(date -u +%Y%m%dT%H%M%SZ).log"
 
 for path in "$shell/src/jarabe/main.py" "$toolkit/src/sugar4" \
+            "$datastore/bin/datastore-service" \
+            "$datastore_site/carquinyol/metadatareader.cpython-312-x86_64-linux-gnu.so" \
             "$prefix/lib/x86_64-linux-gnu/girepository-1.0/Casilda-0.1.typelib" \
             "$runroot/schemas/gschemas.compiled" "$runroot/group-labels.json"; do
     test -e "$path" || { echo "missing GTK4 preview requirement: $path" >&2; exit 2; }
@@ -56,8 +61,11 @@ exec dbus-run-session -- env \
     SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
     SUGAR_WINDOWED=1 \
-    PYTHONPATH="$shell/src:$toolkit/src" \
+    PYTHONPATH="$datastore_site:$datastore/src:$shell/src:$toolkit/src" \
     GI_TYPELIB_PATH="$prefix/lib/x86_64-linux-gnu/girepository-1.0" \
     LD_LIBRARY_PATH="$prefix/lib/x86_64-linux-gnu" \
     XDG_DATA_DIRS="$prefix/share:/usr/local/share:/usr/share" \
-    python3 "$shell/src/jarabe/main.py" 2>&1 | tee "$log"
+    DATASTORE_SERVICE="$datastore/bin/datastore-service" \
+    DATASTORE_LOG="$root/logs/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
+    SHELL_ENTRY="$shell/src/jarabe/main.py" \
+    bash "$project_root/scripts/sugar-gtk4-session.sh"

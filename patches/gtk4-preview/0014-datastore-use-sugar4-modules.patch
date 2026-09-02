@@ -1,0 +1,44 @@
+--- a/src/carquinyol/datastore.py
++++ b/src/carquinyol/datastore.py
+@@ -30,7 +30,7 @@
+ import dbus.service
+ from gi.repository import GLib
+ 
+-from sugar3 import mime
++from sugar4 import mime
+ 
+ from carquinyol import layoutmanager
+ from carquinyol import migration
+--- a/src/carquinyol/filestore.py
++++ b/src/carquinyol/filestore.py
+@@ -21,7 +21,7 @@
+ 
+ from gi.repository import GLib
+ 
+-from sugar3 import env
++from sugar4 import env
+ 
+ from carquinyol import layoutmanager
+ 
+--- a/src/carquinyol/layoutmanager.py
++++ b/src/carquinyol/layoutmanager.py
+@@ -17,7 +17,7 @@
+ import os
+ import logging
+ 
+-from sugar3 import env
++from sugar4 import env
+ 
+ MAX_QUERY_LIMIT = 40960
+ CURRENT_LAYOUT_VERSION = 6
+--- a/bin/datastore-service
++++ b/bin/datastore-service
+@@ -5,7 +5,7 @@
+ from gi.repository import GLib
+ import dbus.mainloop.glib
+ from carquinyol.datastore import DataStore
+-from sugar3 import logger
++from sugar4 import logger
+ 
+ # setup logger
+ logger.start('datastore')

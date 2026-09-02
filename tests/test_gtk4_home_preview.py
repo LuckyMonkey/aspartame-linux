@@ -13,7 +13,7 @@ def test_gtk4_launcher_stages_shell_runtime_data():
 def test_gtk4_home_preview_patches_are_ordered_and_targeted():
     patches = sorted((ROOT / "patches/gtk4-preview").glob("00*.patch"))
     names = [patch.name for patch in patches]
-    assert names[-8:] == [
+    assert names[-10:] == [
         "0005-home-cell-renderer-api.patch",
         "0006-profile-modern-ssh-key.patch",
         "0007-home-renderer-signal-compat.patch",
@@ -22,8 +22,10 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
         "0010-home-defer-optional-views.patch",
         "0011-frame-neighborhood-optional.patch",
         "0012-home-lazy-list-search.patch",
+        "0013-toolkit-palette-icon-compat.patch",
+        "0014-datastore-use-sugar4-modules.patch",
     ]
-    text = "\n".join(p.read_text() for p in patches[-7:])
+    text = "\n".join(p.read_text() for p in patches[-10:])
     assert "CellRendererFavorite" in text
     assert "supported_prefixes" in text
     assert "_ensure_group_box" in text

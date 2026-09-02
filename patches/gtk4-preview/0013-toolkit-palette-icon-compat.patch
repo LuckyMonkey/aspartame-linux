@@ -1,0 +1,13 @@
+--- a/src/sugar4/graphics/palettemenu.py
++++ b/src/sugar4/graphics/palettemenu.py
+@@ -387,6 +387,10 @@
+             # Insert icon at the beginning
+             self._hbox.prepend(icon)
+ 
++    def set_icon_widget(self, icon):
++        """Compatibility name for Sugar GTK4 callers still being ported."""
++        self.set_image(icon)
++
+     def set_accelerator(self, text):
+         """
+         Set the accelerator text for the menu item.

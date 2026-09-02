@@ -13,4 +13,4 @@ def test_gtk4_home_search_initializes_lazy_list_before_filtering():
 
 def test_gtk4_home_search_patch_is_ordered_after_home_startup_patches():
     patches = sorted((ROOT / "patches/gtk4-preview").glob("00*.patch"))
-    assert patches[-1].name == "0012-home-lazy-list-search.patch"
+    assert "0012-home-lazy-list-search.patch" in [patch.name for patch in patches]
