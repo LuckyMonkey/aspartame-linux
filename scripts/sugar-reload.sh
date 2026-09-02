@@ -109,7 +109,7 @@ for face in broken bad needs-work good perfect; do
 done
 sudo install -D -m 0755 "$project_root/archiso/aspartame/airootfs/etc/skel/.xinitrc" "$share_root/tools/aspartame-xinitrc"
 sudo install -D -m 0755 "$marker_file" "$share_root/tools/aspartame-version-overlay"
-for tool in aspartame-sugar-info aspartame-sugar-health aspartame-sugar-logs aspartame-sugar-state aspartame-sugar-imports aspartame-x-session aspartame-restart-sugar aspartame-sugar-transition; do
+for tool in aspartame-sugar-info aspartame-sugar-health aspartame-sugar-logs aspartame-sugar-state aspartame-sugar-imports aspartame-x-session aspartame-restart-sugar; do
     sudo install -D -m 0755 \
         "$project_root/archiso/aspartame/airootfs/usr/local/bin/$tool" \
         "$share_root/tools/$tool"
@@ -117,7 +117,7 @@ done
 
 vm_ssh bash -s <<'REMOTE'
 set -euo pipefail
-for tool in aspartame-sugar-info aspartame-sugar-health aspartame-sugar-logs aspartame-sugar-state aspartame-sugar-imports aspartame-x-session aspartame-restart-sugar aspartame-sugar-transition; do
+for tool in aspartame-sugar-info aspartame-sugar-health aspartame-sugar-logs aspartame-sugar-state aspartame-sugar-imports aspartame-x-session aspartame-restart-sugar; do
     install -m 0755 "/mnt/aspartame-dev/tools/$tool" "/usr/local/bin/$tool"
 done
 if ! grep -qx 'exec /usr/local/bin/aspartame-x-session' /home/aspartame/.xinitrc 2>/dev/null; then
@@ -138,6 +138,7 @@ install -m 0644 /mnt/aspartame-dev/schemas/org.aspartame.clock.gschema.xml /usr/
 while IFS= read -r relative; do
     test -n "$relative" || continue
     install -D -m 0644 "/mnt/aspartame-dev/extensions/$relative" "/usr/share/sugar/extensions/$relative"
+    install -D -m 0644 "/mnt/aspartame-dev/extensions/$relative" "/usr/share/aspartame/$relative"
 done < /mnt/aspartame-dev/extensions.list
 glib-compile-schemas /usr/share/glib-2.0/schemas
 install -d -o aspartame -g aspartame /home/aspartame/.cache
