@@ -1,0 +1,358 @@
+# Copyright (C) 2008 One Laptop Per Child
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+import os
+import logging
+import subprocess
+import platform
+import shutil
+import socket
+from gettext import gettext as _
+import errno
+import time
+
+from gi.repository import Gio
+from gi.repository import GLib
+
+from jarabe import config
+from jarabe.model.network import get_wireless_interfaces
+
+
+_OFW_TREE = '/ofw'
+_PROC_TREE = '/proc/device-tree'
+_DMI_DIRECTORY = '/sys/class/dmi/id'
+
+_logger = logging.getLogger('ControlPanel - AboutComputer')
+_not_available = _('Not available')
+
+_serial_no = None
+
+
+def get_aboutcomputer():
+    msg = 'Serial Number: %s \nBuild Number: %s \nFirmware Number: %s \n' \
+        % (get_serial_number(), get_build_number(), get_firmware_number())
+    return msg
+
+
+def print_aboutcomputer():
+    print(get_aboutcomputer())
+
+
+def _get_serial_number():
+    serial_no = _read_device_tree('serial-number')
+    if serial_no is not None:
+        return serial_no
+
+    cmd = 'pkexec sugar-serial-number-helper'
+    result, output, error, status = GLib.spawn_command_line_sync(cmd)
+    if status != 0:
+        return _not_available
+
+    return output.decode().rstrip('\n')
+
+
+def get_serial_number():
+    global _serial_no
+
+    if _serial_no is None:
+        _serial_no = _get_serial_number()
+
+    return _serial_no
+
+
+def print_serial_number():
+    serial_no = get_serial_number()
+    if serial_no is None:
+        serial_no = _not_available
+    print(serial_no)
+
+
+def _read_os_release():
+    values = {}
+    try:
+        with open('/etc/os-release', encoding='utf-8') as stream:
+            for line in stream:
+                line = line.strip()
+                if not line or line.startswith('#') or '=' not in line:
+                    continue
+                key, value = line.split('=', 1)
+                values[key] = value.strip('"')
+    except OSError:
+        pass
+    return values
+
+
+def get_build_number():
+    os_release = _read_os_release()
+    image = os_release.get('IMAGE_VERSION')
+    if image:
+        return '%s %s' % (os_release.get('IMAGE_ID', 'Linux'), image)
+    return os_release.get('PRETTY_NAME', _not_available)
+
+
+def _command_output(command):
+    try:
+        return subprocess.check_output(command, text=True,
+                                       stderr=subprocess.DEVNULL).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return ''
+
+
+def _memory_size():
+    try:
+        with open('/proc/meminfo', encoding='utf-8') as stream:
+            for line in stream:
+                if line.startswith('MemTotal:'):
+                    kib = int(line.split()[1])
+                    return '%.1f GiB' % (kib / 1024 / 1024)
+    except (OSError, ValueError):
+        pass
+    return _not_available
+
+
+def _graphics_adapter():
+    output = _command_output(['lspci', '-nn'])
+    for line in output.splitlines():
+        if 'VGA compatible controller' in line or '3D controller' in line:
+            return line.split(': ', 1)[-1]
+    return _not_available
+
+
+def get_system_information():
+    """Return truthful local system information for the About panel."""
+    os_release = _read_os_release()
+    distribution = os_release.get('PRETTY_NAME', _not_available)
+    if os_release.get('IMAGE_ID'):
+        distribution = 'Aspartame Linux (Arch Linux)'
+
+    cpu = _command_output(['lscpu', '-p=MODELNAME'])
+    cpu = next((line for line in cpu.splitlines()
+                if line and not line.startswith('#')), '')
+    if not cpu:
+        cpu = platform.processor() or _not_available
+
+    usage = shutil.disk_usage('/')
+    storage = '%.1f GiB free of %.1f GiB' % (
+        usage.free / 1024**3, usage.total / 1024**3)
+    uptime = _not_available
+    try:
+        with open('/proc/uptime', encoding='utf-8') as stream:
+            seconds = int(float(stream.read().split()[0]))
+        uptime = '%dh %dm' % (seconds // 3600, (seconds % 3600) // 60)
+    except (OSError, ValueError):
+        pass
+
+    session = 'Wayland' if os.environ.get('WAYLAND_DISPLAY') else 'X11'
+    return (
+        (_('Distribution:'), distribution),
+        (_('Image:'), os_release.get('IMAGE_VERSION', _not_available)),
+        (_('Kernel:'), platform.release()),
+        (_('Architecture:'), platform.machine()),
+        (_('CPU:'), cpu),
+        (_('CPU cores:'), str(os.cpu_count() or _not_available)),
+        (_('Memory:'), _memory_size()),
+        (_('Storage:'), storage),
+        (_('Graphics:'), _graphics_adapter()),
+        (_('Session:'), session),
+        (_('Python:'), platform.python_version()),
+        (_('Hostname:'), socket.gethostname()),
+        (_('Uptime:'), uptime),
+    )
+
+
+def print_build_number():
+    print(get_build_number())
+
+
+def get_firmware_number():
+    firmware_no = _read_device_tree('openprom/model')
+    if firmware_no is not None:
+        # try to extract Open Firmware version from OLPC style version
+        # string, e.g. "CL2   Q4B11  Q4B"
+        if firmware_no.startswith('CL'):
+            firmware_no = firmware_no[6:13].strip()
+        ec_name = _read_device_tree('ec-name')
+        if ec_name:
+            ec_name = ec_name.replace('Ver:', '')
+            firmware_no = '%(firmware)s with %(ec)s' % {
+                'firmware': firmware_no, 'ec': ec_name}
+
+    elif os.path.exists(os.path.join(_DMI_DIRECTORY, 'bios_version')):
+        firmware_no = _read_file(os.path.join(_DMI_DIRECTORY, 'bios_version'))
+    if firmware_no is None:
+        firmware_no = _not_available
+    return firmware_no
+
+
+def get_hardware_model():
+    settings = Gio.Settings.new('org.sugarlabs.extensions.aboutcomputer')
+    model = settings.get_string('hardware-model')
+    if not model:
+        model = _read_device_tree('mfg-data/MN')
+        sku = _read_device_tree('mfg-data/sk')
+        if sku:
+            if sku.startswith('SKU'):
+                model = '%s, %s' % (model, sku)
+            else:
+                model = '%s, SKU%s' % (model, sku)
+    return model
+
+
+def get_secondary_licenses():
+    licenses = []
+    # Check if there are more licenses to display
+    licenses_path = config.licenses_path
+    if os.path.isdir(licenses_path):
+        for file_name in os.listdir(licenses_path):
+            try:
+                file_path = os.path.join(licenses_path, file_name)
+                with open(file_path) as f:
+                    licenses.append(f.read())
+            except IOError:
+                logging.error('Error trying open %s', file_path)
+    return licenses
+
+
+def print_firmware_number():
+    print(get_firmware_number())
+
+
+def get_wireless_firmware():
+    environment = os.environ.copy()
+    environment['PATH'] = '%s:/usr/sbin' % (environment['PATH'], )
+    firmware_info = {}
+
+    wireless_interfaces = get_wireless_interfaces()
+    if not wireless_interfaces:
+        _logger.warning('NetworkManager knows of no wireless devices, '
+                        'falling back to static list')
+        wireless_interfaces = ['wlan0', 'eth0']
+
+    for interface in get_wireless_interfaces():
+        try:
+            output = subprocess.Popen(['ethtool', '-i', interface],
+                                      stdout=subprocess.PIPE,
+                                      env=environment).stdout.readlines()
+        except OSError:
+            _logger.exception('Error running ethtool for %r', interface)
+            continue
+
+        try:
+            for line in output:
+                line = line.decode()
+                if line.startswith('firmware'):
+                    version = line.split()[1]
+                if line.startswith('driver'):
+                    driver = line.split()[1]
+        except IndexError:
+            _logger.exception('Error parsing ethtool output for %r',
+                              interface)
+            continue
+
+        card = None
+        if driver == 'mwifiex':
+            card = 'mv8787, IEEE 802.11n 5GHz'
+        if driver == 'libertas':
+            if version.startswith('5.'):
+                card = 'usb8388, IEEE 802.11g 2.4GHz'
+            else:
+                card = 'mv8686, IEEE 802.11g 2.4GHz'
+
+        if card:
+            firmware_info[interface] = '%s (%s, %s)' % (version, driver, card)
+        else:
+            firmware_info[interface] = '%s (%s)' % (version, driver)
+
+    if not firmware_info:
+        return _not_available
+
+    if len(firmware_info) == 1:
+        return list(firmware_info.values())[0]
+
+    return ', '.join(['%(interface)s: %(info)s' %
+                      {'interface': interface, 'info': info}
+                      for interface, info in list(firmware_info.items())])
+
+
+def print_wireless_firmware():
+    print(get_wireless_firmware())
+
+
+def _read_file(path):
+    if os.access(path, os.R_OK) == 0:
+        return None
+
+    fd = open(path, 'r')
+    value = fd.read()
+    fd.close()
+    if value:
+        value = value.strip('\n')
+        return value
+    _logger.debug('No information in file or directory: %s', path)
+    return None
+
+
+def get_license():
+    license_file = os.path.join(config.data_path, 'GPLv3')
+    lang = os.environ['LANG']
+    if lang.endswith('UTF-8'):
+        lang = lang[:-6]
+
+    try_file = license_file + '.' + lang
+    if os.path.isfile(try_file):
+        license_file = try_file
+    else:
+        try_file = license_file + '.' + lang.split('_')[0]
+        if os.path.isfile(try_file):
+            license_file = try_file
+
+    try:
+        fd = open(license_file)
+        # remove 0x0c page breaks which can't be rendered in text views
+        license_text = fd.read().replace('\x0c', '')
+        fd.close()
+    except IOError:
+        license_text = _not_available
+    return license_text
+
+
+def _read_device_tree(path):
+    value = _read_file(os.path.join(_PROC_TREE, path))
+    if value:
+        return value.strip('\x00')
+    value = _read_file(os.path.join(_OFW_TREE, path))
+    if value:
+        return value.strip('\x00')
+    return value
+
+
+def days_from_last_update():
+
+    last_update_seconds = -1
+    # Get the number of seconds of the last update date.
+    try:
+        flag_file = '/var/lib/misc/last_os_update.stamp'
+        if os.path.exists(flag_file):
+            last_update_seconds = int(os.stat(flag_file).st_mtime)
+    except IOError:
+        _logger.error('couldn''t get last modification time')
+
+    if last_update_seconds == -1:
+        return -1
+
+    now = time.time()
+    days_from_last_update = (now - last_update_seconds) / (24 * 60 * 60)
+    return int(days_from_last_update)
