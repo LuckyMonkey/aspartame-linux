@@ -29,11 +29,11 @@ patch_dir=${GTK4_PATCH_DIR:-$repo/patches/gtk4-preview}
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*) target="$toolkit" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*) target="$root/sources/sugar" ;;
         *) continue ;;
     esac
     if git -C "$target" apply --check "$patch" >/dev/null 2>&1; then

@@ -1,0 +1,8 @@
+--- a/src/jarabe/desktop/homebox.py
++++ b/src/jarabe/desktop/homebox.py
+@@ -43,3 +43,4 @@ class HomeBox(Gtk.Box):
+         super().__init__(orientation=Gtk.Orientation.VERTICAL)
+-
++        self._toolbar = toolbar
++
+         self._favorites_views_indicies = []

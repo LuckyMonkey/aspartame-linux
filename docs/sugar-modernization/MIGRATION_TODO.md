@@ -5,16 +5,18 @@
 - [x] Select and pin Sugar PR #1106 and reach real Jarabe pixels in the
   Aspartame VM with embedded Casilda 1.5. This proves startup, not a complete
   session.
-- [ ] Align the toolkit/datastore D-Bus service contract.
-- [ ] Propagate locale and runtime-directory state before private D-Bus starts.
-- [ ] Hold the corrected Home shell alive for 60 seconds without fatal
-  tracebacks.
+- [x] Align the toolkit/datastore D-Bus service contract (preview patch `0018`).
+- [x] Propagate locale and runtime-directory state before private D-Bus starts.
+- [x] Hold corrected Home beyond 60 seconds without a fatal traceback; search
+  and return were also exercised through AT-SPI.
 - [ ] Remove any GTK3-only shell import from the selected upstream branch.
   Downstream only until upstream has a supported pattern.
 
 ## P1 — major shell functionality
 
 - [ ] Frame, Home, Journal, and Activity launch smoke tests on GTK4.
+- [x] Render and clear a real GTK4 Home search without crashing lazy List View.
+- [ ] Build/register one pinned GTK4 Activity and prove launch/switch/stop.
 - [ ] Verify Sugar theme/icon behavior without GTK3-only CSS assumptions.
 
 ## P2 — Journal / Neighborhood / Frame / clipboard / palettes

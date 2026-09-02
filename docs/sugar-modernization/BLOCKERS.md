@@ -123,7 +123,10 @@
   `org.laptop.sugar.DataStore`.
 - Root cause: toolkit PR naming changed without a matching datastore service
   contract in the pinned source.
-- Status: open; this is the first shell-stability blocker after FIRST PIXELS.
+- Fix: preview patch `0018` keeps the established datastore service and
+  interface contract in `sugar4`.
+- Verification: Favorites queries complete against the private datastore bus.
+- Status: resolved; upstream toolkit candidate.
 
 ## GTK4-016 — private session omits locale variables
 
@@ -132,7 +135,9 @@
   `sugar4.util.timestamp_to_elapsed_string`.
 - Root cause: the preview launcher constructs a private environment without
   propagating a normalized locale.
-- Status: open; fix in the launcher, not with a shell source workaround.
+- Fix: normalize `LANG` to the caller's locale or `C.UTF-8` in the launcher.
+- Verification: the corrected Home run has no locale traceback.
+- Status: resolved downstream in the preview launcher.
 
 ## GTK4-017 — D-Bus activation inherits the caller's runtime directory
 
@@ -142,7 +147,11 @@
 - Root cause: `XDG_RUNTIME_DIR` is applied to the command *inside*
   `dbus-run-session`, after the private bus has captured its activation
   environment.
-- Status: open; sanitize the environment before creating the private bus.
+- Fix: create the private bus only after applying the complete preview
+  environment.
+- Verification: activated services use the preview runtime directory; the
+  corrected run has no `/run/user/0/dconf` permission error.
+- Status: resolved downstream in the preview launcher.
 
 ## GTK4-018 — GTK4 co-installation breaks stable GTK3 Activity startup
 
@@ -158,3 +167,47 @@
 - Verification: the standard runtime probe reports GTK 3.24.52 without a GI
   traceback, and a fresh packaged Terminal Activity process rendered visibly.
 - Status: resolved; stable GTK3 and isolated GTK4 can coexist.
+
+## GTK4-019 — Favorites layout calls the renderer-only icon sizing API
+
+- Category: `UPSTREAM-SHELL`
+- Reproduction: launch corrected Home; Favorites allocation calls
+  `ActivityIcon.set_size()` and raises `AttributeError`.
+- Root cause: `ActivityIcon` is a GTK4 `CanvasIcon`, whose public API is
+  `set_pixel_size()`; `set_size()` belongs to the legacy cell renderer.
+- Fix: preview patch `0019` uses the existing GTK4 icon API at the call site.
+- Verification: the Favorites ring and XO render beyond 60 seconds.
+- Status: resolved; upstream shell candidate.
+
+## GTK4-020 — GTK4 cell renderer drops Jarabe's scrolling contract
+
+- Category: `UPSTREAM-TOOLKIT`
+- Reproduction: enter a Home search; lazy `ActivitiesList` calls
+  `CellRendererActivityIcon.connect_to_scroller()` and raises `AttributeError`.
+- Root cause: GTK3 `CellRendererIcon` exposes scroll tracking, but the GTK4
+  compatibility renderer omitted that API while Jarabe still consumes it.
+- Fix: preview patch `0020` restores `connect_to_scroller()`, scroll state
+  callbacks, and `is_scrolling()` at the toolkit compatibility boundary.
+- Verification: the search path passes renderer setup and reaches List View.
+- Status: resolved; upstream toolkit candidate pending native list migration.
+
+## GTK4-021 — lazy Home List View loses its toolbar dependency
+
+- Category: `ASPARTAME-INTEGRATION`
+- Reproduction: after List View construction, a non-empty query calls
+  `HomeBox._set_view()` and raises `AttributeError: _toolbar`.
+- Root cause: preview patch `0012` centralized lazy list construction but did
+  not retain the constructor's toolbar for later view changes.
+- Fix: preview patch `0021` stores the existing toolbar reference on
+  `HomeBox`; no new dependency or abstraction was added.
+- Verification: AT-SPI sets `terminal`, the GTK4 search result surface renders,
+  clearing the query returns the Favorites wheel, and the same Jarabe process
+  remains alive without a traceback.
+- Status: resolved downstream; fold into the upstreamable lazy-list change.
+
+## Next runtime blocker — no GTK4 Activity bundle is registered
+
+Home search now works and truthfully reports no matching Activities. The
+preview has pinned Activity source checkouts, but it has not yet built,
+installed, or registered one bundle with Jarabe. Activity lifecycle remains
+the next milestone; do not treat the empty result as a renderer failure.

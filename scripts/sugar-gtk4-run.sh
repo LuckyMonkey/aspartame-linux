@@ -50,6 +50,7 @@ if [ -z "$display" ]; then
     sleep 1
 fi
 
+locale_name=${LANG:-C.UTF-8}
 cat <<EOF
 Aspartame GTK4 Sugar preview
   shell:   $(git -C "$shell" rev-parse HEAD)
@@ -59,7 +60,8 @@ Aspartame GTK4 Sugar preview
   log:     $log
 EOF
 
-exec dbus-run-session -- env \
+exec env \
+    LANG="$locale_name" \
     DISPLAY="$display" \
     GDK_BACKEND=x11 \
     CASILDA_FORCE_SOFTWARE="${CASILDA_FORCE_SOFTWARE:-1}" \
@@ -82,4 +84,5 @@ exec dbus-run-session -- env \
     DATASTORE_LOG="$root/logs/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
     PYTHON_BIN="$python_bin" \
     SHELL_ENTRY="$shell/src/jarabe/main.py" \
+    dbus-run-session -- \
     bash "$project_root/scripts/sugar-gtk4-session.sh"

@@ -1,0 +1,6 @@
+--- a/src/jarabe/desktop/favoriteslayout.py
++++ b/src/jarabe/desktop/favoriteslayout.py
+@@ -439,2 +439,2 @@
+-            child.set_size(icon_size)
++            child.set_pixel_size(icon_size)
+             new_width = child.measure(Gtk.Orientation.HORIZONTAL, -1)[1]

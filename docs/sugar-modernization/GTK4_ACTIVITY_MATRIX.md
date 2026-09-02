@@ -11,6 +11,7 @@ No activity is marked usable until it launches inside a running GTK4 Sugar sessi
 | Terminal | `1425071` | not yet tested | not tested |
 
 
-Home shell note (2026-09-02): default Favorites/Home now renders in the pinned
-preview. The activity list remains untested because the current GTK4 toolkit
-renderer adapter cannot be passed to the legacy TreeView column API.
+Home shell note (2026-09-02): Favorites/Home and the search List View render in
+the pinned preview. The search path was exercised semantically and returned to
+Home without a traceback. It correctly has no matches because these Activity
+sources have not yet been built, installed, or registered as preview bundles.

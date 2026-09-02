@@ -1,0 +1,31 @@
+--- a/src/sugar4/graphics/icon.py
++++ b/src/sugar4/graphics/icon.py
+@@ -1124,6 +1124,7 @@ class CellRendererIcon(Gtk.CellRenderer):
+         self._prelit_stroke_color = None
+         self.props = _CellRendererIconProps(self)
+         self._signals = {}
++        self._is_scrolling = False
+-
++
+     def connect(self, signal_name, callback, *user_data):
+         """Keep legacy renderer callbacks available during GTK4 migration."""
+@@ -1135,5 +1136,18 @@ class CellRendererIcon(Gtk.CellRenderer):
+         for callback, user_data in self._signals.get(signal_name, []):
+             callback(self, *args, *user_data)
+-
++
++    def connect_to_scroller(self, scrolled):
++        scrolled.connect("scroll-start", self._scroll_start_cb)
++        scrolled.connect("scroll-end", self._scroll_end_cb)
++
++    def _scroll_start_cb(self, event):
++        self._is_scrolling = True
++
++    def _scroll_end_cb(self, event):
++        self._is_scrolling = False
++
++    def is_scrolling(self):
++        return self._is_scrolling
++
+     def set_icon_name(self, icon_name: str):
+         self._buffer.icon_name = icon_name

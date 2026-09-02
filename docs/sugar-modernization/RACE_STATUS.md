@@ -6,16 +6,20 @@ isolated from package-owned GTK3 Sugar.
 
 ## Current milestone
 
-🟡 **FIRST PIXELS (Arch VM):** pinned GTK4 Jarabe creates a real Sugar window
-on the 1920x1080 guest desktop. The shell remained alive beyond 140 seconds.
-Casilda 1.5.0 created the private `wayland-sugar` socket, and `wayland-info`
-confirmed compositor, seat, pointer, keyboard, data-device, XDG shell, output,
-viewport, and fractional-scale protocols.
+🟡 **SHELL STABILITY + HOME SEARCH (Arch VM):** pinned GTK4 Jarabe now renders
+the real Favorites wheel and XO after initializing its corrected private D-Bus,
+datastore, profile, and embedded Casilda compositor.
 
-This proves Jarabe pixels and the embedded Wayland boundary, not a usable GTK4
-desktop. Favorites and the XO render, but datastore name mismatch and missing
-locale propagation produce runtime tracebacks. Frame, Journal, and activity
-lifecycle are not claimed. Stable GTK3 continued running behind the preview.
+An AT-SPI editable-text action entered `terminal` in the GTK4 Home search field.
+The List View rendered its real empty-result state, clearing the query returned
+to Favorites, and the same Jarabe process remained alive beyond 60 seconds with
+no fatal traceback. Casilda's private `wayland-sugar` socket remained healthy.
+
+This proves a stable GTK4 Home render/search/return loop and semantic input into
+the search control. It does not prove a complete GTK4 desktop: Frame, Journal,
+and Activity lifecycle remain unclaimed. The preview has pinned Activity source
+checkouts but no GTK4 Activity bundle is installed or registered yet, so launch
+cannot be tested honestly. Stable GTK3 continues behind the isolated preview.
 After GTK4 installation exposed an ambiguous GI default, the GTK3-only
 Select-a-Thing startup hook was made explicit about GTK/GDK 3; a fresh Terminal
 Activity then launched and rendered normally.
@@ -34,8 +38,8 @@ Casilda is pinned to `cecb869ce390e13ebdecdca9953731d3a3f3aa73`.
 | Toolkit icon tests | 🧪 | ✅ 55/55 |
 | sugar-ext build/tests | 🧪 | ✅ build/install and 5 native tests |
 | Casilda compositor | 🧪 PR work | ✅ 1.5.0 socket and protocols live |
-| Shell startup | ❌ incomplete | 🟡 real Jarabe window visible |
-| Home | 🧪 PR work | 🧪 Favorites/XO render; datastore error |
+| Shell startup | ❌ incomplete | ✅ Home process stable beyond 60 seconds |
+| Home | 🧪 PR work | 🧪 Favorites/search/return visibly exercised |
 | Frame/Journal | 🧪 PR work | ❌ not usable yet |
 | GTK4 activity lifecycle | 🧪 PR work | ❌ not runtime-tested |
 
@@ -61,6 +65,32 @@ this checkpoint.
 The older `reports/gtk4/first-pixels-12.png` Xvfb result is retained as
 historical evidence only. The VM-native Casilda 1.5 result supersedes its host
 dependency assumptions.
+
+## Verified 2026-09-02 SHELL STABILITY / Home interaction checkpoint
+
+Evidence:
+
+- `reports/gtk4/home-search-stable-arch-vm-20260902.png` — search query and
+  GTK4 empty-result view, SHA-256
+  `2c0b84ed164b3e667f633406787077ec1898a7c5054f4aae158a7b691a6fcfab`.
+- `reports/gtk4/home-return-stable-arch-vm-20260902.png` — same process returned
+  to the Favorites wheel, SHA-256
+  `d8479f76fca8266fad448afd43a530f363acc759af0c4852b0285d4e313980ca`.
+
+Preview patches `0018` through `0021` resolve the datastore contract, private
+bus environment, Favorites icon sizing, renderer scrolling contract, and lazy
+Home toolbar state. The shell stayed alive for 63 seconds after search and
+return; Jarabe, datastore, Casilda, and the Wayland socket were all live.
+
+Input was exercised through the GTK4 search object's AT-SPI `EditableText`
+interface. This validates semantic control exposure and the resulting Jarabe
+behavior. Keyboard event synthesis remains unproven because the managed X11
+wrapper does not raise when AT-SPI activates the nested search object; do not
+misreport that harness limitation as successful keyboard navigation.
+
+Next milestone: build/register the simplest pinned GTK4 Activity and complete
+Home → launch → active Activity → stop → Home. The empty search result is
+currently correct for the preview's empty Activity registry.
 
 ## 2026-09-01 verification
 

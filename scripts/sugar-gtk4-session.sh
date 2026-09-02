@@ -11,11 +11,13 @@ datastore_pid=$!
 cleanup() { kill "$datastore_pid" 2>/dev/null || true; }
 trap cleanup EXIT INT TERM
 
+datastore_ready=0
 for attempt in $(seq 1 30); do
     if dbus-send --session --print-reply --dest=org.freedesktop.DBus \
         /org/freedesktop/DBus org.freedesktop.DBus.ListNames 2>/dev/null |
         grep -q "org.laptop.sugar.DataStore"; then
         echo "datastore: ready"
+        datastore_ready=1
         break
     fi
     if ! kill -0 "$datastore_pid" 2>/dev/null; then
@@ -24,5 +26,9 @@ for attempt in $(seq 1 30); do
     fi
     sleep 0.1
 done
+if [ "$datastore_ready" -ne 1 ]; then
+    echo "datastore: service name did not appear; see $DATASTORE_LOG" >&2
+    exit 1
+fi
 
 exec "$python_bin" "$SHELL_ENTRY"

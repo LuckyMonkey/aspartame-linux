@@ -1,0 +1,8 @@
+--- a/src/sugar4/datastore/datastore.py
++++ b/src/sugar4/datastore/datastore.py
+@@ -38,3 +38,3 @@
+-DS_DBUS_SERVICE = "org.laptop.sugar4.DataStore"
+-DS_DBUS_INTERFACE = "org.laptop.sugar4.DataStore"
++DS_DBUS_SERVICE = "org.laptop.sugar.DataStore"
++DS_DBUS_INTERFACE = "org.laptop.sugar.DataStore"
+ DS_DBUS_PATH = "/org/laptop/sugar/DataStore"

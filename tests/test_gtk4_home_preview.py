@@ -13,10 +13,24 @@ def test_gtk4_build_stages_shell_runtime_data_before_launch():
     assert 'ln -sfn "$shell/extensions"' not in launcher
 
 
+def test_gtk4_launcher_seeds_private_bus_environment_first():
+    launcher = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    assert 'locale_name=${LANG:-C.UTF-8}' in launcher
+    assert 'LANG="$locale_name"' in launcher
+    assert 'XDG_RUNTIME_DIR="$runroot"' in launcher
+    assert launcher.index("exec env") < launcher.index("dbus-run-session --")
+
+
+def test_gtk4_session_fails_when_datastore_never_registers():
+    session = (ROOT / "scripts/sugar-gtk4-session.sh").read_text()
+    assert 'datastore_ready=0' in session
+    assert 'if [ "$datastore_ready" -ne 1 ]' in session
+
+
 def test_gtk4_home_preview_patches_are_ordered_and_targeted():
     patches = sorted((ROOT / "patches/gtk4-preview").glob("00*.patch"))
     names = [patch.name for patch in patches]
-    assert names[-13:] == [
+    assert names[-17:] == [
         "0005-home-cell-renderer-api.patch",
         "0006-profile-modern-ssh-key.patch",
         "0007-home-renderer-signal-compat.patch",
@@ -30,9 +44,16 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
         "0015-toolkit-cell-renderer-props-compat.patch",
         "0016-toolkit-cell-renderer-gobject.patch",
         "0017-toolkit-icon-file-alias.patch",
+        "0018-toolkit-datastore-dbus-contract.patch",
+        "0019-home-icon-pixel-size.patch",
+        "0020-toolkit-cell-renderer-scrolling.patch",
+        "0021-home-retain-toolbar.patch",
     ]
-    text = "\n".join(p.read_text() for p in patches[-13:] )
+    text = "\n".join(p.read_text() for p in patches[-17:])
     assert "CellRendererFavorite" in text
     assert "supported_prefixes" in text
     assert "_ensure_group_box" in text
     assert "Neighborhood unavailable for FriendsTray" in text
+    assert "child.set_pixel_size(icon_size)" in text
+    assert "def connect_to_scroller(self, scrolled):" in text
+    assert "self._toolbar = toolbar" in text
