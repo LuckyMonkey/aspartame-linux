@@ -1,0 +1,13 @@
+--- a/src/sugar4/graphics/icon.py
++++ b/src/sugar4/graphics/icon.py
+@@ -715,6 +715,10 @@
+         type=str, default=None, getter=get_icon_name, setter=set_icon_name
+     )
+     file_name = GObject.Property(
++        type=str, default=None, getter=get_file_name, setter=set_file_name
++    )
++    # Legacy Sugar callers use ``props.file`` for an icon path.
++    file = GObject.Property(
+         type=str, default=None, getter=get_file_name, setter=set_file_name
+     )
+     pixel_size = GObject.Property(
