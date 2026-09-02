@@ -32,6 +32,22 @@ class ActivityManagerModelTests(unittest.TestCase):
             self.assertEqual(result[0]['version'], '7')
             self.assertEqual(result[0]['icon'], '')
 
+    def test_malformed_activity_does_not_hide_valid_activities(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "activities"
+            good = root / "Good.activity" / "activity"
+            bad = root / "Bad.activity" / "activity"
+            good.mkdir(parents=True)
+            bad.mkdir(parents=True)
+            (good / "activity.info").write_text(
+                "[Activity]" + chr(10) + "name = Good" + chr(10),
+                encoding="utf-8")
+            (bad / "activity.info").write_text(
+                "[Activity" + chr(10) + "name = Bad" + chr(10),
+                encoding="utf-8")
+            result = model.list_activities((str(root),))
+            self.assertEqual([item["name"] for item in result], ["Good"])
+
     def test_activity_metadata_preserves_icon_and_cleans_summary(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / 'activities'

@@ -1,6 +1,7 @@
 """User-facing Activity inventory and ratings for Aspartame Settings."""
 
 import configparser
+import logging
 import json
 import os
 import shutil
@@ -10,6 +11,7 @@ import time
 from gettext import gettext as _
 
 
+LOG = logging.getLogger(__name__)
 RATINGS = (_('Broken'), _('Bad'), _('Needs work'), _('Good'), _('Perfect'))
 RATING_FILE = os.path.expanduser('~/.config/aspartame/activity-ratings.json')
 # Inventory only installed Activity locations. The Aspartame bundle tree is
@@ -59,7 +61,11 @@ def list_activities(roots=ACTIVITY_ROOTS):
             path = os.path.join(root, name)
             if not os.path.isdir(path):
                 continue
-            info = _read_info(path)
+            try:
+                info = _read_info(path)
+            except (OSError, UnicodeError, configparser.Error) as error:
+                LOG.warning("Skipping malformed Activity metadata %s: %s", path, error)
+                continue
             if info and info['id'] not in found:
                 found[info['id']] = info
     return sorted(found.values(), key=lambda item: item['name'].lower())
