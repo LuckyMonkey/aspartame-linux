@@ -3,3 +3,4 @@ jarabe/desktop/viewtoolbar.py
 jarabe/frame/zoomtoolbar.py
 jarabe/intro/window.py
 jarabe/view/tabbinghandler.py
+jarabe/desktop/snowflakelayout.py

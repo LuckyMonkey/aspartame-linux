@@ -166,26 +166,31 @@
  
          self._button_box = Gtk.HBox()
          self._favorites_buttons = []
-@@ -99,8 +143,87 @@
+@@ -99,8 +143,95 @@
              'toggled', self.__view_button_toggled_cb, self._list_view_index)
          self.insert(self._list_button, -1)
  
 +        help_css = Gtk.CssProvider()
 +        help_css.load_from_data(b'''
-+            .aspartame-help-button {
++            .aspartame-help-button,
++            .aspartame-help-button:hover,
++            .aspartame-help-button:focus,
++            .aspartame-help-button:active {
 +                min-width: 72px;
 +                min-height: 72px;
 +                padding: 0;
 +                border-radius: 36px;
-+                border: 2px solid #30383c;
-+                background-color: #ffffff;
++                border: 0;
++                background: #ffffff;
++                background-image: none;
++                box-shadow: none;
 +            }
 +            .aspartame-help-button label {
-+                color: #30383c;
++                color: #58636a;
++                margin: 0;
 +            }
 +            .aspartame-help-button.aspartame-help-active {
-+                border-color: #ffffff;
-+                background-color: #30383c;
++                background: #58636a;
 +            }
 +            .aspartame-help-button.aspartame-help-active label {
 +                color: #ffffff;
@@ -203,10 +208,12 @@
 +        self._help_button.set_size_request(72, 72)
 +        self._help_button.set_tooltip_text(
 +            "What is this? - Learn what something on the screen does.")
++        aspartame_help.register_target(
++            self._help_button, 'org.aspartame.shell.help')
 +        self._help_button.connect('button-press-event',
 +                                  self.__help_clicked_cb)
 +        help_label = Gtk.Label()
-+        help_label.set_markup('<span size="xx-large" weight="bold">?</span>')
++        help_label.set_markup('<span size="42000" weight="bold">?</span>')
 +        help_label.set_halign(Gtk.Align.CENTER)
 +        help_label.set_valign(Gtk.Align.CENTER)
 +        self._help_button.add(help_label)
@@ -217,7 +224,7 @@
 +        help_toolitem.show_all()
 +        GLib.idle_add(self._install_help_key_handler)
 +
-+        aspartame_help.guard(self._list_button, 'org.aspartame.shell.frame')
++        aspartame_help.guard(self._list_button, 'org.aspartame.shell.list')
 +
          self._add_separator()
  
@@ -241,6 +248,7 @@
 +    def _install_help_key_handler(self):
 +        window = self.get_toplevel()
 +        if isinstance(window, Gtk.Window):
++            aspartame_help.install_window(window)
 +            window.connect('key-press-event', self.__help_key_press_cb)
 +        return False
 +
@@ -254,7 +262,7 @@
      def _add_favorites_button(self, i):
          logging.debug('adding FavoritesButton %d' % (i))
          self._favorites_buttons.append(FavoritesButton(i))
-@@ -122,6 +245,41 @@
+@@ -122,6 +253,41 @@
              self._favorites_buttons[i].hide()
          self._list_button.hide()
  
@@ -296,6 +304,22 @@
      def clear_query(self):
          self.search_entry.props.text = ''
  
+@@ -212,6 +378,15 @@
+         self.props.accelerator = _('<Ctrl>%d' % (favorite_view + 1))
+         self.props.group = None
+         self.props.icon_name = desktop.get_view_icons()[favorite_view]
++        view_help_ids = {
++            'zoom-neighborhood': 'org.aspartame.shell.neighborhood',
++            'zoom-groups': 'org.aspartame.shell.group',
++            'zoom-home': 'org.aspartame.shell.home',
++            'zoom-activity': 'org.aspartame.shell.activity',
++        }
++        help_id = view_help_ids.get(self.props.icon_name)
++        if help_id:
++            aspartame_help.guard(self, help_id)
+ 
+         favorites_settings = favoritesview.get_settings(favorite_view)
+         self._layout = favorites_settings.layout
 --- jarabe/frame/zoomtoolbar.py
 +++ jarabe/frame/zoomtoolbar.py
 @@ -13,7 +13,6 @@
@@ -306,15 +330,19 @@
  from gettext import gettext as _
  import logging
  
-@@ -25,6 +24,7 @@
+@@ -25,6 +24,11 @@
  from sugar3.graphics.palette import Palette
  from sugar3.graphics.radiotoolbutton import RadioToolButton
  
++import sys
++sys.path.insert(0, '/usr/share/aspartame')
++import aspartame_help
++
 +from jarabe.journal import journalactivity
  from jarabe.frame.frameinvoker import FrameWidgetInvoker
  from jarabe.model import shell
  
-@@ -40,6 +40,7 @@
+@@ -40,6 +44,7 @@
  
          # we shouldn't be mirrored in RTL locales
          self.set_direction(Gtk.TextDirection.LTR)
@@ -322,7 +350,7 @@
  
          # ask not to be collapsed if possible
          self.set_size_request(4 * style.GRID_CELL_SIZE, -1)
-@@ -62,6 +63,14 @@
+@@ -62,6 +67,16 @@
                               _('F4'),
                               shell.ShellModel.ZOOM_ACTIVITY)
  
@@ -331,22 +359,32 @@
 +        self._journal_button.set_is_important(True)
 +        self._journal_button.set_tooltip_text(_('Journal'))
 +        self._journal_button.connect('clicked', self.__journal_clicked_cb)
++        aspartame_help.guard(self._journal_button,
++                             'org.aspartame.shell.journal')
 +        self.add(self._journal_button)
 +        self._journal_button.show()
 +
          shell_model = shell.get_model()
          self._set_zoom_level(shell_model.zoom_level)
          shell_model.zoom_level_changed.connect(self.__zoom_level_changed_cb)
-@@ -74,6 +83,8 @@
+@@ -74,7 +89,16 @@
  
          button = RadioToolButton(icon_name=icon_name, group=group,
                                   accelerator=accelerator)
 +        Gtk.RadioToolButton.set_label(button, label)
 +        button.props.label_widget = None
          button.connect('clicked', self.__level_clicked_cb, zoom_level)
++        help_ids = {
++            shell.ShellModel.ZOOM_MESH: 'org.aspartame.shell.neighborhood',
++            shell.ShellModel.ZOOM_GROUP: 'org.aspartame.shell.group',
++            shell.ShellModel.ZOOM_HOME: 'org.aspartame.shell.home',
++            shell.ShellModel.ZOOM_ACTIVITY: 'org.aspartame.shell.activity',
++        }
++        aspartame_help.guard(button, help_ids[zoom_level])
          self.add(button)
          button.show()
-@@ -92,6 +103,10 @@
+ 
+@@ -92,6 +116,10 @@
          shell.get_model().set_zoom_level(level)
          self.emit('level-clicked')
  
@@ -427,3 +465,37 @@
          user_profile.colors = self._color_page.get_color()
          user_profile.gender = self._gender_page.get_gender()
          user_profile.age = self._age_page.get_age()
+--- jarabe/view/tabbinghandler.py
++++ jarabe/view/tabbinghandler.py
+@@ -130,7 +130,7 @@
+             shell_model.set_tabbing_activity(activity)
+             self._start_timeout(event_time)
+         else:
+-            self._activate_next_activity(event_time)
++            self._activate_previous_activity(event_time)
+ 
+     def previous_activity(self, event_time):
+         if not self._tabbing:
+@@ -160,6 +160,11 @@
+         if next_activity:
+             next_activity.get_window().activate(event_time)
+ 
++    def _activate_previous_activity(self, event_time):
++        previous_activity = shell.get_model().get_previous_activity()
++        if previous_activity:
++            previous_activity.get_window().activate(event_time)
++
+     def stop(self, event_time):
+         self._keyboard.ungrab(event_time)
+         self._mouse.ungrab(event_time)
+--- jarabe/desktop/snowflakelayout.py
++++ jarabe/desktop/snowflakelayout.py
+@@ -68,7 +68,7 @@
+             self._nflakes -= 1
+ 
+         del self._children[child]
+-        self.remove(child)
++        Gtk.Container.remove(self, child)
+ 
+     def do_get_preferred_size(self):
+         size = self._calculate_size()
