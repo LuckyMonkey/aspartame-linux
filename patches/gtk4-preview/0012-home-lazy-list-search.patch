@@ -1,0 +1,32 @@
+--- a/src/jarabe/desktop/homebox.py
++++ b/src/jarabe/desktop/homebox.py
+@@ -111,8 +111,18 @@
+         logging.debug('homebox: reassigning list view index to %d' %
+                       (self._list_view_index))
+ 
++    def _ensure_list_view(self, toolbar):
++        if self._list_view is None:
++            self._list_view = ActivitiesList()
++            self._view_stack.add_named(self._list_view, "list")
++            self._list_view.connect('clear-clicked',
++                                    self.__activitylist_clear_clicked_cb,
++                                    toolbar)
++        return self._list_view
++
+     def __toolbar_query_changed_cb(self, toolbar, query):
+         self._query = normalize_string(query)
++        self._ensure_list_view(toolbar)
+         self._list_view.set_filter(self._query)
+         for i in range(desktop.get_number_of_views()):
+             self._favorites_boxes[i].set_filter(self._query)
+@@ -184,9 +194,7 @@
+             self._view_stack.set_visible_child_name(f"favorite_{favorite}")
+             self._favorites_boxes[favorite].grab_focus()
+         elif view == self._list_view_index:
+-            if self._list_view is None:
+-                self._list_view = ActivitiesList()
+-                self._view_stack.add_named(self._list_view, "list")
++            self._ensure_list_view(self._toolbar)
+             self._view_stack.set_visible_child_name("list")
+             self._list_view.grab_focus()
+         else:

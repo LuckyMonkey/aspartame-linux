@@ -54,3 +54,15 @@ network-extension warnings.
 
 Next single blocker: make List View a real GTK4-native view, or explicitly
 provide Home search/list behavior without the legacy TreeView compatibility path.
+
+## 2026-09-02 Home search milestone
+
+Home search now initializes the lazy ActivitiesList before applying the query,
+so entering a search from Favorites does not dereference an absent list view.
+Preview patch `0012-home-lazy-list-search.patch` was applied and checked in the
+isolated shell. A real F5 + `calc` input produced the Home search state and the
+Jarabe process remained alive. Evidence: `reports/gtk4/home-search-20260902.png`.
+
+The list renderer remains legacy GTK3-style code under the GTK4 preview.
+Journal and network startup also still report separate `PaletteMenuItem` API
+errors; those are not part of this milestone.
