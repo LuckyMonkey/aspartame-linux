@@ -88,6 +88,36 @@ def save_rating(activity_id, rating, filename=RATING_FILE):
     os.replace(temporary, filename)
 
 
+def clear_rating(activity_id, filename=RATING_FILE):
+    """Remove an answer from the rating record, if one exists."""
+    ratings = load_ratings(filename)
+    if activity_id not in ratings:
+        return
+    del ratings[activity_id]
+    parent = os.path.dirname(filename)
+    os.makedirs(parent, mode=0o700, exist_ok=True)
+    temporary = filename + ".tmp"
+    with open(temporary, "w", encoding="utf-8") as stream:
+        json.dump(ratings, stream, indent=2, sort_keys=True)
+        stream.write("\\n")
+    os.replace(temporary, filename)
+
+
+def clear_rating(activity_id, filename=RATING_FILE):
+    """Remove an answer from the rating record, if one exists."""
+    ratings = load_ratings(filename)
+    if activity_id not in ratings:
+        return
+    del ratings[activity_id]
+    parent = os.path.dirname(filename)
+    os.makedirs(parent, mode=0o700, exist_ok=True)
+    temporary = filename + ".tmp"
+    with open(temporary, "w", encoding="utf-8") as stream:
+        json.dump(ratings, stream, indent=2, sort_keys=True)
+        stream.write("\\n")
+    os.replace(temporary, filename)
+
+
 def remove_activity(path, quarantine=QUARANTINE_ROOT):
     """Move an Activity bundle aside, never recursively delete it."""
     path = os.path.realpath(path)

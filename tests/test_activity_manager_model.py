@@ -53,6 +53,13 @@ class ActivityManagerModelTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 model.save_rating('org.aspartame.Count', 6, filename)
 
+    def test_clearing_rating_removes_the_answer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            filename = os.path.join(directory, "ratings.json")
+            model.save_rating("org.aspartame.Count", 5, filename)
+            model.clear_rating("org.aspartame.Count", filename)
+            self.assertNotIn("org.aspartame.Count", model.load_ratings(filename))
+
     def test_user_activity_removal_is_recoverable(self):
         with tempfile.TemporaryDirectory() as directory:
             home = Path(directory) / 'home'
