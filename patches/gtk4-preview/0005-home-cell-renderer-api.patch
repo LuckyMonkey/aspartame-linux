@@ -1,0 +1,54 @@
+--- a/src/jarabe/desktop/activitieslist.py
++++ b/src/jarabe/desktop/activitieslist.py
+@@ -157,9 +157,9 @@
+         favorite = \
+             model[tree_iter][self._model.column_favorites[cell.favorite_view]]
+         if favorite:
+-            cell.props.xo_color = profile.get_color()
++            cell.set_xo_color(profile.get_color())
+         else:
+-            cell.props.xo_color = None
++            cell.set_xo_color(None)
+ 
+     def __favorite_clicked_cb(self, cell, path):
+         row = self.get_model()[path]
+@@ -409,13 +409,10 @@
+         CellRendererIcon.__init__(self)
+ 
+         self.favorite_view = favorite_view
+-        self.props.width = style.GRID_CELL_SIZE
+-        self.props.height = style.GRID_CELL_SIZE
+-        self.props.size = style.SMALL_ICON_SIZE
+-        self.props.icon_name = desktop.get_favorite_icons()[favorite_view]
+-        self.props.fill_color = style.COLOR_BUTTON_GREY.get_svg()
+-        self.props.stroke_color = style.COLOR_TRANSPARENT.get_svg()
+-        self.props.mode = Gtk.CellRendererMode.ACTIVATABLE
++        self.set_size(style.GRID_CELL_SIZE)
++        self.set_icon_name(desktop.get_favorite_icons()[favorite_view])
++        self.set_fill_color(style.COLOR_BUTTON_GREY.get_svg())
++        self.set_stroke_color(style.COLOR_TRANSPARENT.get_svg())
+ 
+ 
+ class CellRendererActivityIcon(CellRendererIcon):
+@@ -429,16 +426,13 @@
+     def __init__(self):
+         CellRendererIcon.__init__(self)
+ 
+-        self.props.width = style.GRID_CELL_SIZE
+-        self.props.height = style.GRID_CELL_SIZE
+-        self.props.size = style.STANDARD_ICON_SIZE
+-        self.props.stroke_color = style.COLOR_BUTTON_GREY.get_svg()
+-        self.props.fill_color = style.COLOR_TRANSPARENT.get_svg()
+-        self.props.mode = Gtk.CellRendererMode.INERT
++        self.set_size(style.GRID_CELL_SIZE)
++        self.set_stroke_color(style.COLOR_BUTTON_GREY.get_svg())
++        self.set_fill_color(style.COLOR_TRANSPARENT.get_svg())
+ 
+         prelit_color = profile.get_color()
+-        self.props.prelit_stroke_color = prelit_color.get_stroke_color()
+-        self.props.prelit_fill_color = prelit_color.get_fill_color()
++        self._prelit_stroke_color = prelit_color.get_stroke_color()
++        self._prelit_fill_color = prelit_color.get_fill_color()
+ 
+ 
+ class ClearMessageBox(Gtk.Box):

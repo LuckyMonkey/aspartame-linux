@@ -1,0 +1,15 @@
+--- a/src/jarabe/desktop/homebox.py
++++ b/src/jarabe/desktop/homebox.py
+@@ -76,8 +76,10 @@
+         toolbar.search_entry.add_controller(key_controller)
+ 
+ 
+-        self._list_view.connect('clear-clicked',
+-                                self.__activitylist_clear_clicked_cb, toolbar)
++        if self._list_view is not None:
++            self._list_view.connect('clear-clicked',
++                                    self.__activitylist_clear_clicked_cb,
++                                    toolbar)
+ 
+         self._last_view = self._favorites_views_indicies[0]
+         self._query = ''

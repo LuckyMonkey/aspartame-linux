@@ -1,0 +1,79 @@
+--- a/src/jarabe/desktop/homewindow.py
++++ b/src/jarabe/desktop/homewindow.py
+@@ -113,11 +113,10 @@
+         self._resume_mode = setting.get_boolean('resume-activity')
+         self._home_box.set_resume_mode(self._resume_mode)
+ 
+-        self._group_box = GroupBox(self._toolbar)
+-        self._view_stack.add_named(self._group_box, 'group')
+-        
+-        self._mesh_box = MeshBox(self._toolbar)
+-        self._view_stack.add_named(self._mesh_box, 'mesh')
++        # Group and Neighborhood have optional service dependencies. Defer
++        # them until selected so the default Home view can start independently.
++        self._group_box = None
++        self._mesh_box = None
+         
+         self._transition_box = TransitionBox()
+         self._view_stack.add_named(self._transition_box, 'transition')
+@@ -151,13 +150,25 @@
+     def _hide_alert(self):
+         if self._alert:
+             self._box.remove(self._alert)
++
++    def _ensure_group_box(self):
++        if self._group_box is None:
++            self._group_box = GroupBox(self._toolbar)
++            self._view_stack.add_named(self._group_box, 'group')
++        return self._group_box
++
++    def _ensure_mesh_box(self):
++        if self._mesh_box is None:
++            self._mesh_box = MeshBox(self._toolbar)
++            self._view_stack.add_named(self._mesh_box, 'mesh')
++        return self._mesh_box
+ 
+     def _deactivate_view(self, level):
+         group = palettegroup.get_group('default')
+         group.popdown()
+         if level == ShellModel.ZOOM_HOME:
+             self._home_box.suspend()
+-        elif level == ShellModel.ZOOM_MESH:
++        elif level == ShellModel.ZOOM_MESH and self._mesh_box is not None:
+             self._mesh_box.suspend()
+ 
+     def __screen_size_changed_cb(self, *args):
+@@ -174,8 +185,10 @@
+     def _activate_view(self, level):
+         if level == ShellModel.ZOOM_HOME:
+             self._home_box.resume()
++        elif level == ShellModel.ZOOM_GROUP:
++            self._ensure_group_box()
+         elif level == ShellModel.ZOOM_MESH:
+-            self._mesh_box.resume()
++            self._ensure_mesh_box().resume()
+ 
+     def __is_alt(self, keyval, state):
+         # with Shift held, Alt reports as Meta
+@@ -268,17 +281,19 @@
+             self._toolbar.show_view_buttons()
+             GLib.idle_add(self._home_box.grab_focus)
+         elif level == ShellModel.ZOOM_GROUP:
++            group_box = self._ensure_group_box()
+             self._view_stack.set_visible_child_name('group')
+             self._toolbar.clear_query()
+             self._toolbar.set_placeholder_text_for_view(_('Group'))
+             self._toolbar.show_view_buttons()
+-            GLib.idle_add(self._group_box.grab_focus)
++            GLib.idle_add(group_box.grab_focus)
+         elif level == ShellModel.ZOOM_MESH:
++            mesh_box = self._ensure_mesh_box()
+             self._view_stack.set_visible_child_name('mesh')
+             self._toolbar.clear_query()
+             self._toolbar.set_placeholder_text_for_view(_('Neighborhood'))
+             self._toolbar.hide_view_buttons()
+-            GLib.idle_add(self._mesh_box.grab_focus)
++            GLib.idle_add(mesh_box.grab_focus)
+         self._show_alert()
+ 
+     def do_dispose(self):

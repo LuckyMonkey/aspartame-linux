@@ -1,0 +1,22 @@
+--- a/src/jarabe/desktop/activitieslist.py
++++ b/src/jarabe/desktop/activitieslist.py
+@@ -80,7 +80,8 @@
+         for i in range(desktop.get_number_of_views()):
+             fav_column = Gtk.TreeViewColumn()
+             cell_favorite = CellRendererFavorite(i)
+-            cell_favorite.connect('clicked', self.__favorite_clicked_cb)
++            if hasattr(cell_favorite, 'connect'):
++                cell_favorite.connect('clicked', self.__favorite_clicked_cb)
+             fav_column.pack_start(cell_favorite, True)
+             fav_column.set_cell_data_func(cell_favorite,
+                                           self.__favorite_set_data_cb)
+@@ -89,7 +90,8 @@
+             self._favorite_cells.append(cell_favorite)
+ 
+         self.cell_icon = CellRendererActivityIcon()
+-        self.cell_icon.connect('clicked', self.__activity_icon_clicked_cb)
++        if hasattr(self.cell_icon, 'connect'):
++            self.cell_icon.connect('clicked', self.__activity_icon_clicked_cb)
+ 
+         column = Gtk.TreeViewColumn()
+         column.pack_start(self.cell_icon, True)

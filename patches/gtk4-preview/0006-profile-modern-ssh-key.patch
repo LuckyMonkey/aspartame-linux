@@ -1,0 +1,18 @@
+--- a/src/sugar4/profile.py
++++ b/src/sugar4/profile.py
+@@ -88,12 +88,12 @@
+             logging.exception("Error reading public key")
+             return None
+ 
+-        magic = "ssh-dss "
++        supported_prefixes = ("ssh-dss ", "ssh-rsa ", "ecdsa-", "ssh-ed25519 ")
+         for line in lines:
+             line = line.strip()
+-            if not line.startswith(magic):
++            if not line.startswith(supported_prefixes):
+                 continue
+-            return line[len(magic) :]
++            return line.split(None, 2)[1]
+         else:
+             logging.error("Error parsing public key.")
+             return None

@@ -57,3 +57,24 @@
 - Reproduction: fresh isolated profile had no org.sugarlabs schema or group-label data; intro then failed with empty-label/index errors.
 - Fix: launcher contains GSETTINGS_SCHEMA_DIR, SUGAR_GROUP_LABELS, and SUGAR_HOME under the preview runtime.
 - Status: resolved for preview; one test initially omitted SUGAR_HOME, and stable host profile keys were restored from generated backups.
+
+## GTK4-009 — Home eagerly constructs a GTK3-only activity list
+
+- Category: `UPSTREAM-SHELL` / `UPSTREAM-TOOLKIT`
+- Reproduction: launch the pinned preview; Home construction reaches `Gtk.TreeViewColumn.pack_start()` with the toolkit's plain `CellRendererIcon` adapter and raises `TypeError`.
+- Fix: the preview defers `ActivitiesList` until List View is requested; default Favorites/Home can initialize without the unfinished legacy list.
+- Status: default Home path unblocked; List View remains open.
+
+## GTK4-010 — GTK4 preview profile validator rejects its generated RSA key
+
+- Category: `UPSTREAM-TOOLKIT`
+- Reproduction: fresh preview profile generates `ssh-keygen -t rsa`, then `sugar4.profile` accepts only `ssh-dss` and repeatedly shows intro.
+- Fix: accept modern SSH public-key prefixes while preserving the existing private-key hash validation.
+- Status: fixed in preview; upstream candidate.
+
+## GTK4-011 — Home eagerly constructs optional Telepathy-backed views
+
+- Category: `DBUS` / `UPSTREAM-SHELL`
+- Reproduction: private preview DBus session has no `org.freedesktop.Telepathy.AccountManager`; eager `MeshBox`/`FriendsTray` construction aborts before Home is installed.
+- Fix: defer Group/Neighborhood construction and make FriendsTray degrade to the owner-only tray when collaboration is unavailable.
+- Status: default Home path unblocked; collaboration remains untested.

@@ -1,0 +1,24 @@
+--- a/src/jarabe/desktop/homebox.py
++++ b/src/jarabe/desktop/homebox.py
+@@ -58,8 +58,9 @@
+             self._favorites_boxes.append(box)
+             self._view_stack.add_named(box, f"favorite_{i}")
+             
+-        self._list_view = ActivitiesList()
+-        self._view_stack.add_named(self._list_view, "list")
++        # The GTK4 preview's legacy TreeView list is not yet a native
++        # GTK4 view. Keep the default Favorites/Home path independent of it.
++        self._list_view = None
+ 
+         self._desktop_model = desktop.get_model()
+         self._desktop_model.connect('desktop-view-icons-changed',
+@@ -181,6 +182,9 @@
+             self._view_stack.set_visible_child_name(f"favorite_{favorite}")
+             self._favorites_boxes[favorite].grab_focus()
+         elif view == self._list_view_index:
++            if self._list_view is None:
++                self._list_view = ActivitiesList()
++                self._view_stack.add_named(self._list_view, "list")
+             self._view_stack.set_visible_child_name("list")
+             self._list_view.grab_focus()
+         else:

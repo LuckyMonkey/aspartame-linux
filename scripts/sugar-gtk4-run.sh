@@ -17,6 +17,10 @@ command -v dbus-run-session >/dev/null || { echo "missing dbus-run-session" >&2;
 command -v python3 >/dev/null || { echo "missing python3" >&2; exit 2; }
 
 mkdir -p "$runroot/home" "$runroot/data" "$runroot/config" "$runroot/cache" "$root/logs"
+# The shell config points at the preview prefix for extensions. Expose the
+# pinned shell checkout there without installing anything system-wide.
+mkdir -p "$prefix/share/sugar"
+ln -sfn "$shell/extensions" "$prefix/share/sugar/extensions"
 chmod 700 "$runroot"
 
 display=${DISPLAY:-}
@@ -49,6 +53,7 @@ exec dbus-run-session -- env \
     XDG_CACHE_HOME="$runroot/cache" \
     GSETTINGS_SCHEMA_DIR="$runroot/schemas" \
     SUGAR_GROUP_LABELS="$runroot/group-labels.json" \
+    SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
     SUGAR_WINDOWED=1 \
     PYTHONPATH="$shell/src:$toolkit/src" \

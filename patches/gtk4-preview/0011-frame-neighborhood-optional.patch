@@ -1,0 +1,34 @@
+--- a/src/jarabe/frame/friendstray.py
++++ b/src/jarabe/frame/friendstray.py
+@@ -53,8 +53,17 @@
+         shell.get_model().connect('active-activity-changed',
+                                   self.__active_activity_changed_cb)
+ 
+-        neighborhood.get_model().connect('activity-added',
+-                                         self.__neighborhood_activity_added_cb)
++        try:
++            self._neighborhood_model = neighborhood.get_model()
++        except Exception as error:
++            # Collaboration is optional in a local preview/session. Keep
++            # the Frame usable when Telepathy is not running.
++            logging.warning('Neighborhood unavailable for FriendsTray: %s',
++                            error)
++            self._neighborhood_model = None
++        else:
++            self._neighborhood_model.connect(
++                'activity-added', self.__neighborhood_activity_added_cb)
+ 
+         # always display ourselves by default
+         self.add_buddy(get_owner_instance())
+@@ -113,7 +122,10 @@
+ 
+     def _set_current_activity(self, activity_id):
+         logging.debug('FriendsTray._set_current_activity')
+-        neighborhood_model = neighborhood.get_model()
++        if self._neighborhood_model is None:
++            return
++
++        neighborhood_model = self._neighborhood_model
+         self._shared_activity = neighborhood_model.get_activity(activity_id)
+         if self._shared_activity is None:
+             return

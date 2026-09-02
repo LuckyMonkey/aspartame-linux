@@ -9,3 +9,8 @@ No activity is marked usable until it launches inside a running GTK4 Sugar sessi
 | Browse | `c448927` | not yet tested | not tested |
 | ImageViewer | `87fedc0` | not yet tested | not tested |
 | Terminal | `1425071` | not yet tested | not tested |
+
+
+Home shell note (2026-09-02): default Favorites/Home now renders in the pinned
+preview. The activity list remains untested because the current GTK4 toolkit
+renderer adapter cannot be passed to the legacy TreeView column API.

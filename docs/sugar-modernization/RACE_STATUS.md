@@ -4,6 +4,11 @@ Checked 2026-08-31. The preview is isolated on SteamLibrary and cannot overwrite
 
 ## Current milestone
 
+🟡 GTK4 Home startup reached: the isolated preview now gets past profile setup,
+Home construction, and optional collaboration dependencies. Default Favorites
+Home is visible and the shell process remains alive for at least 12 seconds.
+List View, Frame interaction, and activity launch are not yet claimed.
+
 ✅ Official GTK4 PyGObject 4.14.5 loads. ✅ `sugar4` imports from the pinned toolkit checkout. ✅ `sugar-ext` C libraries, GIR generation, and five Meson tests build/pass after a local gtk-doc correction. ❌ A complete GTK4 Sugar shell has not booted.
 
 ## Pinned heads
@@ -35,3 +40,17 @@ Preview-only compatibility work uses Casilda 0.3 (Casilda-0.1) because host GTK4
 ## 2026-09-01 verification
 
 GTK4 checks pass: GTK4/PyGObject loads, 55 toolkit tests pass, sugar-ext native tests pass, and Jarabe starts under private Xvfb/DBus. A recognizable Sugar-rendered screenshot was captured at reports/gtk4/first-pixels-12.png (1280x800). This does not yet prove stable Home, Frame, Journal, or Activity lifecycle. The next blocker is stable Home rendering for 60 seconds. Runtime warnings include software Casilda rendering under Xvfb, Graphene version selection, and private-portal/GVFS noise; these remain visible in the captured run log.
+
+## 2026-09-02 Home startup milestone
+
+The first real Home startup run initially failed in the legacy activity-list
+renderer, then in profile-key validation, optional Telepathy initialization, and
+missing extension data. Preview-only patches `0005` through `0011` address those
+startup boundaries without changing stable GTK3. The final run stayed alive for
+12 seconds, produced a 1280x800 screenshot at
+`reports/gtk4/home-preview-20260902.png`, and OCR identified the Home search
+surface. The same run still reports non-fatal missing UPower/espeak/portal and
+network-extension warnings.
+
+Next single blocker: make List View a real GTK4-native view, or explicitly
+provide Home search/list behavior without the legacy TreeView compatibility path.
