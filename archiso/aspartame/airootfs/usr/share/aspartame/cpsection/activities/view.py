@@ -13,9 +13,9 @@ from jarabe.controlpanel.sectionview import SectionView
 
 from . import model
 from .rating_faces import FaceRating
-import aspartame_visual
 
 sys.path.insert(0, '/usr/share/aspartame')
+import aspartame_visual
 try:
     import aspartame_help
 except ImportError:
@@ -32,9 +32,9 @@ class ActivityManager(SectionView):
         self.set_border_width(style.DEFAULT_SPACING * 2)
         self.set_spacing(style.DEFAULT_SPACING)
         css = Gtk.CssProvider()
-        css.load_from_data(b'''
+        css.load_from_data(('''
             .aspartame-activity-row {
-                border-bottom: 1px solid #c8d3d8;
+                border-bottom: 1px solid %s;
                 padding: 8px 0;
                 min-height: 68px;
             }
@@ -48,8 +48,8 @@ class ActivityManager(SectionView):
                 box-shadow: none;
             }
             .aspartame-rating-face.aspartame-rating-selected {
-                border: 2px solid #202b31;
-                background-color: #202b31;
+                border: 2px solid %s;
+                background-color: %s;
             }
             .aspartame-remove-button {
                 min-width: 68px;
@@ -57,28 +57,39 @@ class ActivityManager(SectionView):
                 padding: 1px 8px;
                 border: 1px solid #9aa8ae;
                 border-radius: 14px;
-                background-color: #e6eef1;
-                color: #65747a;
+                background-color: %s;
+                color: %s;
             }
             .aspartame-remove-button label {
-                color: #65747a;
+                color: %s;
                 font-weight: bold;
             }
             .aspartame-remove-button:hover,
             .aspartame-remove-button:active {
-                background-color: #202b31;
-                border-color: #202b31;
-                color: #ffffff;
+                background-color: %s;
+                border-color: %s;
+                color: %s;
             }
             .aspartame-remove-button:hover label,
             .aspartame-remove-button:active label {
-                color: #ffffff;
+                color: %s;
             }
             .aspartame-table-header {
-                background-color: #e6eef1;
-                border-bottom: 2px solid #8fa3ad;
+                background-color: %s;
+                border-bottom: 2px solid %s;
             }
-        ''')
+        ''' % (aspartame_visual.SHELL_LINE,
+               aspartame_visual.SHELL_INK,
+               aspartame_visual.SHELL_INK,
+               aspartame_visual.SHELL_SURFACE,
+               aspartame_visual.SHELL_MUTED_INK,
+               aspartame_visual.SHELL_MUTED_INK,
+               aspartame_visual.SHELL_INK,
+               aspartame_visual.SHELL_INK,
+               aspartame_visual.SHELL_WHITE,
+               aspartame_visual.SHELL_WHITE,
+               aspartame_visual.SHELL_SURFACE,
+               aspartame_visual.SHELL_MUTED_INK)).encode('utf-8'))
         Gtk.StyleContext.add_provider_for_screen(
             self.get_screen(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 

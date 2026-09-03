@@ -15,6 +15,14 @@ SSH_OPTS=(
     -o "ControlPath=$SSH_CONTROL_PATH"
     -p "$SSH_PORT"
 )
+# The development VM uses a temporary local askpass helper. Keep this
+# opt-in and host-local; normal SSH setups continue to use their own agent.
+if test -x /tmp/aspartame-askpass; then
+    export SSH_ASKPASS=/tmp/aspartame-askpass
+    export SSH_ASKPASS_REQUIRE=force
+    export DISPLAY=${DISPLAY:-:0}
+fi
+
 SCP_OPTS=(
     -q
     -o StrictHostKeyChecking=no
