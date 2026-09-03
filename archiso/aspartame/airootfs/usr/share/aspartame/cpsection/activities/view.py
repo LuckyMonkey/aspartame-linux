@@ -10,6 +10,7 @@ from gi.repository import GdkPixbuf
 
 from sugar3.graphics import style
 from jarabe.controlpanel.sectionview import SectionView
+from jarabe.model import bundleregistry
 
 from . import model
 from .rating_faces import FaceRating
@@ -301,11 +302,18 @@ class ActivityManager(SectionView):
         grid.attach(detail_version, 0, 0, 1, 1)
         self._column_groups[0].add_widget(detail_version)
 
-        remove = Gtk.Button(label=_('Remove'))
+        if activity['user']:
+            action_label = _('Uninstall')
+            action_tip = _('Uninstall this Activity and keep its work in the Journal.')
+        elif activity.get('hidden'):
+            action_label = _('Restore')
+            action_tip = _('Show this Activity on Home again.')
+        else:
+            action_label = _('Hide')
+            action_tip = _('Hide this system Activity from Home without deleting it.')
+        remove = Gtk.Button(label=action_label)
         remove.get_style_context().add_class('aspartame-remove-button')
-        remove.set_tooltip_text(_('Remove this Activity for this user.'))
-        if not activity['user']:
-            remove.set_tooltip_text(_('Remove this system Activity with administrator approval.'))
+        remove.set_tooltip_text(action_tip)
         remove.connect('clicked', self._remove_clicked, activity)
         remove.set_size_request(64, -1)
         remove.set_halign(Gtk.Align.END)
@@ -322,18 +330,47 @@ class ActivityManager(SectionView):
             model.clear_rating(activity_id)
 
     def _remove_clicked(self, _button, activity):
+        if not activity['user']:
+            hidden = not activity.get('hidden', False)
+            verb = _('Hide') if hidden else _('Restore')
+            dialog = Gtk.MessageDialog(
+                transient_for=self.get_toplevel(),
+                flags=Gtk.DialogFlags.MODAL,
+                message_type=Gtk.MessageType.QUESTION,
+                buttons=Gtk.ButtonsType.OK_CANCEL,
+                text=_('%s %s?') % (verb, activity['name']))
+            if hidden:
+                dialog.format_secondary_text(_(
+                    'This keeps the system Activity installed, but removes it '
+                    'from Home for this user. Your Journal work is unchanged.'))
+            else:
+                dialog.format_secondary_text(_(
+                    'This shows the installed Activity on Home again.'))
+            response = dialog.run()
+            dialog.destroy()
+            if response != Gtk.ResponseType.OK:
+                return
+            model.set_activity_hidden(activity['id'], activity['version'], hidden)
+            try:
+                registry = bundleregistry.get_registry()
+                registry.set_bundle_favorite(activity['id'],
+                                             activity['version'], not hidden)
+            except (ValueError, AttributeError):
+                # The persisted state is still correct; the next shell start
+                # will reload it even if this registry instance is unavailable.
+                pass
+            self.setup()
+            return
+
         dialog = Gtk.MessageDialog(
             transient_for=self.get_toplevel(),
             flags=Gtk.DialogFlags.MODAL,
             message_type=Gtk.MessageType.QUESTION,
             buttons=Gtk.ButtonsType.OK_CANCEL,
-            text=_('Remove %s?') % activity['name'])
-        secondary = _('The Activity will be moved to a recoverable local quarantine.')
-        if not activity['user']:
-            secondary += '\n\n' + _(
-                'After you choose Remove, an administrator approval dialog '
-                'will appear.')
-        dialog.format_secondary_text(secondary)
+            text=_('Uninstall %s?') % activity['name'])
+        dialog.format_secondary_text(_(
+            'The Activity bundle will be moved to a recoverable local '
+            'quarantine. Your Journal work is unchanged.'))
         response = dialog.run()
         dialog.destroy()
         if response != Gtk.ResponseType.OK:
@@ -346,7 +383,7 @@ class ActivityManager(SectionView):
                 flags=Gtk.DialogFlags.MODAL,
                 message_type=Gtk.MessageType.ERROR,
                 buttons=Gtk.ButtonsType.CLOSE,
-                text=_('Activity could not be removed'))
+                text=_('Activity could not be uninstalled'))
             error_dialog.format_secondary_text(str(error))
             error_dialog.run()
             error_dialog.destroy()
@@ -357,7 +394,7 @@ class ActivityManager(SectionView):
             flags=Gtk.DialogFlags.MODAL,
             message_type=Gtk.MessageType.INFO,
             buttons=Gtk.ButtonsType.CLOSE,
-            text=_('Activity removed'))
+            text=_('Activity uninstalled'))
         success_dialog.format_secondary_text(
             _('%s was moved to the recoverable Activity quarantine.') %
             activity['name'])

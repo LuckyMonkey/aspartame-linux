@@ -1,25 +1,14 @@
 --- jarabe/desktop/meshbox.py
 +++ jarabe/desktop/meshbox.py
-@@ -18,9 +18,15 @@
- 
- from gettext import gettext as _
- import logging
+@@ -20,0 +21,5 @@
 +import ipaddress
 +import os
 +import subprocess
 +
 +from datetime import datetime
- 
- import dbus
- from gi.repository import GObject
+@@ -23,0 +29 @@
 +from gi.repository import Gtk
- from gi.repository import Gio
- 
- from sugar3.graphics.icon import Icon
-@@ -371,6 +377,18 @@
-         ViewContainer.__init__(self, layout, owner_icon)
-         self.set_can_focus(False)
- 
+@@ -373,0 +380,12 @@
 +        self._scan_button = Gtk.Button()
 +
 +        self._scan_button.set_label(_('Scan network'))
@@ -32,13 +21,8 @@
 +        self.add(self._scan_button)
 +        self._scan_button.show_all()
 +
-         self.wireless_networks = {}
-         self._adhoc_manager = None
-         self._adhoc_networks = []
-@@ -402,6 +420,51 @@
-         netmgr_observer = NetworkManagerObserver(self)
-         netmgr_observer.listen()
- 
+@@ -403,0 +422,45 @@
++
 +    def do_size_allocate(self, allocation):
 +        ViewContainer.do_size_allocate(self, allocation)
 +        button_allocation = Gtk.Allocation()
@@ -83,51 +67,27 @@
 +            with open(report_path, 'w', encoding='utf-8') as report_file:
 +                report_file.write(output)
 +        dialog.destroy()
-+
-     def _buddy_added_cb(self, model, buddy_model):
-         self._add_buddy(buddy_model)
- 
 --- jarabe/desktop/viewtoolbar.py
 +++ jarabe/desktop/viewtoolbar.py
-@@ -20,9 +20,14 @@
- # along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
- from gettext import gettext as _
+@@ -22,0 +23,2 @@
 +from datetime import datetime
 +import locale
- import logging
+@@ -23,0 +26 @@
 +import sys
- 
- from gi.repository import Gtk
+@@ -25,0 +29,2 @@
 +from gi.repository import Gdk
 +from gi.repository import Gio
- from gi.repository import GObject
- from gi.repository import GLib
- 
-@@ -33,6 +38,10 @@
- from jarabe.desktop import favoritesview
- from jarabe.model import desktop
- 
+@@ -27,0 +33 @@
++from gi.repository import GdkPixbuf
+@@ -35,0 +42,4 @@
 +sys.path.insert(0, '/usr/share/aspartame')
 +import aspartame_help
 +import aspartame_visual
 +
- _AUTOSEARCH_TIMEOUT = 1000
- 
- 
-@@ -48,6 +57,8 @@
- 
-     def __init__(self):
-         Gtk.Toolbar.__init__(self)
+@@ -50,0 +61,2 @@
 +        aspartame_help.set_active(False)
 +        self.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
- 
-         self._favorites_views_indicies = []
-         for i in range(desktop.get_number_of_views()):
-@@ -78,7 +89,49 @@
-         tool_item.add(self.search_entry)
-         self.search_entry.show()
- 
+@@ -81 +93,43 @@
 -        self._add_separator(expand=True)
 +        # Use an expanding, centered tool item rather than a ToolButton.
 +        # ToolButton aligns its label from the left and makes the clock appear
@@ -172,13 +132,7 @@
 +                                     self.__clock_format_changed_cb)
 +        self.__update_clock_cb()
 +        GLib.timeout_add_seconds(30, self.__update_clock_cb)
- 
-         self._button_box = Gtk.HBox()
-         self._favorites_buttons = []
-@@ -99,8 +152,102 @@
-             'toggled', self.__view_button_toggled_cb, self._list_view_index)
-         self.insert(self._list_button, -1)
- 
+@@ -101,0 +156,74 @@
 +        help_css = Gtk.CssProvider()
 +        help_css.load_from_data(('''
 +            .aspartame-help-button,
@@ -188,29 +142,33 @@
 +                min-width: %dpx;
 +                min-height: %dpx;
 +                padding: 0;
-+                border-radius: %dpx;
-+                border: 0;
-+                background: %s;
++                border-radius: 999px;
++                border: 2px solid %s;
++                background: transparent;
 +                background-image: none;
 +                box-shadow: none;
 +            }
-+            .aspartame-help-button label {
++            button.aspartame-help-button label.aspartame-help-glyph {
 +                color: %s;
 +                margin: 0;
++                padding: 0;
++                font-size: 27px;
++                font-weight: bold;
 +            }
 +            .aspartame-help-button.aspartame-help-active {
 +                background: %s;
++                border-color: %s;
 +            }
-+            .aspartame-help-button.aspartame-help-active label {
++            button.aspartame-help-button.aspartame-help-active label.aspartame-help-glyph {
 +                color: %s;
 +            }
 +        ''' % (aspartame_visual.HELP_BUTTON_DIAMETER,
 +               aspartame_visual.HELP_BUTTON_DIAMETER,
-+               aspartame_visual.HELP_BUTTON_DIAMETER // 2,
 +               aspartame_visual.SHELL_WHITE,
 +               aspartame_visual.SHELL_FOCUS,
-+               aspartame_visual.SHELL_FOCUS,
-+               aspartame_visual.SHELL_WHITE)).encode('utf-8'))
++               aspartame_visual.SHELL_WHITE,
++               aspartame_visual.SHELL_WHITE,
++               aspartame_visual.SHELL_FOCUS)).encode('utf-8'))
 +
 +        Gtk.StyleContext.add_provider_for_screen(
 +            Gdk.Screen.get_default(), help_css,
@@ -228,22 +186,28 @@
 +            self._help_button, 'org.aspartame.shell.help')
 +        self._help_button.connect('button-press-event',
 +                                  self.__help_clicked_cb)
-+        help_label = Gtk.Label()
-+        help_label.set_markup('<span size="42000" weight="bold">?</span>')
-+        help_label.set_halign(Gtk.Align.CENTER)
-+        help_label.set_valign(Gtk.Align.CENTER)
-+        self._help_button.add(help_label)
++        # Reuse the installed Help Activity's canonical Sugar artwork.
++        help_icon = GdkPixbuf.Pixbuf.new_from_file_at_scale(
++            '/usr/share/sugar/activities/Help.activity/activity/activity-help.svg',
++            24, 24, True)
++        help_image = Gtk.Image.new_from_pixbuf(help_icon)
++        help_image.set_halign(Gtk.Align.CENTER)
++        help_image.set_valign(Gtk.Align.CENTER)
++        help_image.set_tooltip_text(
++            'What is this? Learn what something on the screen does.')
++        self._help_button.add(help_image)
 +        help_toolitem = Gtk.ToolItem()
-+        help_toolitem.set_border_width(2)
++        help_toolitem.set_border_width(0)
 +        help_toolitem.add(self._help_button)
-+        self.insert(help_toolitem, -1)
++        # Keep contextual Help beside the Home search field, not among the
++        # view selectors.  It is a search/understanding affordance.
++        self.insert(help_toolitem, 2)
 +        help_toolitem.show_all()
 +        GLib.idle_add(self._install_help_key_handler)
 +
 +        aspartame_help.guard(self._list_button, 'org.aspartame.shell.list')
 +
-         self._add_separator()
- 
+@@ -103,0 +232,31 @@
 +    def __help_clicked_cb(self, _button, _event):
 +        active = aspartame_help.toggle()
 +        self._set_help_button_active(active)
@@ -275,13 +239,7 @@
 +            return True
 +        return False
 +
-     def _add_favorites_button(self, i):
-         logging.debug('adding FavoritesButton %d' % (i))
-         self._favorites_buttons.append(FavoritesButton(i))
-@@ -122,6 +269,39 @@
-             self._favorites_buttons[i].hide()
-         self._list_button.hide()
- 
+@@ -124,0 +284,33 @@
 +    def __find_clock_label(self, widget):
 +        if isinstance(widget, Gtk.Label):
 +            return widget
@@ -315,13 +273,7 @@
 +        return True
 +
 +
-     def clear_query(self):
-         self.search_entry.props.text = ''
- 
-@@ -212,6 +392,15 @@
-         self.props.accelerator = _('<Ctrl>%d' % (favorite_view + 1))
-         self.props.group = None
-         self.props.icon_name = desktop.get_view_icons()[favorite_view]
+@@ -214,0 +407,9 @@
 +        view_help_ids = {
 +            'zoom-neighborhood': 'org.aspartame.shell.neighborhood',
 +            'zoom-groups': 'org.aspartame.shell.group',
@@ -331,43 +283,19 @@
 +        help_id = view_help_ids.get(self.props.icon_name)
 +        if help_id:
 +            aspartame_help.guard(self, help_id)
- 
-         favorites_settings = favoritesview.get_settings(favorite_view)
-         self._layout = favorites_settings.layout
 --- jarabe/frame/zoomtoolbar.py
 +++ jarabe/frame/zoomtoolbar.py
-@@ -13,7 +13,6 @@
- #
- # You should have received a copy of the GNU General Public License
- # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+@@ -16 +15,0 @@
 -
- from gettext import gettext as _
- import logging
- 
-@@ -25,6 +24,11 @@
- from sugar3.graphics.palette import Palette
- from sugar3.graphics.radiotoolbutton import RadioToolButton
- 
+@@ -27,0 +27,5 @@
 +import sys
 +sys.path.insert(0, '/usr/share/aspartame')
 +import aspartame_help
 +
 +from jarabe.journal import journalactivity
- from jarabe.frame.frameinvoker import FrameWidgetInvoker
- from jarabe.model import shell
- 
-@@ -40,6 +44,7 @@
- 
-         # we shouldn't be mirrored in RTL locales
-         self.set_direction(Gtk.TextDirection.LTR)
+@@ -42,0 +47 @@
 +        self.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
- 
-         # ask not to be collapsed if possible
-         self.set_size_request(4 * style.GRID_CELL_SIZE, -1)
-@@ -62,6 +67,16 @@
-                              _('F4'),
-                              shell.ShellModel.ZOOM_ACTIVITY)
- 
+@@ -64,0 +70,10 @@
 +        self._journal_button = Gtk.ToolButton.new(None, _('Journal'))
 +        self._journal_button.set_icon_name('activity-journal')
 +        self._journal_button.set_is_important(True)
@@ -378,16 +306,10 @@
 +        self.add(self._journal_button)
 +        self._journal_button.show()
 +
-         shell_model = shell.get_model()
-         self._set_zoom_level(shell_model.zoom_level)
-         shell_model.zoom_level_changed.connect(self.__zoom_level_changed_cb)
-@@ -74,7 +89,16 @@
- 
-         button = RadioToolButton(icon_name=icon_name, group=group,
-                                  accelerator=accelerator)
+@@ -76,0 +92,2 @@
 +        Gtk.RadioToolButton.set_label(button, label)
 +        button.props.label_widget = None
-         button.connect('clicked', self.__level_clicked_cb, zoom_level)
+@@ -77,0 +95,7 @@
 +        help_ids = {
 +            shell.ShellModel.ZOOM_MESH: 'org.aspartame.shell.neighborhood',
 +            shell.ShellModel.ZOOM_GROUP: 'org.aspartame.shell.group',
@@ -395,71 +317,29 @@
 +            shell.ShellModel.ZOOM_ACTIVITY: 'org.aspartame.shell.activity',
 +        }
 +        aspartame_help.guard(button, help_ids[zoom_level])
-         self.add(button)
-         button.show()
- 
-@@ -92,6 +116,10 @@
-         shell.get_model().set_zoom_level(level)
-         self.emit('level-clicked')
- 
+@@ -93,0 +118,4 @@
++
 +    def __journal_clicked_cb(self, _button):
 +        journalactivity.get_journal().show_journal()
 +
-+
-     def __zoom_level_changed_cb(self, **kwargs):
-         self._set_zoom_level(kwargs['new_level'])
- 
 --- jarabe/intro/window.py
 +++ jarabe/intro/window.py
-@@ -57,6 +57,8 @@
-     if colors is None:
-         colors = XoColor()
-     settings.set_string('color', colors.to_string())
+@@ -59,0 +60,2 @@
 +    if not settings.get_string('group-label'):
 +        settings.set_string('group-label', 'Aspartame')
- 
-     genderpicker.save_gender(user_profile.gender)
- 
-@@ -252,7 +254,7 @@
- class _IntroBox(Gtk.VBox):
-     done_signal = GObject.Signal('done', arg_types=([object]))
- 
+@@ -255 +257 @@
 -    PAGES = ["NAME", "COLOR", "GENDER", "AGE"]
 +    PAGES = ["COLOR"]
- 
-     PAGE_FIRST = 0
-     PAGE_LAST = len(PAGES) - 1
-@@ -271,7 +273,7 @@
- 
-         settings = Gio.Settings.new('org.sugarlabs.user')
- 
+@@ -274 +276 @@
 -        if 'default-gender' in settings.list_keys():
 +        if False and 'default-gender' in settings.list_keys():
-             default_gender = settings.get_string('default-gender')
-             if default_gender == 'disabled':
-                 self.PAGES[self.PAGES.index("GENDER")] = False
-@@ -282,7 +284,7 @@
- 
-         default_nick = settings.get_string('default-nick')
-         if default_nick != 'disabled':
+@@ -285 +287 @@
 -            self._page += 1
 +            self._page = self.PAGES.index("COLOR")
-             if default_nick == 'system':
-                 pwd_entry = pwd.getpwuid(os.getuid())
-                 default_nick = (pwd_entry.pw_gecos.split(',')[0] or
-@@ -291,7 +293,7 @@
- 
-         # XXX should also consider whether or not there is a nick
-         nick = settings.get_string('nick')
+@@ -294 +296 @@
 -        if start_on_age_page and nick:
 +        if False and start_on_age_page and nick:
-             self._page = self.PAGES.index("AGE")
- 
-         self._setup_page()
-@@ -318,12 +320,7 @@
-                 self._age_page.update_color(self._color_page.get_color())
-             self._current_page = self._age_page
- 
+@@ -321,6 +323 @@
 -        setup_methods = [
 -            _setup_name_page,
 -            _setup_color_page,
@@ -467,60 +347,53 @@
 -            _setup_age_page
 -        ]
 +        setup_methods = [_setup_color_page]
- 
-         setup_methods[self._page](self)
-         self.pack_start(self._current_page, True, True, 0)
-@@ -399,7 +396,7 @@
- 
-     def done(self):
-         user_profile = UserProfile()
+@@ -402 +399 @@
 -        user_profile.nickname = self._name_page.get_name()
 +        user_profile.nickname = os.environ.get('SUGAR_PROFILE_NAME', 'Aspartame')
-         user_profile.colors = self._color_page.get_color()
-         user_profile.gender = self._gender_page.get_gender()
-         user_profile.age = self._age_page.get_age()
 --- jarabe/view/tabbinghandler.py
 +++ jarabe/view/tabbinghandler.py
-@@ -130,7 +130,7 @@
-             shell_model.set_tabbing_activity(activity)
-             self._start_timeout(event_time)
-         else:
+@@ -133 +133 @@
 -            self._activate_next_activity(event_time)
 +            self._activate_previous_activity(event_time)
- 
-     def previous_activity(self, event_time):
-         if not self._tabbing:
-@@ -160,6 +160,11 @@
-         if next_activity:
-             next_activity.get_window().activate(event_time)
- 
+@@ -161,0 +162,5 @@
++
 +    def _activate_previous_activity(self, event_time):
 +        previous_activity = shell.get_model().get_previous_activity()
 +        if previous_activity:
 +            previous_activity.get_window().activate(event_time)
-+
-     def stop(self, event_time):
-         self._keyboard.ungrab(event_time)
-         self._mouse.ungrab(event_time)
 --- jarabe/desktop/snowflakelayout.py
 +++ jarabe/desktop/snowflakelayout.py
-@@ -68,7 +68,7 @@
-             self._nflakes -= 1
- 
-         del self._children[child]
+@@ -71 +71 @@
 -        self.remove(child)
 +        Gtk.Container.remove(self, child)
- 
-     def do_get_preferred_size(self):
-         size = self._calculate_size()
 --- jarabe/desktop/grid.py
 +++ jarabe/desktop/grid.py
-@@ -199,7 +199,7 @@
-         for c in self._children:
-             intersects_, intersection = Gdk.rectangle_intersect(
-                 child_rect, self._child_rects[c])
+@@ -202 +202 @@
 -            if c != child and intersection.width > 0:
 +            if c != child and intersection.width > 0 and intersection.height > 0:
-                 collision_found = True
-                 if (c not in self._locked_children and
-                         c not in self._collisions):
+--- jarabe/desktop/favoritesview.py
++++ jarabe/desktop/favoritesview.py
+@@ -48,0 +49,6 @@
++
++try:
++    import aspartame_help
++except ImportError:
++    aspartame_help = None
++
+@@ -422,0 +429,10 @@
++        if aspartame_help is not None:
++            self._help_id = aspartame_help.register_activity({
++                'id': activity_info.get_bundle_id(),
++                'name': activity_info.get_name(),
++                'summary': 'Open %s.' % activity_info.get_name(),
++            })
++            aspartame_help.register_target(self, self._help_id)
++            self.set_tooltip_text('Open %s' % activity_info.get_name())
++        else:
++            self._help_id = None
+@@ -506,0 +523,5 @@
++        # CanvasIcon owns activation. Intercept at the actual launch boundary
++        # so What's This? never opens an Activity by accident.
++        if aspartame_help is not None and aspartame_help.is_active():
++            aspartame_help._explain_widget(self)
++            return

@@ -118,6 +118,21 @@ class ActivityManagerModelTests(unittest.TestCase):
                 else:
                     os.environ['HOME'] = old_home
 
+    def test_system_activity_hide_is_persistent_and_reversible(self):
+        with tempfile.TemporaryDirectory() as directory:
+            favorites = os.path.join(directory, 'favorite_activities')
+            model.set_activity_hidden('org.example.Activity', '7', True,
+                                      favorites)
+            self.assertTrue(model.is_activity_hidden(
+                'org.example.Activity', '7', favorites))
+            model.set_activity_hidden('org.example.Activity', '7', False,
+                                      favorites)
+            self.assertFalse(model.is_activity_hidden(
+                'org.example.Activity', '7', favorites))
+            data = json.loads(Path(favorites).read_text(encoding='utf-8'))
+            self.assertEqual(data['favorites']['org.example.Activity 7'],
+                             {'favorite': True})
+
     def test_system_activity_paths_are_managed_by_remover_policy(self):
         self.assertIn('/usr/share/sugar/activities', model.MANAGED_SYSTEM_ROOTS)
         self.assertIn('/usr/share/aspartame/activities', model.MANAGED_SYSTEM_ROOTS)

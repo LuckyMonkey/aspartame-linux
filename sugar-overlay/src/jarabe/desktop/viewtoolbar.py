@@ -30,6 +30,7 @@ from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import GObject
 from gi.repository import GLib
+from gi.repository import GdkPixbuf
 
 from sugar3.graphics import style
 from sugar3.graphics import iconentry
@@ -161,29 +162,33 @@ class ViewToolbar(Gtk.Toolbar):
                 min-width: %dpx;
                 min-height: %dpx;
                 padding: 0;
-                border-radius: %dpx;
-                border: 0;
-                background: %s;
+                border-radius: 999px;
+                border: 2px solid %s;
+                background: transparent;
                 background-image: none;
                 box-shadow: none;
             }
-            .aspartame-help-button label {
+            button.aspartame-help-button label.aspartame-help-glyph {
                 color: %s;
                 margin: 0;
+                padding: 0;
+                font-size: 27px;
+                font-weight: bold;
             }
             .aspartame-help-button.aspartame-help-active {
                 background: %s;
+                border-color: %s;
             }
-            .aspartame-help-button.aspartame-help-active label {
+            button.aspartame-help-button.aspartame-help-active label.aspartame-help-glyph {
                 color: %s;
             }
         ''' % (aspartame_visual.HELP_BUTTON_DIAMETER,
                aspartame_visual.HELP_BUTTON_DIAMETER,
-               aspartame_visual.HELP_BUTTON_DIAMETER // 2,
                aspartame_visual.SHELL_WHITE,
                aspartame_visual.SHELL_FOCUS,
-               aspartame_visual.SHELL_FOCUS,
-               aspartame_visual.SHELL_WHITE)).encode('utf-8'))
+               aspartame_visual.SHELL_WHITE,
+               aspartame_visual.SHELL_WHITE,
+               aspartame_visual.SHELL_FOCUS)).encode('utf-8'))
 
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), help_css,
@@ -201,15 +206,22 @@ class ViewToolbar(Gtk.Toolbar):
             self._help_button, 'org.aspartame.shell.help')
         self._help_button.connect('button-press-event',
                                   self.__help_clicked_cb)
-        help_label = Gtk.Label()
-        help_label.set_markup('<span size="42000" weight="bold">?</span>')
-        help_label.set_halign(Gtk.Align.CENTER)
-        help_label.set_valign(Gtk.Align.CENTER)
-        self._help_button.add(help_label)
+        # Reuse the installed Help Activity's canonical Sugar artwork.
+        help_icon = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+            '/usr/share/sugar/activities/Help.activity/activity/activity-help.svg',
+            24, 24, True)
+        help_image = Gtk.Image.new_from_pixbuf(help_icon)
+        help_image.set_halign(Gtk.Align.CENTER)
+        help_image.set_valign(Gtk.Align.CENTER)
+        help_image.set_tooltip_text(
+            'What is this? Learn what something on the screen does.')
+        self._help_button.add(help_image)
         help_toolitem = Gtk.ToolItem()
-        help_toolitem.set_border_width(2)
+        help_toolitem.set_border_width(0)
         help_toolitem.add(self._help_button)
-        self.insert(help_toolitem, -1)
+        # Keep contextual Help beside the Home search field, not among the
+        # view selectors.  It is a search/understanding affordance.
+        self.insert(help_toolitem, 2)
         help_toolitem.show_all()
         GLib.idle_add(self._install_help_key_handler)
 

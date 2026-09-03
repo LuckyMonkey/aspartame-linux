@@ -27,7 +27,7 @@ while IFS= read -r relative; do
     test -n "$relative" || continue
     test -f "$site_packages/$relative" || { echo "base file missing: $relative" >&2; exit 5; }
     test -f "$overlay_root/$relative" || { echo "overlay file missing: $relative" >&2; exit 6; }
-    diff -u --label "$relative" --label "$relative" \
+    diff -U0 --label "$relative" --label "$relative" \
         "$site_packages/$relative" "$overlay_root/$relative" >> "$generated" ||
         test $? -eq 1
 done < "$files_list"

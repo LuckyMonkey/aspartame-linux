@@ -23,6 +23,7 @@ ACTIVITY_ROOTS = (
     os.path.expanduser('~/.local/share/sugar/activities'),
 )
 QUARANTINE_ROOT = os.path.expanduser('~/.local/share/aspartame/removed-activities')
+FAVORITES_FILE = os.path.expanduser('~/.sugar/default/favorite_activities')
 SYSTEM_REMOVER = '/usr/local/libexec/aspartame-remove-activity'
 MANAGED_SYSTEM_ROOTS = (
     '/usr/share/sugar/activities',
@@ -60,7 +61,7 @@ def _root_priority(root):
     return 2
 
 
-def list_activities(roots=ACTIVITY_ROOTS):
+def list_activities(roots=ACTIVITY_ROOTS, favorites_file=FAVORITES_FILE):
     """Return installed Activity metadata, preferring user overrides."""
     found = {}
     priorities = {}
@@ -82,8 +83,53 @@ def list_activities(roots=ACTIVITY_ROOTS):
                         priority < priorities[info['id']]):
                     found[info['id']] = info
                     priorities[info['id']] = priority
+    for activity in found.values():
+        activity['hidden'] = (not activity['user'] and
+                              is_activity_hidden(activity['id'],
+                                                 activity['version'],
+                                                 favorites_file))
     return sorted(found.values(), key=lambda item: item['name'].lower())
 
+
+
+def _favorite_key(activity_id, version):
+    return '%s %s' % (activity_id, version)
+
+
+def _load_favorites(filename=FAVORITES_FILE):
+    try:
+        with open(filename, encoding='utf-8') as stream:
+            data = json.load(stream)
+    except (OSError, ValueError):
+        data = {}
+    favorites = data.get('favorites') if isinstance(data, dict) else None
+    return {'favorites': favorites if isinstance(favorites, dict) else {}}
+
+
+def _save_favorites(data, filename=FAVORITES_FILE):
+    parent = os.path.dirname(filename)
+    os.makedirs(parent, mode=0o700, exist_ok=True)
+    temporary = filename + '.tmp'
+    with open(temporary, 'w', encoding='utf-8') as stream:
+        json.dump(data, stream, indent=1, sort_keys=True)
+        stream.write('\n')
+    os.replace(temporary, filename)
+
+
+def is_activity_hidden(activity_id, version, filename=FAVORITES_FILE):
+    """Return whether Sugar's persistent favorites state hides this Activity."""
+    record = _load_favorites(filename)['favorites'].get(
+        _favorite_key(activity_id, version), {})
+    return isinstance(record, dict) and record.get('favorite') is False
+
+
+def set_activity_hidden(activity_id, version, hidden, filename=FAVORITES_FILE):
+    """Persist a system Activity Hide/Restore choice in Sugar's own profile."""
+    data = _load_favorites(filename)
+    key = _favorite_key(activity_id, version)
+    record = data['favorites'].setdefault(key, {})
+    record['favorite'] = not hidden
+    _save_favorites(data, filename)
 
 def load_ratings(filename=RATING_FILE):
     try:
