@@ -5,6 +5,7 @@ import os
 from gettext import gettext as _
 
 from gi.repository import Gtk, GObject
+import aspartame_visual
 
 
 RATING_LABELS = (_('Broken'), _('Bad'), _('Needs work'), _('Good'), _('Perfect'))
@@ -35,7 +36,7 @@ class FaceRating(Gtk.Box):
             image_path = os.path.join(face_root, filename)
             if os.path.isfile(image_path):
                 image = Gtk.Image.new_from_file(image_path)
-                image.set_pixel_size(52)
+                image.set_pixel_size(aspartame_visual.RATING_FACE_SIZE)
                 button.set_image(image)
                 button.set_always_show_image(True)
             button.set_tooltip_text(_('%s%s') % (

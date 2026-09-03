@@ -13,6 +13,7 @@ from jarabe.controlpanel.sectionview import SectionView
 
 from . import model
 from .rating_faces import FaceRating
+import aspartame_visual
 
 sys.path.insert(0, '/usr/share/aspartame')
 try:
@@ -228,14 +229,14 @@ class ActivityManager(SectionView):
         else:
             icon = Gtk.Image.new_from_icon_name(
                 'activity-generic', Gtk.IconSize.DIALOG)
-        icon.set_pixel_size(42)
+        icon.set_pixel_size(aspartame_visual.ACTIVITY_ICON_SLOT - 10)
         icon.set_tooltip_text(_('Icon for %s') % activity['name'])
         icon.set_halign(Gtk.Align.CENTER)
         icon.set_valign(Gtk.Align.CENTER)
         icon.set_hexpand(False)
         icon.set_vexpand(False)
         icon_slot = Gtk.Box()
-        icon_slot.set_size_request(52, 52)
+        icon_slot.set_size_request(aspartame_visual.ACTIVITY_ICON_SLOT, aspartame_visual.ACTIVITY_ICON_SLOT)
         icon_slot.set_halign(Gtk.Align.CENTER)
         icon_slot.set_valign(Gtk.Align.CENTER)
         icon_slot.pack_start(icon, False, False, 0)
