@@ -1,0 +1,149 @@
+#!/usr/bin/env python3
+"""Fullscreen Sugar UAC confirmation for approved maintenance tasks."""
+
+import gi
+gi.require_version('Gdk', '3.0')
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gdk, Gtk
+from sugar3.graphics.toolbutton import ToolButton
+
+
+STOP_ICON = '/usr/share/icons/sugar/scalable/actions/activity-stop.svg'
+
+
+def stop_button():
+    """Return Sugar's native ToolButton with its canonical Stop artwork."""
+    button = ToolButton(tooltip='Stop')
+    button.set_icon_widget(Gtk.Image.new_from_file(STOP_ICON))
+    return button
+
+
+class ApprovalWindow(Gtk.Window):
+    def __init__(self):
+        super().__init__(title='Approval requested')
+        self._approved = False
+        self.set_decorated(False)
+        self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
+        self.set_keep_above(True)
+        self.fullscreen()
+        self.connect('delete-event', self._cancel)
+
+        css = Gtk.CssProvider()
+        css.load_from_data(b'''
+            window, toolbar { background: #000000; color: #ffffff; }
+            .aspartame-uac-title { color: #ffffff; font-size: 28px; font-weight: bold; }
+            entry { min-height: 42px; font-size: 18px; background: #ffffff; color: #000000; }
+            button.aspartame-uac-arrow {
+                min-height: 46px; min-width: 46px; padding: 0;
+                background: #ffffff; border: 2px solid #ffffff;
+                border-radius: 23px; color: #000000;
+            }
+            button.aspartame-uac-arrow label { color: #000000; font-size: 25px; font-weight: bold; }
+            button.aspartame-uac-cancel {
+                min-height: 48px; min-width: 170px; font-size: 17px;
+                background: #000000; border: 2px solid #ffffff;
+                border-radius: 22px; color: #ffffff;
+            }
+            button.aspartame-uac-cancel label { color: #ffffff; font-weight: bold; }
+            button.aspartame-uac-cancel:hover {
+                background: #ffffff; border-color: #ffffff;
+            }
+            button.aspartame-uac-cancel:hover label { color: #000000; }
+            .aspartame-uac-hint { color: #ffffff; }
+        ''')
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(), css,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+        root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        toolbar = Gtk.Toolbar()
+        toolbar.set_show_arrow(False)
+        spacer = Gtk.SeparatorToolItem()
+        spacer.set_draw(False)
+        spacer.set_expand(True)
+        toolbar.insert(spacer, -1)
+        stop = stop_button()
+        stop.connect('clicked', self._cancel)
+        toolbar.insert(stop, -1)
+        root.pack_start(toolbar, False, False, 0)
+
+        page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
+        page.set_border_width(38)
+        page.set_halign(Gtk.Align.CENTER)
+        page.set_hexpand(True)
+        page.set_vexpand(True)
+        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
+        card.set_size_request(580, -1)
+        page.pack_start(Gtk.Box(), True, True, 0)
+        page.pack_start(card, False, False, 0)
+        page.pack_start(Gtk.Box(), True, True, 0)
+        root.pack_start(page, True, True, 0)
+        self.add(root)
+
+        title = Gtk.Label(label='Approval requested')
+        title.get_style_context().add_class('aspartame-uac-title')
+        title.set_xalign(0)
+        card.pack_start(title, False, False, 0)
+        entry_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        self._confirm = Gtk.Entry()
+        self._confirm.set_placeholder_text('Type to confirm')
+        self._confirm.set_activates_default(True)
+        entry_row.pack_start(self._confirm, True, True, 0)
+        arrow = Gtk.Button(label='→')
+        arrow.get_style_context().add_class('aspartame-uac-arrow')
+        arrow.connect('clicked', self._submit)
+        arrow.set_can_default(True)
+        entry_row.pack_start(arrow, False, False, 0)
+        self.set_default(arrow)
+        card.pack_start(entry_row, False, False, 0)
+
+        self._error = Gtk.Label()
+        self._error.get_style_context().add_class('aspartame-uac-hint')
+        self._error.set_xalign(0)
+        self._error.set_no_show_all(True)
+        card.pack_start(self._error, False, False, 0)
+        cancel = Gtk.Button()
+        cancel.get_style_context().add_class('aspartame-uac-cancel')
+        cancel_content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        cancel_content.set_halign(Gtk.Align.CENTER)
+        cancel_icon = Gtk.Image.new_from_file(STOP_ICON)
+        cancel_content.pack_start(cancel_icon, False, False, 0)
+        cancel_label = Gtk.Label(label='Cancel')
+        cancel_content.pack_start(cancel_label, False, False, 0)
+        cancel.add(cancel_content)
+        cancel.connect('clicked', self._cancel)
+        page.pack_end(cancel, False, False, 0)
+        self._confirm.grab_focus()
+
+    def _submit(self, _button=None):
+        value = self._confirm.get_text().strip().lower()
+        if value.startswith('n'):
+            self._cancel()
+            return
+        if not (value.startswith('y') or value in (
+                'sure', 'okay', 'ok', 'confirm', 'please', 'affirmative',
+                'approve', 'accept', 'go', 'granted')):
+            self._error.set_text(
+                'Try yes, sure, okay, approve, accept, go, granted, or another Y word.')
+            self._error.show()
+            self._confirm.grab_focus()
+            return
+        self._approved = True
+        self.hide()
+        Gtk.main_quit()
+
+    def _cancel(self, *_args):
+        self.hide()
+        Gtk.main_quit()
+        return True
+
+
+def main():
+    window = ApprovalWindow()
+    window.show_all()
+    Gtk.main()
+    return 0 if window._approved else 1
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

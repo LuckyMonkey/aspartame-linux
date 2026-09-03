@@ -22,6 +22,13 @@ ratings, and removal actions aligned.
 The reusable five-face control starts with no answer selected and records one
 chosen review rating when the user selects a face.
 
+### Native approval
+
+![Native Sugar approval prompt](aspartame-uac-native-confirmation.png)
+
+The all-black fullscreen approval surface uses Sugar's canonical Stop artwork
+and replaces both the generic GTK confirmation modal and GNOME Polkit prompt.
+
 ### Count
 
 ![Count Activity](count-v0.0.14.png)

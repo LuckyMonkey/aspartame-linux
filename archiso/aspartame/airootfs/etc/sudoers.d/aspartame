@@ -1,1 +1,4 @@
-%wheel ALL=(ALL:ALL) NOPASSWD: ALL
+# The Sugar UAC is deliberately limited to its fixed, path-validating helper.
+# It is consent-based for the passwordless autologin account, not a general
+# passwordless sudo grant.
+aspartame ALL=(root) NOPASSWD: /usr/local/libexec/aspartame-remove-activity *

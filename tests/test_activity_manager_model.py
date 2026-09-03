@@ -2,6 +2,7 @@ import json
 import os
 import tempfile
 import unittest
+from unittest import mock
 
 from pathlib import Path
 
@@ -138,6 +139,31 @@ class ActivityManagerModelTests(unittest.TestCase):
         self.assertIn('/usr/share/aspartame/activities', model.MANAGED_SYSTEM_ROOTS)
         self.assertIn('/usr/local/share/sugar/activities', model.MANAGED_SYSTEM_ROOTS)
         self.assertTrue(model.SYSTEM_REMOVER.endswith('aspartame-remove-activity'))
+
+    def test_system_activity_removal_requires_native_uac_before_sudo(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'usr/share/sugar/activities'
+            bundle = root / 'Example.activity' / 'activity'
+            bundle.mkdir(parents=True)
+            (bundle / 'activity.info').write_text('[Activity]\nname = Example\n',
+                                                  encoding='utf-8')
+            old_roots = model.MANAGED_SYSTEM_ROOTS
+            try:
+                model.MANAGED_SYSTEM_ROOTS = (str(root),)
+                with mock.patch.object(model.subprocess, 'run') as run:
+                    run.side_effect = [
+                        mock.Mock(returncode=0),
+                        mock.Mock(returncode=0,
+                                  stdout='/var/lib/aspartame/removed-activities/Example.activity\n'),
+                    ]
+                    target = model.remove_activity(str(bundle.parent))
+            finally:
+                model.MANAGED_SYSTEM_ROOTS = old_roots
+            self.assertEqual(target, '/var/lib/aspartame/removed-activities/Example.activity')
+            self.assertEqual(run.call_args_list[0].args[0], [model.UAC_APPROVER])
+            command = run.call_args_list[1].args[0]
+            self.assertEqual(command[:2], ['sudo', '-n'])
+            self.assertEqual(command[2], model.SYSTEM_REMOVER)
 
 
 if __name__ == '__main__':

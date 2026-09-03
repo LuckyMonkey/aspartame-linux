@@ -35,8 +35,6 @@ intltool
 python-empy
 python-pytest
 dbus
-polkit
-polkit-gnome
 udisks2
 upower
 xdg-user-dirs

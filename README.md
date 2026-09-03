@@ -77,6 +77,18 @@ The result preserves existing Activity installation/state data, avoids a new
 desktop panel metaphor, and gives future Activity reviews a shared control
 instead of bespoke rating code.
 
+### Native approval milestone
+
+![Native Sugar approval prompt](docs/screenshots/aspartame-uac-native-confirmation.png)
+
+System Activity removal now opens Aspartame's fullscreen, all-black Sugar
+approval surface instead of a GNOME Polkit dialog or a generic GTK modal. Its
+top-right Stop control is the canonical Sugar `activity-stop` ToolButton; the
+bottom Stop + Cancel control cancels the request. Enter accepts `Y…`, `yes`,
+`sure`, `okay`, `ok`, `confirm`, `please`, `affirmative`, `approve`, `accept`,
+`go`, or `granted`; `N…` cancels. The fixed removal helper then moves the
+bundle to recovery quarantine, preserving Journal work.
+
 See the [QEMU VM screenshot gallery](docs/screenshots/README.md) for captions,
 capture details, and the complete representative set.
 

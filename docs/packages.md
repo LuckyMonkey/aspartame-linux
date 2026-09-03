@@ -15,10 +15,16 @@ per-user five-level quality rating (`Broken`, `Bad`, `Needs work`, `Good`, or
 recoverable Remove action.
 
 User-local bundles are moved to `~/.local/share/aspartame/removed-activities`.
-System and bundled Aspartame bundles use the fixed `pkexec` helper
+System and bundled Aspartame bundles use the fixed, sudo-authorized helper
 `/usr/local/libexec/aspartame-remove-activity` and are moved to
 `/var/lib/aspartame/removed-activities`; they are never recursively deleted.
-The Remove button requests administrator approval for these bundles. The
+The Remove button opens Aspartame's fullscreen Sugar-styled approval screen:
+enter `yes`, `sure`, `okay`, `ok`, `confirm`, `please`, `affirmative`,
+`approve`, `accept`, `go`, `granted`, or another word beginning with `Y`, then
+press Return or the circular arrow. A word beginning with `N`, the canonical
+Sugar Stop control, or the combined Stop + Cancel control cancels. The prompt
+is the visible consent boundary for the fixed removal helper; it does not
+request a password. No GNOME Polkit agent participates. The
 Sugar shell/activity registry may need a shell or full session restart before
 a removed system bundle disappears from Home.
 

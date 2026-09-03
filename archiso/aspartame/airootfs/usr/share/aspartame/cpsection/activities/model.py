@@ -25,6 +25,7 @@ ACTIVITY_ROOTS = (
 QUARANTINE_ROOT = os.path.expanduser('~/.local/share/aspartame/removed-activities')
 FAVORITES_FILE = os.path.expanduser('~/.sugar/default/favorite_activities')
 SYSTEM_REMOVER = '/usr/local/libexec/aspartame-remove-activity'
+UAC_APPROVER = '/usr/local/libexec/aspartame-sudo-askpass'
 MANAGED_SYSTEM_ROOTS = (
     '/usr/share/sugar/activities',
     '/usr/share/aspartame/activities',
@@ -181,11 +182,13 @@ def remove_activity(path, quarantine=QUARANTINE_ROOT):
         if not any(path.startswith(os.path.realpath(root) + os.sep)
                    for root in MANAGED_SYSTEM_ROOTS):
             raise PermissionError(_('That Activity is outside a managed Activity folder.'))
+        approval = subprocess.run([UAC_APPROVER], capture_output=True, text=True)
+        if approval.returncode:
+            raise PermissionError(_('Approval was cancelled.'))
         result = subprocess.run(
-            ['pkexec', '--disable-internal-agent', SYSTEM_REMOVER, path],
-            capture_output=True, text=True)
+            ['sudo', '-n', SYSTEM_REMOVER, path], capture_output=True, text=True)
         if result.returncode:
-            message = result.stderr.strip() or _('Administrator approval was cancelled.')
+            message = result.stderr.strip() or _('Approval was cancelled.')
             raise PermissionError(message)
         return result.stdout.strip() or path
     os.makedirs(quarantine, mode=0o700, exist_ok=True)
