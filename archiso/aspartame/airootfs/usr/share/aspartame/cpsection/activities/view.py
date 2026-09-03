@@ -55,7 +55,7 @@ class ActivityManager(SectionView):
                 min-width: 68px;
                 min-height: 28px;
                 padding: 1px 8px;
-                border: 1px solid #9aa8ae;
+                border: 1px solid %s;
                 border-radius: 14px;
                 background-color: %s;
                 color: %s;
@@ -89,7 +89,8 @@ class ActivityManager(SectionView):
                aspartame_visual.SHELL_WHITE,
                aspartame_visual.SHELL_WHITE,
                aspartame_visual.SHELL_SURFACE,
-               aspartame_visual.SHELL_MUTED_INK)).encode('utf-8'))
+               aspartame_visual.SHELL_MUTED_INK,
+               aspartame_visual.SHELL_BORDER)).encode('utf-8'))
         Gtk.StyleContext.add_provider_for_screen(
             self.get_screen(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
