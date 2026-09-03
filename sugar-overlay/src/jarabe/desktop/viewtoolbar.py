@@ -40,6 +40,7 @@ from jarabe.model import desktop
 
 sys.path.insert(0, '/usr/share/aspartame')
 import aspartame_help
+import aspartame_visual
 
 _AUTOSEARCH_TIMEOUT = 1000
 
@@ -152,31 +153,38 @@ class ViewToolbar(Gtk.Toolbar):
         self.insert(self._list_button, -1)
 
         help_css = Gtk.CssProvider()
-        help_css.load_from_data(b'''
+        help_css.load_from_data(('''
             .aspartame-help-button,
             .aspartame-help-button:hover,
             .aspartame-help-button:focus,
             .aspartame-help-button:active {
-                min-width: 52px;
-                min-height: 52px;
+                min-width: %dpx;
+                min-height: %dpx;
                 padding: 0;
-                border-radius: 26px;
+                border-radius: %dpx;
                 border: 0;
-                background: #ffffff;
+                background: %s;
                 background-image: none;
                 box-shadow: none;
             }
             .aspartame-help-button label {
-                color: #58636a;
+                color: %s;
                 margin: 0;
             }
             .aspartame-help-button.aspartame-help-active {
-                background: #58636a;
+                background: %s;
             }
             .aspartame-help-button.aspartame-help-active label {
-                color: #ffffff;
+                color: %s;
             }
-        ''')
+        ''' % (aspartame_visual.HELP_BUTTON_DIAMETER,
+               aspartame_visual.HELP_BUTTON_DIAMETER,
+               aspartame_visual.HELP_BUTTON_DIAMETER // 2,
+               aspartame_visual.SHELL_WHITE,
+               aspartame_visual.SHELL_FOCUS,
+               aspartame_visual.SHELL_FOCUS,
+               aspartame_visual.SHELL_WHITE)).encode('utf-8'))
+
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), help_css,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -186,7 +194,7 @@ class ViewToolbar(Gtk.Toolbar):
             'aspartame-help-button')
         self._help_button.set_relief(Gtk.ReliefStyle.NONE)
         self._help_button.set_focus_on_click(True)
-        self._help_button.set_size_request(52, 52)
+        self._help_button.set_size_request(aspartame_visual.HELP_BUTTON_DIAMETER, aspartame_visual.HELP_BUTTON_DIAMETER)
         self._help_button.set_tooltip_text(
             "What is this? - Learn what something on the screen does.")
         aspartame_help.register_target(

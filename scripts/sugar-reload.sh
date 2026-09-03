@@ -101,6 +101,7 @@ done < "$extension_files_list"
 sudo install -D -m 0644 "$clock_schema" "$share_root/schemas/org.aspartame.clock.gschema.xml"
 sudo install -D -m 0644 "$version_file" "$share_root/ui-version"
 sudo install -D -m 0644 "$project_root/archiso/aspartame/airootfs/usr/share/aspartame/aspartame_help.py" "$share_root/tools/aspartame_help.py"
+install -D -m 0644 "$project_root/archiso/aspartame/airootfs/usr/share/aspartame/aspartame_visual.py" "$share_root/tools/aspartame_visual.py"
 sudo install -D -m 0644 "$project_root/sugar-overlay/src/jarabe/select_a_thing.py" "$share_root/sugar/src/jarabe/select_a_thing.py"
 sudo install -D -m 0644 "$project_root/sugar-overlay/src/sitecustomize.py" "$share_root/tools/sitecustomize.py"
 sudo install -D -m 0644 "$project_root/sugar-overlay/src/sitecustomize.py" "$share_root/sugar/src/sitecustomize.py"
@@ -136,6 +137,7 @@ fi
 install -m 0755 /mnt/aspartame-dev/tools/aspartame-version-overlay \
     /usr/local/bin/aspartame-version-overlay
 install -m 0644 /mnt/aspartame-dev/tools/aspartame_help.py /usr/share/aspartame/aspartame_help.py
+install -m 0644 /mnt/aspartame-dev/tools/aspartame_visual.py /usr/share/aspartame/aspartame_visual.py
 install -m 0644 /mnt/aspartame-dev/tools/sitecustomize.py /usr/share/aspartame/sitecustomize.py
 install -D -m 0644 /mnt/aspartame-dev/docs/universal-help.html /usr/share/aspartame/docs/universal-help.html
 for face in broken bad needs-work good perfect; do

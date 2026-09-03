@@ -104,17 +104,18 @@
  from gi.repository import GObject
  from gi.repository import GLib
  
-@@ -33,6 +38,9 @@
+@@ -33,6 +38,10 @@
  from jarabe.desktop import favoritesview
  from jarabe.model import desktop
  
 +sys.path.insert(0, '/usr/share/aspartame')
 +import aspartame_help
++import aspartame_visual
 +
  _AUTOSEARCH_TIMEOUT = 1000
  
  
-@@ -48,6 +56,8 @@
+@@ -48,6 +57,8 @@
  
      def __init__(self):
          Gtk.Toolbar.__init__(self)
@@ -123,7 +124,7 @@
  
          self._favorites_views_indicies = []
          for i in range(desktop.get_number_of_views()):
-@@ -78,7 +88,49 @@
+@@ -78,7 +89,49 @@
          tool_item.add(self.search_entry)
          self.search_entry.show()
  
@@ -174,36 +175,43 @@
  
          self._button_box = Gtk.HBox()
          self._favorites_buttons = []
-@@ -99,8 +151,95 @@
+@@ -99,8 +152,102 @@
              'toggled', self.__view_button_toggled_cb, self._list_view_index)
          self.insert(self._list_button, -1)
  
 +        help_css = Gtk.CssProvider()
-+        help_css.load_from_data(b'''
++        help_css.load_from_data(('''
 +            .aspartame-help-button,
 +            .aspartame-help-button:hover,
 +            .aspartame-help-button:focus,
 +            .aspartame-help-button:active {
-+                min-width: 52px;
-+                min-height: 52px;
++                min-width: %dpx;
++                min-height: %dpx;
 +                padding: 0;
-+                border-radius: 26px;
++                border-radius: %dpx;
 +                border: 0;
-+                background: #ffffff;
++                background: %s;
 +                background-image: none;
 +                box-shadow: none;
 +            }
 +            .aspartame-help-button label {
-+                color: #58636a;
++                color: %s;
 +                margin: 0;
 +            }
 +            .aspartame-help-button.aspartame-help-active {
-+                background: #58636a;
++                background: %s;
 +            }
 +            .aspartame-help-button.aspartame-help-active label {
-+                color: #ffffff;
++                color: %s;
 +            }
-+        ''')
++        ''' % (aspartame_visual.HELP_BUTTON_DIAMETER,
++               aspartame_visual.HELP_BUTTON_DIAMETER,
++               aspartame_visual.HELP_BUTTON_DIAMETER // 2,
++               aspartame_visual.SHELL_WHITE,
++               aspartame_visual.SHELL_FOCUS,
++               aspartame_visual.SHELL_FOCUS,
++               aspartame_visual.SHELL_WHITE)).encode('utf-8'))
++
 +        Gtk.StyleContext.add_provider_for_screen(
 +            Gdk.Screen.get_default(), help_css,
 +            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -213,7 +221,7 @@
 +            'aspartame-help-button')
 +        self._help_button.set_relief(Gtk.ReliefStyle.NONE)
 +        self._help_button.set_focus_on_click(True)
-+        self._help_button.set_size_request(52, 52)
++        self._help_button.set_size_request(aspartame_visual.HELP_BUTTON_DIAMETER, aspartame_visual.HELP_BUTTON_DIAMETER)
 +        self._help_button.set_tooltip_text(
 +            "What is this? - Learn what something on the screen does.")
 +        aspartame_help.register_target(
@@ -270,7 +278,7 @@
      def _add_favorites_button(self, i):
          logging.debug('adding FavoritesButton %d' % (i))
          self._favorites_buttons.append(FavoritesButton(i))
-@@ -122,6 +261,39 @@
+@@ -122,6 +269,39 @@
              self._favorites_buttons[i].hide()
          self._list_button.hide()
  
@@ -310,7 +318,7 @@
      def clear_query(self):
          self.search_entry.props.text = ''
  
-@@ -212,6 +384,15 @@
+@@ -212,6 +392,15 @@
          self.props.accelerator = _('<Ctrl>%d' % (favorite_view + 1))
          self.props.group = None
          self.props.icon_name = desktop.get_view_icons()[favorite_view]
