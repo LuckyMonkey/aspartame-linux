@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2013, SugarLabs
+# This file is distributed under the same license as the Sugar package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Sugar 0.100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-22 23:07-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/index.rst:7
+# 75582d63435244b78bab2ceb61701fc0
+msgid "Welcome to Sugar's documentation!"
+msgstr ""
+
+#: ../source/index.rst:9
+# 9fc64c39e78b42bdb8c65528fe494fc2
+msgid "Contents:"
+msgstr ""
+
+#: ../source/index.rst:11
+# 5c39b4b591ba408aa7fa0537e975c1c2
+msgid "Using Sugar"
+msgstr ""
+
+#: ../source/index.rst:27
+# f10540e048ce4d5985e3dd380f91dc8b
+msgid "Using Activities"
+msgstr ""
+
+#: ../source/index.rst:38
+# cfbebecb05e742419eda935ad097beb4
+msgid "Activities"
+msgstr ""
+
+#: ../source/index.rst:78
+# 67e4eb1b7f60417092154d441cbbb874
+msgid "Network"
+msgstr ""
+
+#: ../source/index.rst:87
+# 40d5280197c0495a86b5a582a2db774b
+msgid "The XO hardware"
+msgstr ""
+
+#: ../source/index.rst:102
+# bafcb547c8ac40db8027902f865b5358
+msgid "About this manual"
+msgstr ""
+
+#: ../source/index.rst:113
+# 10b0fd7979594de59cddb92d5b9dc969
+msgid "Contribute to this manual"
+msgstr ""
+
+#: ../source/index.rst:121
+# 89179aef960b4891b7a802d2c9660bca
+msgid "Support"
+msgstr ""
+
+#: ../source/index.rst:129
+# 43012cf39f394226b8612b2ec4025cef
+msgid "Appendices"
+msgstr ""
+
