@@ -27,13 +27,6 @@ if ! ss -ltn 2>/dev/null | grep -q ':22 '; then
         >>/var/log/aspartame-sshd.log 2>&1 &
 fi
 
-# Seed a complete Sugar profile before jarabe starts. This keeps the live
-# image from opening the first-run color picker, which can crash on some
-# virtual GPUs after a swatch click.
-gsettings set org.sugarlabs.user nick "${SUGAR_PROFILE_NAME:-Aspartame}"
-gsettings set org.sugarlabs.user color '#005FE4,#FFFFFF'
-gsettings set org.sugarlabs.user group-label 'Aspartame'
-
 # Sugar's HomeBackgroundBox reads these settings for the Home view.
 gsettings set org.sugarlabs.user.background image-path \
     /usr/share/backgrounds/aspartame-default.png

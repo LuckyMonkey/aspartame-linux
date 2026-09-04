@@ -398,8 +398,12 @@ class _IntroBox(Gtk.VBox):
         user_profile = UserProfile()
         user_profile.nickname = os.environ.get('SUGAR_PROFILE_NAME', 'Aspartame')
         user_profile.colors = self._color_page.get_color()
-        user_profile.gender = self._gender_page.get_gender()
+        # Aspartame keeps the color page only. The hidden legacy pages have no
+        # selection, so never pass their None values into profile persistence.
+        user_profile.gender = self._gender_page.get_gender() or ''
         user_profile.age = self._age_page.get_age()
+        if user_profile.age is None:
+            user_profile.age = 18
 
         self.done_signal.emit(user_profile)
 
