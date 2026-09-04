@@ -99,6 +99,12 @@ done < /usr/share/aspartame/activities/INSTALL-MANIFEST
 site_packages=$(python3 -c 'import sugar3, os; print(os.path.dirname(sugar3.__file__))')
 patch -d "$(dirname "$site_packages")" -p0 < \
     /usr/share/aspartame/0001-integrated-navigation.patch
+# The color-only intro deliberately omits the legacy age page. Patch the
+# installed completion path after the broad navigation patch so an unset age
+# cannot terminate Sugar when the user accepts a color.
+window_py="$(dirname "$site_packages")/jarabe/intro/window.py"
+sed -i "s/user_profile.gender = self._gender_page.get_gender()/user_profile.gender = self._gender_page.get_gender() or ''/" "$window_py"
+sed -i "/user_profile.age = self._age_page.get_age()/a\\        if user_profile.age is None:\\n            user_profile.age = 18" "$window_py"
 install -D -m 0644 /usr/share/aspartame/select_a_thing.py \
     "$site_packages/jarabe/select_a_thing.py"
 install -D -m 0644 /usr/share/aspartame/sitecustomize.py \
@@ -107,7 +113,6 @@ glib-compile-schemas /usr/share/glib-2.0/schemas
 cat > /usr/local/bin/aspartame-session <<'EOF'
 #!/bin/sh
 set -eu
-export PYTHONFAULTHANDLER=1
 # Sugar owns administrator approval through its fullscreen sudo askpass UI.
 exec sugar
 EOF
