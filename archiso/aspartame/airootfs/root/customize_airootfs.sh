@@ -107,10 +107,9 @@ glib-compile-schemas /usr/share/glib-2.0/schemas
 cat > /usr/local/bin/aspartame-session <<'EOF'
 #!/bin/sh
 set -eu
+export PYTHONFAULTHANDLER=1
 # Sugar owns administrator approval through its fullscreen sudo askpass UI.
-sugar &
-sugar_pid=$!
-wait "$sugar_pid"
+exec sugar
 EOF
 chmod 0755 /usr/local/bin/aspartame-session
 ln -sfn /usr/bin/fastfetch /usr/local/bin/neofetch
