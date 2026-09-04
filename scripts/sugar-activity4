@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+exec "${PYTHON_BIN:-python3}" -m sugar4.activity.activityinstance "$@"

@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"><circle cx="27.5" cy="27.5" r="25" fill="#444444" stroke="#ffffff" stroke-width="3"/><path d="M15 17h25v6H15zm0 10h25v6H15zm0 10h25v6H15z" fill="#ffffff"/><circle cx="20" cy="20" r="2" fill="#75b5d3"/><circle cx="20" cy="30" r="2" fill="#75b5d3"/><circle cx="20" cy="40" r="2" fill="#75b5d3"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+  <!ENTITY stroke_color "#ffffff">
+  <!ENTITY fill_color "#ffffff">
+]>
+<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55">
+  <!-- Three quiet Sugar-style voxels: a small stack to count. -->
+  <g fill="&fill_color;" fill-opacity="0.18" stroke="&stroke_color;"
+     stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+    <!-- rear cube -->
+    <path d="M28 10 38 15.5 38 27 28 32.5 18 27 18 15.5Z"/>
+    <path d="M18 15.5 28 21 38 15.5M28 21v11.5" fill="none"/>
+    <!-- lower-left cube -->
+    <path d="M17 24 27 29.5 27 41 17 46.5 7 41 7 29.5Z"/>
+    <path d="M7 29.5 17 35 27 29.5M17 35v11.5" fill="none"/>
+    <!-- lower-right cube -->
+    <path d="M38 24 48 29.5 48 41 38 46.5 28 41 28 29.5Z"/>
+    <path d="M28 29.5 38 35 48 29.5M38 35v11.5" fill="none"/>
+  </g>
+</svg>

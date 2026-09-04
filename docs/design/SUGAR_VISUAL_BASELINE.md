@@ -37,7 +37,7 @@ state. The source of truth is Jarabe's Activity model, never a click cache.
 
 Activity icons occupy a fixed slot so an unusual SVG cannot enlarge a row or
 change table geometry. The Activity Manager currently uses a 52px icon slot,
-52px rating faces, and a compact 32px outlined Help control target. These are implementation
+52px rating faces, and a standard 55px canonical Help Activity control target. These are implementation
 defaults, not new Sugar concepts; GTK4 should preserve the visual bounds while
 using its own measurement/rendering APIs.
 

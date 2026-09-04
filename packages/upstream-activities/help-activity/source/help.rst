@@ -3,6 +3,9 @@ Help
 ====
 
 Help displays documentation for Sugar and the XO laptop.
+Start with :doc:`/sugar_fundamentals` for a plain-language explanation of
+Activities, views, the Frame, collaboration, and the Journal.
+
 
 .. image :: ../images/Help.png
 

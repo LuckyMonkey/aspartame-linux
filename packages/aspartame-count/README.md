@@ -14,7 +14,8 @@ make count-deploy
 ```
 
 Launch it through Sugar with `sugar-launch org.aspartame.Count` from the
-active session. The current version supports cell toggling, dimensions,
-multiple layers, duplicate/delete/clear, undo/redo, total counts, and JSON
-Journal persistence. Isometric rendering and richer Activity metadata remain
-future work.
+active session. The current version supports cell toggling, multiple layers, duplicate and
+delete, total counts, and JSON Journal persistence. Layers share one XY grid:
+the selected layer is opaque and editable, while other layers are painted first
+as translucent neutral-grey context. The side rail places Back layer and Forward layer arrows
+next to the voxel canvas so layer number and edit target stay visible. Delete layer is a single direct button, not a two-step menu.

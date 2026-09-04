@@ -23,13 +23,18 @@ test -d "$casilda/.git" || { echo "missing Casilda checkout: $casilda"; exit 2; 
 if ! test -x "$venv/bin/python"; then
     python3 -m venv --system-site-packages "$venv"
 fi
+# Expose Empy from the isolated preview venv when Arch omitted its console link.
+if ! test -x "$venv/bin/empy" && test -x "$venv/bin/em.py"; then
+    ln -sf "$venv/bin/em.py" "$venv/bin/empy"
+fi
+export PATH="$venv/bin:$PATH"
 echo "toolkit: $(git -C "$toolkit" rev-parse HEAD)"; echo "sugar-ext: $(git -C "$ext" rev-parse HEAD)"
 repo=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 patch_dir=${GTK4_PATCH_DIR:-$repo/patches/gtk4-preview}
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*) target="$toolkit" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
@@ -42,6 +47,22 @@ for patch in "$patch_dir"/*.patch; do
     fi
 done
 PYTHONPATH="$toolkit/src${PYTHONPATH:+:$PYTHONPATH}" "$venv/bin/python" -c 'import sugar4; print("sugar4: PASS", sugar4.__file__)'
+
+install -m 0755 "$repo/scripts/sugar-activity4" "$venv/bin/sugar-activity4"
+test -x "$venv/bin/sugar-activity4"
+
+activity_dir="$prefix/share/sugar/activities"
+log_activity="$root/sources/log-activity"
+test -f "$log_activity/activity/activity.info" || {
+    echo "missing pinned Log Activity bundle: $log_activity" >&2
+    exit 2
+}
+mkdir -p "$activity_dir"
+if test -e "$activity_dir/Log.activity" && test ! -L "$activity_dir/Log.activity"; then
+    echo "refusing to replace a real Log.activity directory" >&2
+    exit 2
+fi
+ln -sfn "$log_activity" "$activity_dir/Log.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }

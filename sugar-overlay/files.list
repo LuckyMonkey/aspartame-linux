@@ -6,3 +6,4 @@ jarabe/view/tabbinghandler.py
 jarabe/desktop/snowflakelayout.py
 jarabe/desktop/grid.py
 jarabe/desktop/favoritesview.py
+jarabe/desktop/homewindow.py

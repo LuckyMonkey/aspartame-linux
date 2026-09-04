@@ -21,6 +21,9 @@ Using Sugar
     journal.rst
     my_settings.rst
     sugar_features.rst
+    sugar_fundamentals.rst
+    sugar_architecture.rst
+    sugar_accessibility.rst
     gnome.rst
     schoolserver.rst
 
@@ -51,6 +54,7 @@ Activities
     classroom_broadcast.rst
     clipart.rst
     clock.rst
+    count.rst
     cookie_search.rst
     develop.rst
     dimensions.rst

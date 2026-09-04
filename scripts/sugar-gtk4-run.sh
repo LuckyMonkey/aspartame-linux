@@ -27,6 +27,14 @@ for path in "$shell/src/jarabe/main.py" "$toolkit/src/sugar4" \
             "$runroot/schemas/gschemas.compiled" "$runroot/group-labels.json"; do
     test -e "$path" || { echo "missing GTK4 preview requirement: $path" >&2; exit 2; }
 done
+test -x "$venv/bin/sugar-activity4" || {
+    echo "missing GTK4 Activity launcher: $venv/bin/sugar-activity4" >&2
+    exit 2
+}
+test -f "$prefix/share/sugar/activities/Log.activity/activity/activity.info" || {
+    echo "missing staged GTK4 Log Activity bundle" >&2
+    exit 2
+}
 metadata_reader=$(find "$datastore_site/carquinyol" -maxdepth 1 -name 'metadatareader*.so' -print -quit)
 test -n "$metadata_reader" || { echo "missing GTK4 datastore metadata reader" >&2; exit 2; }
 command -v dbus-run-session >/dev/null || { echo "missing dbus-run-session" >&2; exit 2; }
@@ -83,6 +91,7 @@ exec env \
     DATASTORE_SERVICE="$datastore/bin/datastore-service" \
     DATASTORE_LOG="$root/logs/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
     PYTHON_BIN="$python_bin" \
+    PATH="$venv/bin:$prefix/bin:$PATH" \
     SHELL_ENTRY="$shell/src/jarabe/main.py" \
     dbus-run-session -- \
     bash "$project_root/scripts/sugar-gtk4-session.sh"

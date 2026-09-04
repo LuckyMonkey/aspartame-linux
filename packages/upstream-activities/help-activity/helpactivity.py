@@ -42,8 +42,12 @@ _ZOOM_AMOUNT = 0.1
 
 
 def get_current_language():
-    locale = os.environ.get('LANG', 'en_US')
-    return locale.split('.')[0].split('_')[0].lower()
+    # Help ships an English runtime manual. Locales can opt in explicitly
+    # without allowing the desktop LANG to select stale generated pages.
+    requested = os.environ.get('SUGAR_HELP_LANGUAGE', '').strip().lower()
+    if requested in ('es', 'ht'):
+        return requested
+    return 'en'
 
 
 def get_index_uri():
@@ -52,11 +56,10 @@ def get_index_uri():
         'html/%s/index.html' % get_current_language())
 
     if not os.path.isfile(index_path):
-        # This checkout currently ships the compiled Spanish documentation
-        # but no compiled default-language index. Use it rather than opening
-        # a missing file; future packaging should add generated English HTML.
+        # English is the canonical fallback; never silently present Spanish
+        # when a localized build is unavailable.
         index_path = os.path.join(
-            activity.get_bundle_path(), 'html/es/index.html')
+            activity.get_bundle_path(), 'html/en/index.html')
     return 'file://' + index_path
 
 
@@ -157,8 +160,11 @@ class HelpActivity(activity.Activity):
     def read_file(self, file_path):
         f = open(file_path, "r")
         data = json.load(f)
-        self._web_view.load_uri(data['current_page'])
-        self._web_view.set_zoom_level(data['zoom_level'])
+        # A desktop launch should always land on the current English contents
+        # page. The Journal still restores zoom, while the page itself is
+        # intentionally fresh so new chapters are discoverable immediately.
+        self._web_view.load_uri(get_index_uri())
+        self._web_view.set_zoom_level(data.get('zoom_level', ZOOM_ORIGINAL))
         f.close()
 
     def write_file(self, file_path):

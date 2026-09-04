@@ -90,25 +90,22 @@ class ViewToolbar(Gtk.Toolbar):
         tool_item.add(self.search_entry)
         self.search_entry.show()
 
-        # Use an expanding, centered tool item rather than a ToolButton.
-        # ToolButton aligns its label from the left and makes the clock appear
-        # displaced when the surrounding controls change width.
-        self._clock_item = Gtk.ToolItem()
-        self._clock_item.set_expand(True)
-        clock_box = Gtk.Box()
-        clock_box.set_hexpand(True)
-        clock_box.set_halign(Gtk.Align.FILL)
+        # Preserve dynamic separation between the search/help and view areas.
+        self._toolbar_spacer = Gtk.SeparatorToolItem()
+        self._toolbar_spacer.props.draw = False
+        self._toolbar_spacer.set_expand(True)
+        self.insert(self._toolbar_spacer, -1)
+        self._toolbar_spacer.show()
+
+        # HomeWindow places this passive clock over the real window center.
+        # Keeping it out of Toolbar's allocation flow prevents changing
+        # search/view controls from shifting the displayed time sideways.
         self._clock_render_label = Gtk.Label(label="--:--")
-        self._clock_render_label.set_hexpand(True)
         self._clock_render_label.set_halign(Gtk.Align.CENTER)
-        self._clock_render_label.set_valign(Gtk.Align.CENTER)
+        self._clock_render_label.set_valign(Gtk.Align.START)
         self._clock_render_label.set_can_focus(False)
         self._clock_render_label.get_style_context().add_class(
             'aspartame-clock-button')
-        clock_box.pack_start(self._clock_render_label, True, True, 0)
-        self._clock_item.add(clock_box)
-        self.insert(self._clock_item, -1)
-        self._clock_item.show_all()
         self._clock_button = self._clock_render_label
         clock_css = Gtk.CssProvider()
         clock_css.load_from_data(b'''
@@ -122,6 +119,9 @@ class ViewToolbar(Gtk.Toolbar):
                 border: 0;
                 box-shadow: none;
                 outline-width: 0;
+                color: #ffffff;
+                font-size: 24px;
+                font-weight: bold;
             }
         ''')
         self._clock_button.get_style_context().add_provider(
@@ -163,32 +163,13 @@ class ViewToolbar(Gtk.Toolbar):
                 min-height: %dpx;
                 padding: 0;
                 border-radius: 999px;
-                border: 2px solid %s;
+                border: 0;
                 background: transparent;
                 background-image: none;
                 box-shadow: none;
             }
-            button.aspartame-help-button label.aspartame-help-glyph {
-                color: %s;
-                margin: 0;
-                padding: 0;
-                font-size: 27px;
-                font-weight: bold;
-            }
-            .aspartame-help-button.aspartame-help-active {
-                background: %s;
-                border-color: %s;
-            }
-            button.aspartame-help-button.aspartame-help-active label.aspartame-help-glyph {
-                color: %s;
-            }
         ''' % (aspartame_visual.HELP_BUTTON_DIAMETER,
-               aspartame_visual.HELP_BUTTON_DIAMETER,
-               aspartame_visual.SHELL_WHITE,
-               aspartame_visual.SHELL_FOCUS,
-               aspartame_visual.SHELL_WHITE,
-               aspartame_visual.SHELL_WHITE,
-               aspartame_visual.SHELL_FOCUS)).encode('utf-8'))
+               aspartame_visual.HELP_BUTTON_DIAMETER)).encode('utf-8'))
 
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), help_css,
@@ -207,10 +188,25 @@ class ViewToolbar(Gtk.Toolbar):
         self._help_button.connect('button-press-event',
                                   self.__help_clicked_cb)
         # Reuse the installed Help Activity's canonical Sugar artwork.
-        help_icon = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            '/usr/share/sugar/activities/Help.activity/activity/activity-help.svg',
-            24, 24, True)
-        help_image = Gtk.Image.new_from_pixbuf(help_icon)
+        help_path = '/usr/share/sugar/activities/Help.activity/activity/activity-help.svg'
+        self._help_icon_inactive = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+            help_path, 55, 55, True)
+        # Keep the same SVG geometry in selected state, but invert Sugar's
+        # stroke/fill tokens instead of adding a second highlight circle.
+        help_svg = open(help_path, encoding='utf-8').read()
+        help_svg = help_svg.replace('\"#000\"', '\"%s\"' %
+                                    aspartame_visual.SHELL_WHITE)
+        help_svg = help_svg.replace('\"#eee\"', '\"%s\"' %
+                                    aspartame_visual.SHELL_FOCUS)
+        loader = GdkPixbuf.PixbufLoader.new_with_type('svg')
+        loader.write(help_svg.encode('utf-8'))
+        loader.close()
+        self._help_icon_active = loader.get_pixbuf().scale_simple(
+            55, 55, GdkPixbuf.InterpType.BILINEAR)
+        # Inactive Help is the dark Sugar shell treatment; selecting it
+        # restores the canonical light Help Activity appearance.
+        help_image = Gtk.Image.new_from_pixbuf(self._help_icon_active)
+        self._help_image = help_image
         help_image.set_halign(Gtk.Align.CENTER)
         help_image.set_valign(Gtk.Align.CENTER)
         help_image.set_tooltip_text(
@@ -238,10 +234,12 @@ class ViewToolbar(Gtk.Toolbar):
         context = self._help_button.get_style_context()
         if active:
             context.add_class('aspartame-help-active')
+            self._help_image.set_from_pixbuf(self._help_icon_inactive)
             self._help_button.set_tooltip_text(
                 "What is this? - Click something to learn what it does.")
         else:
             context.remove_class('aspartame-help-active')
+            self._help_image.set_from_pixbuf(self._help_icon_active)
             self._help_button.set_tooltip_text(
                 "What is this? - Learn what something on the screen does.")
         self._help_button.queue_draw()
@@ -259,6 +257,10 @@ class ViewToolbar(Gtk.Toolbar):
             self._set_help_button_active(False)
             return True
         return False
+
+    def get_clock_widget(self):
+        """Return the passive clock for HomeWindow's centered overlay."""
+        return self._clock_render_label
 
     def _add_favorites_button(self, i):
         logging.debug('adding FavoritesButton %d' % (i))
@@ -306,11 +308,10 @@ class ViewToolbar(Gtk.Toolbar):
                 text = datetime.now().strftime("%I:%M %p").lstrip("0")
             else:
                 text = datetime.now().strftime("%H:%M")
-        escaped_text = GLib.markup_escape_text(text)
         if self._clock_render_label is not None:
-            self._clock_render_label.set_markup(
-                "<span size=\"xx-large\" weight=\"bold\">%s</span>" %
-                escaped_text)
+            # Let the Sugar theme choose its normal UI family; CSS supplies
+            # only the deliberate shell size/weight/color above.
+            self._clock_render_label.set_text(text)
         return True
 
 

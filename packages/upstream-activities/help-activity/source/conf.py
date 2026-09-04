@@ -286,3 +286,7 @@ epub_copyright = u'2013, SugarLabs'
 
 # Allow duplicate toc entries.
 #epub_tocdup = True
+
+# Aspartame Help presentation: readable high-contrast dark mode and disclosures.
+html_css_files = ['sugar-dark.css']
+html_js_files = ['sugar-help.js']

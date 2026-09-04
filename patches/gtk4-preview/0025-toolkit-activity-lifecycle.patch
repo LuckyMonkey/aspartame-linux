@@ -1,0 +1,49 @@
+--- a/src/sugar4/activity/activity.py
++++ b/src/sugar4/activity/activity.py
+@@ -195,6 +195,7 @@
+ from sugar4.graphics.icon import Icon
+ from sugar4.graphics.window import Window
+ from sugar4.profile import get_color, get_save_as
++from sugar4.activity.activityservice import ActivityService
+ 
+ 
+ def _(msg):
+@@ -369,6 +370,7 @@
+ 
+         # Initialize parent Window
+         Window.__init__(self, application=application)
++        self._activity_service = ActivityService(self)
+ 
+         if "SUGAR_ACTIVITY_ROOT" in os.environ:
+             # If this activity runs inside Sugar, we want it to take all the
+@@ -1345,7 +1347,7 @@
+ 
+     def _complete_close(self):
+         """Complete the close process."""
+-        self.destroy()
++        self.set_visible(False)
+ 
+         if self.shared_activity:
+             self.shared_activity.leave()
+@@ -1353,11 +1355,19 @@
+         self._cleanup_jobject()
+ 
+         # D-Bus service cleanup
+-        if self._bus:
+-            logging.debug("Cleaning up D-Bus service")
++        if self._activity_service:
++            logging.debug("Cleaning up Activity D-Bus service")
++            self._activity_service.close()
++            self._activity_service = None
+ 
+         self._session.unregister(self)
+ 
++        application = self.get_application()
++        if application:
++            application.remove_window(self)
++            if not application.get_windows():
++                application.quit()
++
+         # Power management for GTK4
+         # power.get_power_manager().shutdown()
+ 

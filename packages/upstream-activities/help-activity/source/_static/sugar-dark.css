@@ -1,0 +1,21 @@
+/* Aspartame Help: high-contrast Sugar dark mode. */
+:root { color-scheme: dark; }
+html, body { background: #090b0d !important; color: #f4f5f6 !important; }
+body { font-family: sans-serif; font-size: 18px; line-height: 1.65; }
+div.document, div.body, div.documentwrapper, div.bodywrapper { background: #101418 !important; color: #f4f5f6 !important; }
+div.body { max-width: 980px; padding: 2rem 2.5rem 4rem !important; }
+div.related { background: #050607 !important; color: #fff !important; border-bottom: 1px solid #3d454c; }
+div.related a, a { color: #8fd3ff !important; }
+h1, h2, h3, h4 { color: #fff !important; line-height: 1.25; }
+h1 { font-size: 2.15rem; border-bottom: 2px solid #59636d; padding-bottom: .5rem; }
+h2 { margin-top: 2.2rem; border-top: 1px solid #313941; padding-top: 1rem; }
+p, li, dd { color: #e7eaed !important; }
+code, tt, pre { background: #1b2228 !important; color: #f5d58b !important; border-color: #3f4c57 !important; }
+img { max-width: 100%; height: auto; }
+details { margin: .8rem 0; padding: .15rem 1rem; background: #151b20; border: 1px solid #35414a; border-radius: 10px; }
+details > summary { cursor: pointer; color: #fff; font-weight: 700; padding: .55rem 0; }
+details > summary::marker { color: #8fd3ff; }
+details[open] { padding-bottom: .6rem; }
+.toctree-wrapper { margin: 0 0 1rem; }
+.toctree-wrapper ul { margin-top: .25rem; }
+.footer { color: #aab4bd !important; }

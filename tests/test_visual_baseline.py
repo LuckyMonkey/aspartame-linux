@@ -8,7 +8,7 @@ MODULE = ROOT / 'archiso/aspartame/airootfs/usr/share/aspartame/aspartame_visual
 def test_visual_tokens_are_bounded_and_documented():
     source = MODULE.read_text(encoding='utf-8')
     assert 'XoColor' in source
-    assert 'HELP_BUTTON_DIAMETER = 32' in source
+    assert 'HELP_BUTTON_DIAMETER = 55' in source
     assert 'RATING_FACE_SIZE = 52' in source
     baseline = (ROOT / 'docs/design/SUGAR_VISUAL_BASELINE.md').read_text(encoding='utf-8')
     assert 'not a status bar' in baseline

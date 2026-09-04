@@ -59,12 +59,15 @@ class CountActivity(activity.Activity):
         total_hint.get_style_context().add_class("count-hint")
         self.root.pack_start(total_hint, False, False, 0)
 
+        content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=16)
+        content.set_hexpand(True)
+        content.set_vexpand(True)
         self.stack = Gtk.DrawingArea()
         self.stack.set_name("org.aspartame.count.stack")
         self.stack.set_size_request(760, 520)
         self.stack.set_hexpand(True)
         self.stack.set_vexpand(True)
-        self.stack.set_tooltip_text("Click an empty place to add a box; click a box to remove it. Drag to add several boxes.")
+        self.stack.set_tooltip_text("Click an empty cell to add a voxel; drag to fill a rectangle. Drag from a voxel to erase a rectangle.")
         if aspartame_help:
             aspartame_help.guard(self.stack, "org.aspartame.count.stack")
         self.stack.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
@@ -74,39 +77,41 @@ class CountActivity(activity.Activity):
         self.stack.connect("button-press-event", self._button_press)
         self.stack.connect("button-release-event", self._button_release)
         self.stack.connect("motion-notify-event", self._motion)
-        self.root.pack_start(self.stack, True, True, 0)
+        content.pack_start(self.stack, True, True, 0)
 
+        rail = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        rail.set_size_request(190, -1)
+        rail.set_valign(Gtk.Align.CENTER)
+        rail.get_style_context().add_class("count-rail")
+        layer_heading = Gtk.Label(label="EDIT LAYER")
+        layer_heading.get_style_context().add_class("count-rail-heading")
+        rail.pack_start(layer_heading, False, False, 0)
         self.layer_count = Gtk.Label()
         self.layer_count.set_name("org.aspartame.count.current-layer")
         self.layer_count.get_style_context().add_class("count-layer-count")
         if aspartame_help:
             aspartame_help.guard(self.layer_count, "org.aspartame.count.current-layer")
-        self.root.pack_start(self.layer_count, False, False, 0)
+        rail.pack_start(self.layer_count, False, False, 0)
         self.layer_total = Gtk.Label()
         self.layer_total.get_style_context().add_class("count-hint")
-        self.root.pack_start(self.layer_total, False, False, 0)
+        rail.pack_start(self.layer_total, False, False, 0)
 
-        nav = Gtk.Box(spacing=8)
-        nav.set_halign(Gtk.Align.CENTER)
-        self._symbol_button(nav, "◀", "Move toward the front of the stack.", self._previous_layer,
-                            "org.aspartame.count.layer.previous")
+        self._symbol_button(rail, "↑  Back layer", "Select the adjacent layer behind this one.",
+                            self._previous_layer, "org.aspartame.count.layer.previous")
+        self._symbol_button(rail, "↓  Forward layer", "Select the adjacent layer in front of this one.",
+                            self._next_layer, "org.aspartame.count.layer.next")
         self.layer_position = Gtk.Label()
         self.layer_position.get_style_context().add_class("count-layer-position")
-        nav.pack_start(self.layer_position, False, False, 5)
-        self._symbol_button(nav, "▶", "Move deeper into the stack.", self._next_layer,
-                            "org.aspartame.count.layer.next")
-        self.root.pack_start(nav, False, False, 0)
-
-        actions = Gtk.Box(spacing=8)
-        actions.set_halign(Gtk.Align.CENTER)
-        self._action_button(actions, "＋  New Layer",
-                            "Add an empty row behind the deepest row.",
+        rail.pack_start(self.layer_position, False, False, 0)
+        separator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        rail.pack_start(separator, False, False, 4)
+        self._action_button(rail, "＋  New layer", "Add an empty layer behind the selected layer.",
                             self._add_layer, "org.aspartame.count.layer.new")
-        self._action_button(actions, "⧉  Copy Layer",
-                            "Add a row behind the deepest row with the same boxes as this one.",
+        self._action_button(rail, "⧉  Copy layer", "Copy the selected layer behind it.",
                             self._copy_layer, "org.aspartame.count.layer.copy")
-        self._make_layer_menu(actions)
-        self.root.pack_start(actions, False, False, 0)
+        self._make_layer_menu(rail)
+        content.pack_start(rail, False, False, 0)
+        self.root.pack_start(content, True, True, 0)
 
         self.set_canvas(self.root)
         self._load()
@@ -116,14 +121,16 @@ class CountActivity(activity.Activity):
     def _install_style(self):
         css = Gtk.CssProvider()
         css.load_from_data(b"""
-            #count-root { background: #eeeeee; color: #222222; }
+            #count-root { background: #f4f6f7; color: #18232b; }
             #count-title { font-size: 25px; font-weight: bold; }
-            .count-total { font-size: 46px; font-weight: bold; }
-            .count-hint { font-size: 15px; color: #555555; }
-            .count-layer-count { font-size: 19px; font-weight: bold; }
-            .count-layer-position { font-size: 18px; font-weight: bold; }
-            .count-action { padding: 7px 14px; border-radius: 18px; }
-            .count-symbol { min-width: 40px; min-height: 38px; border-radius: 20px; font-size: 20px; }
+            .count-total { font-size: 46px; font-weight: bold; color: #1b668f; }
+            .count-hint { font-size: 14px; color: #52616b; }
+            .count-rail { background: #e3ebef; border: 1px solid #a8bac4; border-radius: 16px; padding: 14px; }
+            .count-rail-heading { font-size: 12px; letter-spacing: 1px; color: #52616b; }
+            .count-layer-count { font-size: 20px; font-weight: bold; color: #173f55; }
+            .count-layer-position { font-size: 18px; font-weight: bold; color: #1b668f; padding: 4px; }
+            .count-action { padding: 8px 12px; border-radius: 18px; }
+            .count-symbol { min-width: 40px; min-height: 38px; border-radius: 19px; font-size: 15px; }
         """)
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -154,20 +161,10 @@ class CountActivity(activity.Activity):
         return button
 
     def _make_layer_menu(self, box):
-        menu = Gtk.Menu()
-        delete = Gtk.MenuItem(label="Delete layer")
-        delete.set_name("org.aspartame.count.layer.delete")
-        delete.set_tooltip_text("Remove the layer you are looking at.")
-        delete.connect("activate", self._delete_layer)
-        menu.append(delete)
-        menu.show_all()
-        more = Gtk.MenuButton()
-        more.set_label("⋯")
-        more.set_name("org.aspartame.count.layer.more")
-        more.set_tooltip_text("More layer actions, including delete layer.")
-        more.get_style_context().add_class("count-symbol")
-        more.set_popup(menu)
-        box.pack_start(more, False, False, 0)
+        # Deleting the selected layer is a single, visible action.  There is no
+        # intermediate overflow menu between the user's intent and the result.
+        self._action_button(box, "Delete layer", "Remove the selected layer.",
+                            self._delete_layer, "org.aspartame.count.layer.delete")
 
     def _snapshot(self):
         return {"width": self.width, "height": self.height,
@@ -203,16 +200,19 @@ class CountActivity(activity.Activity):
     def _iso_geometry(self):
         width = max(1, self.stack.get_allocated_width())
         height = max(1, self.stack.get_allocated_height())
-        # XY is the front-facing rectangle. Z is a fixed diagonal projection
-        # away from the viewer, never a vertical stack.
-        size = min(76, (width - 50) / max(1, self.width + len(self.layers) * 0.34),
-                   (height - 40) / max(1, self.height + len(self.layers) * 0.22))
+        size = min(100, (width - 100) / max(1, self.width + len(self.layers) * 0.12),
+                   (height - 80) / max(1, self.height + len(self.layers) * 0.08))
         size = max(28, size)
-        depth_x, depth_y = size * 0.34, -size * 0.22
-        total_width = self.width * size + (len(self.layers) - 1) * depth_x
-        total_height = self.height * size + abs((len(self.layers) - 1) * depth_y)
-        ox = (width - total_width) / 2
-        oy = (height - total_height) / 2 + abs((len(self.layers) - 1) * depth_y)
+        depth_x, depth_y = size * 0.30, -size * 0.20
+        relatives = range(-self.current_layer, len(self.layers) - self.current_layer)
+        min_x, max_x = min(relatives) * depth_x, max(relatives) * depth_x
+        min_y, max_y = min(relatives) * depth_y, max(relatives) * depth_y
+        total_width = self.width * size + max_x - min_x
+        total_height = self.height * size + max_y - min_y
+        ox = (width - total_width) / 2 - min_x
+        oy = (height - total_height) / 2 - min_y
+        # Cells in one layer stay aligned; the shallow offset is only between
+        # layers, preserving a readable 3D stack without a staircase grid.
         return ox, oy, size, depth_x, depth_y
 
     def _draw_stack(self, widget, cr):
@@ -237,73 +237,75 @@ class CountActivity(activity.Activity):
 
     def _draw_depth_stack(self, cr):
         ox, oy, size, depth_x, depth_y = self._iso_geometry()
-        # Draw deepest rows first. The front row is closest to the viewer.
-        order = [i for i in range(len(self.layers) - 1, -1, -1)
-                 if i != self.current_layer]
-        order.append(self.current_layer)
+        # Draw each plane's sparse grid first.  The selected plane is blue and
+        # strong; rear planes are readable context, while front planes barely
+        # veil the selected work surface.
+        order = (list(range(len(self.layers) - 1, self.current_layer, -1)) +
+                 [self.current_layer] + list(range(self.current_layer - 1, -1, -1)))
         for layer_index in order:
+            relative = layer_index - self.current_layer
+            distance = abs(relative)
+            selected = relative == 0
+            if selected:
+                grid_alpha = 0.72
+            elif relative > 0:       # behind the selected plane
+                grid_alpha = max(0.26, 0.38 - distance * 0.025)
+            else:                    # in front of the selected plane
+                grid_alpha = max(0.18, 0.24 - distance * 0.012)
+            px_offset, py_offset = relative * depth_x, relative * depth_y
+            cr.set_source_rgba(0.12, 0.40, 0.62, grid_alpha)
+            cr.set_line_width(2.0 if selected else 1.0)
+            # One continuous grid per plane: no inset rectangles or extra
+            # outlines that make the grid look denser than the actual model.
+            for x in range(self.width + 1):
+                xx = ox + x * size + px_offset
+                cr.move_to(xx, oy + py_offset)
+                cr.line_to(xx, oy + self.height * size + py_offset)
+            for y in range(self.height + 1):
+                yy = oy + y * size + py_offset
+                cr.move_to(ox + px_offset, yy)
+                cr.line_to(ox + self.width * size + px_offset, yy)
+            cr.stroke()
+
             layer = self.layers[layer_index]
-            ghost = layer_index != self.current_layer
-            distance = abs(layer_index - self.current_layer)
-            alpha = max(0.16, 0.34 - distance * 0.035) if ghost else 1.0
-            px_offset = layer_index * depth_x
-            py_offset = layer_index * depth_y
+            cube_alpha = 1.0 if selected else (max(0.30, 0.50 - distance * 0.04)
+                                               if relative > 0 else max(0.24, 0.34 - distance * 0.018))
             for y, row in enumerate(layer):
                 for x, occupied in enumerate(row):
+                    if not occupied:
+                        continue
                     left = ox + x * size + px_offset
                     top = oy + y * size + py_offset
-                    # Every occupied position is a box. The side and top
-                    # faces show that later layers are behind, not above.
-                    if occupied:
-                        cr.set_source_rgba(0.27, 0.27, 0.27, alpha)
-                        cr.rectangle(left, top, size - 3, size - 3)
-                        cr.fill_preserve()
-                        cr.set_source_rgba(0.12, 0.12, 0.12, alpha)
-                        cr.set_line_width(1.3)
-                        cr.stroke()
-                        cr.set_source_rgba(0.42, 0.42, 0.42, alpha)
-                        cr.move_to(left, top)
-                        cr.line_to(left + depth_x, top + depth_y)
-                        cr.line_to(left + size - 3 + depth_x, top + depth_y)
-                        cr.line_to(left + size - 3, top)
-                        cr.close_path()
-                        cr.fill_preserve()
-                        cr.stroke()
-                        cr.set_source_rgba(0.18, 0.18, 0.18, alpha)
-                        cr.move_to(left + size - 3, top)
-                        cr.line_to(left + size - 3 + depth_x, top + depth_y)
-                        cr.line_to(left + size - 3 + depth_x, top + size - 3 + depth_y)
-                        cr.line_to(left + size - 3, top + size - 3)
-                        cr.close_path()
-                        cr.fill_preserve()
-                        cr.stroke()
-                    elif layer_index == self.current_layer:
-                        cr.set_source_rgba(0.25, 0.25, 0.25, 0.28)
-                        cr.rectangle(left, top, size - 3, size - 3)
-                        cr.set_line_width(1)
-                        cr.stroke()
-
-        # Keep the editable XY plane obvious without covering ghost rows.
-        for y in range(self.height):
-            for x in range(self.width):
-                left = ox + x * size + self.current_layer * depth_x
-                top = oy + y * size + self.current_layer * depth_y
-                cr.set_source_rgba(0.10, 0.10, 0.10, 0.42)
-                cr.rectangle(left, top, size - 3, size - 3)
-                cr.set_line_width(1)
-                cr.stroke()
+                    cr.set_source_rgba(0.42, 0.45, 0.47, cube_alpha)
+                    cr.rectangle(left + 1, top + 1, size - 3, size - 3)
+                    cr.fill_preserve()
+                    cr.set_source_rgba(0.20, 0.22, 0.23, cube_alpha)
+                    cr.set_line_width(2.2 if selected else 1.1)
+                    cr.stroke()
+                    cr.set_source_rgba(0.64, 0.66, 0.67, cube_alpha)
+                    cr.move_to(left + 1, top + 1)
+                    cr.line_to(left + 1 + depth_x, top + 1 + depth_y)
+                    cr.line_to(left + size - 2 + depth_x, top + 1 + depth_y)
+                    cr.line_to(left + size - 2, top + 1)
+                    cr.close_path()
+                    cr.fill_preserve()
+                    cr.stroke()
+                    cr.set_source_rgba(0.25, 0.26, 0.27, cube_alpha)
+                    cr.move_to(left + size - 2, top + 1)
+                    cr.line_to(left + size - 2 + depth_x, top + 1 + depth_y)
+                    cr.line_to(left + size - 2 + depth_x, top + size - 2 + depth_y)
+                    cr.line_to(left + size - 2, top + size - 2)
+                    cr.close_path()
+                    cr.fill_preserve()
+                    cr.stroke()
 
     def _hit_cell(self, px, py):
         if len(self.layers) == 1:
             ox, oy, size = self._flat_geometry()
-            x, y = int((px - ox) // size), int((py - oy) // size)
-            if 0 <= x < self.width and 0 <= y < self.height:
-                if ox + x * size <= px <= ox + (x + 1) * size and oy + y * size <= py <= oy + (y + 1) * size:
-                    return x, y
-            return None
-        ox, oy, size, depth_x, depth_y = self._iso_geometry()
-        ox += self.current_layer * depth_x
-        oy += self.current_layer * depth_y
+        else:
+            ox, oy, size, depth_x, depth_y = self._iso_geometry()
+            ox += 0
+            oy += 0
         x, y = int((px - ox) // size), int((py - oy) // size)
         if 0 <= x < self.width and 0 <= y < self.height:
             if ox + x * size <= px <= ox + (x + 1) * size and oy + y * size <= py <= oy + (y + 1) * size:
@@ -320,27 +322,40 @@ class CountActivity(activity.Activity):
             self._record()
             self._gesture_recorded = True
         self.layers[self.current_layer][y][x] = value
-        self._render()
+
+    def _apply_rectangle(self, end_cell):
+        if self._press_cell is None or end_cell is None:
+            return
+        x0, y0 = self._press_cell
+        x1, y1 = end_cell
+        changed = False
+        for y in range(min(y0, y1), max(y0, y1) + 1):
+            for x in range(min(x0, x1), max(x0, x1) + 1):
+                if self.layers[self.current_layer][y][x] != self._paint_add:
+                    if not self._gesture_recorded:
+                        self._record()
+                        self._gesture_recorded = True
+                    self.layers[self.current_layer][y][x] = self._paint_add
+                    changed = True
+        if changed:
+            self._render()
 
     def _button_press(self, _widget, event):
-        cell = self._hit_cell(event.x, event.y)
-        self._press_cell = cell
+        self._press_cell = self._hit_cell(event.x, event.y)
         self._gesture_recorded = False
-        self._paint_add = bool(cell is not None and
-                               not self.layers[self.current_layer][cell[1]][cell[0]])
-        if self._paint_add:
-            self._set_cell(cell, True)
+        if self._press_cell is not None:
+            x, y = self._press_cell
+            self._paint_add = not self.layers[self.current_layer][y][x]
+            self._apply_rectangle(self._press_cell)
         return True
 
     def _motion(self, _widget, event):
-        if self._paint_add and event.state & Gdk.ModifierType.BUTTON1_MASK:
-            self._set_cell(self._hit_cell(event.x, event.y), True)
+        if self._press_cell is not None and event.state & Gdk.ModifierType.BUTTON1_MASK:
+            self._apply_rectangle(self._hit_cell(event.x, event.y))
         return True
 
     def _button_release(self, _widget, event):
-        cell = self._hit_cell(event.x, event.y)
-        if not self._paint_add and cell == self._press_cell and cell is not None:
-            self._set_cell(cell, False)
+        self._apply_rectangle(self._hit_cell(event.x, event.y))
         self._press_cell = None
         self._paint_add = False
         self._gesture_recorded = False
@@ -348,15 +363,15 @@ class CountActivity(activity.Activity):
 
     def _add_layer(self, *_):
         self._record()
-        self.layers.append(self._empty_layer())
-        self.current_layer = len(self.layers) - 1
+        # Insert depth behind the plane being edited; keep that plane selected
+        # so the new translucent context is immediately visible.
+        self.layers.insert(self.current_layer + 1, self._empty_layer())
         self._render()
 
     def _copy_layer(self, *_):
         self._record()
         copied = json.loads(json.dumps(self.layers[self.current_layer]))
-        self.layers.append(copied)
-        self.current_layer = len(self.layers) - 1
+        self.layers.insert(self.current_layer + 1, copied)
         self._render()
 
     def _delete_layer(self, *_):

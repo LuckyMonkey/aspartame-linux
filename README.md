@@ -34,6 +34,15 @@ make iso
 make run
 ```
 
+### Full ISO handoff
+
+The complete bootable image is generated as `dist/aspartame-YYYY.MM.DD-x86_64.iso`.
+It includes the Sugar desktop, GTK4 preview infrastructure, English dark Help
+content, Activity Manager, approval flow, and the overhauled layered Count Activity.
+Builds are reproducible with `make iso` from an Arch build environment; the live
+VM builder can install `archiso` automatically from the Arch mirror when the host
+privilege boundary is unavailable.
+
 Override QEMU defaults with environment variables:
 
 ```sh

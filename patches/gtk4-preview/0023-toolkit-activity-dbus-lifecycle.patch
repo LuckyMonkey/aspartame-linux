@@ -1,0 +1,43 @@
+diff --git a/src/sugar4/activity/activityservice.py b/src/sugar4/activity/activityservice.py
+new file mode 100644
+--- /dev/null
++++ b/src/sugar4/activity/activityservice.py
+@@ -0,0 +1,38 @@
++"""Small GTK4 Activity D-Bus lifecycle service.
++
++This keeps the established Sugar shell contract while GTK4 activities use
++Gtk.Application rather than legacy X windows.
++"""
++
++import dbus
++import dbus.service
++
++
++class ActivityService(dbus.service.Object):
++    """Advertise one Activity instance to Jarabe and accept lifecycle calls."""
++
++    def __init__(self, activity):
++        self._activity = activity
++        self._bus = dbus.SessionBus()
++        activity_id = activity.get_id()
++        self._bus_name = dbus.service.BusName(
++            "org.laptop.Activity" + activity_id, bus=self._bus
++        )
++        super().__init__(
++            self._bus_name, "/org/laptop/Activity/" + activity_id
++        )
++
++    @dbus.service.method("org.laptop.Activity", in_signature="b")
++    def SetActive(self, active):
++        self._activity.set_active(bool(active))
++
++    @dbus.service.method("org.laptop.Activity")
++    def Close(self):
++        self._activity.close()
++
++    def close(self):
++        """Release the well-known instance name during normal shutdown."""
++        self.remove_from_connection()
++        self._activity = None
++        self._bus_name = None
++        self._bus = None
