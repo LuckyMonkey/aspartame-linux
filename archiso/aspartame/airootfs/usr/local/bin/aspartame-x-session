@@ -4,16 +4,14 @@ export XDG_SESSION_DESKTOP=sugar
 # Optional live source overlay exported by QEMU at /mnt/aspartame-dev.
 # A checkout placed at aspartame-dev/sugar with Python sources under src/
 # overrides the packaged Sugar shell for the next session restart.
-for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30; do
-    mountpoint -q /home/aspartame &&
-        test "$(findmnt -n -o SOURCE --target /home/aspartame)" = /dev/vdb &&
-        break
-    sleep 1
-done
-if ! mountpoint -q /home/aspartame ||
-   test "$(findmnt -n -o SOURCE --target /home/aspartame)" != /dev/vdb; then
-    echo 'Aspartame persistent home is not mounted; refusing to start Sugar' >&2
-    exit 1
+# A separate /dev/vdb data disk is optional.  When present it provides
+# persistence; on a plain ISO boot Sugar uses the writable live overlay.
+if mountpoint -q /home/aspartame &&
+   test "$(findmnt -n -o SOURCE --target /home/aspartame)" = /dev/vdb; then
+    export ASPARTAME_PERSISTENCE=persistent
+else
+    export ASPARTAME_PERSISTENCE=ephemeral
+    install -d -o aspartame -g aspartame /home/aspartame/Desktop /home/aspartame/Downloads
 fi
 for _ in 1 2 3 4 5; do
     mountpoint -q /mnt/aspartame-dev && break

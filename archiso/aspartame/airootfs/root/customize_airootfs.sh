@@ -27,17 +27,15 @@ cat > /usr/local/bin/aspartame-persistent-home <<'EOF'
 set -eu
 
 device=/dev/vdb
-for _ in 1 2 3 4 5 6 7 8 9 10; do
-    test -b "$device" && break
-    sleep 1
-done
-test -b "$device"
-
-if ! blkid "$device" >/dev/null 2>&1; then
-    mkfs.ext4 -F -L ASPARTAME_DATA "$device"
+# Standalone ISO boots do not have a second disk.  Keep the live overlay
+# usable in that case; automatically use /dev/vdb when a data disk is supplied.
+if test -b "$device"; then
+    if ! blkid "$device" >/dev/null 2>&1; then
+        mkfs.ext4 -F -L ASPARTAME_DATA "$device"
+    fi
+    mountpoint -q /home/aspartame || mount "$device" /home/aspartame
+    test "$(findmnt -n -o SOURCE --target /home/aspartame)" = "$device"
 fi
-mountpoint -q /home/aspartame || mount "$device" /home/aspartame
-test "$(findmnt -n -o SOURCE --target /home/aspartame)" = "$device"
 install -d -o aspartame -g aspartame /home/aspartame/Desktop \
     /home/aspartame/Downloads /home/aspartame/.config
 if ! grep -qx 'exec /usr/local/bin/aspartame-x-session' /home/aspartame/.xinitrc 2>/dev/null; then
@@ -56,8 +54,7 @@ chmod 0755 /usr/local/bin/aspartame-persistent-home
 cat > /etc/systemd/system/aspartame-persistent-home.service <<'EOF'
 [Unit]
 Description=Mount Aspartame persistent user data
-Requires=dev-vdb.device
-After=dev-vdb.device local-fs.target
+After=local-fs.target
 Before=graphical.target
 
 [Service]
