@@ -81,9 +81,10 @@ class Handler(BaseHTTPRequestHandler):
     def body(self):
         length = int(self.headers.get("Content-Length", "0"))
         try:
-            return json.loads(self.rfile.read(length) or b"{}")
+            value = json.loads(self.rfile.read(length) or b"{}")
         except (ValueError, json.JSONDecodeError):
             return None
+        return value if isinstance(value, dict) else None
 
     def do_GET(self):
         path = urlparse(self.path).path
