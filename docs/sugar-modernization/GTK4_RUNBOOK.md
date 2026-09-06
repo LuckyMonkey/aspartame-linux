@@ -42,7 +42,7 @@ not claimed by this repository yet.
 mkdir -p reports/sugar-modernization
 git -C "$MODERNIZATION_ROOT/sugar-toolkit-gtk4" rev-parse HEAD \
   > reports/sugar-modernization/gtk4-toolkit-revision.txt
-GTK4_ROOT="$MODERNIZATION_ROOT/sugar-toolkit-gtk4" \
+GTK4_ROOT="$MODERNIZATION_ROOT" \
   make sugar-gtk4-smoke 2>&1 | tee reports/sugar-modernization/gtk4-smoke.log
 ```
 
