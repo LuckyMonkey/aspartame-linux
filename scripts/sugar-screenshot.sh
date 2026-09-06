@@ -14,7 +14,7 @@ mkdir -p "$output_dir"
 resolution=$(vm_ssh "runuser -u aspartame -- env DISPLAY=:0 xrandr --current" |
     awk '/ connected / {
         for (index = 1; index <= NF; index++) {
-            if ($index ~ /^[0-9]+x[0-9]+\\+/) {
+            if ($index ~ /^[0-9]+x[0-9]+[+]/) {
                 split($index, mode, "+")
                 print mode[1]
                 exit
