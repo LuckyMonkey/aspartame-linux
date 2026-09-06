@@ -1,0 +1,632 @@
+diff --git a/logviewer.py b/logviewer.py
+--- a/logviewer.py
++++ b/logviewer.py
+@@ -58,336 +58,284 @@
+-class MultiLogView(Gtk.Paned):
+-
+-    def __init__(self, paths, extra_files):
+-        GObject.GObject.__init__(self)
+-        self.set_orientation(Gtk.Orientation.HORIZONTAL)
+-
+-        self.paths = paths
+-        self.extra_files = extra_files
+-        # Hold a reference to the monitors so they don't get disposed
+-        self._gio_monitors = []
+-        self.first_file_open = '|'
+-
+-        self.active_log = None
+-        self.logs = {}
+-
+-        self.search_text = ''
+-
+-        self._build_treeview()
+-        self._build_textview()
+-
+-        self._configure_watcher()
+-        self._find_logs()
+-
+-    def _format_col(self, col, cell, model, iterator, user_data):
+-        treestore, text_iter = self._treeview.get_selection().get_selected()
+-        direc, filename = self.first_file_open.split('|')
+-        if text_iter is None:
+-            if filename == model.get_value(iterator, 0):
+-                parent_iter = model.iter_parent(iterator)
+-                if parent_iter is None:
+-                    cell.props.background_rgba = Gdk.RGBA(1.0, 1.0, 1.0, 1)
+-                else:
+-                    if direc == model.get_value(parent_iter, 0):
+-                        cell.props.background_rgba = \
+-                            Gdk.RGBA(0.75, 0.75, 0.75, 1)
+-                    else:
+-                        cell.props.background_rgba = Gdk.RGBA(1.0, 1.0, 1.0, 1)
+-            else:
+-                cell.props.background_rgba = Gdk.RGBA(1.0, 1.0, 1.0, 1)
+-        else:
+-            cell.props.background_rgba = Gdk.RGBA(1.0, 1.0, 1.0, 1)
+-
+-    def _build_treeview(self):
+-        self._treeview = Gtk.TreeView()
+-
+-        self._treeview.connect('cursor-changed', self._cursor_changed_cb)
+-        self._treeview.set_enable_search(False)
+-
+-        self._treemodel = Gtk.TreeStore(GObject.TYPE_STRING,
+-                                        GObject.TYPE_STRING)
+-
+-        sorted = Gtk.TreeModelSort.new_with_model(self._treemodel)
+-
+-        sorted.set_sort_column_id(0, Gtk.SortType.ASCENDING)
+-        sorted.set_sort_func(0, self._sort_logfile)
+-        self._treeview.set_model(sorted)
+-
+-        renderer = Gtk.CellRendererText()
+-        col = Gtk.TreeViewColumn(_('Log Files'), renderer, text=0)
+-        col.set_cell_data_func(renderer, self._format_col, 0)
+-        self._treeview.append_column(col)
+-
+-        renderer = Gtk.CellRendererText()
+-        col = Gtk.TreeViewColumn('', renderer, text=1)
+-        self._treeview.append_column(col)
+-        col.props.visible = False
+-
+-        self.path_iter = {}
+-        for p in self.paths:
+-            self.path_iter[p] = self._treemodel.append(None, [p, ''])
+-
+-        if len(self.extra_files):
+-            self.extra_iter = self._treemodel.append(None, [_('Other'), ''])
+-
+-        self.list_scroll = Gtk.ScrolledWindow()
+-        self.list_scroll.set_policy(Gtk.PolicyType.AUTOMATIC,
+-                                    Gtk.PolicyType.AUTOMATIC)
+-        self.list_scroll.set_child(self._treeview)
+-        self.list_scroll.set_size_request(300, -1)
+-
+-        self.set_start_child(self.list_scroll)
+-
+-    def _build_textview(self):
+-        self._textview = Gtk.TextView()
+-        self._textview.set_wrap_mode(Gtk.WrapMode.NONE)
+-
+-        self._textview.set_monospace(True)
+-
+-        self._textview.set_editable(False)
+-
+-        scroll = Gtk.ScrolledWindow()
+-        scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+-        scroll.set_child(self._textview)
+-
+-        self.set_end_child(scroll)
+-
+-    def _sort_logfile(self, treemodel, itera, iterb, user_data=None):
+-        a = treemodel.get_value(itera, 0)
+-        b = treemodel.get_value(iterb, 0)
+-        if a is None or b is None:
+-            return 0
+-        a = a.lower()
+-        b = b.lower()
+-
+-        # Filenames are parased as xxxx-YYY.log
+-        # Sort first by xxxx, then numerically by YYY.
+-        logre = re.compile(r'(.*)-(\d+)\.log', re.IGNORECASE)
+-        ma = logre.match(a)
+-        mb = logre.match(b)
+-        if ma and mb:
+-            if ma.group(1) > mb.group(1):
+-                return 1
+-            if ma.group(1) < mb.group(1):
+-                return -1
+-            if int(ma.group(2)) > int(mb.group(2)):
+-                return 1
+-            if int(ma.group(2)) < int(mb.group(2)):
+-                return -1
+-            return 0
+-        else:
+-            # Put first the files and later the directories
+-            if a.endswith('.log') and not b.endswith('.log'):
+-                return -1
+-            if b.endswith('.log') and not a.endswith('.log'):
+-                return 1
+-
+-            if a > b:
+-                return 1
+-            if a < b:
+-                return -1
+-            return 0
+-
+-    def _configure_watcher(self):
+-        for p in self.paths:
+-            for q in os.listdir(p):
+-                r = os.path.join(p, q)
+-                if os.path.isdir(r):
+-                    self._create_gio_monitor(r)
+-            self._create_gio_monitor(p)
+-
+-        for f in self.extra_files:
+-            self._create_gio_monitor(f)
+-
+-    def _create_gio_monitor(self, direc_path):
+-        monitor = Gio.File.new_for_path(direc_path)\
+-            .monitor_directory(Gio.FileMonitorFlags.NONE, None)
+-        monitor.connect('changed', self._log_file_changed_cb)
+-        self._gio_monitors.append(monitor)
+-
+-    def _log_file_changed_cb(self, monitor, log_file, other_file, event):
+-        filepath = log_file.get_path()
+-        logfile = None
+-        for p in self.paths:
+-            if filepath.startswith(p):
+-                logfile = os.path.relpath(filepath, p)
+-                break
+-
+-        if event == Gio.FileMonitorEvent.CHANGED:
+-            if logfile in self.logs:
+-                self.logs[logfile].update()
+-        elif event == Gio.FileMonitorEvent.DELETED:
+-            if logfile in self.logs:
+-                self._remove_log_file(logfile)
+-        elif event == Gio.FileMonitorEvent.CREATED:
+-            self._add_log_file(log_file.get_path())
+-
+-    def _cursor_changed_cb(self, treeview):
+-        selection = self._treeview.get_selection()
+-        if selection is not None:
+-            treestore, text_iter = selection.get_selected()
+-            if text_iter is not None:
+-                self._show_log(treestore.get_value(text_iter, 1))
+-                if treestore.iter_has_child(text_iter):
+-                    path = treestore.get_path(text_iter)
+-                    if treeview.row_expanded(path):
+-                        treeview.collapse_row(path)
+-                    else:
+-                        treeview.expand_row(path, False)
+-
+-    def _show_log(self, logfile):
+-        if logfile in self.logs:
+-            if self.active_log is None:
+-                try:
+-                    direc, filename = os.path.split(logfile)
+-                    self.first_file_open = \
+-                        time.ctime(float(direc)) + '|' + filename
+-                except ValueError:
+-                    self.first_file_open = \
+-                        env.get_profile_path('logs') + '|' + logfile
+-            log = self.logs[logfile]
+-            self._textview.set_buffer(log)
+-            self._textview.scroll_to_mark(
+-                log.get_insert(), 0, use_align=False, xalign=0.5, yalign=0.5)
+-            self.active_log = log
+-
+-    def _find_logs(self):
+-        for path in self.paths:
+-            try:
+-                files = os.listdir(path)
+-            except BaseException:
+-                logging.debug(
+-                    _("ERROR: Failed to look for files in '%(path)s'.") %
+-                    {'path': path})
+-            else:
+-                for logfile in files:
+-                    self._add_log_file(os.path.join(path, logfile))
+-
+-        for logfile in self.extra_files:
+-            self._add_log_file(logfile)
+-
+-        self._treeview.expand_all()
+-
+-    def _add_log_file(self, path, parent=None, _dir=None):
+-        if os.path.isdir(path):
+-            pdir, _dir = os.path.split(path)
+-            if pdir == self.paths[0]:
+-                self._add_old_logs_dir(pdir, _dir)
+-
+-            return False
+-
+-        if not os.path.exists(path):
+-            logging.debug(_("ERROR: File '%(file)s' does not exist.") %
+-                          {'file': path})
+-            return False
+-
+-        if not os.access(path, os.R_OK):
+-            logging.debug(_("ERROR: Unable to read file '%(file)s'.") %
+-                          {'file': path})
+-            return False
+-
+-        directory, logfile = os.path.split(path)
+-        name = logfile
+-
+-        if _dir:
+-            logfile = '%s/%s' % (_dir, logfile)
+-
+-        if logfile not in self.logs or _dir:
+-            if not parent:
+-                parent = self.extra_iter
+-                if directory in self.path_iter:
+-                    parent = self.path_iter[directory]
+-            tree_iter = self._treemodel.append(parent, [name, logfile])
+-
+-            model = LogBuffer(path, tree_iter)
+-
+-            self.logs[logfile] = model
+-
+-        log = self.logs[logfile]
+-        log.update()
+-        written = log._written
+-
+-        if self.active_log is None:
+-            self._show_log(logfile)
+-            self.active_log = log
+-            success, log_iter = \
+-                self._treeview.get_model().convert_child_iter_to_iter(log.iter)
+-            self._treeview.get_selection().select_iter(log_iter)
+-
+-        if written > 0 and self.active_log == log:
+-            self._textview.scroll_to_mark(
+-                log.get_insert(), 0, use_align=False, xalign=0.5, yalign=0.5)
+-
+-    def _add_old_logs_dir(self, path, _dir):
+-        # Add a directory with their respective logs
+-        complete = os.path.join(path, _dir)
+-        name = time.ctime(float(_dir))
+-        parent = self._treemodel.append(self.path_iter[path], [name, ''])
+-        for p in os.listdir(complete):
+-            self._add_log_file(os.path.join(complete, p), parent, _dir)
+-
+-        return parent
+-
+-    def _remove_log_file(self, logfile):
+-        log = self.logs[logfile]
+-        self._treemodel.remove(log.iter)
+-        if self.active_log == log:
+-            self.active_log = None
+-        del self.logs[logfile]
+-
+-    def set_search_text(self, text):
+-        self.search_text = text
+-
+-        _buffer = self._textview.get_buffer()
+-
+-        start, end = _buffer.get_bounds()
+-        _buffer.remove_tag_by_name('search-hilite', start, end)
+-        _buffer.remove_tag_by_name('search-select', start, end)
+-
+-        text_iter = _buffer.get_start_iter()
+-
+-        while True:
+-            next_found = text_iter.forward_search(text, 0, None)
+-            if next_found is None:
+-                break
+-            start, end = next_found
+-            _buffer.apply_tag_by_name('search-hilite', start, end)
+-            text_iter = end
+-
+-        if self.get_next_result('current'):
+-            self.search_next('current')
+-        elif self.get_next_result('backward'):
+-            self.search_next('backward')
+-
+-    def get_next_result(self, direction):
+-        _buffer = self._textview.get_buffer()
+-
+-        if direction == 'forward':
+-            text_iter = _buffer.get_iter_at_mark(_buffer.get_insert())
+-            text_iter.forward_char()
+-        else:
+-            text_iter = _buffer.get_iter_at_mark(_buffer.get_insert())
+-
+-        if direction == 'backward':
+-            return text_iter.backward_search(self.search_text, 0, None)
+-        else:
+-            return text_iter.forward_search(self.search_text, 0, None)
+-
+-    def search_next(self, direction):
+-        next_found = self.get_next_result(direction)
+-        if next_found:
+-            _buffer = self._textview.get_buffer()
+-
+-            start, end = _buffer.get_bounds()
+-            _buffer.remove_tag_by_name('search-select', start, end)
+-
+-            start, end = next_found
+-            _buffer.apply_tag_by_name('search-select', start, end)
+-
+-            _buffer.place_cursor(start)
+-
+-            self._textview.scroll_to_iter(start, 0.1, use_align=False,
+-                                          xalign=0.5, yalign=0.5)
+-            self._textview.scroll_to_iter(end, 0.1, use_align=False,
+-                                          xalign=0.5, yalign=0.5)
+-
+-
++class MultiLogView(Gtk.Paned):
++    """GTK4 log browser using ListBox instead of removed GTK3 tree widgets."""
++
++    def __init__(self, paths, extra_files):
++        Gtk.Paned.__init__(self, orientation=Gtk.Orientation.HORIZONTAL)
++
++        self.paths = paths
++        self.extra_files = extra_files
++        self._gio_monitors = []
++        self._monitored_paths = set()
++
++        self.active_log = None
++        self.logs = {}
++        self.search_text = ''
++        self._rows = {}
++        self._row_paths = {}
++
++        self._build_log_list()
++        self._build_textview()
++        self._configure_watcher()
++        self._find_logs()
++
++    def _build_log_list(self):
++        self._listbox = Gtk.ListBox()
++        self._listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
++        self._listbox.set_activate_on_single_click(True)
++        self._listbox.connect('row-selected', self._row_selected_cb)
++
++        self.list_scroll = Gtk.ScrolledWindow()
++        self.list_scroll.set_policy(Gtk.PolicyType.AUTOMATIC,
++                                    Gtk.PolicyType.AUTOMATIC)
++        self.list_scroll.set_child(self._listbox)
++        self.list_scroll.set_size_request(300, -1)
++        self.set_start_child(self.list_scroll)
++
++    def _build_textview(self):
++        self._textview = Gtk.TextView()
++        self._textview.set_wrap_mode(Gtk.WrapMode.NONE)
++        self._textview.set_monospace(True)
++        self._textview.set_editable(False)
++
++        scroll = Gtk.ScrolledWindow()
++        scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
++        scroll.set_child(self._textview)
++        self.set_end_child(scroll)
++
++    def _sort_key(self, path):
++        name = os.path.basename(path).lower()
++        match = re.match(r'(.*)-(\d+)\.log', name, re.IGNORECASE)
++        if match:
++            return (0, match.group(1), int(match.group(2)), name)
++        if name.endswith('.log'):
++            return (1, name)
++        return (2, name)
++
++    def _refresh_rows(self):
++        for row in list(self._rows.values()):
++            self._listbox.remove(row)
++        self._rows.clear()
++        self._row_paths.clear()
++
++        for path in sorted(self.logs, key=self._sort_key):
++            row = Gtk.ListBoxRow()
++            label = Gtk.Label(label=path)
++            label.set_xalign(0.0)
++            label.set_hexpand(True)
++            label.set_margin_start(8)
++            label.set_margin_end(8)
++            label.set_margin_top(4)
++            label.set_margin_bottom(4)
++            label.set_tooltip_text(path)
++            row.set_child(label)
++            self._listbox.append(row)
++            self._rows[path] = row
++            self._row_paths[row] = path
++
++        if self.active_log is not None:
++            row = self._rows.get(self.active_log.logfile)
++            if row is not None:
++                self._listbox.select_row(row)
++
++    def _row_selected_cb(self, listbox, row):
++        if row is not None:
++            self._show_log(self._row_paths.get(row))
++
++    def _configure_watcher(self):
++        for path in self.paths + self.extra_files:
++            self._watch_path(path)
++
++    def _watch_path(self, path):
++        path = os.path.abspath(os.path.expanduser(path))
++        if path in self._monitored_paths:
++            return
++
++        if os.path.isdir(path):
++            self._create_gio_monitor(path, directory=True)
++            for root, directories, _files in os.walk(path):
++                for directory in directories:
++                    self._create_gio_monitor(
++                        os.path.join(root, directory), directory=True)
++        elif os.path.isfile(path):
++            self._create_gio_monitor(path, directory=False)
++
++    def _create_gio_monitor(self, path, directory):
++        path = os.path.abspath(path)
++        if path in self._monitored_paths:
++            return
++
++        try:
++            file_object = Gio.File.new_for_path(path)
++            if directory:
++                monitor = file_object.monitor_directory(
++                    Gio.FileMonitorFlags.NONE, None)
++            else:
++                monitor = file_object.monitor_file(
++                    Gio.FileMonitorFlags.NONE, None)
++        except GLib.Error:
++            logging.debug(_("Unable to monitor '%s'."), path, exc_info=True)
++            return
++
++        monitor.connect('changed', self._log_file_changed_cb)
++        self._gio_monitors.append(monitor)
++        self._monitored_paths.add(path)
++
++    def _log_file_changed_cb(self, monitor, log_file, other_file, event):
++        filepath = log_file.get_path()
++        if not filepath:
++            return
++        filepath = os.path.abspath(filepath)
++
++        if event == Gio.FileMonitorEvent.CHANGED:
++            if filepath in self.logs:
++                log = self.logs[filepath]
++                log.update()
++                if self.active_log == log:
++                    self._textview.scroll_to_mark(
++                        log.get_insert(), 0, use_align=False,
++                        xalign=0.5, yalign=0.5)
++        elif event == Gio.FileMonitorEvent.DELETED:
++            self._remove_log_file(filepath)
++        elif event == Gio.FileMonitorEvent.CREATED:
++            if os.path.isdir(filepath):
++                self._watch_path(filepath)
++                self._find_logs_in(filepath)
++            else:
++                self._add_log_file(filepath)
++
++    def _find_logs_in(self, directory):
++        try:
++            entries = os.listdir(directory)
++        except OSError:
++            logging.debug(_("Unable to inspect '%s'."), directory,
++                          exc_info=True)
++            return
++
++        for name in entries:
++            path = os.path.join(directory, name)
++            if os.path.isdir(path):
++                self._watch_path(path)
++                self._find_logs_in(path)
++            else:
++                self._add_log_file(path)
++
++    def _show_log(self, logfile):
++        if not logfile or logfile not in self.logs:
++            return
++
++        log = self.logs[logfile]
++        self._textview.set_buffer(log)
++        self._textview.scroll_to_mark(
++            log.get_insert(), 0, use_align=False, xalign=0.5, yalign=0.5)
++        self.active_log = log
++
++        row = self._rows.get(logfile)
++        if row is not None and self._listbox.get_selected_row() is not row:
++            self._listbox.select_row(row)
++
++    def _find_logs(self):
++        for path in self.paths + self.extra_files:
++            path = os.path.abspath(os.path.expanduser(path))
++            if os.path.isdir(path):
++                self._find_logs_in(path)
++            elif os.path.isfile(path):
++                self._add_log_file(path)
++
++    def _add_log_file(self, path):
++        path = os.path.abspath(os.path.expanduser(path))
++        if os.path.isdir(path):
++            self._watch_path(path)
++            self._find_logs_in(path)
++            return False
++
++        if not os.path.isfile(path) or not os.access(path, os.R_OK):
++            logging.debug(_("Unable to read file '%s'."), path)
++            return False
++
++        if path not in self.logs:
++            log = LogBuffer(path, None)
++            self.logs[path] = log
++        else:
++            log = self.logs[path]
++            log.update()
++
++        self._refresh_rows()
++        if self.active_log is None:
++            self._show_log(path)
++        elif self.active_log == log and log._written > 0:
++            self._textview.scroll_to_mark(
++                log.get_insert(), 0, use_align=False, xalign=0.5, yalign=0.5)
++
++        return True
++
++    def _remove_log_file(self, logfile):
++        log = self.logs.pop(logfile, None)
++        if log is None:
++            return
++
++        was_active = self.active_log is log
++        if was_active:
++            self.active_log = None
++            self._textview.set_buffer(Gtk.TextBuffer())
++
++        self._refresh_rows()
++        if was_active and self.logs:
++            self._show_log(sorted(self.logs, key=self._sort_key)[0])
++
++    def set_search_text(self, text):
++        self.search_text = text or ''
++
++        buffer = self._textview.get_buffer()
++        start, end = buffer.get_bounds()
++        buffer.remove_tag_by_name('search-hilite', start, end)
++        buffer.remove_tag_by_name('search-select', start, end)
++
++        if not self.search_text:
++            return
++
++        text_iter = buffer.get_start_iter()
++        while True:
++            next_found = text_iter.forward_search(self.search_text, 0, None)
++            if next_found is None:
++                break
++            start, end = next_found
++            buffer.apply_tag_by_name('search-hilite', start, end)
++            text_iter = end
++
++        if self.get_next_result('current'):
++            self.search_next('current')
++        elif self.get_next_result('backward'):
++            self.search_next('backward')
++
++    def get_next_result(self, direction):
++        buffer = self._textview.get_buffer()
++        if not self.search_text:
++            return None
++
++        if direction == 'forward':
++            text_iter = buffer.get_iter_at_mark(buffer.get_insert())
++            text_iter.forward_char()
++        else:
++            text_iter = buffer.get_iter_at_mark(buffer.get_insert())
++
++        if direction == 'backward':
++            return text_iter.backward_search(self.search_text, 0, None)
++        return text_iter.forward_search(self.search_text, 0, None)
++
++    def search_next(self, direction):
++        next_found = self.get_next_result(direction)
++        if next_found:
++            buffer = self._textview.get_buffer()
++            start, end = buffer.get_bounds()
++            buffer.remove_tag_by_name('search-select', start, end)
++
++            start, end = next_found
++            buffer.apply_tag_by_name('search-select', start, end)
++            buffer.place_cursor(start)
++
++            self._textview.scroll_to_iter(
++                start, 0.1, use_align=False, xalign=0.5, yalign=0.5)
++            self._textview.scroll_to_iter(
++                end, 0.1, use_align=False, xalign=0.5, yalign=0.5)
++
++
++
+@@ -394,7 +342,7 @@
+ class LogBuffer(Gtk.TextBuffer):
+ 
+     def __init__(self, logfile, iterator):
+         GObject.GObject.__init__(self)
+ 
+         _tagtable = self.get_tag_table()
+         hilite_tag = Gtk.TextTag.new('search-hilite')
