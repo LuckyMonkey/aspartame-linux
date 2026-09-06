@@ -44,6 +44,17 @@ WAYLAND_DISPLAY=wayland-sugar \
 wayland-info
 ```
 
-FIRST PIXELS is verified. This command does not yet produce a usable desktop:
-the next runtime blocker is the datastore D-Bus service-name mismatch, followed
-by locale propagation into the private session. See `BLOCKERS.md`.
+Then verify the two development Spaces and the active preview:
+
+```bash
+/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh setup
+/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh gtk4
+/mnt/aspartame-dev/scripts/sugar-gtk4-runtime-check.sh gtk4
+```
+
+The current checkpoint proves GTK4 Home rendering, GTK3/GTK4 workspace
+switching, and Sugar-styled palettes. The private datastore service and
+metadata reader build are verified. A complete desktop is not claimed:
+Activity launch/stop remains pending until a migrated Activity registers its
+private D-Bus service and exits cleanly. Continue with
+[GTK4_ACTIVITY_RUNBOOK.md](GTK4_ACTIVITY_RUNBOOK.md).
