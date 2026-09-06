@@ -622,11 +622,3 @@ diff --git a/logviewer.py b/logviewer.py
 +
 +
 +
-@@ -394,7 +342,7 @@
- class LogBuffer(Gtk.TextBuffer):
- 
-     def __init__(self, logfile, iterator):
-         GObject.GObject.__init__(self)
- 
-         _tagtable = self.get_tag_table()
-         hilite_tag = Gtk.TextTag.new('search-hilite')
