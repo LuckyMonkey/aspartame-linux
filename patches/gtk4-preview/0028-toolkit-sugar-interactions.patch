@@ -1,0 +1,881 @@
+--- a/src/sugar4/graphics/icon.py
++++ b/src/sugar4/graphics/icon.py
+@@ -511,11 +511,26 @@
+             )
+             ctx.paint()
+ 
+-        # Scale context for icon
+-        ctx.scale(
+-            float(width) / (icon_width + padding * 2),
+-            float(height) / (icon_height + padding * 2),
++        # Keep SVG rendering consistent with the pixbuf path: fit the icon
++        # without distorting it, apply the requested animation scale and keep
++        # the result centred inside the allocated surface.
++        content_width = icon_width + padding * 2
++        content_height = icon_height + padding * 2
++        render_scale = min(
++            float(width) / content_width,
++            float(height) / content_height,
++        ) * max(0.0, self.scale)
++
++        if render_scale <= 0:
++            return surface
++
++        rendered_width = content_width * render_scale
++        rendered_height = content_height * render_scale
++        ctx.translate(
++            (width - rendered_width) / 2,
++            (height - rendered_height) / 2,
+         )
++        ctx.scale(render_scale, render_scale)
+         ctx.save()
+ 
+         # Translate for padding
+@@ -812,8 +827,11 @@
+ 
+     def _setup_gestures(self):
+         """Set up gesture controllers for event handling."""
+-        # Click gesture
++        # Activation belongs exclusively to the primary button.  Palette
++        # invokers install their own controller for secondary-click and
++        # long-press handling.
+         click_gesture = Gtk.GestureClick()
++        click_gesture.set_button(1)
+         click_gesture.connect("pressed", self._on_pressed)
+         click_gesture.connect("released", self._on_released)
+         self.add_controller(click_gesture)
+@@ -906,6 +924,7 @@
+         super().__init__(**kwargs)
+         self._button_down = False
+         self._palette_up = False
++        self.add_css_class("canvas-icon")
+ 
+         # Set up hover and focus controllers
+         self._setup_state_controllers()
+@@ -918,12 +937,6 @@
+         motion_controller.connect("leave", self._on_leave)
+         self.add_controller(motion_controller)
+ 
+-        # Override click gesture to handle states
+-        click_gesture = Gtk.GestureClick()
+-        click_gesture.connect("pressed", self._on_canvas_pressed)
+-        click_gesture.connect("released", self._on_canvas_released)
+-        self.add_controller(click_gesture)
+-
+     def _on_enter(self, controller, x, y):
+         """Handle mouse enter."""
+         self.set_state_flags(Gtk.StateFlags.PRELIGHT, False)
+@@ -938,24 +951,17 @@
+             self.unset_state_flags(
+                 Gtk.StateFlags.PRELIGHT | Gtk.StateFlags.ACTIVE)
+ 
+-    def _on_canvas_pressed(self, gesture, n_press, x, y):
++    def _on_pressed(self, gesture, n_press, x, y):
+         """Handle canvas press."""
+         self._button_down = True
+         self.set_state_flags(Gtk.StateFlags.ACTIVE, False)
+-        self.emit("pressed", x, y)
++        super()._on_pressed(gesture, n_press, x, y)
+ 
+-    def _on_canvas_released(self, gesture, n_press, x, y):
++    def _on_released(self, gesture, n_press, x, y):
+         """Handle canvas release."""
+         self.unset_state_flags(Gtk.StateFlags.ACTIVE)
+         self._button_down = False
+-        self.emit("released", x, y)
+-
+-        if n_press == 1:
+-            width = self.get_width()
+-            height = self.get_height()
+-            if 0 <= x <= width and 0 <= y <= height:
+-                self.emit("clicked")
+-                self.emit("activate")
++        super()._on_released(gesture, n_press, x, y)
+ 
+     def connect_to_palette_pop_events(self, palette):
+         """Hold the prelight state while the palette is shown."""
+@@ -971,24 +977,12 @@
+         self.unset_state_flags(Gtk.StateFlags.PRELIGHT)
+ 
+     def do_snapshot(self, snapshot):
+-        """Override to render background based on state."""
+-        # Get allocation and style context
++        """Render the globally themed state background and the icon."""
++        style_context = self.get_style_context()
+         width = self.get_width()
+         height = self.get_height()
+-
+-        # Render background based on state
+-        style_context = self.get_style_context()
+-        style_context.save()
+-
+-        # Add CSS class for styling
+-        style_context.add_class("canvas-icon")
+-
+-        # Render background
+         snapshot.render_background(style_context, 0, 0, width, height)
+-
+-        style_context.restore()
+-
+-        # Call parent to render icon
++        snapshot.render_frame(style_context, 0, 0, width, height)
+         super().do_snapshot(snapshot)
+ 
+ 
+--- a/src/sugar4/graphics/toolbutton.py
++++ b/src/sugar4/graphics/toolbutton.py
+@@ -50,14 +50,13 @@
+ STABLE.
+ """
+ 
+-import logging
+ import os
+ from typing import Optional
+ 
+ import gi
+ 
+ gi.require_version("Gtk", "4.0")
+-from gi.repository import Gdk, Gio, GObject, Graphene, Gsk, Gtk, Pango
++from gi.repository import Gio, GObject, Gtk, Pango
+ 
+ from sugar4.debug import debug_print
+ from sugar4.graphics import style
+@@ -159,40 +158,6 @@
+         self.connect("destroy", self.__destroy_cb)
+         self.connect("clicked", self.__clicked_cb)
+ 
+-        self._apply_toolbar_button_css()
+-
+-    def _apply_toolbar_button_css(self):
+-        css = """
+-        .toolbar-button {
+-            border-radius: 6px;
+-            margin: 2px;
+-            padding: 6px;
+-            min-width: 32px;
+-            min-height: 32px;
+-        }
+-
+-        .toolbar-button:hover {
+-            background: alpha(@theme_fg_color, 0.1);
+-        }
+-
+-        .toolbar-button:active,
+-        .toolbar-button.active {
+-            background: alpha(@theme_fg_color, 0.2);
+-            border: 1px solid alpha(@theme_fg_color, 0.3);
+-        }
+-
+-        .toolbar-button:focus {
+-            outline: 2px solid @theme_selected_bg_color;
+-            outline-offset: 2px;
+-        }
+-        """
+-
+-        try:
+-            css_provider = Gtk.CssProvider()
+-            css_provider.load_from_string(css)
+-            self.get_style_context().add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+-        except Exception as e:
+-            logging.warning(f"Could not apply toolbar button CSS: {e}")
+ 
+     def __destroy_cb(self, widget):
+         if self._palette_invoker is not None:
+@@ -220,6 +185,11 @@
+         Args:
+             tooltip (string): tooltip to be set.
+         """
++        # Sugar palettes are the tooltip implementation.  Explicitly clear
++        # GTK native tooltip text so a second, desktop-themed popup is never
++        # created alongside the palette.
++        self.set_tooltip_text(None)
++
+         if tooltip is None:
+             self._tooltip = None
+             if hasattr(self, "_palette_invoker") and self._palette_invoker:
+@@ -234,9 +204,6 @@
+         else:
+             self.get_palette().set_primary_text(tooltip)
+ 
+-        # native tooltip as fallback
+-        self.set_tooltip_text(tooltip)
+-
+     def get_tooltip(self) -> Optional[str]:
+         return self._tooltip
+ 
+@@ -417,37 +384,6 @@
+         blurb="Invoker for the palette",
+     )
+ 
+-    def do_snapshot(self, snapshot):
+-        """Render tool button using snapshot-based drawing."""
+-        # Call parent implementation first
+-        Gtk.Widget.do_snapshot(self, snapshot)
+-
+-        palette = self.get_palette()
+-        if palette and palette.is_up():
+-            # Get button allocation
+-            width = self.get_width()
+-            height = self.get_height()
+-
+-            if width > 0 and height > 0:
+-                # Draw active state border
+-                color = Gdk.RGBA()
+-                color.red = 0.0
+-                color.green = 0.5
+-                color.blue = 1.0
+-                color.alpha = 0.8
+-
+-                rect = Graphene.Rect()
+-                rect.init(0, 0, width, height)
+-                rounded = Gsk.RoundedRect()
+-                rounded.init_from_rect(rect, 6.0)
+-
+-                # Draw border
+-                snapshot.append_border(
+-                    rounded,
+-                    [2, 2, 2, 2],  # border widths
+-                    [color, color, color, color],  # border colors
+-                )
+-
+     def set_active(self, active: bool):
+         if active:
+             self.add_css_class("active")
+@@ -458,43 +394,3 @@
+         """Get the active state of the button."""
+         return self.has_css_class("active")
+ 
+-
+-def _apply_module_css():
+-    """Apply module-level CSS styling."""
+-    css = """
+-    /* Additional toolbar button styles */
+-    .toolbar-button icon {
+-        min-width: 24px;
+-        min-height: 24px;
+-    }
+-
+-    .toolbar-button label {
+-        font-size: 0.9em;
+-    }
+-
+-    /* Ensure proper spacing in horizontal toolbars */
+-    toolbar .toolbar-button {
+-        margin: 1px;
+-    }
+-
+-    /* Active palette indicator */
+-    .toolbar-button.active {
+-        box-shadow: inset 0 0 0 2px @theme_selected_bg_color;
+-    }
+-    """
+-
+-    try:
+-        css_provider = Gtk.CssProvider()
+-        css_provider.load_from_string(css)
+-
+-        display = Gdk.Display.get_default()
+-        if display:
+-            Gtk.StyleContext.add_provider_for_display(display, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+-    except Exception as e:
+-        logging.warning(f"Could not apply module CSS: {e}")
+-
+-
+-try:
+-    _apply_module_css()
+-except Exception:
+-    pass
+--- a/src/sugar4/graphics/toolbarbox.py
++++ b/src/sugar4/graphics/toolbarbox.py
+@@ -196,7 +196,7 @@
+ 
+     def do_snapshot(self, snapshot):
+         """GTK4 drawing implementation with arrow indicator."""
+-        Gtk.Widget.do_snapshot(self, snapshot)
++        super().do_snapshot(snapshot)
+ 
+         width = self.get_width()
+         height = self.get_height()
+--- a/src/sugar4/activity/widgets.py
++++ b/src/sugar4/activity/widgets.py
+@@ -30,6 +30,7 @@
+ from sugar4.graphics.radiotoolbutton import RadioToolButton
+ from sugar4.graphics.xocolor import XoColor
+ from sugar4.graphics.icon import Icon
++from sugar4.bundle.activitybundle import get_bundle_instance
+ from sugar4.graphics import style
+ from sugar4.graphics.palettemenu import PaletteMenuBox
+ from sugar4 import profile
+@@ -42,7 +43,7 @@
+ 
+ 
+ def _create_activity_icon(metadata, icon_name=None):
+-    """Create an activity icon with appropriate color."""
++    """Create the running bundle icon with the activity journal color."""
+     import os
+ 
+     if metadata is not None and metadata.get("icon-color"):
+@@ -51,16 +52,18 @@
+         color = profile.get_color()
+ 
+     if icon_name is None:
+-        icon_name = "activity-journal"  # Default fallback icon
++        try:
++            from sugar4.activity.activity import get_bundle_path
+ 
+-    # If icon_name is an absolute SVG path, use file_name
+-    if icon_name and os.path.isabs(icon_name) and icon_name.endswith(".svg"):
+-        print(f"[_create_activity_icon] Using SVG file: {icon_name}")
+-        icon = Icon(file_name=icon_name, xo_color=color)
+-    else:
+-        print(f"[_create_activity_icon] Using theme icon: {icon_name}")
+-        icon = Icon(icon_name=icon_name, xo_color=color)
+-    return icon
++            bundle = get_bundle_instance(get_bundle_path())
++            icon_name = bundle.get_icon()
++        except Exception as error:
++            print(f"[_create_activity_icon] Could not load bundle icon: {error}")
++            icon_name = "activity-journal"
++
++    if os.path.isabs(icon_name):
++        return Icon(file_name=icon_name, xo_color=color)
++    return Icon(icon_name=icon_name, xo_color=color)
+ 
+ 
+ class ActivityButton(ToolButton):
+@@ -88,14 +91,13 @@
+     """Toolbar button that contains an activity toolbar."""
+ 
+     def __init__(self, activity, **kwargs):
+-        print(f"[ActivityToolbarButton] kwargs: {kwargs}")
++        icon_name = kwargs.pop("icon_name", None)
+         toolbar = ActivityToolbar(activity, orientation_left=True)
+         toolbar.connect("enter-key-press", lambda widget: self.emit("clicked"))
+ 
+         ToolbarButton.__init__(self, page=toolbar, **kwargs)
+ 
+-        icon = _create_activity_icon(activity.metadata, kwargs.get("icon_name"))
+-        print(f"[ActivityToolbarButton] icon: {icon}")
++        icon = _create_activity_icon(activity.metadata, icon_name)
+         self.set_icon_widget(icon)
+         icon.show()
+ 
+@@ -104,18 +106,7 @@
+     """Button to stop/close an activity."""
+ 
+     def __init__(self, activity, icon_name="activity-stop", **kwargs):
+-        print(f"[StopButton] icon_name: {icon_name}")
+-        ToolButton.__init__(self, **kwargs)
+-        # Use custom Icon for stop
+-        icon = _create_activity_icon(activity.metadata, icon_name=icon_name)
+-        icon.set_pixel_size(48)
+-        self.set_icon_widget(icon)
+-        icon.show()
+-        print(f"[StopButton] icon_widget type: {type(icon)}")
+-        if hasattr(icon, "get_icon_name"):
+-            print(f"[StopButton] icon name: {icon.get_icon_name()}")
+-        if hasattr(icon, "get_file_name"):
+-            print(f"[StopButton] file name: {icon.get_file_name()}")
++        ToolButton.__init__(self, icon_name=icon_name, **kwargs)
+         self.props.tooltip = _("Stop")
+         self.props.accelerator = "<Ctrl>Q"
+         self.connect("clicked", self.__stop_button_clicked_cb, activity)
+--- a/src/sugar4/graphics/palettewindow.py
++++ b/src/sugar4/graphics/palettewindow.py
+@@ -96,6 +96,17 @@
+         return False
+ 
+ 
++def _get_invoker_widget(invoker):
++    """Return the widget a GTK4 popover should be parented to."""
++    if invoker is None:
++        return None
++
++    widget = getattr(invoker, "_widget", None)
++    if widget is not None:
++        return widget
++    return getattr(invoker, "parent", None)
++
++
+ class _PaletteMenuWidget(Gtk.Popover):
+     """Palette menu widget using Popover."""
+ 
+@@ -108,6 +119,10 @@
+ 
+     def __init__(self):
+         super().__init__()
++        self.add_css_class("sugar-palette")
++        self.add_css_class("sugar-palette-menu")
++        self.set_has_arrow(False)
++        self.set_autohide(False)
+ 
+         # container for menu items
+         self._menu_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+@@ -168,7 +183,14 @@
+         pass  # Handled automatically by Popover in GTK4
+ 
+     def set_invoker(self, invoker):
+-        """Set the invoker widget."""
++        """Anchor the popover to the invoker without creating a window."""
++        anchor = _get_invoker_widget(invoker)
++        parent = self.get_parent()
++        if parent is not anchor:
++            if parent is not None:
++                self.unparent()
++            if anchor is not None:
++                self.set_parent(anchor)
+         self._invoker = invoker
+ 
+     def popup(self, invoker=None):
+@@ -176,9 +198,10 @@
+         if self._up:
+             return
+ 
+-        self._invoker = invoker or self._invoker
+-        if self._invoker and hasattr(self._invoker, "_widget"):
+-            self.set_parent(self._invoker._widget)
++        self.set_invoker(invoker or self._invoker)
++        if self.get_parent() is None:
++            logging.warning("Cannot show a palette without an invoker widget")
++            return
+ 
+         self._entered = False
+         self._mouse_in_palette = False
+@@ -196,6 +219,13 @@
+         self._up = False
+ 
+     # https://docs.gtk.org/gtk4/signal.EventControllerMotion.enter.html
++    def destroy(self):
++        """GTK3-compatible explicit teardown for a GTK4 popover."""
++        self.popdown()
++        if self.get_parent() is not None:
++            self.unparent()
++        self.emit("destroy")
++
+     def _enter_notify_cb(self, controller, x, y):
+         """Handle enter notify events."""
+         self._mouse_in_palette = True
+@@ -280,8 +310,8 @@
+                 self.emit("enter-notify")
+ 
+ 
+-class _PaletteWindowWidget(Gtk.Window):
+-    """Palette window widget with modern event handling."""
++class _PaletteWindowWidget(Gtk.Popover):
++    """Invoker-anchored Sugar palette with no independent window chrome."""
+ 
+     __gtype_name__ = "SugarPaletteWindowWidget"
+ 
+@@ -294,111 +324,127 @@
+         super().__init__()
+ 
+         self._palette = palette
+-        self.set_decorated(False)
+-        self.set_resizable(False)
+-
+-        # Apply palette styling
+-        self.add_css_class("palette")
+-
+-        self._old_alloc = None
+         self._invoker = None
++        self._old_alloc = None
++        self._popup_position = (0, 0)
+         self._should_accept_focus = True
+ 
+-        # Set up event controllers for GTK4
++        self.add_css_class("palette")
++        self.add_css_class("sugar-palette")
++        self.set_has_arrow(False)
++        self.set_autohide(False)
++
+         self._motion_controller = Gtk.EventControllerMotion()
+         self._motion_controller.connect("enter", self._enter_notify_cb)
+         self._motion_controller.connect("leave", self._leave_notify_cb)
+         self.add_controller(self._motion_controller)
+ 
+     def set_accept_focus(self, focus):
+-        """Set whether the window accepts focus."""
+         self._should_accept_focus = focus
+         self.set_can_focus(focus)
+ 
+     def get_origin(self):
+-        """Get the origin position of the window."""
+-        # GTK4: Window position is managed by compositor
++        """Compatibility origin; GTK4 positions the anchored popover."""
+         return (0, 0)
+ 
+     def do_measure(self, orientation, for_size):
+-        """Calculate size requirements for the palette window."""
+-        min_size, nat_size, min_baseline, nat_baseline = Gtk.Window.do_measure(
++        minimum, natural, min_baseline, nat_baseline = Gtk.Popover.do_measure(
+             self, orientation, for_size
+         )
+ 
+-        label_width = 0
+-        if self._palette is not None and hasattr(self._palette, "get_label_width"):
+-            label_width = self._palette.get_label_width()
+-
+         if orientation == Gtk.Orientation.HORIZONTAL:
+-            size = max(
+-                nat_size, label_width + 2 * 6, style.GRID_CELL_SIZE * 3
+-            )  # 6 = border width
+-            return size, size, -1, -1
++            label_width = 0
++            if self._palette is not None and hasattr(
++                self._palette, "get_label_width"
++            ):
++                label_width = self._palette.get_label_width()
++            natural = max(
++                natural, label_width + 2 * 6, style.GRID_CELL_SIZE * 3
++            )
++            minimum = max(minimum, natural)
+ 
+-        return min_size, nat_size, min_baseline, nat_baseline
++        return minimum, natural, min_baseline, nat_baseline
+ 
+     def do_size_allocate(self, width, height, baseline):
+-        """Allocate size to the palette window and its children."""
+-        Gtk.Window.do_size_allocate(self, width, height, baseline)
+-
+-        allocation = Gdk.Rectangle()
+-        allocation.x = 0
+-        allocation.y = 0
+-        allocation.width = width
+-        allocation.height = height
+-
+-        if (
+-            self._old_alloc is None
+-            or self._old_alloc.x != allocation.x
+-            or self._old_alloc.y != allocation.y
+-            or self._old_alloc.width != allocation.width
+-            or self._old_alloc.height != allocation.height
+-        ):
++        Gtk.Popover.do_size_allocate(self, width, height, baseline)
++        allocation = (width, height)
++        if self._old_alloc != allocation:
++            self._old_alloc = allocation
+             self.queue_draw()
+ 
+-        self._old_alloc = allocation
+-
+     def set_invoker(self, invoker):
++        anchor = _get_invoker_widget(invoker)
++        parent = self.get_parent()
++        if parent is not anchor:
++            if parent is not None:
++                self.unparent()
++            if anchor is not None:
++                self.set_parent(anchor)
+         self._invoker = invoker
+ 
+     def get_rect(self):
+-        """Get the rectangle occupied by this window."""
+         rect = Gdk.Rectangle()
+-        rect.x = 0  # GTK4: Position managed by compositor
++        rect.x = 0
+         rect.y = 0
+         rect.width = self.get_width()
+         rect.height = self.get_height()
+         return rect
+ 
+     def set_content(self, widget):
+-        """Set the main content widget for the palette window."""
+-        # Ensure _widget exists and is a Gtk.Window
+-        if not hasattr(self, "_widget") or self._widget is None:
+-            self._widget = Gtk.Window()
+-        self._widget.set_child(widget)
++        """Compatibility alias for the native single-child API."""
++        self.set_child(widget)
++
++    def move(self, x, y):
++        """Retain the requested point; GtkPopover handles final placement."""
++        self._popup_position = (x, y)
++
++    def set_transient_for(self, window):
++        """Compatibility no-op; the widget parent supplies transience."""
+ 
+     def _enter_notify_cb(self, controller, x, y):
+-        """Handle enter notify events."""
+         self.emit("enter-notify")
+ 
+     def _leave_notify_cb(self, controller):
+-        """Handle leave notify events."""
+         self.emit("leave-notify")
+ 
++    def _update_side(self):
++        alignment = getattr(self._palette, "_alignment", None)
++        if not alignment:
++            return
++
++        palette_halign, palette_valign, invoker_halign, invoker_valign = alignment
++        if invoker_valign == 1.0 and palette_valign == 0.0:
++            side = Gtk.PositionType.BOTTOM
++        elif invoker_valign == 0.0 and palette_valign == -1.0:
++            side = Gtk.PositionType.TOP
++        elif invoker_halign == 1.0 and palette_halign == 0.0:
++            side = Gtk.PositionType.RIGHT
++        else:
++            side = Gtk.PositionType.LEFT
++        self.set_position(side)
++
+     def popup(self, invoker=None):
+-        """Show the window."""
+         if self.get_visible():
+             return
+-        print("PaletteWindow.popup called")
+-        self.present()
+ 
+-    def popdown(self):
+-        """Hide the window."""
+-        if not self.get_visible():
++        self.set_invoker(invoker or self._invoker)
++        if self.get_parent() is None:
++            logging.warning("Cannot show a palette without an invoker widget")
+             return
+-        print("PaletteWindow.popdown called")
+-        self.set_visible(False)
++
++        self._update_side()
++        super().popup()
++
++    def popdown(self):
++        if self.get_visible():
++            super().popdown()
++
++    def destroy(self):
++        """GTK3-compatible explicit teardown for a GTK4 popover."""
++        self.popdown()
++        if self.get_parent() is not None:
++            self.unparent()
++        self.emit("destroy")
+ 
+ 
+ class MouseSpeedDetector(GObject.GObject):
+@@ -510,6 +556,8 @@
+             self._widget.connect("destroy", self.__destroy_cb)
+             self._widget.connect("enter-notify", self.__enter_notify_cb)
+             self._widget.connect("leave-notify", self.__leave_notify_cb)
++            self._widget.connect("show", self.__show_cb)
++            self._widget.connect("hide", self.__hide_cb)
+ 
+         # Set up key event controller for GTK4
+         self._key_controller = Gtk.EventControllerKey()
+@@ -533,6 +581,8 @@
+                 self._widget.disconnect_by_func(self.__destroy_cb)
+                 self._widget.disconnect_by_func(self.__enter_notify_cb)
+                 self._widget.disconnect_by_func(self.__leave_notify_cb)
++                self._widget.disconnect_by_func(self.__show_cb)
++                self._widget.disconnect_by_func(self.__hide_cb)
+ 
+             if self._widget is not None and hasattr(self, "_key_controller"):
+                 self._widget.remove_controller(self._key_controller)
+--- a/src/sugar4/graphics/palettemenu.py
++++ b/src/sugar4/graphics/palettemenu.py
+@@ -89,8 +89,7 @@
+ 
+ gi.require_version("Gtk", "4.0")
+ 
+-from gi.repository import GObject, Gtk, Gdk
+-import logging
++from gi.repository import GObject, Gtk
+ 
+ from sugar4.graphics.icon import Icon
+ from sugar4.graphics import style
+@@ -109,6 +108,7 @@
+     def __init__(self):
+         super().__init__(orientation=Gtk.Orientation.VERTICAL)
+         self.set_spacing(2)  # Small default spacing
++        self.add_css_class("palette-menu-box")
+ 
+     def append_item(
+         self, item_or_widget, horizontal_padding=None, vertical_padding=None
+@@ -183,21 +183,6 @@
+         self.set_size_request(-1, style.DEFAULT_SPACING * 2)
+ 
+         self.add_css_class("palette-menu-separator")
+-        self._apply_separator_styling()
+-
+-    def _apply_separator_styling(self):
+-        """Apply CSS styling for the separator."""
+-        css = """
+-        separator.palette-menu-separator {
+-            margin: 2px 6px;
+-            min-height: 1px;
+-            background: alpha(@theme_fg_color, 0.2);
+-        }
+-        """
+-        try:
+-            style.apply_css_to_widget(self, css)
+-        except Exception as e:
+-            logging.warning(f"Could not apply separator CSS: {e}")
+ 
+ 
+ class PaletteMenuItem(Gtk.Button):
+@@ -249,6 +234,7 @@
+ 
+         # main horizontal box
+         self._hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
++        self._hbox.add_css_class("palette-menu-item-content")
+         self._hbox.set_margin_start(style.DEFAULT_PADDING)
+         self._hbox.set_margin_end(style.DEFAULT_PADDING)
+         self._hbox.set_margin_top(style.DEFAULT_PADDING // 2)
+@@ -270,13 +256,6 @@
+             self.label = Gtk.Label(label=text_label)
+             self.label.set_halign(Gtk.Align.START)
+             self.label.set_hexpand(True)
+-            # Force black text
+-            # TODO: Can also not do this based on feedback
+-            self.label.add_css_class("force-black")
+-            from sugar4.graphics import style as _style
+-
+-            _style.apply_css_to_widget(self.label, ".force-black { color: #000000; }")
+-
+             if text_maxlen > 0:
+                 self.label.set_max_width_chars(text_maxlen)
+                 self.label.set_ellipsize(style.ELLIPSIZE_MODE_DEFAULT)
+@@ -291,42 +270,19 @@
+         self.set_child(self._hbox)
+ 
+         self.add_css_class("palette-menu-item")
+-        self._apply_menu_item_styling()
++        self._forwarding_activate = False
+ 
+         # gesture controllers for hover effects
+         self._setup_gestures()
+ 
+-        # Connect to activate signal
+-        self.connect("activate", self._clicked_cb)
+-
+-    def _on_activate(self, button):
+-        """Handle button activation - emits our custom signal."""
+-        # this has been done to remove the conflict with Gtk.Button's activate
+-        self.emit("item-activated")
+-
+-    def _apply_menu_item_styling(self):
+-        """Apply CSS styling to make button look like a menu item."""
+-        css = """
+-        button.palette-menu-item {
+-            background: transparent;
+-            border: none;
+-            border-radius: 4px;
+-            padding: 0;
+-        }
+-        button.palette-menu-item:hover {
+-            background: alpha(@theme_selected_bg_color, 0.1);
+-        }
+-        button.palette-menu-item:active {
+-            background: alpha(@theme_selected_bg_color, 0.2);
+-        }
+-        button.palette-menu-item:disabled {
+-            opacity: 0.5;
+-        }
+-        """
+-        try:
+-            style.apply_css_to_widget(self, css)
+-        except Exception as e:
+-            logging.warning(f"Could not apply menu item CSS: {e}")
++        # Mouse/touch clicks are forwarded to the legacy Sugar activate
++        # signal exactly once.
++        self.connect("clicked", self._clicked_cb)
++
++    def do_activate(self):
++        """Handle keyboard activation without GTK generating another click."""
++        if not self._forwarding_activate:
++            self.emit("item-activated")
+ 
+     def _setup_gestures(self):
+         """Set up gesture controllers for hover effects."""
+@@ -337,8 +293,16 @@
+         self.add_controller(motion_controller)
+ 
+     def _clicked_cb(self, button):
+-        """Handle button click and emit activate signal."""
+-        self.emit("activate")
++        """Forward a pointer click to both modern and legacy consumers."""
++        if self._forwarding_activate:
++            return
++
++        self.emit("item-activated")
++        self._forwarding_activate = True
++        try:
++            self.emit("activate")
++        finally:
++            self._forwarding_activate = False
+ 
+     def _on_enter_notify(self, controller, x, y):
+         """Handle mouse enter event."""
+@@ -406,13 +370,6 @@
+             self._accelerator_label = Gtk.Label(label=text)
+             self._accelerator_label.set_halign(Gtk.Align.END)
+             self._accelerator_label.add_css_class("dim-label")
+-            # Force black text for accelerator label
+-            self._accelerator_label.add_css_class("force-black")
+-            from sugar4.graphics import style as _style
+-
+-            _style.apply_css_to_widget(
+-                self._accelerator_label, ".force-black { color: #000000; }"
+-            )
+             self._hbox.append(self._accelerator_label)
+ 
+     def set_sensitive(self, sensitive):
+--- a/src/sugar4/graphics/palette.py
++++ b/src/sugar4/graphics/palette.py
+@@ -162,9 +162,11 @@
+ 
+         # header container
+         self._primary_event_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
++        self._primary_event_box.add_css_class("sugar-palette-header")
+         self._primary_event_box.set_spacing(style.DEFAULT_SPACING)
+ 
+         click_gesture = Gtk.GestureClick()
++        click_gesture.set_button(1)
+         click_gesture.connect("released", self.__button_release_event_cb)
+         self._primary_event_box.add_controller(click_gesture)
+ 
+@@ -184,6 +186,7 @@
+ 
+         # Primary label
+         self._label = Gtk.Label()
++        self._label.add_css_class("sugar-palette-primary")
+         self._label.set_halign(Gtk.Align.START)
+         self._label.set_valign(Gtk.Align.CENTER)
+ 
+@@ -194,12 +197,14 @@
+ 
+         # Secondary label
+         self._secondary_label = Gtk.Label()
++        self._secondary_label.add_css_class("sugar-palette-secondary")
+         self._secondary_label.set_halign(Gtk.Align.START)
+         self._secondary_label.set_valign(Gtk.Align.CENTER)
+         labels_box.append(self._secondary_label)
+ 
+         # secondary content container
+         self._secondary_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
++        self._secondary_box.add_css_class("sugar-palette-secondary-box")
+ 
+         self._separator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+         self._secondary_box.append(self._separator)
+@@ -272,6 +277,7 @@
+ 
+     def _add_content(self):
+         self._content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
++        self._content.add_css_class("sugar-palette-content")
+         self._secondary_box.append(self._content)
+ 
+     def _update_accel_widget(self):
+@@ -361,6 +367,7 @@
+ 
+             event_box = Gtk.Box()
+             click_gesture = Gtk.GestureClick()
++            click_gesture.set_button(1)
+             click_gesture.connect("released", self.__icon_button_release_event_cb)
+             event_box.add_controller(click_gesture)
+ 
+@@ -402,6 +409,7 @@
+             self._setup_widget()
+ 
+             self._palette_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
++            self._palette_box.add_css_class("sugar-palette-box")
+             self._palette_box.append(self._primary_event_box)
+             self._palette_box.append(self._secondary_box)
+ 

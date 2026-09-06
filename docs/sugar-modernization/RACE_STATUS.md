@@ -24,6 +24,14 @@ After GTK4 installation exposed an ambiguous GI default, the GTK3-only
 Select-a-Thing startup hook was made explicit about GTK/GDK 3; a fresh Terminal
 Activity then launched and rendered normally.
 
+## 2026-09-05 GTK4 Spaces and Sugar interaction checkpoint
+
+The live Arch VM now provides two honest test workspaces. GTK3 is placed and activated on desktop 0; the isolated GTK4 Jarabe window is placed full-screen and activated on desktop 1. `scripts/sugar-gtk4-runtime-check.sh` verifies the active PID, EWMH desktop, private Wayland socket, runtime ownership, and fatal log markers without changing state.
+
+Preview patches 0026 through 0028 provide a display-wide Sugar CSS provider, windowed Frame geometry, one primary-button CanvasIcon activation path, SVG animation scaling, canonical bundle and Stop icons, Sugar-only palettes, and black anchored GTK4 popovers. Runtime evidence: `reports/gtk4/gtk4-home-fullscreen-20260905.png` (SHA-256 `921fd6836244221953eb65c51cd1cb5620930236cc426a7d00df149ec2d7ee84`) and `reports/gtk4/gtk4-palette-20260905.png` (SHA-256 `bb57a28e05a643a2245a83ececc5b8ee223b3a47c89ce3d4ddfe6f4b74a9a8f0`).
+
+The migrated Log Activity still exits before registering its D-Bus service; Activity launch/stop is therefore explicitly unclaimed and its draft patches remain outside this milestone.
+
 ## Pinned heads
 
 See the guest pin file: `/home/aspartame/Development/gtk4-preview/PINS.tsv`.
@@ -40,8 +48,8 @@ Casilda is pinned to `cecb869ce390e13ebdecdca9953731d3a3f3aa73`.
 | Casilda compositor | 🧪 PR work | ✅ 1.5.0 socket and protocols live |
 | Shell startup | ❌ incomplete | ✅ Home process stable beyond 60 seconds |
 | Home | 🧪 PR work | 🧪 Favorites/search/return visibly exercised |
-| Frame/Journal | 🧪 PR work | ❌ not usable yet |
-| GTK4 activity lifecycle | 🧪 PR work | ❌ not runtime-tested |
+| Frame/Journal | 🧪 GTK4 Frame preview; Journal remains pending |
+| GTK4 activity lifecycle | ❌ Log service registration still pending |
 
 “More code” is not counted as “ahead” until it runs in a session.
 

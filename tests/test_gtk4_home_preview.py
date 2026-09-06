@@ -14,7 +14,12 @@ def test_gtk4_build_stages_shell_runtime_data_before_launch():
 
 
 def test_gtk4_launcher_seeds_private_bus_environment_first():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     launcher = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    assert "export ASPARTAME_GTK4_PREVIEW=1" in build
+    assert "ASPARTAME_GTK4_PREVIEW=1" in launcher
+    assert 'export PYTHONPATH="$repo/sugar-overlay/src${PYTHONPATH:+:$PYTHONPATH}"' in build
+    assert 'PYTHONPATH="$project_root/sugar-overlay/src:' in launcher
     assert 'locale_name=${LANG:-C.UTF-8}' in launcher
     assert 'LANG="$locale_name"' in launcher
     assert 'XDG_RUNTIME_DIR="$runroot"' in launcher
@@ -30,7 +35,7 @@ def test_gtk4_session_fails_when_datastore_never_registers():
 def test_gtk4_home_preview_patches_are_ordered_and_targeted():
     patches = sorted((ROOT / "patches/gtk4-preview").glob("00*.patch"))
     names = [patch.name for patch in patches]
-    assert names[-17:] == [
+    expected = [
         "0005-home-cell-renderer-api.patch",
         "0006-profile-modern-ssh-key.patch",
         "0007-home-renderer-signal-compat.patch",
@@ -49,7 +54,12 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
         "0020-toolkit-cell-renderer-scrolling.patch",
         "0021-home-retain-toolbar.patch",
     ]
-    text = "\n".join(p.read_text() for p in patches[-17:])
+    positions = [names.index(name) for name in expected]
+    assert positions == sorted(positions)
+    text = "\n".join(
+        (ROOT / "patches/gtk4-preview" / name).read_text()
+        for name in expected
+    )
     assert "CellRendererFavorite" in text
     assert "supported_prefixes" in text
     assert "_ensure_group_box" in text

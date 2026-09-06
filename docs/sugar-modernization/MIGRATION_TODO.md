@@ -21,7 +21,8 @@
 
 ## P2 — Journal / Neighborhood / Frame / clipboard / palettes
 
-- [ ] Port clipboard and palette behavior using upstream GTK4 APIs.
+- [x] Port the core GTK4 palette and tooltip path using native Popover and Sugar CSS; runtime palette capture is recorded.
+- [ ] Port clipboard and remaining palette behavior using upstream GTK4 APIs.
 - [ ] Verify datastore and D-Bus boundaries remain unchanged.
 
 ## P3 — core activities / Fructose

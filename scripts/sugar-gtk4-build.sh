@@ -5,6 +5,14 @@ if ! grep -qx 'IMAGE_ID=aspartame' /etc/os-release; then
     exit 2
 fi
 
+# The image's stable-Activity bridge deliberately pins GTK3 from
+# sitecustomize. Mark every preview subprocess before Python starts so GTK4
+# can be selected in the isolated toolchain without weakening stable Sugar.
+export ASPARTAME_GTK4_PREVIEW=1
+
+repo=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+export PYTHONPATH="$repo/sugar-overlay/src${PYTHONPATH:+:$PYTHONPATH}"
+
 root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
 shell="$root/sources/sugar"
 toolkit="$root/sources/sugar-toolkit-gtk4"
@@ -29,21 +37,40 @@ if ! test -x "$venv/bin/empy" && test -x "$venv/bin/em.py"; then
 fi
 export PATH="$venv/bin:$PATH"
 echo "toolkit: $(git -C "$toolkit" rev-parse HEAD)"; echo "sugar-ext: $(git -C "$ext" rev-parse HEAD)"
-repo=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 patch_dir=${GTK4_PATCH_DIR:-$repo/patches/gtk4-preview}
+patch_state="$root/build/applied-patches"
+mkdir -p "$patch_state"
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*) target="$toolkit" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*) target="$root/sources/sugar" ;;
-        *) continue ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*) target="$root/sources/sugar" ;;
+        *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
-    if git -C "$target" apply --check "$patch" >/dev/null 2>&1; then
+    patch_name=$(basename "$patch")
+    patch_digest=$(sha256sum "$patch" | cut -d " " -f 1)
+    stamp="$patch_state/$patch_name.sha256"
+    if [[ "$patch_name" == *0004* ]] && grep -q "def get_environment" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified superseded preview patch: $patch_name"
+        continue
+    fi
+    if [ -f "$stamp" ] && grep -qx "$patch_digest" "$stamp"; then
+        echo "verified preview patch: $patch_name"
+    elif git -C "$target" apply --check "$patch" >/dev/null 2>&1; then
         git -C "$target" apply "$patch"
-        echo "applied preview patch: $(basename "$patch")"
+        printf '%s\n' "$patch_digest" > "$stamp"
+        echo "applied preview patch: $patch_name"
+    elif git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
+        printf '%s\n' "$patch_digest" > "$stamp"
+        echo "verified existing preview patch: $patch_name"
+    else
+        echo "GTK4 preview patch drift: $patch_name" >&2
+        echo "target: $target" >&2
+        exit 2
     fi
 done
 PYTHONPATH="$toolkit/src${PYTHONPATH:+:$PYTHONPATH}" "$venv/bin/python" -c 'import sugar4; print("sugar4: PASS", sugar4.__file__)'
@@ -101,6 +128,15 @@ cp -a "$shell/data/." "$prefix/share/sugar/data/"
 cp -a "$shell/extensions/." "$prefix/share/sugar/extensions/"
 test -f "$shell/src/jarabe/config.py"
 grep -Fq "data_path = '$prefix/share/sugar/data'" "$shell/src/jarabe/config.py"
+
+# sugar-artwork currently ships GTK3 CSS only.  Install the GTK4 port under
+# the canonical Sugar theme names so both Jarabe and Activities resolve it
+# through their existing gtk-theme-name setting.
+for sugar_theme in sugar-72 sugar-100; do
+    install -d "$prefix/share/themes/$sugar_theme/gtk-4.0"
+    install -m 0644 "$repo/assets/gtk4/sugar.css" \
+        "$prefix/share/themes/$sugar_theme/gtk-4.0/gtk.css"
+done
 
 # Keep mutable profile and schema state outside the source and prefix trees.
 runroot="$root/runtime"

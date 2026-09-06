@@ -1,0 +1,19 @@
+--- a/src/sugar4/graphics/style.py
++++ b/src/sugar4/graphics/style.py
+@@ -286,6 +286,14 @@
+         css_provider = Gtk.CssProvider()
+         css_provider.load_from_string(css)
+ 
+-        context = widget.get_style_context()
+-        context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++        if widget is None:
++            display = Gdk.Display.get_default()
++            if display is None:
++                return
++            Gtk.StyleContext.add_provider_for_display(
++                display, css_provider,
++                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++        else:
++            context = widget.get_style_context()
++            context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+     except Exception as e:

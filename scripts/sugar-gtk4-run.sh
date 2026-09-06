@@ -24,7 +24,8 @@ log="$root/logs/gtk4-shell-$(date -u +%Y%m%dT%H%M%SZ).log"
 for path in "$shell/src/jarabe/main.py" "$toolkit/src/sugar4" \
             "$datastore/bin/datastore-service" \
             "$libdir/girepository-1.0/Casilda-1.0.typelib" \
-            "$runroot/schemas/gschemas.compiled" "$runroot/group-labels.json"; do
+            "$runroot/schemas/gschemas.compiled" "$runroot/group-labels.json" \
+            "$prefix/share/themes/sugar-72/gtk-4.0/gtk.css"; do
     test -e "$path" || { echo "missing GTK4 preview requirement: $path" >&2; exit 2; }
 done
 test -x "$venv/bin/sugar-activity4" || {
@@ -69,6 +70,7 @@ Aspartame GTK4 Sugar preview
 EOF
 
 exec env \
+    ASPARTAME_GTK4_PREVIEW=1 \
     LANG="$locale_name" \
     DISPLAY="$display" \
     GDK_BACKEND=x11 \
@@ -84,7 +86,7 @@ exec env \
     SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
     SUGAR_WINDOWED=1 \
-    PYTHONPATH="$datastore_site:$datastore/src:$shell/src:$toolkit/src" \
+    PYTHONPATH="$project_root/sugar-overlay/src:$datastore_site:$datastore/src:$shell/src:$toolkit/src" \
     GI_TYPELIB_PATH="$libdir/girepository-1.0" \
     LD_LIBRARY_PATH="$libdir" \
     XDG_DATA_DIRS="$prefix/share:/usr/local/share:/usr/share" \

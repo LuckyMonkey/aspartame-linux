@@ -2,11 +2,13 @@
 
 ## GTK4 First Pixels milestone
 
-The isolated GTK4 preview has produced its first genuine Sugar-rendered
-pixels in QEMU. This is an early rendering checkpoint; the stable GTK3
-desktop remains the production path while the GTK4 shell continues to develop.
+The isolated GTK4 preview now has a verified Sugar Home workspace in QEMU. The stable GTK3 desktop remains production; GTK4 is an explicitly isolated preview with its own workspace, private Wayland runtime, and mounted source tree.
 
-![GTK4 First Pixels](docs/screenshots/gtk4-first-pixels.jpg)
+The 2026-09-05 checkpoint proves full-screen Home rendering, GTK3/GTK4 workspace switching, and an anchored Sugar palette on a secondary click. Activity lifecycle remains pending until a migrated Activity registers its D-Bus service successfully.
+
+![GTK4 Home full-screen](reports/gtk4/gtk4-home-fullscreen-20260905.png)
+
+![GTK4 Sugar palette](reports/gtk4/gtk4-palette-20260905.png)
 
 ![Aspartame banner](aspartame.png)
 
@@ -100,6 +102,10 @@ bundle to recovery quarantine, preserving Journal work.
 
 See the [QEMU VM screenshot gallery](docs/screenshots/README.md) for captions,
 capture details, and the complete representative set.
+
+## GTK4 preview checkpoint
+
+The live QEMU proof is stored in [GTK4 Home full-screen](reports/gtk4/gtk4-home-fullscreen-20260905.png) (SHA-256 921fd6836244221953eb65c51cd1cb5620930236cc426a7d00df149ec2d7ee84) and [GTK4 Sugar palette](reports/gtk4/gtk4-palette-20260905.png) (SHA-256 bb57a28e05a643a2245a83ececc5b8ee223b3a47c89ce3d4ddfe6f4b74a9a8f0). The palette is black, anchored to the Log icon, and uses Sugar menu styling. Run scripts/sugar-gtk4-runtime-check.sh gtk3 or gtk4 inside the guest to verify the active workspace and process. Activity lifecycle remains pending.
 
 ## Sugar development
 

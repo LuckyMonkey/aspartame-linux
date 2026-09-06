@@ -1,0 +1,273 @@
+/*
+ * Sugar's essential GTK4 visual vocabulary.
+ *
+ * The upstream sugar-artwork package currently installs GTK3 themes only.
+ * Keep this deliberately small and class-led so GTK4 Jarabe and GTK4
+ * Activities share Sugar's existing monochrome palette without depending on
+ * GTK3-only widget names or engine properties.
+ */
+
+@define-color sugar_black #000000;
+@define-color sugar_toolbar #282828;
+@define-color sugar_button #808080;
+@define-color sugar_selection #a6a6a6;
+@define-color sugar_panel #c0c0c0;
+@define-color sugar_field #e5e5e5;
+@define-color sugar_white #ffffff;
+
+window {
+    background-color: @sugar_panel;
+    color: @sugar_black;
+}
+
+window.background,
+.background,
+.home-window,
+.sugar-shell-stack {
+    background-color: @sugar_white;
+    color: @sugar_black;
+}
+
+dialog,
+messagedialog,
+popover > contents,
+tooltip {
+    background-color: @sugar_black;
+    color: @sugar_white;
+    border: 2px solid @sugar_button;
+}
+
+.sugar-toolbar,
+.toolbar,
+.sugar-toolbarbox,
+.framewindow,
+htray,
+vtray {
+    background-color: @sugar_toolbar;
+    color: @sugar_white;
+}
+
+.sugar-toolbar {
+    min-height: 75px;
+}
+
+.framewindow {
+    background-color: @sugar_toolbar;
+}
+
+entry {
+    min-height: 30px;
+    padding: 4px 12px;
+    border: 2px solid @sugar_field;
+    border-radius: 18px;
+    background-color: @sugar_field;
+    color: @sugar_black;
+    caret-color: @sugar_black;
+}
+
+entry:focus {
+    border-color: @sugar_white;
+    background-color: @sugar_white;
+}
+
+button {
+    min-height: 32px;
+    padding: 4px 10px;
+    border: 2px solid @sugar_button;
+    border-radius: 18px;
+    background-color: @sugar_button;
+    color: @sugar_white;
+}
+
+button:hover {
+    background-color: @sugar_black;
+}
+
+button:active,
+button:checked {
+    background-color: @sugar_white;
+    color: @sugar_black;
+}
+
+button:disabled {
+    background-color: transparent;
+    color: @sugar_button;
+    opacity: 0.75;
+}
+
+.sugar-toolbar button,
+.toolbar button,
+.framewindow button {
+    border-color: transparent;
+    border-radius: 12px;
+    background-color: transparent;
+    color: @sugar_white;
+}
+
+.sugar-toolbar button:hover,
+.toolbar button:hover,
+.framewindow button:hover {
+    background-color: @sugar_black;
+}
+
+.sugar-toolbar button:checked,
+.toolbar button:checked,
+.framewindow button:checked {
+    background-color: @sugar_button;
+    color: @sugar_white;
+}
+
+separator {
+    background-color: @sugar_button;
+    min-width: 2px;
+    min-height: 2px;
+}
+
+scrollbar trough {
+    background-color: @sugar_button;
+}
+
+scrollbar slider {
+    min-width: 11px;
+    min-height: 11px;
+    border: 2px solid @sugar_button;
+    border-radius: 9px;
+    background-color: @sugar_white;
+}
+
+progressbar trough {
+    border: 2px solid @sugar_button;
+    border-radius: 8px;
+    background-color: @sugar_selection;
+}
+
+progressbar progress {
+    border-radius: 6px;
+    background-color: @sugar_white;
+}
+
+
+/* GTK4 Sugar interaction surfaces. */
+button.toolbar-button {
+    min-width: 44px;
+    min-height: 44px;
+    margin: 2px;
+    padding: 4px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: transparent;
+    color: #ffffff;
+}
+
+button.toolbar-button:hover,
+button.toolbar-button:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px #808080;
+    background-color: #282828;
+}
+
+button.toolbar-button:active,
+button.toolbar-button:checked,
+button.toolbar-button.active,
+button.toolbar-button.expanded {
+    box-shadow: none;
+    background-color: #808080;
+    color: #ffffff;
+}
+
+.canvas-icon {
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+.canvas-icon:hover {
+    border-color: #808080;
+    background-color: #e5e5e5;
+}
+
+.canvas-icon:active {
+    border-color: #282828;
+    background-color: #a6a6a6;
+}
+
+popover.sugar-palette {
+    padding: 0;
+}
+
+popover.sugar-palette > contents {
+    padding: 0;
+    border: 2px solid #808080;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.sugar-palette-box,
+.sugar-palette-header,
+.sugar-palette-secondary-box,
+.sugar-palette-content,
+.palette-menu-box {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.sugar-palette-header {
+    min-height: 44px;
+}
+
+.sugar-palette label,
+.sugar-palette-primary,
+.sugar-palette-secondary,
+.palette-menu-item label {
+    color: #ffffff;
+}
+
+.sugar-palette-secondary,
+.palette-menu-item .dim-label {
+    color: #c0c0c0;
+}
+
+button.palette-menu-item {
+    min-height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: transparent;
+    color: #ffffff;
+}
+
+button.palette-menu-item:hover,
+button.palette-menu-item:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: #808080;
+    color: #ffffff;
+}
+
+button.palette-menu-item:active {
+    background-color: #a6a6a6;
+    color: #000000;
+}
+
+separator.palette-menu-separator {
+    min-height: 2px;
+    margin: 2px 6px;
+    background-color: #808080;
+}
+
+tooltip.background,
+tooltip.background > box,
+tooltip > box {
+    padding: 6px 10px;
+    border: 2px solid #808080;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: #000000;
+    color: #ffffff;
+}
