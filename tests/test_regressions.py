@@ -43,3 +43,36 @@ def test_management_enrollment_fails_closed_without_a_configured_secret():
     assert 'os.environ.get("ASPARTAME_ENROLLMENT_TOKEN")' in server
     assert '"enrollment disabled; set ASPARTAME_ENROLLMENT_TOKEN"' in server
     assert 'os.environ.get("ASPARTAME_ENROLLMENT_TOKEN", "change-me-before-enrollment")' not in server
+
+def test_make_clean_targets_the_configured_build_artifacts():
+    clean = (ROOT / "scripts/clean.sh").read_text()
+
+    assert "build_root=${BUILD_ROOT:-/media/freezer/SteamLibrary/vms/aspartame-build}" in clean
+    assert 'rm -rf -- "$build_root/artifacts/out" "$build_root/artifacts/work"' in clean
+
+
+def test_screenshot_resolution_does_not_require_a_primary_monitor():
+    screenshot = (ROOT / "scripts/sugar-screenshot.sh").read_text()
+
+    assert "awk '/ connected /" in screenshot
+    assert "if ($index ~ /^[0-9]+x[0-9]+\\\\+/)" in screenshot
+    assert "connected primary" not in screenshot
+
+
+def test_gtk4_patch_stamps_are_backed_by_reverse_apply_validation():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+
+    assert 'git -C "$target" apply --reverse --check "$patch"' in build
+    assert 'grep -qx "$patch_digest" "$stamp" &&' in build
+
+
+def test_management_rejects_json_scalars_before_field_access():
+    server = (ROOT / "management/server.py").read_text()
+
+    assert "return value if isinstance(value, dict) else None" in server
+
+
+def test_gtk4_check_does_not_run_a_missing_preview_interpreter():
+    check = (ROOT / "scripts/sugar-gtk4-check.sh").read_text()
+
+    assert 'if [ -d "$toolkit/.git" ] && [ -x "$venv/bin/python" ]; then' in check
