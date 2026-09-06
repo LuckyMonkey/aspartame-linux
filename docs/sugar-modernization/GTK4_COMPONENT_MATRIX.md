@@ -2,13 +2,13 @@
 
 | Component | Upstream head used | Aspartame state | Arch status | Blocker/action |
 |---|---|---|---|---|
-| Sugar shell | official PR #1106, `f84a2d5` | staged isolated runtime | Home/search/return stable beyond 60 seconds | register one GTK4 Activity, then prove lifecycle |
+| Sugar shell | official PR #1106, `f84a2d5` | staged isolated runtime | Home/search/Spaces/palettes verified; lifecycle pending | register one GTK4 Activity, then prove lifecycle |
 | sugar-toolkit-gtk4 | official PR #35, `74f6a05` | editable isolated venv | imports; 55 targeted tests pass; renderer scroll contract restored | upstream patches `0018` and `0020` |
 | sugar-ext | main, `563760e` | installed in isolated prefix | build and 5 native tests pass | upstream gtk-doc correction candidate |
 | sugar-artwork | main, `3c4854d` | pinned checkout | not installed | shell integration |
 | datastore | main, `7aa97e7` | native reader built; private service runs | stable D-Bus contract verified | preserve API while porting Journal |
 | Casilda | main, `cecb869` | 1.5.0 installed in isolated prefix | `wayland-sugar` and protocols verified | output reports 0x0 until an embedded surface is allocated |
-| Calculate/Log/Browse/ImageViewer/Terminal | pinned migration heads | source only | not installed | test one activity at a time |
+| Calculate/Log/Browse/ImageViewer/Terminal | pinned migration heads | Log is staged in the isolated prefix; launch/stop pending | register one Activity, then prove lifecycle |
 
 The shell/toolkit rows are fetched from sugarlabs/* pull-request refs, not
 contributor-fork branch names. This keeps the preview connected to the actual
