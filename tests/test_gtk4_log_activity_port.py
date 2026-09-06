@@ -23,7 +23,7 @@ def test_log_activity_replaces_removed_gtk3_tree_widgets():
     assert "Gtk.TreeView" not in added
     assert "Gtk.TreeStore" not in added
     assert "Gtk.CellRendererText" not in added
-    assert "Gio.File.monitor_file" in added
+    assert "monitor_file(" in added
     assert "def _row_selected_cb" in added
     assert "if not self.search_text:" in added
 
