@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -u
-root=${GTK4_ROOT:-/media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization/gtk4}
+root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
 toolkit="$root/sources/sugar-toolkit-gtk4"; venv="$root/venv"; fail=0
 echo "Aspartame GTK4 preview checks"
 [ -f "$root/PINS.tsv" ] && echo "pins: PASS" || { echo "pins: FAIL"; fail=$((fail+1)); }
