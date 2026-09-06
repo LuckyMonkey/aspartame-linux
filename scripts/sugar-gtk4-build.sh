@@ -19,6 +19,7 @@ toolkit="$root/sources/sugar-toolkit-gtk4"
 ext="$root/sources/sugar-ext"
 datastore="$root/sources/sugar-datastore"
 casilda="$root/sources/casilda"
+log_activity="$root/sources/log-activity"
 prefix="$root/prefix"
 venv="$root/venv"
 log="$root/logs/gtk4-build-$(date -u +%Y%m%dT%H%M%SZ).log"
@@ -28,6 +29,8 @@ test -d "$toolkit/.git" || { echo "missing toolkit checkout: $toolkit"; exit 2; 
 test -d "$ext/.git" || { echo "missing sugar-ext checkout: $ext"; exit 2; }
 test -d "$datastore/.git" || { echo "missing sugar-datastore checkout: $datastore"; exit 2; }
 test -d "$casilda/.git" || { echo "missing Casilda checkout: $casilda"; exit 2; }
+test -d "$log_activity/.git" || { echo "missing Log Activity checkout: $log_activity"; exit 2; }
+test -f "$log_activity/logviewer.py" || { echo "missing Log Activity source: $log_activity"; exit 2; }
 if ! test -x "$venv/bin/python"; then
     python3 -m venv --system-site-packages "$venv"
 fi
@@ -44,6 +47,7 @@ for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
         *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*) target="$toolkit" ;;
+        *0029*) target="$log_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
@@ -79,7 +83,6 @@ install -m 0755 "$repo/scripts/sugar-activity4" "$venv/bin/sugar-activity4"
 test -x "$venv/bin/sugar-activity4"
 
 activity_dir="$prefix/share/sugar/activities"
-log_activity="$root/sources/log-activity"
 test -f "$log_activity/activity/activity.info" || {
     echo "missing pinned Log Activity bundle: $log_activity" >&2
     exit 2
