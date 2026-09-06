@@ -28,7 +28,7 @@ install either checkout into `/usr`.
 ## Probe GTK4 availability
 
 ```sh
-GTK4_ROOT="$MODERNIZATION_ROOT/sugar-toolkit-gtk4" make sugar-gtk4-smoke
+GTK4_ROOT="$MODERNIZATION_ROOT" make sugar-gtk4-smoke
 ```
 
 The probe returns nonzero when GTK4/PyGObject or the upstream toolkit is not
@@ -49,3 +49,8 @@ GTK4_ROOT="$MODERNIZATION_ROOT/sugar-toolkit-gtk4" \
 For a real shell test, use a separate VM disk/profile and an upstream launch
 method documented by the branch under test. Never point `make run` at the
 GTK4 checkout or overwrite the stable runtime.
+
+For the Activity conversion sequence, continue with
+[GTK4_ACTIVITY_RUNBOOK.md](GTK4_ACTIVITY_RUNBOOK.md). It treats import/build,
+private D-Bus registration, Wayland first paint, Stop, and relaunch as separate
+proof gates; a Home icon or surviving process alone is not an Activity pass.
