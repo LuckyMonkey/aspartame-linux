@@ -18,6 +18,7 @@ clean:
 
 test:
 	./scripts/smoke-test.sh
+	python3 -m pytest -q tests
 
 mdm-check:
 	python3 -m py_compile management/server.py management/agent.py management/test_server.py
