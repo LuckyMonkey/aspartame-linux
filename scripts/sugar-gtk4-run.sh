@@ -85,7 +85,7 @@ exec env \
     SUGAR_GROUP_LABELS="$runroot/group-labels.json" \
     SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
-    SUGAR_WINDOWED=1 \
+    SUGAR_WINDOWED="${SUGAR_WINDOWED:-0}" \
     PYTHONPATH="$project_root/sugar-overlay/src:$datastore_site:$datastore/src:$shell/src:$toolkit/src" \
     GI_TYPELIB_PATH="$libdir/girepository-1.0" \
     LD_LIBRARY_PATH="$libdir" \

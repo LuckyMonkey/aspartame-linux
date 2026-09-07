@@ -26,6 +26,12 @@ def test_gtk4_launcher_seeds_private_bus_environment_first():
     assert launcher.index("exec env") < launcher.index("dbus-run-session --")
 
 
+
+def test_gtk4_launcher_defaults_to_native_fullscreen():
+    launcher = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    assert "SUGAR_WINDOWED=\"${SUGAR_WINDOWED:-0}\"" in launcher
+
+
 def test_gtk4_session_fails_when_datastore_never_registers():
     session = (ROOT / "scripts/sugar-gtk4-session.sh").read_text()
     assert 'datastore_ready=0' in session
