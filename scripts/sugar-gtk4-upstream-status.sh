@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-root=${GTK4_ROOT:-/media/freezer/SteamLibrary/vms/aspartame-build/sugar-modernization/gtk4}
+root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
 pins="$root/PINS.tsv"
 test -f "$pins" || { echo "missing pin file: $pins" >&2; exit 1; }
 

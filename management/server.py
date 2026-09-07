@@ -15,7 +15,7 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("ASPARTAME_MDM_DB", ROOT / "runtime" / "aspartame-mdm.sqlite3"))
-ENROLLMENT_TOKEN = os.environ.get("ASPARTAME_ENROLLMENT_TOKEN", "change-me-before-enrollment")
+ENROLLMENT_TOKEN = os.environ.get("ASPARTAME_ENROLLMENT_TOKEN")
 VERSION = "0.1.0"
 
 
@@ -81,9 +81,10 @@ class Handler(BaseHTTPRequestHandler):
     def body(self):
         length = int(self.headers.get("Content-Length", "0"))
         try:
-            return json.loads(self.rfile.read(length) or b"{}")
+            value = json.loads(self.rfile.read(length) or b"{}")
         except (ValueError, json.JSONDecodeError):
             return None
+        return value if isinstance(value, dict) else None
 
     def do_GET(self):
         path = urlparse(self.path).path
@@ -117,6 +118,8 @@ class Handler(BaseHTTPRequestHandler):
         if data is None:
             return self.send_json(400, {"error": "request body must be JSON"})
         if path == "/api/v1/enroll":
+            if not ENROLLMENT_TOKEN:
+                return self.send_json(503, {"error": "enrollment disabled; set ASPARTAME_ENROLLMENT_TOKEN"})
             if self.headers.get("X-Enrollment-Token") != ENROLLMENT_TOKEN:
                 return self.send_json(403, {"error": "invalid enrollment token"})
             name, fingerprint = data.get("name"), data.get("fingerprint")

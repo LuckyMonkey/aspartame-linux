@@ -15,5 +15,5 @@ out="$root/reports/activity-review/$bundle_id"
 mkdir -p "$out"
 stamp=$(date +%Y%m%d-%H%M%S)
 vm_ssh "cat /usr/share/sugar/activities/$activity/activity/activity.info 2>/dev/null || true; ps -eo pid,args | grep '[s]ugar-activity' || true" > "$out/runtime-$stamp.txt"
-SUGAR_SCREENSHOT_DIR="$out" "$root/scripts/sugar-screenshot.sh"
+SCREENSHOT_DIR="$out" "$root/scripts/sugar-screenshot.sh"
 echo "activity review capture: $out"

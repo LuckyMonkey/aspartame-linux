@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -u
 
-root=${GTK4_ROOT:-}
+root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
 failures=0
 printf 'Aspartame GTK4 probe\n'
 

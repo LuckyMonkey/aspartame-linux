@@ -12,7 +12,15 @@ remote_file="/tmp/sugar-${timestamp}-v${version}.png"
 mkdir -p "$output_dir"
 
 resolution=$(vm_ssh "runuser -u aspartame -- env DISPLAY=:0 xrandr --current" |
-    awk '/ connected primary / {split($4, mode, "+"); print mode[1]; exit}')
+    awk '/ connected / {
+        for (index = 1; index <= NF; index++) {
+            if ($index ~ /^[0-9]+x[0-9]+[+]/) {
+                split($index, mode, "+")
+                print mode[1]
+                exit
+            }
+        }
+    }')
 test -n "$resolution" || { echo 'could not determine guest display size' >&2; exit 2; }
 
 vm_ssh "runuser -u aspartame -- env DISPLAY=:0 ffmpeg -hide_banner -loglevel error -f x11grab -video_size '$resolution' -i :0 -frames:v 1 -y '$remote_file'"

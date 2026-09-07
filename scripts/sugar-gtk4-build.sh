@@ -58,7 +58,9 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified superseded preview patch: $patch_name"
         continue
     fi
-    if [ -f "$stamp" ] && grep -qx "$patch_digest" "$stamp"; then
+    if [ -f "$stamp" ] &&
+        grep -qx "$patch_digest" "$stamp" &&
+        git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
         echo "verified preview patch: $patch_name"
     elif git -C "$target" apply --check "$patch" >/dev/null 2>&1; then
         git -C "$target" apply "$patch"
