@@ -62,6 +62,22 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified superseded preview patch: $patch_name"
         continue
     fi
+    # The pinned toolkit already contains the launch and D-Bus service
+    # surfaces introduced by these early preview patches.
+    if [[ "$patch_name" == *0022* ]] &&
+        grep -q "def _get_shell_interface" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null &&
+        grep -q "def create(bundle, handle)" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified superseded preview patch: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0023* ]] &&
+        grep -q "class ActivityService" "$toolkit/src/sugar4/activity/activityservice.py" 2>/dev/null &&
+        grep -q "def SetActive" "$toolkit/src/sugar4/activity/activityservice.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified superseded preview patch: $patch_name"
+        continue
+    fi
     if [ -f "$stamp" ] &&
         grep -qx "$patch_digest" "$stamp" &&
         git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
@@ -73,6 +89,11 @@ for patch in "$patch_dir"/*.patch; do
     elif git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "verified existing preview patch: $patch_name"
+    elif [[ "$patch_name" == *0029* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf '%s\n' "$patch_digest" > "$stamp"
+        echo "applied compatibility preview patch: $patch_name"
     else
         echo "GTK4 preview patch drift: $patch_name" >&2
         echo "target: $target" >&2
