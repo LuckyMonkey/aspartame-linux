@@ -3,7 +3,7 @@
 @@ -511,11 +511,26 @@
              )
              ctx.paint()
- 
+
 -        # Scale context for icon
 -        ctx.scale(
 -            float(width) / (icon_width + padding * 2),
@@ -879,3 +879,15 @@
              self._palette_box.append(self._primary_event_box)
              self._palette_box.append(self._secondary_box)
  
+
+--- a/src/sugar4/activity/activityfactory.py
++++ b/src/sugar4/activity/activityfactory.py
+@@ -140,1 +140,7 @@
+-    command = get_command(bundle)
++    try:
++        command = get_command(bundle)
++    except (RuntimeError, ValueError) as error:
++        logging.error("GTK4 Activity %s cannot launch: %s",
++                      handle.activity_id, error)
++        _notify_launch_failed(handle.activity_id)
++        return None
