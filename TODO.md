@@ -1,5 +1,10 @@
 # Aspartame engineering backlog
 
+Active program (2026-09-11): complete the GTK4 conversion using
+[the execution record](docs/sugar-modernization/CONVERSION_TRACKER.md).
+The milestone lists below are historical backlog, not the current runtime
+scorecard. Preserve GTK3 as the behavioral reference throughout conversion.
+
 This is the durable project backlog. Items are intentionally grouped by
 milestone so future sessions can resume without relying on chat history.
 

@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-exec "${PYTHON_BIN:-python3}" -m sugar4.activity.activityinstance "$@"
+# activityinstance is a console-script module, not a runnable -m module.
+# Call the same entrypoint as the toolkit's installed console script.
+exec "${PYTHON_BIN:-python3}" -c \
+    'from sugar4.activity.activityinstance import main; main()' "$@"
