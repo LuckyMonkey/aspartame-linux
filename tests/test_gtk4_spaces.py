@@ -57,3 +57,12 @@ def test_activate_sends_pager_request_to_target_window():
     ewmh.activate(0x1234)
 
     assert messages == [(0x1234, "_NET_ACTIVE_WINDOW", [2, 0, 0])]
+
+
+def test_gtk4_main_window_routes_sugar_function_keys():
+    patch = (ROOT / "patches/gtk4-preview/0027-shell-windowed-frame.patch").read_text()
+    assert "Gtk.EventControllerKey()" in patch
+    assert "Gtk.PropagationPhase.CAPTURE" in patch
+    for key in ("Gdk.KEY_F1", "Gdk.KEY_F2", "Gdk.KEY_F3", "Gdk.KEY_F4"):
+        assert key in patch
+    assert "shell_instance.set_zoom_level(level)" in patch
