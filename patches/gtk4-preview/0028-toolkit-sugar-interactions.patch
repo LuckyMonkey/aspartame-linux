@@ -871,23 +871,10 @@
              click_gesture.connect("released", self.__icon_button_release_event_cb)
              event_box.add_controller(click_gesture)
  
-@@ -402,6 +409,7 @@
+@@ -402,5 +409,6 @@
              self._setup_widget()
  
              self._palette_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 +            self._palette_box.add_css_class("sugar-palette-box")
              self._palette_box.append(self._primary_event_box)
              self._palette_box.append(self._secondary_box)
- 
-
---- a/src/sugar4/activity/activityfactory.py
-+++ b/src/sugar4/activity/activityfactory.py
-@@ -140,1 +140,7 @@
--    command = get_command(bundle)
-+    try:
-+        command = get_command(bundle)
-+    except (RuntimeError, ValueError) as error:
-+        logging.error("GTK4 Activity %s cannot launch: %s",
-+                      handle.activity_id, error)
-+        _notify_launch_failed(handle.activity_id)
-+        return None

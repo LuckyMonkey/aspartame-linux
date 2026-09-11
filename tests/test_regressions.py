@@ -55,7 +55,7 @@ def test_screenshot_resolution_does_not_require_a_primary_monitor():
     screenshot = (ROOT / "scripts/sugar-screenshot.sh").read_text()
 
     assert "awk '/ connected /" in screenshot
-    assert "if ($index ~ /^[0-9]+x[0-9]+[+]/)" in screenshot
+    assert "if ($field ~ /^[0-9]+x[0-9]+[+]/)" in screenshot
     assert "connected primary" not in screenshot
 
 

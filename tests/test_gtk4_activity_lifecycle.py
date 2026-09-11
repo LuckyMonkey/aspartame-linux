@@ -64,9 +64,11 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
 
 
 def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():
-    patch = _patch("0028-toolkit-sugar-interactions.patch")
+    patch = _patch("0022-toolkit-activity-launch.patch")
 
     assert "except (RuntimeError, ValueError) as error:" in patch
     assert 'logging.error("GTK4 Activity %s cannot launch: %s",' in patch
     assert "_notify_launch_failed(handle.activity_id)" in patch
     assert "return None" in patch
+    assert 'launcher_name == "sugar-activity3"' in patch
+    assert "GTK3 bundle cannot run inside isolated GTK4 Activity compositor" in patch

@@ -15,7 +15,7 @@
  
  _compositor_fd_getter = None
  
-@@ -22,8 +30,102 @@
+@@ -22,8 +30,108 @@
      _compositor_fd_getter = getter
  
  
@@ -53,11 +53,22 @@
 +
 +
 +def get_command(bundle):
-+    """Resolve a bundle command to the isolated GTK4 launcher."""
++    """Resolve a bundle command to the isolated GTK4 launcher.
++
++    A GTK3 entry point must never be silently rewritten into a GTK4 process:
++    the two GI namespaces are separate runtime worlds.  Generic Sugar
++    launchers are intentionally redirected to the GTK4 wrapper, while an
++    explicit GTK3 launcher is rejected with an actionable error.
++    """
 +    command = shlex.split(bundle.get_command())
 +    if not command:
 +        raise ValueError("Activity bundle has no launch command")
-+    if command[0].startswith("sugar-activity"):
++    launcher_name = os.path.basename(command[0])
++    if launcher_name == "sugar-activity3":
++        raise RuntimeError(
++            "GTK3 bundle cannot run inside isolated GTK4 Activity compositor"
++        )
++    if launcher_name in ("sugar-activity", "sugar-activity4"):
 +        command[0] = os.environ.get("SUGAR_ACTIVITY4", "sugar-activity4")
 +    return command
 +
@@ -92,7 +103,13 @@
 +        raise RuntimeError("GTK4 Activity compositor socket is not configured")
 +
 +    client_fd = _compositor_fd_getter()
-+    command = get_command(bundle)
++    try:
++        command = get_command(bundle)
++    except (RuntimeError, ValueError) as error:
++        logging.error("GTK4 Activity %s cannot launch: %s",
++                      handle.activity_id, error)
++        _notify_launch_failed(handle.activity_id)
++        return None
 +    command = [command[0], bundle.get_path(), *command[1:]]
 +    environment = get_environment(bundle, handle)
 +    environment.pop("DISPLAY", None)
