@@ -29,16 +29,18 @@ def test_canvas_icons_have_one_primary_activation_path():
     assert "        super()._on_pressed(gesture, n_press, x, y)" in added
     assert "        super()._on_released(gesture, n_press, x, y)" in added
 
-
 def test_svg_scaling_and_toolbar_snapshotting_are_native_and_theme_driven():
     patch = PATCH.read_text()
+    snapshot_patch = (
+        ROOT / "patches/gtk4-preview/0032-toolkit-toolbar-snapshot-dispatch.patch"
+    ).read_text()
     added = _changed_lines("+")
     removed = _changed_lines("-")
 
     assert "        ) * max(0.0, self.scale)" in added
     assert "        ctx.scale(render_scale, render_scale)" in added
-    assert "        super().do_snapshot(snapshot)" in added
-    assert "        Gtk.Widget.do_snapshot(self, snapshot)" in removed
+    assert "-        super().do_snapshot(snapshot)" in snapshot_patch
+    assert "+        Gtk.Widget.do_snapshot(self, snapshot)" in snapshot_patch
     assert "@theme_selected_bg_color" in patch
     assert "+" + "@theme_selected_bg_color" not in patch
 

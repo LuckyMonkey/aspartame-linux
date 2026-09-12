@@ -46,7 +46,7 @@ mkdir -p "$patch_state"
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*) target="$toolkit" ;;
         *0029*) target="$log_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
@@ -82,6 +82,16 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'launcher_name == "sugar-activity3"' "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing GTK3 launcher guard: $patch_name"
+        continue
+    fi
+    # Later homebox fixes extend the lazy-list hunk from 0008. Accept that
+    # already-applied semantic result even when the additional toolbar and
+    # query wiring changes the original patch context.
+    if [[ "$patch_name" == *0008* ]] &&
+        grep -q 'self\._list_view = None' "$shell/src/jarabe/desktop/homebox.py" 2>/dev/null &&
+        grep -q 'def _ensure_list_view' "$shell/src/jarabe/desktop/homebox.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing lazy Home list result: $patch_name"
         continue
     fi
     if [ -f "$stamp" ] &&

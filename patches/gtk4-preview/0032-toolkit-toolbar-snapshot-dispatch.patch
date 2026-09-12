@@ -1,0 +1,25 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] toolkit: call Gtk.Widget snapshot vfunc with explicit instance
+
+PyGObject exposes the inherited GTK4 snapshot vfunc with a binding quirk:
+``super().do_snapshot(snapshot)`` dispatches to ``Widget.snapshot`` without
+the widget instance and raises ``TypeError`` during every toolbar button
+render.  The explicit base-class call preserves the normal Gtk.Button
+snapshot before drawing Sugar's arrow indicator.
+
+---
+ src/sugar4/graphics/toolbarbox.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/sugar4/graphics/toolbarbox.py b/src/sugar4/graphics/toolbarbox.py
+--- a/src/sugar4/graphics/toolbarbox.py
++++ b/src/sugar4/graphics/toolbarbox.py
+@@ -196,7 +196,7 @@ class ToolbarButton(ToolButton):
+ 
+     def do_snapshot(self, snapshot):
+         """GTK4 drawing implementation with arrow indicator."""
+-        super().do_snapshot(snapshot)
++        Gtk.Widget.do_snapshot(self, snapshot)
+ 
+         width = self.get_width()
+         height = self.get_height()
