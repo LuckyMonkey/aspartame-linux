@@ -51,12 +51,17 @@ for patch in "$patch_dir"/*.patch; do
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0040*|*0041*|*0042*|*0043*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
     patch_name=$(basename "$patch")
     patch_digest=$(sha256sum "$patch" | cut -d " " -f 1)
     stamp="$patch_state/$patch_name.sha256"
+    if [[ "$patch_name" == *0039* ]]; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "retired obsolete preview patch: $patch_name (registry filtering superseded)"
+        continue
+    fi
     if [[ "$patch_name" == *0042* ]] && grep -q "journalactivity.get_journal().show_journal()" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Journal fallback: $patch_name"
