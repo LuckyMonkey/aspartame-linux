@@ -140,6 +140,9 @@ The Activity must acquire its private D-Bus service before it is considered
 launched. A visible window without a registered service is a failed Activity
 launch.
 
+The proof must include bus-name release and process exit, not only a visible
+surface.
+
 The service must provide:
 
 - `SetActive(bool)`, forwarding focus/active state to the Activity;
