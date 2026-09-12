@@ -14,6 +14,7 @@ AUDIO_BACKEND=${AUDIO_BACKEND:-none}
 SERIAL_LOG=${SERIAL_LOG:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-serial.log}
 DEV_SHARE=${DEV_SHARE:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev}
 QEMU_MONITOR=${QEMU_MONITOR:-/tmp/aspartame-qemu-monitor}
+QEMU_QMP=${QEMU_QMP:-/tmp/aspartame-qemu-qmp}
 
 test -f "$ISO" || { echo "missing ISO: $ISO" >&2; exit 2; }
 mkdir -p "$(dirname "$DISK")"
@@ -37,6 +38,7 @@ exec qemu-system-x86_64 \
     -cdrom "$ISO" -boot menu=on \
     -device virtio-vga,xres=1920,yres=1080 -display gtk,gl=off,zoom-to-fit=on,grab-on-hover=on \
     -monitor "unix:$QEMU_MONITOR,server,nowait" \
+    -qmp "unix:$QEMU_QMP,server=on,wait=off" \
     -serial "file:$SERIAL_LOG" \
     -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:2222-:22 \
     -audiodev "driver=$AUDIO_BACKEND,id=a0" -device AC97,audiodev=a0 \
