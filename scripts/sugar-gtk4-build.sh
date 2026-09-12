@@ -51,7 +51,7 @@ for patch in "$patch_dir"/*.patch; do
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
     patch_name=$(basename "$patch")
@@ -65,10 +65,11 @@ for patch in "$patch_dir"/*.patch; do
     # The pinned toolkit already contains the launch and D-Bus service
     # surfaces introduced by these early preview patches.
     if [[ "$patch_name" == *0022* ]] &&
-        grep -q "def _get_shell_interface" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null &&
-        grep -q "def create(bundle, handle)" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
+        grep -q "def create(bundle, handle)" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null &&
+        grep -q "subprocess.Popen(" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null &&
+        grep -q 'command.extend(\["--activity-id", handle.activity_id\])' "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified superseded preview patch: $patch_name"
+        echo "verified existing Activity launch contract: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0023* ]] &&
@@ -157,7 +158,7 @@ for patch in "$patch_dir"/*.patch; do
     elif git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "verified existing preview patch: $patch_name"
-    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* ]] &&
+    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"

@@ -43,3 +43,8 @@ exported its UUID as `SUGAR_ACTIVITY_ID`, while `activityinstance` generated a
 second random ID because the launcher omitted `--activity-id`. Patch `0035`
 passes the shell-owned ID explicitly; patches `0033` and `0034` encode that
 UUID only where D-Bus object paths require it.
+
+Because Casilda clients are embedded Wayland surfaces rather than GTK
+top-level windows, `0036` registers the Activity with `ShellModel` before the
+child is spawned. This preserves Home/Frame state tracking without inventing
+an X11 window or a fake surface.

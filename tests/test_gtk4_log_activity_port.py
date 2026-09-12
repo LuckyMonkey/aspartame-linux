@@ -45,7 +45,8 @@ def test_build_has_bounded_compatibility_for_pinned_log_patch():
 
     assert "patch --dry-run --fuzz=5" in build
     assert "applied compatibility preview patch" in build
-    assert "def _get_shell_interface" in build
+    assert "subprocess.Popen(" in build
+    assert 'command.extend(\\["--activity-id", handle.activity_id\\])' in build
     assert "class ActivityService" in build
 
 

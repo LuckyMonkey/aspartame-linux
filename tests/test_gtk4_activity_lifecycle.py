@@ -63,6 +63,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0033*",
         "*0034*",
         "*0035*",
+        "*0036*",
     ):
         assert patch_name in build
 
@@ -78,6 +79,11 @@ def test_activity_object_path_encoding_is_routed_to_toolkit_and_shell():
     assert "*0034*" in build
     assert "def _get_service_path(self):" in shell_patch
     assert "replace('-', '_')" in shell_patch
+
+
+def test_shell_registers_casilda_activity_before_spawn():
+    patch = _patch("0036-shell-notify-activity-launch.patch")
+    assert "shell_model.notify_launch(activity_id, bundle.get_bundle_id())" in patch
 
 
 def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():
