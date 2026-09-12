@@ -13,7 +13,7 @@ def test_single_process_activity_activation_reuses_window():
 
 def test_activity_activation_guard_is_routed_by_guest_build():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "*0047*) target=\"$root/sources/sugar\"" in build
+    assert "*0047*|*0048*) target=\"$root/sources/sugar\"" in build
     assert '"$patch_name" == *0047*' in build
 
 
