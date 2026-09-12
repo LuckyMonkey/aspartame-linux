@@ -94,10 +94,11 @@ Home toolbar state. The shell stayed alive for 63 seconds after search and
 return; Jarabe, datastore, Casilda, and the Wayland socket were all live.
 
 Input was exercised through the GTK4 search object's AT-SPI `EditableText`
-interface. This validates semantic control exposure and the resulting Jarabe
-behavior. Keyboard event synthesis remains unproven because the managed X11
-wrapper does not raise when AT-SPI activates the nested search object; do not
-misreport that harness limitation as successful keyboard navigation.
+interface. The QEMU USB keyboard is also now observed at guest
+`/dev/input/event3`, and the monitor helper emits real Linux key events after
+using symbolic HMP key names with a bounded hold. Individual F-key view
+transitions still require a clean focused-shell capture; do not infer full
+navigation parity from event delivery alone.
 
 Next milestone: build/register the simplest pinned GTK4 Activity and complete
 Home → launch → active Activity → stop → Home. The empty search result is
