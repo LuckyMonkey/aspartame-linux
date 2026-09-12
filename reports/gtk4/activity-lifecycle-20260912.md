@@ -34,3 +34,11 @@ guest kernel events).
 The same instance was then closed through `org.laptop.Activity.Close`; the
 process exited and the GTK4 shell returned to Home. Capture:
 `reports/screenshots/sugar-20260912-115619-v0.0.31.png` (1920x1080).
+
+Repeated lifecycle probe (2026-09-12 11:57 EDT) launched and closed `Log`
+three times through `org.laptop.Journal.LaunchBundle`. Each cycle produced a
+new Activity PID and ID, then left zero `activityinstance` processes. A fourth
+instance was terminated with `SIGKILL`; after three seconds its process count
+was zero and no `org.laptop.Activity*` name remained on the session bus. The
+GTK4 shell was back at Home in
+`reports/screenshots/sugar-20260912-115727-v0.0.31.png` (1920x1080).
