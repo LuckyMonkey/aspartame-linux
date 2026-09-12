@@ -57,6 +57,16 @@ for patch in "$patch_dir"/*.patch; do
     patch_name=$(basename "$patch")
     patch_digest=$(sha256sum "$patch" | cut -d " " -f 1)
     stamp="$patch_state/$patch_name.sha256"
+    if [[ "$patch_name" == *0042* ]] && grep -q "journalactivity.get_journal().show_journal()" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Journal fallback: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0043* ]] && grep -q "model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Journal stack zoom: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0004* ]] && grep -q "def get_environment" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified superseded preview patch: $patch_name"
