@@ -64,6 +64,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0034*",
         "*0035*",
         "*0036*",
+        "*0037*",
     ):
         assert patch_name in build
 
@@ -84,6 +85,12 @@ def test_activity_object_path_encoding_is_routed_to_toolkit_and_shell():
 def test_shell_registers_casilda_activity_before_spawn():
     patch = _patch("0036-shell-notify-activity-launch.patch")
     assert "shell_model.notify_launch(activity_id, bundle.get_bundle_id())" in patch
+
+
+def test_journal_bundle_launch_uses_shell_lifecycle_helper():
+    patch = _patch("0037-journal-bundle-launch-lifecycle.patch")
+    assert "misc.launch(bundle, object_id=object_id)" in patch
+    assert "+    activityfactory.create(bundle" not in patch
 
 
 def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():

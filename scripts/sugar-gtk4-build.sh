@@ -51,7 +51,7 @@ for patch in "$patch_dir"/*.patch; do
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
     patch_name=$(basename "$patch")
@@ -70,6 +70,12 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'command.extend(\["--activity-id", handle.activity_id\])' "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Activity launch contract: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0036* ]] &&
+        grep -q "shell_model.notify_launch(activity_id, bundle.get_bundle_id())" "$root/sources/sugar/src/jarabe/journal/misc.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing shell Activity registration: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0023* ]] &&
@@ -158,7 +164,7 @@ for patch in "$patch_dir"/*.patch; do
     elif git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "verified existing preview patch: $patch_name"
-    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* ]] &&
+    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"

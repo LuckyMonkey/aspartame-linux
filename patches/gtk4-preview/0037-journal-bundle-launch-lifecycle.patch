@@ -1,0 +1,36 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: route bundle launches through shell lifecycle
+
+Journal's D-Bus LaunchBundle path must use the same Jarabe launch helper as
+Home. Calling activityfactory.create directly skips ShellModel registration
+and leaves the GTK4 compositor view on Home.
+
+---
+ src/jarabe/journal/bundlelauncher.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/jarabe/journal/bundlelauncher.py b/src/jarabe/journal/bundlelauncher.py
+--- a/src/jarabe/journal/bundlelauncher.py
++++ b/src/jarabe/journal/bundlelauncher.py
+@@ -14,6 +14,4 @@
+ import logging
+ 
+-from sugar4.activity import activityfactory
+-from sugar4.activity.activityhandle import ActivityHandle
+ from sugar4.datastore import datastore
+ 
+ from jarabe.model import bundleregistry
+@@ -52,10 +50,12 @@ def launch_bundle(bundle_id=None, object_id=None):
+     if bundle is None:
+         return False
+ 
+-    activity_handle = ActivityHandle(activity_id=None,
+-                                     object_id=object_id,
+-                                     uri=None,
+-                                     invited=False)
+-    activityfactory.create(bundle, activity_handle)
++    # Keep Journal launches on the canonical shell lifecycle path.  The local
++    # import avoids a module cycle through misc.get_activities_for_mime.
++    from jarabe.journal import misc
++    misc.launch(bundle, object_id=object_id)
+     return True
