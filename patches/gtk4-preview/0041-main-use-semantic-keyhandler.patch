@@ -1,6 +1,6 @@
 --- a/src/jarabe/main.py
 +++ b/src/jarabe/main.py
-@@ -284,27 +284,6 @@ def _setup_main_window(shell_instance):
+@@ -284,25 +284,3 @@ def _setup_main_window(shell_instance):
          shell_instance._main_window.set_child(shell_instance._overlay)
  
 -        # Route Sugar zoom keys at the application window. GTK4 accelerators
