@@ -1,0 +1,40 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: capture Sugar zoom keys at the top-level window
+
+GTK4 focusable children and embedded Casilda surfaces can stop key events
+before the semantic KeyHandler receives them. Keep the semantic handler for
+the full action table, but capture F1--F4 at the shell window so Sugar's core
+zoom bindings remain reliable regardless of child focus.
+
+---
+ src/jarabe/main.py | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -286,6 +286,25 @@ def _setup_main_window(shell_instance):
+         shell_instance._main_window.set_child(shell_instance._overlay)
+ 
++        from gi.repository import Gdk
++        zoom_keys = {
++            Gdk.KEY_F1: shell_instance.ZOOM_MESH,
++            Gdk.KEY_F2: shell_instance.ZOOM_GROUP,
++            Gdk.KEY_F3: shell_instance.ZOOM_HOME,
++            Gdk.KEY_F4: shell_instance.ZOOM_ACTIVITY,
++        }
++        zoom_controller = Gtk.EventControllerKey()
++        zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
++
++        def _capture_zoom_key(_controller, keyval, _keycode, _state):
++            level = zoom_keys.get(keyval)
++            if level is None:
++                return False
++            shell_instance.set_zoom_level(level)
++            return True
++
++        zoom_controller.connect("key-pressed", _capture_zoom_key)
++        shell_instance._main_window.add_controller(zoom_controller)
++        shell_instance._sugar_zoom_controller = zoom_controller
++
+         if os.environ.get('SUGAR_WINDOWED', '0') == '1':
