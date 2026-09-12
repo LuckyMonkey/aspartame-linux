@@ -12,7 +12,7 @@ and leaves the GTK4 compositor view on Home.
 diff --git a/src/jarabe/journal/bundlelauncher.py b/src/jarabe/journal/bundlelauncher.py
 --- a/src/jarabe/journal/bundlelauncher.py
 +++ b/src/jarabe/journal/bundlelauncher.py
-@@ -14,6 +14,4 @@
+@@ -14,7 +14,5 @@
  import logging
  
 -from sugar4.activity import activityfactory
@@ -20,7 +20,7 @@ diff --git a/src/jarabe/journal/bundlelauncher.py b/src/jarabe/journal/bundlelau
  from sugar4.datastore import datastore
  
  from jarabe.model import bundleregistry
-@@ -52,10 +50,12 @@ def launch_bundle(bundle_id=None, object_id=None):
+@@ -52,9 +50,8 @@ def launch_bundle(bundle_id=None, object_id=None):
      if bundle is None:
          return False
  
