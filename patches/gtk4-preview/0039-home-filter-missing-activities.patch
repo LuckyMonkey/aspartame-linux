@@ -12,12 +12,12 @@ launch a nonexistent bundle and leaves a failed full-screen launcher.
 diff --git a/src/jarabe/desktop/favoritesview.py b/src/jarabe/desktop/favoritesview.py
 --- a/src/jarabe/desktop/favoritesview.py
 +++ b/src/jarabe/desktop/favoritesview.py
-@@ -15,6 +15,7 @@
+@@ -15,3 +15,4 @@
  
  import logging
 +import os
  from gettext import gettext as _
-@@ -255,6 +256,10 @@ def _add_activity(self, activity_info):
+@@ -255,4 +256,8 @@ def _add_activity(self, activity_info):
          if not activity_info.get_show_launcher():
              return
 +        bundle_path = activity_info.get_path()
