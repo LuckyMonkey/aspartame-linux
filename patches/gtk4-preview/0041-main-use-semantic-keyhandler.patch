@@ -1,0 +1,28 @@
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -284,27 +284,6 @@ def _setup_main_window(shell_instance):
+         shell_instance._main_window.set_child(shell_instance._overlay)
+ 
+-        # Route Sugar zoom keys at the application window. GTK4 accelerators
+-        # otherwise disappear when focus is inside shell children.
+-        from gi.repository import Gdk
+-        key_controller = Gtk.EventControllerKey()
+-        key_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+-        zoom_keys = {
+-            Gdk.KEY_F1: shell_instance.ZOOM_MESH,
+-            Gdk.KEY_F2: shell_instance.ZOOM_GROUP,
+-            Gdk.KEY_F3: shell_instance.ZOOM_HOME,
+-            Gdk.KEY_F4: shell_instance.ZOOM_ACTIVITY,
+-        }
+-
+-        def _sugar_key_pressed(_controller, keyval, _keycode, _state):
+-            level = zoom_keys.get(keyval)
+-            if level is None:
+-                return False
+-            shell_instance.set_zoom_level(level)
+-            return True
+-
+-        key_controller.connect("key-pressed", _sugar_key_pressed)
+-        shell_instance._main_window.add_controller(key_controller)
+-        shell_instance._sugar_key_controller = key_controller
+         if os.environ.get('SUGAR_WINDOWED', '0') == '1':

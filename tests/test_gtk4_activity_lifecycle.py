@@ -67,6 +67,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0037*",
         "*0038*",
         "*0040*",
+        "*0041*",
     ):
         assert patch_name in build
 
@@ -99,6 +100,12 @@ def test_launcher_restores_activity_surface_after_overlay():
     patch = _patch("0038-launcher-restore-activity-surface.patch")
     assert 'model.stack.set_visible_child_name("activity")' in patch
     assert "model.zoom_level == model.ZOOM_ACTIVITY" in patch
+
+
+def test_main_does_not_install_duplicate_zoom_key_controller():
+    patch = _patch("0041-main-use-semantic-keyhandler.patch")
+    assert "_sugar_key_pressed" in patch
+    assert "shell_instance._sugar_key_controller" in patch
 
 
 def test_home_filters_favorites_with_missing_bundle_paths():
