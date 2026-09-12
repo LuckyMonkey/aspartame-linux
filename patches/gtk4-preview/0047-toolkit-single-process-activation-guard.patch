@@ -1,0 +1,30 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] toolkit: do not construct duplicate single-process windows
+
+Gtk.Application may emit ``activate`` more than once for a single-process
+Activity (for example when Journal asks to resume an already running bundle).
+Constructing a second Activity object re-registers the same D-Bus object path
+and aborts before the surface can be presented.  Keep the first instance and
+present it on subsequent activations.
+
+---
+ src/sugar4/activity/activityinstance.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/sugar4/activity/activityinstance.py b/src/sugar4/activity/activityinstance.py
+--- a/src/sugar4/activity/activityinstance.py
++++ b/src/sugar4/activity/activityinstance.py
+@@ -206,8 +206,16 @@
+     app = Gtk.Application(application_id=bundle.get_bundle_id())
+ 
+     def on_activate(app):
+         """Create and show the activity when the application is activated."""
++        existing = getattr(app, "_sugar_activity_instance", None)
++        if existing is not None:
++            logging.debug("re-presenting existing Activity %s", options.activity_id)
++            existing.present()
++            return
+         activity = activity_constructor(activity_handle)
++        app._sugar_activity_instance = activity
+         app.add_window(activity)
+         activity.show()  # This calls present() internally
