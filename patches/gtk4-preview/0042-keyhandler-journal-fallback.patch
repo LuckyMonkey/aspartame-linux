@@ -1,0 +1,10 @@
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -167,7 +167,7 @@ def handle_zoom_activity(self, event_time):
+             # No activity open: show Journal instead of the empty compositor.
+-            # Use get_journal() so the journal is initialized if needed —
+-            # same pattern as handle_open_search (F5).
+-            journalactivity.get_journal().reveal()
++            # Use the visible GTK4 Journal presentation, initializing it if
++            # needed rather than revealing an unregistered shell window.
++            journalactivity.get_journal().show_journal()

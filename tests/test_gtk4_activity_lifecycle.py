@@ -68,6 +68,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0038*",
         "*0040*",
         "*0041*",
+        "*0042*",
     ):
         assert patch_name in build
 
