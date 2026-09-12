@@ -20,3 +20,13 @@ Evidence:
 Result: D-Bus registration and clean stop are proven. The Activity GTK surface
 was not visible in the shell screenshot, so Casilda surface mapping/first paint
 and real pointer/keyboard delivery remain open gates.
+
+Follow-up shell-mediated launch (2026-09-12 11:55 EDT) closed the stale probe,
+launched `org.laptop.Log` through `org.laptop.Journal.LaunchBundle`, switched to
+the GTK4 Space, and captured a visible Log Activity surface at
+`reports/screenshots/sugar-20260912-115540-v0.0.31.png` (1920x1080). The
+Casilda compositor is receiving and painting the Activity surface; the earlier
+Home screenshot was the inactive GTK3 Space, not a failed map. Real pointer and
+keyboard evidence still requires a guest input path that delivers events to
+`/dev/input/event*` (QMP/USB injection currently returns success but produces no
+guest kernel events).
