@@ -1,6 +1,6 @@
 --- a/src/jarabe/view/keyhandler.py
 +++ b/src/jarabe/view/keyhandler.py
-@@ -228,12 +228,11 @@ class KeyHandler(object):
+@@ -228,6 +228,5 @@ class KeyHandler(object):
      def handle_dump_ui_tree(self, event_time):
          if uitree:
              print(uitree.get_root().dump())
@@ -8,9 +8,3 @@
 -        logging.warning("GTK4 semantic key event: %s", key)
              logging.warning("uitree module not available.")
  
-     def _key_pressed_cb(self, controller, keyval, keycode, state):
-         key = Gdk.keyval_name(keyval)
--        logging.info("GTK4 semantic key event: %s", key)
-+        logging.warning("GTK4 semantic key event: %s", key)
-         if not key:
-             return False
