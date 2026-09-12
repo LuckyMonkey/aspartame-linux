@@ -27,6 +27,14 @@ def test_cell_renderer_props_compatibility_patch_targets_toolkit_boundary():
     assert "*0015*" in _toolkit_route()
 
 
+def test_build_recognizes_0015_semantic_result_after_native_renderer_hunks():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "class CellRendererIcon(Gtk.CellRenderer):" in build
+    assert "self\\.props = _CellRendererIconProps(self)" in build
+    assert "def connect(self, signal_name, callback, \\*user_data):" in build
+    assert "verified existing CellRendererIcon property/signal contract" in build
+
+
 def test_gtk4_cell_renderer_uses_native_gobject_boundary():
     patch = (ROOT / "patches/gtk4-preview/0016-toolkit-cell-renderer-gobject.patch").read_text()
     assert "class CellRendererIcon(Gtk.CellRenderer):" in patch

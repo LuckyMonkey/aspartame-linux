@@ -47,3 +47,10 @@ def test_build_has_bounded_compatibility_for_pinned_log_patch():
     assert "applied compatibility preview patch" in build
     assert "def _get_shell_interface" in build
     assert "class ActivityService" in build
+
+
+def test_build_recognizes_existing_log_listbox_semantics_after_context_drift():
+    build = BUILD.read_text()
+    assert "class MultiLogView(Gtk.Paned):" in build
+    assert "self\\._listbox = Gtk.ListBox()" in build
+    assert "verified existing GTK4 Log ListBox result" in build

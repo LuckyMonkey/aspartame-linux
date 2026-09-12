@@ -94,6 +94,29 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing lazy Home list result: $patch_name"
         continue
     fi
+    # 0016 later changes CellRendererIcon's class and adds native GObject
+    # properties, but intentionally retains every behavior introduced by
+    # 0015. Recognize that complete semantic result when patch context has
+    # moved, while still applying 0015 on a pristine checkout.
+    if [[ "$patch_name" == *0015* ]] &&
+        grep -q 'class CellRendererIcon(Gtk.CellRenderer):' "$toolkit/src/sugar4/graphics/icon.py" 2>/dev/null &&
+        grep -q 'self\.props = _CellRendererIconProps(self)' "$toolkit/src/sugar4/graphics/icon.py" 2>/dev/null &&
+        grep -q 'def connect(self, signal_name, callback, \*user_data):' "$toolkit/src/sugar4/graphics/icon.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing CellRendererIcon property/signal contract: $patch_name"
+        continue
+    fi
+    # 0029's GTK4 ListBox implementation is already present in the pinned
+    # Log Activity source. Its later edits changed surrounding helpers, so
+    # the historical wholesale replacement no longer applies mechanically.
+    if [[ "$patch_name" == *0029* ]] &&
+        grep -q 'class MultiLogView(Gtk.Paned):' "$log_activity/logviewer.py" 2>/dev/null &&
+        grep -q 'self\._listbox = Gtk.ListBox()' "$log_activity/logviewer.py" 2>/dev/null &&
+        ! grep -q 'Gtk\.TreeView' "$log_activity/logviewer.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing GTK4 Log ListBox result: $patch_name"
+        continue
+    fi
     if [ -f "$stamp" ] &&
         grep -qx "$patch_digest" "$stamp" &&
         git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
