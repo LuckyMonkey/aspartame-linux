@@ -37,3 +37,9 @@ Activity already has the GTK4 `Gtk.ListBox`/`Gtk.TextView` implementation,
 including file monitoring and search, while later source edits changed the
 historical hunk context. The build verifies that semantic result and retains
 the patch as provenance for a clean checkout.
+
+The first real Activity lifecycle failure was an identity split: the shell
+exported its UUID as `SUGAR_ACTIVITY_ID`, while `activityinstance` generated a
+second random ID because the launcher omitted `--activity-id`. Patch `0035`
+passes the shell-owned ID explicitly; patches `0033` and `0034` encode that
+UUID only where D-Bus object paths require it.

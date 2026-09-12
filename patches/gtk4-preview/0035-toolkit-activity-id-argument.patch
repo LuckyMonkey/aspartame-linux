@@ -1,0 +1,21 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] toolkit: pass the shell Activity ID to the GTK4 entrypoint
+
+The shell allocates the instance ID and exports it in the child environment,
+but activityinstance only reads its parser argument and otherwise generates a
+second random ID. Pass the shell ID explicitly so the Activity D-Bus service,
+Casilda client, and shell model refer to the same instance.
+
+---
+ src/sugar4/activity/activityfactory.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/sugar4/activity/activityfactory.py b/src/sugar4/activity/activityfactory.py
+--- a/src/sugar4/activity/activityfactory.py
++++ b/src/sugar4/activity/activityfactory.py
+@@ -118,7 +118,8 @@ def create(bundle, handle):
+         _notify_launch_failed(handle.activity_id)
+         return None
+     command = [command[0], bundle.get_path(), *command[1:]]
++    command.extend(["--activity-id", handle.activity_id])
+     environment = get_environment(bundle, handle)

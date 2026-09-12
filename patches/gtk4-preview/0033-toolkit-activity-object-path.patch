@@ -1,0 +1,23 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] toolkit: encode Activity IDs for D-Bus object paths
+
+Sugar Activity IDs are UUIDs containing hyphens. Hyphens are valid in a
+D-Bus bus-name component but not in an object-path element. Encode only the
+path while preserving the established well-known service name.
+
+---
+ src/sugar4/activity/activityservice.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/sugar4/activity/activityservice.py b/src/sugar4/activity/activityservice.py
+--- a/src/sugar4/activity/activityservice.py
++++ b/src/sugar4/activity/activityservice.py
+@@ -20,8 +20,9 @@ class ActivityService(dbus.service.Object):
+         self._bus_name = dbus.service.BusName(
+             "org.laptop.Activity" + activity_id, bus=self._bus
+         )
++        object_id = activity_id.replace("-", "_")
+         super().__init__(
+-            self._bus_name, "/org/laptop/Activity/" + activity_id
++            self._bus_name, "/org/laptop/Activity/" + object_id
+         )

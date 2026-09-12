@@ -20,14 +20,18 @@ def test_activity_launch_patch_owns_the_child_process_contract():
     assert "GLib.child_watch_add(" in patch
     assert "os.close(client_fd)" in patch
     assert "_notify_launch_failed(handle.activity_id)" in patch
+    id_patch = _patch("0035-toolkit-activity-id-argument.patch")
+    assert 'command.extend(["--activity-id", handle.activity_id])' in id_patch
 
 
 def test_activity_service_exposes_the_shell_lifecycle_boundary():
     patch = _patch("0023-toolkit-activity-dbus-lifecycle.patch")
+    path_patch = _patch("0033-toolkit-activity-object-path.patch")
 
     assert "class ActivityService(dbus.service.Object):" in patch
     assert '"org.laptop.Activity" + activity_id' in patch
-    assert '"/org/laptop/Activity/" + activity_id' in patch
+    assert 'object_id = activity_id.replace("-", "_")' in path_patch
+    assert '"/org/laptop/Activity/" + object_id' in path_patch
     assert "def SetActive(self, active):" in patch
     assert "def Close(self):" in patch
     assert "def close(self):" in patch
@@ -56,12 +60,24 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0024*",
         "*0025*",
         "*0030*",
+        "*0033*",
+        "*0034*",
+        "*0035*",
     ):
         assert patch_name in build
 
     assert 'test -x "$venv/bin/sugar-activity4"' in build
     assert 'test -x "$venv/bin/sugar-activity4"' in run
     assert 'test -f "$prefix/share/sugar/activities/Log.activity/activity/activity.info"' in run
+
+
+def test_activity_object_path_encoding_is_routed_to_toolkit_and_shell():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    shell_patch = _patch("0034-shell-activity-object-path.patch")
+    assert "*0033*" in build
+    assert "*0034*" in build
+    assert "def _get_service_path(self):" in shell_patch
+    assert "replace('-', '_')" in shell_patch
 
 
 def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():

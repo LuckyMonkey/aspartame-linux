@@ -45,6 +45,13 @@ def test_svg_scaling_and_toolbar_snapshotting_are_native_and_theme_driven():
     assert "+" + "@theme_selected_bg_color" not in patch
 
 
+def test_build_accepts_interaction_patch_after_snapshot_followup():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "click_gesture\\.set_button(1)" in build
+    assert "class _PaletteWindowWidget(Gtk.Popover):" in build
+    assert "verified existing Sugar interaction/snapshot result" in build
+
+
 def test_toolbuttons_use_only_sugar_palettes_for_tooltips():
     added = _changed_lines("+")
     removed = _changed_lines("-")

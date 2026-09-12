@@ -1,0 +1,27 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: use encoded Activity object paths
+
+Keep the shell's Activity proxy aligned with the toolkit service. UUID
+hyphens remain in the bus name but are encoded for the D-Bus object path.
+
+---
+ src/jarabe/model/shell.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/jarabe/model/shell.py b/src/jarabe/model/shell.py
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -297,4 +297,7 @@ class Activity(GObject.GObject):
+         return None
+ 
++    def _get_service_path(self):
++        return _SERVICE_PATH + '/' + self._activity_id.replace('-', '_')
++
+     def _retrieve_service(self):
+         if not self._activity_id:
+@@ -305,5 +305,5 @@ class Activity(GObject.GObject):
+             bus = dbus.SessionBus()
+             proxy = bus.get_object(self._get_service_name(),
+-                                   _SERVICE_PATH + '/' + self._activity_id,
++                                   self._get_service_path(),
+                                    introspect=False)

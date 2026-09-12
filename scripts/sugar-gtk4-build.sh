@@ -46,12 +46,12 @@ mkdir -p "$patch_state"
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*) target="$toolkit" ;;
         *0029*) target="$log_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
     patch_name=$(basename "$patch")
@@ -117,6 +117,35 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing GTK4 Log ListBox result: $patch_name"
         continue
     fi
+    # 0032 intentionally adjusts the toolbar snapshot hunk from 0028. The
+    # surrounding Sugar interaction changes remain present; verify their
+    # semantic markers rather than replaying the superseded context.
+    if [[ "$patch_name" == *0028* ]] &&
+        grep -q 'click_gesture\.set_button(1)' "$toolkit/src/sugar4/graphics/icon.py" 2>/dev/null &&
+        grep -q 'class _PaletteWindowWidget(Gtk.Popover):' "$toolkit/src/sugar4/graphics/palettewindow.py" 2>/dev/null &&
+        grep -q 'Gtk\.Widget\.do_snapshot(self, snapshot)' "$toolkit/src/sugar4/graphics/toolbarbox.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Sugar interaction/snapshot result: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0033* ]] &&
+        grep -q 'object_id = activity_id.replace("-", "_")' "$toolkit/src/sugar4/activity/activityservice.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing encoded Activity service path: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0034* ]] &&
+        grep -q 'def _get_service_path(self):' "$shell/src/jarabe/model/shell.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing encoded shell Activity path: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0035* ]] &&
+        grep -q 'command.extend(\["--activity-id", handle.activity_id\])' "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Activity ID propagation: $patch_name"
+        continue
+    fi
     if [ -f "$stamp" ] &&
         grep -qx "$patch_digest" "$stamp" &&
         git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
@@ -128,7 +157,7 @@ for patch in "$patch_dir"/*.patch; do
     elif git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "verified existing preview patch: $patch_name"
-    elif [[ "$patch_name" == *0029* ]] &&
+    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"
