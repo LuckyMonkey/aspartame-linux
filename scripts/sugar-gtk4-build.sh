@@ -62,7 +62,7 @@ for patch in "$patch_dir"/*.patch; do
         echo "retired obsolete preview patch: $patch_name (registry filtering superseded)"
         continue
     fi
-    if [[ "$patch_name" == *0042* ]] && grep -q "journalactivity.get_journal().show_journal()" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
+    if [[ "$patch_name" == *0042* ]] && grep -Eq "journalactivity\.get_journal\(\)\.show_journal\(\)|journal = journalactivity\.get_journal\(\)" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Journal fallback: $patch_name"
         continue
