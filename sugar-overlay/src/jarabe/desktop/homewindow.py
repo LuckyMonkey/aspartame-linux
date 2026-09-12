@@ -15,6 +15,7 @@
 
 from gettext import gettext as _
 import logging
+import os
 
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -249,6 +250,15 @@ class HomeWindow(Gtk.Window):
 
         self._deactivate_view(old_level)
         self._activate_view(new_level)
+
+        # The historical TransitionBox resizes a managed GTK3 canvas widget.
+        # GTK4 owns allocation and rendering differently; leaving that
+        # animation in the modern space can hide the real view indefinitely.
+        # Switch the already-owned shell surface synchronously in GTK4 and
+        # keep the classic transition path unchanged for the GTK3 reference.
+        if os.environ.get('ASPARTAME_GTK4_PREVIEW') == '1':
+            self._update_view(new_level)
+            return
 
         if old_level != ShellModel.ZOOM_ACTIVITY and \
            new_level != ShellModel.ZOOM_ACTIVITY:

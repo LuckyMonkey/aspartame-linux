@@ -28,6 +28,7 @@ import dbus
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gio
+from gi.repository import Gdk
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics.icon import CanvasIcon
@@ -422,7 +423,9 @@ class MeshBox(ViewContainer):
 
     def do_size_allocate(self, allocation):
         ViewContainer.do_size_allocate(self, allocation)
-        button_allocation = Gtk.Allocation()
+        # GTK4 removed Gtk.Allocation; the compatibility container still
+        # consumes the historical rectangle shape for child placement.
+        button_allocation = Gdk.Rectangle()
         button_allocation.x = style.GRID_CELL_SIZE
         button_allocation.y = style.GRID_CELL_SIZE
         button_allocation.width = 180

@@ -28,6 +28,17 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     assert 'xdotool' not in controller
 
 
+def test_classic_keyhandler_releases_global_grabs_for_modern_space():
+    handler = (ROOT / 'sugar-overlay/src/jarabe/view/keyhandler.py').read_text()
+    assert 'SugarExt.KeyGrabber' in handler
+    assert 'get_active_workspace' in handler
+    assert 'self._key_grabber.grab_keys(keys)' in handler
+    assert 'workspace == 0' in handler
+    assert 'Spaces key ownership' in handler
+    assert 'self._key_grabber = None' in handler
+    assert 'SugarExt.KeyGrabber()' in handler
+
+
 def test_x11_helper_uses_standard_ewmh_messages():
     helper = (ROOT / 'scripts/sugar-x11-workspace.py').read_text()
     assert '_NET_CURRENT_DESKTOP' in helper
