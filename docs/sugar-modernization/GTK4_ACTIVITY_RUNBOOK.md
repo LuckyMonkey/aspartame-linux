@@ -1,16 +1,15 @@
 # GTK4 Activity conversion and port runbook
 
-Status: active migration work (2026-09-06)
+Status: active migration work (2026-09-12)
 
 This runbook covers one GTK4 Activity from source checkout through launch,
 D-Bus registration, interaction, stop, and evidence. It is intentionally
 separate from the stable GTK3 runtime and from the GTK4 Home/Frame work.
 
 The current preview has verified Home rendering, GTK3/GTK4 Spaces switching,
-and Sugar-styled GTK4 palettes. Activity launch/stop is still pending: the
-migrated Log Activity currently exits before registering its Activity D-Bus
-service. Do not mark an Activity usable because its source imports or because
-Home can display its icon.
+Sugar-styled GTK4 palettes, and a real Log Activity launch/paint/stop/repeat
+path. Pointer, keyboard, and focus delivery remain explicit gates. Do not mark
+the full Activity parity gate complete from D-Bus registration alone.
 
 ## 1. Boundary and ownership
 

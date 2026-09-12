@@ -44,7 +44,8 @@ WAYLAND_DISPLAY=wayland-sugar \
 wayland-info
 ```
 
-FIRST PIXELS is verified. Activity launch/stop remains pending. This command does not yet produce a usable desktop:
-the next runtime blocker is the datastore D-Bus service-name mismatch, followed
-by locale propagation into the private session. Use the GTK4 status page and
-Activity conversion runbook for current blockers.
+FIRST PIXELS and shell-mediated Activity launch/stop are verified. The preview
+is usable for Home and Casilda surface testing, but it is not a complete GTK4
+desktop: Journal/Neighborhood/Settings parity and real pointer/keyboard/focus
+evidence remain open. Use the GTK4 status page and Activity conversion runbook
+for current gates.

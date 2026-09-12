@@ -1,6 +1,6 @@
 # GTK4 race status
 
-Checked 2026-09-02. The active preview runs only inside the Aspartame QEMU
+Checked 2026-09-12. The active preview runs only inside the Aspartame QEMU
 development guest. Its source, prefix, profile, D-Bus session, and runtime are
 isolated from package-owned GTK3 Sugar.
 
@@ -30,7 +30,10 @@ The live Arch VM now provides two honest test workspaces. GTK3 is placed and act
 
 Preview patches 0026 through 0028 provide a display-wide Sugar CSS provider, windowed Frame geometry, one primary-button CanvasIcon activation path, SVG animation scaling, canonical bundle and Stop icons, Sugar-only palettes, and black anchored GTK4 popovers. Runtime evidence: `reports/gtk4/gtk4-home-fullscreen-20260905.png` (SHA-256 `921fd6836244221953eb65c51cd1cb5620930236cc426a7d00df149ec2d7ee84`) and `reports/gtk4/gtk4-palette-20260905.png` (SHA-256 `bb57a28e05a643a2245a83ececc5b8ee223b3a47c89ce3d4ddfe6f4b74a9a8f0`).
 
-The migrated Log Activity still exits before registering its D-Bus service; Activity launch/stop is therefore explicitly unclaimed and its draft patches remain outside this milestone.
+The migrated Log Activity now launches through Journal, paints through Casilda,
+registers its D-Bus service, stops cleanly, and repeats across three cycles;
+abnormal exit also releases its process and bus name. Pointer/keyboard delivery
+through the current QEMU input backend remains unproven.
 
 ## Pinned heads
 
@@ -48,8 +51,8 @@ Casilda is pinned to `cecb869ce390e13ebdecdca9953731d3a3f3aa73`.
 | Casilda compositor | 🧪 PR work | ✅ 1.5.0 socket and protocols live |
 | Shell startup | ❌ incomplete | ✅ Home process stable beyond 60 seconds |
 | Home | 🧪 PR work | 🧪 Favorites/search/return visibly exercised |
-| Frame/Journal | 🧪 GTK4 Frame preview; Journal remains pending |
-| GTK4 activity lifecycle | ❌ Log service registration still pending |
+| Frame/Journal | 🧪 GTK4 Frame preview; Journal interaction parity remains pending |
+| GTK4 activity lifecycle | 🧪 launch/paint/stop/repeat proven; input and focus gates remain |
 
 “More code” is not counted as “ahead” until it runs in a session.
 

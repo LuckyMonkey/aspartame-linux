@@ -209,9 +209,10 @@
   remains alive without a traceback.
 - Status: resolved downstream; fold into the upstreamable lazy-list change.
 
-## Next runtime blocker — no GTK4 Activity bundle is registered
+## GTK4-022 — Activity surface and cleanup verified; input remains open
 
-Home search now works and truthfully reports no matching Activities. The
-preview has pinned Activity source checkouts, but it has not yet built,
-installed, or registered one bundle with Jarabe. Activity lifecycle remains
-the next milestone; do not treat the empty result as a renderer failure.
+The pinned Log Activity is built, installed, and registered. Journal launches
+it through Jarabe; Casilda paints its surface; D-Bus Close, repeated relaunch,
+and abnormal exit all clear the process and bus name. Remaining evidence is
+real pointer/keyboard delivery and focus transfer, currently blocked by the
+QEMU input harness producing no guest `/dev/input/event*` events.
