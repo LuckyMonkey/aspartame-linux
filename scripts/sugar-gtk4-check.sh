@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -u
+export ASPARTAME_GTK4_PREVIEW=1
+project_root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+export PYTHONPATH="$project_root/sugar-overlay/src${PYTHONPATH:+:$PYTHONPATH}"
 root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
 toolkit="$root/sources/sugar-toolkit-gtk4"; venv="$root/venv"; fail=0
 echo "Aspartame GTK4 preview checks"
