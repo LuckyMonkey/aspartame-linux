@@ -1,0 +1,4 @@
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -232,1 +232,0 @@
+-        logging.warning("GTK4 semantic key event: %s", key)
