@@ -12,7 +12,7 @@ after a successful launch.
 diff --git a/src/jarabe/view/launcher.py b/src/jarabe/view/launcher.py
 --- a/src/jarabe/view/launcher.py
 +++ b/src/jarabe/view/launcher.py
-@@ -201,4 +201,7 @@ def _destroy_launcher(home_activity):
+@@ -201,4 +201,8 @@ def _destroy_launcher(home_activity):
      if launcher.get_parent() == model.stack:
          model.stack.remove(launcher)
      if model.stack.get_visible_child() is None:
@@ -21,4 +21,5 @@ diff --git a/src/jarabe/view/launcher.py b/src/jarabe/view/launcher.py
 +                model.get_active_activity() is not None:
 +            model.stack.set_visible_child_name("activity")
 +        else:
++            model.stack.set_visible_child_name("home")
 +            model.stack.set_visible_child_name("home")

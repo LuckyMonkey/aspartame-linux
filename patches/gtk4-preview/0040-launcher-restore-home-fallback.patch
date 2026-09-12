@@ -1,0 +1,5 @@
+--- a/src/jarabe/view/launcher.py
++++ b/src/jarabe/view/launcher.py
+@@ -207,1 +207,2 @@
+         else:
++            model.stack.set_visible_child_name("home")
