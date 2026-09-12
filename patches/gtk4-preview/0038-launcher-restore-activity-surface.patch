@@ -1,0 +1,24 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] launcher: restore Casilda surface after startup
+
+Removing the launch overlay must return to the active Activity surface when
+the shell is in Activity zoom. Falling back to Home hides Casilda immediately
+after a successful launch.
+
+---
+ src/jarabe/view/launcher.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/jarabe/view/launcher.py b/src/jarabe/view/launcher.py
+--- a/src/jarabe/view/launcher.py
++++ b/src/jarabe/view/launcher.py
+@@ -201,4 +201,7 @@ def _destroy_launcher(home_activity):
+     if launcher.get_parent() == model.stack:
+         model.stack.remove(launcher)
+     if model.stack.get_visible_child() is None:
+-        model.stack.set_visible_child_name("home")
++        if model.zoom_level == model.ZOOM_ACTIVITY and \
++                model.get_active_activity() is not None:
++            model.stack.set_visible_child_name("activity")
++        else:
++            model.stack.set_visible_child_name("home")

@@ -65,6 +65,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0035*",
         "*0036*",
         "*0037*",
+        "*0038*",
     ):
         assert patch_name in build
 
@@ -91,6 +92,12 @@ def test_journal_bundle_launch_uses_shell_lifecycle_helper():
     patch = _patch("0037-journal-bundle-launch-lifecycle.patch")
     assert "misc.launch(bundle, object_id=object_id)" in patch
     assert "+    activityfactory.create(bundle" not in patch
+
+
+def test_launcher_restores_activity_surface_after_overlay():
+    patch = _patch("0038-launcher-restore-activity-surface.patch")
+    assert 'model.stack.set_visible_child_name("activity")' in patch
+    assert "model.zoom_level == model.ZOOM_ACTIVITY" in patch
 
 
 def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():
