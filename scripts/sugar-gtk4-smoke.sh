@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -u
+export ASPARTAME_GTK4_PREVIEW=1
 
 root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
 failures=0
