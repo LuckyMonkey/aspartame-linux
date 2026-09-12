@@ -66,6 +66,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0036*",
         "*0037*",
         "*0038*",
+        "*0039*",
     ):
         assert patch_name in build
 
@@ -98,6 +99,12 @@ def test_launcher_restores_activity_surface_after_overlay():
     patch = _patch("0038-launcher-restore-activity-surface.patch")
     assert 'model.stack.set_visible_child_name("activity")' in patch
     assert "model.zoom_level == model.ZOOM_ACTIVITY" in patch
+
+
+def test_home_filters_favorites_with_missing_bundle_paths():
+    patch = _patch("0039-home-filter-missing-activities.patch")
+    assert "os.path.isdir(bundle_path)" in patch
+    assert "Skipping favorite with missing bundle" in patch
 
 
 def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():
