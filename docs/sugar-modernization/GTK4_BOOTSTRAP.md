@@ -44,7 +44,7 @@ WAYLAND_DISPLAY=wayland-sugar \
 wayland-info
 ```
 
-FIRST PIXELS is verified. This command does not yet produce a usable desktop:
+FIRST PIXELS is verified. Activity launch/stop remains pending. This command does not yet produce a usable desktop:
 the next runtime blocker is the datastore D-Bus service-name mismatch, followed
 by locale propagation into the private session. Use the GTK4 status page and
 Activity conversion runbook for current blockers.

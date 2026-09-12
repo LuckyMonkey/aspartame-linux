@@ -233,7 +233,7 @@ Run these as separate checks:
 4. save or mutate one piece of state;
 5. invoke the Activity's visible Stop action;
 6. verify the Activity process exits and its bus name disappears;
-7. relaunch and verify the expected state/resume behavior.
+7. relaunch and verify the expected state/resume behavior, producing relaunch/resume evidence.
 
 For a diagnostic stop when the visible control is not yet usable:
 
