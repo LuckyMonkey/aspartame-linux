@@ -15,3 +15,9 @@ def test_activity_activation_guard_is_routed_by_guest_build():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "*0047*) target=\"$root/sources/sugar\"" in build
     assert '"$patch_name" == *0047*' in build
+
+
+def test_qemu_key_helper_uses_bounded_hmp_symbolic_keycodes():
+    helper = (ROOT / "scripts/qemu-send-key.py").read_text()
+    assert 'sendkey {KEYCODES[key]} 100' in helper
+    assert 'numeric form is the QKeyCode enum' in helper
