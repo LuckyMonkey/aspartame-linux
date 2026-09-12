@@ -72,6 +72,13 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing Activity launch contract: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0027* ]] &&
+        grep -q "SUGAR_WINDOWED" "$root/sources/sugar/src/jarabe/main.py" 2>/dev/null &&
+        grep -q "set_decorated(False)" "$root/sources/sugar/src/jarabe/main.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing windowed GTK4 shell behavior: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0036* ]] &&
         grep -q "shell_model.notify_launch(activity_id, bundle.get_bundle_id())" "$root/sources/sugar/src/jarabe/journal/misc.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
