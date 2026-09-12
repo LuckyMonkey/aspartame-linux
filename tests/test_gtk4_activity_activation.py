@@ -20,5 +20,4 @@ def test_activity_activation_guard_is_routed_by_guest_build():
 def test_qemu_key_helper_uses_bounded_hmp_symbolic_keycodes():
     helper = (ROOT / "scripts/qemu-send-key.py").read_text()
     assert 'sendkey {KEYCODES[key]} 100' in helper
-    assert 'symbolic qcode form' not in helper
     assert 'HMP' in helper

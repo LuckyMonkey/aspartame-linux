@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inject a key through QEMU QMP for deterministic guest-input tests."""
+"""Inject a function key through QEMU's monitor for guest-input tests."""
 
 import socket
 import sys
@@ -21,6 +21,11 @@ def main():
         # Explicit hold time prevents a stuck key/repeat storm in QEMU's HMP
         # backend while still producing a normal press/release pair.
         sock.sendall((f"sendkey {KEYCODES[key]} 100\n").encode())
+        # Wait for the monitor prompt: closing immediately after the command
+        # can interrupt QEMU's delayed key-release timer.
+        response = b""
+        while b"(qemu)" not in response:
+            response += sock.recv(4096)
 
 
 if __name__ == "__main__":
