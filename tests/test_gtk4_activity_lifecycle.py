@@ -69,12 +69,20 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0040*",
         "*0041*",
         "*0042*",
+        "*0043*",
     ):
         assert patch_name in build
 
     assert 'test -x "$venv/bin/sugar-activity4"' in build
     assert 'test -x "$venv/bin/sugar-activity4"' in run
     assert 'test -f "$prefix/share/sugar/activities/Log.activity/activity/activity.info"' in run
+
+
+def test_journal_fallback_enters_the_visible_activity_stack():
+    patch = _patch("0043-keyhandler-journal-zoom.patch")
+    assert "journal = journalactivity.get_journal()" in patch
+    assert "journal.show_journal()" in patch
+    assert "model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)" in patch
 
 
 def test_activity_object_path_encoding_is_routed_to_toolkit_and_shell():

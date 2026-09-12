@@ -1,0 +1,14 @@
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -167,7 +167,10 @@ def handle_zoom_activity(self, event_time):
+             # No activity open: show Journal instead of the empty compositor.
+             # Use the visible GTK4 Journal presentation, initializing it if
+             # needed rather than revealing an unregistered shell window.
+-            journalactivity.get_journal().show_journal()
++            journal = journalactivity.get_journal()
++            journal.show_journal()
++            # Journal is registered as the active shell activity; explicitly
++            # enter the activity zoom so the GTK4 stack displays its surface.
++            model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)
+         else:
+             model.set_zoom_level(ShellModel.ZOOM_ACTIVITY, event_time)
