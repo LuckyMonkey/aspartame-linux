@@ -1,0 +1,13 @@
+--- a/src/jarabe/desktop/favoritesview.py
++++ b/src/jarabe/desktop/favoritesview.py
+@@ -255,4 +255,10 @@
+         if not activity_info.get_show_launcher():
+             return
++        import os
++        bundle_path = activity_info.get_path()
++        if not bundle_path or not os.path.isdir(bundle_path):
++            logging.warning('Skipping favorite with missing bundle: %s',
++                            activity_info.get_bundle_id())
++            return
+ 
+         icon = ActivityIcon(activity_info)
