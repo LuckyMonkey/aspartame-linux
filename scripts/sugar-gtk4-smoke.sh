@@ -3,6 +3,8 @@ set -u
 export ASPARTAME_GTK4_PREVIEW=1
 
 root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
+project_root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+export PYTHONPATH="$project_root/sugar-overlay/src${PYTHONPATH:+:$PYTHONPATH}"
 failures=0
 printf 'Aspartame GTK4 probe\n'
 
