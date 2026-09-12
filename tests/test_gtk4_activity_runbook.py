@@ -31,4 +31,5 @@ def test_status_does_not_reference_a_missing_blocker_document():
     status = (MODERNIZATION / "GTK4_BOOTSTRAP.md").read_text()
 
     assert "BLOCKERS.md" not in status
-    assert "Activity launch/stop remains pending" in status
+    assert "shell-mediated Activity launch/stop are verified" in status
+    assert "pointer/keyboard/focus" in status
