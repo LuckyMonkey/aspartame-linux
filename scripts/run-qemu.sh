@@ -42,6 +42,6 @@ exec qemu-system-x86_64 \
     -serial "file:$SERIAL_LOG" \
     -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:2222-:22 \
     -audiodev "driver=$AUDIO_BACKEND,id=a0" -device AC97,audiodev=a0 \
-    -device qemu-xhci -device usb-tablet \
+    -device qemu-xhci -device usb-tablet -device usb-kbd \
     -virtfs "local,path=$DEV_SHARE,mount_tag=aspartame-dev,security_model=none" \
     -name Aspartame
