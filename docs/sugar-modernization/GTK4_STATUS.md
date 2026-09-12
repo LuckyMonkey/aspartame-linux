@@ -1,6 +1,6 @@
 # GTK4 status
 
-Status checked: 2026-08-31.
+Status checked: 2026-09-06.
 
 | Component | Aspartame now | Upstream GTK3 | Upstream GTK4 | Usable today? | Blocker / action |
 |---|---|---|---|---|---|
@@ -11,6 +11,14 @@ Status checked: 2026-08-31.
 | Fructose activities | Arch packages plus pinned bundled set | Mixed but runnable | Calculate/Log and others are active migration targets | Individual GTK4 ports only | Port one activity at a time, never mass-convert |
 | Display/session | Xorg + Metacity + `sugar-runner` assumptions | Supported | Wayland/Casilda work is ongoing | X11 only | Treat Wayland as a separate backend experiment |
 | Browse | GTK3/WebKitGTK-era Activity | GTK3 dependencies | GTK4/WebKitGTK 6 migration is activity-specific | GTK3 only | Do not make WebKitGTK4 a shell dependency |
+
+Current preview checkpoint: GTK4 Home rendering, GTK3/GTK4 Spaces
+switching, and Sugar-styled palettes are verified in QEMU. The private
+datastore service and metadata reader build are also verified. GTK4 Activity
+launch/stop is not yet claimed; the next gate is one migrated Activity with a
+registered private D-Bus service, Wayland first paint, canonical Stop action,
+clean bus-name release, and relaunch evidence. Use
+[GTK4_ACTIVITY_RUNBOOK.md](GTK4_ACTIVITY_RUNBOOK.md) for that sequence.
 
 The GTK4 toolkit repository describes itself as a GTK4 toolkit and documents
 `sugar4` APIs, while the main Sugar repository still documents GTK3 toolkit
