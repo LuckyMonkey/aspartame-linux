@@ -55,6 +55,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0023*",
         "*0024*",
         "*0025*",
+        "*0030*",
     ):
         assert patch_name in build
 
@@ -72,3 +73,10 @@ def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():
     assert "return None" in patch
     assert 'launcher_name == "sugar-activity3"' in patch
     assert "GTK3 bundle cannot run inside isolated GTK4 Activity compositor" in patch
+
+
+def test_current_toolkit_pin_receives_the_gtk3_launcher_guard():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    patch = _patch("0030-toolkit-reject-gtk3-launchers.patch")
+    assert "*0030*" in build
+    assert 'launcher_name == "sugar-activity3"' in patch

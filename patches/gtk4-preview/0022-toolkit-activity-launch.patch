@@ -15,7 +15,7 @@
  
  _compositor_fd_getter = None
  
-@@ -22,8 +30,108 @@
+@@ -22,8 +30,119 @@
      _compositor_fd_getter = getter
  
  

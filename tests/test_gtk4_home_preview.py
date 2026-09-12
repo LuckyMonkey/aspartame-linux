@@ -32,6 +32,19 @@ def test_gtk4_launcher_defaults_to_native_fullscreen():
     assert "SUGAR_WINDOWED=\"${SUGAR_WINDOWED:-0}\"" in launcher
 
 
+def test_gtk4_neighborhood_does_not_use_removed_gtk_allocation_type():
+    meshbox = (ROOT / "sugar-overlay/src/jarabe/desktop/meshbox.py").read_text()
+    assert "from gi.repository import Gdk" in meshbox
+    assert "button_allocation = Gdk.Rectangle()" in meshbox
+    assert "button_allocation = Gtk.Allocation()" not in meshbox
+
+
+def test_gtk4_zoom_updates_the_owned_surface_without_legacy_transition_window():
+    homewindow = (ROOT / "sugar-overlay/src/jarabe/desktop/homewindow.py").read_text()
+    assert "ASPARTAME_GTK4_PREVIEW" in homewindow
+    assert "self._update_view(new_level)" in homewindow
+
+
 def test_gtk4_session_fails_when_datastore_never_registers():
     session = (ROOT / "scripts/sugar-gtk4-session.sh").read_text()
     assert 'datastore_ready=0' in session
@@ -59,6 +72,7 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
         "0019-home-icon-pixel-size.patch",
         "0020-toolkit-cell-renderer-scrolling.patch",
         "0021-home-retain-toolbar.patch",
+        "0031-shell-native-zoom.patch",
     ]
     positions = [names.index(name) for name in expected]
     assert positions == sorted(positions)
@@ -73,3 +87,4 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
     assert "child.set_pixel_size(icon_size)" in text
     assert "def connect_to_scroller(self, scrolled):" in text
     assert "self._toolbar = toolbar" in text
+    assert "TransitionBox resizes a managed canvas widget" in text

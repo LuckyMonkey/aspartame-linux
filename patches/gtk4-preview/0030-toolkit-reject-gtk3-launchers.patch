@@ -1,0 +1,17 @@
+--- a/src/sugar4/activity/activityfactory.py
++++ b/src/sugar4/activity/activityfactory.py
+@@ -55,8 +55,13 @@
+ def get_command(bundle):
+     """Resolve a bundle command to the isolated GTK4 launcher."""
+     command = shlex.split(bundle.get_command())
+     if not command:
+         raise ValueError("Activity bundle has no launch command")
+-    if command[0].startswith("sugar-activity"):
++    launcher_name = os.path.basename(command[0])
++    if launcher_name == "sugar-activity3":
++        raise RuntimeError(
++            "GTK3 bundle cannot run inside isolated GTK4 Activity compositor"
++        )
++    if launcher_name in ("sugar-activity", "sugar-activity4"):
+         command[0] = os.environ.get("SUGAR_ACTIVITY4", "sugar-activity4")
+     return command

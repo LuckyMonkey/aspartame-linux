@@ -1,0 +1,17 @@
+--- a/src/jarabe/desktop/homewindow.py
++++ b/src/jarabe/desktop/homewindow.py
+@@ -247,5 +247,13 @@
+         self._deactivate_view(old_level)
+         self._activate_view(new_level)
+-
++
++        # TransitionBox resizes a managed canvas widget and never completes
++        # reliably under GTK4 allocation.  Switch the already-owned stack
++        # synchronously in the modern space; the GTK3 reference keeps its
++        # established animated transition path.
++        if os.environ.get('ASPARTAME_GTK4_PREVIEW') == '1':
++            self._update_view(new_level)
++            return
++
+         if old_level != ShellModel.ZOOM_ACTIVITY and \
+            new_level != ShellModel.ZOOM_ACTIVITY:
