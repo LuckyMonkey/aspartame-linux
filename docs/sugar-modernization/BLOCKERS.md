@@ -20,15 +20,19 @@
 ## GTK4-003 — complete shell runtime
 
 - Category: `UPSTREAM-SHELL` / Wayland
-- Reproduction: no supported one-command GTK4 session runner is present in this repository yet.
-- Status: open; do not claim GTK4 desktop support until shell, Home, Frame, Journal, and activity lifecycle are exercised.
+- Reproduction: use `scripts/sugar-gtk4-space.sh gtk4` in the guest preview.
+- Status: partially resolved; the runner and default Home path are operational. Full
+  shell parity (Frame, Journal, Neighborhood, Settings, accessibility) remains open.
 
 ## GTK4-004 - shell toolkit activityfactory gap
 
 - Category: UPSTREAM-TOOLKIT / UPSTREAM-SHELL
 - Reproduction: jarabe/main.py imports sugar4.activity.activityfactory, but toolkit PR 35 removed the module.
-- Fix: preview-only compatibility surface supplies create_activity_id and set_compositor_fd_getter; create fails explicitly because GTK4 activity launch is not complete.
-- Status: unblocks shell startup imports; activity lifecycle remains blocked.
+- Fix: preview compatibility surface now supplies the launch contract, propagates the
+  shell-owned Activity UUID, and registers Casilda launches with ShellModel.
+- Verification: Log Activity launches with matching environment/service identity and
+  closes cleanly in repeated runtime checks.
+- Status: resolved for the preview; broader Activity surface/input parity remains open.
 
 ## GTK4-005 - Telepathy GI missing
 
