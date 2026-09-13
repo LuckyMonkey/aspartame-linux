@@ -97,6 +97,11 @@ def test_semantic_zoom_actions_patch_is_valid():
     assert "def ShowGroup" in patch
 
 
+def test_home_focus_surface_patch():
+    patch = (ROOT / "patches/gtk4-preview/0088-home-focus-key-surface.patch").read_text()
+    assert "self.set_focusable(True)" in patch
+
+
 def test_gtk4_overlay_focus_patch_is_routed():
     patch = (ROOT / "patches/gtk4-preview/0051-main-focus-overlay.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()

@@ -1,0 +1,12 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: keep Home surface focusable for Sugar shortcuts
+
+The Home Gtk.Box must remain on the focus path when child views or search
+entries are selected so F1-F6 reach semantic Sugar handling.
+
+--- a/src/jarabe/desktop/homewindow.py
++++ b/src/jarabe/desktop/homewindow.py
+@@ -53,3 +53,4 @@
+         super().__init__(orientation=Gtk.Orientation.VERTICAL)
++        self.set_focusable(True)
+         self.add_css_class('home-window')
