@@ -10,7 +10,7 @@ Fresh guest evidence from the 1920×1080 QEMU display after commit 1062ed8:
 | Journal | F5 / `ShowJournal` now renders the native GTK4 Journal list and search bar | PASS: fresh capture `sugar-20260913-100306-v0.0.31.png` |
 | Datastore contract | `get_uniquevaluesfor` was sending `a{ss}` to declared `a{sv}`; root-owned Xapian index also blocked startup | FIXED: 0083 plus user-owned runtime |
 | Frame | `ShowFrame` renders Sugar Frame chrome and controls | PASS: fresh capture `sugar-20260913-100255-v0.0.31.png` |
-| Zoom/Spaces | QMP probes delivered F1–F4/F7/F8; F1–F4 produced no visible transition from Journal and F7/F8 captures matched | FAIL/needs implementation: key delivery works but view switching is not observable |
+| Zoom/Spaces | F3 returns Journal → Home (`sugar-20260913-100430-v0.0.31.png`); F1 from Home produced no visible Neighborhood transition; F7/F8 captures matched | PARTIAL: Home transition works, Neighborhood/Group/Spaces still need parity work |
 
 The datastore failure is resolved in the current runtime: both the shell and
 preview datastore remain alive, and Journal now renders. The next pass should
