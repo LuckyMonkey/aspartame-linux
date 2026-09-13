@@ -1,0 +1,17 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: show visible loading state during refresh
+
+Keep the GTK4 Journal visibly responsive while its asynchronous datastore
+query is pending. The existing ready callback replaces this state with rows
+or the precise empty/query message.
+
+--- a/src/jarabe/journal/listview.py
++++ b/src/jarabe/journal/listview.py
+@@ -483,6 +483,7 @@
+             else:
+                 self._backup_selected = self._model.get_selected_items()
+             self._model.stop()
+         self._dirty = False
++        self._show_message(_('Loading Journal…'))
+ 
+         self._model = ListModel(self._query)
