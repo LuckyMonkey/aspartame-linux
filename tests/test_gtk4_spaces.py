@@ -24,7 +24,7 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     assert 'select_gtk4' in controller
     assert 'pgrep -u' in controller
     assert 'DBUS_SESSION_BUS_ADDRESS=*) export' in controller
-    assert 'did not retain the F7/F8' in controller
+    assert 'keybindings unavailable' in controller
     assert 'wmctrl' not in controller
     assert 'xdotool' not in controller
 

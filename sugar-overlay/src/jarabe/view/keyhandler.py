@@ -11,6 +11,8 @@ workspace.  The grab is restored when the classic workspace becomes active.
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 import logging
+import os
+import subprocess
 import sys
 
 import gi
@@ -56,6 +58,19 @@ class KeyHandler(_packaged.KeyHandler):
         self._classic_space_active = None
         self._space_watch_id = GLib.timeout_add(100, self._sync_space_grab)
         self._sync_space_grab()
+
+    def _key_pressed_cb(self, grabber, keycode, state, event_time):
+        key = grabber.get_key(keycode, state)
+        if key in ("F7", "F8"):
+            target = "gtk3" if key == "F7" else "gtk4"
+            controller = os.environ.get(
+                "ASPARTAME_SPACE_SWITCHER",
+                "/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh",
+            )
+            logging.warning("GTK3 semantic Space key: %s", key)
+            subprocess.Popen([controller, target], close_fds=True)
+            return True
+        return super()._key_pressed_cb(grabber, keycode, state, event_time)
 
     @staticmethod
     def _active_workspace_number():
