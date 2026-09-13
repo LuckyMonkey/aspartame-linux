@@ -15,6 +15,9 @@ SERIAL_LOG=${SERIAL_LOG:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime
 DEV_SHARE=${DEV_SHARE:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev}
 QEMU_MONITOR=${QEMU_MONITOR:-/tmp/aspartame-qemu-monitor}
 QEMU_QMP=${QEMU_QMP:-/tmp/aspartame-qemu-qmp}
+# Keep the window floating and let the host window manager deliver keyboard
+# focus normally. Set QEMU_GRAB_ON_HOVER=on for a dedicated pointer-grab run.
+QEMU_GRAB_ON_HOVER=${QEMU_GRAB_ON_HOVER:-off}
 
 test -f "$ISO" || { echo "missing ISO: $ISO" >&2; exit 2; }
 mkdir -p "$(dirname "$DISK")"
@@ -36,7 +39,7 @@ exec qemu-system-x86_64 \
     -drive "file=$DISK,if=virtio,format=qcow2" \
     -drive "file=$DATA_DISK,if=virtio,format=qcow2" \
     -cdrom "$ISO" -boot menu=on \
-    -device virtio-vga,xres=1920,yres=1080 -display gtk,gl=off,zoom-to-fit=on,grab-on-hover=on \
+    -device virtio-vga,xres=1920,yres=1080 -display "gtk,gl=off,zoom-to-fit=on,grab-on-hover=$QEMU_GRAB_ON_HOVER" \
     -monitor "unix:$QEMU_MONITOR,server,nowait" \
     -qmp "unix:$QEMU_QMP,server=on,wait=off" \
     -serial "file:$SERIAL_LOG" \
