@@ -12,7 +12,9 @@
 +            return False
 +        from jarabe.controlpanel.gui import ControlPanel
 +        panel = ControlPanel('')
-+        panel.set_transient_for(self._shell_model._main_window)
++        main_window = getattr(self._shell_model, '_main_window', None)
++        if main_window is not None:
++            panel.set_transient_for(main_window)
 +        panel.set_visible(True)
 +        self._control_panel = panel
 +        return True
