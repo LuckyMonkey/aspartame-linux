@@ -1,0 +1,12 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: close datastore call
+
+Complete the explicit D-Bus find call introduced by 0081.
+
+--- a/src/jarabe/journal/model.py
++++ b/src/jarabe/journal/model.py
+@@ -230,3 +230,3 @@
+         entries, total_count = _call_datastore(
+             'find', marshaled, dbus.Array(PROPERTIES, signature='s'),
+-
++            byte_arrays=True)
