@@ -1,0 +1,21 @@
+--- a/src/sugar4/activity/activityfactory.py
++++ b/src/sugar4/activity/activityfactory.py
+@@ -87,15 +87,10 @@
+ 
+ def _notify_launch_failed(activity_id):
+     try:
+-        import dbus
+-
+-        bus = dbus.SessionBus()
+-        shell = bus.get_object("org.laptop.Shell", "/org/laptop/Shell")
+-        dbus.Interface(shell, "org.laptop.Shell").NotifyLaunchFailure(activity_id)
++        from jarabe.model import shell
++        shell.get_model().notify_launch_failed(activity_id)
+     except Exception:
+-        logging.exception(
+-            "Could not notify Sugar shell of failed Activity %s", activity_id
+-        )
++        logging.exception("Could not notify Sugar shell of failed Activity %s", activity_id)
+ 
+ 
+ def _child_exited(pid, status, activity_id):

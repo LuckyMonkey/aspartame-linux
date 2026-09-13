@@ -111,6 +111,12 @@ def test_shell_stop_activity_is_authoritative_and_terminates_child():
     assert "activity_id.encode()" in fallback
 
 
+def test_child_exit_notifies_shell_without_self_dbus_roundtrip():
+    patch = (ROOT / "patches/gtk4-preview/0066-toolkit-local-launch-failure-notify.patch").read_text()
+    assert "shell.get_model().notify_launch_failed(activity_id)" in patch
+    assert "+        dbus.Interface(shell" not in patch
+
+
 def test_shell_exposes_semantic_journal_action():
     patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
     assert "def ShowJournal" in patch

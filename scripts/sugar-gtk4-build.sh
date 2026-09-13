@@ -46,7 +46,7 @@ mkdir -p "$patch_state"
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*|*0047*|*0059*|*0060*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*|*0047*|*0059*|*0060*|*0066*) target="$toolkit" ;;
         *0029*) target="$log_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
@@ -146,6 +146,18 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'activity.close_window()' "$shell/src/jarabe/view/service.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Activity surface close: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0064* ]] &&
+        grep -q 'os.kill(pid, 15)' "$shell/src/jarabe/view/service.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Activity process termination: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0065* ]] &&
+        grep -q 'activity_id.encode()' "$shell/src/jarabe/view/service.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Activity-ID process fallback: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0027* ]] &&
