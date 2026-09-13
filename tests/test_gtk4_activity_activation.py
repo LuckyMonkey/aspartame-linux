@@ -14,7 +14,7 @@ def test_single_process_activity_activation_reuses_window():
 def test_activity_activation_guard_is_routed_by_guest_build():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "*0047*) target=\"$toolkit\"" in build
-    assert '*0048*' in build and '*0057*) target="$root/sources/sugar"' in build
+    assert '*0048*' in build and '*0057*' in build
     assert '"$patch_name" == *0047*' in build
 
 
@@ -75,7 +75,15 @@ def test_control_panel_can_open_without_active_activity():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "if activity is not None" in patch
     assert "panel.set_transient_for(shell_model._main_window)" in patch
-    assert "*0057*) target=\"$root/sources/sugar\"" in build
+    assert "*0057*" in build and 'target="$root/sources/sugar"' in build
+
+
+def test_shell_exposes_semantic_control_panel_action():
+    patch = (ROOT / "patches/gtk4-preview/0058-shell-show-controlpanel-action.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "def ShowControlPanel" in patch
+    assert "ControlPanel('')" in patch
+    assert "*0058*)" in build
 
 
 def test_shell_exposes_semantic_journal_action():

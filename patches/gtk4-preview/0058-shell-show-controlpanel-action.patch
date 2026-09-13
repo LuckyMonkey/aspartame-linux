@@ -1,0 +1,18 @@
+--- a/src/jarabe/view/service.py	2026-09-12 20:58:04.658599096 -0400
++++ b/src/jarabe/view/service.py	2026-09-12 20:58:04.661345002 -0400
+@@ -103,3 +103,15 @@
+         from jarabe import frame
+         frame.get_view().show()
+         return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowControlPanel(self):
++        """Open GTK4 Settings with the shell as its transient owner."""
++        if self._shell_model.has_modal():
++            return False
++        from jarabe.controlpanel.gui import ControlPanel
++        panel = ControlPanel('')
++        panel.set_transient_for(self._shell_model._main_window)
++        panel.set_visible(True)
++        self._control_panel = panel
++        return True
