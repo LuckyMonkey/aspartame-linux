@@ -1,0 +1,31 @@
+--- a/src/jarabe/desktop/groupbox.py	2026-09-12 20:47:19.731714702 -0400
++++ b/src/jarabe/desktop/groupbox.py	2026-09-12 20:47:19.740319722 -0400
+@@ -16,6 +16,7 @@
+ import logging
+ 
+ from sugar4.graphics import style
++from gi.repository import Gtk
+ 
+ from jarabe.view.buddyicon import BuddyIcon
+ from jarabe.model.buddy import get_owner_instance
+@@ -44,6 +45,9 @@
+         toolbar.connect('query-changed', self._toolbar_query_changed_cb)
+ 
+         self._friends = {}
++        self._empty_state = Gtk.Label(label=_("No friends are nearby yet."))
++        self._empty_state.set_opacity(0.72)
++        self.add(self._empty_state)
+ 
+         friends_model = friends.get_model()
+ 
+@@ -54,6 +58,10 @@
+         friends_model.connect('friend-removed', self._friend_removed_cb)
+ 
+     def add_friend(self, buddy_info):
++        if self._empty_state is not None:
++            self.remove(self._empty_state)
++            self._empty_state = None
++
+         icon = FriendView(buddy_info)
+         self.add(icon)
+         self._friends[buddy_info.get_key()] = icon

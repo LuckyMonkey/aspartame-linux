@@ -14,7 +14,7 @@ def test_single_process_activity_activation_reuses_window():
 def test_activity_activation_guard_is_routed_by_guest_build():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "*0047*) target=\"$toolkit\"" in build
-    assert "*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*) target=\"$root/sources/sugar\"" in build
+    assert "*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*) target=\"$root/sources/sugar\"" in build
     assert '"$patch_name" == *0047*' in build
 
 
@@ -60,6 +60,14 @@ def test_shell_exposes_semantic_frame_action():
 def test_focus_overlay_final_patch_is_idempotent():
     patch = (ROOT / "patches/gtk4-preview/0054-main-focus-overlay-final.patch").read_text()
     assert "set_focus(shell_instance._overlay)" in patch
+
+
+def test_empty_collaboration_state_is_routed_into_guest_sugar():
+    patch = (ROOT / "patches/gtk4-preview/0055-empty-space-view-state.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "No friends are nearby yet." in patch
+    assert "*0055*) target=\"$root/sources/sugar\"" in build
+    assert '"$patch_name" == *0055*' in build
 
 
 def test_shell_exposes_semantic_journal_action():
