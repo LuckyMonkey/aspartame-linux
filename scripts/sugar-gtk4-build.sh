@@ -314,6 +314,18 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified explicit Journal datastore query types: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0083* ]] &&
+        grep -q "empty_dict = dbus.Dictionary({}, signature='sv')" "$shell/src/jarabe/journal/model.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified Journal unique-values signature: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0084* ]] &&
+        grep -q "semantic_keys.add_window(journal)" "$shell/src/jarabe/main.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified Journal key routing: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0080* ]] &&
         grep -q '_overlay.set_focusable(True)' "$shell/src/jarabe/main.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
