@@ -1,0 +1,20 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: report result-set readiness failures
+
+The GTK4 Journal must not silently leave a blank canvas when the datastore
+result-set callback fails. Log the failing operation with a traceback so the
+runtime owner is observable while preserving the existing error semantics.
+
+--- a/src/jarabe/journal/listmodel.py
++++ b/src/jarabe/journal/listmodel.py
+@@ -108,5 +108,9 @@ class ListModel(GObject.GObject, Gtk.TreeModel):
+     def __result_set_ready_cb(self, **kwargs):
+         t = time.time()
+-        self._all_ids = self._result_set.find_ids(self._query)
++        try:
++            self._all_ids = self._result_set.find_ids(self._query)
++        except Exception:
++            logging.exception('Journal result-set readiness failed')
++            raise
+         logging.debug('get all ids: %r', time.time() - t)
+         self.emit('ready')
