@@ -1,4 +1,6 @@
 --- a/src/sugar4/activity/activityfactory.py
 +++ b/src/sugar4/activity/activityfactory.py
-@@ -52,0 +53,1 @@
+@@ -52,1 +52,2 @@
+-            "SUGAR_ACTIVITY_ROOT": activity_root,
++            "SUGAR_ACTIVITY_ROOT": activity_root,
 +            "ASPARTAME_GTK4_PREVIEW": "1",
