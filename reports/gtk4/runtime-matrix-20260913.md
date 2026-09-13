@@ -31,3 +31,8 @@ completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
 calls returned true and cleanup passed. The prior rejection was caused by
 duplicate canonical bundle IDs resolving to the GTK3 bundle before the GTK4
 entry.
+
+Repeated/abnormal lifecycle: PASS. Three additional launch/stop cycles
+completed with distinct process IDs and immediate cleanup. A fourth Help
+Activity was then terminated with SIGKILL; no `helpactivity4` process remained
+and the GTK4 shell PID stayed alive, demonstrating abnormal-exit cleanup.
