@@ -55,6 +55,13 @@ for _name, _value in vars(_packaged).items():
     }:
         globals()[_name] = _value
 
+# SugarExt.KeyGrabber only accepts key names known to the upstream action
+# table.  F7/F8 are Aspartame semantic Space actions, so register them as
+# sentinel entries before the workspace-aware grabber requests its key set;
+# dispatch is handled by _key_pressed_cb below.
+_actions_table.setdefault("F7", "aspartame_space")
+_actions_table.setdefault("F8", "aspartame_space")
+
 
 class KeyHandler(_packaged.KeyHandler):
     """Upstream GTK3 handler with an EWMH workspace ownership gate."""
