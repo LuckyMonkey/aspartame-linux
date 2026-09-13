@@ -34,6 +34,11 @@ test -f "$log_activity/logviewer.py" || { echo "missing Log Activity source: $lo
 if ! test -x "$venv/bin/python"; then
     python3 -m venv --system-site-packages "$venv"
 fi
+# Ensure preview children use the GTK3-safe runtime hook from this checkout;
+# distro sitecustomize may be stale and is imported before sugar4.
+venv_site=$($venv/bin/python -c 'import site; print(site.getsitepackages()[0])')
+install -D -m 0644 "$repo/sugar-overlay/src/sitecustomize.py" \
+    "$venv_site/sitecustomize.py"
 # Expose Empy from the isolated preview venv when Arch omitted its console link.
 if ! test -x "$venv/bin/empy" && test -x "$venv/bin/em.py"; then
     ln -sf "$venv/bin/em.py" "$venv/bin/empy"
