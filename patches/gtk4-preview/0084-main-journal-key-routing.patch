@@ -8,9 +8,12 @@ initialized, preserving one process-local handler and GTK3 isolation.
 
 --- a/src/jarabe/main.py
 +++ b/src/jarabe/main.py
-@@ -120,6 +120,10 @@
+@@ -114,7 +114,11 @@
+ def setup_journal_cb():
+     logging.debug('STARTUP: setup_journal_cb')
      journalactivity.start()
 +    journal = journalactivity.get_journal()
 +    semantic_keys = keyhandler.get_instance()
 +    if semantic_keys is not None:
 +        semantic_keys.add_window(journal)
+ 

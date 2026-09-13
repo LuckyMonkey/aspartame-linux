@@ -349,8 +349,8 @@ for patch in "$patch_dir"/*.patch; do
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "applied Journal datastore signature patch: $patch_name"
     elif [[ "$patch_name" == *0084* ]] &&
-        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch -p1 < "$patch" >/dev/null)
+        (cd "$target" && patch --dry-run --fuzz=2 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=2 -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "applied Journal key routing patch: $patch_name"
     elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0040* || "$patch_name" == *0041* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0045* || "$patch_name" == *0046* || "$patch_name" == *0047* || "$patch_name" == *0048* || "$patch_name" == *0049* || "$patch_name" == *0050* || "$patch_name" == *0051* || "$patch_name" == *0052* || "$patch_name" == *0053* || "$patch_name" == *0054* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
