@@ -18,3 +18,10 @@ Live Space checks then showed:
   `sugar-20260912-234136-v0.0.31.png`.
 - F7 selected GTK3 (`current=0`) with the GTK3 Home ring visible.
 - Both processes remained present in the controller status.
+
+The runtime invariant checker also passed in both selected states:
+
+```
+runtime-check=ok target=gtk3 pid=76432 desktop=0 window=0xc00003 stable_pid=76432 gtk4_pid=78526
+runtime-check=ok target=gtk4 pid=78526 desktop=1 window=0x1200005 stable_pid=76432 gtk4_pid=78526
+```
