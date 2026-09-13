@@ -14,7 +14,7 @@ stale signal cannot leave a fatal traceback or stale button state.
 diff --git a/src/jarabe/frame/activitiestray.py b/src/jarabe/frame/activitiestray.py
 --- a/src/jarabe/frame/activitiestray.py
 +++ b/src/jarabe/frame/activitiestray.py
-@@ -356,9 +356,15 @@ class ActivitiesTray(Gtk.Box):
+@@ -356,9 +356,14 @@ class ActivitiesTray(Gtk.Box):
      def __activity_removed_cb(self, home_model, home_activity):
          logging.debug('__activity_removed_cb: %r', home_activity)
 -        button = self._buttons[home_activity]
