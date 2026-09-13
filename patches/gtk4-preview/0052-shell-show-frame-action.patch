@@ -1,0 +1,23 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: expose a semantic ShowFrame action
+
+Expose the canonical Frame reveal through the shell service. This keeps Frame
+validation independent of physical-key injection while using the same native
+GTK4 Frame object that F6 invokes.
+
+---
+ src/jarabe/view/service.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/jarabe/view/service.py b/src/jarabe/view/service.py
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -97,1 +97,8 @@ class UIService(service.Object):
+         return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowFrame(self):
++        """Reveal the native GTK4 Sugar Frame and return success."""
++        from jarabe import frame
++        frame.get_view().show()
++        return True

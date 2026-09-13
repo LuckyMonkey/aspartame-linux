@@ -1,0 +1,18 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: focus overlay after controller attachment
+
+After correcting the drifted 0051 placement, ensure the focus call is present
+at the stable end of `_setup_main_window` rather than inside the key callback.
+
+---
+ src/jarabe/main.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -308,3 +308,4 @@ def _setup_main_window(shell_instance):
+         zoom_controller.connect("key-pressed", _capture_zoom_key)
+         shell_instance._main_window.add_controller(zoom_controller)
+         shell_instance._sugar_zoom_controller = zoom_controller
++        shell_instance._main_window.set_focus(shell_instance._overlay)

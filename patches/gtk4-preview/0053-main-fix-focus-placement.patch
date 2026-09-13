@@ -1,0 +1,29 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: place overlay focus after key handler setup
+
+Patch 0051 was applied by the legacy compatibility fallback against a shifted
+context and placed the focus call inside `_capture_zoom_key`. Move it to the
+end of `_setup_main_window`, after the controller is attached, preserving a
+valid Python function and deterministic startup focus.
+
+---
+ src/jarabe/main.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -299,7 +299,6 @@ def _setup_main_window(shell_instance):
+                 from jarabe import frame
+                 frame.get_view().notify_key_press()
+                 return True
+             level = zoom_keys.get(keyval)
+-        shell_instance._main_window.set_focus(shell_instance._overlay)
+             if level is None:
+                 return False
+             shell_instance.set_zoom_level(level)
+@@ -309,6 +308,7 @@ def _setup_main_window(shell_instance):
+         zoom_controller.connect("key-pressed", _capture_zoom_key)
+         shell_instance._main_window.add_controller(zoom_controller)
+         shell_instance._sugar_zoom_controller = zoom_controller
++        shell_instance._main_window.set_focus(shell_instance._overlay)
