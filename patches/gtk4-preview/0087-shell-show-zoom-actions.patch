@@ -1,0 +1,25 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: expose semantic Neighborhood and Group actions
+
+Provide stable service actions for testing and accessibility clients. They use
+the same ShellModel zoom path as F1/F2 and avoid dependence on physical key
+injection when validating Spaces.
+
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -110,3 +110,15 @@
+     def ShowFrame(self):
+         """Reveal the native GTK4 Sugar Frame and return success."""
+         from jarabe import frame
+         frame.get_view().show()
+         return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowNeighborhood(self):
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_MESH)
++        return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowGroup(self):
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
++        return True
