@@ -1,0 +1,18 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: expose semantic Neighborhood and Group actions
+
+Expose ShellModel zoom operations for runtime and accessibility clients.
+
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -144,0 +145,10 @@
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowNeighborhood(self):
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_MESH)
++        return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowGroup(self):
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
++        return True
