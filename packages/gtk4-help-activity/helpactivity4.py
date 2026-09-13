@@ -19,6 +19,23 @@ class HelpActivity(SimpleActivity):
         title.add_css_class("title-1")
         title.set_halign(Gtk.Align.START)
         root.append(title)
+        search = Gtk.Entry()
+        search.set_placeholder_text("Search help")
+        search.set_hexpand(True)
+        search.set_accessible_name("Search help")
+        root.append(search)
+        input_status = Gtk.Label(label="Keyboard ready")
+        input_status.set_halign(Gtk.Align.START)
+        input_status.add_css_class("dim-label")
+        root.append(input_status)
+
+        def _search_changed(entry):
+            value = entry.get_text()
+            input_status.set_text(
+                f"Input received: {value}" if value else "Keyboard ready"
+            )
+
+        search.connect("changed", _search_changed)
         body = Gtk.TextView()
         body.set_editable(False)
         body.set_cursor_visible(False)
@@ -38,3 +55,4 @@ class HelpActivity(SimpleActivity):
         scroll.set_child(body)
         root.append(scroll)
         self.set_canvas(root)
+        search.grab_focus()

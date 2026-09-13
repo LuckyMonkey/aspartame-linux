@@ -102,6 +102,9 @@ def test_native_help_activity_is_staged_for_modern_space():
     assert "exec = sugar-activity4 helpactivity4.HelpActivity" in info
     assert "from sugar4.activity import SimpleActivity" in source
     assert "def __init__(self, activity_handle=None)" in source
+    assert 'search.set_placeholder_text("Search help")' in source
+    assert 'search.connect("changed", _search_changed)' in source
+    assert 'input_status.set_text' in source
     launcher = (ROOT / "packages/gtk4-help-activity/bin/sugar-activity4").read_text()
     assert "export ASPARTAME_GTK4_PREVIEW=1" in launcher
     assert "Help.activity/activity/activity.info" in run
