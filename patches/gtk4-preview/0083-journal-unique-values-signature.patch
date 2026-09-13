@@ -1,0 +1,16 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: use variant dictionary for unique-value query
+
+The datastore D-Bus method declares its optional query as a{sv}.  Passing an
+a{ss} dictionary is rejected by dbus-python on current runtimes and causes the
+datastore service to disconnect while Journal initializes.
+
+--- a/src/jarabe/journal/model.py
++++ b/src/jarabe/journal/model.py
+@@ -661,7 +661,7 @@
+ def get_unique_values(key):
+     """Returns a list with the different values a property has taken
+     """
+-    empty_dict = dbus.Dictionary({}, signature='ss')
++    empty_dict = dbus.Dictionary({}, signature='sv')
+     return _call_datastore('get_uniquevaluesfor', key, empty_dict)
