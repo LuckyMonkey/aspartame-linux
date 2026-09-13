@@ -335,7 +335,8 @@ for patch in "$patch_dir"/*.patch; do
         continue
     fi
     if [[ "$patch_name" == *0086* ]] &&
-        grep -q "set_visible_child_name('mesh')" "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null; then
+        grep -q "if keyval == Gdk.KEY_F1:" "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null &&
+        grep -q "self._view_stack.set_visible_child_name('mesh')" "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified Home zoom stack selection: $patch_name"
         continue
