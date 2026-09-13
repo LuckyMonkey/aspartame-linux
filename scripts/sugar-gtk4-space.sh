@@ -79,7 +79,10 @@ start_gtk4() {
     local pid
     pid=$(gtk4_pid || true)
     if [ -z "$pid" ]; then
-        setsid env GTK4_ROOT="$root" SUGAR_WINDOWED=1 \
+        # The modern Space owns a real fullscreen surface.  Starting it
+        # windowed leaves a 1024x768 GTK surface letterboxed inside the
+        # 1920x1080 guest and makes shell input/focus appear unreliable.
+        setsid env GTK4_ROOT="$root" SUGAR_WINDOWED=0 \
             bash "$runner" > /tmp/aspartame-gtk4-current.log 2>&1 </dev/null &
         for _attempt in $(seq 1 100); do
             pid=$(gtk4_pid || true)

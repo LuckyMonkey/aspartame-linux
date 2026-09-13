@@ -11,6 +11,7 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     assert 'F7' in controller
     assert 'F8' in controller
     assert 'sugar-gtk4-run.sh' in controller
+    assert 'SUGAR_WINDOWED=0' in controller
     assert 'place --pid' in controller
     assert 'gtk3_pid()' in controller
     assert 'python3 -m jarabe' in controller

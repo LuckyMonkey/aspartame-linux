@@ -22,6 +22,8 @@ def test_qemu_key_helper_uses_bounded_hmp_symbolic_keycodes():
     helper = (ROOT / "scripts/qemu-send-key.py").read_text()
     assert 'sendkey {KEYCODES[key]} 100' in helper
     assert 'HMP' in helper
+    assert 'def _read_prompt' in helper
+    assert '_read_prompt(sock)' in helper
 
 
 def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
@@ -30,6 +32,7 @@ def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
         assert key in patch
     assert "Gtk.PropagationPhase.CAPTURE" in patch
     assert "_sugar_zoom_controller" in patch
+    assert "set_focus(shell_instance._overlay)" in patch
 
 
 def test_shell_exposes_semantic_journal_action():

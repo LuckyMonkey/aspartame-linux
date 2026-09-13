@@ -5,6 +5,15 @@ import socket
 import sys
 
 KEYCODES = {f"F{i}": f"f{i}" for i in range(1, 13)}
+PROMPT = b"(qemu) "
+
+
+def _read_prompt(sock):
+    """Consume one complete HMP response, including a split greeting."""
+    response = b""
+    while PROMPT not in response:
+        response += sock.recv(4096)
+    return response
 
 
 def main():
@@ -17,15 +26,16 @@ def main():
     with socket.socket(socket.AF_UNIX) as sock:
         sock.settimeout(2)
         sock.connect("/tmp/aspartame-qemu-monitor")
-        sock.recv(4096)
+        # QEMU may split its greeting and prompt across separate reads.  Drain
+        # through the prompt before sending the command so the response we
+        # await below cannot be the stale startup prompt.
+        _read_prompt(sock)
         # Explicit hold time prevents a stuck key/repeat storm in QEMU's HMP
         # backend while still producing a normal press/release pair.
         sock.sendall((f"sendkey {KEYCODES[key]} 100\n").encode())
         # Wait for the monitor prompt: closing immediately after the command
         # can interrupt QEMU's delayed key-release timer.
-        response = b""
-        while b"(qemu)" not in response:
-            response += sock.recv(4096)
+        _read_prompt(sock)
 
 
 if __name__ == "__main__":
