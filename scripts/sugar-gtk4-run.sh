@@ -53,7 +53,8 @@ mkdir -p "$runroot/home" "$runroot/data" "$runroot/config" "$runroot/cache" "$ro
 # The launcher is commonly invoked by root while the GTK4 session runs as the
 # `aspartame` user.  Keep datastore/Xapian state user-owned so its lockfile can
 # be opened on every restart (a previous root-owned index made Journal crash).
-chown -R aspartame:aspartame "$runroot"
+chown -R aspartame:aspartame "$runroot/home" "$runroot/data" \
+    "$runroot/config" "$runroot/cache"
 test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2
