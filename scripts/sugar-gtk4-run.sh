@@ -55,6 +55,10 @@ mkdir -p "$runroot/home" "$runroot/data" "$runroot/config" "$runroot/cache" "$ro
 # be opened on every restart (a previous root-owned index made Journal crash).
 chown -R aspartame:aspartame "$runroot/home" "$runroot/data" \
     "$runroot/config" "$runroot/cache"
+modern_activities="$runroot/activities"
+mkdir -p "$modern_activities"
+ln -sfn "$prefix/share/sugar/activities/Help.activity" \
+    "$modern_activities/Help.activity"
 test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2
@@ -101,7 +105,7 @@ exec env \
     SUGAR_GROUP_LABELS="$runroot/group-labels.json" \
     SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
-    SUGAR_ACTIVITIES_PATH="$prefix/share/sugar/activities" \
+    SUGAR_ACTIVITIES_PATH="$modern_activities" \
     SUGAR_WINDOWED="${SUGAR_WINDOWED:-0}" \
     PYTHONPATH="$project_root/gtk4-overlay/src:$project_root/sugar-overlay/src:$datastore_site:$datastore/src:$shell/src:$toolkit/src" \
     GI_TYPELIB_PATH="$libdir/girepository-1.0" \

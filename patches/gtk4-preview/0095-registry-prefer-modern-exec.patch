@@ -1,0 +1,24 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: prefer modern bundle over duplicate GTK3 entry
+
+The GTK4 Help bundle intentionally keeps Sugar's canonical bundle_id, but the
+same ID is installed system-wide with a GTK3 exec. Registry scan order can
+therefore select the wrong runtime. In the isolated modern Space, prefer the
+GTK4 exec when replacing a same-version duplicate.
+
+--- a/src/jarabe/model/bundleregistry.py
++++ b/src/jarabe/model/bundleregistry.py
+@@ -307,2 +307,12 @@
+         installed = self.get_bundle(bundle_id)
++        if (installed is not None and
++                os.environ.get('ASPARTAME_GTK4_PREVIEW') == '1'):
++            installed_exec = installed.get_command()
++            bundle_exec = bundle.get_command()
++            if ('sugar-activity3' in installed_exec and
++                    'sugar-activity4' in bundle_exec):
++                logging.info('Prefer GTK4 bundle %s over GTK3 duplicate',
++                             bundle_id)
++                self.remove_bundle(installed.get_path(), emit_signals=False)
++                installed = None
+ 
+         if installed is not None:
