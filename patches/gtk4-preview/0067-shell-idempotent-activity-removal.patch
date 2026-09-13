@@ -28,7 +28,7 @@ diff --git a/src/jarabe/frame/activitiestray.py b/src/jarabe/frame/activitiestra
 -        del self._buttons_by_name[home_activity.get_activity_id()]
 +        self._buttons_by_name.pop(home_activity.get_activity_id(), None)
  
- def _activate_activity(self, home_activity):
+     def _activate_activity(self, home_activity):
          if home_activity not in self._buttons:
  
 diff --git a/src/jarabe/model/shell.py b/src/jarabe/model/shell.py
