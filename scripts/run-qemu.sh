@@ -15,9 +15,11 @@ SERIAL_LOG=${SERIAL_LOG:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime
 DEV_SHARE=${DEV_SHARE:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev}
 QEMU_MONITOR=${QEMU_MONITOR:-/tmp/aspartame-qemu-monitor}
 QEMU_QMP=${QEMU_QMP:-/tmp/aspartame-qemu-qmp}
-# Keep the window floating and let the host window manager deliver keyboard
-# focus normally. Set QEMU_GRAB_ON_HOVER=on for a dedicated pointer-grab run.
-QEMU_GRAB_ON_HOVER=${QEMU_GRAB_ON_HOVER:-off}
+# Keep the window floating while automatically forwarding keyboard/pointer
+# events when the pointer is over the guest.  Without the grab, GTK4's
+# fullscreen shell can look focused on the host but QEMU never delivers F1-F8
+# to the USB keyboard.  Set QEMU_GRAB_ON_HOVER=off only for pointer-only runs.
+QEMU_GRAB_ON_HOVER=${QEMU_GRAB_ON_HOVER:-on}
 
 test -f "$ISO" || { echo "missing ISO: $ISO" >&2; exit 2; }
 mkdir -p "$(dirname "$DISK")"
