@@ -86,7 +86,14 @@ class ListView(Gtk.Box):
     def _row_activated(self, _list, row):
         uid = getattr(row, '_journal_uid', None)
         if uid:
-            self.emit('detail-clicked', uid)
+            # Defer canvas replacement until the ListBox activation dispatch
+            # has completed; swapping a rooted child synchronously triggers
+            # GTK's gtk_widget_root assertion in the GTK4 preview.
+            GLib.idle_add(self._activate_detail, uid)
+
+    def _activate_detail(self, uid):
+        self.emit('detail-clicked', uid)
+        return GLib.SOURCE_REMOVE
 
     def update_with_query(self, query_dict):
         self._query = dict(query_dict or {})
