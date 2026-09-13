@@ -1,0 +1,20 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: focus the GTK4 overlay after controller setup
+
+The top-level key controller only receives events when the fullscreen shell
+owns keyboard focus. Explicitly focus the shell overlay after attaching the
+controller so startup and Activity return both have a deterministic focus
+target.
+
+---
+ src/jarabe/main.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -300,3 +300,4 @@ def _setup_main_window(shell_instance):
+         zoom_controller.connect("key-pressed", _capture_zoom_key)
+         shell_instance._main_window.add_controller(zoom_controller)
+         shell_instance._sugar_zoom_controller = zoom_controller
++        shell_instance._main_window.set_focus(shell_instance._overlay)

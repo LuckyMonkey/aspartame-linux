@@ -14,7 +14,7 @@ def test_single_process_activity_activation_reuses_window():
 def test_activity_activation_guard_is_routed_by_guest_build():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "*0047*) target=\"$toolkit\"" in build
-    assert "*0048*|*0049*|*0050*) target=\"$root/sources/sugar\"" in build
+    assert "*0048*|*0049*|*0050*|*0051*) target=\"$root/sources/sugar\"" in build
     assert '"$patch_name" == *0047*' in build
 
 
@@ -42,6 +42,13 @@ def test_frame_and_journal_keys_are_captured_by_gtk4_shell():
     assert "Gdk.KEY_F6" in patch
     assert "notify_key_press()" in patch
     assert "journalactivity.get_journal().show_journal()" in patch
+
+
+def test_gtk4_overlay_focus_patch_is_routed():
+    patch = (ROOT / "patches/gtk4-preview/0051-main-focus-overlay.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "set_focus(shell_instance._overlay)" in patch
+    assert "*0051*" in build
 
 
 def test_shell_exposes_semantic_journal_action():
