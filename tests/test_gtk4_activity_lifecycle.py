@@ -85,6 +85,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
 
     assert 'test -x "$venv/bin/sugar-activity4"' in build
     assert 'test -x "$venv/bin/sugar-activity4"' in run
+    assert 'SUGAR_ACTIVITIES_PATH="$prefix/share/sugar/activities"' in run
     assert 'test -f "$prefix/share/sugar/activities/Log.activity/activity/activity.info"' in run
 
 

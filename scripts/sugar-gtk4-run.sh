@@ -61,6 +61,9 @@ test -d "$prefix/share/sugar/extensions" || {
 }
 chmod 700 "$runroot"
 
+# Keep modern bundle resolution isolated from ~/Activities, where the stable
+# GTK3 Help bundle otherwise wins duplicate bundle_id lookup.
+
 display=${DISPLAY:-}
 xvfb_pid=
 if [ -z "$display" ]; then
@@ -98,6 +101,7 @@ exec env \
     SUGAR_GROUP_LABELS="$runroot/group-labels.json" \
     SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
+    SUGAR_ACTIVITIES_PATH="$prefix/share/sugar/activities" \
     SUGAR_WINDOWED="${SUGAR_WINDOWED:-0}" \
     PYTHONPATH="$project_root/gtk4-overlay/src:$project_root/sugar-overlay/src:$datastore_site:$datastore/src:$shell/src:$toolkit/src" \
     GI_TYPELIB_PATH="$libdir/girepository-1.0" \
