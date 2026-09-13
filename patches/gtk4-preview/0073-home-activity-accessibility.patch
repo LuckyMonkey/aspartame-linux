@@ -1,0 +1,22 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: expose Activity icons to accessibility clients
+
+GTK4 Home Activity icons are custom Sugar widgets, so they do not inherit a
+useful accessible name automatically. Give each icon a button role while
+retaining Sugar's custom rendering and activation behavior.
+
+---
+ src/jarabe/desktop/favoritesview.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/jarabe/desktop/favoritesview.py b/src/jarabe/desktop/favoritesview.py
+--- a/src/jarabe/desktop/favoritesview.py
++++ b/src/jarabe/desktop/favoritesview.py
+@@ -374,6 +374,10 @@ class ActivityIcon(CanvasIcon):
+         CanvasIcon.__init__(self, cache=True,
+                             file_name=activity_info.get_icon())
+
++        self.set_focusable(True)
++        self.update_property([Gtk.AccessibleProperty.LABEL],
++                             [activity_info.get_name()])
++        self.set_accessible_role(Gtk.AccessibleRole.BUTTON)

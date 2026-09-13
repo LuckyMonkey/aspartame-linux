@@ -176,6 +176,14 @@ def test_zoom_shortcuts_dismiss_frame_overlay():
     assert "*0071*" in build
 
 
+def test_home_activity_icons_expose_accessible_identity():
+    patch = (ROOT / "patches/gtk4-preview/0073-home-activity-accessibility.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "Gtk.AccessibleProperty.LABEL" in patch
+    assert "Gtk.AccessibleRole.BUTTON" in patch
+    assert "*0073*" in build
+
+
 def test_shell_exposes_semantic_journal_action():
     patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
     assert "def ShowJournal" in patch
