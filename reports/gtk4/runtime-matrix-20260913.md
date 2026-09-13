@@ -18,3 +18,10 @@ defaults to `grab-on-hover=on`; this preserves a floating/resizable window while
 ensuring USB keyboard events reach the guest. F8 was re-proven after restart;
 F1–F4 remain the next GTK4 input frontier because no view transition is visible
 despite the GTK4 window owning EWMH focus.
+
+The 0089 descendant-capture build is valid and deployed, but fresh runtime
+testing still shows the same no-op F1–F4 result. A duplicate GTK4 process was
+also found after restart and removed; only one modern shell now owns workspace 1.
+Physical F7/F8 round-trips remain intermittent, while direct `gtk3`/`gtk4`
+controller commands switch deterministically. This points to global X11 key
+grab ownership as the remaining input issue, not a GTK4 view-rendering failure.
