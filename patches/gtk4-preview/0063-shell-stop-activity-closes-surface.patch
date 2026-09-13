@@ -1,0 +1,6 @@
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -94,2 +94,3 @@
+         activity.stop()
++        activity.close_window()
+         return True

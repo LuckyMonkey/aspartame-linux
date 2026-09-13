@@ -101,6 +101,16 @@ def test_native_help_activity_is_staged_for_modern_space():
     assert 'ln -sfn "$help_activity" "$activity_dir/Help.activity"' in build
 
 
+def test_shell_stop_activity_is_authoritative_and_terminates_child():
+    stop = (ROOT / "patches/gtk4-preview/0062-shell-stop-activity-action.patch").read_text()
+    terminate = (ROOT / "patches/gtk4-preview/0064-shell-stop-activity-terminates-process.patch").read_text()
+    fallback = (ROOT / "patches/gtk4-preview/0065-shell-stop-activity-pid-fallback.patch").read_text()
+    assert "def StopActivity(self, activity_id)" in stop
+    assert "get_activity_by_id" in stop
+    assert "os.kill(pid, 15)" in terminate
+    assert "activity_id.encode()" in fallback
+
+
 def test_shell_exposes_semantic_journal_action():
     patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
     assert "def ShowJournal" in patch

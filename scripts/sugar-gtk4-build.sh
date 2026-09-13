@@ -51,7 +51,7 @@ for patch in "$patch_dir"/*.patch; do
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
     patch_name=$(basename "$patch")
@@ -134,6 +134,18 @@ for patch in "$patch_dir"/*.patch; do
         grep -q '"ASPARTAME_GTK4_PREVIEW": "1"' "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing GTK4 activity process marker: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0062* ]] &&
+        grep -q 'def StopActivity(self, activity_id)' "$shell/src/jarabe/view/service.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing StopActivity shell action: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0063* ]] &&
+        grep -q 'activity.close_window()' "$shell/src/jarabe/view/service.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Activity surface close: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0027* ]] &&

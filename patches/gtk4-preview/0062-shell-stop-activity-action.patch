@@ -1,0 +1,13 @@
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -87,2 +87,10 @@
+         shell.get_model().notify_launch_failed(activity_id)
++    @service.method(_DBUS_SHELL_IFACE, in_signature="s", out_signature="b")
++    def StopActivity(self, activity_id):
++        """Stop an Activity through the authoritative shell model."""
++        activity = self._shell_model.get_activity_by_id(activity_id)
++        if activity is None:
++            return False
++        activity.stop()
++        return True
+     @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')

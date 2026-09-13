@@ -1,0 +1,20 @@
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -100,6 +100,17 @@
+                 os.kill(pid, 15)
+             except ProcessLookupError:
+                 pass
++        if not pid:
++            for entry in os.listdir("/proc"):
++                if not entry.isdigit():
++                    continue
++                try:
++                    with open(os.path.join("/proc", entry, "cmdline"), "rb") as stream:
++                        if activity_id.encode() in stream.read():
++                            os.kill(int(entry), 15)
++                            break
++                except (FileNotFoundError, PermissionError, ProcessLookupError):
++                    continue
+         return True
+     @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
+     def ShowJournal(self):
