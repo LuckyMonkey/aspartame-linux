@@ -5,6 +5,13 @@ ROOT = Path(__file__).parents[1]
 PATCH_DIR = ROOT / "patches/gtk4-preview"
 
 
+def test_repeated_lifecycle_probe_uses_authoritative_shell_stop():
+    probe = (ROOT / "scripts/sugar-gtk4-lifecycle-probe.sh").read_text()
+    assert "LaunchBundle" in probe
+    assert "StopActivity" in probe
+    assert "cleanup=PASS" in probe
+
+
 def _patch(name):
     return (PATCH_DIR / name).read_text()
 
