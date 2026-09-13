@@ -66,6 +66,8 @@ for patch in "$patch_dir"/*.patch; do
         *0091*) target="$root/sources/sugar" ;;
         *0092*) target="$root/sources/sugar" ;;
         *0094*) target="$root/sources/sugar" ;;
+        *0095*) target="$root/sources/sugar" ;;
+        *0096*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0070*|*0071*|*0073*|*0074*|*0075*|*0076*|*0079*|*0080*|*0081*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
@@ -384,6 +386,18 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified workspace-gated GTK4 key grabber: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0095* ]] &&
+        grep -q "Prefer GTK4 bundle" "$shell/src/jarabe/model/bundleregistry.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified modern bundle precedence: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0096* ]] &&
+        grep -q "Modern bundle lookup failed" "$shell/src/jarabe/model/bundleregistry.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified modern get_bundle override: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0080* ]] &&
         grep -q '_overlay.set_focusable(True)' "$shell/src/jarabe/main.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
@@ -456,6 +470,16 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "applied workspace-gated GTK4 key grabber: $patch_name"
+    elif [[ "$patch_name" == *0095* ]] &&
+        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch -p1 < "$patch" >/dev/null)
+        printf '%s\n' "$patch_digest" > "$stamp"
+        echo "applied modern bundle precedence: $patch_name"
+    elif [[ "$patch_name" == *0096* ]] &&
+        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch -p1 < "$patch" >/dev/null)
+        printf '%s\n' "$patch_digest" > "$stamp"
+        echo "applied modern get_bundle override: $patch_name"
     elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0040* || "$patch_name" == *0041* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0045* || "$patch_name" == *0046* || "$patch_name" == *0047* || "$patch_name" == *0048* || "$patch_name" == *0049* || "$patch_name" == *0050* || "$patch_name" == *0051* || "$patch_name" == *0052* || "$patch_name" == *0053* || "$patch_name" == *0054* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)

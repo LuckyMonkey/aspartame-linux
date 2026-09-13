@@ -25,3 +25,9 @@ also found after restart and removed; only one modern shell now owns workspace 1
 Physical F7/F8 round-trips remain intermittent, while direct `gtk3`/`gtk4`
 controller commands switch deterministically. This points to global X11 key
 grab ownership as the remaining input issue, not a GTK4 view-rendering failure.
+
+Activity lifecycle regression: PASS. The real Journal `LaunchBundle` path now
+completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
+calls returned true and cleanup passed. The prior rejection was caused by
+duplicate canonical bundle IDs resolving to the GTK3 bundle before the GTK4
+entry.

@@ -1,0 +1,29 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: override duplicate lookup with modern bundle
+
+Some registry instances are populated before the modern activity path is
+applied. Ensure get_bundle() never hands the GTK4 launcher a GTK3 duplicate by
+re-scanning the isolated modern activity directory on demand.
+
+--- a/src/jarabe/model/bundleregistry.py
++++ b/src/jarabe/model/bundleregistry.py
+@@ -246,6 +246,19 @@
+     def get_bundle(self, bundle_id):
+         """Returns an bundle given his service name"""
+         with self._lock:
+             for bundle in self._bundles:
+                 if bundle.get_bundle_id() == bundle_id:
++                    if (os.environ.get('ASPARTAME_GTK4_PREVIEW') == '1' and
++                            'sugar-activity3' in bundle.get_command()):
++                        modern_dir = os.environ.get('SUGAR_ACTIVITIES_PATH')
++                        if modern_dir:
++                            candidate = os.path.join(modern_dir,
++                                                     os.path.basename(bundle.get_path()))
++                            try:
++                                modern = bundle_from_dir(candidate)
++                                if (modern is not None and
++                                        'sugar-activity4' in modern.get_command()):
++                                    return modern
++                            except Exception:
++                                logging.exception('Modern bundle lookup failed')
+                     return bundle
