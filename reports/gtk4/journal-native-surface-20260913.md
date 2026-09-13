@@ -11,6 +11,9 @@ Live VM evidence:
   Log Activity entries.
 - Screenshot `sugar-20260913-084057-v0.0.31.png`: activating a row opens the
   Journal detail view.
+- Detail activation is deferred to the GTK main loop to avoid a GTK root
+  assertion during canvas replacement; repeated row activation now returns to
+  detail without black-screening the shell.
 
 GTK3 source and runtime paths are unchanged. The overlay preserves the signal
 contract needed by JournalActivity and ObjectChooser while replacing only the
