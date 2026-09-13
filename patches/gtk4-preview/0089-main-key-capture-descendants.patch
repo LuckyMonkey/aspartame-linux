@@ -8,7 +8,7 @@ child.
 
 --- a/src/jarabe/main.py
 +++ b/src/jarabe/main.py
-@@ -338,6 +338,14 @@
+@@ -338,2 +338,9 @@
          shell_instance._main_window.add_controller(zoom_controller)
 +        for _focus_surface in (shell_instance._overlay, shell_instance.stack):
 +            _surface_controller = Gtk.EventControllerKey()
