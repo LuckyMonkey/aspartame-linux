@@ -4,7 +4,12 @@
 
 The isolated GTK4 preview now has a verified Sugar Home workspace in QEMU. The stable GTK3 desktop remains production; GTK4 is an explicitly isolated preview with its own workspace, private Wayland runtime, and mounted source tree.
 
-The 2026-09-05 checkpoint proves full-screen Home rendering, GTK3/GTK4 workspace switching, and an anchored Sugar palette on a secondary click. Activity lifecycle remains pending until a migrated Activity registers its D-Bus service successfully.
+The original 2026-09-05 checkpoint proved full-screen Home rendering,
+GTK3/GTK4 workspace switching, and an anchored Sugar palette. Since then, the
+GTK4 Space has verified real Log/Help Activity launch, input, Journal resume,
+stop cleanup, F1–F6 navigation, and repeated lifecycle evidence in
+`reports/gtk4/`. Full parity across every Activity and accessibility surface
+remains an active conversion goal.
 
 ![GTK4 Home full-screen](reports/gtk4/gtk4-home-fullscreen-20260905.png)
 
@@ -105,7 +110,7 @@ capture details, and the complete representative set.
 
 ## GTK4 preview checkpoint
 
-The live QEMU proof is stored in [GTK4 Home full-screen](reports/gtk4/gtk4-home-fullscreen-20260905.png) (SHA-256 921fd6836244221953eb65c51cd1cb5620930236cc426a7d00df149ec2d7ee84) and [GTK4 Sugar palette](reports/gtk4/gtk4-palette-20260905.png) (SHA-256 bb57a28e05a643a2245a83ececc5b8ee223b3a47c89ce3d4ddfe6f4b74a9a8f0). The palette is black, anchored to the Log icon, and uses Sugar menu styling. Run scripts/sugar-gtk4-runtime-check.sh gtk3 or gtk4 inside the guest to verify the active workspace and process. Activity lifecycle remains pending.
+The live QEMU proof is stored in [GTK4 Home full-screen](reports/gtk4/gtk4-home-fullscreen-20260905.png) (SHA-256 921fd6836244221953eb65c51cd1cb5620930236cc426a7d00df149ec2d7ee84) and [GTK4 Sugar palette](reports/gtk4/gtk4-palette-20260905.png) (SHA-256 bb57a28e05a643a2245a83ececc5b8ee223b3a47c89ce3d4ddfe6f4b74a9a8f0). The palette is black, anchored to the Log icon, and uses Sugar menu styling. Run `scripts/sugar-gtk4-runtime-check.sh gtk3` or `gtk4` inside the guest to verify the active workspace and process. Current lifecycle and Space evidence is documented under `reports/gtk4/`; broader parity remains pending.
 
 ## Sugar development
 
