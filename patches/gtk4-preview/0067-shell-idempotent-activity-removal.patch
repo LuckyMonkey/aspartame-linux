@@ -1,0 +1,44 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aspartame contributors <devnull@aspartame.local>
+Date: Sat, 13 Sep 2026 00:00:00 +0000
+Subject: [PATCH] shell: make duplicate Activity removal harmless
+
+Activity shutdown can race the D-Bus NameOwnerChanged callback.  Treat a
+second removal notification as a no-op and make the Frame tray defensive so a
+stale signal cannot leave a fatal traceback or stale button state.
+---
+ src/jarabe/frame/activitiestray.py | 8 +++++++-
+ src/jarabe/model/shell.py          | 3 +++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/src/jarabe/frame/activitiestray.py b/src/jarabe/frame/activitiestray.py
+--- a/src/jarabe/frame/activitiestray.py
++++ b/src/jarabe/frame/activitiestray.py
+@@ -356,9 +356,15 @@ class ActivitiesTray(Gtk.Box):
+     def __activity_removed_cb(self, home_model, home_activity):
+         logging.debug('__activity_removed_cb: %r', home_activity)
+-        button = self._buttons[home_activity]
++        button = self._buttons.pop(home_activity, None)
++        if button is None:
++            # ShellModel may report a duplicate removal when the Activity
++            # process and its D-Bus name disappear concurrently.
++            return
+         self.remove_item(button)
+-        del self._buttons[home_activity]
+-        del self._buttons_by_name[home_activity.get_activity_id()]
++        self._buttons_by_name.pop(home_activity.get_activity_id(), None)
+
+     def _activate_activity(self, home_activity):
+         if home_activity not in self._buttons:
+diff --git a/src/jarabe/model/shell.py b/src/jarabe/model/shell.py
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -774,6 +774,9 @@ class ShellModel(GObject.GObject):
+                 self._set_active_activity(None)
+                 self.set_zoom_level(self._desktop_level)
+
++        if home_activity not in self._activities:
++            return
++
+         self.emit('activity-removed', home_activity)
+         self._activities.remove(home_activity)

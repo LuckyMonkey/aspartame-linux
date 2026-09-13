@@ -127,6 +127,14 @@ def test_child_exit_notifies_shell_without_self_dbus_roundtrip():
     assert "+        dbus.Interface(shell" not in patch
 
 
+def test_activity_removal_is_idempotent_in_shell_and_frame():
+    patch = (ROOT / "patches/gtk4-preview/0067-shell-idempotent-activity-removal.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "self._buttons.pop(home_activity, None)" in patch
+    assert "home_activity not in self._activities" in patch
+    assert "*0067*" in build
+
+
 def test_shell_exposes_semantic_journal_action():
     patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
     assert "def ShowJournal" in patch
