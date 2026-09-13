@@ -79,6 +79,12 @@ def test_journal_surface_receives_semantic_sugar_keys():
     assert "semantic_keys.add_window(journal)" in patch
 
 
+def test_home_surface_handles_semantic_zoom_keys():
+    patch = (ROOT / "patches/gtk4-preview/0085-home-semantic-zoom-keys.patch").read_text()
+    assert "zoom_levels =" in patch
+    assert "ShellModel.ZOOM_MESH" in patch
+
+
 def test_gtk4_overlay_focus_patch_is_routed():
     patch = (ROOT / "patches/gtk4-preview/0051-main-focus-overlay.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()

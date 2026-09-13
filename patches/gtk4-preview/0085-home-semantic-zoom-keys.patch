@@ -1,0 +1,22 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: handle zoom keys on focused Home surface
+
+Home owns focus for the default shell view. Route Sugar's semantic zoom keys
+from its GTK4 event controller as well as the top-level controller so F1/F2
+cannot be consumed by the search widget or focus chain.
+
+--- a/src/jarabe/desktop/homewindow.py
++++ b/src/jarabe/desktop/homewindow.py
+@@ -202,6 +202,17 @@
+     def __key_pressed_cb(self, controller, keyval, keycode, state):
++        zoom_levels = {
++            Gdk.KEY_F1: ShellModel.ZOOM_MESH,
++            Gdk.KEY_F2: ShellModel.ZOOM_GROUP,
++            Gdk.KEY_F3: ShellModel.ZOOM_HOME,
++            Gdk.KEY_F4: ShellModel.ZOOM_ACTIVITY,
++        }
++        if keyval in zoom_levels:
++            shell.get_model().set_zoom_level(zoom_levels[keyval])
++            return True
++
+         if self.__is_alt(keyval, state) and not getattr(self, '_alt_held', False):
