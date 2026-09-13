@@ -14,4 +14,9 @@
   datastore, then make the ListView stack expose an explicit empty state after
   readiness (or a timeout) without relying on GTK3 TreeView behavior.
 
+Follow-up patch `0076-journal-result-readiness-diagnostics.patch` adds traceback
+logging around `find_ids()`. The live repro still produces no readiness error,
+which narrows the issue to callback/GTK presentation sequencing rather than a
+datastore D-Bus exception.
+
 Validation: `timeout 300 /mnt/aspartame-dev/scripts/sugar-gtk4-build.sh` → PASS.
