@@ -91,6 +91,12 @@ def test_home_zoom_selects_gtk4_view_stack():
     assert "set_visible_child_name('group')" in patch
 
 
+def test_semantic_zoom_actions_patch_is_present():
+    patch = (ROOT / "patches/gtk4-preview/0087-shell-show-zoom-actions.patch").read_text()
+    assert "def ShowNeighborhood" in patch
+    assert "def ShowGroup" in patch
+
+
 def test_gtk4_overlay_focus_patch_is_routed():
     patch = (ROOT / "patches/gtk4-preview/0051-main-focus-overlay.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
