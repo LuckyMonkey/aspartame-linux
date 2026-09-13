@@ -10,10 +10,12 @@ SOCKET = "/tmp/aspartame-qemu-qmp"
 
 
 def _reply(sock):
+    """Read one QMP JSON line, including the initial greeting."""
     data = b""
-    while b'"return"' not in data and b'"error"' not in data:
+    while b"\n" not in data:
         data += sock.recv(4096)
-    return json.loads(data.decode())
+    line, _, _rest = data.partition(b"\n")
+    return json.loads(line.decode())
 
 
 def _command(sock, events):

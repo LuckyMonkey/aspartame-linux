@@ -22,7 +22,9 @@ class HelpActivity(SimpleActivity):
         search = Gtk.Entry()
         search.set_placeholder_text("Search help")
         search.set_hexpand(True)
-        search.set_accessible_name("Search help")
+        search.update_property(
+            [Gtk.AccessibleProperty.LABEL], ["Search help"]
+        )
         root.append(search)
         input_status = Gtk.Label(label="Keyboard ready")
         input_status.set_halign(Gtk.Align.START)

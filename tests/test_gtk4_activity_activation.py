@@ -31,6 +31,13 @@ def test_qemu_pointer_helper_uses_absolute_tablet_events():
     assert 'input-send-event' in helper
     assert '"type": "abs"' in helper
     assert '"type": "btn"' in helper
+    assert 'initial greeting' in helper
+
+
+def test_qemu_key_helper_supports_activity_text_input():
+    helper = (ROOT / "scripts/qemu-send-key.py").read_text()
+    assert 'KEYCODES.update' in helper
+    assert 'or A..Z' in helper
 
 
 def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
