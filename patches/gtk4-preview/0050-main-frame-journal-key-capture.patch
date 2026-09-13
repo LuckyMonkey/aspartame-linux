@@ -1,0 +1,28 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: route Frame and Journal keys through GTK4 window
+
+The GTK3 global key grab cannot own F5/F6 while the modern Space is active.
+Handle those Sugar semantic actions in the GTK4 top-level capture controller;
+the Frame remains the native GTK4 overlay and Journal uses the existing
+shell-owned presentation.
+
+---
+ src/jarabe/main.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -291,4 +291,12 @@ def _setup_main_window(shell_instance):
+         zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+
+         def _capture_zoom_key(_controller, keyval, _keycode, _state):
++            if keyval == Gdk.KEY_F5:
++                from jarabe.journal import journalactivity
++                journalactivity.get_journal().show_journal()
++                return True
++            if keyval == Gdk.KEY_F6:
++                from jarabe import frame
++                frame.get_view().notify_key_press()
++                return True
+             level = zoom_keys.get(keyval)
