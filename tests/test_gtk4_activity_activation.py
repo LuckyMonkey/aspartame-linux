@@ -74,6 +74,11 @@ def test_journal_unique_values_uses_datastore_variant_dictionary():
     assert "get_uniquevaluesfor" in patch
 
 
+def test_journal_surface_receives_semantic_sugar_keys():
+    patch = (ROOT / "patches/gtk4-preview/0084-main-journal-key-routing.patch").read_text()
+    assert "semantic_keys.add_window(journal)" in patch
+
+
 def test_gtk4_overlay_focus_patch_is_routed():
     patch = (ROOT / "patches/gtk4-preview/0051-main-focus-overlay.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
