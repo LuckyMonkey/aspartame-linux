@@ -10,7 +10,7 @@ Fresh guest evidence from the 1920×1080 QEMU display after commit 1062ed8:
 | Journal | F5 / `ShowJournal` now renders the native GTK4 Journal list and search bar | PASS: fresh capture `sugar-20260913-100306-v0.0.31.png` |
 | Datastore contract | `get_uniquevaluesfor` was sending `a{ss}` to declared `a{sv}`; root-owned Xapian index also blocked startup | FIXED: 0083 plus user-owned runtime |
 | Frame | `ShowFrame` renders Sugar Frame chrome and controls | PASS: fresh capture `sugar-20260913-100255-v0.0.31.png` |
-| Zoom/Spaces | F3 returns Journal → Home (`sugar-20260913-100430-v0.0.31.png`); after 0084, F1 from focused Journal returns to shell Home. F1 from Home still has no visible Neighborhood transition. Direct `sugar-gtk4-space.sh gtk3`/`gtk4` probes move EWMH workspace 0↔1 correctly | PARTIAL: Journal key focus fixed; Neighborhood/Group view rendering remains |
+| Zoom/Spaces | Semantic `ShowNeighborhood` and `ShowGroup` actions now render dedicated GTK4 views (`sugar-20260913-104603-v0.0.31.png`, `sugar-20260913-104618-v0.0.31.png`); F3 returns Journal → Home. Direct F7/F8 coordinator probes move EWMH workspace 0↔1 | PASS for view stack/actions; physical F1/F2 delivery still needs final evidence |
 
 The datastore failure is resolved in the current runtime: both the shell and
 preview datastore remain alive, and Journal now renders. The next pass should
