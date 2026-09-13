@@ -23,35 +23,40 @@ export ASPARTAME_GTK4_PREVIEW=1
 # SSH and sudo commonly preserve a host/root bus address. Always bind this
 # controller to the bus owned by the Metacity session it is configuring.
 unset DBUS_SESSION_BUS_ADDRESS
-session_pid=$(pgrep -u "$(id -u)" -x metacity | head -1)
-[ -n "$session_pid" ] || {
-    echo 'Cannot locate the Metacity session bus.' >&2
-    exit 2
-}
-while IFS= read -r -d '' entry; do
-    case "$entry" in
-        DBUS_SESSION_BUS_ADDRESS=*) export "$entry" ;;
-    esac
-done < "/proc/$session_pid/environ"
-[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] || {
-    echo 'Metacity has no D-Bus session address.' >&2
-    exit 2
-}
+session_pid=$(pgrep -u "$(id -u)" -x metacity | head -1 || true)
+if [ -n "$session_pid" ] && [ -r "/proc/$session_pid/environ" ]; then
+    while IFS= read -r -d '' entry; do
+        case "$entry" in
+            DBUS_SESSION_BUS_ADDRESS=*) export "$entry" ;;
+        esac
+    done < "/proc/$session_pid/environ"
+fi
+# Workspace switching uses EWMH and remains valid even when Metacity was
+# launched without a session bus (common in recovery/reload sessions).  Only
+# the optional gsettings keybinding setup needs D-Bus.
+have_gsettings_bus=0
+[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] && have_gsettings_bus=1
 
-workspace_count=$(gsettings get org.gnome.desktop.wm.preferences num-workspaces)
-if [ "$workspace_count" -lt 2 ]; then
-    gsettings set org.gnome.desktop.wm.preferences num-workspaces 2
+if [ "$have_gsettings_bus" -eq 1 ]; then
+    workspace_count=$(gsettings get org.gnome.desktop.wm.preferences num-workspaces)
+    if [ "$workspace_count" -lt 2 ]; then
+        gsettings set org.gnome.desktop.wm.preferences num-workspaces 2
+    fi
 fi
 
 # F1-F6 retain Sugar navigation. F7 and F8 select the two test spaces.
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 \
-    "['F7', '<Super>Home']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 \
-    "['F8']"
-key_one=$(gsettings get org.gnome.desktop.wm.keybindings switch-to-workspace-1)
-key_two=$(gsettings get org.gnome.desktop.wm.keybindings switch-to-workspace-2)
-if [[ "$key_one" != *F7* || "$key_two" != *F8* ]]; then
-    echo 'Metacity keybindings unavailable; semantic Space switching remains enabled.' >&2
+if [ "$have_gsettings_bus" -eq 1 ]; then
+    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 \
+        "['F7', '<Super>Home']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 \
+        "['F8']"
+    key_one=$(gsettings get org.gnome.desktop.wm.keybindings switch-to-workspace-1)
+    key_two=$(gsettings get org.gnome.desktop.wm.keybindings switch-to-workspace-2)
+    if [[ "$key_one" != *F7* || "$key_two" != *F8* ]]; then
+        echo 'Metacity keybindings unavailable; semantic Space switching remains enabled.' >&2
+    fi
+else
+    echo 'Metacity session bus unavailable; semantic EWMH Space switching remains enabled.' >&2
 fi
 
 gtk4_pid() {
