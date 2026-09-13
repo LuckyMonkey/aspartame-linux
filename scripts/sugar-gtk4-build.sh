@@ -46,12 +46,12 @@ mkdir -p "$patch_state"
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*|*0047*) target="$toolkit" ;;
         *0029*) target="$log_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0047*|*0048*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
     patch_name=$(basename "$patch")
@@ -70,6 +70,21 @@ for patch in "$patch_dir"/*.patch; do
     if [[ "$patch_name" == *0043* ]] && grep -q "model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Journal stack zoom: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0041* ]] && grep -q "_sugar_zoom_controller" "$shell/src/jarabe/main.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified obsolete zoom-controller removal: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0048* ]] && grep -q "_sugar_zoom_controller" "$shell/src/jarabe/main.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing top-level zoom capture: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0049* ]] && grep -q "def ShowJournal" "$shell/src/jarabe/view/service.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing semantic Journal action: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0004* ]] && grep -q "def get_environment" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
@@ -198,7 +213,7 @@ for patch in "$patch_dir"/*.patch; do
     elif git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "verified existing preview patch: $patch_name"
-    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0040* || "$patch_name" == *0041* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0045* || "$patch_name" == *0046* || "$patch_name" == *0047* || "$patch_name" == *0048* ]] &&
+    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0040* || "$patch_name" == *0041* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0045* || "$patch_name" == *0046* || "$patch_name" == *0047* || "$patch_name" == *0048* || "$patch_name" == *0049* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"

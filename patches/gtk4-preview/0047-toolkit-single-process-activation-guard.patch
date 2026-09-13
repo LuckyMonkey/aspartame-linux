@@ -14,7 +14,7 @@ present it on subsequent activations.
 diff --git a/src/sugar4/activity/activityinstance.py b/src/sugar4/activity/activityinstance.py
 --- a/src/sugar4/activity/activityinstance.py
 +++ b/src/sugar4/activity/activityinstance.py
-@@ -206,8 +206,16 @@
+@@ -206,7 +206,13 @@
      app = Gtk.Application(application_id=bundle.get_bundle_id())
  
      def on_activate(app):

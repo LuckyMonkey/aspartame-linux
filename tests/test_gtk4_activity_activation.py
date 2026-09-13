@@ -13,7 +13,8 @@ def test_single_process_activity_activation_reuses_window():
 
 def test_activity_activation_guard_is_routed_by_guest_build():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "*0047*|*0048*) target=\"$root/sources/sugar\"" in build
+    assert "*0047*) target=\"$toolkit\"" in build
+    assert "*0048*|*0049*) target=\"$root/sources/sugar\"" in build
     assert '"$patch_name" == *0047*' in build
 
 
@@ -29,3 +30,10 @@ def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
         assert key in patch
     assert "Gtk.PropagationPhase.CAPTURE" in patch
     assert "_sugar_zoom_controller" in patch
+
+
+def test_shell_exposes_semantic_journal_action():
+    patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
+    assert "def ShowJournal" in patch
+    assert "journal.show_journal()" in patch
+    assert "model.ZOOM_ACTIVITY" in patch

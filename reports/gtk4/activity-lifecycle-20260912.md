@@ -42,3 +42,12 @@ instance was terminated with `SIGKILL`; after three seconds its process count
 was zero and no `org.laptop.Activity*` name remained on the session bus. The
 GTK4 shell was back at Home in
 `reports/screenshots/sugar-20260912-115727-v0.0.31.png` (1920x1080).
+
+Semantic Journal action (2026-09-12 20:04 EDT) called
+`org.laptop.Shell.ShowJournal` on the rebuilt GTK4 shell and received boolean
+`true`. The resulting 1920x1080 capture,
+`reports/screenshots/sugar-20260912-200432-v0.0.31.png`, visibly shows the
+GTK4 Journal surface with the Sugar toolbar, `Search in Journal` field,
+activity/device controls, and project list surface. This proves shell-owned
+Journal construction and presentation through the GTK4 stack; Journal search,
+resume/open, and complete GTK3 parity remain separate gates.

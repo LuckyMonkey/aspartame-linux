@@ -1,0 +1,30 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: expose a semantic ShowJournal action
+
+The GTK4 shell must be testable through the same semantic action used by F4,
+without depending on a physical-key harness. Expose a narrow D-Bus method that
+constructs the existing JournalActivity, reveals its main view, and enters the
+Activity zoom level. This is also useful to accessibility and Spaces tooling.
+
+---
+ src/jarabe/view/service.py | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/src/jarabe/view/service.py b/src/jarabe/view/service.py
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -88,3 +88,14 @@ class UIService(service.Object):
+     def NotifyLaunchFailure(self, activity_id):
+         shell.get_model().notify_launch_failed(activity_id)
+
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowJournal(self):
++        """Reveal the GTK4 Journal through a semantic shell action."""
++        from jarabe.journal import journalactivity
++        journal = journalactivity.get_journal()
++        journal.show_journal()
++        model = shell.get_model()
++        model._set_active_activity(model.get_activity_by_id(
++            journal.activity_id))
++        model.set_zoom_level(model.ZOOM_ACTIVITY)
++        return True
