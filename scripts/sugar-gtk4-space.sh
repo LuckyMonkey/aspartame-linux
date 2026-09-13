@@ -56,12 +56,19 @@ if [[ "$key_one" != *"'F7'"* || "$key_two" != *"'F8'"* ]]; then
 fi
 
 gtk4_pid() {
-    pgrep -f "^$root/venv/bin/python $root/sources/sugar/src/jarabe/main.py$" |
-        head -1
+    for pid in $(pgrep -u "$(id -u)" -f 'python3 -m jarabe\.main|jarabe/main.py'); do
+        tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
+            grep -qx 'ASPARTAME_GTK4_PREVIEW=1' && { echo "$pid"; return; }
+    done
 }
 
 gtk3_pid() {
-    pgrep -u "$(id -u)" -f '^python3 -m jarabe\.main$' | head -1
+    for pid in $(pgrep -u "$(id -u)" -f 'python3 -m jarabe\.main|jarabe/main.py'); do
+        if ! tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
+            grep -q '^ASPARTAME_GTK4_PREVIEW=1$'; then
+            echo "$pid"; return
+        fi
+    done
 }
 
 require_gtk3() {
