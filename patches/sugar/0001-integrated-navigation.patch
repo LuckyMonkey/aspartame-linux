@@ -532,12 +532,14 @@
 +semantics, but release its grabs whenever Metacity has selected the modern
 +workspace.  The grab is restored when the classic workspace becomes active.
 +"""
-@@ -72,0 +11,4 @@
+@@ -72,0 +11,6 @@
 +from importlib.util import module_from_spec, spec_from_file_location
 +from pathlib import Path
 +import logging
++import os
++import subprocess
 +import sys
-@@ -74,82 +16 @@
+@@ -74,82 +18 @@
 -class KeyHandler(object):
 -
 -    def __init__(self, frame):
@@ -621,12 +623,12 @@
 -    def handle_volume_up(self, event_time):
 -        self._change_volume(step=_VOLUME_STEP)
 +import gi
-@@ -157,2 +18,2 @@
+@@ -157,2 +20,2 @@
 -    def handle_volume_down(self, event_time):
 -        self._change_volume(step=-_VOLUME_STEP)
 +gi.require_version("Wnck", "3.0")
 +from gi.repository import GLib, Wnck
-@@ -160,24 +20,0 @@
+@@ -160,24 +22,0 @@
 -    def handle_frame(self, event_time):
 -        self._frame.notify_key_press()
 -
@@ -651,7 +653,7 @@
 -        else:
 -            # get activity name and window id
 -            window_xid = activity.get_xid()
-@@ -185,2 +22,27 @@
+@@ -185,2 +24,33 @@
 -        if shell.get_model().has_modal():
 -            return
 +def _load_packaged_handler():
@@ -662,6 +664,12 @@
 +            continue
 +        candidate = (Path(entry) / "jarabe/view/keyhandler.py").resolve()
 +        if not candidate.is_file() or candidate == current:
++            continue
++        # The Aspartame overlay is present in both /usr/share and the
++        # development bind mount.  Neither is the upstream GTK3 handler; if
++        # we load either one again this loader recurses until startup crashes.
++        # Only accept the distro-installed module from Python's site-packages.
++        if "site-packages" not in candidate.parts:
 +            continue
 +        spec = spec_from_file_location("_aspartame_packaged_keyhandler", candidate)
 +        if spec is None or spec.loader is None:
@@ -681,19 +689,24 @@
 +        "KeyHandler", "setup", "get_instance"
 +    }:
 +        globals()[_name] = _value
-@@ -188 +49,0 @@
+@@ -188 +57,0 @@
 -        self._frame.hide()
-@@ -190,39 +51,2 @@
+@@ -190,4 +59,2 @@
 -        panel = ControlPanel(window_xid)
 -        activity.push_shell_window(panel)
 -        panel.connect('hide', activity.pop_shell_window)
 -        panel.show()
--
++class KeyHandler(_packaged.KeyHandler):
++    """Upstream GTK3 handler with an EWMH workspace ownership gate."""
+@@ -195,2 +62,5 @@
 -    def handle_dump_ui_tree(self, event_time):
 -        print(uitree.get_root().dump())
--
--    def _key_pressed_cb(self, grabber, keycode, state, event_time):
--        key = grabber.get_key(keycode, state)
++    def __init__(self, frame):
++        super().__init__(frame)
++        self._classic_space_active = None
++        self._space_watch_id = GLib.timeout_add(100, self._sync_space_grab)
++        self._sync_space_grab()
+@@ -200,30 +70,8 @@
 -        logging.debug('_key_pressed_cb: %i %i %s', keycode, state, key)
 -        if key is not None:
 -            self._key_pressed = key
@@ -723,19 +736,21 @@
 -                method(event_time)
 -            else:
 -                raise TypeError('Invalid action %r' % action)
-+class KeyHandler(_packaged.KeyHandler):
-+    """Upstream GTK3 handler with an EWMH workspace ownership gate."""
-@@ -230,5 +54,22 @@
--            return True
+-
++        if key in ("F7", "F8"):
++            target = "gtk3" if key == "F7" else "gtk4"
++            controller = os.environ.get(
++                "ASPARTAME_SPACE_SWITCHER",
++                "/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh",
++            )
++            logging.warning("GTK3 semantic Space key: %s", key)
++            subprocess.Popen([controller, target], close_fds=True)
+@@ -231,4 +79,18 @@
 -        # If this is not a registered key, then cancel tabbing.
 -        if self._tabbing_handler.is_tabbing():
 -            if not grabber.is_modifier(keycode):
 -                self._tabbing_handler.stop(event_time)
-+    def __init__(self, frame):
-+        super().__init__(frame)
-+        self._classic_space_active = None
-+        self._space_watch_id = GLib.timeout_add(100, self._sync_space_grab)
-+        self._sync_space_grab()
++        return super()._key_pressed_cb(grabber, keycode, state, event_time)
 +
 +    @staticmethod
 +    def _active_workspace_number():
@@ -753,7 +768,7 @@
 +        workspace = self._active_workspace_number()
 +        classic_active = workspace is None or workspace == 0
 +        if classic_active == self._classic_space_active:
-@@ -237 +78,26 @@
+@@ -237 +99,33 @@
 -        return False
 +        if classic_active:
 +            # Recreate the grabber after modern Space releases it.  The
@@ -766,7 +781,14 @@
 +                                          self._key_pressed_cb)
 +                self._key_grabber.connect('key-released',
 +                                          self._key_released_cb)
++            # Spaces keys are semantic shell actions, not upstream Sugar
++            # actions.  Include them in the passive grab explicitly so the
++            # classic Space can hand F8 back to the coordinator (and keep
++            # F7 idempotent) while the modern Space is isolated.
 +            keys = list(_actions_table.keys())
++            for space_key in ("F7", "F8"):
++                if space_key not in keys:
++                    keys.append(space_key)
 +            self._key_grabber.grab_keys(keys)
 +        else:
 +            grabber = self._key_grabber
@@ -781,7 +803,7 @@
 +            workspace,
 +        )
 +        return True
-@@ -239,7 +104,0 @@
+@@ -239,7 +132,0 @@
 -    def _key_released_cb(self, grabber, keycode, state, event_time):
 -        logging.debug('_key_released_cb: %i %i', keycode, state)
 -        if self._tabbing_handler.is_tabbing():
@@ -789,11 +811,11 @@
 -            # modifier key is raised again.
 -            if grabber.is_modifier(keycode, mask=_TABBING_MODIFIER):
 -                self._tabbing_handler.stop(event_time)
-@@ -247,2 +106 @@
+@@ -247,2 +134 @@
 -            return True
 -        return False
 +_instance = None
-@@ -253,0 +112,4 @@
+@@ -253,0 +140,4 @@
 +
 +
 +def get_instance():
