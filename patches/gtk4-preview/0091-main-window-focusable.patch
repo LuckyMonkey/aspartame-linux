@@ -12,6 +12,6 @@ physical Sugar function keys.
          shell_instance._main_window = Gtk.ApplicationWindow(application=shell_instance)
 +        shell_instance._main_window.set_focusable(True)
          shell_instance._main_window.set_title("Sugar")
-@@ -344,1 +345,2 @@
+@@ -357,1 +358,2 @@
          shell_instance._main_window.present()
 +        shell_instance._main_window.set_focus(shell_instance._overlay)
