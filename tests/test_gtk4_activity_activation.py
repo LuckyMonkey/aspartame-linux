@@ -18,12 +18,12 @@ def test_activity_activation_guard_is_routed_by_guest_build():
     assert '"$patch_name" == *0047*' in build
 
 
-def test_qemu_key_helper_uses_bounded_hmp_symbolic_keycodes():
+def test_qemu_key_helper_uses_qmp_usb_keyboard_events():
     helper = (ROOT / "scripts/qemu-send-key.py").read_text()
-    assert 'sendkey {KEYCODES[key]} 100' in helper
-    assert 'HMP' in helper
-    assert 'def _read_prompt' in helper
-    assert '_read_prompt(sock)' in helper
+    assert 'input-send-event' in helper
+    assert '"type": "key"' in helper
+    assert '"type": "qcode"' in helper
+    assert 'qmp_capabilities' in helper
 
 
 def test_qemu_pointer_helper_uses_absolute_tablet_events():

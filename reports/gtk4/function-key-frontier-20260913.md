@@ -14,11 +14,12 @@ semantic Journal canvas reparenting patch `0079`.
 
 ## Runtime frontier
 
-The GTK4 shell starts and renders Home at 1920×1080. Function-key probes sent
-through the current QEMU monitor did not change the visible view, even after
-the stale GTK3 shell process was stopped. This is now isolated as an input
-delivery/ownership issue rather than a view-construction failure: direct
-semantic D-Bus actions and pointer-driven GTK4 views remain available. The
-next pass should instrument the guest keyboard device and verify whether the
-monitor is targeting the active QEMU instance, then validate F1–F8 one key at a
-time with event logs.
+The GTK4 shell starts and renders Home at 1920×1080. The original HMP
+`sendkey` helper targeted the wrong input path; it has been replaced with QMP
+`input-send-event` events for the configured USB keyboard. The guest log now
+records `GTK4 semantic key event: F5`, proving delivery to the GTK4 process.
+
+The F5 Journal action then exposes a separate datastore failure (the service
+disconnects while querying metadata), so the next pass should repair that
+service boundary and validate F1–F8 one key at a time with event logs and
+screenshots.
