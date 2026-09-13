@@ -1,0 +1,17 @@
+--- a/src/jarabe/view/keyhandler.py	2026-09-12 20:52:45.761106934 -0400
++++ b/src/jarabe/view/keyhandler.py	2026-09-12 20:54:32.294751566 -0400
+@@ -221,8 +221,12 @@
+         self._frame.hide()
+ 
+         panel = ControlPanel(window_id)
+-        activity.push_shell_window(panel)
+-        panel.connect('hide', activity.pop_shell_window)
++        if activity is not None:
++            activity.push_shell_window(panel)
++            panel.connect('hide', activity.pop_shell_window)
++        else:
++            # Home has no Activity shell window to own the panel. GTK4 ControlPanel is transient for the shell.
++            panel.set_transient_for(shell_model._main_window)
+         panel.set_visible(True)
+ 
+     def handle_dump_ui_tree(self, event_time):
