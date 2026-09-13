@@ -35,6 +35,10 @@ attribute. The guest preview rebuild passes and the focused regression suite
 passes; a fresh QMP F-key visual recheck remains PARTIAL pending proof that the
 native grab reaches the modern shell on this X11 session.
 
+Post-rebuild lifecycle regression check (18:50 UTC): two fresh Journal-launched
+Help cycles completed with distinct PIDs/Activity IDs and immediate cleanup;
+`sugar-gtk4-lifecycle-probe.sh 2` returned `lifecycle-probe=PASS`.
+
 Activity lifecycle regression: PASS. The real Journal `LaunchBundle` path now
 completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
 calls returned true and cleanup passed. The prior rejection was caused by
