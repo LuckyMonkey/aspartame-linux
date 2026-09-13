@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+toolkit=/home/aspartame/Development/gtk4-preview/sources/sugar-toolkit-gtk4/src
+venv=/home/aspartame/Development/gtk4-preview/venv/bin/sugar-activity4
+export PYTHONPATH="$toolkit${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHON_BIN=/home/aspartame/Development/gtk4-preview/venv/bin/python
+export ASPARTAME_GTK4_PREVIEW=1
+exec "$venv" "$@"

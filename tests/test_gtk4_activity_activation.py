@@ -13,7 +13,7 @@ def test_single_process_activity_activation_reuses_window():
 
 def test_activity_activation_guard_is_routed_by_guest_build():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "*0047*) target=\"$toolkit\"" in build
+    assert "*0047*" in build and "target=\"$toolkit\"" in build
     assert '*0048*' in build and '*0057*' in build
     assert '"$patch_name" == *0047*' in build
 
@@ -85,6 +85,20 @@ def test_shell_exposes_semantic_control_panel_action():
     assert "ControlPanel(0)" in patch
     assert "getattr(self._shell_model, '_main_window', None)" in patch
     assert "*0058*)" in build
+
+
+def test_native_help_activity_is_staged_for_modern_space():
+    info = (ROOT / "packages/gtk4-help-activity/activity/activity.info").read_text()
+    source = (ROOT / "packages/gtk4-help-activity/helpactivity4.py").read_text()
+    run = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "exec = sugar-activity4 helpactivity4.HelpActivity" in info
+    assert "from sugar4.activity import SimpleActivity" in source
+    assert "def __init__(self, activity_handle=None)" in source
+    launcher = (ROOT / "packages/gtk4-help-activity/bin/sugar-activity4").read_text()
+    assert "export ASPARTAME_GTK4_PREVIEW=1" in launcher
+    assert "Help.activity/activity/activity.info" in run
+    assert 'ln -sfn "$help_activity" "$activity_dir/Help.activity"' in build
 
 
 def test_shell_exposes_semantic_journal_action():

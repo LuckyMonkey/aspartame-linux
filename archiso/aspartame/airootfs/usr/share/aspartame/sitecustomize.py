@@ -6,10 +6,13 @@ selector without modifying individual Activities.
 """
 
 import logging
+import os
 
 _LOG = logging.getLogger(__name__)
 
 try:
+    if os.environ.get("ASPARTAME_GTK4_PREVIEW") == "1":
+        raise ImportError("GTK3 bridge disabled for GTK4 activity process")
     import gi
     gi.require_version("Gdk", "3.0")
     gi.require_version("Gtk", "3.0")

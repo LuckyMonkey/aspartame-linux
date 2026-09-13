@@ -36,6 +36,10 @@ test -f "$prefix/share/sugar/activities/Log.activity/activity/activity.info" || 
     echo "missing staged GTK4 Log Activity bundle" >&2
     exit 2
 }
+test -f "$prefix/share/sugar/activities/Help.activity/activity/activity.info" || {
+    echo "missing staged GTK4 Help Activity bundle" >&2
+    exit 2
+}
 metadata_reader=$(find "$datastore_site/carquinyol" -maxdepth 1 -name 'metadatareader*.so' -print -quit)
 test -n "$metadata_reader" || { echo "missing GTK4 datastore metadata reader" >&2; exit 2; }
 command -v dbus-run-session >/dev/null || { echo "missing dbus-run-session" >&2; exit 2; }

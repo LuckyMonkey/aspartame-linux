@@ -1,0 +1,10 @@
+[Activity]
+name = Help
+activity_version = 1
+bundle_id = org.laptop.HelpActivity
+icon = activity-help
+exec = sugar-activity4 helpactivity4.HelpActivity
+license = GPLv3
+summary = Learn how Sugar works and how to use its views, Activities, Journal, and Frame.
+categories = system
+max_participants = 1

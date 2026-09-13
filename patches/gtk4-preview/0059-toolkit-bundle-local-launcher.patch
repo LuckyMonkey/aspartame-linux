@@ -1,0 +1,15 @@
+--- a/src/sugar4/activity/activityfactory.py
++++ b/src/sugar4/activity/activityfactory.py
+@@ -73,7 +73,11 @@ def get_command(bundle):
+     if launcher_name == "sugar-activity3":
+         raise RuntimeError(
+             "GTK3 bundle cannot run inside isolated GTK4 Activity compositor"
+         )
+     if launcher_name in ("sugar-activity", "sugar-activity4"):
+-        command[0] = os.environ.get("SUGAR_ACTIVITY4", "sugar-activity4")
++        # Prefer a bundle-local launcher so Activities carry their runtime
++        # boundary without relying on the shell's PATH.
++        local_launcher = os.path.join(bundle.get_path(), "bin", "sugar-activity4")
++        command[0] = (local_launcher if os.path.isfile(local_launcher)
++                      else os.environ.get("SUGAR_ACTIVITY4", "sugar-activity4"))
+     return command

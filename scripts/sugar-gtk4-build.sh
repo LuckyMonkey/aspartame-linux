@@ -46,7 +46,7 @@ mkdir -p "$patch_state"
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*|*0047*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*|*0047*|*0059*|*0060*) target="$toolkit" ;;
         *0029*) target="$log_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
@@ -275,6 +275,12 @@ if test -e "$activity_dir/Log.activity" && test ! -L "$activity_dir/Log.activity
     exit 2
 fi
 ln -sfn "$log_activity" "$activity_dir/Log.activity"
+help_activity="$repo/packages/gtk4-help-activity"
+test -f "$help_activity/activity/activity.info" || {
+    echo "missing native GTK4 Help Activity bundle: $help_activity" >&2
+    exit 2
+}
+ln -sfn "$help_activity" "$activity_dir/Help.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }
