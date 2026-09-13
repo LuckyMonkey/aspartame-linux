@@ -6,6 +6,9 @@ import sys
 
 KEYCODES = {f"F{i}": f"f{i}" for i in range(1, 13)}
 KEYCODES.update({letter: letter.lower() for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"})
+KEYCODES.update({"TAB": "tab", "ENTER": "ret", "RETURN": "ret",
+                 "ESC": "esc", "ESCAPE": "esc", "SPACE": "spc",
+                 "BACKSPACE": "backspace"})
 PROMPT = b"(qemu) "
 
 
@@ -20,7 +23,7 @@ def _read_prompt(sock):
 def main():
     key = sys.argv[1].upper() if len(sys.argv) == 2 else ""
     if key not in KEYCODES:
-        raise SystemExit(f"usage: {sys.argv[0]} F1..F12 or A..Z")
+        raise SystemExit(f"usage: {sys.argv[0]} F1..F12 or A..Z; TAB, ENTER, ESC, SPACE")
     # HMP's symbolic sendkey path targets QEMU's configured keyboard device.
     # QMP input-send-event accepts the command but, on some QEMU versions,
     # does not route it to the USB keyboard exposed to the guest.

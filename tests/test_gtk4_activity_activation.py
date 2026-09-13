@@ -37,6 +37,9 @@ def test_qemu_pointer_helper_uses_absolute_tablet_events():
 def test_qemu_key_helper_supports_activity_text_input():
     helper = (ROOT / "scripts/qemu-send-key.py").read_text()
     assert 'KEYCODES.update' in helper
+    assert '"TAB": "tab"' in helper
+    assert '"ENTER": "ret"' in helper
+    assert '"ESC": "esc"' in helper
     assert 'or A..Z' in helper
 
 
