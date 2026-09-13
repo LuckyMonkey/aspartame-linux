@@ -12,3 +12,8 @@ The shell remained alive after both cycles. The root cause of the prior
 no-reply race was synchronous self-D-Bus notification from the toolkit child
 watch. Patch `0066` now calls `shell.get_model().notify_launch_failed()`
 locally instead of synchronously calling the shell service over D-Bus.
+
+Additional visual stop probe: Help was visible, `StopActivity` returned
+`true`, PID `55673` disappeared, and the following 1920×1080 capture showed
+the Home favorites ring with no Help surface or stale Help window:
+`reports/screenshots/sugar-20260912-220348-v0.0.31.png`.
