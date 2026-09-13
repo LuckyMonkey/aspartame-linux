@@ -154,6 +154,13 @@ def test_gtk4_menuitem_preserves_sugar_set_image_api():
     assert "*0068*" in build
 
 
+def test_group_view_imports_gettext_for_empty_state():
+    patch = (ROOT / "patches/gtk4-preview/0069-groupbox-gettext-import.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "from gettext import gettext as _" in patch
+    assert "*0069*" in build
+
+
 def test_shell_exposes_semantic_journal_action():
     patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
     assert "def ShowJournal" in patch
