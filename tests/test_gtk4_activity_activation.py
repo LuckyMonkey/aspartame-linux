@@ -26,6 +26,13 @@ def test_qemu_key_helper_uses_bounded_hmp_symbolic_keycodes():
     assert '_read_prompt(sock)' in helper
 
 
+def test_qemu_pointer_helper_uses_absolute_tablet_events():
+    helper = (ROOT / "scripts/qemu-send-pointer.py").read_text()
+    assert 'input-send-event' in helper
+    assert '"type": "abs"' in helper
+    assert '"type": "btn"' in helper
+
+
 def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
     patch = (ROOT / "patches/gtk4-preview/0048-main-zoom-key-capture.patch").read_text()
     for key in ("Gdk.KEY_F1", "Gdk.KEY_F2", "Gdk.KEY_F3", "Gdk.KEY_F4"):

@@ -17,3 +17,8 @@ Additional visual stop probe: Help was visible, `StopActivity` returned
 `true`, PID `55673` disappeared, and the following 1920×1080 capture showed
 the Home favorites ring with no Help surface or stale Help window:
 `reports/screenshots/sugar-20260912-220348-v0.0.31.png`.
+
+Pointer proof: QEMU's absolute tablet event API clicked the stop control at
+guest pixel `(1888, 33)`. The Help process `55765` disappeared while shell
+PID `55327` remained alive. The reproducible helper is
+`scripts/qemu-send-pointer.py`.
