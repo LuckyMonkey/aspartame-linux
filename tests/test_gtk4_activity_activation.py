@@ -169,6 +169,13 @@ def test_compositor_key_capture_patch_is_routed():
     assert "*0070*" in build
 
 
+def test_zoom_shortcuts_dismiss_frame_overlay():
+    patch = (ROOT / "patches/gtk4-preview/0071-main-zoom-hides-frame.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "frame.get_view().hide()" in patch
+    assert "*0071*" in build
+
+
 def test_shell_exposes_semantic_journal_action():
     patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
     assert "def ShowJournal" in patch

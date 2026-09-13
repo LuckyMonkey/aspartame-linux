@@ -14,3 +14,7 @@ Runtime evidence after restarting the GTK4 shell:
 
 This preserves Activity focus for normal input while restoring Sugar's global
 semantic navigation actions. GTK3 remains a separate process/Space.
+
+The follow-up `0071` patch dismisses the Frame overlay before F1–F4 changes the
+desktop level. A live F6→F3 sequence now returns to a clear GTK4 Home ring in
+`sugar-20260912-234523-v0.0.31.png`.

@@ -1,0 +1,23 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] main: dismiss Frame when a zoom shortcut changes view
+
+The GTK4 Frame is an overlay. Direct F1-F4 capture changed the stack level but
+left the Frame panels revealed, making the destination view appear blank or
+obscured. Match Sugar's zoom action semantics by dismissing the Frame before
+switching the desktop view.
+
+---
+ src/jarabe/main.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -336,6 +336,8 @@ def _setup_main_window(shell_instance):
+             level = zoom_keys.get(keyval)
+             if level is None:
+                 return False
++            from jarabe import frame
++            frame.get_view().hide()
+             shell_instance.set_zoom_level(level)
+             return True
