@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
 
@@ -11,6 +11,7 @@ class HelpActivity(SimpleActivity):
         super().__init__(activity_handle)
         self.set_title("Sugar Help")
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        root.add_css_class("help-root")
         root.set_margin_start(32)
         root.set_margin_end(32)
         root.set_margin_top(28)
@@ -58,3 +59,16 @@ class HelpActivity(SimpleActivity):
         root.append(scroll)
         self.set_canvas(root)
         search.grab_focus()
+
+        provider = Gtk.CssProvider()
+        provider.load_from_data(
+            b".help-root { background-color: #111111; color: #f5f5f5; }"
+            b".help-root label { color: #f5f5f5; }"
+            b".help-root textview { color: #f5f5f5; background-color: #111111; }"
+            b".help-root entry { color: #111111; background-color: #ffffff; }"
+        )
+        display = Gdk.Display.get_default()
+        if display is not None:
+            Gtk.StyleContext.add_provider_for_display(
+                display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            )
