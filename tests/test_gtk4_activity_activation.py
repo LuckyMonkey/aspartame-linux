@@ -82,7 +82,7 @@ def test_shell_exposes_semantic_control_panel_action():
     patch = (ROOT / "patches/gtk4-preview/0058-shell-show-controlpanel-action.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "def ShowControlPanel" in patch
-    assert "ControlPanel('')" in patch
+    assert "ControlPanel(0)" in patch
     assert "getattr(self._shell_model, '_main_window', None)" in patch
     assert "*0058*)" in build
 

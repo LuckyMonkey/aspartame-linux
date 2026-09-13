@@ -11,7 +11,7 @@
 +        if self._shell_model.has_modal():
 +            return False
 +        from jarabe.controlpanel.gui import ControlPanel
-+        panel = ControlPanel('')
++        panel = ControlPanel(0)
 +        main_window = getattr(self._shell_model, '_main_window', None)
 +        if main_window is not None:
 +            panel.set_transient_for(main_window)

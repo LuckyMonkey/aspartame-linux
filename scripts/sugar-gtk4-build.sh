@@ -230,6 +230,13 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing Activity ID propagation: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0058* ]] &&
+        grep -q 'def ShowControlPanel' "$shell/src/jarabe/view/service.py" 2>/dev/null &&
+        grep -q 'ControlPanel(0)' "$shell/src/jarabe/view/service.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing semantic Control Panel action: $patch_name"
+        continue
+    fi
     if [ -f "$stamp" ] &&
         grep -qx "$patch_digest" "$stamp" &&
         git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
