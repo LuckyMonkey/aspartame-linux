@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aspartame contributors <devnull@aspartame.local>
+Date: Sat, 13 Sep 2026 00:00:00 +0000
+Subject: [PATCH] desktop: import gettext for GTK4 GroupBox empty state
+
+The GTK4 Group view constructs a localized empty-state label.  Import the
+translation helper before the F2 view is instantiated.
+---
+ src/jarabe/desktop/groupbox.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/jarabe/desktop/groupbox.py b/src/jarabe/desktop/groupbox.py
+--- a/src/jarabe/desktop/groupbox.py
++++ b/src/jarabe/desktop/groupbox.py
+@@ -13,6 +13,7 @@
+ 
+ import logging
++from gettext import gettext as _
+ 
+ from sugar4.graphics import style

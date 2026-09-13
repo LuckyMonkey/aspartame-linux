@@ -1,0 +1,28 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] main: capture Sugar shortcuts on the Casilda activity surface
+
+When a Casilda client has focus, GTK routes key events to the compositor
+widget rather than the shell window. Attach the existing semantic key handler
+at capture phase so F1-F6 and other Sugar shortcuts remain available while a
+real Activity is active.
+
+---
+ src/jarabe/main.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -167,2 +167,10 @@
+     shell_instance.stack.add_named(shell_instance.compositor, "activity")
+     shell_instance.stack.set_visible_child_name("home")
++    # Casilda owns focus while an Activity is active.  Mirror the shell's
++    # semantic key controller on that widget so Sugar shortcuts are still
++    # handled before the Activity client consumes them.
++    semantic_keys = keyhandler.get_instance()
++    if semantic_keys is not None:
++        activity_keys = Gtk.EventControllerKey()
++        activity_keys.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
++        activity_keys.connect("key-pressed", semantic_keys._key_pressed_cb)
++        shell_instance.compositor.add_controller(activity_keys)
++        shell_instance._activity_key_controller = activity_keys

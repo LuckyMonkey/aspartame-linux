@@ -161,6 +161,14 @@ def test_group_view_imports_gettext_for_empty_state():
     assert "*0069*" in build
 
 
+def test_compositor_key_capture_patch_is_routed():
+    patch = (ROOT / "patches/gtk4-preview/0070-main-compositor-key-capture.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "shell_instance.compositor.add_controller(activity_keys)" in patch
+    assert "Gtk.PropagationPhase.CAPTURE" in patch
+    assert "*0070*" in build
+
+
 def test_shell_exposes_semantic_journal_action():
     patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
     assert "def ShowJournal" in patch
