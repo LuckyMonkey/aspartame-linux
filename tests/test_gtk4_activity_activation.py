@@ -85,6 +85,12 @@ def test_home_surface_handles_semantic_zoom_keys():
     assert "ShellModel.ZOOM_MESH" in patch
 
 
+def test_home_zoom_selects_gtk4_view_stack():
+    patch = (ROOT / "patches/gtk4-preview/0086-home-zoom-stack-selection.patch").read_text()
+    assert "set_visible_child_name('mesh')" in patch
+    assert "set_visible_child_name('group')" in patch
+
+
 def test_gtk4_overlay_focus_patch_is_routed():
     patch = (ROOT / "patches/gtk4-preview/0051-main-focus-overlay.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
