@@ -50,6 +50,10 @@ command -v dbus-run-session >/dev/null || { echo "missing dbus-run-session" >&2;
 command -v python3 >/dev/null || { echo "missing python3" >&2; exit 2; }
 
 mkdir -p "$runroot/home" "$runroot/data" "$runroot/config" "$runroot/cache" "$root/logs"
+# The launcher is commonly invoked by root while the GTK4 session runs as the
+# `aspartame` user.  Keep datastore/Xapian state user-owned so its lockfile can
+# be opened on every restart (a previous root-owned index made Journal crash).
+chown -R aspartame:aspartame "$runroot"
 test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2
