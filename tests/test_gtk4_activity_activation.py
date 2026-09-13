@@ -97,6 +97,7 @@ def test_shell_exposes_semantic_control_panel_action():
 def test_native_help_activity_is_staged_for_modern_space():
     info = (ROOT / "packages/gtk4-help-activity/activity/activity.info").read_text()
     source = (ROOT / "packages/gtk4-help-activity/helpactivity4.py").read_text()
+    assert (ROOT / "packages/gtk4-help-activity/activity/activity-help.svg").is_file()
     run = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "exec = sugar-activity4 helpactivity4.HelpActivity" in info
