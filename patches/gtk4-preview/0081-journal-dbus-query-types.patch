@@ -1,13 +1,13 @@
 From: Aspartame GTK4 migration
 Subject: [PATCH] journal: marshal datastore query types explicitly
 
-dbus-python on Python 3.14 no longer infers nested query values reliably.
-Marshal the Journal query dictionary and property list using explicit D-Bus
-signatures before calling the datastore service.
+dbus-python on Python 3.14 needs explicit signatures for nested datastore
+query values. Marshal the Journal query dictionary and property array before
+calling the service.
 
 --- a/src/jarabe/journal/model.py
 +++ b/src/jarabe/journal/model.py
-@@ -224,3 +224,8 @@
+@@ -224,3 +224,9 @@
      def find(self, query):
 -        entries, total_count = _call_datastore('find', query, PROPERTIES,
 -                                               byte_arrays=True)
@@ -17,6 +17,5 @@ signatures before calling the datastore service.
 +                value = dbus.Array(value, signature='s')
 +            marshaled[key] = value
 +        entries, total_count = _call_datastore(
-            'find', marshaled, dbus.Array(PROPERTIES, signature='s'),
-            byte_arrays=True)
++            'find', marshaled, dbus.Array(PROPERTIES, signature='s'),
 +            byte_arrays=True)
