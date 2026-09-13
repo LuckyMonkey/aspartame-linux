@@ -78,3 +78,10 @@ def test_gtk4_main_window_routes_sugar_function_keys():
     for key in ("Gdk.KEY_F1", "Gdk.KEY_F2", "Gdk.KEY_F3", "Gdk.KEY_F4"):
         assert key in patch
     assert "shell_instance.set_zoom_level(level)" in patch
+
+
+def test_gtk4_main_window_routes_space_keys_semantically():
+    patch = (ROOT / "patches/gtk4-preview/0061-main-space-key-capture.patch").read_text()
+    assert "Gdk.KEY_F7" in patch and "Gdk.KEY_F8" in patch
+    assert "ASPARTAME_SPACE_SWITCHER" in patch
+    assert "subprocess.Popen" in patch

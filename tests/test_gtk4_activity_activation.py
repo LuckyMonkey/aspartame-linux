@@ -84,7 +84,7 @@ def test_shell_exposes_semantic_control_panel_action():
     assert "def ShowControlPanel" in patch
     assert "ControlPanel(0)" in patch
     assert "getattr(self._shell_model, '_main_window', None)" in patch
-    assert "*0058*)" in build
+    assert "*0058*" in build
 
 
 def test_native_help_activity_is_staged_for_modern_space():

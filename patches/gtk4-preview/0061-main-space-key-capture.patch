@@ -1,0 +1,21 @@
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -289,6 +289,18 @@
+         }
+         zoom_controller = Gtk.EventControllerKey()
+         zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
++        import subprocess
++        space_keys = {Gdk.KEY_F7: "gtk3", Gdk.KEY_F8: "gtk4"}
++        def _switch_space(target):
++            controller = os.environ.get("ASPARTAME_SPACE_SWITCHER", "/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh")
++            subprocess.Popen([controller, target], close_fds=True)
++        def _capture_space_key(_controller, keyval, _keycode, _state):
++            target = space_keys.get(keyval)
++            if target is None:
++                return False
++            _switch_space(target)
++            return True
++        zoom_controller.connect("key-pressed", _capture_space_key)
+ 
+         def _capture_zoom_key(_controller, keyval, _keycode, _state):
+             if keyval == Gdk.KEY_F5:
