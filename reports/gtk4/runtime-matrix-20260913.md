@@ -26,6 +26,15 @@ Physical F7/F8 round-trips remain intermittent, while direct `gtk3`/`gtk4`
 controller commands switch deterministically. This points to global X11 key
 grab ownership as the remaining input issue, not a GTK4 view-rendering failure.
 
+Follow-up root-cause correction (2026-09-13): `SugarExt.KeyGrabber` emits
+`key-pressed(grabber, keycode, state)`. The GTK4 workspace grabber had declared
+an obsolete fourth `event_time` argument, so grabbed keys could be consumed
+without dispatch. Patch 0094 now matches the signal contract and resolves key
+values through `Gdk.keyval_from_name()` when GTK4 does not expose a `KEY_F*`
+attribute. The guest preview rebuild passes and the focused regression suite
+passes; a fresh QMP F-key visual recheck remains PARTIAL pending proof that the
+native grab reaches the modern shell on this X11 session.
+
 Activity lifecycle regression: PASS. The real Journal `LaunchBundle` path now
 completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
 calls returned true and cleanup passed. The prior rejection was caused by

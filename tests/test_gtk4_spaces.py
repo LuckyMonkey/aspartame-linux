@@ -90,3 +90,12 @@ def test_gtk4_main_window_routes_space_keys_semantically():
     assert "Gdk.KEY_F7" in patch and "Gdk.KEY_F8" in patch
     assert "ASPARTAME_SPACE_SWITCHER" in patch
     assert "subprocess.Popen" in patch
+
+
+def test_gtk4_global_key_grabber_matches_sugarext_signal_contract():
+    patch = (ROOT / "patches/gtk4-preview/0094-modern-space-keygrabber.patch").read_text()
+    # SugarExt.KeyGrabber emits (grabber, keycode, state); an extra event-time
+    # argument makes the callback fail before any Sugar action is dispatched.
+    assert "def _modern_key_pressed(grabber, keycode, state):" in patch
+    assert "Gdk.keyval_from_name(key)" in patch
+    assert "GTK4 global key event" in patch

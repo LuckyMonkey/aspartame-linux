@@ -13,11 +13,14 @@ the keys on workspace 0.
 +        shell_instance._modern_key_grabber = None
 +        shell_instance._modern_key_grab_active = False
 +
-+        def _modern_key_pressed(grabber, keycode, state, event_time):
++        def _modern_key_pressed(grabber, keycode, state):
 +            key = grabber.get_key(keycode, state)
 +            if key.startswith('F') and key[1:].isdigit():
 +                value = getattr(Gdk, 'KEY_' + key, None)
-+                if value is not None:
++                if value is None:
++                    value = Gdk.keyval_from_name(key)
++                if value:
++                    logging.warning('GTK4 global key event: %s', key)
 +                    return _capture_zoom_key(None, value, 0, state)
 +            return False
 +
