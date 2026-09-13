@@ -50,6 +50,13 @@ def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
     assert "Gdk.KEY_F5" not in patch
 
 
+def test_sugar_shortcuts_are_registered_on_home_surface():
+    patch = (ROOT / "patches/gtk4-preview/0074-main-home-key-capture.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "semantic_keys.add_window(home_window)" in patch
+    assert "*0074*" in build and 'target="$root/sources/sugar"' in build
+
+
 def test_frame_and_journal_keys_are_captured_by_gtk4_shell():
     patch = (ROOT / "patches/gtk4-preview/0050-main-frame-journal-key-capture.patch").read_text()
     assert "Gdk.KEY_F5" in patch
@@ -82,6 +89,13 @@ def test_empty_collaboration_state_is_routed_into_guest_sugar():
     assert "No friends are nearby yet." in patch
     assert '*0055*' in build and 'target="$root/sources/sugar"' in build
     assert '"$patch_name" == *0055*' in build
+
+
+def test_empty_group_view_patch_is_semantically_idempotent():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert '"$patch_name" == *0055*' in build
+    assert 'No friends are nearby yet\\.' in build
+    assert 'self\\._empty_state' in build
 
 
 def test_control_panel_can_open_without_active_activity():

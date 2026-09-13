@@ -1,0 +1,26 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] main: capture Sugar shortcuts on the Home surface
+
+GTK4 focus can remain inside a Home child (the search entry, activity icon,
+or a view-specific widget).  The top-level window controller is not a reliable
+owner for those native child surfaces, so register the same semantic handler
+on HomeWindow as well.  This keeps F1--F6 and semantic shortcuts available
+without changing the action table or importing GTK3 into the process.
+
+---
+ src/jarabe/main.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -171,6 +171,7 @@
+     semantic_keys = keyhandler.get_instance()
+     if semantic_keys is not None:
+         activity_keys = Gtk.EventControllerKey()
+         activity_keys.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+         activity_keys.connect("key-pressed", semantic_keys._key_pressed_cb)
+         shell_instance.compositor.add_controller(activity_keys)
+         shell_instance._activity_key_controller = activity_keys
++        semantic_keys.add_window(home_window)
+     shell_instance.stack.set_visible_child_name("home")

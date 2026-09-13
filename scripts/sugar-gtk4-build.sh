@@ -51,7 +51,7 @@ for patch in "$patch_dir"/*.patch; do
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0070*|*0071*|*0073*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0070*|*0071*|*0073*|*0074*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
     patch_name=$(basename "$patch")
@@ -113,6 +113,21 @@ for patch in "$patch_dir"/*.patch; do
     if [[ "$patch_name" == *0054* ]] && grep -q "set_focus(shell_instance._overlay)" "$shell/src/jarabe/main.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified final GTK4 overlay focus: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0055* ]] && grep -q "No friends are nearby yet\." "$shell/src/jarabe/desktop/groupbox.py" 2>/dev/null && grep -q "self\._empty_state" "$shell/src/jarabe/desktop/groupbox.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing empty Group view state: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0068* ]] && grep -q "def set_image(self, image):" "$toolkit/src/sugar4/graphics/menuitem.py" 2>/dev/null && grep -q "self\._content_box\.prepend(image)" "$toolkit/src/sugar4/graphics/menuitem.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing MenuItem image compatibility: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0074* ]] && grep -q "semantic_keys\.add_window(home_window)" "$shell/src/jarabe/main.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified Home surface shortcut capture: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0004* ]] && grep -q "def get_environment" "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
