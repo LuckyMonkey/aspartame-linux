@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aspartame contributors <devnull@aspartame.local>
+Date: Sat, 13 Sep 2026 00:00:00 +0000
+Subject: [PATCH] toolkit: provide GTK4 MenuItem.set_image compatibility
+
+Journal palettes still use Sugar's semantic set_image() API.  Keep that API
+on the GTK4 MenuItem while using GtkBox.prepend for native GTK4 composition.
+---
+ src/sugar4/graphics/menuitem.py | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/src/sugar4/graphics/menuitem.py b/src/sugar4/graphics/menuitem.py
+--- a/src/sugar4/graphics/menuitem.py
++++ b/src/sugar4/graphics/menuitem.py
+@@ -102,5 +102,6 @@
+         else:
+             self._label = None
+ 
++        self._content_box = content_box
+         self.set_child(content_box)
+ 
+@@ -222,5 +223,14 @@
+         if self._label:
+             self._label.set_text(text)
+ 
++    def set_image(self, image):
++        """Prepend a Sugar icon using the GTK4 box composition API."""
++        if image is None:
++            return
++        parent = image.get_parent()
++        if parent is not None:
++            parent.remove(image)
++        self._content_box.prepend(image)
++
+ 
+     def get_text(self) -> str:

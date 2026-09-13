@@ -113,6 +113,9 @@ def test_native_help_activity_is_staged_for_modern_space():
     assert 'search.set_placeholder_text("Search help")' in source
     assert 'search.connect("changed", _search_changed)' in source
     assert 'input_status.set_text' in source
+    assert 'root.add_css_class("help-root")' in source
+    assert 'provider.load_from_data' in source
+    assert 'Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION' in source
     launcher = (ROOT / "packages/gtk4-help-activity/bin/sugar-activity4").read_text()
     assert "export ASPARTAME_GTK4_PREVIEW=1" in launcher
     assert "Help.activity/activity/activity.info" in run
@@ -141,6 +144,14 @@ def test_activity_removal_is_idempotent_in_shell_and_frame():
     assert "self._buttons.pop(home_activity, None)" in patch
     assert "home_activity not in self._activities" in patch
     assert "*0067*" in build
+
+
+def test_gtk4_menuitem_preserves_sugar_set_image_api():
+    patch = (ROOT / "patches/gtk4-preview/0068-toolkit-menuitem-set-image.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "def set_image(self, image)" in patch
+    assert "self._content_box.prepend(image)" in patch
+    assert "*0068*" in build
 
 
 def test_shell_exposes_semantic_journal_action():
