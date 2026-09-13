@@ -1,0 +1,21 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: safely reparent GTK4 canvases
+
+Use GTK4 widget unparenting explicitly while swapping Journal canvases.
+
+--- a/src/jarabe/journal/journalwindow.py
++++ b/src/jarabe/journal/journalwindow.py
+@@ -71,2 +71,2 @@
+         if self._canvas is not None and self._canvas.get_parent() == self._canvas_area:
+-            self._canvas_area.remove(self._canvas)
++            self._canvas.unparent()
+@@ -75,8 +75,7 @@
+         if widget is not None:
+             if widget.get_parent() is not None:
+-                parent = widget.get_parent()
+-                if parent != self._canvas_area:
+-                    parent.remove(widget)
++                if widget.get_parent() != self._canvas_area:
++                    widget.unparent()
+             if widget.get_parent() != self._canvas_area:
+                 self._canvas_area.append(widget)
