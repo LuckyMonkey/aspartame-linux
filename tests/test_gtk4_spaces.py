@@ -38,6 +38,7 @@ def test_classic_keyhandler_releases_global_grabs_for_modern_space():
     assert 'Spaces key ownership' in handler
     assert 'self._key_grabber = None' in handler
     assert 'SugarExt.KeyGrabber()' in handler
+    assert 'for space_key in ("F7", "F8")' in handler
 
 
 def test_x11_helper_uses_standard_ewmh_messages():

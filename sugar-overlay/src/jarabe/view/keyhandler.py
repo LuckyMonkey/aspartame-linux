@@ -101,7 +101,14 @@ class KeyHandler(_packaged.KeyHandler):
                                           self._key_pressed_cb)
                 self._key_grabber.connect('key-released',
                                           self._key_released_cb)
+            # Spaces keys are semantic shell actions, not upstream Sugar
+            # actions.  Include them in the passive grab explicitly so the
+            # classic Space can hand F8 back to the coordinator (and keep
+            # F7 idempotent) while the modern Space is isolated.
             keys = list(_actions_table.keys())
+            for space_key in ("F7", "F8"):
+                if space_key not in keys:
+                    keys.append(space_key)
             self._key_grabber.grab_keys(keys)
         else:
             grabber = self._key_grabber
