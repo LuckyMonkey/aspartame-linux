@@ -22,6 +22,9 @@ runtime failures.
 - Native Calculate Activity (2026-09-14): staged into the rebuilt GTK4
   registry, launched through Journal (`org.aspartame.Calculate`), exposed its
   private `WAYLAND_SOCKET`, passed the GTK4 runtime check, and stopped cleanly.
+- Calculate repeated lifecycle (2026-09-14): three live launch/stop cycles
+  passed with PIDs `231101`, `231124`, and `231145`; every cycle reported
+  `cleanup=PASS` and the probe ended `lifecycle-probe=PASS`.
 
 ## Ranked remaining gaps
 
