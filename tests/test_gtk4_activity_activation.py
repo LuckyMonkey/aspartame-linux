@@ -244,3 +244,11 @@ def test_shell_exposes_semantic_journal_action():
     assert "def ShowJournal" in patch
     assert "journal.show_journal()" in patch
     assert "model.ZOOM_ACTIVITY" in patch
+
+
+def test_native_journal_rows_expose_accessible_identity():
+    source = (ROOT / "gtk4-overlay/src/jarabe/journal/listview.py").read_text()
+    assert "Gtk.AccessibleProperty.LABEL" in source
+    assert "Gtk.AccessibleProperty.DESCRIPTION" in source
+    assert "Gtk.AccessibleRole.LIST_ITEM" in source
+    assert "connect('row-activated'" in source

@@ -71,9 +71,15 @@ class ListView(Gtk.Box):
                 box.set_margin_end(24)
                 box.set_margin_top(10)
                 box.set_margin_bottom(10)
-                box.append(Gtk.Label(label=str(metadata.get('title') or _('Untitled')), xalign=0))
-                box.append(Gtk.Label(label=str(metadata.get('activity') or ''), xalign=0))
+                title = str(metadata.get('title') or _('Untitled'))
+                activity = str(metadata.get('activity') or '')
+                box.append(Gtk.Label(label=title, xalign=0))
+                box.append(Gtk.Label(label=activity, xalign=0))
                 row.set_child(box)
+                row.update_property([Gtk.AccessibleProperty.LABEL,
+                                     Gtk.AccessibleProperty.DESCRIPTION],
+                                    [title, activity])
+                row.set_accessible_role(Gtk.AccessibleRole.LIST_ITEM)
                 self.tree_view.append(row)
                 self._rows[uid] = row
             self._empty.set_visible(total == 0)

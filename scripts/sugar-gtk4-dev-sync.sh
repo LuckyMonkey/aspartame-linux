@@ -8,12 +8,13 @@ share=${DEV_SHARE:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspar
 
 test -d "$share" || { echo "missing development share: $share" >&2; exit 2; }
 mkdir -p "$share/patches/gtk4-preview" "$share/scripts" \
-         "$share/packages/gtk4-help-activity"
+         "$share/packages/gtk4-help-activity" "$share/gtk4-overlay"
 
 cp -a "$repo/patches/gtk4-preview/." "$share/patches/gtk4-preview/"
 cp -a "$repo/scripts/." "$share/scripts/"
 cp -a "$repo/packages/gtk4-help-activity/." \
       "$share/packages/gtk4-help-activity/"
+cp -a "$repo/gtk4-overlay/." "$share/gtk4-overlay/"
 
 printf 'GTK4 dev share synchronized: %s\n' "$share"
 printf 'patches=%s scripts=%s help_icon=%s\n' \

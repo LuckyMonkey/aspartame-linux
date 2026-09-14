@@ -19,5 +19,6 @@ def test_gtk4_dev_sync_copies_only_runtime_inputs():
     script = (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert 'patches/gtk4-preview' in script
     assert 'packages/gtk4-help-activity' in script
+    assert 'gtk4-overlay' in script
     assert 'cp -a' in script
     assert 'Generated guest build trees and runtime state remain untouched' in script
