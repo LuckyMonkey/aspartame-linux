@@ -378,3 +378,14 @@ GTK4 Journal deletion (2026-09-14): rows now expose a deliberate two-step
 Delete/Confirm delete action. Confirmed deletion uses Jarabe's existing
 datastore `model.delete` boundary, refreshes the list, and reports failures in
 the status line; no direct filesystem deletion is introduced.
+
+GTK4 ObjectChooser (2026-09-14): the modern overlay now provides a native
+`jarabe.journal.objectchooser.ObjectChooser` with the classic response and
+selected-object-id contract, Journal search, pointer activation, Cancel, and
+Escape handling. It reuses the GTK4 Journal ListView and does not import the
+GTK3 Wnck/X11 chooser path.
+
+ObjectChooser boundary correction (2026-09-14): the chooser no longer imports
+the GTK3 `sugar3.graphics.objectchooser` module even for a filter constant;
+that import could load GTK3 into the GTK4 process. The MIME filter token is now
+local to the GTK4 module.

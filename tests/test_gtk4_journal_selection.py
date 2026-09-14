@@ -27,3 +27,13 @@ def test_gtk4_journal_selection_emits_count_changes():
     source = (ROOT / "gtk4-overlay/src/jarabe/journal/listview.py").read_text()
     assert "selected-rows-changed" in source
     assert "self.emit('selection-changed', len(self.get_selected_items()))" in source
+
+
+def test_gtk4_objectchooser_uses_native_journal_surface():
+    source = (ROOT / "gtk4-overlay/src/jarabe/journal/objectchooser.py").read_text()
+    assert "class ObjectChooser(Gtk.Window)" in source
+    assert "'response'" in source
+    assert "get_selected_object_id" in source
+    assert "Gtk.SearchEntry" in source
+    assert "ListView(None)" in source
+    assert "from sugar3.graphics" not in source
