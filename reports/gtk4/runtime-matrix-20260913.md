@@ -496,3 +496,9 @@ translucent layer context, selected-plane editing, deletion, and Journal
 persistence. A live Help launch rendered the topic in the modern Activity
 surface; OCR from `reports/screenshots/sugar-20260914-100551-v0.0.31.png`
 contains `Count Activity`.
+
+Count occupied-context verification (2026-09-14): after filling a cell and
+copying the layer twice through real QMP pointer clicks, the selected plane
+shows the filled cell while two offset translucent context planes remain
+visible behind it. The live editor reports `Layer 1 of 3` and `1 on this
+layer`; capture: `reports/screenshots/sugar-20260914-100652-v0.0.31.png`.
