@@ -175,3 +175,8 @@ Journal model runtime reload (2026-09-14): after restarting only the modern
 Space, the authoritative runtime check passed for GTK4 PID `44518` on desktop
 `1`. Two fresh Journal→Help launch/stop cycles completed with distinct PIDs
 `44876` and `44897`; both returned `stop=(true,)` and cleanup PASS.
+
+Semantic navigation round-trip (2026-09-14): on the same fresh GTK4 session,
+`ShowJournal`, `ShowFrame`, and `ShowHome` each returned `(true,)` in sequence.
+The final Home capture remained 1920x1080 with the Favorites ring and Sugar
+top bar: `reports/screenshots/sugar-20260913-234755-v0.0.31.png`.
