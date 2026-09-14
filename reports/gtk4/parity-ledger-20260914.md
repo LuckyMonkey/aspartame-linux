@@ -25,9 +25,9 @@ Reversi game-state correction (2026-09-14): the board now detects a terminal
 position when neither side has a legal move and reports the winner; three
 post-fix lifecycle cycles passed with `cleanup=PASS` (PIDs `292840`–`292884`).
 
-Full matrix rerun (2026-09-14): all thirteen registered modern Activities
-completed Journal launch/stop with `cleanup=PASS`; the final Poll, Mancala, and
-Reversi probes used PIDs `289674`, `289704`, and `289735`.
+Full matrix rerun (2026-09-14): all fourteen registered modern Activities
+completed Journal launch/stop with `cleanup=PASS`; the matrix now defaults to
+three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`.
 
 ## Current evidence
 
