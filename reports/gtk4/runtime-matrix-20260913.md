@@ -307,6 +307,15 @@ Captures: `reports/screenshots/gtk4-settings-grid-live-20260914.png`,
 `reports/screenshots/gtk4-settings-aboutme-live-20260914.png`, and
 `reports/screenshots/gtk4-settings-return-live-20260914.png`.
 
+Runtime cleanup after F-key retirement (2026-09-14): the deployed guest had
+retained an earlier invalid global-grabber block even after its patch was
+retired, so a targeted cleanup patch removed that block from the persistent
+preview source. After rebuild and restart, `sugar-gtk4-runtime-check.sh gtk4`
+returned `runtime-check=ok` with exactly one GTK4 shell (PID `110330`) on
+desktop 1 and the GTK3 process still present. No new timer traceback was
+reported. This keeps the known physical F-key limitation explicit while
+restoring clean modern-shell startup.
+
 GTK4 clipboard transfer (2026-09-14): under the live GTK4 display, a real
 `Gdk.Display.get_default().get_clipboard()` provider was set with
 `Gdk.ContentProvider.new_for_bytes("text/plain", ...)`; asynchronous

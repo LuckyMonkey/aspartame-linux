@@ -104,6 +104,14 @@ def test_build_does_not_accept_stale_key_grabber_patch_as_verified():
     assert '*0094*) echo "retired unavailable SugarExt global key-grabber preview patch"; continue ;;' in build
 
 
+def test_invalid_runtime_grabber_block_is_removed_when_present():
+    patch = (ROOT / "patches/gtk4-preview/0111-retire-invalid-runtime-grabber-block.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "SugarExt 2.0" in patch
+    assert "SugarExt.KeyGrabber" in patch
+    assert '*0111*) target="$root/sources/sugar" ;;' in build
+
+
 def test_mesh_empty_state_and_drift_guards_are_present():
     patch = (ROOT / 'patches/gtk4-preview/0097-mesh-empty-state.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()

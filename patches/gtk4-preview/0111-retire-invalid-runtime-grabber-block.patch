@@ -1,0 +1,43 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: remove unavailable runtime key grabber block
+
+SugarExt 2.0 in the GTK4 preview does not export KeyGrabber.  Remove the
+already-deployed preview block so its timer cannot raise an AttributeError;
+native GTK controllers remain the supported input path.
+
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -358,32 +358,2 @@
+         shell_instance._sugar_zoom_controller = zoom_controller
+-        shell_instance._modern_key_grabber = None
+-        shell_instance._modern_key_grab_active = False
+-
+-        def _modern_key_pressed(grabber, keycode, state, event_time):
+-            key = grabber.get_key(keycode, state)
+-            if key.startswith('F') and key[1:].isdigit():
+-                value = getattr(Gdk, 'KEY_' + key, None)
+-                if value is not None:
+-                    return _capture_zoom_key(None, value, 0, state)
+-            return False
+-
+-        def _sync_modern_key_grab():
+-            try:
+-                from gi.repository import Wnck
+-                screen = Wnck.Screen.get_default()
+-                screen.force_update()
+-                workspace = screen.get_active_workspace()
+-                modern = workspace is not None and workspace.get_number() == 1
+-            except Exception:
+-                modern = True
+-            if modern and not shell_instance._modern_key_grab_active:
+-                from gi.repository import SugarExt
+-                grabber = SugarExt.KeyGrabber()
+-                grabber.connect('key-pressed', _modern_key_pressed)
+-                grabber.grab_keys(['F1', 'F2', 'F3', 'F4', 'F5', 'F6'])
+-                shell_instance._modern_key_grabber = grabber
+-                shell_instance._modern_key_grab_active = True
+-            elif not modern and shell_instance._modern_key_grab_active:
+-                shell_instance._modern_key_grabber.grab_keys([])
+-        shell_instance._overlay.set_focusable(True)
+-        GLib.timeout_add(100, _sync_modern_key_grab)
++        shell_instance._overlay.set_focusable(True)
