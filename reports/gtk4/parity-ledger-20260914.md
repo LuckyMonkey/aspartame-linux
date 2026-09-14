@@ -42,6 +42,10 @@ runtime failures.
   `252096`, and `252117`; every cycle reported `cleanup=PASS`.
 - The guest build now explicitly gates `vte-2.91-gtk4 >= 0.84` and
   `webkitgtk-6.0 >= 2.50`; both checks pass in the current VM build.
+- Full modern Activity matrix (2026-09-14): Help, Count, Calculate, Image
+  Viewer, Terminal, Browse, and Log each completed a live Journal launch/stop
+  cycle with `cleanup=PASS`; final result `activity-matrix=PASS` (PIDs
+  `254754`, `254786`, `254816`, `254846`, `254876`, `254906`, `254937`).
 
 ## Ranked remaining gaps
 
