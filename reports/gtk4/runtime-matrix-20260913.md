@@ -39,6 +39,13 @@ Post-rebuild lifecycle regression check (18:50 UTC): two fresh Journal-launched
 Help cycles completed with distinct PIDs/Activity IDs and immediate cleanup;
 `sugar-gtk4-lifecycle-probe.sh 2` returned `lifecycle-probe=PASS`.
 
+Input boundary probe (2026-09-13): a root reader attached directly to the
+guest's `QEMU QEMU USB Keyboard` event node (`/dev/input/event3`) while QMP
+`input-send-event` and HMP `sendkey` F5 events were injected. No Linux evdev
+events were observed. This moves the remaining F-key defect below GTK4: the
+current QEMU input transport is not reaching the guest keyboard device, so
+additional GTK shortcut patches would not address the observed failure.
+
 Activity lifecycle regression: PASS. The real Journal `LaunchBundle` path now
 completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
 calls returned true and cleanup passed. The prior rejection was caused by
