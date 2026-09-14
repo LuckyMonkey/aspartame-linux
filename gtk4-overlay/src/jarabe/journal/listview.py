@@ -76,6 +76,7 @@ class ListView(Gtk.Box):
         try:
             result = model.find(self._query, 48)
             total = result.get_length()
+            shown = 0
             query_text = str(self._query.get('query', '')).strip()
             if query_text:
                 self._result_status.set_text(
@@ -89,6 +90,7 @@ class ListView(Gtk.Box):
                 metadata = result.read()
                 if self._projects_only and not metadata.get('project_id'):
                     continue
+                shown += 1
                 uid = str(metadata.get('uid', ''))
                 if not uid:
                     continue
@@ -161,7 +163,9 @@ class ListView(Gtk.Box):
                 row.set_accessible_role(Gtk.AccessibleRole.LIST_ITEM)
                 self.tree_view.append(row)
                 self._rows[uid] = row
-            self._empty.set_visible(total == 0)
+            self._empty.set_visible(shown == 0)
+            if self._projects_only and shown == 0:
+                self._empty.set_text(_('No Journal entries are assigned to a project'))
         except Exception as error:
             _LOG.exception('GTK4 Journal refresh failed')
             self._result_status.set_text(_('Journal search unavailable'))
