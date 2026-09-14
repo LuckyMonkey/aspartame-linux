@@ -401,3 +401,11 @@ which opens the native GTK4 ObjectChooser. Accepting a selected Journal UID
 writes `project_id` through the existing metadata validation/writer path;
 Cancel/Escape closes without changing the entry and failures are shown in the
 status line.
+
+ObjectChooser live construction (2026-09-14): under the deployed GTK4 preview
+environment (`ASPARTAME_GTK4_PREVIEW=1`, GTK4 GI typelib path, modern overlay
+PYTHONPATH, and `GDK_BACKEND=x11`), a real `Gtk.Application` constructed
+`jarabe.journal.objectchooser.ObjectChooser` and returned
+`objectchooser=constructed None`. This confirms the module can load in a GTK4
+process without importing GTK3; pointer selection through an Activity remains
+the next end-to-end proof.
