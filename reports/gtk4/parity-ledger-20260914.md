@@ -91,6 +91,10 @@ runtime failures.
 - Help documentation refresh (2026-09-14): added a native Help topic covering
   Clock and JAMClock behavior; the guest rebuild passed and a live Help launch
   and stop cycle completed with `cleanup=PASS` (PID `271187`).
+- Final current-state recheck (2026-09-14): host suite passed 172 tests;
+  GTK4 runtime remained healthy (`pid=265471`, desktop 1), and the expanded
+  nine-Activity matrix completed with `activity-matrix=PASS` (latest Log PID
+  `271525`).
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
