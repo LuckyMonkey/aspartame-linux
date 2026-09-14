@@ -185,3 +185,13 @@ Spaces regression (2026-09-14): the classic Space check passed with GTK3 PID
 `33761` on desktop `0`; the modern Space was then restored and passed with
 GTK4 PID `44518` on desktop `1`. Both checks observed their expected active
 window and retained distinct shell processes.
+
+Native Home List activation (2026-09-14): `org.laptop.Shell.ShowList` returned
+`(true,)` on a fresh GTK4 process (`50899`). The 1920x1080 capture now shows
+the native GTK4 activity rows with normalized icons, summaries, versions, and
+running-state controls rather than the legacy TreeView list:
+`reports/screenshots/gtk4-home-list-native-20260914.png`. The root cause was
+package discovery: the overlay desktop package had no `__init__.py`, so the
+legacy `jarabe.desktop.activitieslist` remained authoritative. Adding the
+package marker activated the overlay; the GTK4 runner also now excludes the
+GTK3-only `sugar-overlay/src` path to preserve the hard GI process boundary.
