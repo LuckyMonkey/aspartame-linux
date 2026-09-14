@@ -9,8 +9,10 @@ GTK3/GTK4 workspace switching, and an anchored Sugar palette. Since then, the
 GTK4 Space has verified fifteen modern Activities (including Log, Help,
 Calculate, Count, Clock, JAMClock, Image Viewer, Terminal, Browse, Mastermind,
 Poll, Mancala, Reversi, Jumble, and NumberRush) through repeated three-cycle
-launch/stop probes. Full parity across every Activity and accessibility surface
-remains an active conversion goal; current evidence is in
+launch/stop probes. Semantic Home/Journal/Frame navigation is verified, while
+physical F-key delivery remains a QEMU/evdev transport limitation. Full parity
+across every Activity and accessibility surface remains an active conversion
+goal; current evidence is in
 `reports/gtk4/runtime-matrix-20260914.md`.
 
 ![GTK4 Home full-screen](reports/gtk4/gtk4-home-fullscreen-20260905.png)
