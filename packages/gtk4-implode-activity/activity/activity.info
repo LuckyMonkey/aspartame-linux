@@ -1,0 +1,10 @@
+[Activity]
+name = Implode
+bundle_id = com.jotaro.ImplodeActivity
+exec = sugar-activity4 implodeactivity4.ImplodeActivity
+icon = implode
+activity_version = 21
+show_launcher = yes
+license = GPLv3+
+summary = Clear matching blocks in a grid
+tags = Game;Puzzle

@@ -63,6 +63,8 @@
   Casilda launch/stop cycles (`mulawa.AppelHaken`).
 - [x] Port BallAndBrick as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`org.sugarlabs.BallAndBrick`).
+- [x] Port Implode as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`com.jotaro.ImplodeActivity`).
 
 ## P4 — Wayland/backend neutrality
 
