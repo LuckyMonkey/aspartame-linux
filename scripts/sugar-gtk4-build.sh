@@ -21,6 +21,7 @@ datastore="$root/sources/sugar-datastore"
 casilda="$root/sources/casilda"
 log_activity="$root/sources/log-activity"
 imageviewer_activity="$root/sources/imageviewer-activity"
+terminal_activity="$root/sources/terminal-activity"
 prefix="$root/prefix"
 venv="$root/venv"
 log="$root/logs/gtk4-build-$(date -u +%Y%m%dT%H%M%SZ).log"
@@ -33,6 +34,7 @@ test -d "$casilda/.git" || { echo "missing Casilda checkout: $casilda"; exit 2; 
 test -d "$log_activity/.git" || { echo "missing Log Activity checkout: $log_activity"; exit 2; }
 test -f "$log_activity/logviewer.py" || { echo "missing Log Activity source: $log_activity"; exit 2; }
 test -d "$imageviewer_activity/.git" || { echo "missing Image Viewer Activity source: $imageviewer_activity"; exit 2; }
+test -d "$terminal_activity/.git" || { echo "missing Terminal Activity source: $terminal_activity"; exit 2; }
 if ! test -x "$venv/bin/python"; then
     python3 -m venv --system-site-packages "$venv"
 fi
@@ -893,6 +895,11 @@ test -f "$imageviewer_activity/activity/activity.info" || {
     exit 2
 }
 ln -sfn "$imageviewer_activity" "$activity_dir/ImageViewer.activity"
+test -f "$terminal_activity/activity/activity.info" || {
+    echo "missing pinned Terminal Activity bundle: $terminal_activity" >&2
+    exit 2
+}
+ln -sfn "$terminal_activity" "$activity_dir/Terminal.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }
