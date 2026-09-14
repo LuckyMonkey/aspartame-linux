@@ -12,7 +12,7 @@ runtime failures.
 - GTK4 runtime check passes on desktop 1 (`pid=183604`).
 - GTK3 runtime check passes on desktop 0 (`pid=33761`).
 - The modern Space is restored after the comparison and passes again.
-- Full host suite: 158 tests passed.
+- Full host suite: 162 tests passed (`pytest -q`, 2026-09-14).
 
 ## Ranked remaining gaps
 
