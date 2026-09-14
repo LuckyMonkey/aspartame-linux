@@ -63,6 +63,9 @@ Twenty-Activity matrix recheck (2026-09-14): all 60 guest launch/stop cycles
 reported `cleanup=PASS`; final result was `activity-matrix=PASS` (Implode PIDs
 `326514`, `326536`, `326558`).
 
+Host regression recheck (2026-09-14): the complete suite passes with 186 tests
+(`pytest -q`).
+
 Seventeen-Activity matrix recheck (2026-09-14): all 51 guest launch/stop
 cycles, including IQ, reported `cleanup=PASS`; final result was
 `activity-matrix=PASS` (IQ PIDs `315806`, `315827`, `315848`).

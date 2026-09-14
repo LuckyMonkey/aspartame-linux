@@ -14,7 +14,7 @@ ended with Implode PID `326558`.
 | Casilda | 60 real Journal launch/stop cycles (three per Activity) | PASS |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
 
-Host regression suite: `pytest -q` → 181 passed.
+Host regression suite: `pytest -q` → 186 passed (2026-09-14).
 
 The GTK3 process remains separate and is not imported into the GTK4 process.
 The full GTK4 replacement gate is still not claimed because physical input
