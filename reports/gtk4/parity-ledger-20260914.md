@@ -61,6 +61,9 @@ runtime failures.
 - Current guest runtime recheck (2026-09-14): GTK4 remains healthy on desktop 1
   (`pid=230719`, `window=0x2a00005`); GTK3 remains available as the separate
   desktop-0 reference (`pid=33761`).
+- Regression recheck (2026-09-14): host suite is now 168 passed; the guest
+  GTK4 toolkit suite remains 55 passed, with the shell configure and preview
+  boot gates passing.
 
 ## Ranked remaining gaps
 
