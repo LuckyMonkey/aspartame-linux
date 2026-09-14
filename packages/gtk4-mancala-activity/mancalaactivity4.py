@@ -43,9 +43,14 @@ class MancalaActivity(SimpleActivity):
             if pos == 6 and self.turn == 1 or pos == 13 and self.turn == 0: continue
             if pos == 6: self.stores[0] += 1
             elif pos == 13: self.stores[1] += 1
-            else: self.pits[pos if pos < 13 else 0] += 1
+            else: self.pits[self._pit_index(pos)] += 1
             stones -= 1
         self.turn = 1 - self.turn; self.status.set_text("Player %d: choose a pit." % (self.turn + 1)); self._render()
+
+    @staticmethod
+    def _pit_index(board_position):
+        """Map the circular board positions 0..5 and 7..12 to pit storage."""
+        return board_position if board_position < 6 else 18 - board_position
 
     def _render(self):
         for pit, button in self.buttons: button.set_label(str(self.pits[pit])); button.set_sensitive((self.turn == 0 and pit < 6) or (self.turn == 1 and pit >= 6))
@@ -53,4 +58,3 @@ class MancalaActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.pits = [4] * 12; self.stores = [0, 0]; self.turn = 0; self.status.set_text("Player 1: choose a pit."); self._render()
-
