@@ -31,8 +31,8 @@
 
 ## P3 — core activities / Fructose
 
-- [x] Test and register the GTK4 Log Activity and Aspartame Count Activity;
-  both have live launch/stop evidence.
+- [x] Test and register the GTK4 Log, Count, and Calculate Activities; all have
+  live launch/stop evidence (Calculate also passed repeated lifecycle probing).
 - [ ] Port upstream Calculate and inventory the remaining Fructose activities.
   Keep each Activity a separate reviewable change.
 
