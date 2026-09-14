@@ -130,3 +130,9 @@ Frame evidence (2026-09-13): `ShowFrame` returned `(true,)`; the live GTK4
 Frame revealed its edge controls, activity tray, XO control, navigation arrows,
 and device icons over the shell surface. Capture:
 `reports/screenshots/sugar-20260913-231708-v0.0.31.png`.
+
+Frame/activity switching evidence (2026-09-13): a real Help Activity launch
+produced PID `31170`; Frame then showed the Help icon as the current running
+Activity (`sugar-20260913-231752-v0.0.31.png`). StopActivity returned `(true,)`,
+the process disappeared, and the subsequent Frame capture cleared the Help
+icon (`sugar-20260913-231813-v0.0.31.png`).
