@@ -1,0 +1,10 @@
+[Activity]
+name = Moon
+bundle_id = com.garycmartin.Moon
+exec = sugar-activity4 moonactivity4.MoonActivity
+icon = moon
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Explore the phases of the Moon
+tags = Science;Astronomy

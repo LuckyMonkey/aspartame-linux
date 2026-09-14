@@ -53,6 +53,7 @@ declare -a activities=(
     'org.sugarlabs.Paint|paintactivity4.PaintActivity'
     'com.francocorrea.diamondfusion|diamondfusionactivity4.DiamondFusionActivity'
     'net.flossmanuals.LevelActivity|levelactivity4.LevelActivity'
+    'com.garycmartin.Moon|moonactivity4.MoonActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

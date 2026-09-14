@@ -1043,6 +1043,13 @@ level_activity="$repo/packages/gtk4-level-activity"
 test -f "$level_activity/activity/activity.info" || { echo "missing native GTK4 Level Activity bundle" >&2; exit 2; }
 test -f "$level_activity/levelactivity4.py" || { echo "missing native GTK4 Level Activity entrypoint" >&2; exit 2; }
 ln -sfn "$level_activity" "$activity_dir/Level.activity"
+moon_activity="$repo/packages/gtk4-moon-activity"
+test -f "$moon_activity/activity/activity.info" || { echo "missing native GTK4 Moon Activity bundle" >&2; exit 2; }
+ln -sfn "$moon_activity" "$activity_dir/Moon.activity"
+moon_activity="$repo/packages/gtk4-moon-activity"
+test -f "$moon_activity/activity/activity.info" || { echo "missing native GTK4 Moon Activity bundle" >&2; exit 2; }
+test -f "$moon_activity/moonactivity4.py" || { echo "missing native GTK4 Moon Activity entrypoint" >&2; exit 2; }
+ln -sfn "$moon_activity" "$activity_dir/Moon.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
