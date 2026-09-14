@@ -298,3 +298,11 @@ provide physical F1–F6 capture; direct semantic shell actions remain reliable
 and native GTK controllers remain intact. The unavailable global-grabber patch
 is retired rather than adding a new X11/input dependency. Physical F-key parity
 remains PARTIAL and is deferred as a platform/API gap.
+
+Settings navigation (2026-09-14): a live `ShowControlPanel` call opened the
+native GTK4 dark Settings grid; a QMP pointer click entered the About Me
+section, and the Sugar top-bar stop/close control returned to the grid. This
+proves section activation and return behavior, not just initial rendering.
+Captures: `reports/screenshots/gtk4-settings-grid-live-20260914.png`,
+`reports/screenshots/gtk4-settings-aboutme-live-20260914.png`, and
+`reports/screenshots/gtk4-settings-return-live-20260914.png`.
