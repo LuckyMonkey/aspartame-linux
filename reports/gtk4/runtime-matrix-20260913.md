@@ -46,6 +46,13 @@ events were observed. This moves the remaining F-key defect below GTK4: the
 current QEMU input transport is not reaching the guest keyboard device, so
 additional GTK shortcut patches would not address the observed failure.
 
+Modern Help visual activation (2026-09-13): the missing `activity-help.svg`
+was restored to the live development share. A fresh Journal `LaunchBundle`
+now presents the native GTK4 Help Activity with its Sugar top bar, Help icon,
+readable English guidance, and canonical stop control; capture:
+`reports/screenshots/sugar-20260913-221408-v0.0.31.png`. The Activity was then
+stopped through `org.laptop.Shell.StopActivity`, and its process exited.
+
 Activity lifecycle regression: PASS. The real Journal `LaunchBundle` path now
 completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
 calls returned true and cleanup passed. The prior rejection was caused by

@@ -512,6 +512,10 @@ test -f "$help_activity/activity/activity.info" || {
     echo "missing native GTK4 Help Activity bundle: $help_activity" >&2
     exit 2
 }
+test -f "$help_activity/activity/activity-help.svg" || {
+    echo "missing native GTK4 Help Activity icon: $help_activity/activity/activity-help.svg" >&2
+    exit 2
+}
 ln -sfn "$help_activity" "$activity_dir/Help.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do

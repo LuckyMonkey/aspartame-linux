@@ -40,6 +40,10 @@ test -f "$prefix/share/sugar/activities/Help.activity/activity/activity.info" ||
     echo "missing staged GTK4 Help Activity bundle" >&2
     exit 2
 }
+test -f "$prefix/share/sugar/activities/Help.activity/activity/activity-help.svg" || {
+    echo "missing staged GTK4 Help Activity icon" >&2
+    exit 2
+}
 test -f "$project_root/gtk4-overlay/src/jarabe/journal/listview.py" || {
     echo "missing GTK4 native Journal overlay" >&2
     exit 2

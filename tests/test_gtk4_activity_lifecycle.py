@@ -87,6 +87,8 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
     assert 'test -x "$venv/bin/sugar-activity4"' in run
     assert 'SUGAR_ACTIVITIES_PATH="$modern_activities"' in run
     assert 'test -f "$prefix/share/sugar/activities/Log.activity/activity/activity.info"' in run
+    assert 'test -f "$help_activity/activity/activity-help.svg"' in build
+    assert 'test -f "$prefix/share/sugar/activities/Help.activity/activity/activity-help.svg"' in run
 
 
 def test_journal_fallback_enters_the_visible_activity_stack():
