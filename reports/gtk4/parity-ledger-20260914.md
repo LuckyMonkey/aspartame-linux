@@ -64,6 +64,10 @@ runtime failures.
 - Regression recheck (2026-09-14): host suite is now 168 passed; the guest
   GTK4 toolkit suite remains 55 passed, with the shell configure and preview
   boot gates passing.
+- Fresh live Activity matrix (2026-09-14): Help, Count, Calculate, Image
+  Viewer, Terminal, Browse, and Log each launched through Journal and stopped
+  with immediate `cleanup=PASS` (PIDs `256080`, `256111`, `256141`, `256171`,
+  `256201`, `256231`, `256261`); final result `activity-matrix=PASS`.
 
 ## Ranked remaining gaps
 
