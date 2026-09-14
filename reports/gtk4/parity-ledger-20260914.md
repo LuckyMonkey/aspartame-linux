@@ -6,6 +6,10 @@ GTK4 Frame exposes a stable accessible `Frame` label and `GROUP` role. The
 current-source patch sequence handles historical hunk drift without hiding
 runtime failures.
 
+The Mancala port also received a follow-up correctness fix: circular sowing
+positions now map to valid pit indices, preventing an out-of-range crash while
+distributing stones.
+
 ## Current evidence
 
 - Guest preview build passes beyond patch 0015.
