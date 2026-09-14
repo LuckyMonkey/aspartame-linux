@@ -942,6 +942,9 @@ ln -sfn "$mancala_activity" "$activity_dir/Mancala.activity"
 reversi_activity="$repo/packages/gtk4-reversi-activity"
 test -f "$reversi_activity/activity/activity.info" || { echo "missing native GTK4 Reversi Activity bundle" >&2; exit 2; }
 ln -sfn "$reversi_activity" "$activity_dir/Reversi.activity"
+jumble_activity="$repo/packages/gtk4-jumble-activity"
+test -f "$jumble_activity/activity/activity.info" || { echo "missing native GTK4 Jumble Activity bundle" >&2; exit 2; }
+ln -sfn "$jumble_activity" "$activity_dir/Jumble.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

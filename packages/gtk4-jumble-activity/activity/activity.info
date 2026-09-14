@@ -1,0 +1,10 @@
+[Activity]
+name = Jumble
+bundle_id = mulawa.Jumble
+exec = sugar-activity4 jumbleactivity4.JumbleActivity
+icon = jumble
+activity_version = 2
+show_launcher = yes
+license = GPLv3+
+summary = Unscramble a word
+tags = Game;Language

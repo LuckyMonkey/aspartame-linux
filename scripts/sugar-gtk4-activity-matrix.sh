@@ -20,6 +20,7 @@ declare -a activities=(
     'org.worldwideworkshop.PollBuilder|pollactivity4.PollActivity'
     'mulawa.Mancala|mancalaactivity4.MancalaActivity'
     'net.coderanger.olpc.reversi|reversiactivity4.ReversiActivity'
+    'mulawa.Jumble|jumbleactivity4.JumbleActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
