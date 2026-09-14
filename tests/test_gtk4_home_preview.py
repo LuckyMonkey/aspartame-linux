@@ -19,7 +19,7 @@ def test_gtk4_launcher_seeds_private_bus_environment_first():
     assert "export ASPARTAME_GTK4_PREVIEW=1" in build
     assert "ASPARTAME_GTK4_PREVIEW=1" in launcher
     assert 'export PYTHONPATH="$repo/sugar-overlay/src${PYTHONPATH:+:$PYTHONPATH}"' in build
-    assert 'PYTHONPATH="$project_root/gtk4-overlay/src:$project_root/sugar-overlay/src:' in launcher
+    assert 'PYTHONPATH="$project_root/gtk4-overlay/src:$datastore_site:' in launcher
     assert 'missing GTK4 native Journal overlay' in launcher
     assert 'locale_name=${LANG:-C.UTF-8}' in launcher
     assert 'LANG="$locale_name"' in launcher
