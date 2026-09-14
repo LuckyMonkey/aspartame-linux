@@ -10,6 +10,9 @@ The Mancala port also received a follow-up correctness fix: circular sowing
 positions now map to valid pit indices, preventing an out-of-range crash while
 distributing stones.
 
+Native Reversi was added as another GTK4 Activity path; its legal-move and
+capture model is local to the Activity and uses the existing lifecycle boundary.
+
 ## Current evidence
 
 - Guest preview build passes beyond patch 0015.
