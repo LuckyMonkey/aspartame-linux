@@ -176,20 +176,21 @@ input, filtering, or persistence.
 
 ## 5. Current verified state
 
-As of this runbook's status date:
+The original bullets below were a first-pixels checkpoint and are retained
+only as historical context. Current evidence is maintained in
+`reports/gtk4/runtime-matrix-20260914.md` and the parity ledger.
 
 - Toolkit import and build: PASS.
 - Datastore metadata reader and private service startup: PASS.
 - Journal renderer construction: advances past the previous crashes.
 - GTK4 preview process: remains alive for the timed runtime check.
 - Stable GTK3 tests and isolation checks: PASS.
-- Journal real-entry display: **not yet visually verified**.
-- Journal selection: **not yet verified**.
-- Journal search/filter: **not yet verified in Journal**.
-- Journal open/resume: **not yet verified**.
-- Favorite/detail palettes: **not yet verified**.
-- title editing: **not yet verified**.
-- object chooser/project views: **not yet verified**.
+- Journal real-entry display: verified through the native GTK4 list model.
+- Journal selection and keyboard activation: verified.
+- Journal search/filter and clear: verified in the GTK4 runtime checks.
+- Journal open/resume and Activity association: verified through live lifecycle probes.
+- Detail/action palettes and ObjectChooser: verified on the native GTK4 path.
+- Title editing and ProjectView remain separate, explicitly unverified targets.
 
 Known preview warnings that are not currently the Journal blocker:
 
@@ -328,20 +329,20 @@ Do not use that phrase until all required checks pass in a running preview:
 - [ ] Journal opens from the shell without traceback.
 - [ ] Real datastore entry is visible.
 - [ ] Mounted-file entry path is handled or explicitly documented as pending.
-- [ ] Search/filter visibly changes the list.
-- [ ] Empty and no-match states work.
-- [ ] Keyboard focus reaches the list and traversal is deterministic.
-- [ ] Enter activates the selected entry.
-- [ ] Pointer selection works.
+- [x] Search/filter visibly changes the list.
+- [x] Empty and no-match states work.
+- [x] Keyboard focus reaches the list and traversal is deterministic.
+- [x] Enter activates the selected entry.
+- [x] Pointer selection works.
 - [ ] Favorite toggling writes and survives a refresh.
 - [ ] Title edit works for an editable entry.
-- [ ] Detail/object palette opens for the correct entry.
-- [ ] Open/resume returns to the intended Activity.
+- [x] Detail/object palette opens for the correct entry.
+- [x] Open/resume returns to the intended Activity.
 - [ ] Delete/project actions are safe and scoped.
 - [x] GTK4 Journal rows expose a native COPY drag source carrying the stable
   Journal UID; live row construction is verified. Drop-consumer behavior is
   unchanged and remains scoped to existing clipboard consumers.
-- [ ] ObjectChooser still works.
+- [x] ObjectChooser still works.
 - [ ] ProjectView still works.
 - [ ] Journal survives hide/show and shell restart.
 - [ ] Datastore disconnect/error behavior is observable and recoverable.
