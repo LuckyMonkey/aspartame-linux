@@ -3,15 +3,14 @@
 Fresh evidence after the modern Home registry path and JAMClock/Clock ports.
 The synchronized development share now includes twenty modern bundles; the
 complete matrix remains green with three-cycle probes. The latest full run
-ended with Appel Haken PID `319806`; BallAndBrick and Implode were subsequently
-verified in three additional cycles (latest Implode PID `325092`).
+ended with Implode PID `326558`.
 
 | Area | Evidence | Status |
 | --- | --- | --- |
 | GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1) | PASS |
 | Guest build | `sugar-gtk4-build.sh`, including patch 0015 | PASS |
 | Home inventory | All twenty verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
-| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush, Across and Down, IQ, Appel Haken (`319806` latest) | PASS: all 54 launch/stop cycles reported `cleanup=PASS` |
+| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode (`326558` latest) | PASS: all 60 launch/stop cycles reported `cleanup=PASS` |
 | Casilda | 60 real Journal launch/stop cycles (three per Activity) | PASS |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
 
