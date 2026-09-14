@@ -169,6 +169,8 @@ class ListView(Gtk.Box):
             elif self._projects_only:
                 self._result_status.set_text(
                     _('%d project Journal entries') % shown)
+            elif shown == 0:
+                self._empty.set_text(_('Your Journal is empty'))
         except Exception as error:
             _LOG.exception('GTK4 Journal refresh failed')
             self._result_status.set_text(_('Journal search unavailable'))
