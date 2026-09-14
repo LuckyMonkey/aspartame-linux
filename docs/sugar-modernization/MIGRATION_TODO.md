@@ -36,8 +36,10 @@
   live launch/stop evidence (Calculate also passed repeated lifecycle probing).
 - [x] Port and verify a native Calculate Activity; the modern registry now
   launches Calculate alongside the other verified GTK4 bundles.
-- [ ] Inventory and port the remaining legacy Fructose activities. Keep each
-  Activity a separate reviewable change.
+- [x] Inventory the remaining legacy Fructose/Sugarizer activities (84 rows in
+  `docs/activity-reviews/REVIEWS.tsv`, refreshed 2026-09-14).
+- [ ] Port the remaining legacy Fructose activities. Keep each Activity a
+  separate reviewable change.
 
 ## P4 — Wayland/backend neutrality
 
