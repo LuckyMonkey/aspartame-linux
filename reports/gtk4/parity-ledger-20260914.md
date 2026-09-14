@@ -88,6 +88,9 @@ runtime failures.
   the guest rebuild stages them without warnings.
 - Host regression recheck after the Activity additions (2026-09-14): `pytest
   -q` passed 172 tests with the worktree clean.
+- Help documentation refresh (2026-09-14): added a native Help topic covering
+  Clock and JAMClock behavior; the guest rebuild passed and a live Help launch
+  and stop cycle completed with `cleanup=PASS` (PID `271187`).
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
