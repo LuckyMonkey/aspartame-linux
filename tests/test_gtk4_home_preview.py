@@ -39,6 +39,13 @@ def test_gtk4_build_removes_only_dangling_activity_links():
     assert 'mkdir -p "$activity_dir"' in build
 
 
+def test_gtk4_runner_exposes_all_verified_bundles_to_isolated_home():
+    runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    assert "for modern_bundle in Calculate ImageViewer Terminal Browse Log; do" in runner
+    assert 'SUGAR_ACTIVITIES_PATH="$modern_activities"' in runner
+    assert 'modern_activities/${modern_bundle}.activity' in runner
+
+
 def test_gtk4_neighborhood_does_not_use_removed_gtk_allocation_type():
     meshbox = (ROOT / "sugar-overlay/src/jarabe/desktop/meshbox.py").read_text()
     assert "from gi.repository import Gdk" in meshbox

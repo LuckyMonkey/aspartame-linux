@@ -81,6 +81,17 @@ test -d "$prefix/share/sugar/activities/JAMClock.activity" || {
 }
 ln -sfn "$prefix/share/sugar/activities/JAMClock.activity" \
     "$modern_activities/JAMClock.activity"
+# Keep every verified GTK4 bundle visible to the isolated Home registry.  If
+# one is omitted here, duplicate GTK3 metadata can win the Home lookup even
+# though the bundle was staged successfully by the build.
+for modern_bundle in Calculate ImageViewer Terminal Browse Log; do
+    test -d "$prefix/share/sugar/activities/${modern_bundle}.activity" || {
+        echo "missing staged GTK4 ${modern_bundle} Activity bundle" >&2
+        exit 2
+    }
+    ln -sfn "$prefix/share/sugar/activities/${modern_bundle}.activity" \
+        "$modern_activities/${modern_bundle}.activity"
+done
 test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2
