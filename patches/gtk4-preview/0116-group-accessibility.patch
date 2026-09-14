@@ -1,0 +1,13 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: expose Group accessible root
+
+Give the GTK4 Group view a stable accessible name and group role while keeping
+its existing friend model and empty-state behavior unchanged.
+
+--- a/src/jarabe/desktop/groupbox.py
++++ b/src/jarabe/desktop/groupbox.py
+@@ -43,1 +43,3 @@
+         self.set_focusable(False)
++        self.update_property([Gtk.AccessibleProperty.LABEL],
++                             [_('Group')])
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)

@@ -1,0 +1,12 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: complete Group accessible role
+
+Complete the Group accessibility result when the label portion of 0116 is
+already present in a persistent preview source tree.
+
+--- a/src/jarabe/desktop/groupbox.py
++++ b/src/jarabe/desktop/groupbox.py
+@@ -46,2 +46,3 @@
+         self.update_property([Gtk.AccessibleProperty.LABEL],
+                              [_('Group')])
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)

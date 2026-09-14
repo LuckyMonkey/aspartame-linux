@@ -422,3 +422,11 @@ Neighborhood accessibility drift correction (2026-09-14): the first
 accessibility patch partially landed (label present, role absent) in the
 persistent guest source. Follow-up patch 0115 adds the missing GTK4 group role
 and the build guard verifies the semantic result.
+
+Group accessibility (2026-09-14): the GTK4 Group view now exposes a stable
+`Group` accessible label and `GROUP` role. Friend model, empty-state, and
+navigation behavior remain unchanged.
+
+Group accessibility drift correction (2026-09-14): the label portion of 0116
+was present in the persistent guest source while its role hunk was absent.
+Follow-up 0117 adds and independently verifies `AccessibleRole.GROUP`.

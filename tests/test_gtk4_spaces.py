@@ -130,3 +130,13 @@ def test_neighborhood_accessibility_patch_is_routed():
     assert "AccessibleRole.GROUP" in patch
     assert '*0114*) target="$root/sources/sugar" ;;' in build
     assert '*0115*) target="$root/sources/sugar" ;;' in build
+
+
+def test_group_accessibility_patch_is_routed():
+    patch = (ROOT / 'patches/gtk4-preview/0116-group-accessibility.patch').read_text()
+    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
+    assert "AccessibleProperty.LABEL" in patch
+    assert "AccessibleRole.GROUP" in patch
+    assert "[_('Group')]" in patch
+    assert '*0116*) target="$root/sources/sugar" ;;' in build
+    assert '*0117*) target="$root/sources/sugar" ;;' in build
