@@ -1,0 +1,10 @@
+[Activity]
+name = Calculate
+bundle_id = org.aspartame.Calculate
+exec = sugar-activity4 calculateactivity4.CalculateActivity
+icon = calculate
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = A simple Sugar calculator
+tags = Maths;Utility

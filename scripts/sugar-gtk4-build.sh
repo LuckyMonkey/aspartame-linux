@@ -876,6 +876,16 @@ test -f "$count_activity/countactivity4.py" || {
     exit 2
 }
 ln -sfn "$count_activity" "$activity_dir/Count.activity"
+calculate_activity="$repo/packages/gtk4-calculate-activity"
+test -f "$calculate_activity/activity/activity.info" || {
+    echo "missing native GTK4 Calculate Activity bundle: $calculate_activity" >&2
+    exit 2
+}
+test -f "$calculate_activity/calculateactivity4.py" || {
+    echo "missing native GTK4 Calculate Activity entrypoint" >&2
+    exit 2
+}
+ln -sfn "$calculate_activity" "$activity_dir/Calculate.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }
