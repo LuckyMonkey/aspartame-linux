@@ -101,6 +101,14 @@ class ListView(Gtk.Box):
                 title_entry.set_visible(False)
                 box.append(title_entry)
                 box.append(Gtk.Label(label=activity, xalign=0))
+                mountpoint = str(metadata.get('mountpoint') or '/')
+                if mountpoint != '/':
+                    volume = Gtk.Label(
+                        label=_('External volume: %s') % mountpoint, xalign=0)
+                    volume.add_css_class('dim-label')
+                    volume.set_tooltip_text(
+                        _('This entry is stored on an external volume'))
+                    box.append(volume)
                 keep = Gtk.CheckButton(label=_('Keep'))
                 keep.set_active(str(metadata.get('keep', '0')).lower()
                                 in ('1', 'true'))

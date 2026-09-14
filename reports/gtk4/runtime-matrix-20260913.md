@@ -389,3 +389,9 @@ ObjectChooser boundary correction (2026-09-14): the chooser no longer imports
 the GTK3 `sugar3.graphics.objectchooser` module even for a filter constant;
 that import could load GTK3 into the GTK4 process. The MIME filter token is now
 local to the GTK4 module.
+
+GTK4 Journal mounted entries (2026-09-14): rows now explicitly identify
+entries whose datastore metadata uses a non-root mountpoint. The external
+volume marker is informational and leaves persistence on the existing
+`model.write` mounted-entry path; root entries continue to use the D-Bus update
+path.

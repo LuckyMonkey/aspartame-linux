@@ -21,6 +21,8 @@ def test_gtk4_journal_list_uses_native_selection_api():
     assert "Journal title updated" in source
     assert "Confirm delete" in source
     assert "model.delete(str(uid))" in source
+    assert "External volume: %s" in source
+    assert "mountpoint" in source
 
 
 def test_gtk4_journal_selection_emits_count_changes():
