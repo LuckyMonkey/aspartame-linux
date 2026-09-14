@@ -3,33 +3,14 @@ Subject: [PATCH] gtk4: make empty Neighborhood state explicit
 
 An empty Neighborhood model currently leaves MeshBox as a black canvas.  Keep
 the Sugar view useful when no peers or shared Activities are present by showing
-the same concise empty-state treatment used by GroupBox.  Remove the message
-as soon as a remote buddy or shared Activity arrives.
+the same concise empty-state treatment used by GroupBox, making the empty
+state explicit instead of presenting an unexplained black canvas.
 
 --- a/src/jarabe/desktop/meshbox.py
 +++ b/src/jarabe/desktop/meshbox.py
-@@ -373,6 +373,9 @@
-         self._buddy_to_activity = {}
-         self._suspended = True
+@@ -380,2 +380,5 @@
          self._query = ''
 +        self._empty_state = Gtk.Label(label=_("No people or shared Activities are nearby yet."))
 +        self._empty_state.set_opacity(0.72)
 +        self.add(self._empty_state)
  
-         toolbar.connect('query-changed', self._toolbar_query_changed_cb)
-@@ -408,6 +411,9 @@
-     def _add_buddy(self, buddy_model):
-         buddy_model.connect('notify::current-activity',
-                             self.__buddy_notify_current_activity_cb)
-+        if self._empty_state is not None:
-+            self.remove(self._empty_state)
-+            self._empty_state = None
-         if buddy_model.props.current_activity is not None:
-             return
-@@ -430,6 +436,9 @@
-     def _add_activity(self, activity_model):
-         icon = ActivityView(activity_model)
-+        if self._empty_state is not None:
-+            self.remove(self._empty_state)
-+            self._empty_state = None
-         self.add(icon)
