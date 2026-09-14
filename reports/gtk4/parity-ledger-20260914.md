@@ -107,6 +107,9 @@ runtime failures.
 - Clock identity correction (2026-09-14): the native Clock bundle now uses its
   original `tv.alterna.Clock` ID, preventing a duplicate unsupported GTK3 Clock
   entry. Guest rebuild and direct Journal lifecycle passed (`PID 277004`).
+- Expanded matrix recheck (2026-09-14): all nine modern bundles passed live
+  Journal launch/stop cleanup after the identity correction; final Browse/Log
+  probes completed with `cleanup=PASS` (PIDs `277262`, `277292`).
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
