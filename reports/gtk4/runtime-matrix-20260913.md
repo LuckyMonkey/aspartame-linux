@@ -417,3 +417,8 @@ PYTHONPATH, and `GDK_BACKEND=x11`), a real `Gtk.Application` constructed
 `objectchooser=constructed None`. This confirms the module can load in a GTK4
 process without importing GTK3; pointer selection through an Activity remains
 the next end-to-end proof.
+
+Neighborhood accessibility drift correction (2026-09-14): the first
+accessibility patch partially landed (label present, role absent) in the
+persistent guest source. Follow-up patch 0115 adds the missing GTK4 group role
+and the build guard verifies the semantic result.

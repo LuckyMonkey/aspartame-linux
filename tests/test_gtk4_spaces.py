@@ -121,3 +121,12 @@ def test_mesh_empty_state_and_drift_guards_are_present():
     assert 'existing Group view gettext import' in build
     assert 'existing Casilda activity key capture' in build
     assert 'existing Frame dismissal on zoom' in build
+
+
+def test_neighborhood_accessibility_patch_is_routed():
+    patch = (ROOT / 'patches/gtk4-preview/0114-neighborhood-accessibility.patch').read_text()
+    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
+    assert "AccessibleProperty.LABEL" in patch
+    assert "AccessibleRole.GROUP" in patch
+    assert '*0114*) target="$root/sources/sugar" ;;' in build
+    assert '*0115*) target="$root/sources/sugar" ;;' in build

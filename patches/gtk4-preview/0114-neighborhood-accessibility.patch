@@ -1,0 +1,13 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: expose Neighborhood accessible root
+
+Give the GTK4 Neighborhood root a stable accessible name and group role. This
+does not alter peer, Activity, or NetworkManager behavior.
+
+--- a/src/jarabe/desktop/meshbox.py
++++ b/src/jarabe/desktop/meshbox.py
+@@ -370,1 +370,3 @@
+         self.set_focusable(False)
++        self.update_property([Gtk.AccessibleProperty.LABEL],
++                             [_('Neighborhood')])
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)

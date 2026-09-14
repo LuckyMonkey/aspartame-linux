@@ -1,0 +1,12 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: complete Neighborhood accessible role
+
+The label hunk from 0114 may already be present in a partially patched source
+tree. Add the missing GTK4 group role independently.
+
+--- a/src/jarabe/desktop/meshbox.py
++++ b/src/jarabe/desktop/meshbox.py
+@@ -372,2 +372,3 @@
+         self.update_property([Gtk.AccessibleProperty.LABEL],
+                              [_('Neighborhood')])
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
