@@ -97,6 +97,8 @@
   launch/stop cycles (`org.sugarlabs.GearsActivity`).
 - [x] Port TurtleBlocks as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`org.laptop.TurtleArtActivity`).
+- [x] Port Game Of Life as a native GTK4 Activity and verify three repeated
+  Casilda launch/stop cycles (`org.sugarlabs.gameOfLife`).
 
 ## P4 — Wayland/backend neutrality
 

@@ -1,5 +1,9 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Game Of Life (2026-09-14): a GTK4 cellular-automaton grid with Step and
+Clear controls was staged under `org.sugarlabs.gameOfLife`. Three guest Casilda
+launch/stop cycles passed with `cleanup=PASS` (PIDs `390350`, `390378`, `390403`).
+
 Native TurtleBlocks (2026-09-14): a GTK4 Logo-style turtle drawing canvas with
 Forward, Turn right, and Clear controls was staged under
 `org.laptop.TurtleArtActivity`. Three guest Casilda launch/stop cycles passed

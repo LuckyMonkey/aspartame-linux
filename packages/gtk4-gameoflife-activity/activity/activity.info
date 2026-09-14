@@ -1,0 +1,10 @@
+[Activity]
+name = Game Of Life
+bundle_id = org.sugarlabs.gameOfLife
+exec = sugar-activity4 gameoflifeactivity4.GameOfLifeActivity
+icon = life
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Explore cellular life
+tags = Science;Math
