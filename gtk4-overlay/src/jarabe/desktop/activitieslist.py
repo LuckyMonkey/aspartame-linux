@@ -194,6 +194,10 @@ class ActivityRow(Gtk.Box):
                                      modifiers & Gdk.ModifierType.SHIFT_MASK):
             self.show_palette()
             return True
+        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter, Gdk.KEY_space):
+            if self.item is not None:
+                self.owner.run_activity(self.item.bundle_id, True)
+                return True
         return False
 
     def show_palette(self):

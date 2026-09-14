@@ -32,6 +32,14 @@ def test_home_list_rows_expose_named_button_semantics():
     assert "Gtk.AccessibleProperty.LABEL" in source
 
 
+def test_home_list_rows_activate_with_enter_or_space():
+    source = (ROOT / "gtk4-overlay/src/jarabe/desktop/activitieslist.py").read_text()
+    assert "Gdk.KEY_Return" in source
+    assert "Gdk.KEY_KP_Enter" in source
+    assert "Gdk.KEY_space" in source
+    assert "self.owner.run_activity(self.item.bundle_id, True)" in source
+
+
 def test_home_list_uses_existing_gtk4_command_capability_api():
     source = (ROOT / "gtk4-overlay/src/jarabe/desktop/activitieslist.py").read_text()
     assert "def supports_bundle(bundle):" in source
