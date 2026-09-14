@@ -857,6 +857,10 @@ test -f "$log_activity/activity/activity.info" || {
     exit 2
 }
 mkdir -p "$activity_dir"
+# Previous preview builds can leave registry-generated dangling links behind.
+# They make Jarabe log "No bundle" errors during startup and obscure real
+# inventory failures; remove only links whose targets are already absent.
+find "$activity_dir" -xtype l -delete
 if test -e "$activity_dir/Log.activity" && test ! -L "$activity_dir/Log.activity"; then
     echo "refusing to replace a real Log.activity directory" >&2
     exit 2

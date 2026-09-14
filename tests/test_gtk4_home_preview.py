@@ -33,6 +33,12 @@ def test_gtk4_launcher_defaults_to_native_fullscreen():
     assert "SUGAR_WINDOWED=\"${SUGAR_WINDOWED:-0}\"" in launcher
 
 
+def test_gtk4_build_removes_only_dangling_activity_links():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert 'find "$activity_dir" -xtype l -delete' in build
+    assert 'mkdir -p "$activity_dir"' in build
+
+
 def test_gtk4_neighborhood_does_not_use_removed_gtk_allocation_type():
     meshbox = (ROOT / "sugar-overlay/src/jarabe/desktop/meshbox.py").read_text()
     assert "from gi.repository import Gdk" in meshbox
