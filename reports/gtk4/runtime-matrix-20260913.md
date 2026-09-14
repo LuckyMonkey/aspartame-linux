@@ -165,3 +165,8 @@ Journal model contract (2026-09-13): the GTK4 ListView now returns itself from
 `get_model()` and implements the legacy action surface (`__len__`, metadata
 lookup, set-selected, select-all, and select-none). This reconnects existing
 Journal batch toolbar actions without introducing a second datastore model.
+
+Semantic Home navigation (2026-09-14): the fresh GTK4 shell accepted
+`org.laptop.Shell.ShowHome` and returned `(true,)`. A 1920x1080 capture shows
+the full Favorites ring, XO identity, Home search, and Sugar top bar:
+`reports/screenshots/sugar-20260913-234522-v0.0.31.png`.
