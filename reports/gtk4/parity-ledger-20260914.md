@@ -37,6 +37,9 @@ runtime failures.
 - Terminal repeated lifecycle (2026-09-14): three standard launch/stop cycles
   passed with PIDs `249309`, `249331`, and `249352`; all reported
   `cleanup=PASS` and the probe ended `lifecycle-probe=PASS`.
+- Browse (2026-09-14): installed guest `webkitgtk-6.0`, staged the pinned GTK4
+  source, and passed three Journal launch/stop cycles with PIDs `252075`,
+  `252096`, and `252117`; every cycle reported `cleanup=PASS`.
 
 ## Ranked remaining gaps
 
