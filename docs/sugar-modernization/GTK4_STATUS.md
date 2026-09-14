@@ -23,7 +23,8 @@ Neighborhood/Group empty states, Sugar palettes, clipboard transfer, Help,
 Activity Manager policy, and repeated normal/abnormal Activity launch-stop
 cleanup run in the modern Space. Native Journal and Home List launch paths
 have real Casilda Activity-surface and process evidence. The complete matrix
-is maintained in `reports/gtk4/runtime-matrix-20260913.md`.
+is maintained in `reports/gtk4/runtime-matrix-20260914.md` (with the earlier
+2026-09-13 report retained as historical evidence).
 
 Remaining limits are explicit: physical F1-F6 delivery is below the current
 QEMU/evdev transport; Neighborhood collaboration cannot be exercised without
