@@ -266,3 +266,9 @@ four Backspace events then restored the unfiltered Journal. Captures are
 `reports/screenshots/sugar-20260914-005132-v0.0.31.png` and
 `reports/screenshots/sugar-20260914-005141-v0.0.31.png`. This is runtime input
 evidence through the QEMU path, not a model-only test.
+
+Journal resume/open (2026-09-14): a QMP pointer activation on a filtered
+Journal row resumed the existing GTK4 Help Activity (PID `67597`, activity id
+`38d41ee5ec5749af9943383fe81ac79b`). `StopActivity` returned `(true,)` and the
+process cleanup check passed. This verifies the native row activation path in
+addition to search filtering and clearing.
