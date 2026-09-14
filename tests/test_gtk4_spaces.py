@@ -108,7 +108,7 @@ def test_build_does_not_accept_stale_key_grabber_patch_as_verified():
 
 
 def test_mesh_empty_state_and_drift_guards_are_present():
-    patch = (ROOT / 'patches/gtk4-preview/0095-mesh-empty-state.patch').read_text()
+    patch = (ROOT / 'patches/gtk4-preview/0097-mesh-empty-state.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert 'No people or shared Activities are nearby yet.' in patch
     assert '_empty_state' in patch
