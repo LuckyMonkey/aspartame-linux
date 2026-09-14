@@ -19,6 +19,9 @@ runtime failures.
 - Fresh guest rebuild (2026-09-14): all preview patches applied or semantically
   verified through 0123, including 0015; toolkit import, Casilda 1.0,
   sugar-ext, Jarabe, and datastore metadata checks all passed.
+- Native Calculate Activity (2026-09-14): staged into the rebuilt GTK4
+  registry, launched through Journal (`org.aspartame.Calculate`), exposed its
+  private `WAYLAND_SOCKET`, passed the GTK4 runtime check, and stopped cleanly.
 
 ## Ranked remaining gaps
 

@@ -10,6 +10,7 @@ Status checked: 2026-09-14.
 | Datastore | Arch `sugar-datastore` | Working Carquinyol service | No independent GTK4 datastore requirement identified | Yes as a service | Keep D-Bus/service boundary stable |
 | Fructose activities | Arch packages plus pinned bundled set | Mixed but runnable | Help and Log launch through the GTK4 toolkit/Casilda boundary | Individual GTK4 ports verified | Port one activity at a time, never mass-convert |
 | Display/session | Xorg + Metacity + `sugar-runner` assumptions | Supported | Casilda owns the private Activity surface inside the GTK4 preview | GTK4 preview on X11 host | Keep the Casilda boundary; do not claim a full Wayland session |
+| Calculate | GTK3 Activity | Native GTK4 bundle | Safe arithmetic editor registered in the modern prefix | GTK4 verified 2026-09-14 | `org.aspartame.Calculate` launches through Journal and stops cleanly |
 | Browse | GTK3/WebKitGTK-era Activity | GTK3 dependencies | GTK4/WebKitGTK 6 migration is activity-specific | GTK3 only | Do not make WebKitGTK4 a shell dependency |
 
 Current verified checkpoint: GTK4 Home Favorites/List/search, Frame,
