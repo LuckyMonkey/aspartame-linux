@@ -50,6 +50,10 @@ runtime failures.
   (`55 passed`), sugar-ext configuration, shell GTK4 configure gate, and
   preview shell boot all passed. The checker still intentionally does not claim
   the full replacement gate.
+- Post-profile Activity matrix rerun (2026-09-14): all seven registered modern
+  bundles again completed Journal launch/stop with `cleanup=PASS`; final
+  `activity-matrix=PASS` (PIDs `255598`, `255629`, `255660`, `255690`,
+  `255720`, `255750`, `255780`).
 
 ## Ranked remaining gaps
 
