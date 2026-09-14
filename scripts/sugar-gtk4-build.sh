@@ -908,7 +908,7 @@ test -f "$browse_activity/activity/activity.info" || {
 }
 ln -sfn "$browse_activity" "$activity_dir/Browse.activity"
 
-for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
+for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20' 'vte-2.91-gtk4 >= 0.84' 'webkitgtk-6.0 >= 2.50'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }
 done
 

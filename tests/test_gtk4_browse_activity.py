@@ -12,3 +12,5 @@ def test_build_stages_pinned_gtk4_browse_activity():
     packages = (ROOT / "archiso/aspartame/packages.x86_64").read_text()
     assert "webkitgtk-6.0" in packages
     assert "vte4" in packages
+    assert "vte-2.91-gtk4 >= 0.84" in build
+    assert "webkitgtk-6.0 >= 2.50" in build
