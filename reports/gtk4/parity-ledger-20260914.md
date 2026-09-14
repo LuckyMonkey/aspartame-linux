@@ -374,6 +374,10 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
   probe passed (`cleanup=PASS`, PIDs `424040`, `424070`, `424091`). The
   subsequent one-cycle matrix covered all 43 registered bundles and ended with
   `activity-matrix=PASS` (latest PID `425527`).
+- Native Paint Activity (2026-09-14): added a GTK4 drawing canvas with drag
+  strokes, color selection, clear action, and accessible controls. Guest build
+  and three direct Casilda launch/stop cycles passed (`cleanup=PASS`, PIDs
+  `431104`, `431130`, `431151`).
 - Spaces runtime round-trip recheck (2026-09-14): the guest switched to the
   GTK3 desktop and passed `runtime-check=ok` for PID `33761`, then switched back
   to GTK4 and passed for PID `265471`. Both processes remained separate.
