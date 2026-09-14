@@ -52,6 +52,7 @@ declare -a activities=(
     'org.laptop.Pippy|pippyactivity4.PippyActivity'
     'org.sugarlabs.Paint|paintactivity4.PaintActivity'
     'com.francocorrea.diamondfusion|diamondfusionactivity4.DiamondFusionActivity'
+    'net.flossmanuals.LevelActivity|levelactivity4.LevelActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

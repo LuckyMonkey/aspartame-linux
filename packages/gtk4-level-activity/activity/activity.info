@@ -1,0 +1,10 @@
+[Activity]
+name = Level
+bundle_id = net.flossmanuals.LevelActivity
+exec = sugar-activity4 levelactivity4.LevelActivity
+icon = level
+activity_version = 3
+show_launcher = yes
+license = GPLv3+
+summary = Check the inclination of a surface
+tags = Utility;Measurement
