@@ -23,7 +23,11 @@ from jarabe.desktop import activitypresentation
 from jarabe.journal import misc
 from jarabe.model import bundleregistry, desktop
 from jarabe.util.normalize import normalize_string
-from jarabe.view.contexthelp import register_target
+
+
+def register_target(widget, target_id, **metadata):
+    """Attach optional Help metadata without importing GTK3 view modules."""
+    widget._sugar_help_target = (target_id, metadata)
 
 
 class ActivityItem(GObject.GObject):
