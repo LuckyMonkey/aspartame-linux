@@ -258,3 +258,11 @@ runtime check passed for GTK4 PID `66777` on desktop `1`, switched to GTK3 PID
 `33761` on desktop `0` and passed there, then returned to GTK4 and passed
 again. This confirms the active-activity clearing change did not damage the
 classic Space or the semantic modern/classic workspace boundary.
+
+Journal search input (2026-09-14): with the GTK4 Journal active, a QMP pointer
+click focused the native search entry and real USB-keyboard events entered
+`help`. The list visibly changed from 46 entries to `33 matches for “help”`;
+four Backspace events then restored the unfiltered Journal. Captures are
+`reports/screenshots/sugar-20260914-005132-v0.0.31.png` and
+`reports/screenshots/sugar-20260914-005141-v0.0.31.png`. This is runtime input
+evidence through the QEMU path, not a model-only test.
