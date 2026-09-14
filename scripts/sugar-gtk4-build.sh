@@ -437,6 +437,13 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified modern get_bundle override: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0099* ]] &&
+        grep -q 'set_accessible_role(Gtk.AccessibleRole.BUTTON)' "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null &&
+        grep -q 'def _key_pressed(self, controller, keyval, keycode, state)' "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Control Panel accessibility: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0080* ]] &&
         grep -q '_overlay.set_focusable(True)' "$shell/src/jarabe/main.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
