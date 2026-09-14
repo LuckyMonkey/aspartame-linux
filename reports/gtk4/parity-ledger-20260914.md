@@ -35,6 +35,10 @@ Full 35-Activity matrix recheck (2026-09-14): all registered bundles completed
 three guest Journal launch/stop cycles; all 105 cycles reported `cleanup=PASS`
 and the matrix ended with `activity-matrix=PASS` (latest PID `384832`).
 
+Cross-space regression (2026-09-14): GTK4 runtime checker passed on desktop 1
+(`pid=265471`), semantic GTK3→GTK4 switching returned `current=1`, and the
+separate GTK3 reference remained `pid=33761`; host suite passed 201 tests.
+
 Native Words (2026-09-14): a GTK4 word exploration/translation Activity was
 staged under `org.laptop.Words`. Three guest Casilda launch/stop cycles passed
 with `cleanup=PASS` (PIDs `363015`, `363043`, `363068`).
