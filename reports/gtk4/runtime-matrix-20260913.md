@@ -339,9 +339,8 @@ shell owner appeared.
 GTK4 Activity Manager inventory (2026-09-14): the modern Settings grid now
 includes an Activity Manager tile. A live pointer activation opened a native
 GTK4 inventory showing 34 registry-backed activities with names, versions, and
-explicit System-managed/User-installed status. System-managed Remove controls
-are visibly disabled; approval-backed uninstall for user-owned bundles remains
-deferred and is not represented as complete. Captures:
+explicit System-managed/User-installed status. Remove controls are active and
+route through the safe user quarantine or fullscreen approval policy. Captures:
 `reports/screenshots/gtk4-settings-activity-manager-grid-20260914.png` and
 `reports/screenshots/gtk4-activity-manager-inventory-20260914.png`.
 
@@ -352,3 +351,9 @@ approval helper and constrained native remover. The controls no longer claim a
 future action while silently doing nothing. A destructive live uninstall was
 not performed against the installed guest inventory; the policy is covered by
 the existing model tests and the new GTK4 section smoke test.
+
+GTK4 Activity Manager runtime restart (2026-09-14): after rebuilding the
+overlay, the guest restarted with one modern shell and the runtime checker
+returned `runtime-check=ok` (`pid=131421`, desktop 1; GTK3 reference PID
+`33761` retained). No live destructive click was performed against the guest's
+installed inventory.

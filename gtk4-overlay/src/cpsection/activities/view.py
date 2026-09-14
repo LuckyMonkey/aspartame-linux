@@ -26,6 +26,10 @@ class ActivityManager(SectionView):
             xalign=0))
         self._count = Gtk.Label(xalign=0)
         self.append(self._count)
+        self._status = Gtk.Label(xalign=0)
+        self._status.set_opacity(0.78)
+        self._status.set_wrap(True)
+        self.append(self._status)
 
         scroller = Gtk.ScrolledWindow()
         scroller.set_vexpand(True)
@@ -76,11 +80,13 @@ class ActivityManager(SectionView):
 
     def _remove_clicked(self, _button, activity):
         try:
-            self._model.remove_activity(activity['path'])
-        except (OSError, PermissionError, ValueError):
-            # The approval helper and remover own user-facing failure UI. Keep
-            # the inventory intact when approval is cancelled or fails.
+            target = self._model.remove_activity(activity['path'])
+        except (OSError, PermissionError, ValueError) as error:
+            self._status.set_text(_('Removal not completed: %s') % error)
             return
+        self._status.set_text(
+            _('Removed %s. A recoverable copy is at %s.') %
+            (activity['name'], target))
         self.setup()
 
     def undo(self):

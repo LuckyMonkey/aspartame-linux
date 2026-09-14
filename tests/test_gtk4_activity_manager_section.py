@@ -12,6 +12,8 @@ def test_gtk4_activity_manager_is_native_and_registry_backed():
     assert "class ActivityManager(SectionView)" in view
     assert "System-managed" in view
     assert "_remove_clicked" in view
+    assert "Removal not completed" in view
+    assert "recoverable copy" in view
     assert "bundleregistry.get_registry()" in model
     assert "aspartame-sudo-askpass" in model
     assert "shutil.move(path, target)" in model
