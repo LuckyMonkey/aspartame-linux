@@ -72,6 +72,9 @@ runtime failures.
   patch 0015, restarted successfully as PID `259457`, and its fresh startup
   log contains zero dangling `No bundle in` registry errors. The full Activity
   matrix still passes after the rebuild (PIDs `259165`–`259348`).
+- Native Clock Activity (2026-09-14): added a live time/date GTK4 Activity,
+  staged it as `org.aspartame.Clock`, and verified Journal launch/stop cleanup
+  in the full matrix (PID `262387`).
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
