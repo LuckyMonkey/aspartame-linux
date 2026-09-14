@@ -842,7 +842,7 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "relocated current Frame accessibility calls: $patch_name"
-    elif [[ "$patch_name" == *0124* ]] &&
+    elif [[ "$patch_name" == *0124* || "$patch_name" == *0125* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
