@@ -1020,6 +1020,9 @@ ln -sfn "$colormyworld_activity" "$activity_dir/ColorMyWorld.activity"
 abacus_activity="$repo/packages/gtk4-abacus-activity"
 test -f "$abacus_activity/activity/activity.info" || { echo "missing native GTK4 Abacus Activity bundle" >&2; exit 2; }
 ln -sfn "$abacus_activity" "$activity_dir/Abacus.activity"
+planets_activity="$repo/packages/gtk4-planets-activity"
+test -f "$planets_activity/activity/activity.info" || { echo "missing native GTK4 Planets Activity bundle" >&2; exit 2; }
+ln -sfn "$planets_activity" "$activity_dir/Planets.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

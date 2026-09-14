@@ -1,5 +1,9 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Planets (2026-09-14): a GTK4 orbit canvas with selectable planet labels
+was staged under `org.sugarlabs.Planets`. Three guest Casilda launch/stop cycles
+passed with `cleanup=PASS` (PIDs `404889`, `404919`, `404941`).
+
 Native Abacus (2026-09-14): a GTK4 five-rod place-value Activity with
 increment/decrement controls and computed value was staged under
 `com.homegrownapps.abacus`. Three guest Casilda launch/stop cycles passed with

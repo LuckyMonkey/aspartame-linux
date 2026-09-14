@@ -46,6 +46,7 @@ declare -a activities=(
     'org.sugarlabs.gameOfLife|gameoflifeactivity4.GameOfLifeActivity'
     'org.sugarlabs.ColorMyWorldActivity|colormyworldactivity4.ColorMyWorldActivity'
     'com.homegrownapps.abacus|abacusactivity4.AbacusActivity'
+    'org.sugarlabs.Planets|planetsactivity4.PlanetsActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
