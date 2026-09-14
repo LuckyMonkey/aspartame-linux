@@ -322,3 +322,10 @@ GTK4 clipboard transfer (2026-09-14): under the live GTK4 display, a real
 `read_text_async()` returned the exact marker `aspartame-gtk4-clipboard`.
 This verifies actual clipboard transfer through the GTK4 display boundary,
 not merely construction of a clipboard object.
+
+Journal drag source (2026-09-14): the GTK4 Journal rows now install native
+`Gtk.DragSource` controllers with COPY action and a stable UID payload. A
+post-build live `ShowJournal` smoke test constructed the rows and kept the
+GTK4 shell alive (`journal-runtime=PASS`) without GTK or Python errors. Drop
+consumers remain intentionally unchanged; this closes the missing row-source
+side of Journal drag/copy without adding a new service boundary.

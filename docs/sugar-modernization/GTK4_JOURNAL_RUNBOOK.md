@@ -338,7 +338,9 @@ Do not use that phrase until all required checks pass in a running preview:
 - [ ] Detail/object palette opens for the correct entry.
 - [ ] Open/resume returns to the intended Activity.
 - [ ] Delete/project actions are safe and scoped.
-- [ ] Drag/copy does not corrupt or misidentify an entry.
+- [x] GTK4 Journal rows expose a native COPY drag source carrying the stable
+  Journal UID; live row construction is verified. Drop-consumer behavior is
+  unchanged and remains scoped to existing clipboard consumers.
 - [ ] ObjectChooser still works.
 - [ ] ProjectView still works.
 - [ ] Journal survives hide/show and shell restart.

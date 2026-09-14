@@ -8,7 +8,7 @@ legacy cell renderers.
 import logging
 from gettext import gettext as _
 
-from gi.repository import GObject, Gtk, GLib
+from gi.repository import GObject, Gtk, GLib, Gdk
 
 from jarabe.journal import model
 
@@ -37,6 +37,7 @@ class ListView(Gtk.Box):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self._query = {}
         self._rows = {}
+        self._dragging = False
         self._journalactivity = journalactivity
         self.tree_view = _JournalRows()
         self.tree_view.set_selection_mode(
@@ -93,6 +94,13 @@ class ListView(Gtk.Box):
                 box.append(Gtk.Label(label=title, xalign=0))
                 box.append(Gtk.Label(label=activity, xalign=0))
                 row.set_child(box)
+                drag_source = Gtk.DragSource()
+                drag_source.set_actions(Gdk.DragAction.COPY)
+                drag_source.connect('prepare', self._prepare_drag, uid)
+                drag_source.connect('drag-begin', self._drag_begin)
+                drag_source.connect('drag-end', self._drag_end)
+                drag_source.connect('drag-cancel', self._drag_cancel)
+                row.add_controller(drag_source)
                 row.update_property([Gtk.AccessibleProperty.LABEL,
                                      Gtk.AccessibleProperty.DESCRIPTION],
                                     [title, activity])
@@ -122,12 +130,25 @@ class ListView(Gtk.Box):
         self.emit('detail-clicked', uid)
         return GLib.SOURCE_REMOVE
 
+    def _prepare_drag(self, _source, _x, _y, uid):
+        payload = GLib.Bytes.new(str(uid).encode('utf-8'))
+        return Gdk.ContentProvider.new_for_bytes('text/plain', payload)
+
+    def _drag_begin(self, *_args):
+        self._dragging = True
+
+    def _drag_end(self, *_args):
+        self._dragging = False
+
+    def _drag_cancel(self, *_args):
+        self._dragging = False
+
     def update_with_query(self, query_dict):
         self._query = dict(query_dict or {})
         GLib.idle_add(self._refresh)
 
     def get_projects_view_active(self): return False
-    def is_dragging(self): return False
+    def is_dragging(self): return self._dragging
     def set_is_visible(self, _visible): return None
     def get_model(self): return self
 
