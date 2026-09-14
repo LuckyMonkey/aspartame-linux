@@ -954,6 +954,9 @@ ln -sfn "$acrossdown_activity" "$activity_dir/AcrossDown.activity"
 iq_activity="$repo/packages/gtk4-iq-activity"
 test -f "$iq_activity/activity/activity.info" || { echo "missing native GTK4 IQ Activity bundle" >&2; exit 2; }
 ln -sfn "$iq_activity" "$activity_dir/IQ.activity"
+appelhaken_activity="$repo/packages/gtk4-appelhaken-activity"
+test -f "$appelhaken_activity/activity/activity.info" || { echo "missing native GTK4 Appel Haken Activity bundle" >&2; exit 2; }
+ln -sfn "$appelhaken_activity" "$activity_dir/AppelHaken.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

@@ -59,6 +59,8 @@
   Casilda launch/stop cycles (`mulawa.AcrossDown`).
 - [x] Port IQ as a native GTK4 Activity and verify three repeated Casilda
   launch/stop cycles (`mulawa.IQ`).
+- [x] Port Appel Haken as a native GTK4 Activity and verify three repeated
+  Casilda launch/stop cycles (`mulawa.AppelHaken`).
 
 ## P4 — Wayland/backend neutrality
 
