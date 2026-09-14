@@ -29,3 +29,4 @@ def test_duplicate_navigation_methods_are_covered():
     assert "ShowGroup" in patch
     assert "ShowHome" in patch
     assert "ShowList" in patch
+    assert patch.count("self._shell_model._set_active_activity(None)") >= 5
