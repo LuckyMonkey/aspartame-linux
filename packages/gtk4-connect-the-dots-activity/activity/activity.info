@@ -1,0 +1,10 @@
+[Activity]
+name = Connect the Dots
+bundle_id = org.sugarlabs.ConnectTheDots
+exec = sugar-activity4 connectthedotsactivity4.ConnectTheDotsActivity
+icon = connect-the-dots
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Connect the numbered dots in order
+tags = Art;Math;Games

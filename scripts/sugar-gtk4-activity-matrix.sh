@@ -48,6 +48,7 @@ declare -a activities=(
     'com.homegrownapps.abacus|abacusactivity4.AbacusActivity'
     'org.sugarlabs.Planets|planetsactivity4.PlanetsActivity'
     'org.sugarlabs.Write|writeactivity4.WriteActivity'
+    'org.sugarlabs.ConnectTheDots|connectthedotsactivity4.ConnectTheDotsActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

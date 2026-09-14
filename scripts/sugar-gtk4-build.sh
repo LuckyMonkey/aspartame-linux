@@ -1026,6 +1026,9 @@ ln -sfn "$planets_activity" "$activity_dir/Planets.activity"
 write_activity="$repo/packages/gtk4-write-activity"
 test -f "$write_activity/activity/activity.info" || { echo "missing native GTK4 Write Activity bundle" >&2; exit 2; }
 ln -sfn "$write_activity" "$activity_dir/Write.activity"
+connect_the_dots_activity="$repo/packages/gtk4-connect-the-dots-activity"
+test -f "$connect_the_dots_activity/activity/activity.info" || { echo "missing native GTK4 Connect the Dots Activity bundle" >&2; exit 2; }
+ln -sfn "$connect_the_dots_activity" "$activity_dir/ConnectTheDots.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
