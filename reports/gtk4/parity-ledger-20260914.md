@@ -73,7 +73,7 @@ runtime failures.
   log contains zero dangling `No bundle in` registry errors. The full Activity
   matrix still passes after the rebuild (PIDs `259165`–`259348`).
 - Native Clock Activity (2026-09-14): added a live time/date GTK4 Activity,
-  staged it as `org.aspartame.Clock`, and verified Journal launch/stop cleanup
+  staged it as the original `tv.alterna.Clock` bundle, and verified Journal launch/stop cleanup
   in the full matrix (PID `262387`).
 - Native JAMClock replacement (2026-09-14): replaced the legacy GTK3/Pygame
   entrypoint for `org.laptop.JAMClock` with a native GTK4 time/date Activity;

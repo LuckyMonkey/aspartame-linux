@@ -1,6 +1,6 @@
 [Activity]
 name = Clock
-bundle_id = org.aspartame.Clock
+bundle_id = tv.alterna.Clock
 exec = sugar-activity4 clockactivity4.ClockActivity
 icon = clock
 activity_version = 1

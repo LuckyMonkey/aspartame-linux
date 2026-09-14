@@ -11,10 +11,10 @@ def test_native_clock_bundle_is_staged_for_modern_space():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     run = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
-    assert "bundle_id = org.aspartame.Clock" in info
+    assert "bundle_id = tv.alterna.Clock" in info
     assert icon.is_file() and "#2f88bd" in icon.read_text()
     assert "sugar-activity4 clockactivity4.ClockActivity" in info
     assert "GLib.timeout_add_seconds(1, self._tick)" in source
     assert 'clock_activity="$repo/packages/gtk4-clock-activity"' in build
     assert "Clock.activity" in run
-    assert "org.aspartame.Clock|clockactivity4.ClockActivity" in matrix
+    assert "tv.alterna.Clock|clockactivity4.ClockActivity" in matrix

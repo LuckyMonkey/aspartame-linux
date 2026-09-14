@@ -14,7 +14,7 @@ Status checked: 2026-09-14.
 | Image Viewer | GTK3 Activity | Pinned GTK4 source | Registered from the GTK4 port without shell changes | GTK4 verified 2026-09-14 | `org.laptop.ImageViewerActivity` launches and stops cleanly |
 | Terminal | GTK3 Activity | Pinned GTK4 source + guest `vte4` | Registered once the GTK4 Vte typelib is available | GTK4 verified 2026-09-14 | `org.laptop.Terminal` launches and stops cleanly |
 | Browse | GTK4 source is pinned | Guest `webkitgtk-6.0` installed | Activity-specific dependency; kept out of the shell build | GTK4 verified 2026-09-14 | `org.laptop.WebActivity` launches and stops cleanly; repeated lifecycle is recorded |
-| Clock | GTK3 Activity | Native GTK4 bundle | Live GTK4 time/date label | GTK4 verified 2026-09-14 | `org.aspartame.Clock` launches and stops cleanly through Casilda |
+| Clock | GTK3 Activity | Native GTK4 bundle | Live GTK4 time/date label | GTK4 verified 2026-09-14 | `tv.alterna.Clock` launches and stops cleanly through Casilda |
 | JAMClock | GTK3/Pygame Activity | Native GTK4 bundle | GTK4 time/date replacement under the original bundle ID | GTK4 verified 2026-09-14 | `org.laptop.JAMClock` launches and stops cleanly through Casilda |
 
 Current verified checkpoint: GTK4 Home Favorites/List/search, Frame,
