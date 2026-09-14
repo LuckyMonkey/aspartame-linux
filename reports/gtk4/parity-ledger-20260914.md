@@ -72,6 +72,10 @@ runtime failures.
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
   delivery is still isolated as the transport gap.
+- Guest evdev probe (2026-09-14): both QMP `input-send-event` and monitor
+  `send-key f1` returned successfully but produced no events on the guest's
+  QEMU USB/virtio keyboard devices. This localizes the failure below GTK4 and
+  Metacity; no shell-side keybinding change is justified by this evidence.
 
 ## Ranked remaining gaps
 
