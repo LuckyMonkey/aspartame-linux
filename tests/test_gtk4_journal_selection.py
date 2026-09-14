@@ -35,6 +35,7 @@ def test_gtk4_journal_list_uses_native_selection_api():
     assert "No Journal entries are assigned to a project" in source
     assert "project Journal entries" in source
     assert "elif shown == 0:" in source
+    assert "0 project Journal entries" in source
 
 
 def test_gtk4_journal_selection_emits_count_changes():

@@ -166,6 +166,7 @@ class ListView(Gtk.Box):
             self._empty.set_visible(shown == 0)
             if self._projects_only and shown == 0:
                 self._empty.set_text(_('No Journal entries are assigned to a project'))
+                self._result_status.set_text(_('0 project Journal entries'))
             elif self._projects_only:
                 self._result_status.set_text(
                     _('%d project Journal entries') % shown)
