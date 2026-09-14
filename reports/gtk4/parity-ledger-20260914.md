@@ -28,6 +28,9 @@ runtime failures.
 - Image Viewer (2026-09-14): the pinned GTK4 source was staged, launched
   through Journal (`org.laptop.ImageViewerActivity`, PID `233782`), and stopped
   cleanly with the shell reporting the expected successful StopActivity call.
+- Image Viewer repeated lifecycle (2026-09-14): three live launch/stop cycles
+  passed with PIDs `246325`, `246348`, and `246369`; each reported
+  `cleanup=PASS` and the probe ended `lifecycle-probe=PASS`.
 
 ## Ranked remaining gaps
 
