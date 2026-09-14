@@ -65,7 +65,7 @@ for patch in "$patch_dir"/*.patch; do
         *0090*) target="$root/sources/sugar" ;;
         *0091*) target="$root/sources/sugar" ;;
         *0092*) target="$root/sources/sugar" ;;
-        *0094*) target="$root/sources/sugar" ;;
+        *0094*) echo "retired unavailable SugarExt global key-grabber preview patch"; continue ;;
         *0095*) target="$root/sources/sugar" ;;
         *0096*) target="$root/sources/sugar" ;;
         *0097*) target="$root/sources/sugar" ;;

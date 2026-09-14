@@ -290,3 +290,11 @@ next GLib dispatch turn. After a clean guest rebuild, five consecutive live
 cycles completed and the shell remained registered (`detail-reentry=PASS`),
 with no fatal GTK assertion in the new log. No new lifecycle or Spaces
 abstraction was introduced.
+
+Global F-key recheck (2026-09-14): the deployed GTK4 process exposed no
+`SugarExt.KeyGrabber` symbol in the GTK4 SugarExt 2.0 typelib. The workspace
+grabber consequently raised an AttributeError from its timer and could not
+provide physical F1–F6 capture; direct semantic shell actions remain reliable
+and native GTK controllers remain intact. The unavailable global-grabber patch
+is retired rather than adding a new X11/input dependency. Physical F-key parity
+remains PARTIAL and is deferred as a platform/API gap.

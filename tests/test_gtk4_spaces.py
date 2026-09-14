@@ -92,19 +92,16 @@ def test_gtk4_main_window_routes_space_keys_semantically():
     assert "subprocess.Popen" in patch
 
 
-def test_gtk4_global_key_grabber_matches_sugarext_signal_contract():
+def test_gtk4_global_key_grabber_patch_is_retired_when_sugarext_lacks_api():
     patch = (ROOT / "patches/gtk4-preview/0094-modern-space-keygrabber.patch").read_text()
-    # SugarExt.KeyGrabber emits (grabber, keycode, state); an extra event-time
-    # argument makes the callback fail before any Sugar action is dispatched.
-    assert "def _modern_key_pressed(grabber, keycode, state):" in patch
-    assert "Gdk.keyval_from_name(key)" in patch
-    assert "GTK4 global key event" in patch
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "SugarExt.KeyGrabber" in patch
+    assert 'retired unavailable SugarExt global key-grabber preview patch' in build
 
 
 def test_build_does_not_accept_stale_key_grabber_patch_as_verified():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert 'def _modern_key_pressed(grabber, keycode, state):' in build
-    assert 'Gdk.keyval_from_name(key)' in build
+    assert '*0094*) echo "retired unavailable SugarExt global key-grabber preview patch"; continue ;;' in build
 
 
 def test_mesh_empty_state_and_drift_guards_are_present():

@@ -71,3 +71,4 @@ def test_journal_toolbar_reattach_is_deferred_when_still_rooted():
     assert "toolbar.get_parent() == self._toolbar_area" in patch
     assert "GLib.idle_add(self.set_toolbar_box, toolbar)" in patch
     assert '*0109*) target="$root/sources/sugar" ;;' in build
+
