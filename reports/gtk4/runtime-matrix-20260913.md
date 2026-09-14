@@ -125,3 +125,8 @@ Group view evidence (2026-09-13): `ShowGroup` returned `(true,)` and the live
 GTK4 surface rendered the Sugar top bar, search affordance, XO owner icon, and
 the explicit empty state “No friends are nearby yet.” Capture:
 `reports/screenshots/sugar-20260913-231633-v0.0.31.png`.
+
+Frame evidence (2026-09-13): `ShowFrame` returned `(true,)`; the live GTK4
+Frame revealed its edge controls, activity tray, XO control, navigation arrows,
+and device icons over the shell surface. Capture:
+`reports/screenshots/sugar-20260913-231708-v0.0.31.png`.
