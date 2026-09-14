@@ -1,0 +1,10 @@
+[Activity]
+name = BallAndBrick
+bundle_id = org.sugarlabs.BallAndBrick
+exec = sugar-activity4 ballandbrickactivity4.BallAndBrickActivity
+icon = ballandbrick
+activity_version = 4
+show_launcher = yes
+license = GPLv3+
+summary = Clear the bricks with a ball
+tags = Game;Arcade

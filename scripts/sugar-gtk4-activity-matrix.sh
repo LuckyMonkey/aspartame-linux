@@ -25,6 +25,7 @@ declare -a activities=(
     'mulawa.AcrossDown|acrossdownactivity4.AcrossDownActivity'
     'mulawa.IQ|iqactivity4.IQActivity'
     'mulawa.AppelHaken|appelhakenactivity4.AppelHakenActivity'
+    'org.sugarlabs.BallAndBrick|ballandbrickactivity4.BallAndBrickActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

@@ -51,6 +51,10 @@ Eighteen-Activity matrix recheck (2026-09-14): all 54 guest launch/stop
 cycles, including Appel Haken, reported `cleanup=PASS`; final result was
 `activity-matrix=PASS` (Appel Haken PIDs `319764`, `319785`, `319806`).
 
+Native BallAndBrick (2026-09-14): a GTK4 brick-breaker surface with pointer
+interaction was staged under `org.sugarlabs.BallAndBrick`. Three guest Casilda
+launch/stop cycles passed with `cleanup=PASS` (PIDs `322404`, `322427`, `322448`).
+
 Seventeen-Activity matrix recheck (2026-09-14): all 51 guest launch/stop
 cycles, including IQ, reported `cleanup=PASS`; final result was
 `activity-matrix=PASS` (IQ PIDs `315806`, `315827`, `315848`).

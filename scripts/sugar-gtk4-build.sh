@@ -957,6 +957,9 @@ ln -sfn "$iq_activity" "$activity_dir/IQ.activity"
 appelhaken_activity="$repo/packages/gtk4-appelhaken-activity"
 test -f "$appelhaken_activity/activity/activity.info" || { echo "missing native GTK4 Appel Haken Activity bundle" >&2; exit 2; }
 ln -sfn "$appelhaken_activity" "$activity_dir/AppelHaken.activity"
+ballandbrick_activity="$repo/packages/gtk4-ballandbrick-activity"
+test -f "$ballandbrick_activity/activity/activity.info" || { echo "missing native GTK4 BallAndBrick Activity bundle" >&2; exit 2; }
+ln -sfn "$ballandbrick_activity" "$activity_dir/BallAndBrick.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
