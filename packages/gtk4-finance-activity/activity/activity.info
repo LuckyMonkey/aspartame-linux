@@ -1,0 +1,10 @@
+[Activity]
+name = Finance
+bundle_id = org.laptop.community.Finance
+exec = sugar-activity4 financeactivity4.FinanceActivity
+icon = finance
+activity_version = 15
+show_launcher = yes
+license = GPLv3+
+summary = Track income, expenses, and balance
+tags = Math;Finance
