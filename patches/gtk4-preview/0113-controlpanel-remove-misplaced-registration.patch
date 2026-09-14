@@ -1,0 +1,27 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: remove misplaced Activity Manager registration
+
+The first registration hunk matched a similarly shaped method in a drifted
+source tree. Remove that accidental block; 0112 now anchors to _get_options.
+
+--- a/src/jarabe/controlpanel/gui.py
++++ b/src/jarabe/controlpanel/gui.py
+@@ -555,17 +555,5 @@
+     def __cancellable_section_cb(self, section_view, pspec):
+         cancellable = section_view.props.is_cancellable
+         self._section_toolbar.cancel_button.set_sensitive(cancellable)
+
+-        try:
+-            import cpsection.activities
+-            options.setdefault('activities', {
+-                'alerts': [],
+-                'view': 'ActivityManager',
+-                'icon': cpsection.activities.ICON,
+-                'title': cpsection.activities.TITLE,
+-                'color': None,
+-                'keywords': list(cpsection.activities.KEYWORDS),
+-            })
+-        except Exception:
+-            logging.exception('Exception while loading GTK4 Activity Manager:')
+
+ class ModelWrapper(object):

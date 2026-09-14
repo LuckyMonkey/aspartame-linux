@@ -1,0 +1,27 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: expose native Activity Manager section
+
+The ISO ships an Activity Manager only in its GTK3 extension tree. Register the
+GTK4 overlay section explicitly so Settings exposes the inventory without
+mixing GTK3 modules into the modern process.
+
+--- a/src/jarabe/controlpanel/gui.py
++++ b/src/jarabe/controlpanel/gui.py
+@@ -447,4 +447,17 @@
+                 except Exception:
+                     logging.exception('Exception while loading extension:')
+
++        try:
++            import cpsection.activities
++            options.setdefault('activities', {
++                'alerts': [],
++                'view': 'ActivityManager',
++                'icon': cpsection.activities.ICON,
++                'title': cpsection.activities.TITLE,
++                'color': None,
++                'keywords': list(cpsection.activities.KEYWORDS),
++            })
++        except Exception:
++            logging.exception('Exception while loading GTK4 Activity Manager:')
++
+         return options

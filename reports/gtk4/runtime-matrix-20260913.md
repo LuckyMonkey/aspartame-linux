@@ -335,3 +335,12 @@ checker passed in GTK4 (`pid=113178`, desktop 1), switched to GTK3
 (`pid=33761`, desktop 0), and returned to GTK4 with both checks passing. The
 active-window and workspace assertions remained consistent and no duplicate
 shell owner appeared.
+
+GTK4 Activity Manager inventory (2026-09-14): the modern Settings grid now
+includes an Activity Manager tile. A live pointer activation opened a native
+GTK4 inventory showing 34 registry-backed activities with names, versions, and
+explicit System-managed/User-installed status. System-managed Remove controls
+are visibly disabled; approval-backed uninstall for user-owned bundles remains
+deferred and is not represented as complete. Captures:
+`reports/screenshots/gtk4-settings-activity-manager-grid-20260914.png` and
+`reports/screenshots/gtk4-activity-manager-inventory-20260914.png`.
