@@ -88,3 +88,14 @@ Repeated/abnormal lifecycle: PASS. Three additional launch/stop cycles
 completed with distinct process IDs and immediate cleanup. A fourth Help
 Activity was then terminated with SIGKILL; no `helpactivity4` process remained
 and the GTK4 shell PID stayed alive, demonstrating abnormal-exit cleanup.
+
+Settings and empty Neighborhood evidence (2026-09-13): `ShowControlPanel`
+returned `(true,)` and a fresh 1920×1080 capture showed the native dark Settings
+grid with Sugar top bar and stop control:
+`reports/screenshots/sugar-20260913-224606-v0.0.31.png`. `ShowNeighborhood`
+also returned `(true,)`; its previously blank no-peer canvas is now patched to
+show a localized empty-state message (`0095-mesh-empty-state.patch`).
+
+Guest build frontier (2026-09-13): after synchronizing the development share,
+the full preview build passed all staged patches through `0096`, then completed
+Casilda, sugar-ext, Jarabe, and datastore metadata validation successfully.
