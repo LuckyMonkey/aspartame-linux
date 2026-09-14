@@ -43,6 +43,10 @@ Native IQ (2026-09-14): a GTK4 sequence-puzzle Activity was staged under the
 original `mulawa.IQ` identity. Three guest Casilda launch/stop cycles passed
 with `cleanup=PASS` (PIDs `314561`, `314584`, `314605`).
 
+Seventeen-Activity matrix recheck (2026-09-14): all 51 guest launch/stop
+cycles, including IQ, reported `cleanup=PASS`; final result was
+`activity-matrix=PASS` (IQ PIDs `315806`, `315827`, `315848`).
+
 Number Rush scoring correction (2026-09-14): a solved round is now latched so
 repeated Check activation cannot inflate the score; post-fix three-cycle
 lifecycle passed with `cleanup=PASS` (PIDs `297682`–`297726`).
