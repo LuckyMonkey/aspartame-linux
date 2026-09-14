@@ -52,9 +52,9 @@ runtime failures.
 2. Neighborhood/Group peer actions need a real collaboration peer. The empty
    state and accessible roots are verified; inventing peers would not prove
    Sugar collaboration behavior.
-3. More individual Activities still require GTK4 ports (Browse remains a
-   known GTK3/WebKit-era example). Help and Log provide the verified real
-   GTK4 Activity lifecycle path.
+3. More individual Activities still require GTK4 ports. Browse, Terminal,
+   Image Viewer, Calculate, Count, Help, and Log now provide verified modern
+   Activity paths; remaining legacy bundles need separate ports.
 
 ## Complexity policy
 
