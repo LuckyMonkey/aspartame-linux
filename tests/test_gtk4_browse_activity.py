@@ -9,3 +9,6 @@ def test_build_stages_pinned_gtk4_browse_activity():
     assert 'browse_activity="$root/sources/browse-activity"' in build
     assert 'ln -sfn "$browse_activity" "$activity_dir/Browse.activity"' in build
     assert "browse-activity|https://github.com/Inuth0603/browse-activity" in init
+    packages = (ROOT / "archiso/aspartame/packages.x86_64").read_text()
+    assert "webkitgtk-6.0" in packages
+    assert "vte4" in packages

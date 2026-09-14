@@ -22,6 +22,8 @@ metacity
 wayland-utils
 wayland-protocols
 gtk4
+webkitgtk-6.0
+vte4
 gobject-introspection
 glib2-devel
 meson
