@@ -35,6 +35,14 @@ attribute. The guest preview rebuild passes and the focused regression suite
 passes; a fresh QMP F-key visual recheck remains PARTIAL pending proof that the
 native grab reaches the modern shell on this X11 session.
 
+Deployment correction (2026-09-13): the first rebuilds were falsely reported
+as applying 0094 because the guest build script treated any existing
+`_modern_key_grabber` code as sufficient. The idempotence guard now checks the
+three-argument callback and `Gdk.keyval_from_name()` explicitly. After syncing
+the patch and guard into `/mnt/aspartame-dev`, the deployed guest source was
+verified to contain both changes. F-key visual dispatch remains unproven after
+that corrected deployment, so the completion status stays PARTIAL.
+
 Post-rebuild lifecycle regression check (18:50 UTC): two fresh Journal-launched
 Help cycles completed with distinct PIDs/Activity IDs and immediate cleanup;
 `sugar-gtk4-lifecycle-probe.sh 2` returned `lifecycle-probe=PASS`.
