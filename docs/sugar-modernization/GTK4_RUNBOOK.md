@@ -33,8 +33,10 @@ GTK4_ROOT="$MODERNIZATION_ROOT" make sugar-gtk4-smoke
 
 The probe returns nonzero when GTK4/PyGObject or the upstream toolkit is not
 available. That is a useful result; it does not convert the test into a fake
-pass. A complete shell boot requires upstream GTK4 shell work as well and is
-not claimed by this repository yet.
+pass. Aspartame also has an isolated GTK4 preview launcher and VM runtime;
+`scripts/sugar-gtk4-check.sh` reports its live boot separately from the full
+replacement gate. The stable GTK3 Space remains installed and is the reference
+for comparison.
 
 ## Record a test
 
@@ -46,6 +48,8 @@ GTK4_ROOT="$MODERNIZATION_ROOT" \
   make sugar-gtk4-smoke 2>&1 | tee reports/sugar-modernization/gtk4-smoke.log
 ```
 
-For a real shell test, use a separate VM disk/profile and an upstream launch
-method documented by the branch under test. Never point `make run` at the
-GTK4 checkout or overwrite the stable runtime.
+For a real shell test, use `scripts/sugar-gtk4-space.sh gtk4` inside the
+development guest, then `scripts/sugar-gtk4-runtime-check.sh gtk4`. Never point
+the stable launcher at the GTK4 checkout or overwrite the GTK3 runtime. The
+remaining physical F-key and peer-collaboration limits are recorded in the
+runtime matrix rather than hidden by this check.

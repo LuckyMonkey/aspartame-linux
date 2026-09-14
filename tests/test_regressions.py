@@ -76,3 +76,5 @@ def test_gtk4_check_does_not_run_a_missing_preview_interpreter():
     check = (ROOT / "scripts/sugar-gtk4-check.sh").read_text()
 
     assert 'if [ -d "$toolkit/.git" ] && [ -x "$venv/bin/python" ]; then' in check
+    assert 'XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$sugar_uid}"' in check
+    assert 'runuser -u "$sugar_user" -- env DISPLAY=' in check
