@@ -489,3 +489,10 @@ capture-phase `Gtk.GestureDrag`; drag updates paint the rectangle between the
 origin and current cell while ordinary button activation remains available to
 keyboard and assistive technology users. The guest preview rebuild passes and
 the modern shell restart remains `runtime-check=ok`.
+
+Help documentation update (2026-09-14): the native GTK4 Help Activity now
+includes a dedicated Count Activity topic covering rectangle painting,
+translucent layer context, selected-plane editing, deletion, and Journal
+persistence. A live Help launch rendered the topic in the modern Activity
+surface; OCR from `reports/screenshots/sugar-20260914-100551-v0.0.31.png`
+contains `Count Activity`.

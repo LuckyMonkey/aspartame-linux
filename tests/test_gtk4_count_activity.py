@@ -25,3 +25,10 @@ def test_gtk4_runner_stages_count_bundle():
     assert "gtk4-count-activity" in build
     assert "Count.activity" in run
     assert "gtk4-count-activity" in sync
+
+
+def test_help_documents_count_layers_and_rectangle_painting():
+    help_source = (ROOT / "packages/gtk4-help-activity/helpactivity4.py").read_text()
+    assert '("Count Activity"' in help_source
+    assert "translucent context" in help_source
+    assert "drag across a rectangle" in help_source
