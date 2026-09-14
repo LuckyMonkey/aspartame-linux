@@ -126,6 +126,10 @@ class ListView(Gtk.Box):
                 delete.set_tooltip_text(_('Delete this Journal entry'))
                 delete.connect('clicked', self._delete_clicked, uid)
                 box.append(delete)
+                project = Gtk.Button(label=_('Project'))
+                project.set_tooltip_text(_('Assign this entry to a project'))
+                project.connect('clicked', self._project_clicked, metadata)
+                box.append(project)
                 row.set_child(box)
                 # Make keyboard traversal explicit in GTK4. ListBox otherwise
                 # only guarantees pointer activation for rows whose child
@@ -238,6 +242,34 @@ class ListView(Gtk.Box):
         button._delete_armed = False
         button.set_label(_('Delete'))
         return GLib.SOURCE_REMOVE
+
+    def _project_clicked(self, _button, metadata):
+        from jarabe.journal.objectchooser import ObjectChooser
+        parent = self.get_root()
+        chooser = ObjectChooser(parent=parent)
+        chooser.connect('response', self._project_response, metadata)
+        chooser.present()
+
+    def _project_response(self, chooser, response, metadata):
+        if response != Gtk.ResponseType.ACCEPT:
+            chooser.close()
+            return
+        project_id = chooser.get_selected_object_id()
+        chooser.close()
+        if not project_id:
+            return
+        try:
+            updated = editable_changes(metadata, {'project_id': project_id})
+            write_metadata(
+                updated,
+                lambda *args: self._result_status.set_text(
+                    _('Journal project updated')),
+                lambda error, *args: self._result_status.set_text(
+                    _('Could not update Journal project: %s') % error))
+            metadata.update(updated)
+        except (OSError, ValueError, TypeError) as error:
+            self._result_status.set_text(
+                _('Could not update Journal project: %s') % error)
 
     def _prepare_drag(self, _source, _x, _y, uid):
         payload = GLib.Bytes.new(str(uid).encode('utf-8'))

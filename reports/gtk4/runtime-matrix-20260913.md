@@ -395,3 +395,9 @@ entries whose datastore metadata uses a non-root mountpoint. The external
 volume marker is informational and leaves persistence on the existing
 `model.write` mounted-entry path; root entries continue to use the D-Bus update
 path.
+
+GTK4 Journal project assignment (2026-09-14): each row now exposes Project,
+which opens the native GTK4 ObjectChooser. Accepting a selected Journal UID
+writes `project_id` through the existing metadata validation/writer path;
+Cancel/Escape closes without changing the entry and failures are shown in the
+status line.
