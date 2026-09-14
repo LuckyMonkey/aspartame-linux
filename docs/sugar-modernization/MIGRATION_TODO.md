@@ -41,6 +41,8 @@
   now includes a self-contained logic game with live launch/stop evidence.
 - [x] Port and verify a native GTK4 Poll Activity with editable choices and
   local vote counts.
+- [x] Port and verify a native GTK4 Mancala Activity with playable pit and
+  store state.
 - [x] Port and verify a native Calculate Activity; the modern registry now
   launches Calculate alongside the other verified GTK4 bundles.
 - [x] Inventory the remaining legacy Fructose/Sugarizer activities (84 rows in

@@ -126,6 +126,9 @@ runtime failures.
 - Native Poll Activity (2026-09-14): added an editable-question, local-vote
   GTK4 Activity under `org.worldwideworkshop.PollBuilder`. The rebuilt guest
   and eleven-Activity Casilda matrix passed launch/stop cleanup (PID `283466`).
+- Native Mancala Activity (2026-09-14): added a playable two-row pit/store
+  GTK4 Activity under `mulawa.Mancala`. The rebuilt guest and twelve-Activity
+  Casilda matrix passed launch/stop cleanup (PID `286396`).
 
 ## Ranked remaining gaps
 
