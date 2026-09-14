@@ -1,0 +1,10 @@
+[Activity]
+name = JAMClock
+bundle_id = org.laptop.JAMClock
+exec = sugar-activity4 jamclockactivity4.JAMClockActivity
+icon = JAMClock
+activity_version = 4
+show_launcher = yes
+license = GPLv3+
+summary = A simple Sugar clock
+tags = Utility;Time

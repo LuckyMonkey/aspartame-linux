@@ -11,6 +11,7 @@ mkdir -p "$share/patches/gtk4-preview" "$share/scripts" \
          "$share/packages/gtk4-help-activity" "$share/packages/gtk4-count-activity" \
          "$share/packages/gtk4-calculate-activity" \
          "$share/packages/gtk4-clock-activity" \
+         "$share/packages/gtk4-jamclock-activity" \
          "$share/gtk4-overlay"
 
 cp -a "$repo/patches/gtk4-preview/." "$share/patches/gtk4-preview/"
@@ -23,6 +24,8 @@ cp -a "$repo/packages/gtk4-calculate-activity/." \
       "$share/packages/gtk4-calculate-activity/"
 cp -a "$repo/packages/gtk4-clock-activity/." \
       "$share/packages/gtk4-clock-activity/"
+cp -a "$repo/packages/gtk4-jamclock-activity/." \
+      "$share/packages/gtk4-jamclock-activity/"
 cp -a "$repo/gtk4-overlay/." "$share/gtk4-overlay/"
 # Remove compatibility patches retired from the host tree so a persistent
 # virtio share cannot replay stale staging decisions.

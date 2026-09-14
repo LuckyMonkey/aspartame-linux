@@ -75,6 +75,12 @@ test -d "$prefix/share/sugar/activities/Clock.activity" || {
 }
 ln -sfn "$prefix/share/sugar/activities/Clock.activity" \
     "$modern_activities/Clock.activity"
+test -d "$prefix/share/sugar/activities/JAMClock.activity" || {
+    echo "missing staged GTK4 JAMClock Activity bundle" >&2
+    exit 2
+}
+ln -sfn "$prefix/share/sugar/activities/JAMClock.activity" \
+    "$modern_activities/JAMClock.activity"
 test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2

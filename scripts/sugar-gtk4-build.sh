@@ -906,6 +906,16 @@ test -f "$clock_activity/clockactivity4.py" || {
     exit 2
 }
 ln -sfn "$clock_activity" "$activity_dir/Clock.activity"
+jamclock_activity="$repo/packages/gtk4-jamclock-activity"
+test -f "$jamclock_activity/activity/activity.info" || {
+    echo "missing native GTK4 JAMClock Activity bundle: $jamclock_activity" >&2
+    exit 2
+}
+test -f "$jamclock_activity/jamclockactivity4.py" || {
+    echo "missing native GTK4 JAMClock Activity entrypoint" >&2
+    exit 2
+}
+ln -sfn "$jamclock_activity" "$activity_dir/JAMClock.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
