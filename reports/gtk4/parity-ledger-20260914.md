@@ -33,6 +33,10 @@ Number Rush scoring correction (2026-09-14): a solved round is now latched so
 repeated Check activation cannot inflate the score; post-fix three-cycle
 lifecycle passed with `cleanup=PASS` (PIDs `297682`–`297726`).
 
+Count restore validation (2026-09-14): malformed layer shapes and non-numeric
+selected-layer values now fall back safely; rebuilt guest lifecycle passed
+three cycles with `cleanup=PASS` (PIDs `308057`–`308101`).
+
 Full matrix recheck after Number Rush registration (2026-09-14): all fifteen
 modern Activities completed three launch/stop cycles with `cleanup=PASS`; the
 latest Jumble and Number Rush cycles used PIDs `297535`–`297650`.
