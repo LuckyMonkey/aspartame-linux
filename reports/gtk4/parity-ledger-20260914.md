@@ -16,6 +16,9 @@ runtime failures.
 - Fresh guest lifecycle probe (2026-09-14): GTK4 Count launched/stopped for
   three consecutive cycles (PIDs `222220`, `222242`, `222263`), each reporting
   `cleanup=PASS`; final result `lifecycle-probe=PASS`.
+- Fresh guest rebuild (2026-09-14): all preview patches applied or semantically
+  verified through 0123, including 0015; toolkit import, Casilda 1.0,
+  sugar-ext, Jarabe, and datastore metadata checks all passed.
 
 ## Ranked remaining gaps
 
