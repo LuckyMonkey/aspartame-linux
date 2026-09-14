@@ -67,6 +67,8 @@
   launch/stop cycles (`com.jotaro.ImplodeActivity`).
 - [x] Port PlayGo as a native GTK4 Activity and verify three repeated Casilda
   launch/stop cycles (`org.laptop.PlayGo`).
+- [x] Port BlockParty as a native GTK4 Activity and verify three repeated
+  Casilda launch/stop cycles (`org.laptop.BlockPartyActivity`).
 
 ## P4 — Wayland/backend neutrality
 

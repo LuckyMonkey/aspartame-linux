@@ -1,0 +1,10 @@
+[Activity]
+name = BlockParty
+bundle_id = org.laptop.BlockPartyActivity
+exec = sugar-activity4 blockpartyactivity4.BlockPartyActivity
+icon = blockparty
+activity_version = 13
+show_launcher = yes
+license = GPLv3+
+summary = Arrange blocks in a grid
+tags = Game;Puzzle
