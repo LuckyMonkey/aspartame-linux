@@ -13,6 +13,11 @@ distributing stones.
 Native Reversi was added as another GTK4 Activity path; its legal-move and
 capture model is local to the Activity and uses the existing lifecycle boundary.
 
+Repeated lifecycle evidence (2026-09-14): Mastermind, Poll, Mancala, and
+Reversi each completed three launch/stop cycles with `cleanup=PASS` (PIDs
+`289078`–`289338`), confirming the newer ports do not leave stale processes or
+Casilda surfaces.
+
 ## Current evidence
 
 - Guest preview build passes beyond patch 0015.
