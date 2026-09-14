@@ -306,3 +306,10 @@ proves section activation and return behavior, not just initial rendering.
 Captures: `reports/screenshots/gtk4-settings-grid-live-20260914.png`,
 `reports/screenshots/gtk4-settings-aboutme-live-20260914.png`, and
 `reports/screenshots/gtk4-settings-return-live-20260914.png`.
+
+GTK4 clipboard transfer (2026-09-14): under the live GTK4 display, a real
+`Gdk.Display.get_default().get_clipboard()` provider was set with
+`Gdk.ContentProvider.new_for_bytes("text/plain", ...)`; asynchronous
+`read_text_async()` returned the exact marker `aspartame-gtk4-clipboard`.
+This verifies actual clipboard transfer through the GTK4 display boundary,
+not merely construction of a clipboard object.
