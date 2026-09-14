@@ -1,0 +1,10 @@
+[Activity]
+name = Gears
+bundle_id = org.sugarlabs.GearsActivity
+exec = sugar-activity4 gearsactivity4.GearsActivity
+icon = gears
+activity_version = 6.2
+show_launcher = yes
+license = Apache-2.0
+summary = Explore meshing gears
+tags = Science;Art

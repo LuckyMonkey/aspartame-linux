@@ -1,5 +1,10 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Gears (2026-09-14): a GTK4 custom-rendered meshing-gear canvas with turn
+and reset controls was staged under `org.sugarlabs.GearsActivity`. Three guest
+Casilda launch/stop cycles passed with `cleanup=PASS` (PIDs `381805`, `381833`,
+`381858`).
+
 Native Stopwatch (2026-09-14): a GTK4 elapsed-time Activity with start/pause and
 reset controls was staged under `org.sugarlabs.StopwatchActivity`. Three guest
 Casilda launch/stop cycles passed with `cleanup=PASS` (PIDs `379133`, `379161`,
