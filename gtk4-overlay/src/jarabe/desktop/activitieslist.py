@@ -49,6 +49,8 @@ class ActivityRow(Gtk.Box):
         self.owner = owner
         self.item = None
         self.palette = None
+        self.set_focusable(True)
+        self.set_accessible_role(Gtk.AccessibleRole.BUTTON)
         self.add_css_class('activity-list-row')
         self.set_margin_start(style.DEFAULT_SPACING)
         self.set_margin_end(style.DEFAULT_SPACING)

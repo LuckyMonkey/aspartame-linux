@@ -24,6 +24,13 @@ def test_home_list_rows_launch_on_primary_pointer_click():
     assert "self.owner.run_activity(self.item.bundle_id, True)" in source
 
 
+def test_home_list_rows_expose_named_button_semantics():
+    source = (ROOT / "gtk4-overlay/src/jarabe/desktop/activitieslist.py").read_text()
+    assert "self.set_accessible_role(Gtk.AccessibleRole.BUTTON)" in source
+    assert "self.set_focusable(True)" in source
+    assert "Gtk.AccessibleProperty.LABEL" in source
+
+
 def test_gtk4_runner_excludes_gtk3_overlay_path():
     runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     assert 'PYTHONPATH="$project_root/gtk4-overlay/src:$datastore_site' in runner
