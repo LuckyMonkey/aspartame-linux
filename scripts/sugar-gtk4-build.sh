@@ -20,6 +20,7 @@ ext="$root/sources/sugar-ext"
 datastore="$root/sources/sugar-datastore"
 casilda="$root/sources/casilda"
 log_activity="$root/sources/log-activity"
+imageviewer_activity="$root/sources/imageviewer-activity"
 prefix="$root/prefix"
 venv="$root/venv"
 log="$root/logs/gtk4-build-$(date -u +%Y%m%dT%H%M%SZ).log"
@@ -31,6 +32,7 @@ test -d "$datastore/.git" || { echo "missing sugar-datastore checkout: $datastor
 test -d "$casilda/.git" || { echo "missing Casilda checkout: $casilda"; exit 2; }
 test -d "$log_activity/.git" || { echo "missing Log Activity checkout: $log_activity"; exit 2; }
 test -f "$log_activity/logviewer.py" || { echo "missing Log Activity source: $log_activity"; exit 2; }
+test -d "$imageviewer_activity/.git" || { echo "missing Image Viewer Activity source: $imageviewer_activity"; exit 2; }
 if ! test -x "$venv/bin/python"; then
     python3 -m venv --system-site-packages "$venv"
 fi
@@ -886,6 +888,11 @@ test -f "$calculate_activity/calculateactivity4.py" || {
     exit 2
 }
 ln -sfn "$calculate_activity" "$activity_dir/Calculate.activity"
+test -f "$imageviewer_activity/activity/activity.info" || {
+    echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
+    exit 2
+}
+ln -sfn "$imageviewer_activity" "$activity_dir/ImageViewer.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }
