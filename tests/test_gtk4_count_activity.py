@@ -10,7 +10,8 @@ def test_count_is_a_native_gtk4_bundle():
     source = (PACKAGE / "countactivity4.py").read_text()
     assert "exec = sugar-activity4 countactivity4.CountActivity" in info
     assert "from sugar4.activity import SimpleActivity" in source
-    assert "Gtk.GestureDrag" in source
+    assert "Gtk.Grid" in source
+    assert "Gtk.Button" in source
     assert "set_draw_func" in source
     assert "require_version(\"Gtk\", \"3.0\")" not in source
 

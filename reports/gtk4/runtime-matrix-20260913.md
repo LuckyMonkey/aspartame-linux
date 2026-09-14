@@ -470,3 +470,10 @@ with immediate process cleanup. The Activity uses `Gtk.DrawingArea.set_draw_func
 and `Gtk.GestureDrag`, with translucent adjacent layers and native GTK4
 controls for layer traversal, copy, add, and single-step deletion. No GTK3
 imports are present in the bundle.
+
+Count visual/input correction (2026-09-14): the first live capture showed the
+GTK4 DrawingArea callback was not mapped by the Casilda surface, leaving a
+blank plane. The visible editor now uses a native GTK4 Grid of accessible cell
+buttons over the retained layered model. A real QMP pointer click filled the
+first cell and updated the total from `0` to `1`; capture:
+`reports/screenshots/sugar-20260914-095836-v0.0.31.png`.

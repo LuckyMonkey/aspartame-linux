@@ -36,22 +36,47 @@ class CountActivity(SimpleActivity):
         root.append(self.total)
 
         content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
+        content.set_hexpand(True)
         content.set_vexpand(True)
         self.canvas = Gtk.DrawingArea()
+        self.canvas.set_size_request(760, 520)
         self.canvas.set_content_width(760)
         self.canvas.set_content_height(520)
+        self.canvas.add_css_class("count-canvas")
         self.canvas.set_hexpand(True)
         self.canvas.set_vexpand(True)
+        self.canvas.set_visible(True)
         self.canvas.set_draw_func(self._draw)
-        drag = Gtk.GestureDrag()
-        drag.connect("drag-begin", self._drag_begin)
-        drag.connect("drag-update", self._drag_update)
-        drag.connect("drag-end", self._drag_end)
-        self.canvas.add_controller(drag)
-        content.append(self.canvas)
+        canvas_box = Gtk.Box()
+        canvas_box.set_size_request(760, 520)
+        canvas_box.set_hexpand(False)
+        canvas_box.set_vexpand(True)
+        canvas_box.set_visible(True)
+        overlay = Gtk.Overlay()
+        overlay.set_hexpand(True)
+        overlay.set_vexpand(True)
+        overlay.set_child(self.canvas)
+        self.grid = Gtk.Grid(column_spacing=3, row_spacing=3)
+        self.grid.add_css_class("count-grid")
+        self.grid.set_halign(Gtk.Align.CENTER)
+        self.grid.set_valign(Gtk.Align.CENTER)
+        overlay.add_overlay(self.grid)
+        self._cells = []
+        for y in range(self.height):
+            row = []
+            for x in range(self.width):
+                button = Gtk.Button()
+                button.set_size_request(82, 82)
+                button.connect("clicked", self._cell_clicked, x, y)
+                row.append(button)
+                self.grid.attach(button, x, y, 1, 1)
+            self._cells.append(row)
+        canvas_box.append(overlay)
+        content.append(canvas_box)
 
         rail = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         rail.set_size_request(190, -1)
+        rail.set_hexpand(False)
         rail.set_valign(Gtk.Align.CENTER)
         heading = Gtk.Label(label="EDIT LAYER", xalign=0)
         heading.add_css_class("dim-label")
@@ -88,6 +113,9 @@ class CountActivity(SimpleActivity):
         provider.load_from_data(b"""
             .count-total { font-size: 42px; font-weight: bold; color: #2f88bd; }
             .count-layer { font-size: 20px; font-weight: bold; color: #2f88bd; }
+            .count-canvas { background-color: #f7f8f9; border: 1px solid #c5d1d8; }
+            .count-grid button { background: #ffffff; border: 1px solid #6f8794; }
+            .count-grid button.occupied { background: #6d767b; }
             button { min-height: 38px; border-radius: 18px; }
         """)
         display = Gdk.Display.get_default()
@@ -102,7 +130,21 @@ class CountActivity(SimpleActivity):
         self.layer_label.set_text(
             "Layer %d of %d" % (self.current_layer + 1, len(self.layers)))
         self.layer_total.set_text("%d on this layer" % current)
+        for y, row in enumerate(self._cells):
+            for x, button in enumerate(row):
+                button.remove_css_class("occupied")
+                if self.layers[self.current_layer][y][x]:
+                    button.add_css_class("occupied")
+                button.update_property(
+                    [Gtk.AccessibleProperty.LABEL],
+                    ["Cell %d, %d%s" % (x + 1, y + 1,
+                     ", filled" if self.layers[self.current_layer][y][x]
+                     else "")])
         self.canvas.queue_draw()
+
+    def _cell_clicked(self, _button, x, y):
+        self.layers[self.current_layer][y][x] = not self.layers[self.current_layer][y][x]
+        self._render()
 
     def _geometry(self):
         width = max(1, self.canvas.get_width())
@@ -118,6 +160,8 @@ class CountActivity(SimpleActivity):
         return ox, oy, size, depth_x, depth_y
 
     def _draw(self, _area, cr, _width, _height):
+        cr.set_source_rgb(.97, .98, .99)
+        cr.paint()
         ox, oy, size, dx, dy = self._geometry()
         order = [i for i in range(len(self.layers) - 1, -1, -1)]
         for index in order:
@@ -125,7 +169,7 @@ class CountActivity(SimpleActivity):
             selected = relative == 0
             alpha = 1.0 if selected else (.34 if relative > 0 else .20)
             px, py = relative * dx, relative * dy
-            cr.set_source_rgba(.13, .42, .64, .72 if selected else .25)
+            cr.set_source_rgba(.13, .42, .64, .95 if selected else .45)
             cr.set_line_width(2 if selected else 1)
             for x in range(self.width + 1):
                 cr.move_to(ox + px + x * size, oy + py)
