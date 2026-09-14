@@ -73,6 +73,11 @@ capture shows the first topic expanded and a second topic opened by pointer:
 `reports/screenshots/sugar-20260913-222656-v0.0.31.png` and
 `reports/screenshots/sugar-20260913-222710-v0.0.31.png`.
 
+Spaces regression check (2026-09-13): the guest runtime checker returned
+`runtime-check=ok` for GTK3 on desktop 0 and GTK4 on desktop 1 in one round
+trip. It reported stable PID 734 and modern PID 7237 with distinct windows;
+the modern Space was restored afterward.
+
 Activity lifecycle regression: PASS. The real Journal `LaunchBundle` path now
 completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
 calls returned true and cleanup passed. The prior rejection was caused by
