@@ -362,6 +362,12 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
   launch/stop cycles for every registered GTK4 bundle (123 cycles total).
   Every cycle reported `cleanup=PASS`; the final Write probe ended at PID
   `414314`. This supersedes the earlier split 40-bundle plus Write evidence.
+- Native Connect the Dots Activity (2026-09-14): added a self-contained
+  numbered-dot puzzle with pointer input, completion state, reset control, and
+  accessible labels. Guest build and direct three-cycle Casilda probe passed
+  (`cleanup=PASS`, PIDs `416963`, `416992`, `417017`). A subsequent one-cycle
+  matrix covered all 42 registered bundles and ended with
+  `activity-matrix=PASS` (latest PID `418418`).
 
 ## Ranked remaining gaps
 
