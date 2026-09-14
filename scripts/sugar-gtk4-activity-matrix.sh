@@ -31,6 +31,7 @@ declare -a activities=(
     'org.laptop.BlockPartyActivity|blockpartyactivity4.BlockPartyActivity'
     'org.laptop.community.TypingTurtle|typingturtleactivity4.TypingTurtleActivity'
     'org.laptop.Memorize|memorizeactivity4.MemorizeActivity'
+    'vu.lux.olpc.Maze|mazeactivity4.MazeActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

@@ -1,0 +1,10 @@
+[Activity]
+name = Maze
+bundle_id = vu.lux.olpc.Maze
+exec = sugar-activity4 mazeactivity4.MazeActivity
+icon = maze
+activity_version = 33
+show_launcher = yes
+license = GPLv3+
+summary = Find your way through a maze
+tags = Game;Puzzle

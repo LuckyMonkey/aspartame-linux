@@ -95,6 +95,10 @@ Twenty-four-Activity matrix recheck (2026-09-14): all 72 guest launch/stop
 cycles reported `cleanup=PASS`; final result was `activity-matrix=PASS`
 (Memorize PIDs `344894`, `344919`, `344944`).
 
+Native Maze (2026-09-14): a GTK4 maze grid with keyboard/pointer movement was
+staged under `vu.lux.olpc.Maze`. Three guest Casilda launch/stop cycles passed
+with `cleanup=PASS` (PIDs `347548`, `347576`, `347601`).
+
 Live shell recheck (2026-09-14): the GTK4 runtime checker reports
 `target=gtk4 pid=265471 desktop=1 window=0x2400005` with the separate GTK3
 reference `stable_pid=33761`; semantic Spaces switching GTK3 → GTK4 returns

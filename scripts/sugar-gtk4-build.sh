@@ -975,6 +975,9 @@ ln -sfn "$typingturtle_activity" "$activity_dir/TypingTurtle.activity"
 memorize_activity="$repo/packages/gtk4-memorize-activity"
 test -f "$memorize_activity/activity/activity.info" || { echo "missing native GTK4 Memorize Activity bundle" >&2; exit 2; }
 ln -sfn "$memorize_activity" "$activity_dir/Memorize.activity"
+maze_activity="$repo/packages/gtk4-maze-activity"
+test -f "$maze_activity/activity/activity.info" || { echo "missing native GTK4 Maze Activity bundle" >&2; exit 2; }
+ln -sfn "$maze_activity" "$activity_dir/Maze.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

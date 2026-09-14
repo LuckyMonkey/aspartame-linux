@@ -73,6 +73,8 @@
   Casilda launch/stop cycles (`org.laptop.community.TypingTurtle`).
 - [x] Port Memorize as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`org.laptop.Memorize`).
+- [x] Port Maze as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`vu.lux.olpc.Maze`).
 
 ## P4 — Wayland/backend neutrality
 
