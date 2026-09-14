@@ -50,6 +50,7 @@ declare -a activities=(
     'org.sugarlabs.Write|writeactivity4.WriteActivity'
     'org.sugarlabs.ConnectTheDots|connectthedotsactivity4.ConnectTheDotsActivity'
     'org.laptop.Pippy|pippyactivity4.PippyActivity'
+    'org.sugarlabs.Paint|paintactivity4.PaintActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

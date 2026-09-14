@@ -1,0 +1,10 @@
+[Activity]
+name = Paint
+bundle_id = org.sugarlabs.Paint
+exec = sugar-activity4 paintactivity4.PaintActivity
+icon = paint
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Draw with colors on a canvas
+tags = Art;Drawing;Creativity
