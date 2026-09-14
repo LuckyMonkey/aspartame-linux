@@ -265,14 +265,18 @@ class ListView(Gtk.Box):
             return
         try:
             updated = editable_changes(metadata, {'project_id': project_id})
+            def applied(*args):
+                metadata.update(updated)
+                project_button.set_label(_('Project: %s') % project_id)
+                self._result_status.set_text(_('Journal project updated'))
+
+            def failed(error, *args):
+                self._result_status.set_text(
+                    _('Could not update Journal project: %s') % error)
+
             write_metadata(
                 updated,
-                lambda *args: self._result_status.set_text(
-                    _('Journal project updated')),
-                lambda error, *args: self._result_status.set_text(
-                    _('Could not update Journal project: %s') % error))
-            metadata.update(updated)
-            project_button.set_label(_('Project: %s') % project_id)
+                applied, failed)
         except (OSError, ValueError, TypeError) as error:
             self._result_status.set_text(
                 _('Could not update Journal project: %s') % error)

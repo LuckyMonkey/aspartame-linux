@@ -406,6 +406,10 @@ Project state visibility (2026-09-14): rows now display the assigned project
 UID in the Project button label after a successful update, or the neutral
 Project label when no assignment exists.
 
+Project persistence correction (2026-09-14): the label and in-memory metadata
+now change only from the datastore writer's success callback; failed writes no
+longer present an assignment that was not persisted.
+
 ObjectChooser live construction (2026-09-14): under the deployed GTK4 preview
 environment (`ASPARTAME_GTK4_PREVIEW=1`, GTK4 GI typelib path, modern overlay
 PYTHONPATH, and `GDK_BACKEND=x11`), a real `Gtk.Application` constructed

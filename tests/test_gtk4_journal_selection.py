@@ -25,6 +25,7 @@ def test_gtk4_journal_list_uses_native_selection_api():
     assert "get_selected_object_id()" in source
     assert "Journal project updated" in source
     assert "Project: %s" in source
+    assert "def applied(*args):" in source
     assert "External volume: %s" in source
     assert "mountpoint" in source
 
