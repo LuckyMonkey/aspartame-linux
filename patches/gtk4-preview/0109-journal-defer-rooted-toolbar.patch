@@ -1,0 +1,22 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: defer reattach while toolbar is still rooted
+
+Journal Detail and Main views swap their toolbars during Escape navigation.
+GTK4 may leave a detached toolbar rooted until the dispatch cycle completes;
+appending it immediately then aborts in gtk_widget_root().  Defer only that
+transient reattach, matching the canvas protection.
+
+--- a/src/jarabe/journal/journalwindow.py
++++ b/src/jarabe/journal/journalwindow.py
+@@ -89,5 +89,8 @@
+             if toolbar.get_parent() == self._toolbar_area:
+                 return
+             if toolbar.get_parent() != self._toolbar_area:
+                 parent = toolbar.get_parent()
+                 if parent != self._toolbar_area:
+                     parent.remove(toolbar)
+             if toolbar.get_parent() != self._toolbar_area:
++                if toolbar.get_root() is not None:
++                    GLib.idle_add(self.set_toolbar_box, toolbar)
++                    return
+                 self._toolbar_area.append(toolbar)

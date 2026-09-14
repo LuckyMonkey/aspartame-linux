@@ -1,0 +1,16 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: make main-view restoration idempotent
+
+GTK4 can deliver Escape through more than one captured semantic controller.
+After the first callback restores Journal's main canvas, a second callback must
+be a no-op rather than repeating widget reparenting during the same dispatch.
+
+--- a/src/jarabe/journal/journalactivity.py
++++ b/src/jarabe/journal/journalactivity.py
+@@ -513,6 +513,8 @@
+     def show_main_view(self):
+         if not self._init_done:
+             return
++        if self._active_view == JournalViews.MAIN:
++            return
+         self._active_view = JournalViews.MAIN

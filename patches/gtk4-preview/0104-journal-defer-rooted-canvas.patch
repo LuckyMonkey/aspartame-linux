@@ -1,0 +1,23 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: defer reattach while GTK4 canvas is still rooted
+
+GTK4 can leave a detached Journal canvas rooted until the current dispatch
+cycle completes.  Appending that widget immediately to the canvas area then
+aborts in gtk_widget_root().  Defer only this transient case; normal canvas
+changes remain synchronous and retain the existing GTK4 ownership boundary.
+
+--- a/src/jarabe/journal/journalwindow.py
++++ b/src/jarabe/journal/journalwindow.py
+@@ -18,4 +18,4 @@
+ import logging
+ _logger = logging.getLogger('JournalWindow')
+ 
+-from gi.repository import Gtk, Gdk
++from gi.repository import Gtk, Gdk, GLib
+@@ -77,2 +77,6 @@
+             if widget.get_parent() != self._canvas_area:
++                if widget.get_root() is not None:
++                    # GTK clears the root one dispatch turn after unparent().
++                    GLib.idle_add(self.set_canvas, widget)
++                    return
+                 self._canvas_area.append(widget)

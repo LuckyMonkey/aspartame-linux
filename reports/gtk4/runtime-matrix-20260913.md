@@ -278,3 +278,15 @@ surface had focus produced no visible zoom transition, although the equivalent
 semantic D-Bus actions remain reliable. The modern shell stayed alive with no
 fatal traceback. This remains an input-routing gap to address after the
 user-visible Journal behavior, not evidence to expand the Spaces machinery.
+
+Journal detail re-entry stability (2026-09-14): repeated live cycles of
+`ShowJournal` → pointer activation of a Journal row → `Escape` initially
+aborted the GTK4 shell in `gtk_widget_root()` while swapping the detail and
+main canvases/toolbars. The root causes were duplicate Escape delivery and a
+stale rooted widget during synchronous GTK4 reparenting. The preview now makes
+main-view restoration idempotent, routes detail Escape through the shared
+keyhandler, and defers only transient canvas/toolbar reattachment until the
+next GLib dispatch turn. After a clean guest rebuild, five consecutive live
+cycles completed and the shell remained registered (`detail-reentry=PASS`),
+with no fatal GTK assertion in the new log. No new lifecycle or Spaces
+abstraction was introduced.

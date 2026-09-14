@@ -75,6 +75,11 @@ for patch in "$patch_dir"/*.patch; do
         *0101*) target="$root/sources/sugar" ;;
         *0102*) target="$root/sources/sugar" ;;
         *0103*) target="$root/sources/sugar" ;;
+        *0104*) target="$root/sources/sugar" ;;
+        *0106*) target="$root/sources/sugar" ;;
+        *0107*) target="$root/sources/sugar" ;;
+        *0108*) target="$root/sources/sugar" ;;
+        *0109*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0070*|*0071*|*0073*|*0074*|*0075*|*0076*|*0079*|*0080*|*0081*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
@@ -100,6 +105,12 @@ for patch in "$patch_dir"/*.patch; do
     if [[ "$patch_name" == *0041* ]] && grep -q "_sugar_zoom_controller" "$shell/src/jarabe/main.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified obsolete zoom-controller removal: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0044* ]] &&
+        grep -q 'logging.warning("GTK4 semantic key event: %s", key)' "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified key observability: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0048* ]] && grep -q "_sugar_zoom_controller" "$shell/src/jarabe/main.py" 2>/dev/null; then
@@ -474,6 +485,39 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified duplicate navigation modal cleanup: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0104* ]] &&
+        grep -q 'from gi.repository import Gtk, Gdk, GLib' "$shell/src/jarabe/journal/journalwindow.py" 2>/dev/null &&
+        grep -q 'GLib.idle_add(self.set_canvas, widget)' "$shell/src/jarabe/journal/journalwindow.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified deferred Journal canvas attach: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0106* ]] &&
+        sed -n '/def show_main_view/,/def _show_secondary_view/p' "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
+            grep -q 'if self._active_view == JournalViews.MAIN:'; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified idempotent Journal main view: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0107* ]] &&
+        grep -A3 -q "elif self._active_view == JournalViews.DETAIL:" "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null &&
+        grep -A3 "elif self._active_view == JournalViews.DETAIL:" "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null | grep -q "keyname == 'Escape'"; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified Journal detail Escape navigation: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0108* ]] &&
+        grep -q "active_activity.show_main_view()" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified Journal detail Escape keyhandler route: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0109* ]] &&
+        grep -q 'GLib.idle_add(self.set_toolbar_box, toolbar)' "$shell/src/jarabe/journal/journalwindow.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified deferred Journal toolbar attach: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0080* ]] &&
         grep -q '_overlay.set_focusable(True)' "$shell/src/jarabe/main.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
@@ -581,6 +625,31 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=3 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied duplicate navigation modal cleanup: $patch_name"
+    elif [[ "$patch_name" == *0104* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied deferred Journal canvas attach: $patch_name"
+    elif [[ "$patch_name" == *0106* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied idempotent Journal main view: $patch_name"
+    elif [[ "$patch_name" == *0107* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied Journal detail Escape navigation: $patch_name"
+    elif [[ "$patch_name" == *0108* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied Journal detail Escape keyhandler route: $patch_name"
+    elif [[ "$patch_name" == *0109* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied deferred Journal toolbar attach: $patch_name"
     elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0040* || "$patch_name" == *0041* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0045* || "$patch_name" == *0046* || "$patch_name" == *0047* || "$patch_name" == *0048* || "$patch_name" == *0049* || "$patch_name" == *0050* || "$patch_name" == *0051* || "$patch_name" == *0052* || "$patch_name" == *0053* || "$patch_name" == *0054* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)

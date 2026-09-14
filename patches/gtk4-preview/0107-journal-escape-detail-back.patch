@@ -1,0 +1,19 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: make Escape leave the GTK4 detail view
+
+The GTK4 Journal already documents Escape as search cancellation and detail
+navigation.  The detail branch handled Left but not Escape, leaving the detail
+canvas active while shell-level navigation re-entered Journal.  Route Escape
+through the existing main-view transition so the action is immediate and
+idempotent.
+
+--- a/src/jarabe/journal/journalactivity.py
++++ b/src/jarabe/journal/journalactivity.py
+@@ -425,3 +425,7 @@
+         elif self._active_view == JournalViews.DETAIL:
++            if keyname == 'Escape':
++                self.show_main_view()
++                return True
++
+             if keyname == 'Left':
+                 path, col = self._list_view.tree_view.get_cursor()

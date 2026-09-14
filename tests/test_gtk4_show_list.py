@@ -30,3 +30,44 @@ def test_duplicate_navigation_methods_are_covered():
     assert "ShowHome" in patch
     assert "ShowList" in patch
     assert patch.count("self._shell_model._set_active_activity(None)") >= 5
+
+
+def test_journal_canvas_reattach_is_deferred_when_still_rooted():
+    patch = (ROOT / "patches/gtk4-preview/0104-journal-defer-rooted-canvas.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "widget.get_root() is not None" in patch
+    assert "GLib.idle_add(self.set_canvas, widget)" in patch
+    assert '*0104*) target="$root/sources/sugar" ;;' in build
+
+
+def test_journal_main_view_restoration_is_idempotent():
+    patch = (ROOT / "patches/gtk4-preview/0106-journal-main-view-idempotent.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "self._active_view == JournalViews.MAIN" in patch
+    assert "if self._active_view == JournalViews.MAIN:" in patch
+    assert '*0106*) target="$root/sources/sugar" ;;' in build
+
+
+def test_journal_detail_escape_returns_to_main_view():
+    patch = (ROOT / "patches/gtk4-preview/0107-journal-escape-detail-back.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "if keyname == 'Escape':" in patch
+    assert "self.show_main_view()" in patch
+    assert '*0107*) target="$root/sources/sugar" ;;' in build
+
+
+def test_keyhandler_routes_escape_for_journal_detail():
+    patch = (ROOT / "patches/gtk4-preview/0108-keyhandler-journal-detail-escape.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "active_activity.show_main_view()" in patch
+    assert "hasattr(active_activity" in patch
+    assert '*0108*) target="$root/sources/sugar" ;;' in build
+
+
+def test_journal_toolbar_reattach_is_deferred_when_still_rooted():
+    patch = (ROOT / "patches/gtk4-preview/0109-journal-defer-rooted-toolbar.patch").read_text()
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert "toolbar.get_root() is not None" in patch
+    assert "toolbar.get_parent() == self._toolbar_area" in patch
+    assert "GLib.idle_add(self.set_toolbar_box, toolbar)" in patch
+    assert '*0109*) target="$root/sources/sugar" ;;' in build
