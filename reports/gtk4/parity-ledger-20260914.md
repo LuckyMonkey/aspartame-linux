@@ -29,6 +29,10 @@ Native Number Rush (2026-09-14): arithmetic rounds and score tracking run as a
 GTK4 Activity; three lifecycle cycles passed with `cleanup=PASS` (PIDs
 `296505`–`296549`).
 
+Number Rush scoring correction (2026-09-14): a solved round is now latched so
+repeated Check activation cannot inflate the score; post-fix three-cycle
+lifecycle passed with `cleanup=PASS` (PIDs `297682`–`297726`).
+
 Full matrix recheck after Number Rush registration (2026-09-14): all fifteen
 modern Activities completed three launch/stop cycles with `cleanup=PASS`; the
 latest Jumble and Number Rush cycles used PIDs `297535`–`297650`.
