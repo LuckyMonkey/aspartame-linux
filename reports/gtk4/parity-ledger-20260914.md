@@ -18,6 +18,10 @@ Reversi each completed three launch/stop cycles with `cleanup=PASS` (PIDs
 `289078`–`289338`), confirming the newer ports do not leave stale processes or
 Casilda surfaces.
 
+Full matrix rerun (2026-09-14): all thirteen registered modern Activities
+completed Journal launch/stop with `cleanup=PASS`; the final Poll, Mancala, and
+Reversi probes used PIDs `289674`, `289704`, and `289735`.
+
 ## Current evidence
 
 - Guest preview build passes beyond patch 0015.
