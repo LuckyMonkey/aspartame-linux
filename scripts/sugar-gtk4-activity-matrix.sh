@@ -16,9 +16,11 @@ declare -a activities=(
     'org.laptop.Log|logviewer.LogActivity'
 )
 
+script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+
 for spec in "${activities[@]}"; do
     IFS='|' read -r bundle pattern <<< "$spec"
     echo "== $bundle =="
-    "$PWD/scripts/sugar-gtk4-lifecycle-probe.sh" 1 "$bundle" "$pattern"
+    "$script_dir/sugar-gtk4-lifecycle-probe.sh" 1 "$bundle" "$pattern"
 done
 echo 'activity-matrix=PASS'
