@@ -40,6 +40,7 @@ class ListView(Gtk.Box):
         self._query = {}
         self._rows = {}
         self._dragging = False
+        self._projects_only = False
         self._journalactivity = journalactivity
         self.tree_view = _JournalRows()
         self.tree_view.set_selection_mode(
@@ -53,6 +54,11 @@ class ListView(Gtk.Box):
         self._result_status.set_margin_top(8)
         self._result_status.set_opacity(0.72)
         self.append(self._result_status)
+        self._projects_button = Gtk.ToggleButton(label=_('Projects'))
+        self._projects_button.set_tooltip_text(_('Show Journal entries assigned to a project'))
+        self._projects_button.update_property([Gtk.AccessibleProperty.LABEL], [_('Show project entries')])
+        self._projects_button.connect('toggled', self._projects_toggled)
+        self.append(self._projects_button)
         scroller = Gtk.ScrolledWindow()
         scroller.set_vexpand(True)
         scroller.set_child(self.tree_view)
@@ -81,6 +87,8 @@ class ListView(Gtk.Box):
             for index in range(total):
                 result.seek(index)
                 metadata = result.read()
+                if self._projects_only and not metadata.get('project_id'):
+                    continue
                 uid = str(metadata.get('uid', ''))
                 if not uid:
                     continue
@@ -298,7 +306,11 @@ class ListView(Gtk.Box):
         self._query = dict(query_dict or {})
         GLib.idle_add(self._refresh)
 
-    def get_projects_view_active(self): return False
+    def _projects_toggled(self, button):
+        self._projects_only = button.get_active()
+        GLib.idle_add(self._refresh)
+
+    def get_projects_view_active(self): return self._projects_only
     def is_dragging(self): return self._dragging
     def set_is_visible(self, _visible): return None
     def get_model(self): return self
