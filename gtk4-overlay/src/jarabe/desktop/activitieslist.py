@@ -85,6 +85,10 @@ class ActivityRow(Gtk.Box):
         click = Gtk.GestureClick(button=Gdk.BUTTON_SECONDARY)
         click.connect('pressed', self._secondary_pressed)
         self.add_controller(click)
+        primary = Gtk.GestureClick(button=Gdk.BUTTON_PRIMARY)
+        primary.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
+        primary.connect('pressed', self._primary_pressed)
+        self.add_controller(primary)
         keys = Gtk.EventControllerKey()
         keys.connect('key-pressed', self._key_pressed)
         self.add_controller(keys)
@@ -154,6 +158,12 @@ class ActivityRow(Gtk.Box):
     def _secondary_pressed(self, gesture, count, x, y):
         gesture.set_state(Gtk.EventSequenceState.CLAIMED)
         self.show_palette()
+
+    def _primary_pressed(self, gesture, count, x, y):
+        """Launch a row from a primary pointer click."""
+        if count != 1 or self.item is None:
+            return
+        self.owner.run_activity(self.item.bundle_id, True)
 
     def _key_pressed(self, controller, keyval, keycode, modifiers):
         if keyval == Gdk.KEY_Menu or (keyval == Gdk.KEY_F10 and

@@ -17,6 +17,13 @@ def test_home_list_help_metadata_does_not_import_gtk3_view_modules():
     assert "jarabe.view.contexthelp" not in source
 
 
+def test_home_list_rows_launch_on_primary_pointer_click():
+    source = (ROOT / "gtk4-overlay/src/jarabe/desktop/activitieslist.py").read_text()
+    assert "Gtk.GestureClick(button=Gdk.BUTTON_PRIMARY)" in source
+    assert "def _primary_pressed" in source
+    assert "self.owner.run_activity(self.item.bundle_id, True)" in source
+
+
 def test_gtk4_runner_excludes_gtk3_overlay_path():
     runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     assert 'PYTHONPATH="$project_root/gtk4-overlay/src:$datastore_site' in runner
