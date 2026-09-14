@@ -123,6 +123,9 @@ runtime failures.
   and the expanded ten-Activity Casilda matrix passed launch/stop cleanup
   (PID `280547`), closing one more legacy Activity port without changing shell
   lifecycle or Spaces architecture.
+- Native Poll Activity (2026-09-14): added an editable-question, local-vote
+  GTK4 Activity under `org.worldwideworkshop.PollBuilder`. The rebuilt guest
+  and eleven-Activity Casilda matrix passed launch/stop cleanup (PID `283466`).
 
 ## Ranked remaining gaps
 
