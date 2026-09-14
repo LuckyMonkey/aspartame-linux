@@ -93,6 +93,9 @@ Aspartame GTK4 Sugar preview
   log:     $log
 EOF
 
+# Keep GTK3-only sugar-overlay code out of the GTK4 interpreter. The
+# overlay's jarabe.view modules import Gtk 3 and violate the process
+# boundary when discovered through the extended jarabe package path.
 exec env \
     ASPARTAME_GTK4_PREVIEW=1 \
     LANG="$locale_name" \
@@ -111,9 +114,6 @@ exec env \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
     SUGAR_ACTIVITIES_PATH="$modern_activities" \
     SUGAR_WINDOWED="${SUGAR_WINDOWED:-0}" \
-    # Keep GTK3-only sugar-overlay code out of the GTK4 interpreter.  The
-    # overlay's jarabe.view modules import Gtk 3 and violate the process
-    # boundary when discovered through the extended jarabe package path.
     PYTHONPATH="$project_root/gtk4-overlay/src:$datastore_site:$datastore/src:$shell/src:$toolkit/src" \
     GI_TYPELIB_PATH="$libdir/girepository-1.0" \
     LD_LIBRARY_PATH="$libdir" \

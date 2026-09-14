@@ -95,7 +95,10 @@ start_gtk4() {
         # 1920x1080 guest and makes shell input/focus appear unreliable.
         setsid env GTK4_ROOT="$root" SUGAR_WINDOWED=0 \
             bash "$runner" > /tmp/aspartame-gtk4-current.log 2>&1 </dev/null &
-        for _attempt in $(seq 1 100); do
+        # GTK4 startup may activate portal/AT-SPI services before Jarabe
+        # publishes its process marker. Allow a full 30 seconds so a healthy
+        # modern Space is not reported as failed during cold startup.
+        for _attempt in $(seq 1 300); do
             pid=$(gtk4_pid || true)
             [ -n "$pid" ] && break
             sleep 0.1

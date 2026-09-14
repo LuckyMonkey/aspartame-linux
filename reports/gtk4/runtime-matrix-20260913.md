@@ -201,3 +201,14 @@ returned `(true,)` on the same GTK4 process. The live 1920x1080 capture shows
 the black Sugar settings surface with About Me, Computer, Background, Backup,
 Date & Time, Frame, Keyboard, Language, Modem, Network, Power, Software Update,
 and Web Services tiles: `reports/screenshots/gtk4-settings-native-20260914.png`.
+
+Modal navigation cleanup (2026-09-14): opening Settings followed by
+`ShowList` now dismisses the modal Control Panel and reveals the native Home
+List immediately. The live capture contains the dark Sugar toolbar and native
+activity rows, with no Settings surface remaining:
+`reports/screenshots/gtk4-modal-dismiss-list2.png`. The fix also covers Home,
+Frame, Group, Neighborhood, and both duplicate legacy navigation definitions.
+The startup regression encountered during verification was traced to a
+comment embedded inside a backslash-continued `env` command; moving that
+comment outside the command restored GTK4 process startup. The controller now
+allows 30 seconds for cold portal/AT-SPI startup before declaring failure.
