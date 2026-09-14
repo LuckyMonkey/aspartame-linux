@@ -9,9 +9,9 @@ matrix remains green with the final Mancala/Reversi/Jumble probes at PIDs
 | --- | --- | --- |
 | GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1) | PASS |
 | Guest build | `sugar-gtk4-build.sh`, including patch 0015 | PASS |
-| Home inventory | All fourteen verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
-| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble (`292807` latest) | PASS: every launch/stop reported `cleanup=PASS` |
-| Casilda | Fourteen real Journal launch/stop cycles | PASS |
+| Home inventory | All fifteen verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
+| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush (`297650` latest) | PASS: every launch/stop reported `cleanup=PASS` |
+| Casilda | Fifteen real Journal launch/stop cycles | PASS |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
 
 The GTK3 process remains separate and is not imported into the GTK4 process.
