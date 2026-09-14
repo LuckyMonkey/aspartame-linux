@@ -1,0 +1,10 @@
+[Activity]
+name = TurtleBlocks
+bundle_id = org.laptop.TurtleArtActivity
+exec = sugar-activity4 turtleartactivity4.TurtleArtActivity
+icon = turtleart
+activity_version = 220
+show_launcher = yes
+license = MIT;GPLv2+
+summary = Draw with a Logo-inspired turtle
+tags = Programming;Art

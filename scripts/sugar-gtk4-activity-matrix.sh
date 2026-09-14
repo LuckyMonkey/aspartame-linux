@@ -42,6 +42,7 @@ declare -a activities=(
     'org.olpcfrance.Gridpaint|gridpaintactivity4.GridPaintActivity'
     'org.sugarlabs.StopwatchActivity|stopwatchactivity4.StopwatchActivity'
     'org.sugarlabs.GearsActivity|gearsactivity4.GearsActivity'
+    'org.laptop.TurtleArtActivity|turtleartactivity4.TurtleArtActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

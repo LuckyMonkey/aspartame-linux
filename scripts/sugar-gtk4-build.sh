@@ -1008,6 +1008,9 @@ ln -sfn "$stopwatch_activity" "$activity_dir/Stopwatch.activity"
 gears_activity="$repo/packages/gtk4-gears-activity"
 test -f "$gears_activity/activity/activity.info" || { echo "missing native GTK4 Gears Activity bundle" >&2; exit 2; }
 ln -sfn "$gears_activity" "$activity_dir/Gears.activity"
+turtleart_activity="$repo/packages/gtk4-turtleart-activity"
+test -f "$turtleart_activity/activity/activity.info" || { echo "missing native GTK4 TurtleBlocks Activity bundle" >&2; exit 2; }
+ln -sfn "$turtleart_activity" "$activity_dir/TurtleArt.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
