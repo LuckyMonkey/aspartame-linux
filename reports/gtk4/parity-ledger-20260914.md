@@ -25,6 +25,10 @@ Reversi game-state correction (2026-09-14): the board now detects a terminal
 position when neither side has a legal move and reports the winner; three
 post-fix lifecycle cycles passed with `cleanup=PASS` (PIDs `292840`–`292884`).
 
+Native Number Rush (2026-09-14): arithmetic rounds and score tracking run as a
+GTK4 Activity; three lifecycle cycles passed with `cleanup=PASS` (PIDs
+`296505`–`296549`).
+
 Full matrix rerun (2026-09-14): all fourteen registered modern Activities
 completed Journal launch/stop with `cleanup=PASS`; the matrix now defaults to
 three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`.
