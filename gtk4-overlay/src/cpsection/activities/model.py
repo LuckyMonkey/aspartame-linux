@@ -57,11 +57,13 @@ def remove_activity(path, quarantine=QUARANTINE_ROOT):
     path = os.path.realpath(path)
     if not os.path.isdir(os.path.join(path, 'activity')):
         raise ValueError('That Activity bundle is not valid.')
+    registry = bundleregistry.get_registry()
     if path.startswith(USER_ROOT + os.sep):
         os.makedirs(quarantine, mode=0o700, exist_ok=True)
         target = os.path.join(
             quarantine, '%d-%s' % (time.time_ns(), os.path.basename(path)))
         shutil.move(path, target)
+        _forget_registry_bundle(registry, path)
         return target
     if not any(path.startswith(os.path.realpath(root) + os.sep)
                for root in MANAGED_ROOTS):
@@ -73,4 +75,18 @@ def remove_activity(path, quarantine=QUARANTINE_ROOT):
         ['sudo', '-n', SYSTEM_REMOVER, path], capture_output=True, text=True)
     if result.returncode:
         raise PermissionError(result.stderr.strip() or 'Approval was cancelled.')
+    _forget_registry_bundle(registry, path)
     return result.stdout.strip() or path
+
+
+def _forget_registry_bundle(registry, path):
+    """Drop a removed bundle from the live registry, when supported."""
+    remover = getattr(registry, 'remove_bundle', None)
+    if remover is None:
+        return
+    try:
+        remover(path, emit_signals=True)
+    except (OSError, ValueError, RuntimeError):
+        # Filesystem/remover success is authoritative; an already-refreshed
+        # registry must not turn a completed removal into an error.
+        return

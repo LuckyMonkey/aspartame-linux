@@ -17,5 +17,7 @@ def test_gtk4_activity_manager_is_native_and_registry_backed():
     assert "bundleregistry.get_registry()" in model
     assert "aspartame-sudo-askpass" in model
     assert "shutil.move(path, target)" in model
+    assert "_forget_registry_bundle(registry, path)" in model
+    assert "remover(path, emit_signals=True)" in model
     assert "import cpsection.activities" in patch
     assert '*0112*) target="$root/sources/sugar" ;;' in build
