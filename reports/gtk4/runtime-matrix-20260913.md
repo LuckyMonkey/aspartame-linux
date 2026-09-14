@@ -402,6 +402,10 @@ writes `project_id` through the existing metadata validation/writer path;
 Cancel/Escape closes without changing the entry and failures are shown in the
 status line.
 
+Project state visibility (2026-09-14): rows now display the assigned project
+UID in the Project button label after a successful update, or the neutral
+Project label when no assignment exists.
+
 ObjectChooser live construction (2026-09-14): under the deployed GTK4 preview
 environment (`ASPARTAME_GTK4_PREVIEW=1`, GTK4 GI typelib path, modern overlay
 PYTHONPATH, and `GDK_BACKEND=x11`), a real `Gtk.Application` constructed

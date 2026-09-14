@@ -126,9 +126,13 @@ class ListView(Gtk.Box):
                 delete.set_tooltip_text(_('Delete this Journal entry'))
                 delete.connect('clicked', self._delete_clicked, uid)
                 box.append(delete)
-                project = Gtk.Button(label=_('Project'))
+                project_id = str(metadata.get('project_id') or '')
+                project_label = (_('Project: %s') % project_id
+                                 if project_id else _('Project'))
+                project = Gtk.Button(label=project_label)
                 project.set_tooltip_text(_('Assign this entry to a project'))
-                project.connect('clicked', self._project_clicked, metadata)
+                project.connect('clicked', self._project_clicked, metadata,
+                                project)
                 box.append(project)
                 row.set_child(box)
                 # Make keyboard traversal explicit in GTK4. ListBox otherwise
@@ -243,14 +247,15 @@ class ListView(Gtk.Box):
         button.set_label(_('Delete'))
         return GLib.SOURCE_REMOVE
 
-    def _project_clicked(self, _button, metadata):
+    def _project_clicked(self, _button, metadata, project_button):
         from jarabe.journal.objectchooser import ObjectChooser
         parent = self.get_root()
         chooser = ObjectChooser(parent=parent)
-        chooser.connect('response', self._project_response, metadata)
+        chooser.connect('response', self._project_response, metadata,
+                        project_button)
         chooser.present()
 
-    def _project_response(self, chooser, response, metadata):
+    def _project_response(self, chooser, response, metadata, project_button):
         if response != Gtk.ResponseType.ACCEPT:
             chooser.close()
             return
@@ -267,6 +272,7 @@ class ListView(Gtk.Box):
                 lambda error, *args: self._result_status.set_text(
                     _('Could not update Journal project: %s') % error))
             metadata.update(updated)
+            project_button.set_label(_('Project: %s') % project_id)
         except (OSError, ValueError, TypeError) as error:
             self._result_status.set_text(
                 _('Could not update Journal project: %s') % error)
