@@ -53,7 +53,6 @@ qemu-system-x86_64 \
     -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:2222-:22 \
     -audiodev "driver=$AUDIO_BACKEND,id=a0" -device AC97,audiodev=a0 \
     -device qemu-xhci -device usb-tablet -device usb-kbd \
-    -device virtio-keyboard-pci \
     -virtfs "local,path=$DEV_SHARE,mount_tag=aspartame-dev,security_model=none" \
     -name Aspartame &
 qemu_pid=$!

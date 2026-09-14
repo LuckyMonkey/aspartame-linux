@@ -53,6 +53,11 @@ readable English guidance, and canonical stop control; capture:
 `reports/screenshots/sugar-20260913-221408-v0.0.31.png`. The Activity was then
 stopped through `org.laptop.Shell.StopActivity`, and its process exited.
 
+QEMU transport experiment (2026-09-13): adding `virtio-keyboard-pci` made a
+second guest keyboard (`/dev/input/event4`) enumerate, but focused host F5 still
+produced no GTK4 navigation. The extra device was removed to avoid duplicate
+input ownership; the launcher retains the verified 1600×900 floating viewport.
+
 Activity lifecycle regression: PASS. The real Journal `LaunchBundle` path now
 completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
 calls returned true and cleanup passed. The prior rejection was caused by

@@ -10,7 +10,6 @@ def test_qemu_forwards_keyboard_by_default_while_remaining_floating():
     assert 'grab-on-hover=$QEMU_GRAB_ON_HOVER' in script
     assert 'zoom-to-fit=on' in script
     assert '-device usb-kbd' in script
-    assert '-device virtio-keyboard-pci' in script
     assert 'QEMU_WINDOW_WIDTH=${QEMU_WINDOW_WIDTH:-1600}' in script
     assert 'QEMU_WINDOW_HEIGHT=${QEMU_WINDOW_HEIGHT:-900}' in script
     assert 'xdotool windowsize' in script
