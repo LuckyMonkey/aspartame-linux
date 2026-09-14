@@ -99,3 +99,9 @@ def test_gtk4_global_key_grabber_matches_sugarext_signal_contract():
     assert "def _modern_key_pressed(grabber, keycode, state):" in patch
     assert "Gdk.keyval_from_name(key)" in patch
     assert "GTK4 global key event" in patch
+
+
+def test_build_does_not_accept_stale_key_grabber_patch_as_verified():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    assert 'def _modern_key_pressed(grabber, keycode, state):' in build
+    assert 'Gdk.keyval_from_name(key)' in build

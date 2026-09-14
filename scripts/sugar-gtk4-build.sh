@@ -381,7 +381,10 @@ for patch in "$patch_dir"/*.patch; do
         continue
     fi
     if [[ "$patch_name" == *0094* ]] &&
-        grep -q "_modern_key_grabber" "$shell/src/jarabe/main.py" 2>/dev/null; then
+        grep -q "_modern_key_grabber" "$shell/src/jarabe/main.py" 2>/dev/null &&
+        grep -q "def _modern_key_pressed(grabber, keycode, state):" \
+            "$shell/src/jarabe/main.py" 2>/dev/null &&
+        grep -q "Gdk.keyval_from_name(key)" "$shell/src/jarabe/main.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified workspace-gated GTK4 key grabber: $patch_name"
         continue
