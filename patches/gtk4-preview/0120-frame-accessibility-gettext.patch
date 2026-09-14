@@ -1,0 +1,11 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: import gettext for Frame accessibility label
+
+FrameContainer now uses the translated accessible label `Frame`; import the
+existing Sugar gettext helper so startup does not fail with NameError.
+
+--- a/src/jarabe/frame/framewindow.py
++++ b/src/jarabe/frame/framewindow.py
+@@ -15,1 +15,2 @@
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
++from gettext import gettext as _

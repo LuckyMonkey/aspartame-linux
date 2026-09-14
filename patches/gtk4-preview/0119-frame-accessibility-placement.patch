@@ -1,0 +1,18 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: place Frame accessibility in initializer
+
+Repair 0118 when its context matched the class body instead of
+FrameContainer.__init__. Remove the misplaced statements and add them after
+the initializer's super call.
+
+--- a/src/jarabe/frame/framewindow.py
++++ b/src/jarabe/frame/framewindow.py
+@@ -49,2 +49,0 @@
+-        self.update_property([Gtk.AccessibleProperty.LABEL], [_('Frame')])
+-        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
+@@ -53,2 +51,4 @@
+     def __init__(self, position):
+         super().__init__()
++        self.update_property([Gtk.AccessibleProperty.LABEL], [_('Frame')])
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
+         self._position = position

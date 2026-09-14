@@ -430,3 +430,33 @@ navigation behavior remain unchanged.
 Group accessibility drift correction (2026-09-14): the label portion of 0116
 was present in the persistent guest source while its role hunk was absent.
 Follow-up 0117 adds and independently verifies `AccessibleRole.GROUP`.
+
+Frame accessibility (2026-09-14): the GTK4 Frame drawing container now exposes
+the accessible `Frame` label and `GROUP` role. Reveal animation, edge input,
+and tray ownership are unchanged.
+
+Frame accessibility placement correction (2026-09-14): runtime evidence found
+0118 had matched the class body and caused an `IndentationError`. Patch 0119
+removes the misplaced statements and places them inside
+`FrameContainer.__init__`; the guest startup check is required to pass before
+this change is accepted.
+
+Frame accessibility gettext correction (2026-09-14): the corrected initializer
+then exposed a missing `_` import. Patch 0120 adds the gettext alias required
+by the accessible label; startup must pass before this patch is accepted.
+
+Frame accessibility final placement (2026-09-14): 0119 matched an earlier
+`self._position` context and left the calls under the orientation `else:`.
+Patch 0121 removes those lines and inserts them at the exact initializer
+boundary; it is accepted only after a clean GTK4 startup check.
+
+Frame accessibility final relocation (2026-09-14): the persistent source then
+contained the calls in `do_dispose`. Patch 0122 moves them into
+`FrameContainer.__init__` and verifies they are absent from disposal code.
+
+Frame accessibility current-source repair (2026-09-14): the accumulated
+placement patches are now handled semantically. Drifted 0121/0122 hunks are
+retired by the build guard, while 0123 applies the exact current-source move.
+Guest source inspection shows the label/`GROUP` role only in `__init__`, the
+preview build passes, and a clean GTK4 restart reports `runtime-check=ok` with
+no Frame traceback or fatal GTK warning.

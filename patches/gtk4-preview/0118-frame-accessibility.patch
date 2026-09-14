@@ -1,0 +1,13 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: expose Frame container accessibility
+
+Expose the GTK4 Frame drawing container as a named group for assistive
+technology. Frame geometry, reveal animation, and input controllers are
+unchanged.
+
+--- a/src/jarabe/frame/framewindow.py
++++ b/src/jarabe/frame/framewindow.py
+@@ -49,1 +49,3 @@
+         super().__init__()
++        self.update_property([Gtk.AccessibleProperty.LABEL], [_('Frame')])
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
