@@ -1,28 +1,25 @@
 # GTK4 race status
 
-Checked 2026-09-12. The active preview runs only inside the Aspartame QEMU
+Checked 2026-09-14. The active preview runs only inside the Aspartame QEMU
 development guest. Its source, prefix, profile, D-Bus session, and runtime are
 isolated from package-owned GTK3 Sugar.
 
 ## Current milestone
 
-🟡 **SHELL STABILITY + HOME SEARCH (Arch VM):** pinned GTK4 Jarabe now renders
-the real Favorites wheel and XO after initializing its corrected private D-Bus,
-datastore, profile, and embedded Casilda compositor.
+🟢 **FUNCTIONAL GTK4 PREVIEW SPACE:** GTK4 Jarabe now renders Home Favorites and
+native Home List/search, Frame, Journal, Neighborhood/Group empty states,
+Settings, Help, and Activity Manager through the isolated modern process and
+embedded Casilda boundary. Help, Log, and Count are registered GTK4 Activities.
 
-An AT-SPI editable-text action entered `terminal` in the GTK4 Home search field.
-The List View rendered its real empty-result state, clearing the query returned
-to Favorites, and the same Jarabe process remained alive beyond 60 seconds with
-no fatal traceback. Casilda's private `wayland-sugar` socket remained healthy.
+Live evidence includes repeated normal and abnormal Activity launch/stop
+cleanup, Journal search/resume/edit/selection, clipboard transfer, Count cell
+and layer editing, AT-SPI names/roles, and clean GTK3↔GTK4 Space round-trips.
+The stable GTK3 Space remains installed and healthy as the behavioral reference.
 
-This proves a stable GTK4 Home render/search/return loop and semantic input into
-the search control. It does not prove a complete GTK4 desktop: Frame, Journal,
-and Activity lifecycle remain unclaimed. The preview has pinned Activity source
-checkouts but no GTK4 Activity bundle is installed or registered yet, so launch
-cannot be tested honestly. Stable GTK3 continues behind the isolated preview.
-After GTK4 installation exposed an ambiguous GI default, the GTK3-only
-Select-a-Thing startup hook was made explicit about GTK/GDK 3; a fresh Terminal
-Activity then launched and rendered normally.
+The remaining parity gate is explicit rather than hidden: physical F1–F6
+delivery is below the current QEMU/evdev transport, peer-backed Neighborhood
+actions need an actual collaboration peer, and the broader Activity catalog
+still contains GTK3-only ports such as Browse.
 
 ## 2026-09-05 GTK4 Spaces and Sugar interaction checkpoint
 
@@ -51,8 +48,8 @@ Casilda is pinned to `cecb869ce390e13ebdecdca9953731d3a3f3aa73`.
 | Casilda compositor | 🧪 PR work | ✅ 1.5.0 socket and protocols live |
 | Shell startup | ❌ incomplete | ✅ Home process stable beyond 60 seconds |
 | Home | 🧪 PR work | 🧪 Favorites/search/return visibly exercised |
-| Frame/Journal | 🧪 GTK4 Frame preview; Journal interaction parity remains pending |
-| GTK4 activity lifecycle | 🧪 launch/paint/stop/repeat proven; input and focus gates remain |
+| Frame/Journal | ✅ GTK4 Frame and native Journal interaction/lifecycle evidence |
+| GTK4 activity lifecycle | ✅ Help, Log, and Count launch/stop/repeat; peer/catalog breadth remains |
 
 “More code” is not counted as “ahead” until it runs in a session.
 
