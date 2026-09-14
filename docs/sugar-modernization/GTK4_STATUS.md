@@ -25,8 +25,13 @@ is maintained in `reports/gtk4/runtime-matrix-20260913.md`.
 
 Remaining limits are explicit: physical F1-F6 delivery is below the current
 QEMU/evdev transport; Neighborhood collaboration cannot be exercised without
-peers; and unsupported GTK3-only Activities such as Browse remain individual
-porting targets. These are not silently counted as GTK4 parity.
+peers; and additional legacy Activities remain individual porting targets.
+These are not silently counted as GTK4 parity.
+
+The ISO profile includes GTK4 runtime libraries, but the GTK4 source overlay
+and pinned Activity checkouts are still supplied by the `aspartame-dev` 9p
+share during development. Embedding those sources into a standalone ISO is a
+separate packaging task and is not yet claimed.
 
 The GTK4 toolkit repository describes itself as a GTK4 toolkit and documents
 `sugar4` APIs, while the main Sugar repository still documents GTK3 toolkit
