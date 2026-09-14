@@ -233,3 +233,12 @@ failure was a stale call to the removed `sugar4.activity.activityfactory`
 `supports_bundle`/`explain_unsupported` helpers. The overlay now resolves
 capability through the existing `get_command()` API, preserving the original
 Classic-Space fallback without adding a new launcher service.
+
+Repeated native-list lifecycle (2026-09-14): three additional launches from
+the GTK4 Home List/Jarabe Journal boundary completed with distinct Activity
+PIDs `64033`, `64055`, and `64077`. Each launch returned `(true,)`, each
+`StopActivity` returned `(true,)`, and every child process disappeared within
+the cleanup check. An abnormal-exit pass then launched PID `64104`, sent
+`SIGKILL`, and confirmed no Help Activity process remained. This extends the
+existing Journal lifecycle evidence to the newly repaired Home List launcher
+without changing Casilda or introducing another lifecycle abstraction.
