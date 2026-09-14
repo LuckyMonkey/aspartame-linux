@@ -30,6 +30,24 @@ def register_target(widget, target_id, **metadata):
     widget._sugar_help_target = (target_id, metadata)
 
 
+def supports_bundle(bundle):
+    """Return whether the GTK4 launcher can resolve this bundle command."""
+    try:
+        activityfactory.get_command(bundle)
+    except (AttributeError, RuntimeError, ValueError, TypeError):
+        return False
+    return True
+
+
+def explain_unsupported(bundle):
+    """Explain why a bundle remains assigned to the Classic Space."""
+    try:
+        activityfactory.get_command(bundle)
+    except Exception as error:
+        return str(error)
+    return _('This activity is not available in the GTK4 Space.')
+
+
 class ActivityItem(GObject.GObject):
     def __init__(self, bundle):
         super().__init__()
@@ -144,7 +162,7 @@ class ActivityRow(Gtk.Box):
             return
         state = self.owner.presentation.present(self.icon, self.item.bundle_id)
         description = activitypresentation.STATE_LABELS[state]
-        if not activityfactory.supports_bundle(self.item.bundle):
+        if not supports_bundle(self.item.bundle):
             description = _('Classic Space activity')
         self.status.set_text(description)
         self.update_property([Gtk.AccessibleProperty.LABEL,
@@ -168,6 +186,7 @@ class ActivityRow(Gtk.Box):
         """Launch a row from a primary pointer click."""
         if count != 1 or self.item is None:
             return
+        logging.info('Home List primary activation: %s', self.item.bundle_id)
         self.owner.run_activity(self.item.bundle_id, True)
 
     def _key_pressed(self, controller, keyval, keycode, modifiers):
@@ -331,9 +350,9 @@ class ActivitiesList(Gtk.Box):
         if bundle is None:
             self._reload()
             return
-        if not activityfactory.supports_bundle(bundle):
+        if not supports_bundle(bundle):
             self._show_error(_('Open in the Classic Space'),
-                             activityfactory.explain_unsupported(bundle))
+                             explain_unsupported(bundle))
             return
         if self.presentation.activate_running(bundle_id):
             return
@@ -413,13 +432,13 @@ class ActivityListPalette(Palette):
                                    pixel_size=style.STANDARD_ICON_SIZE))
         box = PaletteMenuBox()
         self.set_content(box)
-        supported = activityfactory.supports_bundle(bundle)
+        supported = supports_bundle(bundle)
         start = PaletteMenuItem(_('Start new'), icon_name='activity-start')
         start.set_sensitive(supported)
         start.connect('activate', lambda item: misc.launch(bundle))
         box.append_item(start)
         if not supported:
-            self.set_secondary_text(activityfactory.explain_unsupported(bundle))
+            self.set_secondary_text(explain_unsupported(bundle))
         registry = bundleregistry.get_registry()
         for view in range(desktop.get_number_of_views()):
             favorite = registry.is_bundle_favorite(bundle.get_bundle_id(),

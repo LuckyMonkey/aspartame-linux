@@ -220,3 +220,16 @@ descriptive accessible name containing the Activity name, favorite view,
 summary, version, and actions. This verifies the row semantics against the
 live GTK4 bridge, not only source-level assertions. The visible list evidence
 is `reports/screenshots/gtk4-home-list-native-20260914.png`.
+
+Home List launch (2026-09-14): a real pointer click on the Help row launched
+the GTK4 Help Activity (`activityinstance` PID 63907, activity id
+`38d41ee5ec5749af9943383fe81ac79b`) from the native list. The Activity process
+was visible while running, then `org.laptop.Shell.StopActivity` returned
+`(true,)`; the process exited and the list returned to its stopped state.
+Running and stopped captures are recorded at
+`reports/screenshots/gtk4-home-list-help-running-20260914.png` and
+`reports/screenshots/gtk4-home-list-help-stopped-20260914.png`. The launch
+failure was a stale call to the removed `sugar4.activity.activityfactory`
+`supports_bundle`/`explain_unsupported` helpers. The overlay now resolves
+capability through the existing `get_command()` API, preserving the original
+Classic-Space fallback without adding a new launcher service.

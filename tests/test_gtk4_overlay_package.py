@@ -32,6 +32,13 @@ def test_home_list_rows_expose_named_button_semantics():
     assert "Gtk.AccessibleProperty.LABEL" in source
 
 
+def test_home_list_uses_existing_gtk4_command_capability_api():
+    source = (ROOT / "gtk4-overlay/src/jarabe/desktop/activitieslist.py").read_text()
+    assert "def supports_bundle(bundle):" in source
+    assert "activityfactory.get_command(bundle)" in source
+    assert "activityfactory.supports_bundle" not in source
+
+
 def test_gtk4_runner_excludes_gtk3_overlay_path():
     runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     assert 'PYTHONPATH="$project_root/gtk4-overlay/src:$datastore_site' in runner
