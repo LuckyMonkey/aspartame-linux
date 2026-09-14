@@ -66,6 +66,13 @@ second guest keyboard (`/dev/input/event4`) enumerate, but focused host F5 still
 produced no GTK4 navigation. The extra device was removed to avoid duplicate
 input ownership; the launcher retains the verified 1600×900 floating viewport.
 
+Help readability update (2026-09-13): the native Help Activity now uses a dark
+Sugar surface with a search field, seven keyboard-accessible `GtkExpander`
+topics, wrapped selectable guidance, and live match counts. A live guest
+capture shows the first topic expanded and a second topic opened by pointer:
+`reports/screenshots/sugar-20260913-222656-v0.0.31.png` and
+`reports/screenshots/sugar-20260913-222710-v0.0.31.png`.
+
 Activity lifecycle regression: PASS. The real Journal `LaunchBundle` path now
 completed two cycles with distinct Help Activity PIDs and IDs; both StopActivity
 calls returned true and cleanup passed. The prior rejection was caused by
