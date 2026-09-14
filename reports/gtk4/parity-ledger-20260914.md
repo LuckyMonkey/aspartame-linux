@@ -83,6 +83,9 @@ runtime failures.
   all nine verified GTK4 bundles through `SUGAR_ACTIVITIES_PATH`, preventing
   GTK3 duplicates from winning Home lookup. After a clean GTK4 restart
   (`pid=265471`), the complete matrix passed again (final Log PID `266035`).
+- Activity artwork validation (2026-09-14): added bundle-local Sugar SVG icons
+  for Clock and JAMClock; both convert successfully with `rsvg-convert`, and
+  the guest rebuild stages them without warnings.
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
