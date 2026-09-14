@@ -1023,6 +1023,9 @@ ln -sfn "$abacus_activity" "$activity_dir/Abacus.activity"
 planets_activity="$repo/packages/gtk4-planets-activity"
 test -f "$planets_activity/activity/activity.info" || { echo "missing native GTK4 Planets Activity bundle" >&2; exit 2; }
 ln -sfn "$planets_activity" "$activity_dir/Planets.activity"
+write_activity="$repo/packages/gtk4-write-activity"
+test -f "$write_activity/activity/activity.info" || { echo "missing native GTK4 Write Activity bundle" >&2; exit 2; }
+ln -sfn "$write_activity" "$activity_dir/Write.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

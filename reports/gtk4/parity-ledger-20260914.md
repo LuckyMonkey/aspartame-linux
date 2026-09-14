@@ -1,5 +1,9 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Write (2026-09-14): a GTK4 document editor with draft status and clear
+action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
+cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
+
 Native Planets (2026-09-14): a GTK4 orbit canvas with selectable planet labels
 was staged under `org.sugarlabs.Planets`. Three guest Casilda launch/stop cycles
 passed with `cleanup=PASS` (PIDs `404889`, `404919`, `404941`).

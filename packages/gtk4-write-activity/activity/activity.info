@@ -1,0 +1,10 @@
+[Activity]
+name = Write
+bundle_id = org.sugarlabs.Write
+exec = sugar-activity4 writeactivity4.WriteActivity
+icon = write
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Write and edit a document
+tags = Writing;Education
