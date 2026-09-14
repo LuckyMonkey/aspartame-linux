@@ -57,6 +57,8 @@
   separate reviewable change.
 - [x] Port Across and Down as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`mulawa.AcrossDown`).
+- [x] Port IQ as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`mulawa.IQ`).
 
 ## P4 — Wayland/backend neutrality
 
