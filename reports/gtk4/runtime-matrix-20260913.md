@@ -368,3 +368,8 @@ GTK4 Journal keep toggle (2026-09-14): each native row now exposes a Keep
 check button. Changes pass through `editable_changes` and the existing
 asynchronous datastore writer; success and failure are reported in the Journal
 status line, and invalid updates restore the prior toggle state.
+
+GTK4 Journal title editing (2026-09-14): each native row now offers an inline
+Edit title/Save title control. Non-empty titles use the shared metadata
+validation and asynchronous datastore writer, then update the visible row and
+status line. Invalid titles remain in edit mode with an explicit error.

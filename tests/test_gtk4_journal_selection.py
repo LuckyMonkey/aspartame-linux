@@ -17,6 +17,8 @@ def test_gtk4_journal_list_uses_native_selection_api():
     assert "row.set_activatable(True)" in source
     assert "Gtk.CheckButton(label=_('Keep'))" in source
     assert "write_metadata(" in source
+    assert "Gtk.Entry(text=title)" in source
+    assert "Journal title updated" in source
 
 
 def test_gtk4_journal_selection_emits_count_changes():

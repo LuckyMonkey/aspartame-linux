@@ -93,7 +93,13 @@ class ListView(Gtk.Box):
                 box.set_margin_bottom(10)
                 title = str(metadata.get('title') or _('Untitled'))
                 activity = str(metadata.get('activity') or '')
-                box.append(Gtk.Label(label=title, xalign=0))
+                title_label = Gtk.Label(label=title, xalign=0)
+                title_label.add_css_class('heading')
+                box.append(title_label)
+                title_entry = Gtk.Entry(text=title)
+                title_entry.set_hexpand(True)
+                title_entry.set_visible(False)
+                box.append(title_entry)
                 box.append(Gtk.Label(label=activity, xalign=0))
                 keep = Gtk.CheckButton(label=_('Keep'))
                 keep.set_active(str(metadata.get('keep', '0')).lower()
@@ -101,6 +107,13 @@ class ListView(Gtk.Box):
                 keep.set_tooltip_text(_('Keep this entry in the Journal'))
                 keep.connect('toggled', self._keep_toggled, uid, metadata)
                 box.append(keep)
+                edit = Gtk.Button(label=_('Edit title'))
+                edit.set_tooltip_text(_('Change this Journal entry title'))
+                edit.connect('clicked', self._edit_title, edit, title_label,
+                             title_entry, metadata)
+                title_entry.connect('activate', self._finish_title, edit,
+                                    title_label, title_entry, metadata)
+                box.append(edit)
                 row.set_child(box)
                 # Make keyboard traversal explicit in GTK4. ListBox otherwise
                 # only guarantees pointer activation for rows whose child
@@ -158,6 +171,37 @@ class ListView(Gtk.Box):
             button.set_active(not button.get_active())
             self._result_status.set_text(
                 _('Could not update Journal entry: %s') % error)
+
+    def _edit_title(self, _button, edit, title_label, title_entry, metadata):
+        editing = title_entry.get_visible()
+        if editing:
+            self._finish_title(edit, edit, title_label, title_entry, metadata)
+            return
+        title_entry.set_text(str(metadata.get('title') or ''))
+        title_label.set_visible(False)
+        title_entry.set_visible(True)
+        title_entry.grab_focus()
+        title_entry.select_region(0, -1)
+        edit.set_label(_('Save title'))
+
+    def _finish_title(self, _entry, edit, title_label, title_entry, metadata):
+        try:
+            updated = editable_changes(
+                metadata, {'title': title_entry.get_text()})
+            write_metadata(
+                updated,
+                lambda *args: self._result_status.set_text(
+                    _('Journal title updated')),
+                lambda error, *args: self._result_status.set_text(
+                    _('Could not update Journal title: %s') % error))
+            metadata.update(updated)
+            title_label.set_text(metadata['title'])
+            title_label.set_visible(True)
+            title_entry.set_visible(False)
+            edit.set_label(_('Edit title'))
+        except (OSError, ValueError, TypeError) as error:
+            self._result_status.set_text(
+                _('Could not update Journal title: %s') % error)
 
     def _prepare_drag(self, _source, _x, _y, uid):
         payload = GLib.Bytes.new(str(uid).encode('utf-8'))
