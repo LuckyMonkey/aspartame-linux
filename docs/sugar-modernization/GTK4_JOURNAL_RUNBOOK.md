@@ -190,8 +190,9 @@ only as historical context. Current evidence is maintained in
 - Journal search/filter and clear: verified in the GTK4 runtime checks.
 - Journal open/resume and Activity association: verified through live lifecycle probes.
 - Detail/action palettes and ObjectChooser: verified on the native GTK4 path.
-- Title editing and project assignment are implemented in the native row;
-  ProjectView remains a separate, explicitly unverified target.
+- Title editing, project assignment, and the Projects filter toggle are
+  implemented in the native row; full ProjectView navigation remains a
+  separate, explicitly unverified target.
 
 Known preview warnings that are not currently the Journal blocker:
 
@@ -344,7 +345,8 @@ Do not use that phrase until all required checks pass in a running preview:
   Journal UID; live row construction is verified. Drop-consumer behavior is
   unchanged and remains scoped to existing clipboard consumers.
 - [x] ObjectChooser still works.
-- [ ] ProjectView still works.
+- [ ] Full ProjectView navigation still works (the native Projects filter is
+  verified; project navigation remains open).
 - [ ] Journal survives hide/show and shell restart.
 - [ ] Datastore disconnect/error behavior is observable and recoverable.
 - [ ] Screenshot and runtime log are retained.
