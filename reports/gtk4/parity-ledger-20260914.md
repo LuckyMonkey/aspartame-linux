@@ -68,6 +68,10 @@ runtime failures.
   Viewer, Terminal, Browse, and Log each launched through Journal and stopped
   with immediate `cleanup=PASS` (PIDs `256080`, `256111`, `256141`, `256171`,
   `256201`, `256231`, `256261`); final result `activity-matrix=PASS`.
+- Post-cleanup guest rebuild (2026-09-14): the GTK4 preview rebuilt beyond
+  patch 0015, restarted successfully as PID `259457`, and its fresh startup
+  log contains zero dangling `No bundle in` registry errors. The full Activity
+  matrix still passes after the rebuild (PIDs `259165`–`259348`).
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
