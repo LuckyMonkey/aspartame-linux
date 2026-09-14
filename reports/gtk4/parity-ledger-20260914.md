@@ -34,6 +34,9 @@ runtime failures.
 - Terminal (2026-09-14): installed the guest `vte4` package after repairing
   pacman trust, rebuilt the GTK4 prefix, launched `org.laptop.Terminal` (PID
   `249258`) through Journal, and stopped it cleanly (`terminal-stop=PASS`).
+- Terminal repeated lifecycle (2026-09-14): three standard launch/stop cycles
+  passed with PIDs `249309`, `249331`, and `249352`; all reported
+  `cleanup=PASS` and the probe ended `lifecycle-probe=PASS`.
 
 ## Ranked remaining gaps
 
