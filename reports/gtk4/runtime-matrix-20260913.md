@@ -329,3 +329,9 @@ post-build live `ShowJournal` smoke test constructed the rows and kept the
 GTK4 shell alive (`journal-runtime=PASS`) without GTK or Python errors. Drop
 consumers remain intentionally unchanged; this closes the missing row-source
 side of Journal drag/copy without adding a new service boundary.
+
+Spaces regression after Journal DnD work (2026-09-14): the guest runtime
+checker passed in GTK4 (`pid=113178`, desktop 1), switched to GTK3
+(`pid=33761`, desktop 0), and returned to GTK4 with both checks passing. The
+active-window and workspace assertions remained consistent and no duplicate
+shell owner appeared.
