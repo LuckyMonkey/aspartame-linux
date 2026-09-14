@@ -71,7 +71,13 @@ class CountActivity(SimpleActivity):
                 button.connect("clicked", self._cell_clicked, x, y)
                 row.append(button)
                 self.grid.attach(button, x, y, 1, 1)
-        self._cells.append(row)
+            self._cells.append(row)
+        grid_drag = Gtk.GestureDrag()
+        grid_drag.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        grid_drag.connect("drag-begin", self._grid_drag_begin)
+        grid_drag.connect("drag-update", self._grid_drag_update)
+        grid_drag.connect("drag-end", self._grid_drag_end)
+        self.grid.add_controller(grid_drag)
         self._context_grids = []
         canvas_box.append(overlay)
         content.append(canvas_box)
@@ -175,6 +181,41 @@ class CountActivity(SimpleActivity):
 
     def _cell_clicked(self, _button, x, y):
         self.layers[self.current_layer][y][x] = not self.layers[self.current_layer][y][x]
+        self._render()
+
+    def _grid_cell(self, x, y):
+        column = int(x // 85)
+        row = int(y // 85)
+        if 0 <= column < self.width and 0 <= row < self.height:
+            return column, row
+        return None
+
+    def _grid_drag_begin(self, _gesture, x, y):
+        self._drag_origin = (x, y)
+        self._press_cell = self._grid_cell(x, y)
+        if self._press_cell:
+            px, py = self._press_cell
+            self._paint_add = not self.layers[self.current_layer][py][px]
+            self._paint_rectangle(self._press_cell)
+
+    def _grid_drag_update(self, _gesture, offset_x, offset_y):
+        if self._press_cell is None:
+            return
+        origin_x, origin_y = self._drag_origin
+        self._paint_rectangle(self._grid_cell(origin_x + offset_x,
+                                               origin_y + offset_y))
+
+    def _grid_drag_end(self, *_args):
+        self._press_cell = None
+
+    def _paint_rectangle(self, end_cell):
+        if self._press_cell is None or end_cell is None:
+            return
+        x0, y0 = self._press_cell
+        x1, y1 = end_cell
+        for row in range(min(y0, y1), max(y0, y1) + 1):
+            for column in range(min(x0, x1), max(x0, x1) + 1):
+                self.layers[self.current_layer][row][column] = self._paint_add
         self._render()
 
     def _geometry(self):

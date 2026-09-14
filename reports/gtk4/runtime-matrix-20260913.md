@@ -483,3 +483,9 @@ the live editor shows the selected plane as the editable blue-outlined grid and
 the adjacent plane as a translucent offset context. A second real QMP click
 filled the selected cell and updated the total to `1`; capture:
 `reports/screenshots/sugar-20260914-100050-v0.0.31.png`.
+
+Count drag interaction (2026-09-14): the visible GTK4 cell grid now installs a
+capture-phase `Gtk.GestureDrag`; drag updates paint the rectangle between the
+origin and current cell while ordinary button activation remains available to
+keyboard and assistive technology users. The guest preview rebuild passes and
+the modern shell restart remains `runtime-check=ok`.
