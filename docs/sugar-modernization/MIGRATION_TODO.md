@@ -14,15 +14,17 @@
 
 ## P1 — major shell functionality
 
-- [ ] Frame, Home, Journal, and Activity launch smoke tests on GTK4.
+- [x] Frame, Home, Journal, and Activity launch smoke tests on GTK4 (see
+  `reports/gtk4/runtime-matrix-20260913.md`).
 - [x] Render and clear a real GTK4 Home search without crashing lazy List View.
-- [ ] Build/register one pinned GTK4 Activity and prove launch/switch/stop.
-- [ ] Verify Sugar theme/icon behavior without GTK3-only CSS assumptions.
+- [x] Build/register one pinned GTK4 Activity and prove launch/switch/stop.
+- [x] Verify Sugar theme/icon behavior without GTK3-only CSS assumptions.
 
 ## P2 — Journal / Neighborhood / Frame / clipboard / palettes
 
 - [x] Port the core GTK4 palette and tooltip path using native Popover and Sugar CSS; runtime palette capture is recorded.
-- [ ] Port clipboard and remaining palette behavior using upstream GTK4 APIs.
+- [x] Port clipboard and remaining palette behavior using upstream GTK4 APIs;
+  live text transfer is recorded in the runtime matrix.
 - [ ] Verify datastore and D-Bus boundaries remain unchanged.
 
 ## P3 — core activities / Fructose
