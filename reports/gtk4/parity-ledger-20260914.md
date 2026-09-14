@@ -13,6 +13,9 @@ runtime failures.
 - GTK3 runtime check passes on desktop 0 (`pid=33761`).
 - The modern Space is restored after the comparison and passes again.
 - Full host suite: 162 tests passed (`pytest -q`, 2026-09-14).
+- Fresh guest lifecycle probe (2026-09-14): GTK4 Count launched/stopped for
+  three consecutive cycles (PIDs `222220`, `222242`, `222263`), each reporting
+  `cleanup=PASS`; final result `lifecycle-probe=PASS`.
 
 ## Ranked remaining gaps
 
