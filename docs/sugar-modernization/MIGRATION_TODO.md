@@ -91,6 +91,8 @@
   Casilda launch/stop cycles (`org.sugarlabs.GTDActivity`).
 - [x] Port Grid Paint as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`org.olpcfrance.Gridpaint`).
+- [x] Port Stopwatch as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`org.sugarlabs.StopwatchActivity`).
 
 ## P4 — Wayland/backend neutrality
 

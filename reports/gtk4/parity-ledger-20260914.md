@@ -1,5 +1,10 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Stopwatch (2026-09-14): a GTK4 elapsed-time Activity with start/pause and
+reset controls was staged under `org.sugarlabs.StopwatchActivity`. Three guest
+Casilda launch/stop cycles passed with `cleanup=PASS` (PIDs `379133`, `379161`,
+`379186`).
+
 Native Grid Paint (2026-09-14): a GTK4 10×10 selectable drawing grid with a
 clear action was staged under `org.olpcfrance.Gridpaint`. Three guest Casilda
 launch/stop cycles passed with `cleanup=PASS` (PIDs `373650`, `373678`, `373703`).

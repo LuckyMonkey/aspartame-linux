@@ -1002,6 +1002,9 @@ ln -sfn "$gtd_activity" "$activity_dir/GetThingsDone.activity"
 gridpaint_activity="$repo/packages/gtk4-gridpaint-activity"
 test -f "$gridpaint_activity/activity/activity.info" || { echo "missing native GTK4 Grid Paint Activity bundle" >&2; exit 2; }
 ln -sfn "$gridpaint_activity" "$activity_dir/Gridpaint.activity"
+stopwatch_activity="$repo/packages/gtk4-stopwatch-activity"
+test -f "$stopwatch_activity/activity/activity.info" || { echo "missing native GTK4 Stopwatch Activity bundle" >&2; exit 2; }
+ln -sfn "$stopwatch_activity" "$activity_dir/Stopwatch.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
