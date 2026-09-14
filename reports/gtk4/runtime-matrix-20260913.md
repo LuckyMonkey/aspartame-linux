@@ -149,3 +149,8 @@ modern Space at 1920x1080 (`sugar-20260913-232259-v0.0.31.png`), and two fresh
 Journal→Help launch/stop cycles completed with distinct PIDs and immediate
 cleanup (`lifecycle-probe.sh 2`: PASS). The authoritative runtime check also
 passed for GTK4 PID `28378` on desktop `1`.
+
+Control Panel accessibility (2026-09-13): the GTK4 preview build applied
+`0099-controlpanel-section-accessibility.patch` cleanly. Section tiles now
+expose Button semantics and activate through Enter, keypad Enter, or Space;
+the guest source was verified at lines 623 and 648 after the build.
