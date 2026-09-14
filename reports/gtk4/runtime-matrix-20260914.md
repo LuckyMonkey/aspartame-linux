@@ -1,8 +1,8 @@
 # GTK4 runtime matrix — 2026-09-14
 
 Fresh evidence after the modern Home registry path and JAMClock/Clock ports.
-The matrix was rerun from the synchronized development share; the new Reversi
-bundle completed a live launch/stop cycle (PID `289038`) after the full build.
+The synchronized development share now also includes Jumble; its three-cycle
+probe completed with `cleanup=PASS` (PIDs `292333`–`292377`) after the full build.
 
 | Area | Evidence | Status |
 | --- | --- | --- |

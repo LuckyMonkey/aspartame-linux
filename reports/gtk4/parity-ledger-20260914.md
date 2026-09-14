@@ -18,6 +18,9 @@ Reversi each completed three launch/stop cycles with `cleanup=PASS` (PIDs
 `289078`–`289338`), confirming the newer ports do not leave stale processes or
 Casilda surfaces.
 
+Native Jumble repeated lifecycle (2026-09-14): three launch/stop cycles passed
+with `cleanup=PASS` (PIDs `292333`, `292356`, `292377`).
+
 Full matrix rerun (2026-09-14): all thirteen registered modern Activities
 completed Journal launch/stop with `cleanup=PASS`; the final Poll, Mancala, and
 Reversi probes used PIDs `289674`, `289704`, and `289735`.

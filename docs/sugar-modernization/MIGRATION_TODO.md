@@ -45,6 +45,8 @@
   store state.
 - [x] Port and verify a native GTK4 Reversi Activity with legal capture and
   disc flipping.
+- [x] Port and verify a native GTK4 Jumble Activity with answer checking and
+  word navigation.
 - [x] Port and verify a native Calculate Activity; the modern registry now
   launches Calculate alongside the other verified GTK4 bundles.
 - [x] Inventory the remaining legacy Fructose/Sugarizer activities (84 rows in
