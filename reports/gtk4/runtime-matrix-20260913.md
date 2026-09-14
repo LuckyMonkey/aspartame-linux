@@ -502,3 +502,9 @@ copying the layer twice through real QMP pointer clicks, the selected plane
 shows the filled cell while two offset translucent context planes remain
 visible behind it. The live editor reports `Layer 1 of 3` and `1 on this
 layer`; capture: `reports/screenshots/sugar-20260914-100652-v0.0.31.png`.
+
+Count repeated lifecycle (2026-09-14): the lifecycle probe now accepts an
+alternate bundle and process pattern (Help remains the default). Three real
+Count launches completed with PIDs `221548`, `221571`, and `221594`; each
+returned `stop=(true,)` and `cleanup=PASS`, followed by
+`lifecycle-probe=PASS`.

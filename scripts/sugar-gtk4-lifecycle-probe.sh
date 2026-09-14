@@ -8,10 +8,16 @@ if ! grep -qx 'IMAGE_ID=aspartame' /etc/os-release; then
 fi
 
 cycles=${1:-3}
+bundle_id=${2:-org.laptop.HelpActivity}
+process_pattern=${3:-helpactivity4.HelpActivity}
 case "$cycles" in
     ''|*[!0-9]*) echo 'usage: sugar-gtk4-lifecycle-probe.sh [cycles]' >&2; exit 2 ;;
 esac
 [ "$cycles" -gt 0 ] || { echo 'cycles must be positive' >&2; exit 2; }
+[ -n "$bundle_id" ] && [ -n "$process_pattern" ] || {
+    echo 'bundle and process pattern must be non-empty' >&2
+    exit 2
+}
 
 gtk4_pid=$(pgrep -u aspartame -f '/sources/sugar/src/jarabe/main.py' | head -1 || true)
 [ -n "$gtk4_pid" ] || { echo 'GTK4 shell is not running' >&2; exit 1; }
@@ -27,11 +33,11 @@ aspartame_gdbus() {
 for cycle in $(seq 1 "$cycles"); do
     launch=$(aspartame_gdbus --dest org.laptop.Journal \
         --object-path /org/laptop/Journal \
-        --method org.laptop.Journal.LaunchBundle org.laptop.HelpActivity '')
+        --method org.laptop.Journal.LaunchBundle "$bundle_id" '')
     activity_pid=''
     activity_id=''
     for _attempt in $(seq 1 50); do
-        activity_pid=$(pgrep -u aspartame -f 'helpactivity4.HelpActivity' | head -1 || true)
+        activity_pid=$(pgrep -u aspartame -f "$process_pattern" | head -1 || true)
         if [ -n "$activity_pid" ]; then
             activity_id=$(tr '\0' ' ' <"/proc/$activity_pid/cmdline" |
                 sed -n 's/.*--activity-id \([^ ]*\).*/\1/p')
@@ -44,10 +50,10 @@ for cycle in $(seq 1 "$cycles"); do
         --object-path /org/laptop/Shell \
         --method org.laptop.Shell.StopActivity "$activity_id")
     for _attempt in $(seq 1 50); do
-        pgrep -u aspartame -f 'helpactivity4.HelpActivity' >/dev/null || break
+        pgrep -u aspartame -f "$process_pattern" >/dev/null || break
         sleep 0.1
     done
-    pgrep -u aspartame -f 'helpactivity4.HelpActivity' >/dev/null && {
+    pgrep -u aspartame -f "$process_pattern" >/dev/null && {
         echo "cycle=$cycle cleanup=FAIL" >&2
         exit 1
     }

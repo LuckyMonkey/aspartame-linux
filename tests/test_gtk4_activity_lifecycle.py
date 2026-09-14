@@ -154,3 +154,11 @@ def test_current_toolkit_pin_receives_the_gtk3_launcher_guard():
     patch = _patch("0030-toolkit-reject-gtk3-launchers.patch")
     assert "*0030*" in build
     assert 'launcher_name == "sugar-activity3"' in patch
+
+
+def test_lifecycle_probe_accepts_an_alternate_gtk4_bundle():
+    probe = (ROOT / "scripts/sugar-gtk4-lifecycle-probe.sh").read_text()
+    assert 'bundle_id=${2:-org.laptop.HelpActivity}' in probe
+    assert 'process_pattern=${3:-helpactivity4.HelpActivity}' in probe
+    assert '"$bundle_id"' in probe
+    assert 'pgrep -u aspartame -f "$process_pattern"' in probe
