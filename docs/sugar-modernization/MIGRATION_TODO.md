@@ -101,6 +101,8 @@
   Casilda launch/stop cycles (`org.sugarlabs.gameOfLife`).
 - [x] Port Color My World as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`org.sugarlabs.ColorMyWorldActivity`).
+- [x] Port Abacus as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`com.homegrownapps.abacus`).
 
 ## P4 — Wayland/backend neutrality
 

@@ -1,0 +1,10 @@
+[Activity]
+name = Abacus
+bundle_id = com.homegrownapps.abacus
+exec = sugar-activity4 abacusactivity4.AbacusActivity
+icon = abacus
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Learn place value with an abacus
+tags = Math;Education

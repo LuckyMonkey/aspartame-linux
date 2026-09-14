@@ -1,5 +1,10 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Abacus (2026-09-14): a GTK4 five-rod place-value Activity with
+increment/decrement controls and computed value was staged under
+`com.homegrownapps.abacus`. Three guest Casilda launch/stop cycles passed with
+`cleanup=PASS` (PIDs `398910`, `398940`, `398961`).
+
 Native Color My World (2026-09-14): a GTK4 color palette and rendered swatch
 Activity was staged under `org.sugarlabs.ColorMyWorldActivity`. Three guest
 Casilda launch/stop cycles passed with `cleanup=PASS` (PIDs `393024`, `393052`,
