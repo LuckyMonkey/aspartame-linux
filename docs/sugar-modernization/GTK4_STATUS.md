@@ -11,7 +11,7 @@ Status checked: 2026-09-14.
 | Fructose activities | Arch packages plus pinned bundled set | Mixed but runnable | Help and Log launch through the GTK4 toolkit/Casilda boundary | Individual GTK4 ports verified | Port one activity at a time, never mass-convert |
 | Display/session | Xorg + Metacity + `sugar-runner` assumptions | Supported | Casilda owns the private Activity surface inside the GTK4 preview | GTK4 preview on X11 host | Keep the Casilda boundary; do not claim a full Wayland session |
 | Calculate | GTK3 Activity | Native GTK4 bundle | Safe arithmetic editor registered in the modern prefix | GTK4 verified 2026-09-14 | `org.aspartame.Calculate` launches through Journal and stops cleanly |
-| Browse | GTK3/WebKitGTK-era Activity | GTK3 dependencies | GTK4/WebKitGTK 6 migration is activity-specific | GTK3 only | Do not make WebKitGTK4 a shell dependency |
+| Browse | GTK4 source is pinned, but requires WebKitGTK 6 | Guest lacks `webkitgtk-6.0` | Activity-specific dependency; keep it out of the shell build | Not staged | Install WebKitGTK 6 before validating Browse; do not make it a shell dependency |
 
 Current verified checkpoint: GTK4 Home Favorites/List/search, Frame,
 Journal search/resume/edit/selection, Settings navigation,
