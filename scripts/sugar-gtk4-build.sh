@@ -896,6 +896,16 @@ test -f "$calculate_activity/calculateactivity4.py" || {
     exit 2
 }
 ln -sfn "$calculate_activity" "$activity_dir/Calculate.activity"
+clock_activity="$repo/packages/gtk4-clock-activity"
+test -f "$clock_activity/activity/activity.info" || {
+    echo "missing native GTK4 Clock Activity bundle: $clock_activity" >&2
+    exit 2
+}
+test -f "$clock_activity/clockactivity4.py" || {
+    echo "missing native GTK4 Clock Activity entrypoint" >&2
+    exit 2
+}
+ln -sfn "$clock_activity" "$activity_dir/Clock.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

@@ -10,6 +10,7 @@ declare -a activities=(
     'org.laptop.HelpActivity|helpactivity4.HelpActivity'
     'org.aspartame.Count|countactivity4.CountActivity'
     'org.aspartame.Calculate|calculateactivity4.CalculateActivity'
+    'org.aspartame.Clock|clockactivity4.ClockActivity'
     'org.laptop.ImageViewerActivity|ImageViewerActivity.ImageViewerActivity'
     'org.laptop.Terminal|terminal.TerminalActivity'
     'org.laptop.WebActivity|webactivity.WebActivity'

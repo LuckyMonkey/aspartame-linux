@@ -69,6 +69,12 @@ test -d "$prefix/share/sugar/activities/Count.activity" || {
 }
 ln -sfn "$prefix/share/sugar/activities/Count.activity" \
     "$modern_activities/Count.activity"
+test -d "$prefix/share/sugar/activities/Clock.activity" || {
+    echo "missing staged GTK4 Clock Activity bundle" >&2
+    exit 2
+}
+ln -sfn "$prefix/share/sugar/activities/Clock.activity" \
+    "$modern_activities/Clock.activity"
 test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2
