@@ -67,6 +67,10 @@ Native PlayGo (2026-09-14): a GTK4 Go board with alternating stone placement
 was staged under `org.laptop.PlayGo`. Three guest Casilda launch/stop cycles
 passed with `cleanup=PASS` (PIDs `329171`, `329194`, `329215`).
 
+Twenty-one-Activity matrix recheck (2026-09-14): all 63 guest launch/stop
+cycles reported `cleanup=PASS`; final result was `activity-matrix=PASS`
+(PlayGo PIDs `330778`, `330803`, `330828`).
+
 Host regression recheck (2026-09-14): the complete suite passes with 186 tests
 (`pytest -q`).
 
