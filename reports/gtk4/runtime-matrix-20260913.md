@@ -508,3 +508,8 @@ alternate bundle and process pattern (Help remains the default). Three real
 Count launches completed with PIDs `221548`, `221571`, and `221594`; each
 returned `stop=(true,)` and `cleanup=PASS`, followed by
 `lifecycle-probe=PASS`.
+
+Count accessibility (2026-09-14): a live AT-SPI traversal of the running
+Activity found the `Count` frame/grouping and a named `Cell 1, 1` button. This
+confirms the GTK4 root and editable cells are exposed through the accessibility
+bridge, not only through source-level metadata.
