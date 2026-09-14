@@ -368,6 +368,9 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
   (`cleanup=PASS`, PIDs `416963`, `416992`, `417017`). A subsequent one-cycle
   matrix covered all 42 registered bundles and ended with
   `activity-matrix=PASS` (latest PID `418418`).
+- Spaces runtime round-trip recheck (2026-09-14): the guest switched to the
+  GTK3 desktop and passed `runtime-check=ok` for PID `33761`, then switched back
+  to GTK4 and passed for PID `265471`. Both processes remained separate.
 
 ## Ranked remaining gaps
 
