@@ -104,6 +104,9 @@ runtime failures.
 - Help surface documentation (2026-09-14): added Terminal/Browse usage and a
   Casilda private-surface explanation; the synchronized Help bundle completed
   a live launch/stop cycle with `cleanup=PASS` (PID `274364`).
+- Clock identity correction (2026-09-14): the native Clock bundle now uses its
+  original `tv.alterna.Clock` ID, preventing a duplicate unsupported GTK3 Clock
+  entry. Guest rebuild and direct Journal lifecycle passed (`PID 277004`).
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
