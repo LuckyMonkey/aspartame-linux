@@ -53,6 +53,7 @@ class CountActivity(SimpleActivity):
         canvas_box.set_vexpand(True)
         canvas_box.set_visible(True)
         overlay = Gtk.Overlay()
+        self.overlay = overlay
         overlay.set_hexpand(True)
         overlay.set_vexpand(True)
         overlay.set_child(self.canvas)
@@ -70,7 +71,8 @@ class CountActivity(SimpleActivity):
                 button.connect("clicked", self._cell_clicked, x, y)
                 row.append(button)
                 self.grid.attach(button, x, y, 1, 1)
-            self._cells.append(row)
+        self._cells.append(row)
+        self._context_grids = []
         canvas_box.append(overlay)
         content.append(canvas_box)
 
@@ -140,7 +142,36 @@ class CountActivity(SimpleActivity):
                     ["Cell %d, %d%s" % (x + 1, y + 1,
                      ", filled" if self.layers[self.current_layer][y][x]
                      else "")])
+        self._refresh_context_grids()
         self.canvas.queue_draw()
+
+    def _refresh_context_grids(self):
+        for grid in self._context_grids:
+            self.overlay.remove_overlay(grid)
+        self._context_grids.clear()
+        for index, layer in enumerate(self.layers):
+            relative = index - self.current_layer
+            if relative == 0:
+                continue
+            grid = Gtk.Grid(column_spacing=3, row_spacing=3)
+            grid.set_halign(Gtk.Align.CENTER)
+            grid.set_valign(Gtk.Align.CENTER)
+            grid.set_opacity(.24 if relative > 0 else .16)
+            grid.set_margin_start(relative * 18)
+            grid.set_margin_top(relative * -12)
+            for y, row in enumerate(layer):
+                for x, occupied in enumerate(row):
+                    button = Gtk.Button()
+                    button.set_size_request(82, 82)
+                    button.set_sensitive(False)
+                    if occupied:
+                        button.add_css_class("occupied")
+                    grid.attach(button, x, y, 1, 1)
+            self.overlay.add_overlay(grid)
+            self._context_grids.append(grid)
+        # Keep the selected plane above context grids.
+        self.overlay.remove_overlay(self.grid)
+        self.overlay.add_overlay(self.grid)
 
     def _cell_clicked(self, _button, x, y):
         self.layers[self.current_layer][y][x] = not self.layers[self.current_layer][y][x]

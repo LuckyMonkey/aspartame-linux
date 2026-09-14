@@ -477,3 +477,9 @@ blank plane. The visible editor now uses a native GTK4 Grid of accessible cell
 buttons over the retained layered model. A real QMP pointer click filled the
 first cell and updated the total from `0` to `1`; capture:
 `reports/screenshots/sugar-20260914-095836-v0.0.31.png`.
+
+Count layer-context verification (2026-09-14): after adding a second layer,
+the live editor shows the selected plane as the editable blue-outlined grid and
+the adjacent plane as a translucent offset context. A second real QMP click
+filled the selected cell and updated the total to `1`; capture:
+`reports/screenshots/sugar-20260914-100050-v0.0.31.png`.
