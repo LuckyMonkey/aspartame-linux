@@ -11,3 +11,4 @@ def test_activity_matrix_covers_registered_modern_bundles():
                    "org.laptop.Log"):
         assert bundle in probe
     assert "activity-matrix=PASS" in probe
+    assert 'cycles=${ACTIVITY_CYCLES:-3}' in probe

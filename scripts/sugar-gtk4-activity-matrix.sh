@@ -24,10 +24,11 @@ declare -a activities=(
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+cycles=${ACTIVITY_CYCLES:-3}
 
 for spec in "${activities[@]}"; do
     IFS='|' read -r bundle pattern <<< "$spec"
     echo "== $bundle =="
-    "$script_dir/sugar-gtk4-lifecycle-probe.sh" 1 "$bundle" "$pattern"
+    "$script_dir/sugar-gtk4-lifecycle-probe.sh" "$cycles" "$bundle" "$pattern"
 done
 echo 'activity-matrix=PASS'
