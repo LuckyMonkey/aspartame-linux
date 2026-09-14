@@ -8,12 +8,12 @@ Diamond Fusion, Level, and Moon then passed three direct cycles (final Moon PID
 
 | Area | Evidence | Status |
 | --- | --- | --- |
-| GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1, pid `265471`) | PASS |
+| GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1, pid `445246`) | PASS |
 | Guest build | `sugar-gtk4-build.sh`, including patch 0015 | PASS |
 | Home inventory | All forty-seven verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
 | Activity lifecycle | Full 43-bundle matrix (`425527` latest) plus direct three-cycle probes for Connect the Dots, Pippy, Paint, Diamond Fusion, Level, and Moon | PASS: all matrix and direct cycles reported `cleanup=PASS` |
 | Casilda | 226 real Journal launch/stop cycles across the three-cycle 41-bundle run, one-cycle 42/43-bundle rechecks, and direct probes | PASS |
-| Spaces | semantic `sugar-gtk4-space.sh gtk3`, `gtk4`, and `status` round-trip | PASS: GTK3 pid `33761`, GTK4 pid `265471`, current workspace 1 |
+| Spaces | semantic `sugar-gtk4-space.sh gtk3`, `gtk4`, and `status` round-trip | PASS: GTK3 pid `33761`, GTK4 pid `445246`, current workspace 1 |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
 
 Host regression suite: `pytest -q` → 207 passed (2026-09-14).
