@@ -8,12 +8,12 @@ The ISO profile supplies current Arch GTK4, PyGObject, Wayland, wlroots 0.20,
 Meson, GI, and build tools. Casilda itself is the embedded compositor, so
 Weston is neither installed nor part of the runtime architecture.
 
-The repository is exposed to the guest through the existing 9p development
-share. Stage the scripts and preview patches there after changing them:
+The repository is exposed to the guest through the existing virtio development
+share. Because that share is a staged tree rather than a live Git checkout,
+always synchronize GTK4 inputs after changing the repository:
 
 ```bash
-cp -a scripts /media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev/gtk4-preview/
-cp -a patches/gtk4-preview /media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev/gtk4-preview/patches/
+./scripts/sugar-gtk4-dev-sync.sh
 ```
 
 Then, inside the VM as `aspartame`:
@@ -44,8 +44,8 @@ WAYLAND_DISPLAY=wayland-sugar \
 wayland-info
 ```
 
-FIRST PIXELS and shell-mediated Activity launch/stop are verified. The preview
-is usable for Home and Casilda surface testing, but it is not a complete GTK4
-desktop: Journal/Neighborhood/Settings parity and real pointer/keyboard/focus
-evidence remain open. Use the GTK4 status page and Activity conversion runbook
-for current gates.
+Home, Journal, Neighborhood, Settings, Help, and shell-mediated Activity
+launch/stop have current runtime evidence. The preview is not yet a complete
+GTK4 desktop: physical F1–F6 delivery through the QEMU/X11 frontend remains
+open. Use the GTK4 status page and Activity conversion runbook for current
+gates.

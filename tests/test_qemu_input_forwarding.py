@@ -13,3 +13,11 @@ def test_qemu_forwards_keyboard_by_default_while_remaining_floating():
     assert 'QEMU_WINDOW_WIDTH=${QEMU_WINDOW_WIDTH:-1600}' in script
     assert 'QEMU_WINDOW_HEIGHT=${QEMU_WINDOW_HEIGHT:-900}' in script
     assert 'xdotool windowsize' in script
+
+
+def test_gtk4_dev_sync_copies_only_runtime_inputs():
+    script = (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
+    assert 'patches/gtk4-preview' in script
+    assert 'packages/gtk4-help-activity' in script
+    assert 'cp -a' in script
+    assert 'Generated guest build trees and runtime state remain untouched' in script
