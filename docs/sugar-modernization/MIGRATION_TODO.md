@@ -83,6 +83,8 @@
   launch/stop cycles (`org.sugarlabs.Markdown`).
 - [x] Port Finance as a native GTK4 Activity and verify three repeated Casilda
   launch/stop cycles (`org.laptop.community.Finance`).
+- [x] Port Words as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`org.laptop.Words`).
 
 ## P4 — Wayland/backend neutrality
 

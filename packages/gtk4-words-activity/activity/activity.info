@@ -1,0 +1,10 @@
+[Activity]
+name = Words
+bundle_id = org.laptop.Words
+exec = sugar-activity4 wordsactivity4.WordsActivity
+icon = words
+activity_version = 24
+show_launcher = yes
+license = GPLv3+
+summary = Explore words and translations
+tags = Language;Education

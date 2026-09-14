@@ -990,6 +990,9 @@ ln -sfn "$markdown_activity" "$activity_dir/Markdown.activity"
 finance_activity="$repo/packages/gtk4-finance-activity"
 test -f "$finance_activity/activity/activity.info" || { echo "missing native GTK4 Finance Activity bundle" >&2; exit 2; }
 ln -sfn "$finance_activity" "$activity_dir/Finance.activity"
+words_activity="$repo/packages/gtk4-words-activity"
+test -f "$words_activity/activity/activity.info" || { echo "missing native GTK4 Words Activity bundle" >&2; exit 2; }
+ln -sfn "$words_activity" "$activity_dir/Words.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

@@ -1,5 +1,9 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Words (2026-09-14): a GTK4 word exploration/translation Activity was
+staged under `org.laptop.Words`. Three guest Casilda launch/stop cycles passed
+with `cleanup=PASS` (PIDs `363015`, `363043`, `363068`).
+
 Native Finance (2026-09-14): an income/expense tracker with balance calculation
 was staged under `org.laptop.community.Finance`. Three guest Casilda
 launch/stop cycles passed with `cleanup=PASS` (PIDs `360347`, `360375`, `360400`).
