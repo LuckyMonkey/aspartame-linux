@@ -68,6 +68,10 @@ runtime failures.
   Viewer, Terminal, Browse, and Log each launched through Journal and stopped
   with immediate `cleanup=PASS` (PIDs `256080`, `256111`, `256141`, `256171`,
   `256201`, `256231`, `256261`); final result `activity-matrix=PASS`.
+- Direct QMP Space check (2026-09-14): with the QEMU window active, injected
+  F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
+  `sugar-gtk4-space.sh` switching remains functional, so physical function-key
+  delivery is still isolated as the transport gap.
 
 ## Ranked remaining gaps
 
