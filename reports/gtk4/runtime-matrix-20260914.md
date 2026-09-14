@@ -3,14 +3,14 @@
 Fresh evidence after the modern Home registry path and JAMClock/Clock ports.
 The synchronized development share now includes twenty-five modern bundles; the
 complete matrix remains green with three-cycle probes. The latest full run
-ended with Maze PID `347601`.
+ended with Maze PID `349739`.
 
 | Area | Evidence | Status |
 | --- | --- | --- |
 | GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1) | PASS |
 | Guest build | `sugar-gtk4-build.sh`, including patch 0015 | PASS |
 | Home inventory | All twenty-five verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
-| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze (`347601` latest) | PASS: all 75 launch/stop cycles reported `cleanup=PASS` |
+| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze (`349739` latest) | PASS: all 75 launch/stop cycles reported `cleanup=PASS` |
 | Casilda | 75 real Journal launch/stop cycles (three per Activity) | PASS |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
 
