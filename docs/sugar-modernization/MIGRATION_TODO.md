@@ -55,6 +55,8 @@
   `docs/activity-reviews/REVIEWS.tsv`, refreshed 2026-09-14).
 - [ ] Port the remaining legacy Fructose activities. Keep each Activity a
   separate reviewable change.
+- [x] Port Across and Down as a native GTK4 Activity and verify three repeated
+  Casilda launch/stop cycles (`mulawa.AcrossDown`).
 
 ## P4 — Wayland/backend neutrality
 

@@ -22,6 +22,7 @@ declare -a activities=(
     'net.coderanger.olpc.reversi|reversiactivity4.ReversiActivity'
     'mulawa.Jumble|jumbleactivity4.JumbleActivity'
     'org.sugarlabs.NumRush|numberrushactivity4.NumberRushActivity'
+    'mulawa.AcrossDown|acrossdownactivity4.AcrossDownActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
