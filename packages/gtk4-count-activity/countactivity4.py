@@ -242,6 +242,10 @@ class CountActivity(SimpleActivity):
     def read_file(self, file_path):
         with open(file_path, encoding="utf-8") as stream:
             state = json.load(stream)
-        self.layers = state["layers"]
+        layers = state.get("layers")
+        if not isinstance(layers, list) or not layers:
+            layers = [self._empty_layer()]
+        self.layers = layers
         self.current_layer = min(state.get("current_layer", 0), len(self.layers) - 1)
+        self.current_layer = max(0, self.current_layer)
         self._render()
