@@ -94,7 +94,7 @@ returned `(true,)` and a fresh 1920×1080 capture showed the native dark Setting
 grid with Sugar top bar and stop control:
 `reports/screenshots/sugar-20260913-224606-v0.0.31.png`. `ShowNeighborhood`
 also returned `(true,)`; its previously blank no-peer canvas is now patched to
-show a localized empty-state message (`0095-mesh-empty-state.patch`).
+show a localized empty-state message (`0097-mesh-empty-state.patch`).
 
 Guest build frontier (2026-09-13): after synchronizing the development share,
 the full preview build passed all staged patches through `0096`, then completed
