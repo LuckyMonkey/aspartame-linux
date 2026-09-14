@@ -167,6 +167,10 @@ def test_native_help_activity_is_staged_for_modern_space():
     assert 'root.add_css_class("help-root")' in source
     assert 'provider.load_from_data' in source
     assert 'Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION' in source
+    assert source.count('(\"') >= 7
+    assert 'Gtk.Expander' in source
+    assert 'query in heading.casefold()' in source
+    assert '#111111' in source
     launcher = (ROOT / "packages/gtk4-help-activity/bin/sugar-activity4").read_text()
     assert "export ASPARTAME_GTK4_PREVIEW=1" in launcher
     assert "Help.activity/activity/activity.info" in run
