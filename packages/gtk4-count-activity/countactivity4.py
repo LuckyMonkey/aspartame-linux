@@ -24,6 +24,8 @@ class CountActivity(SimpleActivity):
         self._paint_add = True
 
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        root.update_property([Gtk.AccessibleProperty.LABEL], ["Count"])
+        root.set_accessible_role(Gtk.AccessibleRole.GROUP)
         root.set_margin_start(28)
         root.set_margin_end(28)
         root.set_margin_top(22)
