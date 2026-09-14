@@ -154,3 +154,9 @@ Control Panel accessibility (2026-09-13): the GTK4 preview build applied
 `0099-controlpanel-section-accessibility.patch` cleanly. Section tiles now
 expose Button semantics and activate through Enter, keypad Enter, or Space;
 the guest source was verified at lines 623 and 648 after the build.
+
+Journal selection parity (2026-09-13): the GTK4 ListBox view now honors its
+`enable_multi_operations` contract, exposes selected Journal UIDs, and
+implements select-all/select-none through native GTK4 row selection. The
+synced module passes guest Python syntax validation; runtime loading remains
+scheduled for the next GTK4 session restart.
