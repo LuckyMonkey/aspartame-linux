@@ -39,8 +39,11 @@ class ListView(Gtk.Box):
         self._rows = {}
         self._journalactivity = journalactivity
         self.tree_view = _JournalRows()
-        self.tree_view.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        self.tree_view.set_selection_mode(
+            Gtk.SelectionMode.MULTIPLE if enable_multi_operations
+            else Gtk.SelectionMode.SINGLE)
         self.tree_view.connect('row-activated', self._row_activated)
+        self.tree_view.connect('selected-rows-changed', self._selection_changed)
         self._result_status = Gtk.Label(label=_('Journal entries'))
         self._result_status.set_xalign(0)
         self._result_status.set_margin_start(24)
@@ -112,6 +115,9 @@ class ListView(Gtk.Box):
             # GTK's gtk_widget_root assertion in the GTK4 preview.
             GLib.idle_add(self._activate_detail, uid)
 
+    def _selection_changed(self, _list):
+        self.emit('selection-changed', len(self.get_selected_items()))
+
     def _activate_detail(self, uid):
         self.emit('detail-clicked', uid)
         return GLib.SOURCE_REMOVE
@@ -122,11 +128,25 @@ class ListView(Gtk.Box):
 
     def get_projects_view_active(self): return False
     def is_dragging(self): return False
-    def set_is_visible(self, _visible): pass
+    def set_is_visible(self, _visible): return None
     def get_model(self): return None
-    def get_selected_items(self): return []
-    def select_all(self): pass
-    def select_none(self): pass
+
+    def get_selected_items(self):
+        return [getattr(row, '_journal_uid', None)
+                for row in self.tree_view.get_selected_rows()
+                if getattr(row, '_journal_uid', None)]
+
+    def select_all(self):
+        if self.tree_view.get_selection_mode() == Gtk.SelectionMode.MULTIPLE:
+            for row in self._rows.values():
+                self.tree_view.select_row(row)
+        elif self._rows:
+            self.tree_view.select_row(next(iter(self._rows.values())))
+        self.emit('selection-changed', len(self.get_selected_items()))
+
+    def select_none(self):
+        self.tree_view.unselect_all()
+        self.emit('selection-changed', 0)
 
 
 # ObjectChooser imports the historical base name; the GTK4 surface provides

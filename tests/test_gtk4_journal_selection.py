@@ -1,0 +1,18 @@
+from pathlib import Path
+
+
+ROOT = Path(__file__).parents[1]
+
+
+def test_gtk4_journal_list_uses_native_selection_api():
+    source = (ROOT / "gtk4-overlay/src/jarabe/journal/listview.py").read_text()
+    assert "Gtk.SelectionMode.MULTIPLE" in source
+    assert "get_selected_rows()" in source
+    assert "select_row(row)" in source
+    assert "unselect_all()" in source
+
+
+def test_gtk4_journal_selection_emits_count_changes():
+    source = (ROOT / "gtk4-overlay/src/jarabe/journal/listview.py").read_text()
+    assert "selected-rows-changed" in source
+    assert "self.emit('selection-changed', len(self.get_selected_items()))" in source
