@@ -1,0 +1,14 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: import Gtk for Mesh empty state
+
+The GTK4 Mesh empty-state label uses Gtk.Label; import Gtk in the module so
+Neighborhood can be instantiated when F1 or ShowNeighborhood is selected.
+
+--- a/src/jarabe/desktop/meshbox.py
++++ b/src/jarabe/desktop/meshbox.py
+@@ -25,4 +25,5 @@
+ from gi.repository import GObject
+ from gi.repository import Gio
++from gi.repository import Gtk
+ 
+ from sugar4.graphics.icon import Icon
