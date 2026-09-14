@@ -25,12 +25,16 @@
 - [x] Port the core GTK4 palette and tooltip path using native Popover and Sugar CSS; runtime palette capture is recorded.
 - [x] Port clipboard and remaining palette behavior using upstream GTK4 APIs;
   live text transfer is recorded in the runtime matrix.
-- [ ] Verify datastore and D-Bus boundaries remain unchanged.
+- [x] Verify datastore and D-Bus boundaries remain unchanged (native Journal,
+  ObjectChooser, and repeated Activity lifecycle evidence in the runtime
+  matrix).
 
 ## P3 — core activities / Fructose
 
-- [ ] Test upstream Calculate and Log GTK4 ports first; then inventory other
-  Fructose activities. Keep each activity a separate reviewable change.
+- [x] Test and register the GTK4 Log Activity and Aspartame Count Activity;
+  both have live launch/stop evidence.
+- [ ] Port upstream Calculate and inventory the remaining Fructose activities.
+  Keep each Activity a separate reviewable change.
 
 ## P4 — Wayland/backend neutrality
 
