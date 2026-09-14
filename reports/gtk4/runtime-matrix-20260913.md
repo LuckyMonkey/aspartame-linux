@@ -160,3 +160,8 @@ Journal selection parity (2026-09-13): the GTK4 ListBox view now honors its
 implements select-all/select-none through native GTK4 row selection. The
 synced module passes guest Python syntax validation; runtime loading remains
 scheduled for the next GTK4 session restart.
+
+Journal model contract (2026-09-13): the GTK4 ListView now returns itself from
+`get_model()` and implements the legacy action surface (`__len__`, metadata
+lookup, set-selected, select-all, and select-none). This reconnects existing
+Journal batch toolbar actions without introducing a second datastore model.
