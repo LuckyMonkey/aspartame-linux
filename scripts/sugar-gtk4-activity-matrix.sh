@@ -54,6 +54,7 @@ declare -a activities=(
     'com.francocorrea.diamondfusion|diamondfusionactivity4.DiamondFusionActivity'
     'net.flossmanuals.LevelActivity|levelactivity4.LevelActivity'
     'com.garycmartin.Moon|moonactivity4.MoonActivity'
+    'org.laptop.sugar.GetBooksActivity|getbooksactivity4.GetBooksActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

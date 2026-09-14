@@ -1,0 +1,10 @@
+[Activity]
+name = Get Books
+bundle_id = org.laptop.sugar.GetBooksActivity
+exec = sugar-activity4 getbooksactivity4.GetBooksActivity
+icon = get-ia-books
+activity_version = 1
+show_launcher = yes
+license = GPLv2+
+summary = Browse and read books from an offline catalog
+tags = Reading;Books;Education
