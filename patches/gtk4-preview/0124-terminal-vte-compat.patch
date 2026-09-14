@@ -1,9 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 Subject: terminal: accept distro Vte 3.0 typelib for GTK4 port
 
-The guest ships the GTK4-capable Vte API under the Vte-2.91 typelib
-(version 3.0).  Keep the upstream 3.91 preference, but use the compatible
-3.0 namespace when 3.91 is not installed.
+The guest ships the GTK4-capable Vte API under the Vte-2.91 typelib.
+Keep the upstream 3.91 preference, but use the compatible 2.91 namespace
+when 3.91 is not installed.
 
 --- a/terminal.py
 +++ b/terminal.py
@@ -14,6 +14,6 @@ The guest ships the GTK4-capable Vte API under the Vte-2.91 typelib
 +try:
 +    gi.require_version('Vte', '3.91')
 +except ValueError:
-+    gi.require_version('Vte', '3.0')
++    gi.require_version('Vte', '2.91')
  
  from gi.repository import GLib
