@@ -1,5 +1,10 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Last One Loses (2026-09-14): a GTK4 take-away game with selectable
+token counts and reset was staged under `org.olpc-france.LOLActivity`. Three
+guest Casilda launch/stop cycles passed with `cleanup=PASS` (PIDs `365679`,
+`365707`, `365732`).
+
 Native Words (2026-09-14): a GTK4 word exploration/translation Activity was
 staged under `org.laptop.Words`. Three guest Casilda launch/stop cycles passed
 with `cleanup=PASS` (PIDs `363015`, `363043`, `363068`).

@@ -85,6 +85,8 @@
   launch/stop cycles (`org.laptop.community.Finance`).
 - [x] Port Words as a native GTK4 Activity and verify three repeated Casilda
   launch/stop cycles (`org.laptop.Words`).
+- [x] Port Last One Loses as a native GTK4 Activity and verify three repeated
+  Casilda launch/stop cycles (`org.olpc-france.LOLActivity`).
 
 ## P4 — Wayland/backend neutrality
 
