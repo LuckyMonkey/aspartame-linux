@@ -12,6 +12,7 @@ Status checked: 2026-09-14.
 | Display/session | Xorg + Metacity + `sugar-runner` assumptions | Supported | Casilda owns the private Activity surface inside the GTK4 preview | GTK4 preview on X11 host | Keep the Casilda boundary; do not claim a full Wayland session |
 | Calculate | GTK3 Activity | Native GTK4 bundle | Safe arithmetic editor registered in the modern prefix | GTK4 verified 2026-09-14 | `org.aspartame.Calculate` launches through Journal and stops cleanly |
 | Image Viewer | GTK3 Activity | Pinned GTK4 source | Registered from the GTK4 port without shell changes | GTK4 verified 2026-09-14 | `org.laptop.ImageViewerActivity` launches and stops cleanly |
+| Terminal | GTK3 Activity | Pinned GTK4 source + guest `vte4` | Registered once the GTK4 Vte typelib is available | GTK4 verified 2026-09-14 | `org.laptop.Terminal` launches and stops cleanly |
 | Browse | GTK4 source is pinned, but requires WebKitGTK 6 | Guest lacks `webkitgtk-6.0` | Activity-specific dependency; keep it out of the shell build | Not staged | Install WebKitGTK 6 before validating Browse; do not make it a shell dependency |
 
 Current verified checkpoint: GTK4 Home Favorites/List/search, Frame,

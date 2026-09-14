@@ -31,6 +31,9 @@ runtime failures.
 - Image Viewer repeated lifecycle (2026-09-14): three live launch/stop cycles
   passed with PIDs `246325`, `246348`, and `246369`; each reported
   `cleanup=PASS` and the probe ended `lifecycle-probe=PASS`.
+- Terminal (2026-09-14): installed the guest `vte4` package after repairing
+  pacman trust, rebuilt the GTK4 prefix, launched `org.laptop.Terminal` (PID
+  `249258`) through Journal, and stopped it cleanly (`terminal-stop=PASS`).
 
 ## Ranked remaining gaps
 
