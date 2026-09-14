@@ -251,6 +251,10 @@ class CountActivity(SimpleActivity):
         if not layers:
             layers = [self._empty_layer()]
         self.layers = layers
-        self.current_layer = min(state.get("current_layer", 0), len(self.layers) - 1)
+        try:
+            requested_layer = int(state.get("current_layer", 0))
+        except (TypeError, ValueError):
+            requested_layer = 0
+        self.current_layer = min(requested_layer, len(self.layers) - 1)
         self.current_layer = max(0, self.current_layer)
         self._render()

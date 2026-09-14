@@ -20,6 +20,7 @@ def test_count_is_a_native_gtk4_bundle():
     assert "require_version(\"Gtk\", \"3.0\")" not in source
     assert "if isinstance(layers, list):" in source
     assert "self.current_layer = max(0, self.current_layer)" in source
+    assert "requested_layer = int(state.get(\"current_layer\", 0))" in source
     assert "len(layer) == self.height" in source
 
 
