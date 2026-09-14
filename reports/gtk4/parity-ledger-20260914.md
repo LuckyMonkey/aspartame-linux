@@ -40,6 +40,8 @@ runtime failures.
 - Browse (2026-09-14): installed guest `webkitgtk-6.0`, staged the pinned GTK4
   source, and passed three Journal launch/stop cycles with PIDs `252075`,
   `252096`, and `252117`; every cycle reported `cleanup=PASS`.
+- The guest build now explicitly gates `vte-2.91-gtk4 >= 0.84` and
+  `webkitgtk-6.0 >= 2.50`; both checks pass in the current VM build.
 
 ## Ranked remaining gaps
 
