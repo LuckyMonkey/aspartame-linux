@@ -180,3 +180,8 @@ Semantic navigation round-trip (2026-09-14): on the same fresh GTK4 session,
 `ShowJournal`, `ShowFrame`, and `ShowHome` each returned `(true,)` in sequence.
 The final Home capture remained 1920x1080 with the Favorites ring and Sugar
 top bar: `reports/screenshots/sugar-20260913-234755-v0.0.31.png`.
+
+Spaces regression (2026-09-14): the classic Space check passed with GTK3 PID
+`33761` on desktop `0`; the modern Space was then restored and passed with
+GTK4 PID `44518` on desktop `1`. Both checks observed their expected active
+window and retained distinct shell processes.
