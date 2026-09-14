@@ -1,0 +1,9 @@
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -154,1 +154,6 @@
+        return True
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowHome(self):
++        """Return to the GTK4 Home surface through a semantic action."""
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_HOME)
++        return True
