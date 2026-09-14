@@ -1,0 +1,10 @@
+[Activity]
+name = Number Rush
+bundle_id = org.sugarlabs.NumRush
+exec = sugar-activity4 numberrushactivity4.NumberRushActivity
+icon = numberrush
+activity_version = 2
+show_launcher = yes
+license = GPLv3+
+summary = Practice quick arithmetic
+tags = Game;Math

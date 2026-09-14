@@ -21,6 +21,7 @@ declare -a activities=(
     'mulawa.Mancala|mancalaactivity4.MancalaActivity'
     'net.coderanger.olpc.reversi|reversiactivity4.ReversiActivity'
     'mulawa.Jumble|jumbleactivity4.JumbleActivity'
+    'org.sugarlabs.NumRush|numberrushactivity4.NumberRushActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
