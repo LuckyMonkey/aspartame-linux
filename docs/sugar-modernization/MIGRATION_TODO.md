@@ -9,8 +9,9 @@
 - [x] Propagate locale and runtime-directory state before private D-Bus starts.
 - [x] Hold corrected Home beyond 60 seconds without a fatal traceback; search
   and return were also exercised through AT-SPI.
-- [ ] Remove any GTK3-only shell import from the selected upstream branch.
-  Downstream only until upstream has a supported pattern.
+- [x] Remove any GTK3-only shell import from the selected upstream branch.
+  The modern process resolves generic `Gtk` imports to 4.0 and no explicit
+  GTK3 namespace import remains in `jarabe`; GTK3 stays in its separate Space.
 
 ## P1 — major shell functionality
 
