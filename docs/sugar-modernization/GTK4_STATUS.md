@@ -13,13 +13,14 @@ Status checked: 2026-09-13.
 | Browse | GTK3/WebKitGTK-era Activity | GTK3 dependencies | GTK4/WebKitGTK 6 migration is activity-specific | GTK3 only | Do not make WebKitGTK4 a shell dependency |
 
 Current preview checkpoint: GTK4 Home rendering, GTK3/GTK4 Spaces
-switching, Sugar-styled palettes, a visible GTK4 Journal, and repeated Log
-Activity launch/stop are verified in QEMU. The private datastore service and
-metadata reader build are also verified. The modern Space now has top-level
-F1--F6 semantic capture and starts as a real fullscreen 1920x1080 surface.
-Pointer/keyboard delivery through the current QEMU synthetic-input harness,
-full Journal interaction parity, and broader shell accessibility remain open
-gates. Use
+switching, Sugar-styled palettes, a native Journal with search, keyboard
+activation, keep/title/delete/project actions, mounted-entry markers, and a
+GTK4 ObjectChooser, plus repeated Log Activity launch/stop are verified in
+QEMU. The private datastore service and metadata reader build are also
+verified. The modern Space starts as a real fullscreen 1920x1080 surface.
+Physical global F-key delivery remains a QEMU/input-stack limitation, and
+broader shell accessibility and collaboration-depth checks remain open gates.
+Use
 [GTK4_ACTIVITY_RUNBOOK.md](GTK4_ACTIVITY_RUNBOOK.md) for that sequence.
 
 The GTK4 toolkit repository describes itself as a GTK4 toolkit and documents
