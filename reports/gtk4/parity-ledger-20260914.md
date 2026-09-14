@@ -378,6 +378,10 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
   strokes, color selection, clear action, and accessible controls. Guest build
   and three direct Casilda launch/stop cycles passed (`cleanup=PASS`, PIDs
   `431104`, `431130`, `431151`).
+- Native Diamond Fusion Activity (2026-09-14): added a GTK4 6×6 matching and
+  fusion puzzle with pointer selection, score state, reset, and accessible
+  controls. Guest build and three direct Casilda launch/stop cycles passed
+  (`cleanup=PASS`, PIDs `435203`, `435227`, `435249`).
 - Spaces runtime round-trip recheck (2026-09-14): the guest switched to the
   GTK3 desktop and passed `runtime-check=ok` for PID `33761`, then switched back
   to GTK4 and passed for PID `265471`. Both processes remained separate.
