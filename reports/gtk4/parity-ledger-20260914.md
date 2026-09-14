@@ -37,6 +37,11 @@ Full matrix recheck after Number Rush registration (2026-09-14): all fifteen
 modern Activities completed three launch/stop cycles with `cleanup=PASS`; the
 latest Jumble and Number Rush cycles used PIDs `297535`–`297650`.
 
+Journal Projects filter (2026-09-14): GTK4 Journal now exposes a native
+Projects toggle, filters rows by `project_id`, reports the filtered count, and
+restores the correct empty-state text when toggled off. The guest overlay build
+passed after these changes; targeted Journal tests pass.
+
 Full matrix rerun (2026-09-14): all fourteen registered modern Activities
 completed Journal launch/stop with `cleanup=PASS`; the matrix now defaults to
 three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`.
