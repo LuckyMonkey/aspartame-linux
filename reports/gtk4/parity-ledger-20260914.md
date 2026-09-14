@@ -95,6 +95,9 @@ runtime failures.
   GTK4 runtime remained healthy (`pid=265471`, desktop 1), and the expanded
   nine-Activity matrix completed with `activity-matrix=PASS` (latest Log PID
   `271525`).
+- Semantic Spaces round-trip (2026-09-14): `sugar-gtk4-space.sh gtk3` and
+  `gtk4` switched deterministically between EWMH workspaces 0 and 1 while
+  retaining the same GTK3 (`33761`) and GTK4 (`265471`) process identities.
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
