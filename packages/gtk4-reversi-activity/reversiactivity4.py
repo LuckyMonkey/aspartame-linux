@@ -59,6 +59,9 @@ class ReversiActivity(SimpleActivity):
     def _render(self):
         counts = [sum(cell == player for row in self.board for cell in row) for player in (1, 2)]
         moves = self._moves(self.player); self.status.set_text("Player %d · Black %d  White %d · %d legal move%s" % (self.player, counts[0], counts[1], len(moves), "" if len(moves) == 1 else "s"))
+        if not moves and not self._moves(3 - self.player):
+            winner = "Black" if counts[0] > counts[1] else "White" if counts[1] > counts[0] else "Nobody"
+            self.status.set_text("Game over · %s wins (%d–%d). Start a new game to play again." % (winner, counts[0], counts[1]))
         for y, row in enumerate(self.cells):
             for x, button in enumerate(row):
                 for css in ("black", "white"): button.remove_css_class(css)
