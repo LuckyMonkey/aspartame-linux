@@ -114,6 +114,10 @@ class ListView(Gtk.Box):
                 title_entry.connect('activate', self._finish_title, edit,
                                     title_label, title_entry, metadata)
                 box.append(edit)
+                delete = Gtk.Button(label=_('Delete'))
+                delete.set_tooltip_text(_('Delete this Journal entry'))
+                delete.connect('clicked', self._delete_clicked, uid)
+                box.append(delete)
                 row.set_child(box)
                 # Make keyboard traversal explicit in GTK4. ListBox otherwise
                 # only guarantees pointer activation for rows whose child
@@ -202,6 +206,30 @@ class ListView(Gtk.Box):
         except (OSError, ValueError, TypeError) as error:
             self._result_status.set_text(
                 _('Could not update Journal title: %s') % error)
+
+    def _delete_clicked(self, button, uid):
+        # Require a deliberate second activation for this destructive action.
+        if not getattr(button, '_delete_armed', False):
+            button._delete_armed = True
+            button.set_label(_('Confirm delete'))
+            self._result_status.set_text(_('Activate Delete again to confirm'))
+            GLib.timeout_add_seconds(5, self._reset_delete, button)
+            return
+        try:
+            model.delete(str(uid))
+        except (OSError, ValueError, TypeError) as error:
+            self._result_status.set_text(
+                _('Could not delete Journal entry: %s') % error)
+            self._reset_delete(button)
+            return
+        self._result_status.set_text(_('Journal entry deleted'))
+        self._refresh()
+
+    @staticmethod
+    def _reset_delete(button):
+        button._delete_armed = False
+        button.set_label(_('Delete'))
+        return GLib.SOURCE_REMOVE
 
     def _prepare_drag(self, _source, _x, _y, uid):
         payload = GLib.Bytes.new(str(uid).encode('utf-8'))

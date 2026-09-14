@@ -19,6 +19,8 @@ def test_gtk4_journal_list_uses_native_selection_api():
     assert "write_metadata(" in source
     assert "Gtk.Entry(text=title)" in source
     assert "Journal title updated" in source
+    assert "Confirm delete" in source
+    assert "model.delete(str(uid))" in source
 
 
 def test_gtk4_journal_selection_emits_count_changes():

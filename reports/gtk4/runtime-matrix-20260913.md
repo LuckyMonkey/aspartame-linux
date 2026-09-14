@@ -373,3 +373,8 @@ GTK4 Journal title editing (2026-09-14): each native row now offers an inline
 Edit title/Save title control. Non-empty titles use the shared metadata
 validation and asynchronous datastore writer, then update the visible row and
 status line. Invalid titles remain in edit mode with an explicit error.
+
+GTK4 Journal deletion (2026-09-14): rows now expose a deliberate two-step
+Delete/Confirm delete action. Confirmed deletion uses Jarabe's existing
+datastore `model.delete` boundary, refreshes the list, and reports failures in
+the status line; no direct filesystem deletion is introduced.
