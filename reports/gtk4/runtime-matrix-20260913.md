@@ -344,3 +344,11 @@ are visibly disabled; approval-backed uninstall for user-owned bundles remains
 deferred and is not represented as complete. Captures:
 `reports/screenshots/gtk4-settings-activity-manager-grid-20260914.png` and
 `reports/screenshots/gtk4-activity-manager-inventory-20260914.png`.
+
+GTK4 Activity Manager removal policy (2026-09-14): the live inventory's Remove
+controls now invoke the existing model policy. User-owned bundles are moved to
+the recoverable quarantine; system-managed bundles invoke the fullscreen Sugar
+approval helper and constrained native remover. The controls no longer claim a
+future action while silently doing nothing. A destructive live uninstall was
+not performed against the installed guest inventory; the policy is covered by
+the existing model tests and the new GTK4 section smoke test.

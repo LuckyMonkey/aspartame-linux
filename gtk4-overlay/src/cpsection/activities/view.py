@@ -57,11 +57,12 @@ class ActivityManager(SectionView):
                     else _('User-installed')), xalign=0))
             box.append(info)
             action = Gtk.Button(label=_('Remove'))
-            action.set_sensitive(not activity['managed'])
+            action.set_sensitive(True)
             action.set_tooltip_text(
-                _('System activities cannot be removed here.')
+                _('Request Sugar approval to remove this system Activity.')
                 if activity['managed'] else
-                _('Removal will require approval in a future Activity Manager pass.'))
+                _('Remove this Activity to a recoverable quarantine.'))
+            action.connect('clicked', self._remove_clicked, activity)
             box.append(action)
             row.set_child(box)
             row.update_property([Gtk.AccessibleProperty.LABEL,
@@ -72,6 +73,15 @@ class ActivityManager(SectionView):
 
     def apply(self):
         return None
+
+    def _remove_clicked(self, _button, activity):
+        try:
+            self._model.remove_activity(activity['path'])
+        except (OSError, PermissionError, ValueError):
+            # The approval helper and remover own user-facing failure UI. Keep
+            # the inventory intact when approval is cancelled or fails.
+            return
+        self.setup()
 
     def undo(self):
         self.setup()
