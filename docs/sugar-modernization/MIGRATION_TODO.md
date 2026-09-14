@@ -34,6 +34,9 @@
 
 - [x] Test and register the GTK4 Log, Count, and Calculate Activities; all have
   live launch/stop evidence (Calculate also passed repeated lifecycle probing).
+- [x] Register and verify native GTK4 Clock and JAMClock replacements, plus
+  pinned Image Viewer, Terminal, and Browse bundles, in the live Casilda
+  Activity matrix.
 - [x] Port and verify a native Calculate Activity; the modern registry now
   launches Calculate alongside the other verified GTK4 bundles.
 - [x] Inventory the remaining legacy Fructose/Sugarizer activities (84 rows in
