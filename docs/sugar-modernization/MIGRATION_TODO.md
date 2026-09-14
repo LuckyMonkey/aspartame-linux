@@ -99,6 +99,8 @@
   Casilda launch/stop cycles (`org.laptop.TurtleArtActivity`).
 - [x] Port Game Of Life as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`org.sugarlabs.gameOfLife`).
+- [x] Port Color My World as a native GTK4 Activity and verify three repeated
+  Casilda launch/stop cycles (`org.sugarlabs.ColorMyWorldActivity`).
 
 ## P4 — Wayland/backend neutrality
 

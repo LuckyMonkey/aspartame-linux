@@ -1,5 +1,10 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Color My World (2026-09-14): a GTK4 color palette and rendered swatch
+Activity was staged under `org.sugarlabs.ColorMyWorldActivity`. Three guest
+Casilda launch/stop cycles passed with `cleanup=PASS` (PIDs `393024`, `393052`,
+`393077`).
+
 Native Game Of Life (2026-09-14): a GTK4 cellular-automaton grid with Step and
 Clear controls was staged under `org.sugarlabs.gameOfLife`. Three guest Casilda
 launch/stop cycles passed with `cleanup=PASS` (PIDs `390350`, `390378`, `390403`).

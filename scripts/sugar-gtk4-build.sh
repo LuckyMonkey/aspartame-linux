@@ -1014,6 +1014,9 @@ ln -sfn "$turtleart_activity" "$activity_dir/TurtleArt.activity"
 gameoflife_activity="$repo/packages/gtk4-gameoflife-activity"
 test -f "$gameoflife_activity/activity/activity.info" || { echo "missing native GTK4 Game Of Life Activity bundle" >&2; exit 2; }
 ln -sfn "$gameoflife_activity" "$activity_dir/GameOfLife.activity"
+colormyworld_activity="$repo/packages/gtk4-colormyworld-activity"
+test -f "$colormyworld_activity/activity/activity.info" || { echo "missing native GTK4 Color My World Activity bundle" >&2; exit 2; }
+ln -sfn "$colormyworld_activity" "$activity_dir/ColorMyWorld.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
