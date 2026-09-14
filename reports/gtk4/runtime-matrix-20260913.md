@@ -252,3 +252,9 @@ or the Home List. After rebuilding and restarting the modern Space,
 `ShowJournal` followed by `ShowNeighborhood` produced a clean full-surface
 Neighborhood view with its explicit empty state and no Journal rows beneath it:
 `reports/screenshots/sugar-20260914-004707-v0.0.31.png`.
+
+Spaces regression after the navigation rebuild (2026-09-14): the guest
+runtime check passed for GTK4 PID `66777` on desktop `1`, switched to GTK3 PID
+`33761` on desktop `0` and passed there, then returned to GTK4 and passed
+again. This confirms the active-activity clearing change did not damage the
+classic Space or the semantic modern/classic workspace boundary.
