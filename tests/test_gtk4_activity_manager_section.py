@@ -23,3 +23,11 @@ def test_gtk4_activity_manager_is_native_and_registry_backed():
     assert "remover(path, emit_signals=True)" in model
     assert "import cpsection.activities" in patch
     assert '*0112*) target="$root/sources/sugar" ;;' in build
+
+
+def test_packaged_activity_manager_uses_sugar_approval_wording():
+    packaged = (ROOT / "archiso/aspartame/airootfs/usr/share/aspartame/"
+                "cpsection/activities/view.py").read_text()
+    assert "Request Sugar approval to uninstall this Activity." in packaged
+    assert "Request approval" in packaged
+    assert "administrator" not in packaged

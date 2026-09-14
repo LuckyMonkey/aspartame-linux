@@ -302,9 +302,11 @@ class ActivityManager(SectionView):
         self._column_groups[0].add_widget(detail_version)
 
         action_tip = _('Uninstall this Activity and keep its work in the Journal.')
+        action_label = _('Uninstall')
         if not activity['user']:
-            action_tip = _('Request Sugar administrator approval to uninstall this Activity.')
-        remove = Gtk.Button(label=_('Uninstall'))
+            action_tip = _('Request Sugar approval to uninstall this Activity.')
+            action_label = _('Request approval')
+        remove = Gtk.Button(label=action_label)
         remove.get_style_context().add_class('aspartame-remove-button')
         remove.set_tooltip_text(action_tip)
         remove.connect('clicked', self._remove_clicked, activity)
