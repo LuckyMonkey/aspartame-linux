@@ -40,15 +40,6 @@ class CountActivity(SimpleActivity):
         content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=18)
         content.set_hexpand(True)
         content.set_vexpand(True)
-        self.canvas = Gtk.DrawingArea()
-        self.canvas.set_size_request(760, 520)
-        self.canvas.set_content_width(760)
-        self.canvas.set_content_height(520)
-        self.canvas.add_css_class("count-canvas")
-        self.canvas.set_hexpand(True)
-        self.canvas.set_vexpand(True)
-        self.canvas.set_visible(True)
-        self.canvas.set_draw_func(self._draw)
         canvas_box = Gtk.Box()
         canvas_box.set_size_request(760, 520)
         canvas_box.set_hexpand(False)
@@ -58,7 +49,9 @@ class CountActivity(SimpleActivity):
         self.overlay = overlay
         overlay.set_hexpand(True)
         overlay.set_vexpand(True)
-        overlay.set_child(self.canvas)
+        canvas_back = Gtk.Box()
+        canvas_back.add_css_class("count-canvas")
+        overlay.set_child(canvas_back)
         self.grid = Gtk.Grid(column_spacing=3, row_spacing=3)
         self.grid.add_css_class("count-grid")
         self.grid.set_halign(Gtk.Align.CENTER)
@@ -151,7 +144,6 @@ class CountActivity(SimpleActivity):
                      ", filled" if self.layers[self.current_layer][y][x]
                      else "")])
         self._refresh_context_grids()
-        self.canvas.queue_draw()
 
     def _refresh_context_grids(self):
         for grid in self._context_grids:
@@ -219,95 +211,6 @@ class CountActivity(SimpleActivity):
             for column in range(min(x0, x1), max(x0, x1) + 1):
                 self.layers[self.current_layer][row][column] = self._paint_add
         self._render()
-
-    def _geometry(self):
-        width = max(1, self.canvas.get_width())
-        height = max(1, self.canvas.get_height())
-        size = min(92, (width - 44) / self.width, (height - 44) / self.height)
-        size = max(28, size)
-        depth_x, depth_y = size * .28, -size * .18
-        span = len(self.layers) - 1
-        total_w = self.width * size + span * abs(depth_x)
-        total_h = self.height * size + span * abs(depth_y)
-        ox = (width - total_w) / 2 + max(0, -span * depth_x)
-        oy = (height - total_h) / 2 + max(0, -span * depth_y)
-        return ox, oy, size, depth_x, depth_y
-
-    def _draw(self, _area, cr, _width, _height):
-        cr.set_source_rgb(.97, .98, .99)
-        cr.paint()
-        ox, oy, size, dx, dy = self._geometry()
-        order = [i for i in range(len(self.layers) - 1, -1, -1)]
-        for index in order:
-            relative = index - self.current_layer
-            selected = relative == 0
-            alpha = 1.0 if selected else (.34 if relative > 0 else .20)
-            px, py = relative * dx, relative * dy
-            cr.set_source_rgba(.13, .42, .64, .95 if selected else .45)
-            cr.set_line_width(2 if selected else 1)
-            for x in range(self.width + 1):
-                cr.move_to(ox + px + x * size, oy + py)
-                cr.line_to(ox + px + x * size, oy + py + self.height * size)
-            for y in range(self.height + 1):
-                cr.move_to(ox + px, oy + py + y * size)
-                cr.line_to(ox + px + self.width * size, oy + py + y * size)
-            cr.stroke()
-            for y, row in enumerate(self.layers[index]):
-                for x, occupied in enumerate(row):
-                    if not occupied:
-                        continue
-                    left, top = ox + px + x * size, oy + py + y * size
-                    cr.set_source_rgba(.40, .44, .46, alpha)
-                    cr.rectangle(left + 1, top + 1, size - 3, size - 3)
-                    cr.fill_preserve()
-                    cr.set_source_rgba(.12, .15, .17, alpha)
-                    cr.set_line_width(2 if selected else 1)
-                    cr.stroke()
-                    if selected:
-                        cr.set_source_rgba(.67, .72, .75, alpha)
-                        cr.move_to(left + 1, top + 1)
-                        cr.line_to(left + 1 + dx, top + 1 + dy)
-                        cr.line_to(left + size - 2 + dx, top + 1 + dy)
-                        cr.line_to(left + size - 2, top + 1)
-                        cr.close_path()
-                        cr.fill()
-
-    def _cell(self, x, y):
-        ox, oy, size, _dx, _dy = self._geometry()
-        cell = int((x - ox) // size), int((y - oy) // size)
-        return cell if 0 <= cell[0] < self.width and 0 <= cell[1] < self.height else None
-
-    def _paint(self, cell):
-        if cell is None:
-            return
-        x, y = cell
-        self.layers[self.current_layer][y][x] = self._paint_add
-        self._render()
-
-    def _drag_begin(self, _gesture, x, y):
-        self._drag_origin = (x, y)
-        cell = self._cell(x, y)
-        self._press_cell = cell
-        if cell:
-            px, py = cell
-            self._paint_add = not self.layers[self.current_layer][py][px]
-            self._paint(cell)
-
-    def _drag_update(self, _gesture, offset_x, offset_y):
-        if self._press_cell is None:
-            return
-        origin_x, origin_y = self._drag_origin
-        cell = self._cell(origin_x + offset_x, origin_y + offset_y)
-        if cell:
-            x0, y0 = self._press_cell
-            x1, y1 = cell
-            for y in range(min(y0, y1), max(y0, y1) + 1):
-                for x in range(min(x0, x1), max(x0, x1) + 1):
-                    self.layers[self.current_layer][y][x] = self._paint_add
-            self._render()
-
-    def _drag_end(self, *_args):
-        self._press_cell = None
 
     def _add_layer(self, *_args):
         self.layers.insert(self.current_layer + 1, self._empty_layer())
