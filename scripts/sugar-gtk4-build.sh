@@ -21,7 +21,6 @@ datastore="$root/sources/sugar-datastore"
 casilda="$root/sources/casilda"
 log_activity="$root/sources/log-activity"
 imageviewer_activity="$root/sources/imageviewer-activity"
-terminal_activity="$root/sources/terminal-activity"
 prefix="$root/prefix"
 venv="$root/venv"
 log="$root/logs/gtk4-build-$(date -u +%Y%m%dT%H%M%SZ).log"
@@ -34,7 +33,6 @@ test -d "$casilda/.git" || { echo "missing Casilda checkout: $casilda"; exit 2; 
 test -d "$log_activity/.git" || { echo "missing Log Activity checkout: $log_activity"; exit 2; }
 test -f "$log_activity/logviewer.py" || { echo "missing Log Activity source: $log_activity"; exit 2; }
 test -d "$imageviewer_activity/.git" || { echo "missing Image Viewer Activity source: $imageviewer_activity"; exit 2; }
-test -d "$terminal_activity/.git" || { echo "missing Terminal Activity source: $terminal_activity"; exit 2; }
 if ! test -x "$venv/bin/python"; then
     python3 -m venv --system-site-packages "$venv"
 fi
@@ -57,8 +55,6 @@ for patch in "$patch_dir"/*.patch; do
     case "$patch" in
         *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*|*0047*|*0059*|*0060*|*0066*|*0068*) target="$toolkit" ;;
         *0029*) target="$log_activity" ;;
-        *0124*) target="$terminal_activity" ;;
-        *0125*) target="$terminal_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0083*) target="$root/sources/sugar" ;;
@@ -326,13 +322,6 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'def connect(self, signal_name, callback, \*user_data):' "$toolkit/src/sugar4/graphics/icon.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing CellRendererIcon property/signal contract: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0124* ]] &&
-        grep -q "gi.require_version('Vte', '3.91')" "$terminal_activity/terminal.py" 2>/dev/null &&
-        grep -q "except ValueError:" "$terminal_activity/terminal.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp"
-        echo "verified existing Terminal Vte fallback: $patch_name"
         continue
     fi
     # 0029's GTK4 ListBox implementation is already present in the pinned
@@ -842,11 +831,6 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "relocated current Frame accessibility calls: $patch_name"
-    elif [[ "$patch_name" == *0124* || "$patch_name" == *0125* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf "%s\n" "$patch_digest" > "$stamp"
-        echo "applied Terminal Vte compatibility: $patch_name"
     elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0040* || "$patch_name" == *0041* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0045* || "$patch_name" == *0046* || "$patch_name" == *0047* || "$patch_name" == *0048* || "$patch_name" == *0049* || "$patch_name" == *0050* || "$patch_name" == *0051* || "$patch_name" == *0052* || "$patch_name" == *0053* || "$patch_name" == *0054* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
@@ -909,11 +893,6 @@ test -f "$imageviewer_activity/activity/activity.info" || {
     exit 2
 }
 ln -sfn "$imageviewer_activity" "$activity_dir/ImageViewer.activity"
-test -f "$terminal_activity/activity/activity.info" || {
-    echo "missing pinned Terminal Activity bundle: $terminal_activity" >&2
-    exit 2
-}
-ln -sfn "$terminal_activity" "$activity_dir/Terminal.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }
