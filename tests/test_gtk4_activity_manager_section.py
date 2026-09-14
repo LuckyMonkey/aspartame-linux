@@ -11,6 +11,8 @@ def test_gtk4_activity_manager_is_native_and_registry_backed():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "class ActivityManager(SectionView)" in view
     assert "System-managed" in view
+    assert "Request approval" in view
+    assert "AccessibleProperty.DESCRIPTION" in view
     assert "_remove_clicked" in view
     assert "Removal not completed" in view
     assert "recoverable copy" in view

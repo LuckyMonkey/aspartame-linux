@@ -60,12 +60,17 @@ class ActivityManager(SectionView):
                     _('System-managed') if activity['managed']
                     else _('User-installed')), xalign=0))
             box.append(info)
-            action = Gtk.Button(label=_('Remove'))
+            action = Gtk.Button(label=_('Request approval') if activity['managed']
+                                else _('Remove'))
             action.set_sensitive(True)
             action.set_tooltip_text(
                 _('Request Sugar approval to remove this system Activity.')
                 if activity['managed'] else
                 _('Remove this Activity to a recoverable quarantine.'))
+            action.update_property(
+                [Gtk.AccessibleProperty.LABEL,
+                 Gtk.AccessibleProperty.DESCRIPTION],
+                [action.get_label(), action.get_tooltip_text()])
             action.connect('clicked', self._remove_clicked, activity)
             box.append(action)
             row.set_child(box)
