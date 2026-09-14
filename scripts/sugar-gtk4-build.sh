@@ -916,6 +916,16 @@ test -f "$jamclock_activity/jamclockactivity4.py" || {
     exit 2
 }
 ln -sfn "$jamclock_activity" "$activity_dir/JAMClock.activity"
+mastermind_activity="$repo/packages/gtk4-mastermind-activity"
+test -f "$mastermind_activity/activity/activity.info" || {
+    echo "missing native GTK4 Mastermind Activity bundle: $mastermind_activity" >&2
+    exit 2
+}
+test -f "$mastermind_activity/mastermindactivity4.py" || {
+    echo "missing native GTK4 Mastermind Activity entrypoint" >&2
+    exit 2
+}
+ln -sfn "$mastermind_activity" "$activity_dir/Mastermind.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

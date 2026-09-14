@@ -118,6 +118,11 @@ runtime failures.
   `send-key f1` returned successfully but produced no events on the guest's
   QEMU USB/virtio keyboard devices. This localizes the failure below GTK4 and
   Metacity; no shell-side keybinding change is justified by this evidence.
+- Native Mastermind Activity (2026-09-14): added a self-contained GTK4 logic
+  game under the original `org.laptop.Mastermind` bundle identity. Guest build
+  and the expanded ten-Activity Casilda matrix passed launch/stop cleanup
+  (PID `280547`), closing one more legacy Activity port without changing shell
+  lifecycle or Spaces architecture.
 
 ## Ranked remaining gaps
 

@@ -37,6 +37,8 @@
 - [x] Register and verify native GTK4 Clock and JAMClock replacements, plus
   pinned Image Viewer, Terminal, and Browse bundles, in the live Casilda
   Activity matrix.
+- [x] Port and verify a native GTK4 Mastermind Activity; the modern registry
+  now includes a self-contained logic game with live launch/stop evidence.
 - [x] Port and verify a native Calculate Activity; the modern registry now
   launches Calculate alongside the other verified GTK4 bundles.
 - [x] Inventory the remaining legacy Fructose/Sugarizer activities (84 rows in

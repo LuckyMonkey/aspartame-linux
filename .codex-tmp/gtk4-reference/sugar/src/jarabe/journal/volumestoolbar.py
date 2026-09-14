@@ -1,0 +1,418 @@
+﻿# Copyright (C) 2007, 2011, One Laptop Per Child
+# Copyright (C) 2014, Ignacio Rodriguez
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import logging
+import os
+from gettext import gettext as _
+
+from gi.repository import GObject
+from gi.repository import Gio
+from gi.repository import GLib
+from gi.repository import Gtk
+from gi.repository import Gdk
+import pickle
+import xapian
+import json
+import tempfile
+import shutil
+
+from sugar4.graphics.radiotoolbutton import RadioToolButton
+from sugar4.graphics.palette import Palette
+from sugar4.graphics import style
+from sugar4 import env
+from sugar4 import profile
+
+from jarabe.journal import model
+from jarabe.journal.misc import get_mount_icon_name
+from jarabe.journal.misc import get_mount_color
+from jarabe.view.palettes import VolumePalette
+
+_JOURNAL_0_METADATA_DIR = '.olpc.store'
+
+
+def _get_id(document):
+    """Get the ID for the document in the xapian database."""
+    tl = document.termlist()
+    try:
+        term = tl.skip_to('Q').term
+        if len(term) == 0 or term[0] != 'Q':
+            return None
+        return term[1:]
+    except StopIteration:
+        return None
+
+
+def _convert_entries(root):
+    """Convert entries written by the datastore version 0.
+
+    The metadata and the preview will be written using the new
+    scheme for writing Journal entries to removable storage
+    devices.
+
+    - entries that do not have an associated file are not
+    converted.
+    - if an entry has no title we set it to Untitled and rename
+    the file accordingly, taking care of creating a unique
+    filename
+
+    """
+    try:
+        database = xapian.Database(os.path.join(root, _JOURNAL_0_METADATA_DIR,
+                                                'index'))
+    except xapian.DatabaseError:
+        logging.exception('Convert DS-0 Journal entries: error reading db: %s',
+                          os.path.join(root, _JOURNAL_0_METADATA_DIR, 'index'))
+        return
+
+    metadata_dir_path = os.path.join(root, model.JOURNAL_METADATA_DIR)
+    if not os.path.exists(metadata_dir_path):
+        try:
+            os.mkdir(metadata_dir_path)
+        except EnvironmentError:
+            logging.error('Convert DS-0 Journal entries: '
+                          'error creating the Journal metadata directory.')
+            return
+
+    for posting_item in database.postlist(''):
+        try:
+            document = database.get_document(posting_item.docid)
+        except xapian.DocNotFoundError as e:
+            logging.debug('Convert DS-0 Journal entries: error getting '
+                          'document %s: %s', posting_item.docid, e)
+            continue
+        _convert_entry(root, document)
+
+
+def _convert_entry(root, document):
+    try:
+        metadata_loaded = pickle.loads(document.get_data())
+    except pickle.PickleError as e:
+        logging.debug('Convert DS-0 Journal entries: '
+                      'error converting metadata: %s', e)
+        return
+
+    if not ('activity_id' in metadata_loaded and
+            'mime_type' in metadata_loaded and
+            'title' in metadata_loaded):
+        return
+
+    metadata = {}
+
+    uid = _get_id(document)
+    if uid is None:
+        return
+
+    for key, value in list(metadata_loaded.items()):
+        metadata[str(key)] = str(value[0])
+
+    if 'uid' not in metadata:
+        metadata['uid'] = uid
+
+    filename = metadata.pop('filename', None)
+    if not filename:
+        return
+    if not os.path.exists(os.path.join(root, filename)):
+        return
+
+    if not metadata.get('title'):
+        metadata['title'] = _('Untitled')
+        fn = model.get_file_name(metadata['title'],
+                                 metadata['mime_type'])
+        new_filename = model.get_unique_file_name(root, fn)
+        os.rename(os.path.join(root, filename),
+                  os.path.join(root, new_filename))
+        filename = new_filename
+
+    preview_path = os.path.join(root, _JOURNAL_0_METADATA_DIR,
+                                'preview', uid)
+    if os.path.exists(preview_path):
+        preview_fname = filename + '.preview'
+        new_preview_path = os.path.join(root,
+                                        model.JOURNAL_METADATA_DIR,
+                                        preview_fname)
+        if not os.path.exists(new_preview_path):
+            shutil.copy(preview_path, new_preview_path)
+
+    metadata_fname = filename + '.metadata'
+    metadata_path = os.path.join(root, model.JOURNAL_METADATA_DIR,
+                                 metadata_fname)
+    if not os.path.exists(metadata_path):
+        (fh, fn) = tempfile.mkstemp(dir=root)
+        os.write(fh, json.dumps(metadata).encode('utf-8'))
+        os.close(fh)
+        os.rename(fn, metadata_path)
+
+        logging.debug('Convert DS-0 Journal entries: entry converted: '
+                      'file=%s metadata=%s',
+                      os.path.join(root, filename), metadata)
+
+
+class VolumesToolbar(Gtk.Box):
+    __gtype_name__ = 'VolumesToolbar'
+
+    __gsignals__ = {
+        'volume-changed': (GObject.SignalFlags.RUN_FIRST, None,
+                           ([str])),
+        'volume-error': (GObject.SignalFlags.RUN_FIRST, None,
+                         ([str, str])),
+    }
+
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
+        self._mount_added_hid = None
+        self._mount_removed_hid = None
+        self._children = []
+
+        button = JournalButton()
+        button.connect('toggled', self._button_toggled_cb)
+        self.append(button)
+        self._children.append(button)
+        button.set_visible(True)
+        self._volume_buttons = [button]
+
+        GLib.idle_add(self._set_up_volumes)
+
+    def insert(self, widget, position):
+        if position == -1 or position >= len(self._children):
+            self.append(widget)
+            self._children.append(widget)
+        elif position == 0:
+            self.prepend(widget)
+            self._children.insert(0, widget)
+        else:
+            sibling = self._children[position - 1]
+            self.insert_child_after(widget, sibling)
+            self._children.insert(position, widget)
+
+    def get_item_index(self, widget):
+        if widget in self._children:
+            return self._children.index(widget)
+        return -1
+
+    def do_unroot(self):
+        volume_monitor = Gio.VolumeMonitor.get()
+        if self._mount_added_hid:
+            volume_monitor.disconnect(self._mount_added_hid)
+        if self._mount_removed_hid:
+            volume_monitor.disconnect(self._mount_removed_hid)
+
+    def _set_up_volumes(self):
+        self._set_up_documents_button()
+
+        volume_monitor = Gio.VolumeMonitor.get()
+        self._mount_added_hid = volume_monitor.connect('mount-added',
+                                                       self.__mount_added_cb)
+        self._mount_removed_hid = volume_monitor.connect(
+            'mount-removed',
+            self.__mount_removed_cb)
+
+        for mount in volume_monitor.get_mounts():
+            self._add_button(mount)
+
+    def _set_up_documents_button(self):
+        documents_path = model.get_documents_path()
+        if documents_path is not None:
+            button = DocumentsButton(documents_path)
+            button.set_group(self._volume_buttons[0])
+            button.set_palette(Palette(_('Documents')))
+            button.connect('toggled', self._button_toggled_cb)
+            button.set_visible(True)
+
+            position = self.get_item_index(self._volume_buttons[-1]) + 1
+            self.insert(button, position)
+            self._volume_buttons.append(button)
+            self.set_visible(True)
+
+    def __mount_added_cb(self, volume_monitor, mount):
+        self._add_button(mount)
+
+    def __mount_removed_cb(self, volume_monitor, mount):
+        self._remove_button(mount)
+
+    def _add_button(self, mount):
+        logging.debug('VolumeToolbar._add_button: %r', mount.get_name())
+
+        path = mount.get_root().get_path()
+        if path and (path.startswith('/snap/') or path.startswith('/run/')):
+            return
+
+        if os.path.exists(os.path.join(mount.get_root().get_path(),
+                                       _JOURNAL_0_METADATA_DIR)):
+            logging.debug('Convert DS-0 Journal entries: starting conversion')
+            GLib.idle_add(_convert_entries, mount.get_root().get_path())
+
+        button = VolumeButton(mount)
+        button.set_group(self._volume_buttons[0])
+        button.connect('toggled', self._button_toggled_cb)
+        button.connect('volume-error', self.__volume_error_cb)
+        position = self.get_item_index(self._volume_buttons[-1]) + 1
+        self.insert(button, position)
+        button.set_visible(True)
+
+        self._volume_buttons.append(button)
+
+        if len(self._children) > 1:
+            self.set_visible(True)
+
+    def __volume_error_cb(self, button, strerror, severity):
+        self.emit('volume-error', strerror, severity)
+
+    def _button_toggled_cb(self, button):
+        if button.props.active:
+            self.emit('volume-changed', button.mount_point)
+
+    def _get_button_for_mount(self, mount):
+        mount_point = mount.get_root().get_path()
+        for button in self._children:
+            if getattr(button, 'mount_point', None) == mount_point:
+                return button
+        logging.error('Couldnt find button with mount_point %r', mount_point)
+        return None
+
+    def _remove_button(self, mount):
+        button = self._get_button_for_mount(mount)
+        if button:
+            self._volume_buttons.remove(button)
+            self.remove(button)
+            self._children.remove(button)
+            if self._children:
+                # We expect the first button to be JournalButton which can be activated
+                self._children[0].props.active = True
+
+            if len(self._children) < 2:
+                self.set_visible(False)
+
+    def set_active_volume(self, mount):
+        button = self._get_button_for_mount(mount)
+        if button:
+            button.props.active = True
+
+
+class BaseButton(RadioToolButton):
+    __gsignals__ = {
+        'volume-error': (GObject.SignalFlags.RUN_FIRST, None,
+                         ([str, str])),
+    }
+
+    def __init__(self, mount_point):
+        super().__init__()
+
+        self.mount_point = mount_point
+
+        self._drop_target = Gtk.DropTarget.new(GObject.TYPE_STRING, Gdk.DragAction.COPY)
+        self._drop_target.connect('drop', self._drag_data_received_cb)
+        self.add_controller(self._drop_target)
+
+    def _drag_data_received_cb(self, drop_target, value, x, y):
+        object_id = value
+        if not object_id:
+            return False
+            
+        metadata = model.get(object_id)
+        file_path = model.get_file(metadata['uid'])
+        if not file_path or not os.path.exists(file_path):
+            logging.warn('Entries without a file cannot be copied.')
+            self.emit('volume-error',
+                      _('Entries without a file cannot be copied.'),
+                      _('Warning'))
+            return False
+
+        try:
+            model.copy(metadata, self.mount_point)
+            return True
+        except IOError as e:
+            logging.exception('Error while copying the entry. %s', e.strerror)
+            self.emit('volume-error',
+                      _('Error while copying the entry. %s') % e.strerror,
+                      _('Error'))
+            return False
+
+
+class VolumeButton(BaseButton):
+
+    def __init__(self, mount):
+        self._mount = mount
+        mount_point = mount.get_root().get_path()
+        BaseButton.__init__(self, mount_point)
+
+        self.props.icon_name = get_mount_icon_name(mount, 24)
+        if self.get_icon_widget():
+            self.get_icon_widget().props.xo_color = get_mount_color(self._mount)
+
+    def create_palette(self):
+        palette = VolumePalette(self._mount)
+        return palette
+
+
+class JournalButton(BaseButton):
+
+    def __init__(self):
+        BaseButton.__init__(self, mount_point='/')
+
+        self.props.icon_name = 'activity-journal'
+        if self.get_icon_widget():
+            self.get_icon_widget().props.xo_color = profile.get_color()
+
+    def create_palette(self):
+        palette = JournalButtonPalette(self)
+        return palette
+
+
+class JournalButtonPalette(Palette):
+
+    def __init__(self, mount):
+        Palette.__init__(self, _('Journal'))
+
+        grid = Gtk.Grid(orientation=Gtk.Orientation.VERTICAL,
+                        margin_top=style.DEFAULT_SPACING,
+                        margin_bottom=style.DEFAULT_SPACING,
+                        margin_start=style.DEFAULT_SPACING,
+                        margin_end=style.DEFAULT_SPACING,
+                        row_spacing=style.DEFAULT_SPACING)
+        self.set_content(grid)
+        grid.set_visible(True)
+
+        self._progress_bar = Gtk.ProgressBar()
+        grid.attach(self._progress_bar, 0, 0, 1, 1)
+        self._progress_bar.set_visible(True)
+
+        self._free_space_label = Gtk.Label()
+        self._free_space_label.set_halign(Gtk.Align.CENTER)
+        self._free_space_label.set_valign(Gtk.Align.CENTER)
+        grid.attach(self._free_space_label, 0, 1, 1, 1)
+        self._free_space_label.set_visible(True)
+
+        self.connect('popup', self.__popup_cb)
+
+    def __popup_cb(self, palette):
+        stat = os.statvfs(env.get_profile_path())
+        free_space = stat[0] * stat[4]
+        total_space = stat[0] * stat[2]
+
+        fraction = (total_space - free_space) / float(total_space)
+        self._progress_bar.props.fraction = fraction
+        self._free_space_label.props.label = _('%(free_space)d MiB Free') % \
+            {'free_space': free_space / (1024 * 1024)}
+
+
+class DocumentsButton(BaseButton):
+
+    def __init__(self, documents_path):
+        BaseButton.__init__(self, mount_point=documents_path)
+
+        self.props.icon_name = 'user-documents'
+        if self.get_icon_widget():
+            self.get_icon_widget().props.xo_color = profile.get_color()

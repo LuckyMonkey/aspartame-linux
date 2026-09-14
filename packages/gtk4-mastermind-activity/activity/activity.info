@@ -1,0 +1,10 @@
+[Activity]
+name = Mastermind
+bundle_id = org.laptop.Mastermind
+exec = sugar-activity4 mastermindactivity4.MastermindActivity
+icon = mastermind
+activity_version = 2
+show_launcher = yes
+license = GPLv3+
+summary = Crack the hidden four-colour code
+tags = Game;Logic
