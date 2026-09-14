@@ -12,14 +12,16 @@ semantic Journal canvas reparenting patch `0079`.
   is explicitly focusable before the window focus is assigned.
 - Guest source contains `_overlay.set_focusable(True)`.
 
-## Runtime frontier
+## Historical runtime frontier
 
 The GTK4 shell starts and renders Home at 1920×1080. The original HMP
 `sendkey` helper targeted the wrong input path; it has been replaced with QMP
 `input-send-event` events for the configured USB keyboard. The guest log now
 records `GTK4 semantic key event: F5`, proving delivery to the GTK4 process.
 
-The F5 Journal action then exposes a separate datastore failure (the service
-disconnects while querying metadata), so the next pass should repair that
-service boundary and validate F1–F8 one key at a time with event logs and
-screenshots.
+At the time of this report, the F5 Journal action exposed a datastore
+disconnect while querying metadata. That issue was subsequently resolved by
+the native Journal surface and is covered by the current Journal
+search/resume evidence and the 41-Activity lifecycle matrix. The remaining
+function-key limitation is transport-level: QMP/HMP injections do not produce
+guest evdev events, while semantic Space switching remains reliable.
