@@ -40,6 +40,11 @@ def test_home_list_rows_activate_with_enter_or_space():
     assert "self.owner.run_activity(self.item.bundle_id, True)" in source
 
 
+def test_activity_presentation_treats_unknown_launch_status_as_stopped():
+    source = (ROOT / "gtk4-overlay/src/jarabe/desktop/activitypresentation.py").read_text()
+    assert "statuses.get(activity.get_launch_status(), 'stopped')" in source
+
+
 def test_home_list_uses_existing_gtk4_command_capability_api():
     source = (ROOT / "gtk4-overlay/src/jarabe/desktop/activitieslist.py").read_text()
     assert "def supports_bundle(bundle):" in source

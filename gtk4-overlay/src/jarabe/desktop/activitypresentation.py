@@ -61,7 +61,7 @@ class ActivityPresentation(GObject.GObject):
                     shell.Activity.LAUNCH_FAILED: 'failed'}
         activities = list(self.model)
         records = [Instance(activity.get_activity_id(), activity.get_bundle_id(),
-                            statuses[activity.get_launch_status()])
+                            statuses.get(activity.get_launch_status(), 'stopped'))
                    for activity in activities]
         current = self.model.get_active_activity()
         active_id = (current.get_activity_id() if current is not None and
