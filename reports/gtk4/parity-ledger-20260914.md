@@ -75,6 +75,10 @@ Native BlockParty (2026-09-14): a GTK4 block-arrangement puzzle was staged
 under `org.laptop.BlockPartyActivity`. Three guest Casilda launch/stop cycles
 passed with `cleanup=PASS` (PIDs `333429`, `333457`, `333482`).
 
+Twenty-two-Activity matrix recheck (2026-09-14): all 66 guest launch/stop
+cycles reported `cleanup=PASS`; final result was `activity-matrix=PASS`
+(BlockParty PIDs `335315`, `335340`, `335365`).
+
 Host regression recheck (2026-09-14): the complete suite passes with 186 tests
 (`pytest -q`).
 

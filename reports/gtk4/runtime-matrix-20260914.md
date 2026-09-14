@@ -3,14 +3,14 @@
 Fresh evidence after the modern Home registry path and JAMClock/Clock ports.
 The synchronized development share now includes twenty-two modern bundles; the
 complete matrix remains green with three-cycle probes. The latest full run
-ended with BlockParty PID `333482`.
+ended with BlockParty PID `335365`.
 
 | Area | Evidence | Status |
 | --- | --- | --- |
 | GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1) | PASS |
 | Guest build | `sugar-gtk4-build.sh`, including patch 0015 | PASS |
 | Home inventory | All twenty-two verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
-| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty (`333482` latest) | PASS: all 66 launch/stop cycles reported `cleanup=PASS` |
+| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty (`335365` latest) | PASS: all 66 launch/stop cycles reported `cleanup=PASS` |
 | Casilda | 66 real Journal launch/stop cycles (three per Activity) | PASS |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
 
