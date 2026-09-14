@@ -4,7 +4,7 @@ This is the active steering document for the full conversion requested on
 2026-09-11. Historical first-pixels notes and the root engineering backlog are
 not completion claims. The conversion is **in progress**, not complete.
 
-## Starting reality
+## Starting reality (historical)
 
 - Starting branch `master`, HEAD/origin `601ffc6`; origin fetched 2026-09-11.
 - No Git submodules. Dependencies are separate, pinned guest checkouts recorded
@@ -22,8 +22,22 @@ not completion claims. The conversion is **in progress**, not complete.
   window-added signal cannot observe separate Wayland client windows.
 - GTK4 Home list/Journal still contain GTK3 TreeView assumptions. Historical
   compatibility and process-liveness tests do not prove parity.
-- Runtime share initially lacked current scripts. Source deployment and hashes
-  must be checked after VM restart, before claiming visible changes.
+- Runtime share initially lacked current scripts. This was corrected during the
+  2026-09-14 deployment; current runtime evidence is maintained in
+  `reports/gtk4/runtime-matrix-20260914.md` and the parity ledger.
+
+## Current reality (2026-09-14)
+
+- `master` and `origin/master` are synchronized at `e8ffe45`.
+- Host regression suite: 174 tests passed. Guest GTK4 toolkit suite: 55 tests
+  passed. The guest preview build applies/validates patch 0015 and boots the
+  GTK4 shell.
+- Nine modern Activities have live Casilda launch/stop evidence: Help, Count,
+  Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, and Log.
+- Remaining parity work is user-visible: physical QEMU function-key transport,
+  peer-backed Neighborhood/Group behavior, and individual ports for the
+  remaining legacy Activity catalog. No additional keybinding or Spaces
+  abstraction is justified by current evidence.
 
 ## Execution and ownership
 
