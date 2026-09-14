@@ -46,6 +46,10 @@ runtime failures.
   Viewer, Terminal, Browse, and Log each completed a live Journal launch/stop
   cycle with `cleanup=PASS`; final result `activity-matrix=PASS` (PIDs
   `254754`, `254786`, `254816`, `254846`, `254876`, `254906`, `254937`).
+- Consolidated guest checker (2026-09-14): GTK4/PyGObject import, toolkit suite
+  (`55 passed`), sugar-ext configuration, shell GTK4 configure gate, and
+  preview shell boot all passed. The checker still intentionally does not claim
+  the full replacement gate.
 
 ## Ranked remaining gaps
 
