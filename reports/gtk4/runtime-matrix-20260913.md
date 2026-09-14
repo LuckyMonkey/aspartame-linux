@@ -363,3 +363,8 @@ declare GTK4 focusability and activation, so Tab/Shift+Tab can land on rows and
 Enter follows the existing `row-activated` → deferred detail path. This is a
 presentation-only fix; the datastore and already-proven resume/lifecycle
 contracts are unchanged.
+
+GTK4 Journal keep toggle (2026-09-14): each native row now exposes a Keep
+check button. Changes pass through `editable_changes` and the existing
+asynchronous datastore writer; success and failure are reported in the Journal
+status line, and invalid updates restore the prior toggle state.

@@ -11,6 +11,8 @@ from gettext import gettext as _
 from gi.repository import GObject, Gtk, GLib, Gdk
 
 from jarabe.journal import model
+from jarabe.journal.entrymodel import editable_changes
+from jarabe.journal.listmodel import write_metadata
 
 _LOG = logging.getLogger(__name__)
 
@@ -93,6 +95,12 @@ class ListView(Gtk.Box):
                 activity = str(metadata.get('activity') or '')
                 box.append(Gtk.Label(label=title, xalign=0))
                 box.append(Gtk.Label(label=activity, xalign=0))
+                keep = Gtk.CheckButton(label=_('Keep'))
+                keep.set_active(str(metadata.get('keep', '0')).lower()
+                                in ('1', 'true'))
+                keep.set_tooltip_text(_('Keep this entry in the Journal'))
+                keep.connect('toggled', self._keep_toggled, uid, metadata)
+                box.append(keep)
                 row.set_child(box)
                 # Make keyboard traversal explicit in GTK4. ListBox otherwise
                 # only guarantees pointer activation for rows whose child
@@ -134,6 +142,22 @@ class ListView(Gtk.Box):
     def _activate_detail(self, uid):
         self.emit('detail-clicked', uid)
         return GLib.SOURCE_REMOVE
+
+    def _keep_toggled(self, button, uid, metadata):
+        try:
+            updated = editable_changes(
+                metadata, {'keep': '1' if button.get_active() else '0'})
+            write_metadata(
+                updated,
+                lambda *args: self._result_status.set_text(
+                    _('Journal entry updated')),
+                lambda error, *args: self._result_status.set_text(
+                    _('Could not update Journal entry: %s') % error))
+            metadata.update(updated)
+        except (OSError, ValueError, TypeError) as error:
+            button.set_active(not button.get_active())
+            self._result_status.set_text(
+                _('Could not update Journal entry: %s') % error)
 
     def _prepare_drag(self, _source, _x, _y, uid):
         payload = GLib.Bytes.new(str(uid).encode('utf-8'))

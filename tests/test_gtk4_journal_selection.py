@@ -15,6 +15,8 @@ def test_gtk4_journal_list_uses_native_selection_api():
     assert "def get_metadata(self, uid):" in source
     assert "row.set_focusable(True)" in source
     assert "row.set_activatable(True)" in source
+    assert "Gtk.CheckButton(label=_('Keep'))" in source
+    assert "write_metadata(" in source
 
 
 def test_gtk4_journal_selection_emits_count_changes():
