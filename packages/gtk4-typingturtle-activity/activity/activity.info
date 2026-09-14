@@ -1,0 +1,10 @@
+[Activity]
+name = Typing Turtle
+bundle_id = org.laptop.community.TypingTurtle
+exec = sugar-activity4 typingturtleactivity4.TypingTurtleActivity
+icon = typingturtle
+activity_version = 33
+show_launcher = yes
+license = GPLv3+
+summary = Practice typing with short words
+tags = Education;Language

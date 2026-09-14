@@ -969,6 +969,9 @@ ln -sfn "$playgo_activity" "$activity_dir/PlayGo.activity"
 blockparty_activity="$repo/packages/gtk4-blockparty-activity"
 test -f "$blockparty_activity/activity/activity.info" || { echo "missing native GTK4 BlockParty Activity bundle" >&2; exit 2; }
 ln -sfn "$blockparty_activity" "$activity_dir/BlockParty.activity"
+typingturtle_activity="$repo/packages/gtk4-typingturtle-activity"
+test -f "$typingturtle_activity/activity/activity.info" || { echo "missing native GTK4 Typing Turtle Activity bundle" >&2; exit 2; }
+ln -sfn "$typingturtle_activity" "$activity_dir/TypingTurtle.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

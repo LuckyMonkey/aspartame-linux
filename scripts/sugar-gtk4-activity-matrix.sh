@@ -29,6 +29,7 @@ declare -a activities=(
     'com.jotaro.ImplodeActivity|implodeactivity4.ImplodeActivity'
     'org.laptop.PlayGo|playgoactivity4.PlayGoActivity'
     'org.laptop.BlockPartyActivity|blockpartyactivity4.BlockPartyActivity'
+    'org.laptop.community.TypingTurtle|typingturtleactivity4.TypingTurtleActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
