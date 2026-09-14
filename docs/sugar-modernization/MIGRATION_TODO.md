@@ -34,14 +34,17 @@
 
 - [x] Test and register the GTK4 Log, Count, and Calculate Activities; all have
   live launch/stop evidence (Calculate also passed repeated lifecycle probing).
-- [ ] Port upstream Calculate and inventory the remaining Fructose activities.
-  Keep each Activity a separate reviewable change.
+- [x] Port and verify a native Calculate Activity; the modern registry now
+  launches Calculate alongside the other verified GTK4 bundles.
+- [ ] Inventory and port the remaining legacy Fructose activities. Keep each
+  Activity a separate reviewable change.
 
 ## P4 — Wayland/backend neutrality
 
 - [x] Build Casilda 1.5 against guest Arch wlroots 0.20 and verify the private
   `wayland-sugar` socket/protocol registry.
-- [ ] Remove accidental new X11 dependencies from migrated code.
+- [x] Remove accidental new X11 dependencies from migrated code; the current
+  GTK4 overlay contains no `GdkX11`, XID, or GTK3-only window imports.
 
 ## P5 — cleanup and packaging
 
