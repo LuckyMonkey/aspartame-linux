@@ -1,0 +1,27 @@
+--- a/src/jarabe/controlpanel/gui.py
++++ b/src/jarabe/controlpanel/gui.py
+@@ -619,6 +619,12 @@
+         self.set_valign(Gtk.Align.CENTER)
+         self.set_hexpand(True)
+         self.set_vexpand(True)
++        self.set_focusable(True)
++        self.set_accessible_role(Gtk.AccessibleRole.BUTTON)
++        self.update_property([Gtk.AccessibleProperty.LABEL], [self._title])
++        key = Gtk.EventControllerKey()
++        key.connect('key-pressed', self._key_pressed)
++        self.add_controller(key)
+ 
+         self._icon = Icon(icon_name=self._icon_name,
+                           pixel_size=self._pixel_size,
+@@ -639,6 +645,12 @@
+         self._label.set_visible(True)
+         self._icon.set_visible(True)
+ 
++    def _key_pressed(self, controller, keyval, keycode, state):
++        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter, Gdk.KEY_space):
++            self.emit('option-clicked')
++            return True
++        return False
++
+     def _on_clicked(self, gesture, n_press, x, y):
+         self.emit('option-clicked')
