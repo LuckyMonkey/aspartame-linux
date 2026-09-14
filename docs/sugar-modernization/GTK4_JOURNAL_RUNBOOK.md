@@ -190,7 +190,8 @@ only as historical context. Current evidence is maintained in
 - Journal search/filter and clear: verified in the GTK4 runtime checks.
 - Journal open/resume and Activity association: verified through live lifecycle probes.
 - Detail/action palettes and ObjectChooser: verified on the native GTK4 path.
-- Title editing and ProjectView remain separate, explicitly unverified targets.
+- Title editing and project assignment are implemented in the native row;
+  ProjectView remains a separate, explicitly unverified target.
 
 Known preview warnings that are not currently the Journal blocker:
 
@@ -335,7 +336,7 @@ Do not use that phrase until all required checks pass in a running preview:
 - [x] Enter activates the selected entry.
 - [x] Pointer selection works.
 - [ ] Favorite toggling writes and survives a refresh.
-- [ ] Title edit works for an editable entry.
+- [x] Title edit works for an editable entry.
 - [x] Detail/object palette opens for the correct entry.
 - [x] Open/resume returns to the intended Activity.
 - [ ] Delete/project actions are safe and scoped.
