@@ -358,6 +358,10 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
 - Native Mancala Activity (2026-09-14): added a playable two-row pit/store
   GTK4 Activity under `mulawa.Mancala`. The rebuilt guest and twelve-Activity
   Casilda matrix passed launch/stop cleanup (PID `286396`).
+- Full 41-Activity matrix recheck (2026-09-14): rebuilt guest ran three
+  launch/stop cycles for every registered GTK4 bundle (123 cycles total).
+  Every cycle reported `cleanup=PASS`; the final Write probe ended at PID
+  `414314`. This supersedes the earlier split 40-bundle plus Write evidence.
 
 ## Ranked remaining gaps
 
