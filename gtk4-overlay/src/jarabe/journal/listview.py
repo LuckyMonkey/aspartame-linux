@@ -64,9 +64,14 @@ class ListView(Gtk.Box):
         try:
             result = model.find(self._query, 48)
             total = result.get_length()
-            self._result_status.set_text(
-                _('%d Journal entries') % total if total != 1
-                else _('1 Journal entry'))
+            query_text = str(self._query.get('query', '')).strip()
+            if query_text:
+                self._result_status.set_text(
+                    _('%d matches for “%s”') % (total, query_text))
+            else:
+                self._result_status.set_text(
+                    _('%d Journal entries') % total if total != 1
+                    else _('1 Journal entry'))
             for index in range(total):
                 result.seek(index)
                 metadata = result.read()

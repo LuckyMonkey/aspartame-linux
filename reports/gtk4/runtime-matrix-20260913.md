@@ -115,3 +115,8 @@ Journal result status (2026-09-13): the rebuilt GTK4 list now reports the
 current result count above the rows (live capture showed `44 Journal entries`),
 and exposes a clear “Journal search unavailable” state if datastore refresh
 fails. Capture: `reports/screenshots/sugar-20260913-231339-v0.0.31.png`.
+
+Query feedback (2026-09-13): when the existing Journal toolbar supplies a
+non-empty `query`, the same status line now reports `<count> matches for
+“<query>”`; clearing the query returns to the total-entry wording. This keeps
+search behavior visible without changing the datastore contract.
