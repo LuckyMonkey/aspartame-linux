@@ -89,6 +89,8 @@
   Casilda launch/stop cycles (`org.olpc-france.LOLActivity`).
 - [x] Port Get Things Done as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`org.sugarlabs.GTDActivity`).
+- [x] Port Grid Paint as a native GTK4 Activity and verify three repeated
+  Casilda launch/stop cycles (`org.olpcfrance.Gridpaint`).
 
 ## P4 — Wayland/backend neutrality
 

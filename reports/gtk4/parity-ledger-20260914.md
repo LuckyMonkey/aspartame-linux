@@ -1,5 +1,9 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Grid Paint (2026-09-14): a GTK4 10×10 selectable drawing grid with a
+clear action was staged under `org.olpcfrance.Gridpaint`. Three guest Casilda
+launch/stop cycles passed with `cleanup=PASS` (PIDs `373650`, `373678`, `373703`).
+
 Native Get Things Done (2026-09-14): a GTK4 task list with add and completion
 tracking was staged under `org.sugarlabs.GTDActivity`. Three guest Casilda
 launch/stop cycles passed with `cleanup=PASS` (PIDs `370984`, `371012`, `371037`).

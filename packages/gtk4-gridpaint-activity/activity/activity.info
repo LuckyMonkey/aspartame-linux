@@ -1,0 +1,10 @@
+[Activity]
+name = Grid Paint
+bundle_id = org.olpcfrance.Gridpaint
+exec = sugar-activity4 gridpaintactivity4.GridPaintActivity
+icon = gridpaint
+activity_version = 2
+show_launcher = yes
+license = GPLv3+
+summary = Paint a picture on a grid
+tags = Art;Drawing

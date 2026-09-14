@@ -1,18 +1,18 @@
 # GTK4 runtime matrix — 2026-09-14
 
 Fresh evidence after the modern Home registry path and JAMClock/Clock ports.
-The synchronized development share now includes thirty-two modern bundles. A
+The synchronized development share now includes thirty-three modern bundles. A
 fresh full matrix completed three cycles for every registered bundle before the
-latest addition; Get Things Done has a separate three-cycle probe ending at
-PID `371037`.
+latest addition; Grid Paint has a separate three-cycle probe ending at PID
+`373703`.
 
 | Area | Evidence | Status |
 | --- | --- | --- |
 | GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1) | PASS |
 | Guest build | `sugar-gtk4-build.sh`, including patch 0015 | PASS |
-| Home inventory | All thirty-two verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
-| Activity lifecycle | Full 31-bundle matrix (`368370` latest) plus Get Things Done (`371037` latest) | PASS: all 96 recorded launch/stop cycles reported `cleanup=PASS` |
-| Casilda | 96 real Journal launch/stop cycles (three per registered Activity) | PASS |
+| Home inventory | All thirty-three verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
+| Activity lifecycle | Full 31-bundle matrix (`368370` latest), Get Things Done (`371037`), and Grid Paint (`373703`) | PASS: all 99 recorded launch/stop cycles reported `cleanup=PASS` |
+| Casilda | 99 real Journal launch/stop cycles (three per registered Activity) | PASS |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
 
 Host regression suite: `pytest -q` → 186 passed (2026-09-14).
