@@ -136,3 +136,10 @@ produced PID `31170`; Frame then showed the Help icon as the current running
 Activity (`sugar-20260913-231752-v0.0.31.png`). StopActivity returned `(true,)`,
 the process disappeared, and the subsequent Frame capture cleared the Help
 icon (`sugar-20260913-231813-v0.0.31.png`).
+
+Home List result feedback (2026-09-13): GTK4 Home's native activity list now
+exposes a visible status line for the installed total and filtered matches
+(`N matching activities (of M)`), while retaining the empty-state clear-search
+action. Host regression coverage passed and the guest preview rebuild completed
+after syncing the overlay. This closes a user-visible GTK3→GTK4 parity gap
+without changing the Activity registry or launcher path.
