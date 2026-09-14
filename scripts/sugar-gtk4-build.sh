@@ -963,6 +963,9 @@ ln -sfn "$ballandbrick_activity" "$activity_dir/BallAndBrick.activity"
 implode_activity="$repo/packages/gtk4-implode-activity"
 test -f "$implode_activity/activity/activity.info" || { echo "missing native GTK4 Implode Activity bundle" >&2; exit 2; }
 ln -sfn "$implode_activity" "$activity_dir/Implode.activity"
+playgo_activity="$repo/packages/gtk4-playgo-activity"
+test -f "$playgo_activity/activity/activity.info" || { echo "missing native GTK4 PlayGo Activity bundle" >&2; exit 2; }
+ln -sfn "$playgo_activity" "$activity_dir/PlayGo.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

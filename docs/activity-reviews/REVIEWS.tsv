@@ -13,7 +13,7 @@ org.laptop.Log	Log	42	cc9d8bb69935bcc908a4f99628bd42b588160745	packages/upstream
 mulawa.Mancala	Mancala	23	303ec6bb382bdc82f5fd9b345305fc62ca453fc6	packages/upstream-activities/mancala-activity	native-sugar-bundle	gtk4-verified				
 org.laptop.Mastermind	Mastermind	1	4a79d8ac25642a7aa65a37f821f820fda1ded393	packages/upstream-activities/mastermind-activity	native-sugar-bundle	gtk4-verified				
 org.sugarlabs.NumRush	NumberRush	4	c0b7c2dd4817c44903e2b8b9477a26363fe74b7f	packages/upstream-activities/numberrush-activity	native-sugar-bundle	gtk4-verified				
-org.laptop.PlayGo	PlayGo	6	20a3ec94078cc7aa31ede56de37683621d4f2fd5	packages/upstream-activities/playgo-activity	native-sugar-bundle	unreviewed				
+org.laptop.PlayGo	PlayGo	6	20a3ec94078cc7aa31ede56de37683621d4f2fd5	packages/upstream-activities/playgo-activity	native-sugar-bundle	gtk4-verified		Native GTK4 Go board with alternating stone placement and reset control; three repeated Casilda lifecycle cycles pass.	2026-09-14	reports/gtk4/parity-ledger-20260914.md
 org.worldwideworkshop.PollBuilder	Poll	33	995a42daeacbf924dc6e3dcbf298b8d761f389ab	packages/upstream-activities/poll-activity	native-sugar-bundle	gtk4-verified				
 org.sugarlabs.PortfolioActivity	Portfolio	52	e25eb768e194de4a3197a434d88d31d59f897a3d	packages/upstream-activities/portfolio-activity	native-sugar-bundle	unreviewed				
 net.coderanger.olpc.reversi	Reversi	4	afef06623f9f9b341862b8c79dbd4c7473c44346	packages/upstream-activities/reversi-activity	native-sugar-bundle	gtk4-verified				
