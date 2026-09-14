@@ -1,5 +1,9 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Get Things Done (2026-09-14): a GTK4 task list with add and completion
+tracking was staged under `org.sugarlabs.GTDActivity`. Three guest Casilda
+launch/stop cycles passed with `cleanup=PASS` (PIDs `370984`, `371012`, `371037`).
+
 Native Last One Loses (2026-09-14): a GTK4 take-away game with selectable
 token counts and reset was staged under `org.olpc-france.LOLActivity`. Three
 guest Casilda launch/stop cycles passed with `cleanup=PASS` (PIDs `365679`,

@@ -996,6 +996,9 @@ ln -sfn "$words_activity" "$activity_dir/Words.activity"
 lol_activity="$repo/packages/gtk4-last-one-loses-activity"
 test -f "$lol_activity/activity/activity.info" || { echo "missing native GTK4 Last One Loses Activity bundle" >&2; exit 2; }
 ln -sfn "$lol_activity" "$activity_dir/LastOneLoses.activity"
+gtd_activity="$repo/packages/gtk4-gtd-activity"
+test -f "$gtd_activity/activity/activity.info" || { echo "missing native GTK4 Get Things Done Activity bundle" >&2; exit 2; }
+ln -sfn "$gtd_activity" "$activity_dir/GetThingsDone.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

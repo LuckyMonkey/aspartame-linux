@@ -1,0 +1,10 @@
+[Activity]
+name = Get Things Done
+bundle_id = org.sugarlabs.GTDActivity
+exec = sugar-activity4 gtdactivity4.GTDActivity
+icon = gtd
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Organize tasks and ideas
+tags = Organization;Writing

@@ -38,6 +38,7 @@ declare -a activities=(
     'org.laptop.community.Finance|financeactivity4.FinanceActivity'
     'org.laptop.Words|wordsactivity4.WordsActivity'
     'org.olpc-france.LOLActivity|lolactivity4.LastOneLosesActivity'
+    'org.sugarlabs.GTDActivity|gtdactivity4.GTDActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
