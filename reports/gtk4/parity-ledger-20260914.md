@@ -79,6 +79,10 @@ runtime failures.
   entrypoint for `org.laptop.JAMClock` with a native GTK4 time/date Activity;
   guest rebuild and the expanded nine-Activity matrix passed launch/stop
   cleanup (PID `265219`).
+- Isolated Home registry path (2026-09-14): the modern launcher now exposes
+  all nine verified GTK4 bundles through `SUGAR_ACTIVITIES_PATH`, preventing
+  GTK3 duplicates from winning Home lookup. After a clean GTK4 restart
+  (`pid=265471`), the complete matrix passed again (final Log PID `266035`).
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
