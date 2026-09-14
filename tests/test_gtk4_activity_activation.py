@@ -252,3 +252,6 @@ def test_native_journal_rows_expose_accessible_identity():
     assert "Gtk.AccessibleProperty.DESCRIPTION" in source
     assert "Gtk.AccessibleRole.LIST_ITEM" in source
     assert "connect('row-activated'" in source
+    assert "_result_status" in source
+    assert "Journal entries" in source
+    assert "Journal search unavailable" in source

@@ -41,6 +41,12 @@ class ListView(Gtk.Box):
         self.tree_view = _JournalRows()
         self.tree_view.set_selection_mode(Gtk.SelectionMode.SINGLE)
         self.tree_view.connect('row-activated', self._row_activated)
+        self._result_status = Gtk.Label(label=_('Journal entries'))
+        self._result_status.set_xalign(0)
+        self._result_status.set_margin_start(24)
+        self._result_status.set_margin_top(8)
+        self._result_status.set_opacity(0.72)
+        self.append(self._result_status)
         scroller = Gtk.ScrolledWindow()
         scroller.set_vexpand(True)
         scroller.set_child(self.tree_view)
@@ -58,6 +64,9 @@ class ListView(Gtk.Box):
         try:
             result = model.find(self._query, 48)
             total = result.get_length()
+            self._result_status.set_text(
+                _('%d Journal entries') % total if total != 1
+                else _('1 Journal entry'))
             for index in range(total):
                 result.seek(index)
                 metadata = result.read()
@@ -85,6 +94,7 @@ class ListView(Gtk.Box):
             self._empty.set_visible(total == 0)
         except Exception as error:
             _LOG.exception('GTK4 Journal refresh failed')
+            self._result_status.set_text(_('Journal search unavailable'))
             self._empty.set_text(_('Journal unavailable: %s') % error)
             self._empty.set_visible(True)
         return GLib.SOURCE_REMOVE

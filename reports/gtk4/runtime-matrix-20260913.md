@@ -110,3 +110,8 @@ Journal resume evidence (2026-09-13): from the live GTK4 Journal list, a
 pointer activation opened the native entry detail surface with Back navigation,
 title, description, preview/metadata fields, and action toolbar. Capture:
 `reports/screenshots/sugar-20260913-231110-v0.0.31.png`.
+
+Journal result status (2026-09-13): the rebuilt GTK4 list now reports the
+current result count above the rows (live capture showed `44 Journal entries`),
+and exposes a clear “Journal search unavailable” state if datastore refresh
+fails. Capture: `reports/screenshots/sugar-20260913-231339-v0.0.31.png`.
