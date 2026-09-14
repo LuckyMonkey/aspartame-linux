@@ -13,6 +13,7 @@ required_scripts=(
     build-iso.sh run-qemu.sh ssh-asp sugar-info.sh sugar-reload.sh
     sugar-session-restart.sh sugar-logs.sh sugar-screenshot.sh sugar-patch.sh
     sugar-open-control-panel.sh sugar-upstream-sync.sh sugar-gtk4-init.sh sugar-gtk4-build.sh sugar-gtk4-check.sh sugar-gtk4-update.sh sugar-gtk4-smoke.sh
+    sugar-gtk4-activity-matrix.sh
     sugar-modernization-check.sh
     activity-review-inventory.py activity-review-check.sh activity-review-capture.sh activity-contract-check.py
 )
