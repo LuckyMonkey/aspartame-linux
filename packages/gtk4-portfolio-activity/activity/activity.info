@@ -1,0 +1,10 @@
+[Activity]
+name = Portfolio
+bundle_id = org.sugarlabs.PortfolioActivity
+exec = sugar-activity4 portfolioactivity4.PortfolioActivity
+icon = portfolio
+activity_version = 53
+show_launcher = yes
+license = GPLv3+
+summary = Build a simple portfolio page
+tags = Art;Writing

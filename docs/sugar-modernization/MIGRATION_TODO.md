@@ -77,6 +77,8 @@
   launch/stop cycles (`vu.lux.olpc.Maze`).
 - [x] Port FotoToon as a native GTK4 Activity and verify three repeated Casilda
   launch/stop cycles (`org.eq.FotoToon`).
+- [x] Port Portfolio as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`org.sugarlabs.PortfolioActivity`).
 
 ## P4 — Wayland/backend neutrality
 

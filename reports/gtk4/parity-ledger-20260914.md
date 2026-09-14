@@ -1,5 +1,10 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Portfolio (2026-09-14): a GTK4 document-canvas Activity with editable
+title/body, draft status, and clear action was staged under
+`org.sugarlabs.PortfolioActivity`. Three guest Casilda launch/stop cycles passed
+with `cleanup=PASS` (PIDs `355014`, `355042`, `355067`).
+
 ## Closed gap
 
 GTK4 Frame exposes a stable accessible `Frame` label and `GROUP` role. The
