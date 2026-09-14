@@ -58,6 +58,7 @@ for patch in "$patch_dir"/*.patch; do
         *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*|*0047*|*0059*|*0060*|*0066*|*0068*) target="$toolkit" ;;
         *0029*) target="$log_activity" ;;
         *0124*) target="$terminal_activity" ;;
+        *0125*) target="$terminal_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0083*) target="$root/sources/sugar" ;;
@@ -325,6 +326,13 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'def connect(self, signal_name, callback, \*user_data):' "$toolkit/src/sugar4/graphics/icon.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing CellRendererIcon property/signal contract: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0124* ]] &&
+        grep -q "gi.require_version('Vte', '3.91')" "$terminal_activity/terminal.py" 2>/dev/null &&
+        grep -q "except ValueError:" "$terminal_activity/terminal.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "verified existing Terminal Vte fallback: $patch_name"
         continue
     fi
     # 0029's GTK4 ListBox implementation is already present in the pinned
@@ -834,6 +842,11 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "relocated current Frame accessibility calls: $patch_name"
+    elif [[ "$patch_name" == *0124* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied Terminal Vte compatibility: $patch_name"
     elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0040* || "$patch_name" == *0041* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0045* || "$patch_name" == *0046* || "$patch_name" == *0047* || "$patch_name" == *0048* || "$patch_name" == *0049* || "$patch_name" == *0050* || "$patch_name" == *0051* || "$patch_name" == *0052* || "$patch_name" == *0053* || "$patch_name" == *0054* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)

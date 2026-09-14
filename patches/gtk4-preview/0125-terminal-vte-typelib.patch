@@ -1,0 +1,11 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+Subject: terminal: select the installed Vte typelib name
+
+--- a/terminal.py
++++ b/terminal.py
+@@ -39,7 +39,7 @@ for api, ver in vs.items():
+ try:
+     gi.require_version('Vte', '3.91')
+ except ValueError:
+-    gi.require_version('Vte', '3.0')
++    gi.require_version('Vte', '2.91')
