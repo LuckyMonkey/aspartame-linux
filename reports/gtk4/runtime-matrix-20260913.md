@@ -143,3 +143,9 @@ exposes a visible status line for the installed total and filtered matches
 action. Host regression coverage passed and the guest preview rebuild completed
 after syncing the overlay. This closes a user-visible GTK3→GTK4 parity gap
 without changing the Activity registry or launcher path.
+
+Post-rebuild regression (2026-09-13): the GTK4 shell restarted cleanly on the
+modern Space at 1920x1080 (`sugar-20260913-232259-v0.0.31.png`), and two fresh
+Journal→Help launch/stop cycles completed with distinct PIDs and immediate
+cleanup (`lifecycle-probe.sh 2`: PASS). The authoritative runtime check also
+passed for GTK4 PID `28378` on desktop `1`.
