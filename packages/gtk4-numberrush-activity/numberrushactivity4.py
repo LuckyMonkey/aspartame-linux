@@ -8,7 +8,7 @@ class NumberRushActivity(SimpleActivity):
     ROUNDS = ((7, 5), (12, 8), (9, 6), (15, 4), (11, 9))
 
     def __init__(self, activity_handle=None):
-        super().__init__(activity_handle); self.set_title("Number Rush"); self.round = 0; self.score = 0
+        super().__init__(activity_handle); self.set_title("Number Rush"); self.round = 0; self.score = 0; self.solved = False
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
         root.set_margin_top(30); root.set_margin_bottom(30); root.set_margin_start(34); root.set_margin_end(34)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Number Rush"]); root.set_accessible_role(Gtk.AccessibleRole.GROUP)
@@ -33,9 +33,10 @@ class NumberRushActivity(SimpleActivity):
         left, right = self.ROUNDS[self.round]
         try: answer = int(self.answer.get_text())
         except ValueError: self.status.set_text("Enter a whole number."); return
-        if answer == left + right: self.score += 1; self.status.set_text("Correct! Score: %d" % self.score)
+        if answer == left + right:
+            if not self.solved: self.score += 1; self.solved = True
+            self.status.set_text("Correct! Score: %d" % self.score)
         else: self.status.set_text("Try again — the answer is a little different.")
 
     def _next(self, _button):
-        self.round = (self.round + 1) % len(self.ROUNDS); self.answer.set_text(""); self._render()
-
+        self.round = (self.round + 1) % len(self.ROUNDS); self.answer.set_text(""); self.solved = False; self._render()
