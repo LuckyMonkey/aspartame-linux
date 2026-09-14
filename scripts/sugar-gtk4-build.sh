@@ -22,6 +22,7 @@ casilda="$root/sources/casilda"
 log_activity="$root/sources/log-activity"
 imageviewer_activity="$root/sources/imageviewer-activity"
 terminal_activity="$root/sources/terminal-activity"
+browse_activity="$root/sources/browse-activity"
 prefix="$root/prefix"
 venv="$root/venv"
 log="$root/logs/gtk4-build-$(date -u +%Y%m%dT%H%M%SZ).log"
@@ -35,6 +36,7 @@ test -d "$log_activity/.git" || { echo "missing Log Activity checkout: $log_acti
 test -f "$log_activity/logviewer.py" || { echo "missing Log Activity source: $log_activity"; exit 2; }
 test -d "$imageviewer_activity/.git" || { echo "missing Image Viewer Activity source: $imageviewer_activity"; exit 2; }
 test -d "$terminal_activity/.git" || { echo "missing Terminal Activity source: $terminal_activity"; exit 2; }
+test -d "$browse_activity/.git" || { echo "missing Browse Activity source: $browse_activity"; exit 2; }
 if ! test -x "$venv/bin/python"; then
     python3 -m venv --system-site-packages "$venv"
 fi
@@ -900,6 +902,11 @@ test -f "$terminal_activity/activity/activity.info" || {
     exit 2
 }
 ln -sfn "$terminal_activity" "$activity_dir/Terminal.activity"
+test -f "$browse_activity/activity/activity.info" || {
+    echo "missing pinned Browse Activity bundle: $browse_activity" >&2
+    exit 2
+}
+ln -sfn "$browse_activity" "$activity_dir/Browse.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }
