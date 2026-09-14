@@ -382,6 +382,10 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
   fusion puzzle with pointer selection, score state, reset, and accessible
   controls. Guest build and three direct Casilda launch/stop cycles passed
   (`cleanup=PASS`, PIDs `435203`, `435227`, `435249`).
+- Native Level Activity (2026-09-14): added a GTK4 inclination/level control
+  with draggable gauge, arrow controls, reset, persistence, and accessible
+  labels. Guest build and three direct Casilda launch/stop cycles passed
+  (`cleanup=PASS`, PIDs `442449`, `442471`, `442492`).
 - Spaces runtime round-trip recheck (2026-09-14): the guest switched to the
   GTK3 desktop and passed `runtime-check=ok` for PID `33761`, then switched back
   to GTK4 and passed for PID `265471`. Both processes remained separate.
