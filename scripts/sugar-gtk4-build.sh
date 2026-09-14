@@ -926,6 +926,16 @@ test -f "$mastermind_activity/mastermindactivity4.py" || {
     exit 2
 }
 ln -sfn "$mastermind_activity" "$activity_dir/Mastermind.activity"
+poll_activity="$repo/packages/gtk4-poll-activity"
+test -f "$poll_activity/activity/activity.info" || {
+    echo "missing native GTK4 Poll Activity bundle: $poll_activity" >&2
+    exit 2
+}
+test -f "$poll_activity/pollactivity4.py" || {
+    echo "missing native GTK4 Poll Activity entrypoint" >&2
+    exit 2
+}
+ln -sfn "$poll_activity" "$activity_dir/Poll.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

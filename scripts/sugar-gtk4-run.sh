@@ -84,7 +84,7 @@ ln -sfn "$prefix/share/sugar/activities/JAMClock.activity" \
 # Keep every verified GTK4 bundle visible to the isolated Home registry.  If
 # one is omitted here, duplicate GTK3 metadata can win the Home lookup even
 # though the bundle was staged successfully by the build.
-for modern_bundle in Calculate ImageViewer Terminal Browse Log Mastermind; do
+for modern_bundle in Calculate ImageViewer Terminal Browse Log Mastermind Poll; do
     test -d "$prefix/share/sugar/activities/${modern_bundle}.activity" || {
         echo "missing staged GTK4 ${modern_bundle} Activity bundle" >&2
         exit 2

@@ -17,6 +17,7 @@ declare -a activities=(
     'org.laptop.WebActivity|webactivity.WebActivity'
     'org.laptop.Log|logviewer.LogActivity'
     'org.laptop.Mastermind|mastermindactivity4.MastermindActivity'
+    'org.worldwideworkshop.PollBuilder|pollactivity4.PollActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
