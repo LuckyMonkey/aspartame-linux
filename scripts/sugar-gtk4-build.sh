@@ -939,6 +939,9 @@ ln -sfn "$poll_activity" "$activity_dir/Poll.activity"
 mancala_activity="$repo/packages/gtk4-mancala-activity"
 test -f "$mancala_activity/activity/activity.info" || { echo "missing native GTK4 Mancala Activity bundle" >&2; exit 2; }
 ln -sfn "$mancala_activity" "$activity_dir/Mancala.activity"
+reversi_activity="$repo/packages/gtk4-reversi-activity"
+test -f "$reversi_activity/activity/activity.info" || { echo "missing native GTK4 Reversi Activity bundle" >&2; exit 2; }
+ln -sfn "$reversi_activity" "$activity_dir/Reversi.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
