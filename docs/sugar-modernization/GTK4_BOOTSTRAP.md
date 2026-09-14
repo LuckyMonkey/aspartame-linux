@@ -44,8 +44,9 @@ WAYLAND_DISPLAY=wayland-sugar \
 wayland-info
 ```
 
-Home, Journal, Neighborhood, Settings, Help, and shell-mediated Activity
-launch/stop have current runtime evidence. The preview is not yet a complete
-GTK4 desktop: physical F1–F6 delivery through the QEMU/X11 frontend remains
+Home, Journal, Neighborhood, Settings, Help, and shell-mediated Activity launch/stop are verified
+with current runtime evidence. The preview is not yet a complete
+GTK4 desktop: pointer/keyboard/focus semantic paths are covered, while physical
+F1–F6 delivery through the QEMU/X11 frontend remains
 open. Use the GTK4 status page and Activity conversion runbook for current
 gates.

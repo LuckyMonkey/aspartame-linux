@@ -198,6 +198,39 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing Activity-ID process fallback: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0067* ]] &&
+        grep -q '_buttons.pop(home_activity, None)' "$shell/src/jarabe/frame/activitiestray.py" 2>/dev/null &&
+        grep -q 'if home_activity not in self._activities:' "$shell/src/jarabe/model/shell.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing idempotent Activity removal: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0069* ]] &&
+        grep -q 'from gettext import gettext as _' "$shell/src/jarabe/desktop/groupbox.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Group view gettext import: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0070* ]] &&
+        grep -q 'activity_keys.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)' "$shell/src/jarabe/main.py" 2>/dev/null &&
+        grep -q 'shell_instance.compositor.add_controller(activity_keys)' "$shell/src/jarabe/main.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Casilda activity key capture: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0071* ]] &&
+        grep -q 'frame.get_view().hide()' "$shell/src/jarabe/main.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Frame dismissal on zoom: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0073* ]] &&
+        grep -q 'set_accessible_role(Gtk.AccessibleRole.BUTTON)' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null &&
+        grep -q 'Gtk.AccessibleProperty.LABEL' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Home Activity accessibility: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0027* ]] &&
         grep -q "SUGAR_WINDOWED" "$root/sources/sugar/src/jarabe/main.py" 2>/dev/null &&
         grep -q "set_decorated(False)" "$root/sources/sugar/src/jarabe/main.py" 2>/dev/null; then
