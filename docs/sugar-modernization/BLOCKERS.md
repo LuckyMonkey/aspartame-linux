@@ -15,7 +15,8 @@
 - Reproduction: Meson build reaches `SugarExt-2.0.gir`.
 - Evidence: malformed gtk-doc comment in `src/sugar-fatattr.c` stops GIR generation; C libraries and five tests build/pass.
 - Fix: preview-only comment correction; rerun full Meson build next.
-- Status: in progress.
+- Status: resolved locally; the guest sugar-ext build and GTK4 typelib
+  generation now pass. Upstream cleanup remains a candidate.
 
 ## GTK4-003 — complete shell runtime
 
@@ -67,7 +68,9 @@
 - Category: `UPSTREAM-SHELL` / `UPSTREAM-TOOLKIT`
 - Reproduction: launch the pinned preview; Home construction reaches `Gtk.TreeViewColumn.pack_start()` with the toolkit's plain `CellRendererIcon` adapter and raises `TypeError`.
 - Fix: the preview defers `ActivitiesList` until List View is requested; default Favorites/Home can initialize without the unfinished legacy list.
-- Status: default Home path unblocked; List View remains open.
+- Status: resolved for the GTK4 Home ListView; current runtime exercises search,
+  keyboard activation, and isolated modern bundle lookup. The historical
+  deferred-construction workaround remains documented for GTK3 compatibility.
 
 ## GTK4-010 — GTK4 preview profile validator rejects its generated RSA key
 
