@@ -18,8 +18,9 @@ def test_count_is_a_native_gtk4_bundle():
     assert "AccessibleRole.GROUP" in source
     assert "Gtk.Overlay" in source
     assert "require_version(\"Gtk\", \"3.0\")" not in source
-    assert "if not isinstance(layers, list) or not layers" in source
+    assert "if isinstance(layers, list):" in source
     assert "self.current_layer = max(0, self.current_layer)" in source
+    assert "len(layer) == self.height" in source
 
 
 def test_gtk4_runner_stages_count_bundle():
