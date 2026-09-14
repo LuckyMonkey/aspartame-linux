@@ -1,5 +1,9 @@
 # GTK4 parity ledger — 2026-09-14
 
+Native Markdown (2026-09-14): a GTK4 editor/preview Activity was staged under
+`org.sugarlabs.Markdown`. Three guest Casilda launch/stop cycles passed with
+`cleanup=PASS` (PIDs `357682`, `357710`, `357735`).
+
 Native Portfolio (2026-09-14): a GTK4 document-canvas Activity with editable
 title/body, draft status, and clear action was staged under
 `org.sugarlabs.PortfolioActivity`. Three guest Casilda launch/stop cycles passed

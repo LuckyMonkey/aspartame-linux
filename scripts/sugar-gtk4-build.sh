@@ -984,6 +984,9 @@ ln -sfn "$fototoon_activity" "$activity_dir/FotoToon.activity"
 portfolio_activity="$repo/packages/gtk4-portfolio-activity"
 test -f "$portfolio_activity/activity/activity.info" || { echo "missing native GTK4 Portfolio Activity bundle" >&2; exit 2; }
 ln -sfn "$portfolio_activity" "$activity_dir/Portfolio.activity"
+markdown_activity="$repo/packages/gtk4-markdown-activity"
+test -f "$markdown_activity/activity/activity.info" || { echo "missing native GTK4 Markdown Activity bundle" >&2; exit 2; }
+ln -sfn "$markdown_activity" "$activity_dir/Markdown.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

@@ -34,6 +34,7 @@ declare -a activities=(
     'vu.lux.olpc.Maze|mazeactivity4.MazeActivity'
     'org.eq.FotoToon|fototoonactivity4.FotoToonActivity'
     'org.sugarlabs.PortfolioActivity|portfolioactivity4.PortfolioActivity'
+    'org.sugarlabs.Markdown|markdownactivity4.MarkdownActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

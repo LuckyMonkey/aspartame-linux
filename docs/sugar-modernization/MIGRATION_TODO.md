@@ -79,6 +79,8 @@
   launch/stop cycles (`org.eq.FotoToon`).
 - [x] Port Portfolio as a native GTK4 Activity and verify three repeated Casilda
   launch/stop cycles (`org.sugarlabs.PortfolioActivity`).
+- [x] Port Markdown as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`org.sugarlabs.Markdown`).
 
 ## P4 — Wayland/backend neutrality
 

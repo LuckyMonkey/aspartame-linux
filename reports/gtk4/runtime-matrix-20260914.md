@@ -1,16 +1,16 @@
 # GTK4 runtime matrix — 2026-09-14
 
 Fresh evidence after the modern Home registry path and JAMClock/Clock ports.
-The synchronized development share now includes twenty-seven modern bundles;
-the latest direct three-cycle probe ended with Portfolio PID `355067`.
+The synchronized development share now includes twenty-eight modern bundles;
+the latest direct three-cycle probe ended with Markdown PID `357735`.
 
 | Area | Evidence | Status |
 | --- | --- | --- |
 | GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1) | PASS |
 | Guest build | `sugar-gtk4-build.sh`, including patch 0015 | PASS |
-| Home inventory | All twenty-seven verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
-| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, FotoToon, Portfolio (`355067` latest) | PASS: Portfolio direct cycles reported `cleanup=PASS`; prior matrix covered 78 cycles |
-| Casilda | Portfolio direct three-cycle launch/stop probe | PASS |
+| Home inventory | All twenty-eight verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
+| Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Markdown (`357735` latest) | PASS: Markdown direct cycles reported `cleanup=PASS`; prior matrix covered 78 cycles |
+| Casilda | Markdown direct three-cycle launch/stop probe | PASS |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
 
 Host regression suite: `pytest -q` → 186 passed (2026-09-14).
