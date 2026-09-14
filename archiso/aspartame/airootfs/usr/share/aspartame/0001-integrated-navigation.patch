@@ -653,7 +653,7 @@
 -        else:
 -            # get activity name and window id
 -            window_xid = activity.get_xid()
-@@ -185,2 +24,33 @@
+@@ -185,2 +24,40 @@
 -        if shell.get_model().has_modal():
 -            return
 +def _load_packaged_handler():
@@ -689,16 +689,23 @@
 +        "KeyHandler", "setup", "get_instance"
 +    }:
 +        globals()[_name] = _value
-@@ -188 +57,0 @@
++
++# SugarExt.KeyGrabber only accepts key names known to the upstream action
++# table.  F7/F8 are Aspartame semantic Space actions, so register them as
++# sentinel entries before the workspace-aware grabber requests its key set;
++# dispatch is handled by _key_pressed_cb below.
++_actions_table.setdefault("F7", "aspartame_space")
++_actions_table.setdefault("F8", "aspartame_space")
+@@ -188 +64,0 @@
 -        self._frame.hide()
-@@ -190,4 +59,2 @@
+@@ -190,4 +66,2 @@
 -        panel = ControlPanel(window_xid)
 -        activity.push_shell_window(panel)
 -        panel.connect('hide', activity.pop_shell_window)
 -        panel.show()
 +class KeyHandler(_packaged.KeyHandler):
 +    """Upstream GTK3 handler with an EWMH workspace ownership gate."""
-@@ -195,2 +62,5 @@
+@@ -195,2 +69,5 @@
 -    def handle_dump_ui_tree(self, event_time):
 -        print(uitree.get_root().dump())
 +    def __init__(self, frame):
@@ -706,7 +713,7 @@
 +        self._classic_space_active = None
 +        self._space_watch_id = GLib.timeout_add(100, self._sync_space_grab)
 +        self._sync_space_grab()
-@@ -200,30 +70,8 @@
+@@ -200,30 +77,8 @@
 -        logging.debug('_key_pressed_cb: %i %i %s', keycode, state, key)
 -        if key is not None:
 -            self._key_pressed = key
@@ -745,7 +752,7 @@
 +            )
 +            logging.warning("GTK3 semantic Space key: %s", key)
 +            subprocess.Popen([controller, target], close_fds=True)
-@@ -231,4 +79,18 @@
+@@ -231,4 +86,18 @@
 -        # If this is not a registered key, then cancel tabbing.
 -        if self._tabbing_handler.is_tabbing():
 -            if not grabber.is_modifier(keycode):
@@ -768,7 +775,7 @@
 +        workspace = self._active_workspace_number()
 +        classic_active = workspace is None or workspace == 0
 +        if classic_active == self._classic_space_active:
-@@ -237 +99,33 @@
+@@ -237 +106,33 @@
 -        return False
 +        if classic_active:
 +            # Recreate the grabber after modern Space releases it.  The
@@ -803,7 +810,7 @@
 +            workspace,
 +        )
 +        return True
-@@ -239,7 +132,0 @@
+@@ -239,7 +139,0 @@
 -    def _key_released_cb(self, grabber, keycode, state, event_time):
 -        logging.debug('_key_released_cb: %i %i', keycode, state)
 -        if self._tabbing_handler.is_tabbing():
@@ -811,11 +818,11 @@
 -            # modifier key is raised again.
 -            if grabber.is_modifier(keycode, mask=_TABBING_MODIFIER):
 -                self._tabbing_handler.stop(event_time)
-@@ -247,2 +134 @@
+@@ -247,2 +141 @@
 -            return True
 -        return False
 +_instance = None
-@@ -253,0 +140,4 @@
+@@ -253,0 +147,4 @@
 +
 +
 +def get_instance():
