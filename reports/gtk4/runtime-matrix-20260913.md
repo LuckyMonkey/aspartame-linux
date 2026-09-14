@@ -195,3 +195,9 @@ package discovery: the overlay desktop package had no `__init__.py`, so the
 legacy `jarabe.desktop.activitieslist` remained authoritative. Adding the
 package marker activated the overlay; the GTK4 runner also now excludes the
 GTK3-only `sugar-overlay/src` path to preserve the hard GI process boundary.
+
+Control Panel runtime (2026-09-14): `org.laptop.Shell.ShowControlPanel`
+returned `(true,)` on the same GTK4 process. The live 1920x1080 capture shows
+the black Sugar settings surface with About Me, Computer, Background, Backup,
+Date & Time, Frame, Keyboard, Language, Modem, Network, Power, Software Update,
+and Web Services tiles: `reports/screenshots/gtk4-settings-native-20260914.png`.
