@@ -460,3 +460,13 @@ retired by the build guard, while 0123 applies the exact current-source move.
 Guest source inspection shows the label/`GROUP` role only in `__init__`, the
 preview build passes, and a clean GTK4 restart reports `runtime-check=ok` with
 no Frame traceback or fatal GTK warning.
+
+GTK4 Count Activity (2026-09-14): a second native GTK4 Activity bundle is now
+staged alongside Help and Log. `org.laptop.Journal.LaunchBundle` launched
+`countactivity4.CountActivity` with Activity ID
+`369cc84b402d43179e918f5ae1095f72`; the process remained alive under the
+modern Activity path, and `org.laptop.Shell.StopActivity` returned `(true,)`
+with immediate process cleanup. The Activity uses `Gtk.DrawingArea.set_draw_func`
+and `Gtk.GestureDrag`, with translucent adjacent layers and native GTK4
+controls for layer traversal, copy, add, and single-step deletion. No GTK3
+imports are present in the bundle.

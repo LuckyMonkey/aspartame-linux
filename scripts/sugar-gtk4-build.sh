@@ -866,6 +866,16 @@ test -f "$help_activity/activity/activity-help.svg" || {
     exit 2
 }
 ln -sfn "$help_activity" "$activity_dir/Help.activity"
+count_activity="$repo/packages/gtk4-count-activity"
+test -f "$count_activity/activity/activity.info" || {
+    echo "missing native GTK4 Count Activity bundle: $count_activity" >&2
+    exit 2
+}
+test -f "$count_activity/countactivity4.py" || {
+    echo "missing native GTK4 Count Activity entrypoint" >&2
+    exit 2
+}
+ln -sfn "$count_activity" "$activity_dir/Count.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }

@@ -63,6 +63,12 @@ modern_activities="$runroot/activities"
 mkdir -p "$modern_activities"
 ln -sfn "$prefix/share/sugar/activities/Help.activity" \
     "$modern_activities/Help.activity"
+test -d "$prefix/share/sugar/activities/Count.activity" || {
+    echo "missing staged GTK4 Count Activity bundle" >&2
+    exit 2
+}
+ln -sfn "$prefix/share/sugar/activities/Count.activity" \
+    "$modern_activities/Count.activity"
 test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2

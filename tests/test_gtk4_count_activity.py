@@ -1,0 +1,24 @@
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+PACKAGE = ROOT / "packages/gtk4-count-activity"
+
+
+def test_count_is_a_native_gtk4_bundle():
+    info = (PACKAGE / "activity/activity.info").read_text()
+    source = (PACKAGE / "countactivity4.py").read_text()
+    assert "exec = sugar-activity4 countactivity4.CountActivity" in info
+    assert "from sugar4.activity import SimpleActivity" in source
+    assert "Gtk.GestureDrag" in source
+    assert "set_draw_func" in source
+    assert "require_version(\"Gtk\", \"3.0\")" not in source
+
+
+def test_gtk4_runner_stages_count_bundle():
+    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+    run = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    sync = (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
+    assert "gtk4-count-activity" in build
+    assert "Count.activity" in run
+    assert "gtk4-count-activity" in sync
