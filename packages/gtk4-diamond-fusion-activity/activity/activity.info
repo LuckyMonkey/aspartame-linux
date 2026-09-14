@@ -1,0 +1,10 @@
+[Activity]
+name = Diamond Fusion
+bundle_id = com.francocorrea.diamondfusion
+exec = sugar-activity4 diamondfusionactivity4.DiamondFusionActivity
+icon = diamond-fusion
+activity_version = 1
+show_launcher = yes
+license = GPLv3+
+summary = Match neighbouring diamonds and fuse them
+tags = Game;Puzzle;Math

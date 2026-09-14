@@ -1036,6 +1036,9 @@ paint_activity="$repo/packages/gtk4-paint-activity"
 test -f "$paint_activity/activity/activity.info" || { echo "missing native GTK4 Paint Activity bundle" >&2; exit 2; }
 test -f "$paint_activity/paintactivity4.py" || { echo "missing native GTK4 Paint Activity entrypoint" >&2; exit 2; }
 ln -sfn "$paint_activity" "$activity_dir/Paint.activity"
+diamond_fusion_activity="$repo/packages/gtk4-diamond-fusion-activity"
+test -f "$diamond_fusion_activity/activity/activity.info" || { echo "missing native GTK4 Diamond Fusion Activity bundle" >&2; exit 2; }
+ln -sfn "$diamond_fusion_activity" "$activity_dir/DiamondFusion.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
