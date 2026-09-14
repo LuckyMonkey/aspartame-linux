@@ -1,0 +1,10 @@
+[Activity]
+name = Pippy
+bundle_id = org.laptop.Pippy
+exec = sugar-activity4 pippyactivity4.PippyActivity
+icon = pippy
+activity_version = 1
+show_launcher = yes
+license = GPLv2+
+summary = Learn Python by writing and running small programs
+tags = Programming;Education;Python

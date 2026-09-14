@@ -1029,6 +1029,9 @@ ln -sfn "$write_activity" "$activity_dir/Write.activity"
 connect_the_dots_activity="$repo/packages/gtk4-connect-the-dots-activity"
 test -f "$connect_the_dots_activity/activity/activity.info" || { echo "missing native GTK4 Connect the Dots Activity bundle" >&2; exit 2; }
 ln -sfn "$connect_the_dots_activity" "$activity_dir/ConnectTheDots.activity"
+pippy_activity="$repo/packages/gtk4-pippy-activity"
+test -f "$pippy_activity/activity/activity.info" || { echo "missing native GTK4 Pippy Activity bundle" >&2; exit 2; }
+ln -sfn "$pippy_activity" "$activity_dir/Pippy.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2
