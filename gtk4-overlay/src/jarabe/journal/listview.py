@@ -129,7 +129,19 @@ class ListView(Gtk.Box):
     def get_projects_view_active(self): return False
     def is_dragging(self): return False
     def set_is_visible(self, _visible): return None
-    def get_model(self): return None
+    def get_model(self): return self
+
+    def __len__(self):
+        return len(self._rows)
+
+    def set_selected(self, uid, value):
+        row = self._rows.get(str(uid))
+        if row is None:
+            return
+        if value:
+            self.tree_view.select_row(row)
+        else:
+            self.tree_view.unselect_row(row)
 
     def get_selected_items(self):
         return [getattr(row, '_journal_uid', None)
@@ -147,6 +159,9 @@ class ListView(Gtk.Box):
     def select_none(self):
         self.tree_view.unselect_all()
         self.emit('selection-changed', 0)
+
+    def get_metadata(self, uid):
+        return model.get(str(uid))
 
 
 # ObjectChooser imports the historical base name; the GTK4 surface provides
