@@ -1,9 +1,9 @@
 # GTK4 runtime matrix — 2026-09-14
 
 Fresh evidence after the modern Home registry path and JAMClock/Clock ports.
-The synchronized development share now also includes Jumble; the complete
-matrix remains green with the final Mancala/Reversi/Jumble probes at PIDs
-`292746`, `292777`, and `292807`.
+The synchronized development share now includes fifteen modern bundles; the
+complete matrix remains green with three-cycle probes. The latest full run
+ended with NumberRush PID `297650`.
 
 | Area | Evidence | Status |
 | --- | --- | --- |
@@ -13,6 +13,8 @@ matrix remains green with the final Mancala/Reversi/Jumble probes at PIDs
 | Activity lifecycle | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Mastermind, Poll, Mancala, Reversi, Jumble, Number Rush (`297650` latest) | PASS: every launch/stop reported `cleanup=PASS` |
 | Casilda | Fifteen real Journal launch/stop cycles | PASS |
 | Physical F7/F8 | QMP and HMP injection | PARTIAL: no guest evdev events; semantic controller switching remains reliable |
+
+Host regression suite: `pytest -q` → 181 passed.
 
 The GTK3 process remains separate and is not imported into the GTK4 process.
 The full GTK4 replacement gate is still not claimed because physical input
