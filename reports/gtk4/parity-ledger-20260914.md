@@ -98,6 +98,9 @@ runtime failures.
 - Semantic Spaces round-trip (2026-09-14): `sugar-gtk4-space.sh gtk3` and
   `gtk4` switched deterministically between EWMH workspaces 0 and 1 while
   retaining the same GTK3 (`33761`) and GTK4 (`265471`) process identities.
+- Home keyboard activation (2026-09-14): focused GTK4 Activity rows now
+  activate on Enter, keypad Enter, or Space in addition to pointer/list
+  activation; the guest preview rebuild passed with the updated overlay.
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
