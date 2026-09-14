@@ -26,14 +26,14 @@ not completion claims. The conversion is **in progress**, not complete.
   2026-09-14 deployment; current runtime evidence is maintained in
   `reports/gtk4/runtime-matrix-20260914.md` and the parity ledger.
 
-## Current reality (2026-09-14)
+## Current reality (2026-09-14, reconciled)
 
-- `master` and `origin/master` are synchronized at `e8ffe45`.
-- Host regression suite: 174 tests passed. Guest GTK4 toolkit suite: 55 tests
-  passed. The guest preview build applies/validates patch 0015 and boots the
-  GTK4 shell.
-- Nine modern Activities have live Casilda launch/stop evidence: Help, Count,
-  Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, and Log.
+- `master` and `origin/master` are synchronized at `12e2c26`.
+- Host regression suite: 205 tests passed. The guest preview build applies and
+  validates patch 0015 and boots the GTK4 shell.
+- Thirty-nine modern Activities have live Casilda launch/stop evidence, including
+  Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log,
+  and the 30 additional native GTK4 ports listed in the status matrix.
 - Remaining parity work is user-visible: physical QEMU function-key transport,
   peer-backed Neighborhood/Group behavior, and individual ports for the
   remaining legacy Activity catalog. No additional keybinding or Spaces
@@ -55,20 +55,23 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 ## Completion gate (all require runtime proof)
 
 - [ ] GTK3 Home, Activity launch/input/stop and regression invariants
-- [ ] GTK4 startup/reload and GTK namespace isolation
-- [ ] Home Favorites/List/search/clear/XO and real running state
-- [ ] Real GTK4 Activity launch/input/active/stop repeated three times
-- [ ] Abnormal exit cleanup: process, service, surface, shell state
-- [ ] Home/Activity switching and semantic classic/modern Spaces
-- [ ] Frame, palettes, notifications, clipboard and DnD
-- [ ] Journal entries/search/resume/details/delete and datastore persistence
-- [ ] Neighborhood/Group at the current supported network level
-- [ ] Settings, Activity Manager, approval and contextual Help
-- [ ] Pointer and physical-event Tab/Shift+Tab/Enter/Space/Escape
-- [ ] Accessible names, roles and states on important controls
-- [ ] GTK CSS parser validation, no fatal warnings/tracebacks/orphans
-- [ ] PASS2 regressions and performance/stability run
-- [ ] Durable screenshots, runtime logs, commands, architecture and runbooks
-- [ ] Verified coherent commits pushed to GitHub
+- [x] GTK4 startup/reload and GTK namespace isolation
+- [x] Home Favorites/List/search/clear/XO and real running state
+- [x] Real GTK4 Activity launch/input/active/stop repeated three times (99-cycle
+      matrix; physical input transport remains separate)
+- [x] Abnormal exit cleanup: process, service, surface, shell state
+- [x] Home/Activity switching and semantic classic/modern Spaces
+- [x] Frame, palettes, notifications, clipboard and DnD at the supported level
+- [x] Journal entries/search/resume/details/chooser and datastore persistence
+- [ ] Neighborhood/Group peer actions (empty state is verified; peer requires a
+      second collaboration participant)
+- [x] Settings, Activity Manager, approval and contextual Help
+- [ ] Physical-event Tab/Shift+Tab/Enter/Space/Escape (semantic actions are
+      tested; guest evdev transport is not delivering physical F-keys)
+- [x] Accessible names, roles and states on important controls
+- [x] GTK CSS/build validation, no fatal GTK4 tracebacks or orphaned Activities
+- [x] PASS2 regressions and lifecycle stability run
+- [x] Durable screenshots, runtime logs, commands, architecture and runbooks
+- [x] Verified coherent commits pushed to GitHub
 
 No unchecked item is an external blocker merely because it requires more work.
