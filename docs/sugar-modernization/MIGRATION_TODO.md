@@ -75,6 +75,8 @@
   Casilda launch/stop cycles (`org.laptop.Memorize`).
 - [x] Port Maze as a native GTK4 Activity and verify three repeated Casilda
   launch/stop cycles (`vu.lux.olpc.Maze`).
+- [x] Port FotoToon as a native GTK4 Activity and verify three repeated Casilda
+  launch/stop cycles (`org.eq.FotoToon`).
 
 ## P4 — Wayland/backend neutrality
 

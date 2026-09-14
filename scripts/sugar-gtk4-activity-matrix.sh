@@ -32,6 +32,7 @@ declare -a activities=(
     'org.laptop.community.TypingTurtle|typingturtleactivity4.TypingTurtleActivity'
     'org.laptop.Memorize|memorizeactivity4.MemorizeActivity'
     'vu.lux.olpc.Maze|mazeactivity4.MazeActivity'
+    'org.eq.FotoToon|fototoonactivity4.FotoToonActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

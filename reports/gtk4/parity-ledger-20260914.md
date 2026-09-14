@@ -103,6 +103,10 @@ Twenty-five-Activity matrix recheck (2026-09-14): all 75 guest launch/stop
 cycles reported `cleanup=PASS`; final result was `activity-matrix=PASS`
 (Maze PIDs `349688`, `349713`, `349739`).
 
+Native FotoToon (2026-09-14): a GTK4 caption canvas with pointer placement and
+text input was staged under `org.eq.FotoToon`. Three guest Casilda launch/stop
+cycles passed with `cleanup=PASS` (PIDs `352343`, `352371`, `352396`).
+
 Live shell recheck (2026-09-14): the GTK4 runtime checker reports
 `target=gtk4 pid=265471 desktop=1 window=0x2400005` with the separate GTK3
 reference `stable_pid=33761`; semantic Spaces switching GTK3 → GTK4 returns
