@@ -53,6 +53,9 @@ runtime failures.
    `ShowHome`, `ShowJournal`, `ShowFrame`, `ShowNeighborhood`, `ShowGroup`, and
    `ShowControlPanel` actions are reliable, so no additional keybinding layer
    is justified until keyboard events reach the guest device.
+   A direct QMP `F8` injection after `sugar-gtk4-space.sh setup` left the guest
+   on workspace 0, confirming this remains an input-delivery issue rather than
+   a missing semantic action.
 2. Neighborhood/Group peer actions need a real collaboration peer. The empty
    state and accessible roots are verified; inventing peers would not prove
    Sugar collaboration behavior.
