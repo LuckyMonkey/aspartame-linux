@@ -972,6 +972,9 @@ ln -sfn "$blockparty_activity" "$activity_dir/BlockParty.activity"
 typingturtle_activity="$repo/packages/gtk4-typingturtle-activity"
 test -f "$typingturtle_activity/activity/activity.info" || { echo "missing native GTK4 Typing Turtle Activity bundle" >&2; exit 2; }
 ln -sfn "$typingturtle_activity" "$activity_dir/TypingTurtle.activity"
+memorize_activity="$repo/packages/gtk4-memorize-activity"
+test -f "$memorize_activity/activity/activity.info" || { echo "missing native GTK4 Memorize Activity bundle" >&2; exit 2; }
+ln -sfn "$memorize_activity" "$activity_dir/Memorize.activity"
 test -f "$imageviewer_activity/activity/activity.info" || {
     echo "missing pinned Image Viewer Activity bundle: $imageviewer_activity" >&2
     exit 2

@@ -30,6 +30,7 @@ declare -a activities=(
     'org.laptop.PlayGo|playgoactivity4.PlayGoActivity'
     'org.laptop.BlockPartyActivity|blockpartyactivity4.BlockPartyActivity'
     'org.laptop.community.TypingTurtle|typingturtleactivity4.TypingTurtleActivity'
+    'org.laptop.Memorize|memorizeactivity4.MemorizeActivity'
 )
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)

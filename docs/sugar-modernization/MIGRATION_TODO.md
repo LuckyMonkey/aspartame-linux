@@ -71,6 +71,8 @@
   Casilda launch/stop cycles (`org.laptop.BlockPartyActivity`).
 - [x] Port Typing Turtle as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`org.laptop.community.TypingTurtle`).
+- [x] Port Memorize as a native GTK4 Activity and verify three repeated
+  Casilda launch/stop cycles (`org.laptop.Memorize`).
 
 ## P4 — Wayland/backend neutrality
 

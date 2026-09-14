@@ -1,0 +1,10 @@
+[Activity]
+name = Memorize
+bundle_id = org.laptop.Memorize
+exec = sugar-activity4 memorizeactivity4.MemorizeActivity
+icon = memorize
+activity_version = 60
+show_launcher = yes
+license = GPLv3+
+summary = Match pairs of cards
+tags = Game;Memory
