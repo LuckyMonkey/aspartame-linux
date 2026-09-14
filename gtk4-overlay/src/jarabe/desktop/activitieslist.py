@@ -71,6 +71,13 @@ class ActivityRow(Gtk.Box):
         labels.append(self.name)
         labels.append(self.summary)
         self.append(labels)
+        # Launch gestures belong to non-interactive content so favorite and
+        # action controls retain their own click semantics.
+        for target in (self.icon, labels):
+            primary = Gtk.GestureClick(button=Gdk.BUTTON_PRIMARY)
+            primary.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+            primary.connect('pressed', self._primary_pressed)
+            target.add_controller(primary)
         self.status = Gtk.Label(xalign=0)
         self.status.set_width_chars(16)
         self.append(self.status)
@@ -87,10 +94,6 @@ class ActivityRow(Gtk.Box):
         click = Gtk.GestureClick(button=Gdk.BUTTON_SECONDARY)
         click.connect('pressed', self._secondary_pressed)
         self.add_controller(click)
-        primary = Gtk.GestureClick(button=Gdk.BUTTON_PRIMARY)
-        primary.set_propagation_phase(Gtk.PropagationPhase.BUBBLE)
-        primary.connect('pressed', self._primary_pressed)
-        self.add_controller(primary)
         keys = Gtk.EventControllerKey()
         keys.connect('key-pressed', self._key_pressed)
         self.add_controller(keys)

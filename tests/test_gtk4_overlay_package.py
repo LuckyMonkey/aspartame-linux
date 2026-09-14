@@ -20,6 +20,7 @@ def test_home_list_help_metadata_does_not_import_gtk3_view_modules():
 def test_home_list_rows_launch_on_primary_pointer_click():
     source = (ROOT / "gtk4-overlay/src/jarabe/desktop/activitieslist.py").read_text()
     assert "Gtk.GestureClick(button=Gdk.BUTTON_PRIMARY)" in source
+    assert "Gtk.PropagationPhase.CAPTURE" in source
     assert "def _primary_pressed" in source
     assert "self.owner.run_activity(self.item.bundle_id, True)" in source
 
