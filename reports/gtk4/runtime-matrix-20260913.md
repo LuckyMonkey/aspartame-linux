@@ -272,3 +272,9 @@ Journal row resumed the existing GTK4 Help Activity (PID `67597`, activity id
 `38d41ee5ec5749af9943383fe81ac79b`). `StopActivity` returned `(true,)` and the
 process cleanup check passed. This verifies the native row activation path in
 addition to search filtering and clearing.
+
+Keyboard frontier (2026-09-14): QMP F1/F3 events sent while the Journal search
+surface had focus produced no visible zoom transition, although the equivalent
+semantic D-Bus actions remain reliable. The modern shell stayed alive with no
+fatal traceback. This remains an input-routing gap to address after the
+user-visible Journal behavior, not evidence to expand the Spaces machinery.
