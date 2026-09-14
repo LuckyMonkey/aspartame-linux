@@ -203,6 +203,13 @@ class ActivitiesList(Gtk.Box):
         scrolled.set_vexpand(True)
         scrolled.set_child(self._list_view)
 
+        self._result_status = Gtk.Label(xalign=0)
+        self._result_status.add_css_class('dim-label')
+        self._result_status.set_margin_start(style.DEFAULT_SPACING)
+        self._result_status.set_margin_top(style.DEFAULT_PADDING)
+        self._result_status.update_property(
+            [Gtk.AccessibleProperty.LABEL], [_('Activity list status')])
+
         self._empty = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,
                               spacing=style.DEFAULT_SPACING,
                               halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER)
@@ -213,6 +220,7 @@ class ActivitiesList(Gtk.Box):
         self._stack = Gtk.Stack(vexpand=True)
         self._stack.add_named(scrolled, 'list')
         self._stack.add_named(self._empty, 'empty')
+        self.append(self._result_status)
         self.append(self._stack)
         self._filtered.connect('items-changed', self._results_changed)
         for signal in ('bundle-added', 'bundle-changed', 'bundle-removed'):
@@ -270,8 +278,15 @@ class ActivitiesList(Gtk.Box):
         return self._filtered.get_n_items()
 
     def _results_changed(self, *args):
-        self._stack.set_visible_child_name(
-            'list' if self._filtered.get_n_items() else 'empty')
+        count = self._filtered.get_n_items()
+        total = self._store.get_n_items()
+        if self._query:
+            self._result_status.set_text(
+                _('%d matching activities (of %d)') % (count, total))
+        else:
+            self._result_status.set_text(
+                _('%d installed activities') % total)
+        self._stack.set_visible_child_name('list' if count else 'empty')
 
     def _state_changed(self, presentation):
         for row in self._rows:
