@@ -1,22 +1,25 @@
 --- a/src/jarabe/view/service.py
 +++ b/src/jarabe/view/service.py
-@@ -153,22 +153,26 @@
+@@ -153,22 +153,30 @@
  
      @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
      def ShowNeighborhood(self):
 +        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
          self._shell_model.set_zoom_level(self._shell_model.ZOOM_MESH)
          return True
  
      @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
      def ShowGroup(self):
 +        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
          self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
          return True
      @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
      def ShowHome(self):
          """Return to the GTK4 Home surface through a semantic action."""
 +        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
          self._shell_model.set_zoom_level(self._shell_model.ZOOM_HOME)
          return True
  
@@ -24,19 +27,22 @@
      def ShowList(self):
          """Reveal Home's native installed-Activity list."""
 +        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
          from jarabe.desktop import homewindow
          homewindow.get_instance().get_home_box().show_list_view()
          self._shell_model.set_zoom_level(self._shell_model.ZOOM_HOME)
-@@ -176,10 +180,12 @@
+@@ -176,10 +180,14 @@
  
      @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
      def ShowNeighborhood(self):
 +        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
          self._shell_model.set_zoom_level(self._shell_model.ZOOM_MESH)
          return True
  
      @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
      def ShowGroup(self):
 +        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
          self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
          return True

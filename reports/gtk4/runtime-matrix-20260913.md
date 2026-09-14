@@ -242,3 +242,13 @@ the cleanup check. An abnormal-exit pass then launched PID `64104`, sent
 `SIGKILL`, and confirmed no Help Activity process remained. This extends the
 existing Journal lifecycle evidence to the newly repaired Home List launcher
 without changing Casilda or introducing another lifecycle abstraction.
+
+Journal-to-Neighborhood navigation (2026-09-14): runtime evidence exposed a
+real shell-view bug: after `ShowJournal`, `ShowNeighborhood` changed the zoom
+level but left the synthetic Journal activity marked active, so the Journal
+surface remained underneath a dim Neighborhood overlay. The navigation patch
+now clears the active Journal target before entering Home, Group, Neighborhood,
+or the Home List. After rebuilding and restarting the modern Space,
+`ShowJournal` followed by `ShowNeighborhood` produced a clean full-surface
+Neighborhood view with its explicit empty state and no Journal rows beneath it:
+`reports/screenshots/sugar-20260914-004707-v0.0.31.png`.
