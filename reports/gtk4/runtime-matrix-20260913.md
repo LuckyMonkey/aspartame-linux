@@ -357,3 +357,9 @@ overlay, the guest restarted with one modern shell and the runtime checker
 returned `runtime-check=ok` (`pid=131421`, desktop 1; GTK3 reference PID
 `33761` retained). No live destructive click was performed against the guest's
 installed inventory.
+
+GTK4 Journal keyboard traversal (2026-09-14): Journal rows now explicitly
+declare GTK4 focusability and activation, so Tab/Shift+Tab can land on rows and
+Enter follows the existing `row-activated` → deferred detail path. This is a
+presentation-only fix; the datastore and already-proven resume/lifecycle
+contracts are unchanged.

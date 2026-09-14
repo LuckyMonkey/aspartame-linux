@@ -94,6 +94,11 @@ class ListView(Gtk.Box):
                 box.append(Gtk.Label(label=title, xalign=0))
                 box.append(Gtk.Label(label=activity, xalign=0))
                 row.set_child(box)
+                # Make keyboard traversal explicit in GTK4. ListBox otherwise
+                # only guarantees pointer activation for rows whose child
+                # hierarchy happens to be focusable.
+                row.set_focusable(True)
+                row.set_activatable(True)
                 drag_source = Gtk.DragSource()
                 drag_source.set_actions(Gdk.DragAction.COPY)
                 drag_source.connect('prepare', self._prepare_drag, uid)

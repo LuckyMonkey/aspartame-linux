@@ -13,6 +13,8 @@ def test_gtk4_journal_list_uses_native_selection_api():
     assert "def get_model(self): return self" in source
     assert "def set_selected(self, uid, value):" in source
     assert "def get_metadata(self, uid):" in source
+    assert "row.set_focusable(True)" in source
+    assert "row.set_activatable(True)" in source
 
 
 def test_gtk4_journal_selection_emits_count_changes():
