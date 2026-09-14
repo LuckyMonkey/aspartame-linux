@@ -1,0 +1,10 @@
+[Activity]
+name = Mancala
+bundle_id = mulawa.Mancala
+exec = sugar-activity4 mancalaactivity4.MancalaActivity
+icon = mancala
+activity_version = 2
+show_launcher = yes
+license = GPLv3+
+summary = Play a game of Mancala
+tags = Game;Strategy
