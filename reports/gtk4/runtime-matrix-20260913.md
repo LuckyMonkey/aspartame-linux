@@ -212,3 +212,11 @@ The startup regression encountered during verification was traced to a
 comment embedded inside a backslash-continued `env` command; moving that
 comment outside the command restored GTK4 process startup. The controller now
 allows 30 seconds for cold portal/AT-SPI startup before declaring failure.
+
+Home List accessibility (2026-09-14): after restarting the modern Space, the
+AT-SPI tree exposed the installed-activity list as role `list` with label
+`Installed activities`; its first Activity row exposed role `button` and a
+descriptive accessible name containing the Activity name, favorite view,
+summary, version, and actions. This verifies the row semantics against the
+live GTK4 bridge, not only source-level assertions. The visible list evidence
+is `reports/screenshots/gtk4-home-list-native-20260914.png`.
