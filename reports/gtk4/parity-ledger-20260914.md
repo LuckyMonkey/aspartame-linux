@@ -86,6 +86,8 @@ runtime failures.
 - Activity artwork validation (2026-09-14): added bundle-local Sugar SVG icons
   for Clock and JAMClock; both convert successfully with `rsvg-convert`, and
   the guest rebuild stages them without warnings.
+- Host regression recheck after the Activity additions (2026-09-14): `pytest
+  -q` passed 172 tests with the worktree clean.
 - Direct QMP Space check (2026-09-14): with the QEMU window active, injected
   F7 and F8 events left the authoritative EWMH state at `current=1`; semantic
   `sugar-gtk4-space.sh` switching remains functional, so physical function-key
