@@ -245,3 +245,50 @@ Pointer delivery is separately proven: an absolute-tablet click opened a Help
 expander in the live GTK4 surface; keyboard delivery and keyboard-driven focus
 transfer remain unproven. See `reports/gtk4/qemu-input-frontier-20260915.md`
 and `qemu-pointer-frontier-20260915.md` for the reproductions.
+
+## GTK4-023 — AT-SPI bus discovery collides across the two Spaces on one X display
+
+- Category: `ASPARTAME-INTEGRATION` / verification tooling
+- Reproduction: run `scripts/sugar-gtk4-help-visible.py` after the classic
+  GTK3 shell has been (re)started more recently than the modern GTK4 shell.
+- Evidence: each Space runs its own private `at-spi-bus-launcher`, but both
+  advertise themselves through the same shared X11 root window `AT_SPI_BUS`
+  property; whichever launcher started most recently wins. `Atspi.get_desktop()`
+  follows that property and does not honor an `AT_SPI_BUS` environment
+  override (confirmed with the variable set and visible in `os.environ`).
+  A probe run after a GTK3 restart silently walks GTK3's tree instead of
+  GTK4's, with no error until a specific lookup fails.
+- Fix: `scripts/sugar-gtk4-focus-probe.py` saves the property, temporarily
+  points it at the modern Space's own deterministic bus socket, queries,
+  and restores the original value in `finally`. Verified against the live
+  guest; see `reports/gtk4/atspi-bus-discovery-20260915.md`.
+- Status: fixed in the new probe; `sugar-gtk4-help-visible.py` and any
+  future AT-SPI tooling should adopt the same save/swap/restore pattern.
+  Past "AT-SPI names/roles" evidence should be treated as ordering-sensitive
+  until re-verified with a bus-pinning probe.
+
+## GTK4-024 — Keyboard focus does not cross from the shell into an embedded Activity surface
+
+- Category: `CASILDA` / `UPSTREAM-SHELL`
+- Reproduction: with a real Activity active (Help, in a process separate
+  from the shell), send one physical Tab via QMP, then probe AT-SPI focus
+  with the GTK4-023 fix applied.
+- Evidence: focus moves once, from the Jarabe window down into the
+  `Gtk.Stack` "activity" child (the Casilda compositor widget), then stops;
+  a second and third Tab produce no further change. The Activity's own
+  AT-SPI tree is fully populated and correctly marks its search entry,
+  scroll pane, and topic buttons `focusable=True`, but every node in it,
+  including the Activity's own top-level frame, reports `focused=False`.
+  Sugar's semantic key handler does not consume a bare Tab
+  (`KeyHandler._key_pressed_cb` returns `False`), so this is not a shortcut
+  swallowing the event; GTK's own focus chain simply has no visibility past
+  the compositor widget's boundary.
+- Root cause: keyboard focus was never handed to the embedded Wayland
+  client at the compositor/seat level (a `wl_keyboard` enter operation),
+  which is a separate step from GTK4's widget-level focus chain and is
+  Casilda's responsibility, not the shell's or the Activity's.
+- Status: root-caused, not fixed. See
+  `reports/gtk4/focus-transfer-frontier-20260915.md`. Next step is Casilda's
+  own GTK4 widget API for seat/keyboard-focus handoff when the compositor
+  widget becomes the visible stack child; out of scope for a small
+  reviewable shell patch.

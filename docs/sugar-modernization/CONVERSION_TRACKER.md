@@ -47,6 +47,13 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   peer-backed Neighborhood/Group behavior, and individual ports for the
   remaining legacy Activity catalog. No additional keybinding or Spaces
   abstraction is justified by current evidence.
+- Later on 2026-09-15, the live guest was found with the classic GTK3 shell
+  placed on the modern Space's workspace (a bare `python3 -m jarabe.main`
+  restart bypassing `sugar-gtk4-space.sh`'s placement step); reconciled with
+  `sugar-gtk4-space.sh setup`. The same session found and fixed a shared
+  AT-SPI bus-discovery collision between the two Spaces (GTK4-023) and used
+  the fix to root-cause the open Tab/Shift+Tab/Space gate item down to a
+  missing Casilda keyboard-focus handoff (GTK4-024); see `BLOCKERS.md`.
 
 ## Execution and ownership
 
@@ -77,8 +84,14 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 - [x] Settings, Activity Manager, approval and contextual Help
 - [ ] Physical-event Tab/Shift+Tab/Space (QMP F1–F6, Enter activation, and
       F6→Escape now reach GTK4 through the explicit virtio keyboard, including
-      F4 on a live Activity; the injector now supports `SHIFT+TAB`, but these
-      focus actions still need a deterministic visible Activity result)
+      F4 on a live Activity; the injector now supports `SHIFT+TAB`. Root-caused
+      2026-09-15 via AT-SPI focus probing (GTK4-023/GTK4-024): a bare Tab moves
+      GTK focus once from the shell window into the Casilda compositor widget
+      and then stops there, because keyboard focus is never handed to the
+      embedded Activity's Wayland surface at the seat level. The Activity's own
+      widgets are fully focusable and correctly labeled; none ever reports
+      `STATE_FOCUSED`. This gate item now waits on Casilda-side keyboard-focus
+      handoff, not on shell input routing.)
 - [x] Accessible names, roles and states on important controls
 - [x] GTK CSS/build validation, no fatal GTK4 tracebacks or orphaned Activities
 - [x] Regression invariants and lifecycle stability run (repeat this pass as
