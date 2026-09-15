@@ -1,9 +1,9 @@
-# GTK4 Frame runtime verification — 2026-09-15
+# GTK4 Frame runtime evidence — 2026-09-15
 
-The live GTK4 shell service `ShowFrame()` returned `1` and revealed the Sugar
-Frame at 1920×1080. The capture shows the top activity/device strip, edge
-navigation arrows, owner icon, and bottom system controls rendered inside the
-fullscreen GTK4 shell surface.
-
-Evidence: `reports/screenshots/sugar-20260915-075309-v0.0.31.png` and OCR
-sidecar. No separate native top-level window was introduced.
+While the modern Space was active, the semantic shell action
+`org.laptop.Shell.ShowFrame` returned `boolean true` and revealed the GTK4
+Frame around Home. The 1920x1080 capture
+`reports/screenshots/sugar-20260915-092240-v0.0.31.png` shows the top and bottom
+Frame trays, edge reveal controls, Activity icons, and the active XO-colored
+Home icon. This confirms the Frame is mapped and visually usable in the GTK4
+shell; physical F1–F6 transport remains separately constrained by QEMU input.
