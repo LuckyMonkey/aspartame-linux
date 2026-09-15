@@ -1,5 +1,8 @@
 """Native GTK4 Finance Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -36,7 +39,37 @@ class FinanceActivity(SimpleActivity):
         try: value = abs(float(self.amount.get_text().strip())) * sign
         except ValueError: self.balance.set_text("Balance: enter a number"); return
         description = self.description.get_text().strip() or ("Income" if sign > 0 else "Expense")
+        self._append_row(value, description)
+        self.amount.set_text(""); self.description.set_text("")
+
+    def _append_row(self, value, description):
         self._rows.append((value, description))
         row = Gtk.ListBoxRow(); row.set_child(Gtk.Label(label=f"{description}: {value:+.2f}", xalign=0)); self.rows.append(row)
         self.balance.set_text(f"Balance: {sum(v for v, _ in self._rows):.2f}")
-        self.amount.set_text(""); self.description.set_text("")
+
+    def read_file(self, file_path):
+        """Restore transactions from a JSON Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            transactions = payload.get("transactions", [])
+            if not isinstance(transactions, list):
+                raise ValueError("transactions must be a list")
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            transactions = []
+        self._rows.clear()
+        while (row := self.rows.get_row_at_index(0)) is not None:
+            self.rows.remove(row)
+        for transaction in transactions:
+            if not isinstance(transaction, dict):
+                continue
+            try:
+                value = float(transaction["value"])
+                description = str(transaction.get("description", "Transaction")).strip() or "Transaction"
+            except (KeyError, TypeError, ValueError):
+                continue
+            self._append_row(value, description)
+        self.balance.set_text(f"Balance: {sum(v for v, _ in self._rows):.2f}")
+
+    def write_file(self, file_path):
+        """Save transactions as a JSON Journal object."""
+        Path(file_path).write_text(json.dumps({"transactions": [{"value": value, "description": description} for value, description in self._rows]}, sort_keys=True) + "\n", encoding="utf-8")

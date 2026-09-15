@@ -58,6 +58,15 @@ AT-SPI, and stopped cleanly with service release and shell cleanup. This
 supports a FUNCTIONAL PORT claim for UTF-8 editing/preview and persistence;
 full Markdown parser/rendering parity remains outside the claim.
 
+Native Finance object resume (2026-09-15):
+`sugar-gtk4-finance-roundtrip.py` passed two real guest cycles. Each cycle
+launched Finance, stopped it through Shell, seeded the saved Journal object
+with income and expense transactions, resumed it, verified the visible
+`Balance: 100.00` readout through AT-SPI, and stopped cleanly with service
+release and shell cleanup. This supports a FUNCTIONAL PORT claim for bounded
+offline transaction tracking and persistence; charts, import/export, and
+collaboration remain outside the claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
