@@ -1,5 +1,12 @@
 # GTK4 parity ledger — 2026-09-14
 
+Spaces runtime recheck (2026-09-15): the live guest selected GTK3 on desktop 0
+and passed `sugar-gtk4-runtime-check.sh gtk3` (`pid=33761`, active window
+`0x400003`), then selected GTK4 on desktop 1 and passed the GTK4 checker
+(`pid=464562`, active window `0x2400005`). Both processes remained present and
+separate throughout. This proves shell/runtime ownership and switching, not the
+full GTK3 Activity launch/input/stop gate.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
