@@ -45,7 +45,8 @@ Classification used by the migration ledger:
 | Appel Haken | FUNCTIONAL PORT | Four-region colour cycling/validation, JSON Journal colour configuration resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full map breadth and collaboration remain absent |
 | IQ | FUNCTIONAL PORT | Visual sequence choices, puzzle progression, JSON Journal round resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full puzzle catalog and collaboration breadth remain absent |
 | Across and Down | FUNCTIONAL PORT | Crossword clue/letter editing and check workflow, JSON Journal clue/letters resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full crossword grid breadth and collaboration remain absent |
-| Typing Turtle, Maze, FotoToon, Portfolio, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |
+| Typing Turtle, FotoToon, Portfolio, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |
+| Maze | FUNCTIONAL PORT | Four-direction movement, direct cell selection, JSON Journal position resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full maze generation and collaboration breadth remain absent |
 | Memorize | FUNCTIONAL PORT | Card reveal/matching workflow, JSON Journal card/match resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full randomization, scoring, and collaboration breadth remain absent |
 | Words | FUNCTIONAL PORT | UTF-8 word entry, lookup result, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; translation/audio breadth remains absent |
 | Portfolio | FUNCTIONAL PORT | UTF-8 project title/body editing and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; rich media/export breadth remains absent |

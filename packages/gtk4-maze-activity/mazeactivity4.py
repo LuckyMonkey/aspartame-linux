@@ -1,5 +1,8 @@
 """Native GTK4 Maze Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -46,3 +49,16 @@ class MazeActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.position = [0, 0]; self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            position = payload.get("position") if isinstance(payload, dict) else None
+            if isinstance(position, list) and len(position) == 2:
+                self.position = [max(0, min(3, int(value))) for value in position]
+                self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"position": self.position}, sort_keys=True) + "\n", encoding="utf-8")
