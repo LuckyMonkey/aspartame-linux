@@ -61,12 +61,62 @@ whichever workspace is current, covering the modern Space until
 not an available workaround, and the fix has to be a correct ungrab rather
 than avoiding the contention.
 
-## Next step
+## Direct observation: the grabs are never released
 
-Verify directly whether the grabs are still held after the release — with
-`xev`/`xdotool` or an XQueryKeymap-level probe — rather than trusting the log
-line. If they are, the minimum fix is to make the ungrab explicit and
-verified instead of relying on object finalisation.
+`scripts/sugar-x11-keygrab-probe.py` answers this without guessing. X11 allows
+only one client to hold a passive grab on a key, so asking for the grab and
+catching `BadAccess` says whether someone else owns it. Run with the modern
+Space selected, while the classic shell logged
+`Spaces key ownership: GTK3 released (workspace=1)`:
+
+    F1     keycode=67  HELD by another client
+    F2     keycode=68  HELD by another client
+    F3     keycode=69  HELD by another client
+    F4     keycode=70  HELD by another client
+    F5     keycode=71  HELD by another client
+    F6     keycode=72  HELD by another client
+    F7     keycode=73  HELD by another client
+    F8     keycode=74  HELD by another client
+    Tab    keycode=23  free
+    a      keycode=38  free
+
+Exactly the observed symptom: ordinary keys reach the modern shell, function
+keys never do.
+
+The owner is the classic shell. Killing it and probing inside the respawn
+window, before it re-grabs, reports every one of F1-F8 as `free`.
+
+Three release strategies were tried in the classic shell's
+`_sync_space_grab`, with the probe re-run after each, and **none** dropped the
+grabs:
+
+1. `grabber.grab_keys([])` as shipped - still held.
+2. Adding `grabber.run_dispose()` to force GObject disposal - still held.
+3. Replacing the set with a single unused key,
+   `grab_keys(['XF86LaunchA'])` - still held.
+
+So `SugarExt.KeyGrabber`'s grabs are additive and are released only when the
+owning process exits. The classic shell's release path cannot work as
+written, whatever its log line says. All three experiments were reverted and
+the classic shell is back to its original source; both Spaces were verified
+healthy afterwards.
+
+## Where the fix belongs
+
+In `SugarExt.KeyGrabber` itself: `grab_keys()` has to `XUngrabKey` the keys it
+previously took before applying a new set, so that an empty set is a real
+ungrab. The implementation ships in **`sugar-toolkit-gtk3 0.121-7`**
+(`/usr/lib/libsugarext.so`, `SugarExt-1.0.typelib`), so closing this means
+rebuilding that package with a corrected key grabber, and it is an upstream
+candidate. Its source is not checked out on this guest; only the GTK4
+`sugar-ext` is pinned here, and that one does not contain the key grabber.
+
+The alternative, calling `XUngrabKey` directly from the classic shell, needs
+the shell's *own* X connection, because passive grabs are per-client: a fresh
+`XOpenDisplay` is a different client and cannot release them. PyGObject
+exposes the GTK3 `Display*` only through the repr of a boxed `xlib.Display`,
+so doing this from Python means parsing a pointer out of a string. That is
+not worth shipping into the classic shell's key handling.
 
 Do not treat this as a Frame defect or a key-routing defect in the GTK4
 shell; both were eliminated above.
