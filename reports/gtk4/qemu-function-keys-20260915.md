@@ -24,3 +24,6 @@ presentation. Journal detail Escape remains a separate navigation check.
 After adding the shell-level Escape shortcut, a live F6 → Escape sequence
 closed the revealed Frame and returned to Home. Evidence:
 `sugar-20260915-101954-v0.0.31.png`.
+
+From Journal, physical Enter activated the selected Clock entry and produced a
+live Clock Activity surface (`sugar-20260915-101822-v0.0.31.png`).
