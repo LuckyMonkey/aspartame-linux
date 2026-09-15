@@ -5,6 +5,9 @@ model is intentionally independent from the renderer so the activity remains
 predictable in the Casilda surface and easy to exercise with pointer input.
 """
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -78,6 +81,31 @@ class DiamondFusionActivity(SimpleActivity):
 
     def _reset(self, _button):
         self._reset_model(); self.status.set_text("Select two matching neighbouring diamonds to fuse."); self.canvas.queue_draw()
+
+    def read_file(self, file_path):
+        """Restore the board and score from a Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            cells = payload.get("cells", []) if isinstance(payload, dict) else []
+            score = payload.get("score", 0) if isinstance(payload, dict) else 0
+            if (not isinstance(cells, list) or len(cells) != self.ROWS * self.COLUMNS
+                    or any(not isinstance(value, int) or value < 0 or value > max(self.COLORS)
+                           for value in cells)):
+                raise ValueError("invalid board")
+            self.cells = cells
+            self.score = max(0, int(score))
+            self.selected = None
+            self.status.set_text(f"Score: {self.score} · select two matching neighbours.")
+            self.canvas.queue_draw()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            self._reset_model()
+
+    def write_file(self, file_path):
+        """Persist the board and score as a Journal object."""
+        Path(file_path).write_text(
+            json.dumps({"cells": self.cells, "score": self.score}, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
 
     def _draw(self, _area, cr, width, height):
         cr.set_source_rgb(0.97, 0.97, 0.97); cr.paint()
