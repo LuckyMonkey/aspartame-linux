@@ -1050,6 +1050,10 @@ get_books_activity="$repo/packages/gtk4-get-books-activity"
 test -f "$get_books_activity/activity/activity.info" || { echo "missing native GTK4 Get Books Activity bundle" >&2; exit 2; }
 test -f "$get_books_activity/getbooksactivity4.py" || { echo "missing native GTK4 Get Books Activity entrypoint" >&2; exit 2; }
 ln -sfn "$get_books_activity" "$activity_dir/GetBooks.activity"
+jukebox_activity="$repo/packages/gtk4-jukebox-activity"
+test -f "$jukebox_activity/activity/activity.info" || { echo "missing native GTK4 Jukebox Activity bundle" >&2; exit 2; }
+test -f "$jukebox_activity/jukeboxactivity4.py" || { echo "missing native GTK4 Jukebox Activity entrypoint" >&2; exit 2; }
+ln -sfn "$jukebox_activity" "$activity_dir/Jukebox.activity"
 moon_activity="$repo/packages/gtk4-moon-activity"
 test -f "$moon_activity/activity/activity.info" || { echo "missing native GTK4 Moon Activity bundle" >&2; exit 2; }
 test -f "$moon_activity/moonactivity4.py" || { echo "missing native GTK4 Moon Activity entrypoint" >&2; exit 2; }

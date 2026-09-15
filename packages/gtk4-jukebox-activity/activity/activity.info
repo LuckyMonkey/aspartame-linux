@@ -1,0 +1,10 @@
+[Activity]
+name = Jukebox
+bundle_id = org.laptop.sugar.Jukebox
+exec = sugar-activity4 jukeboxactivity4.JukeboxActivity
+icon = jukebox
+activity_version = 1
+show_launcher = yes
+license = GPLv2+
+summary = Offline Sugar playlist and audio player
+tags = Audio;Music;Media
