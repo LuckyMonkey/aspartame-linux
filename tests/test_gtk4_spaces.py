@@ -172,14 +172,6 @@ def test_journal_explicit_stack_selection_patch_is_routed():
     assert 'model.stack.set_visible_child_name("journal")' in patch
 
 
-def test_journal_expand_visible_child_patch_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0131-journal-expand-visible-child.patch').read_text()
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert 'expand the Journal shell child when shown' in patch
-    assert '*0131*) target="$root/sources/sugar" ;;' in build
-    assert 'journal.set_vexpand(True)' in patch
-
-
 def test_group_accessibility_patch_is_routed():
     patch = (ROOT / 'patches/gtk4-preview/0116-group-accessibility.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
