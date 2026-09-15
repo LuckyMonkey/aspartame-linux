@@ -30,7 +30,22 @@ def find(node, pid, depth=0):
             hit = find(child, pid, depth + 1)
             if hit: return hit
     return None
-for old in subprocess.check_output(["pgrep", "-u", "aspartame", "-f", "helpactivity4.HelpActivity"], text=True).splitlines():
+def find_entry(node, pid, depth=0):
+    if depth > 14: return None
+    if node.get_process_id() == pid and node.get_role() in (Atspi.Role.ENTRY, Atspi.Role.TEXT):
+        try:
+            if node.get_name() == "Search help" or node.get_role() == Atspi.Role.ENTRY:
+                return node
+        except Exception:
+            pass
+    for i in range(node.get_child_count()):
+        child = node.get_child_at_index(i)
+        if child:
+            hit = find_entry(child, pid, depth + 1)
+            if hit: return hit
+    return None
+old_pids = subprocess.run(["pgrep", "-u", "aspartame", "-f", "helpactivity4.HelpActivity"], text=True, capture_output=True).stdout.splitlines()
+for old in old_pids:
     try: os.kill(int(old), 15)
     except ProcessLookupError: pass
 time.sleep(1)
@@ -54,4 +69,23 @@ for _ in range(100):
     if hit: break
     time.sleep(.1)
 assert hit, "Help surface not visible in AT-SPI"
-print("help-visible=PASS pid=%d activity=%s name=%r text=%r" % (pid, aid, hit[2], hit[1][:500]), flush=True)
+entry = find_entry(Atspi.get_desktop(0), pid)
+assert entry, "Help search entry not visible in AT-SPI"
+Atspi.EditableText.set_text_contents(entry, "Journal")
+filtered = None
+for _ in range(100):
+    def has_match(node, depth=0):
+        if depth > 14: return False
+        if node.get_process_id() == pid:
+            try:
+                text = Atspi.Text.get_text(node, 0, -1)
+                if "topic match" in text or "topics match" in text: return True
+            except Exception: pass
+        for i in range(node.get_child_count()):
+            child = node.get_child_at_index(i)
+            if child and has_match(child, depth + 1): return True
+        return False
+    if has_match(Atspi.get_desktop(0)): break
+    time.sleep(.1)
+assert has_match(Atspi.get_desktop(0)), "Help search did not filter Journal topic"
+print("help-visible=PASS help-search=PASS pid=%d activity=%s" % (pid, aid), flush=True)

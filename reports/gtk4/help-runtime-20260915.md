@@ -8,5 +8,11 @@ Activities, Journal, Frame, Neighborhood, keyboard/accessibility, and further
 reading. The earlier white icon-only captures were launch placeholders taken
 before `ActivateActivity`; they are not runtime evidence for the Help UI.
 
-Evidence: `reports/screenshots/sugar-20260915-092840-v0.0.31.png` and OCR
-sidecar. Probe output: `help-visible=PASS` (AT-SPI surface/name discovery).
+The same probe used the real GTK4 text-entry accessible object to enter
+`Journal`; the status changed to `6 topics match` and unrelated sections were
+hidden. This closes the visible Help search behavior as well as initial launch.
+
+Evidence: `reports/screenshots/sugar-20260915-092840-v0.0.31.png` (initial
+surface) and `reports/screenshots/sugar-20260915-093221-v0.0.31.png` (filtered
+`Journal` search), with OCR sidecars. Probe output:
+`help-visible=PASS help-search=PASS` (AT-SPI surface and search discovery).
