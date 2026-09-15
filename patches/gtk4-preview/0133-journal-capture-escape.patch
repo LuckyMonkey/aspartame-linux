@@ -1,0 +1,14 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: capture Journal Escape before focused children
+
+The GTK4 Journal key controller is attached to the Activity root, but focus is
+normally held by the ListBox, search entry, or an editable row child. Capture
+phase preserves the Journal contract that Escape clears search or returns from
+detail regardless of which child currently owns focus.
+
+--- a/src/jarabe/journal/journalactivity.py
++++ b/src/jarabe/journal/journalactivity.py
+@@ -228,2 +228,3 @@
+         key_controller = Gtk.EventControllerKey()
++        key_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+         key_controller.connect('key-pressed', self.__key_press_event_cb)

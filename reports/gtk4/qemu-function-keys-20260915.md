@@ -17,6 +17,6 @@ Each event was injected into the running QEMU instance and followed by a
 focus/input checks; the screenshots here establish physical function-key
 delivery and shell view transitions only.
 
-An additional F5 → Escape attempt left Journal visible, so physical Escape is
-currently **not passed**. The failure is retained as a concrete follow-up rather
-than being inferred from the successful F-key transport.
+An F5 → Escape sequence first dismissed the pointer-opened palette; a second
+Escape cancelled an active Journal title edit and returned the row to its normal
+presentation. Journal detail Escape remains a separate navigation check.
