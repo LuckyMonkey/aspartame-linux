@@ -8,13 +8,14 @@
 | sugar-artwork | main, `3c4854d` | pinned checkout | not installed | shell integration |
 | datastore | main, `7aa97e7` | native reader built; private service runs | stable D-Bus contract verified | preserve API while porting Journal |
 | Casilda | main, `cecb869` | 1.5.0 installed in isolated prefix | `wayland-sugar` and protocols verified | output reports 0x0 until an embedded surface is allocated |
-| Calculate/Log/Browse/ImageViewer/Terminal | pinned migration heads | source only | not installed | test one activity at a time |
+| GTK4 Activity coverage set | pinned/bundled native ports | registered preview bundles | 40 Activities pass repeated launch/stop coverage | classify parity in `ACTIVITY_PORT_CLASSIFICATION.md` |
 
 The shell/toolkit rows are fetched from sugarlabs/* pull-request refs, not
 contributor-fork branch names. This keeps the preview connected to the actual
 review objects Sugar Labs is evaluating while preserving exact SHA pins. The
-activity rows remain provisional migration checkouts and are not treated as
-upstream-complete.
+Activity coverage row records runtime coverage only; behavioral parity and
+retirement-gate status are tracked separately in the Activity classification
+ledger.
 
 The shell remains an ordinary GTK4 top-level on the guest's existing X11
 development desktop. Casilda supplies the private Wayland compositor used for

@@ -1,39 +1,35 @@
-# GTK4 activity matrix
+# GTK4 Activity matrix
 
-No activity is marked usable until it launches inside a running GTK4 Sugar session.
+This matrix separates runtime coverage from behavioral parity. The lifecycle
+probe proves that a registered bundle can launch through Journal/Casilda,
+register its private Activity service, become active in the shell, and stop
+without an orphan process. It does not by itself prove a complete port.
 
-| Activity | Pinned head | Import/build | Launch/toolbar/palette/Journal/clipboard/quit |
-|---|---|---|---|
-| Calculate | `1ff50e7` | not yet tested | not tested |
-| Log | `b4c43c4` | not yet tested | not tested |
-| Browse | `c448927` | not yet tested | not tested |
-| ImageViewer | `87fedc0` | not yet tested | not tested |
-| Terminal | `1425071` | not yet tested | not tested |
+| Activities | Runtime coverage | Parity classification |
+|---|---|---|
+| Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log | 3-cycle Casilda launch/activate/stop evidence | FUNCTIONAL PORT (bounded workflows) |
+| Write | 3-cycle launch plus UTF-8 Journal save/resume and save-failure cancellation/retry | FUNCTIONAL PORT |
+| Read | 2-cycle launch/activate/stop; Journal UTF-8 hooks compile in guest | COVERAGE IMPLEMENTATION (live resume pending) |
+| Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Markdown, Finance, Words, Last One Loses, Get Things Done, Grid Paint, Stopwatch, Gears, TurtleBlocks, Game Of Life, Color My World, Abacus, Planets, Connect the Dots, Pippy, Paint, Diamond Fusion, Level, Moon, Get Books, Jukebox | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
 
-
-Home shell note (2026-09-02): Favorites/Home and the search List View render in
-the pinned preview. The search path was exercised semantically and returned to
-Home without a traceback. It correctly has no matches because these Activity
-sources have not yet been built, installed, or registered as preview bundles.
-
+The authoritative class definitions and per-Activity boundaries live in
+[`ACTIVITY_PORT_CLASSIFICATION.md`](ACTIVITY_PORT_CLASSIFICATION.md). No
+Activity is currently a FULL PORT, and no implemented bundle is being counted
+as a PLACEHOLDER merely because it has reduced behavior.
 
 ## Porting gate
 
 Use [GTK4_ACTIVITY_RUNBOOK.md](GTK4_ACTIVITY_RUNBOOK.md) for each Activity.
-The columns are deliberately separate: a source checkout that imports is not
-a launchable Activity, and a process that stays alive is not a completed
-lifecycle.
+Promotion requires evidence appropriate to the claimed class:
 
-An Activity moves from **source only** only after the following evidence exists:
+- import/build at the pinned source state;
+- Home activation in the running GTK4 preview;
+- private Activity D-Bus service and intended surface path;
+- real input and accessible controls for the claimed workflow;
+- canonical Stop action, process exit, and bus-name release;
+- Journal relaunch/resume when the Activity owns persistent state;
+- comparison with the stable GTK3 behavior before claiming parity.
 
-- isolated import/build result at the pinned source SHA;
-- Home activation inside the running GTK4 preview;
-- private `org.laptop.Activity<SUGAR_ACTIVITY_ID>` D-Bus name and object path;
-- Wayland first paint through Casilda;
-- toolbar/palette behavior and the canonical Stop action;
-- clean bus-name release and process exit;
-- relaunch/resume evidence when the Activity owns persistent state.
-
-The first target remains Log because it already exercises the shell's Activity
-launch path and exposes the current service-registration blocker. Do not
-parallelize the next five ports until one Activity passes this gate.
+The full matrix is a coverage instrument, not a retirement gate. The remaining
+highest-value parity work is live Read/Stopwatch object resume, peer-backed
+Neighborhood behavior, and physical input delivery below the QEMU transport.
