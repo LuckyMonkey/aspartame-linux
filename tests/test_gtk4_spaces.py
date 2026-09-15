@@ -17,6 +17,9 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     assert 'dead session bus' in controller
     assert 'DBUS_SESSION_BUS_ADDRESS=unix:path=' in controller
     assert '[ -S "$bus_address" ]' in controller
+    assert 'retire_stale_gtk4()' in controller
+    assert 'Retiring stale GTK4 shell PID' in controller
+    assert 'kill "$pid"' in controller
     assert 'python3 -m jarabe' in controller
     assert '--workspace 0' in controller
     assert '--workspace 1 --fullscreen' in controller

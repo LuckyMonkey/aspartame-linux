@@ -73,6 +73,20 @@ gtk4_pid() {
     done
 }
 
+retire_stale_gtk4() {
+    local pid bus_address
+    for pid in $(pgrep -u "$(id -u)" -f 'python3 -m jarabe\.main|jarabe/main.py'); do
+        tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
+            grep -qx 'ASPARTAME_GTK4_PREVIEW=1' || continue
+        bus_address=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
+            sed -n 's/^DBUS_SESSION_BUS_ADDRESS=unix:path=\([^,]*\).*$/\1/p' | head -1)
+        if [ -z "$bus_address" ] || [ ! -S "$bus_address" ]; then
+            echo "Retiring stale GTK4 shell PID $pid" >&2
+            kill "$pid" 2>/dev/null || true
+        fi
+    done
+}
+
 gtk3_pid() {
     for pid in $(pgrep -u "$(id -u)" -f 'python3 -m jarabe\.main|jarabe/main.py'); do
         if ! tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
@@ -95,6 +109,7 @@ require_gtk3() {
 
 start_gtk4() {
     local pid
+    retire_stale_gtk4
     pid=$(gtk4_pid || true)
     if [ -z "$pid" ]; then
         # The modern Space owns a real fullscreen surface.  Starting it
