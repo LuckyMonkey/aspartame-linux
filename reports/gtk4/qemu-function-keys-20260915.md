@@ -16,3 +16,7 @@ Each event was injected into the running QEMU instance and followed by a
 1920×1080 capture. Tab/Shift+Tab/Enter/Space/Escape remain separate semantic
 focus/input checks; the screenshots here establish physical function-key
 delivery and shell view transitions only.
+
+An additional F5 → Escape attempt left Journal visible, so physical Escape is
+currently **not passed**. The failure is retained as a concrete follow-up rather
+than being inferred from the successful F-key transport.
