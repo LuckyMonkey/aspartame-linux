@@ -565,3 +565,10 @@ Stopwatch subsequently gained live seeded JSON elapsed-time resume evidence in
 
 No new Spaces, launcher, datastore, or input abstraction is introduced by the
 Frame fix. GTK3 remains a separate process and behavioral reference.
+Native Abacus object resume (2026-09-15):
+`sugar-gtk4-abacus-roundtrip.py` passed two real guest cycles. Each cycle
+launched Abacus, stopped it through Shell, seeded the saved Journal object
+with five rod values, resumed it, verified the visible `Value: 12345` readout
+through AT-SPI, and stopped cleanly with service release and shell cleanup.
+This supports a FUNCTIONAL PORT claim for bounded place-value interaction and
+persistence; advanced bead manipulation remains outside the claim.

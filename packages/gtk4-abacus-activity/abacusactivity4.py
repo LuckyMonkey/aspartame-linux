@@ -1,5 +1,8 @@
 """Native GTK4 Abacus place-value Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -23,6 +26,24 @@ class AbacusActivity(SimpleActivity):
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def _change(self, _button, index, delta):
-        self.values[index] = max(0, min(9, self.values[index] + delta)); self.value_label.set_text(f"Value: {sum(v * 10 ** (4-i) for i, v in enumerate(self.values))}")
+        self.values[index] = max(0, min(9, self.values[index] + delta)); self._update_value()
 
-    def _clear(self, _button): self.values = [0] * 5; self.value_label.set_text("Value: 0")
+    def _update_value(self): self.value_label.set_text(f"Value: {sum(v * 10 ** (4-i) for i, v in enumerate(self.values))}")
+
+    def _clear(self, _button): self.values = [0] * 5; self._update_value()
+
+    def read_file(self, file_path):
+        """Restore rod values from a JSON Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            values = payload.get("values", []) if isinstance(payload, dict) else []
+            if not isinstance(values, list) or len(values) != 5:
+                raise ValueError("values must contain five rods")
+            self.values = [max(0, min(9, int(value))) for value in values]
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            self.values = [0] * 5
+        self._update_value()
+
+    def write_file(self, file_path):
+        """Save rod values as a JSON Journal object."""
+        Path(file_path).write_text(json.dumps({"values": self.values}, sort_keys=True) + "\n", encoding="utf-8")

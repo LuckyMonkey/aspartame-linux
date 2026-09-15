@@ -45,6 +45,7 @@ Classification used by the migration ledger:
 | Grid Paint | FUNCTIONAL PORT | 10×10 cell painting, selection summary, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; advanced layer/fill tools remain absent |
 | Get Things Done | FUNCTIONAL PORT | Native task list with add/complete controls and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; collaboration and upstream feature breadth remain absent |
 | Game Of Life, Color My World, Abacus, Planets | COVERAGE IMPLEMENTATION | Native rendering/interaction cores; not full upstream replacements |
+| Abacus | FUNCTIONAL PORT | Place-value rod controls, computed value, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; advanced bead manipulation remains absent |
 | Connect the Dots, Pippy, Paint, Diamond Fusion, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
 | Paint | FUNCTIONAL PORT | Pointer stroke drawing, color selection, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; image layers/tools remain absent |
 | Level | FUNCTIONAL PORT | Offline inclination controls, drag interaction, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; hardware sensor integration remains outside this claim |
