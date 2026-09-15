@@ -588,3 +588,12 @@ with the selected planet `Mars`, resumed it, verified the visible selection
 through AT-SPI, and stopped cleanly with service release and shell cleanup.
 This supports a FUNCTIONAL PORT claim for bounded planet selection and
 persistence; full simulation breadth remains outside the claim.
+
+Native Color My World object resume (2026-09-15):
+`sugar-gtk4-colormyworld-roundtrip.py` passed two real guest cycles. Each cycle
+launched Color My World, stopped it through Shell, seeded the saved Journal
+object with the `Violet` palette selection, resumed it, verified the visible
+selection through AT-SPI, and stopped cleanly with service release and shell
+cleanup. This supports a FUNCTIONAL PORT claim for bounded palette selection
+and persistence; full artwork and collaboration breadth remain outside the
+claim.

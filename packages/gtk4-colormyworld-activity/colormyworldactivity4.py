@@ -1,5 +1,8 @@
 """Native GTK4 Color My World Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -20,7 +23,26 @@ class ColorMyWorldActivity(SimpleActivity):
         provider = Gtk.CssProvider(); provider.load_from_data(b"button { min-height: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-    def _choose(self, _button, label, color): self.name.set_text(label); self._color = color; self.swatch.queue_draw()
+    def _choose(self, _button, label, color): self.name.set_text(label); self._color_name = label; self._color = color; self.swatch.queue_draw()
 
     def _draw(self, _area, cr, width, height):
         color = getattr(self, "_color", "#ddd"); rgba = Gdk.RGBA(); rgba.parse(color); cr.set_source_rgba(rgba.red, rgba.green, rgba.blue, 1); cr.paint()
+
+    def read_file(self, file_path):
+        """Restore the selected palette color from a JSON Journal object."""
+        colors = {"Red": "#e33", "Gold": "#fc3", "Green": "#3c9", "Blue": "#39f", "Violet": "#c6f"}
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            name = payload.get("name", "") if isinstance(payload, dict) else ""
+            if name not in colors:
+                name = ""
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            name = ""
+        if name:
+            self._choose(None, name, colors[name])
+        else:
+            self._color_name = ""; self._color = "#ddd"; self.name.set_text("Choose a color"); self.swatch.queue_draw()
+
+    def write_file(self, file_path):
+        """Save the selected palette color as a JSON Journal object."""
+        Path(file_path).write_text(json.dumps({"name": getattr(self, "_color_name", "")}, sort_keys=True) + "\n", encoding="utf-8")

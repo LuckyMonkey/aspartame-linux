@@ -22,6 +22,7 @@ without an orphan process. It does not by itself prove a complete port.
 | Abacus | 2-cycle launch plus seeded JSON rod-value resume and visible value restoration | FUNCTIONAL PORT |
 | Pippy | 2-cycle launch plus seeded UTF-8 source resume and visible editor restoration | FUNCTIONAL PORT |
 | Planets | 2-cycle launch plus seeded JSON selected-planet resume and visible selection restoration | FUNCTIONAL PORT |
+| Color My World | 2-cycle launch plus seeded JSON color resume and visible selection restoration | FUNCTIONAL PORT |
 | Paint | 2-cycle launch plus seeded JSON stroke/color resume and visible status restoration | FUNCTIONAL PORT |
 | FotoToon | 2-cycle launch plus seeded JSON caption-canvas resume and visible caption restoration | FUNCTIONAL PORT |
 | Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, Last One Loses, Gears, TurtleBlocks, Game Of Life, Color My World, Connect the Dots, Diamond Fusion, Level, Moon, Get Books | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
