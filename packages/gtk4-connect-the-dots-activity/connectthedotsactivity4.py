@@ -4,7 +4,9 @@ The puzzle is deliberately small and deterministic so it works offline: click
 the numbered points in order to draw a continuous line through the picture.
 """
 
+import json
 import math
+from pathlib import Path
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
@@ -81,3 +83,22 @@ class ConnectTheDotsActivity(SimpleActivity):
 
     def _reset(self, _button):
         self._next = 0; self._connected.clear(); self.status.set_text("Connect dot 1 to begin"); self.canvas.queue_draw()
+
+    def read_file(self, file_path):
+        """Restore progress from a Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            connected = payload.get("connected", []) if isinstance(payload, dict) else []
+            if (not isinstance(connected, list) or
+                    any(not isinstance(index, int) or index < 0 or index >= len(self.POINTS)
+                        for index in connected) or connected != list(range(len(connected)))):
+                raise ValueError("invalid connected points")
+            self._connected = connected; self._next = len(connected)
+            self.status.set_text("Puzzle complete!" if self._next == len(self.POINTS) else f"Connect dot {self._next + 1}")
+            self.canvas.queue_draw()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            self._reset(None)
+
+    def write_file(self, file_path):
+        """Persist connected point progress as a Journal object."""
+        Path(file_path).write_text(json.dumps({"connected": self._connected}, sort_keys=True) + "\n", encoding="utf-8")

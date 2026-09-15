@@ -11,6 +11,8 @@ def test_connect_the_dots_bundle_is_native_and_registered():
     assert "sugar-activity4 connectthedotsactivity4.ConnectTheDotsActivity" in info
     assert "class ConnectTheDotsActivity(SimpleActivity)" in source
     assert "Puzzle complete!" in source
+    assert "def read_file(self, file_path)" in source
+    assert '"connected": self._connected' in source
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     sync = (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
