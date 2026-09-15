@@ -33,7 +33,7 @@ still classified separately from launch coverage.
 | Stopwatch | GTK3 legacy Activity | Native GTK4 bundle | Elapsed-time display with JSON Journal resume | GTK4 verified 2026-09-15 | `org.sugarlabs.StopwatchActivity` resumes seeded elapsed-time objects; lap/export parity is not claimed |
 
 Current verified checkpoint: GTK4 Home Favorites/List/search, Frame,
-Journal search/resume/edit/selection, Settings navigation,
+native Journal Activity search/resume/edit/selection, Settings navigation,
 Neighborhood/Group empty states, Sugar palettes, clipboard transfer, Help,
 Activity Manager policy, and repeated normal/abnormal Activity launch-stop
 cleanup run in the modern Space. Native Journal and Home List launch paths
@@ -45,6 +45,11 @@ Remaining limits are explicit: physical F1-F6 delivery is below the current
 QEMU/evdev transport; Neighborhood collaboration cannot be exercised without
 peers; and additional legacy Activities remain individual porting targets.
 These are not silently counted as GTK4 parity.
+
+The shell-level `ShowJournal()` action is a known presentation gap: it enters
+the Journal Activity state but currently captures as a blank white surface.
+Native Journal Activity launch/resume remains independently verified; that
+evidence does not prove shell-embedded Journal presentation is complete.
 
 The ISO profile includes GTK4 runtime libraries, but the GTK4 source overlay
 and pinned Activity checkouts are still supplied by the `aspartame-dev` 9p
