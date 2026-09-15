@@ -1,5 +1,8 @@
 """GTK4-native two-row Mancala board."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -58,3 +61,21 @@ class MancalaActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.pits = [4] * 12; self.stores = [0, 0]; self.turn = 0; self.status.set_text("Player 1: choose a pit."); self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                pits = payload.get("pits", self.pits)
+                stores = payload.get("stores", self.stores)
+                if len(pits) == 12 and len(stores) == 2:
+                    self.pits = [max(0, int(value)) for value in pits]
+                    self.stores = [max(0, int(value)) for value in stores]
+                    self.turn = int(payload.get("turn", self.turn)) % 2
+                    self.status.set_text("Player %d: choose a pit." % (self.turn + 1))
+                    self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"pits": self.pits, "stores": self.stores, "turn": self.turn}, sort_keys=True) + "\n", encoding="utf-8")
