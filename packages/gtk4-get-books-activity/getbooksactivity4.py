@@ -5,6 +5,9 @@ the same useful interaction (find a title, inspect its metadata, and open a
 reading view) without making network access part of the shell smoke test.
 """
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -92,6 +95,7 @@ class GetBooksActivity(SimpleActivity):
         if row is None:
             self.details.set_text("Select a book to see details."); self.read.set_sensitive(False); return
         book = row.book
+        self._selected_title = book["title"]
         self.details.set_text(f'{book["title"]}\n{book["author"]} · {book["year"]}\n\n{book["description"]}')
         self.read.set_sensitive(True)
 
@@ -99,3 +103,20 @@ class GetBooksActivity(SimpleActivity):
         row = self.results.get_selected_row()
         if row is not None:
             self.details.set_text(f'Reading preview: {row.book["title"]}\n\n{row.book["description"]}\n\nThis offline catalog does not download books.')
+
+    def read_file(self, file_path):
+        """Restore catalog query and selected book from a JSON Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            query = str(payload.get("query", "")) if isinstance(payload, dict) else ""
+            selected = str(payload.get("selected", "")) if isinstance(payload, dict) else ""
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            query, selected = "", ""
+        self.search.set_text(query)
+        row = next((self.results.get_row_at_index(i) for i in range(len(BOOKS)) if self.results.get_row_at_index(i) is not None and getattr(self.results.get_row_at_index(i), "book", {}).get("title") == selected), None)
+        if row is not None:
+            self.results.select_row(row)
+
+    def write_file(self, file_path):
+        """Save catalog query and selected book as a JSON Journal object."""
+        Path(file_path).write_text(json.dumps({"query": self.search.get_text(), "selected": getattr(self, "_selected_title", "")}, sort_keys=True) + "\n", encoding="utf-8")

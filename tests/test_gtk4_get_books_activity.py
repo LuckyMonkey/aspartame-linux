@@ -15,3 +15,10 @@ def test_get_books_bundle_is_native_offline_and_registered():
     assert "org.laptop.sugar.GetBooksActivity|getbooksactivity4.GetBooksActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     for script in ("sugar-gtk4-dev-sync.sh", "sugar-gtk4-build.sh"):
         assert "gtk4-get-books-activity" in (ROOT / "scripts" / script).read_text()
+
+
+def test_get_books_journal_roundtrip_is_json():
+    source = (ROOT / "packages/gtk4-get-books-activity/getbooksactivity4.py").read_text()
+    assert "def read_file(self, file_path)" in source
+    assert "def write_file(self, file_path)" in source
+    assert '"selected"' in source

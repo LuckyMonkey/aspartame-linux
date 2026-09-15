@@ -597,3 +597,12 @@ selection through AT-SPI, and stopped cleanly with service release and shell
 cleanup. This supports a FUNCTIONAL PORT claim for bounded palette selection
 and persistence; full artwork and collaboration breadth remain outside the
 claim.
+
+Native Get Books object resume (2026-09-15):
+`sugar-gtk4-get-books-roundtrip.py` passed two real guest cycles. Each cycle
+launched Get Books, stopped it through Shell, seeded the saved Journal object
+with a catalog query and selected title, resumed it, verified the visible book
+title through AT-SPI, and stopped cleanly with service release and shell
+cleanup. This supports a FUNCTIONAL PORT claim for bounded offline catalog
+search/selection and persistence; network catalogs and downloads remain
+outside the claim.
