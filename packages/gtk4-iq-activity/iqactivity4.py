@@ -1,5 +1,8 @@
 """Native GTK4 visual sequence puzzle Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -39,3 +42,15 @@ class IQActivity(SimpleActivity):
 
     def _next(self, _button):
         self.round = (self.round + 1) % len(self.ROUNDS); self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                self.round = int(payload.get("round", 0)) % len(self.ROUNDS)
+                self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"round": self.round}, sort_keys=True) + "\n", encoding="utf-8")

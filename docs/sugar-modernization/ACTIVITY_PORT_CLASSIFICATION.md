@@ -38,7 +38,8 @@ Classification used by the migration ledger:
 | Reversi | FUNCTIONAL PORT | Eight-by-eight capture/flip workflow, board/player JSON Journal resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full scoring, hints, and collaboration breadth remain absent |
 | Jumble | FUNCTIONAL PORT | Word scramble/check/next workflow, JSON Journal puzzle-index resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; scoring, hints, and collaboration breadth remain absent |
 | Mastermind | FUNCTIONAL PORT | Four-color guess/check/reset workflow, visible guess progress, JSON Journal save/resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full upstream scoring, hints, and collaboration breadth remain absent |
-| IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
+| Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
+| IQ | FUNCTIONAL PORT | Visual sequence choices, puzzle progression, JSON Journal round resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full puzzle catalog and collaboration breadth remain absent |
 | Across and Down | FUNCTIONAL PORT | Crossword clue/letter editing and check workflow, JSON Journal clue/letters resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full crossword grid breadth and collaboration remain absent |
 | Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |
 | Words | FUNCTIONAL PORT | UTF-8 word entry, lookup result, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; translation/audio breadth remains absent |
