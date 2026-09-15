@@ -27,7 +27,7 @@ Classification used by the migration ledger:
 | Clock | FUNCTIONAL PORT | Native time/date presentation |
 | JAMClock | FUNCTIONAL PORT | Native time/date replacement under the original identity |
 | Image Viewer | FUNCTIONAL PORT | Native image surface through the pinned bundle path |
-| Terminal | FUNCTIONAL PORT | Native VTE terminal path; terminal feature parity remains bounded |
+| Terminal | FUNCTIONAL PORT | Native GTK4 command/output surface, command input, and clean lifecycle verified 2026-09-15; full terminal-emulator features remain outside this claim |
 | Browse | FUNCTIONAL PORT | Native WebKit path; collaboration/download parity is not claimed |
 | Log | FUNCTIONAL PORT | Native log list surface |
 | Read | FUNCTIONAL PORT | UTF-8 Journal text object resume, visible page restoration, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; PDF/EPUB/format breadth and upstream Read parity remain absent |

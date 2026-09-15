@@ -1,0 +1,9 @@
+[Activity]
+name = Terminal
+bundle_id = org.laptop.Terminal
+exec = sugar-activity4 terminalactivity4.TerminalActivity
+icon = terminal
+activity_version = 1
+license = GPLv3+
+summary = Run shell commands inside Sugar
+categories = utility

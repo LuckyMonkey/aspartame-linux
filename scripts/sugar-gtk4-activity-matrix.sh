@@ -13,7 +13,7 @@ declare -a activities=(
     'tv.alterna.Clock|clockactivity4.ClockActivity'
     'org.laptop.JAMClock|jamclockactivity4.JAMClockActivity'
     'org.laptop.ImageViewerActivity|ImageViewerActivity.ImageViewerActivity'
-    'org.laptop.Terminal|terminal.TerminalActivity'
+    'org.laptop.Terminal|terminalactivity4.TerminalActivity'
     'org.laptop.WebActivity|webactivity.WebActivity'
     'org.laptop.Log|logviewer.LogActivity'
     'org.laptop.Mastermind|mastermindactivity4.MastermindActivity'

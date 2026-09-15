@@ -22,6 +22,7 @@ casilda="$root/sources/casilda"
 log_activity="$root/sources/log-activity"
 imageviewer_activity="$root/sources/imageviewer-activity"
 terminal_activity="$root/sources/terminal-activity"
+native_terminal_activity="$repo/packages/gtk4-terminal-activity"
 browse_activity="$root/sources/browse-activity"
 prefix="$root/prefix"
 venv="$root/venv"
@@ -1129,6 +1130,14 @@ read_activity="$repo/packages/gtk4-read-activity"
 test -f "$read_activity/activity/activity.info" || { echo "missing native GTK4 Read Activity bundle" >&2; exit 2; }
 test -f "$read_activity/readactivity4.py" || { echo "missing native GTK4 Read Activity entrypoint" >&2; exit 2; }
 ln -sfn "$read_activity" "$activity_dir/Read.activity"
+test -f "$native_terminal_activity/activity/activity.info" || {
+    echo "missing native GTK4 Terminal Activity bundle: $native_terminal_activity" >&2
+    exit 2
+}
+test -f "$native_terminal_activity/terminalactivity4.py" || {
+    echo "missing native GTK4 Terminal Activity entrypoint" >&2
+    exit 2
+}
 moon_activity="$repo/packages/gtk4-moon-activity"
 test -f "$moon_activity/activity/activity.info" || { echo "missing native GTK4 Moon Activity bundle" >&2; exit 2; }
 test -f "$moon_activity/moonactivity4.py" || { echo "missing native GTK4 Moon Activity entrypoint" >&2; exit 2; }
@@ -1138,11 +1147,7 @@ test -f "$imageviewer_activity/activity/activity.info" || {
     exit 2
 }
 ln -sfn "$imageviewer_activity" "$activity_dir/ImageViewer.activity"
-test -f "$terminal_activity/activity/activity.info" || {
-    echo "missing pinned Terminal Activity bundle: $terminal_activity" >&2
-    exit 2
-}
-ln -sfn "$terminal_activity" "$activity_dir/Terminal.activity"
+ln -sfn "$native_terminal_activity" "$activity_dir/Terminal.activity"
 test -f "$browse_activity/activity/activity.info" || {
     echo "missing pinned Browse Activity bundle: $browse_activity" >&2
     exit 2
