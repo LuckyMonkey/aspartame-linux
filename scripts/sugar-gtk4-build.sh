@@ -586,6 +586,20 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified deferred Journal canvas attach: $patch_name"
         continue
     fi
+    # The idempotence guard is the semantic result of 0106.  The persistent
+    # guest checkout may contain additional equivalent early-return guards
+    # from earlier patch passes, so a textual reverse-check is insufficient.
+    if [[ "$patch_name" == *0106* ]] &&
+        sed -n '/def show_main_view/,/def _show_secondary_view/p' \
+            "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
+            grep -q 'self._active_view == JournalViews.MAIN and' &&
+        sed -n '/def show_main_view/,/def _show_secondary_view/p' \
+            "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
+            grep -q 'self.canvas == self._main_view'; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Journal main-view idempotence: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0106* ]] &&
         sed -n '/def show_main_view/,/def _show_secondary_view/p' "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
             grep -q 'self.canvas == self._main_view' &&
@@ -713,6 +727,18 @@ for patch in "$patch_dir"/*.patch; do
             grep -q 'AccessibleRole.GROUP'; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified current Frame accessibility relocation: $patch_name"
+        continue
+    fi
+    # 0134's semantic result may already be present in a source checkout whose
+    # surrounding shortcut block moved.  Do not replay a stale textual hunk:
+    # the invariant is a global Escape trigger that hides only a visible Frame.
+    if [[ "$patch_name" == *0134* ]] &&
+        grep -q 'def _escape_shell' "$shell/src/jarabe/main.py" 2>/dev/null &&
+        grep -q 'Gtk.KeyvalTrigger.new(Gdk.KEY_Escape, 0)' "$shell/src/jarabe/main.py" 2>/dev/null &&
+        sed -n '/def _escape_shell/,/shortcut_controller.add_shortcut/p' "$shell/src/jarabe/main.py" 2>/dev/null |
+            grep -q 'frame_view.visible'; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing global Frame Escape behavior: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0080* ]] &&
