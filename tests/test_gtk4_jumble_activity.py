@@ -10,4 +10,5 @@ def test_jumble_bundle_is_native_and_registered():
     assert "bundle_id = mulawa.Jumble" in info
     assert "class JumbleActivity(SimpleActivity)" in source
     assert "def _check" in source and "Next word" in source
+    assert "def read_file" in source and "def write_file" in source
     assert "mulawa.Jumble" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()

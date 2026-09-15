@@ -1,5 +1,8 @@
 """GTK4-native word scramble Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -36,3 +39,16 @@ class JumbleActivity(SimpleActivity):
     def _next(self, _button):
         self.index = (self.index + 1) % len(self.WORDS); self.entry.set_text(""); self.attempts = 0; self._render()
 
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                self.index = int(payload.get("index", 0)) % len(self.WORDS)
+                self.attempts = max(0, int(payload.get("attempts", 0)))
+                self.entry.set_text(str(payload.get("answer", "")))
+                self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"index": self.index, "attempts": self.attempts, "answer": self.entry.get_text()}, sort_keys=True) + "\n", encoding="utf-8")
