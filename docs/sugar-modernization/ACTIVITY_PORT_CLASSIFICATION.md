@@ -51,6 +51,7 @@ Classification used by the migration ledger:
 | Game Of Life | FUNCTIONAL PORT | Finite-grid stepping, live-cell selection, generation summary, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; advanced patterns/collaboration remain absent |
 | Connect the Dots, Pippy, Paint, Diamond Fusion, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
 | Pippy | FUNCTIONAL PORT | UTF-8 Python source editing, isolated execution surface, and Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; full upstream editor/runtime breadth remains absent |
+| Typing Turtle | FUNCTIONAL PORT | Keyboard exercise progression and JSON Journal exercise-index resume verified with real GTK4 Activity processes on 2026-09-15; scoring/audio breadth remains absent |
 | Paint | FUNCTIONAL PORT | Pointer stroke drawing, color selection, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; image layers/tools remain absent |
 | Level | FUNCTIONAL PORT | Offline inclination controls, drag interaction, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; hardware sensor integration remains outside this claim |
 | Get Books, Jukebox | COVERAGE IMPLEMENTATION | Offline catalog/playlist surfaces; network/media-library parity not claimed |

@@ -14,3 +14,10 @@ def test_typingturtle_bundle_is_native_and_registered():
     assert "org.laptop.community.TypingTurtle" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-typingturtle-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-typingturtle-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+
+
+def test_typingturtle_journal_roundtrip_is_json():
+    source = (ROOT / "packages/gtk4-typingturtle-activity/typingturtleactivity4.py").read_text()
+    assert "def read_file(self, file_path)" in source
+    assert "def write_file(self, file_path)" in source
+    assert '"index"' in source

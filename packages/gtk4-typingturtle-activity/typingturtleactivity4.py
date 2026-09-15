@@ -1,5 +1,8 @@
 """Native GTK4 Typing Turtle practice Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -32,3 +35,17 @@ class TypingTurtleActivity(SimpleActivity):
 
     def _next(self, _button):
         self.index = (self.index + 1) % len(self.WORDS); self._render()
+
+    def read_file(self, file_path):
+        """Restore the current exercise index from a JSON Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            index = int(payload.get("index", 0)) if isinstance(payload, dict) else 0
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            index = 0
+        self.index = index % len(self.WORDS)
+        self._render()
+
+    def write_file(self, file_path):
+        """Save the current exercise index as a JSON Journal object."""
+        Path(file_path).write_text(json.dumps({"index": self.index}, sort_keys=True) + "\n", encoding="utf-8")

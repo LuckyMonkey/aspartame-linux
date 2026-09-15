@@ -581,6 +581,15 @@ and stopped cleanly with service release and shell cleanup. This supports a
 FUNCTIONAL PORT claim for bounded source editing and persistence; full
 upstream editor/runtime breadth remains outside the claim.
 
+Native Typing Turtle object resume (2026-09-15):
+`sugar-gtk4-typingturtle-roundtrip.py` passed two real guest cycles. Each
+cycle launched Typing Turtle, stopped it through Shell, seeded the saved
+Journal object with exercise index 2, resumed it, verified the visible
+`Type: journal` prompt through AT-SPI, and stopped cleanly with service release
+and shell cleanup. This supports a FUNCTIONAL PORT claim for bounded keyboard
+exercise progression and persistence; scoring and audio breadth remain outside
+the claim.
+
 Native Planets object resume (2026-09-15):
 `sugar-gtk4-planets-roundtrip.py` passed two real guest cycles. Each cycle
 launched Planets, stopped it through Shell, seeded the saved Journal object
