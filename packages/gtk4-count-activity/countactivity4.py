@@ -120,7 +120,7 @@ class CountActivity(SimpleActivity):
             .count-total { font-size: 42px; font-weight: bold; color: #2f88bd; }
             .count-layer { font-size: 20px; font-weight: bold; color: #2f88bd; }
             .count-canvas { background-color: #f7f8f9; border: 1px solid #c5d1d8; }
-            .count-grid button { background: #ffffff; border: 1px solid #6f8794; }
+            .count-grid button { background: rgba(255, 255, 255, 0.55); border: 1px solid #6f8794; }
             .count-grid button.occupied { background: #6d767b; }
             .count-context button { margin: 0; padding: 0; }
             button { min-height: 38px; border-radius: 18px; }
@@ -164,7 +164,7 @@ class CountActivity(SimpleActivity):
             # All planes share one XY origin. Back planes remain readable
             # through the selected plane; front planes are lighter so they
             # never masquerade as editable cells.
-            grid.set_opacity(.20 if relative < 0 else .10)
+            grid.set_opacity(.38 if relative < 0 else .24)
             grid.set_can_target(False)
             grid.add_css_class("count-context")
             grid.add_css_class("count-context-back" if relative < 0
