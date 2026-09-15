@@ -31,7 +31,6 @@ class FaceRating(Gtk.Box):
             # selected. The toggled handler enforces one-or-none selection.
             button = Gtk.ToggleButton()
             button.set_relief(Gtk.ReliefStyle.NONE)
-            button.set_can_focus(False)
             button.get_style_context().add_class('aspartame-rating-face')
             image_path = os.path.join(face_root, filename)
             if os.path.isfile(image_path):
@@ -39,8 +38,16 @@ class FaceRating(Gtk.Box):
                 image.set_pixel_size(aspartame_visual.RATING_FACE_SIZE)
                 button.set_image(image)
                 button.set_always_show_image(True)
-            button.set_tooltip_text(_('%s%s') % (
-                label, _(': %s') % context if context else ''))
+            description = _('%s%s') % (
+                label, _(': %s') % context if context else '')
+            button.set_tooltip_text(description)
+            # A face carries an image and no label, so ATK has no name to
+            # read. Name each face explicitly and keep it in the Tab order:
+            # rating is a real answer, not decoration, and must be reachable
+            # without a pointer.
+            accessible = button.get_accessible()
+            accessible.set_name(label)
+            accessible.set_description(description)
             button.connect('toggled', self._button_toggled, index)
             self._buttons.append(button)
             self.pack_start(button, False, False, 0)

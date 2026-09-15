@@ -1,4 +1,5 @@
 from gettext import gettext as _
+import logging
 import os
 import sys
 from xml.sax.saxutils import escape
@@ -20,6 +21,8 @@ try:
     import aspartame_help
 except ImportError:
     aspartame_help = None
+
+LOG = logging.getLogger(__name__)
 
 
 class ActivityManager(SectionView):
@@ -309,6 +312,12 @@ class ActivityManager(SectionView):
         remove = Gtk.Button(label=action_label)
         remove.get_style_context().add_class('aspartame-remove-button')
         remove.set_tooltip_text(action_tip)
+        # The pill is compact and repeats once per row, so its own label does
+        # not say which Activity it acts on. Name it per row.
+        remove_accessible = remove.get_accessible()
+        remove_accessible.set_name(
+            _('%s: %s') % (action_label, activity['name']))
+        remove_accessible.set_description(action_tip)
         remove.connect('clicked', self._remove_clicked, activity)
         remove.set_size_request(64, -1)
         remove.set_halign(Gtk.Align.END)

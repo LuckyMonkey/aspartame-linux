@@ -18,8 +18,18 @@ milestone so future sessions can resume without relying on chat history.
 - [x] Add Activity icons and metadata fallbacks for every installed bundle.
 - [x] Add a friendly fallback for Activities with missing descriptions.
 - [x] Enable recoverable removal for user and managed system Activities.
-- [ ] Confirm compact Remove pills remain discoverable and accessible.
-- [ ] Add focused UI tests for face selection, icon fallback, and row layout.
+- [x] Confirm compact Remove pills remain discoverable and accessible. The
+  pill repeats once per row and its label omits the Activity, so it now
+  carries a per-row accessible name and description.
+- [x] Add focused UI tests for face selection. `tests/test_activity_manager_faces.py`
+  builds the real GTK3 `FaceRating` and covers one-or-none selection, the
+  unanswered state, the `rating-changed` value, out-of-range clamping, the
+  selection style class, keyboard reachability, accessible names, and
+  missing face artwork.
+- [ ] Add UI tests for activity-icon fallback and row layout. Both live in
+  `view.py`, which cannot be imported headless (it needs `sugar3` and
+  `jarabe.controlpanel`); they need a guest-side harness or a seam that
+  separates row construction from the Sugar section base class.
 
 ## Next milestone: About This Computer
 

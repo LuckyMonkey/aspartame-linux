@@ -31,3 +31,24 @@ def test_packaged_activity_manager_uses_sugar_approval_wording():
     assert "Request Sugar approval to uninstall this Activity." in packaged
     assert "Request approval" in packaged
     assert "administrator" not in packaged
+
+
+def test_packaged_remove_pill_is_named_per_row():
+    packaged = (ROOT / "archiso/aspartame/airootfs/usr/share/aspartame/"
+                "cpsection/activities/view.py").read_text()
+    # The pill repeats once per row and its own label omits the Activity, so
+    # the accessible name has to carry it.
+    assert "remove_accessible = remove.get_accessible()" in packaged
+    assert "remove_accessible.set_name(" in packaged
+    assert "activity['name']" in packaged
+    assert "remove_accessible.set_description(action_tip)" in packaged
+
+
+def test_packaged_view_defines_the_logger_it_uses():
+    packaged = (ROOT / "archiso/aspartame/airootfs/usr/share/aspartame/"
+                "cpsection/activities/view.py").read_text()
+    # A failed or declined uninstall reaches LOG.warning; without the logger
+    # that handler raised NameError instead of reporting the real error.
+    assert "LOG.warning(" in packaged
+    assert "import logging" in packaged
+    assert "LOG = logging.getLogger(__name__)" in packaged
