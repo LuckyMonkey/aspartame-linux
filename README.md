@@ -199,6 +199,89 @@ Before changing migration code, read the status, tracker, and Chirality
 runbook. They define ownership, evidence boundaries, patch policy, and the
 distinction between a useful coverage implementation and a real port.
 
+Additional planning runbooks from the design desk are preserved in the
+repository:
+
+- [Count Activity runbook](docs/runbooks/COUNT_ACTIVITY_RUNBOOK.md)
+- [Universal Help runbook](docs/runbooks/UNIVERSAL_HELP_RUNBOOK.md)
+- [Scale Activity runbook](docs/runbooks/SCALE_ACTIVITY_RUNBOOK.md)
+- [Pets runbook — planned/maybe/future](docs/planned/ASPARTAME_PETS_RUNBOOK.md)
+
+The Pets document is intentionally filed as a future idea only. It is not an
+implementation commitment and has not been expanded here.
+
+## Aspartame Chirality
+
+Chirality is the project's steering metaphor: two surfaces can share an
+identity and purpose while remaining distinct implementations. In practice,
+Aspartame has a stable left hand (GTK3 Sugar) and a modern right hand (GTK4
+Sugar). They are comparable, but they are not mixed. Each hand must remain
+coherent on its own before the pair can replace the old model.
+
+This metaphor produces concrete engineering rules:
+
+| Chirality principle | Aspartame rule |
+| --- | --- |
+| Same shape, separate orientation | Preserve Sugar semantics while using GTK4-native layout, input, and rendering APIs |
+| A mirror is not a duplicate | Share models and service contracts, not GTK widgets or GI namespaces |
+| Compare corresponding surfaces | Use F7/F8 Spaces to compare Home, Frame, Journal, and Activities side by side |
+| Handedness has an owner | Label every workaround as Aspartame, Sugar, toolkit, Activity, Casilda, GTK, packaging, or harness-owned |
+| Do not hide an asymmetry | Record missing peers, physical-input limits, and reduced Activity breadth explicitly |
+| Rotation must preserve identity | XOColor, Activity IDs, Journal objects, and lifecycle state remain stable across Spaces |
+
+Chirality also explains why bounds matter. Sugar is an educational environment,
+not a collection of unrelated windows. A panel, palette, Activity, and Journal
+entry each have a meaningful relationship to the user's current context. A
+new feature is accepted when it strengthens that relationship; it is deferred
+when it introduces a generic desktop metaphor, an invisible fallback, or a
+second source of truth. This is why the conversion favors native GTK4
+primitives, bounded Activity workflows, and evidence-led promotion from
+COVERAGE IMPLEMENTATION to FUNCTIONAL PORT or FULL PORT.
+
+Read the complete [Aspartame Chirality runbook](docs/sugar-modernization/ASPARTAME_CHIRALITY.md)
+for the longer design language, ownership boundaries, transition rules,
+activity surfaces, and acceptance philosophy.
+
+## Sugar HIG and bounded interaction
+
+Aspartame follows a Sugar-shaped HIG rather than importing GNOME, Material, or
+web conventions:
+
+- One focused workspace at a time; Home and Frame preserve orientation.
+- Large, readable targets with visible focus and keyboard equivalents.
+- XOColor communicates identity and semantic state, never decoration alone.
+- Palettes and popovers stay attached to their target and dismiss predictably.
+- Stop is always a clear Sugar stop action; destructive changes request explicit approval.
+- Journal objects are the user's history, not an incidental file browser.
+- Empty collaboration states explain the absence of peers instead of inventing data.
+- Accessibility names, roles, descriptions, and deterministic Tab order are part of the UI.
+- GTK geometry belongs to GTK layout managers; CSS supplies appearance only.
+- Transitions animate pixels inside an owned surface, never fragile native-window choreography.
+
+“Bounded” means a feature has a clear owner, state model, input contract, and
+exit path. It does not mean small or underpowered. A bounded Activity can grow
+later without forcing the shell to guess whether a process is running, whether
+a Journal object was saved, or which window owns focus.
+
+## Approval-required system actions
+
+System-level Activity Manager operations use a Sugar-native approval surface.
+The prompt is fullscreen, black, minimal, and separate from the old GNOME
+Polkit/GTK dialog. It says **approval requested**, accepts a confirmation word
+(including `yes`, `yeah`, `yeet`, `sure`, `okay`, `confirm`, `please`,
+`affirmative`, `approve`, `accept`, `go`, and `granted`), and accepts Enter.
+Words beginning with `n` cancel immediately. A single pill-shaped Stop + Cancel
+control remains below the form, with the canonical Sugar stop sign also present
+in the top bar.
+
+The prompt authorizes the action; it does not reveal or bypass an administrator
+password. Activity Manager distinguishes user-installed bundles, which can be
+uninstalled, from package-managed bundles, which are disabled or hidden rather
+than falsely reported as deleted. Journal entries remain preserved unless the
+user explicitly requests otherwise.
+
+![Native Sugar approval prompt](docs/screenshots/aspartame-uac-native-confirmation.png)
+
 ## Current open work
 
 The project is intentionally still in conversion. The highest-value remaining
@@ -215,10 +298,3 @@ items are:
 
 These are tracked gaps, not silent fallbacks. GTK3 remains the healthy
 behavioral and visual reference until the gate is genuinely satisfied.
-
-## Security and licensing
-
-The QEMU image's autologin and development credentials are for local
-engineering only and are not an installed-system security model. Aspartame is
-GPL-3.0-or-later; see [LICENSE](LICENSE) and the individual Activity licenses
-for bundled work.

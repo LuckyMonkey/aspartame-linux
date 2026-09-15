@@ -12,7 +12,8 @@ The images are reference snapshots from the QEMU development VM. See the screens
 
 ## Runbooks
 
-- count.txt  Count Activity behavior and data model
-- neighborhood-board.txt  Neighborhood Board concept
-- scale.txt  Scale Activity direction
-- universal-help.txt  contextual help system
+- [Count Activity](COUNT_ACTIVITY_RUNBOOK.md) — behavior and data model
+- [Universal Help](UNIVERSAL_HELP_RUNBOOK.md) — contextual help system
+- [Scale Activity](SCALE_ACTIVITY_RUNBOOK.md) — future activity direction
+- [Pets](../planned/ASPARTAME_PETS_RUNBOOK.md) — planned/maybe/future idea only
+- [GTK4 modernization](../sugar-modernization/README.md) — active conversion runbooks
