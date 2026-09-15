@@ -1,11 +1,11 @@
 # GTK4 QEMU keyboard frontier — 2026-09-15
 
-The live guest exposes keyboard devices (`event1` AT keyboard, `event3` QEMU
-USB keyboard, and `event4` QEMU virtio keyboard). A root read probe was run on
-each node while injecting `F1` through both `scripts/qemu-send-key.py` (QMP
-`input-send-event`) and the QEMU monitor `sendkey f1` command. No evdev records
-were emitted and the modern shell remained on Home; its shell log recorded no
-new semantic F-key event.
+The original launcher exposed keyboard devices but QMP injection did not reach
+the shell. The launcher now includes an explicit `virtio-keyboard-pci` device.
+On a fresh boot, QMP `input-send-event` F1 reached the modern shell and opened
+Neighborhood; F2, F3, F5, and F6 likewise switched to Group, Home, Journal,
+and Frame. 1920×1080 screenshots are recorded in the accompanying input
+evidence report.
 
 This is narrower than the previous “no `/dev/input/event*`” description: the
 guest devices exist, but the current QEMU injection path is not reaching them.
@@ -13,7 +13,5 @@ Semantic GTK4 key routing remains implemented and must be tested separately
 once the transport is repaired. This report does not count physical-keyboard
 parity as passed.
 
-The VM was then restarted from the current `scripts/run-qemu.sh` (which omits
-the experimental `virtio-keyboard-pci` device and keeps only the USB keyboard).
-The clean launcher still produced no records for F1, so duplicate virtio input
-ownership is not the sole cause.
+Physical Tab/Shift+Tab/Enter/Space/Escape and F4 Activity switching still need
+separate evidence. This report does not claim the full physical-input gate.

@@ -73,8 +73,9 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 - [ ] Neighborhood/Group peer actions (empty state is verified; peer requires a
       second collaboration participant)
 - [x] Settings, Activity Manager, approval and contextual Help
-- [ ] Physical-event Tab/Shift+Tab/Enter/Space/Escape (semantic actions are
-      tested; guest evdev transport is not delivering physical F-keys)
+- [ ] Physical-event Tab/Shift+Tab/Enter/Space/Escape and F4 Activity switching
+      (QMP F1/F2/F3/F5/F6 now reach GTK4 through the explicit virtio keyboard;
+      remaining physical actions still need evidence)
 - [x] Accessible names, roles and states on important controls
 - [x] GTK CSS/build validation, no fatal GTK4 tracebacks or orphaned Activities
 - [x] PASS2 regressions and lifecycle stability run
