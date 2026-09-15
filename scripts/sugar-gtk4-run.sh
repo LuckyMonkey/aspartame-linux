@@ -21,6 +21,8 @@ libdir="$prefix/lib"
 runroot=${GTK4_RUNTIME_ROOT:-$root/runtime}
 log="$root/logs/gtk4-shell-$(date -u +%Y%m%dT%H%M%SZ).log"
 : > "$log"
+# Keep the session log authoritative while retaining normal launcher output.
+exec > >(tee -a "$log") 2>&1
 
 # Resolve the Journal window before starting the session. A distro GTK3 copy
 # can otherwise win the namespace package and leave ShowJournal blank while
