@@ -24,9 +24,10 @@ without an orphan process. It does not by itself prove a complete port.
 | Planets | 2-cycle launch plus seeded JSON selected-planet resume and visible selection restoration | FUNCTIONAL PORT |
 | Color My World | 2-cycle launch plus seeded JSON color resume and visible selection restoration | FUNCTIONAL PORT |
 | Get Books | 2-cycle launch plus seeded JSON catalog selection resume and visible title restoration | FUNCTIONAL PORT |
+| Game Of Life | 2-cycle launch plus seeded JSON live-cell/generation resume and visible summary restoration | FUNCTIONAL PORT |
 | Paint | 2-cycle launch plus seeded JSON stroke/color resume and visible status restoration | FUNCTIONAL PORT |
 | FotoToon | 2-cycle launch plus seeded JSON caption-canvas resume and visible caption restoration | FUNCTIONAL PORT |
-| Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, Last One Loses, Gears, TurtleBlocks, Game Of Life, Color My World, Connect the Dots, Diamond Fusion, Level, Moon | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
+| Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, Last One Loses, Gears, TurtleBlocks, Color My World, Connect the Dots, Diamond Fusion, Level, Moon | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
 | Get Things Done | 2-cycle launch plus seeded JSON Journal task-list resume and clean stop | FUNCTIONAL PORT |
 
 The authoritative class definitions and per-Activity boundaries live in

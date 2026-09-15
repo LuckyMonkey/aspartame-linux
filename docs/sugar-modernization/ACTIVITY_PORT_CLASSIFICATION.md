@@ -48,6 +48,7 @@ Classification used by the migration ledger:
 | Abacus | FUNCTIONAL PORT | Place-value rod controls, computed value, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; advanced bead manipulation remains absent |
 | Planets | FUNCTIONAL PORT | Planet selection, orbit canvas, and JSON Journal selection resume verified with real GTK4 Activity processes on 2026-09-15; full simulation breadth remains absent |
 | Color My World | FUNCTIONAL PORT | Palette selection, rendered swatch, and JSON Journal color resume verified with real GTK4 Activity processes on 2026-09-15; full artwork/collaboration breadth remains absent |
+| Game Of Life | FUNCTIONAL PORT | Finite-grid stepping, live-cell selection, generation summary, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; advanced patterns/collaboration remain absent |
 | Connect the Dots, Pippy, Paint, Diamond Fusion, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
 | Pippy | FUNCTIONAL PORT | UTF-8 Python source editing, isolated execution surface, and Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; full upstream editor/runtime breadth remains absent |
 | Paint | FUNCTIONAL PORT | Pointer stroke drawing, color selection, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; image layers/tools remain absent |
