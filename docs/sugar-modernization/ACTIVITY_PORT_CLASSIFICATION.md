@@ -54,7 +54,8 @@ Classification used by the migration ledger:
 | Finance | FUNCTIONAL PORT | Income/expense tracking, balance calculation, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; charts, import/export, and collaboration remain absent |
 | Markdown | FUNCTIONAL PORT | UTF-8 Markdown editing, live preview, and Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; full parser/rendering parity remains absent |
 | Stopwatch | FUNCTIONAL PORT | JSON Journal elapsed-time resume, visible time restoration, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; lap/export/collaboration breadth is not claimed |
-| Grid Paint, Gears, TurtleBlocks | COVERAGE IMPLEMENTATION | Native interaction cores; full upstream parity is not established |
+| Grid Paint, TurtleBlocks | COVERAGE IMPLEMENTATION | Native interaction cores; full upstream parity is not established |
+| Gears | FUNCTIONAL PORT | Native gear rendering/rotation controls, visible rotation state, JSON Journal phase resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; animation and collaboration breadth remain absent |
 | Last One Loses | FUNCTIONAL PORT | Take-away turn workflow, visible token count, JSON Journal pile resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; strategy/AI and collaboration breadth remain absent |
 | Grid Paint | FUNCTIONAL PORT | 10×10 cell painting, selection summary, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; advanced layer/fill tools remain absent |
 | Get Things Done | FUNCTIONAL PORT | Native task list with add/complete controls and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; collaboration and upstream feature breadth remain absent |
