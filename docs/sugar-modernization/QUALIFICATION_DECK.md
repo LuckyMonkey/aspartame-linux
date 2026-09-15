@@ -97,21 +97,24 @@ inherited until a change plausibly touches them.
 ## W7 — Frame navigation
 
 - **GTK3 reference:** F6 reveals the Frame; Escape dismisses it.
-- **GTK4 result:** **failing as of 2026-09-15 18:02.** Physical F6 on Home
-  produces no visible change across repeated presses; the Frame never
-  appears. Earlier evidence the same day (`qemu-function-keys-20260915.md`,
-  ~10:19) recorded F6 reveal working, so this regressed at some point during
-  the day.
-- **Gap:** not caused by this session's focus work — isolated by reverting
-  0140 (restoring the overlay focus sink), restarting, and retesting: F6
-  still produced nothing, so the Frame fault is independent of the input
-  path changes. F6 is consumed by the window's capture controller before
-  KeyHandler, so the key is being delivered and `notify_key_press()` is
-  reached; the Frame view itself does not present.
-- **Minimum fix:** unknown; needs a look at the Frame view's presentation,
-  not at key delivery.
-- **Evidence:** `reports/screenshots/sugar-20260915-180212-v0.0.31.png`
-- **STATUS: OPEN — newly observed, isolated, not yet fixed**
+- **GTK4 result:** **failing as of 2026-09-15.** From a verified Home view,
+  physical F6 produces no change across repeated presses, and the top-left
+  hot corner does not reveal it either.
+- **Gap, narrowed:** not key delivery and not this session's focus work.
+  - Reverting 0140 (restoring the overlay focus sink), restarting and
+    retesting still produced nothing, so the input changes are not the cause.
+  - F6 and the hot corner reach the same `Frame.toggle()`; both fail, so the
+    fault is below the trigger, in `show()` / revealer presentation.
+  - The four `FrameWindow` revealers are constructed and added to the shell
+    overlay (`frame.py` adds each via `_overlay.add_overlay`), and no
+    exception appears in the shell log.
+  - Earlier evidence the same day (`qemu-function-keys-20260915.md`, ~10:19)
+    recorded F6 reveal working, so this regressed during the day.
+- **Minimum fix:** unknown. Next step is to confirm whether `show()` runs and
+  whether the revealers get a non-zero allocation — not to touch key routing.
+- **Evidence:** `reports/screenshots/sugar-20260915-180823-v0.0.31.png` (F6),
+  `sugar-20260915-180839-v0.0.31.png` (hot corner)
+- **STATUS: OPEN — isolated to Frame presentation, next rotation target**
 
 ## W8 — Palette interaction
 
