@@ -10,7 +10,9 @@ live VM accepted QMP keyboard events through `scripts/qemu-send-key.py`.
 | F3 | Home | `sugar-20260915-101005-v0.0.31.png` |
 | F5 | Journal entries | `sugar-20260915-101007-v0.0.31.png` |
 | F6 | Frame overlay | `sugar-20260915-101008-v0.0.31.png` |
+| F4 | Active Count Activity surface | `sugar-20260915-101245-v0.0.31.png` |
 
 Each event was injected into the running QEMU instance and followed by a
-1920×1080 capture. F4 requires an active Activity to prove Activity view
-switching; Tab/Shift+Tab/Enter/Space/Escape remain separate input checks.
+1920×1080 capture. Tab/Shift+Tab/Enter/Space/Escape remain separate semantic
+focus/input checks; the screenshots here establish physical function-key
+delivery and shell view transitions only.
