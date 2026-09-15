@@ -4,6 +4,11 @@ This is the active steering document for the full conversion requested on
 2026-09-11. Historical first-pixels notes and the root engineering backlog are
 not completion claims. The conversion is **in progress**, not complete.
 
+Activity checkboxes below record implementation and runtime coverage history;
+they do not claim behavioral parity. The authoritative per-Activity status is
+`ACTIVITY_PORT_CLASSIFICATION.md`, which distinguishes FULL PORT, FUNCTIONAL
+PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
+
 ## Starting reality (historical)
 
 - Starting branch `master`, HEAD/origin `601ffc6`; origin fetched 2026-09-11.

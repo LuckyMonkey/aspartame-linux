@@ -286,7 +286,8 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
 - Activity catalog inventory (2026-09-14): the review inventory now contains
   84 unique legacy Fructose/Sugarizer rows (23 native Sugar bundles and 61
   Sugarizer web bundles); this closes the accounting gap without implying that
-  those remaining bundles are already GTK4-ported.
+  those remaining bundles have runtime coverage only; behavioral parity is
+  classified separately in `docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md`.
 - Current guest runtime recheck (2026-09-14): GTK4 remains healthy on desktop 1
   (`pid=230719`, `window=0x2a00005`); GTK3 remains available as the separate
   desktop-0 reference (`pid=33761`).

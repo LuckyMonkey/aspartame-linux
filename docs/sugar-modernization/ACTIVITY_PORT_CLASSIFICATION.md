@@ -30,6 +30,7 @@ Classification used by the migration ledger:
 | Terminal | FUNCTIONAL PORT | Native VTE terminal path; terminal feature parity remains bounded |
 | Browse | FUNCTIONAL PORT | Native WebKit path; collaboration/download parity is not claimed |
 | Log | FUNCTIONAL PORT | Native log list surface |
+| Read | FUNCTIONAL PORT | Native offline document reader; library/import parity is not claimed |
 | Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush | COVERAGE IMPLEMENTATION | Native playable cores used to exercise GTK4 input/render/lifecycle |
 | Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
 | Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Markdown, Finance, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |

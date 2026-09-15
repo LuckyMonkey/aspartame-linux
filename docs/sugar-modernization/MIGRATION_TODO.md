@@ -1,5 +1,9 @@
 # GTK4 migration backlog
 
+The historical “port and verify” entries track that a GTK4 implementation and
+lifecycle evidence exist; they are not equivalent to a FULL PORT claim. See
+`ACTIVITY_PORT_CLASSIFICATION.md` for current parity classification.
+
 ## P0 — boot/session startup
 
 - [x] Select and pin Sugar PR #1106 and reach real Jarabe pixels in the
