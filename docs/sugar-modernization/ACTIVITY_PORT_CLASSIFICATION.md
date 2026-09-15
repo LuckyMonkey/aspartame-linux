@@ -35,6 +35,7 @@ Classification used by the migration ledger:
 | Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush | COVERAGE IMPLEMENTATION | Native playable cores used to exercise GTK4 input/render/lifecycle |
 | Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
 | Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |
+| Words | FUNCTIONAL PORT | UTF-8 word entry, lookup result, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; translation/audio breadth remains absent |
 | Finance | FUNCTIONAL PORT | Income/expense tracking, balance calculation, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; charts, import/export, and collaboration remain absent |
 | Markdown | FUNCTIONAL PORT | UTF-8 Markdown editing, live preview, and Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; full parser/rendering parity remains absent |
 | Stopwatch | FUNCTIONAL PORT | JSON Journal elapsed-time resume, visible time restoration, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; lap/export/collaboration breadth is not claimed |

@@ -1,5 +1,8 @@
 """Native GTK4 Words language Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -29,3 +32,17 @@ class WordsActivity(SimpleActivity):
     def _lookup(self, _widget):
         value = self.word.get_text().strip()
         self.result.set_text(("Word: " + value + "\nExplore its meaning, spelling, and translation.") if value else "Type a word first.")
+
+    def read_file(self, file_path):
+        """Restore the current word from a Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            value = str(payload.get("word", "")) if isinstance(payload, dict) else ""
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            value = ""
+        self.word.set_text(value)
+        self._lookup(self.word)
+
+    def write_file(self, file_path):
+        """Save the current word as a Journal object."""
+        Path(file_path).write_text(json.dumps({"word": self.word.get_text()}, sort_keys=True) + "\n", encoding="utf-8")

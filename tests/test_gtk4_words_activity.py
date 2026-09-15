@@ -14,3 +14,10 @@ def test_words_bundle_is_native_and_registered():
     assert "org.laptop.Words" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-words-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-words-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+
+
+def test_words_journal_roundtrip_is_json():
+    source = (ROOT / "packages/gtk4-words-activity/wordsactivity4.py").read_text()
+    assert "def read_file(self, file_path)" in source
+    assert "def write_file(self, file_path)" in source
+    assert '"word"' in source

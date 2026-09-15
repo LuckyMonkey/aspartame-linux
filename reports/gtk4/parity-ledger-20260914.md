@@ -67,6 +67,14 @@ release and shell cleanup. This supports a FUNCTIONAL PORT claim for bounded
 offline transaction tracking and persistence; charts, import/export, and
 collaboration remain outside the claim.
 
+Native Words object resume (2026-09-15):
+`sugar-gtk4-words-roundtrip.py` passed two real guest cycles. Each cycle
+launched Words, stopped it through Shell, seeded the saved Journal object with
+the word `Aurora`, resumed it, verified the visible lookup result through
+AT-SPI, and stopped cleanly with service release and shell cleanup. This
+supports a FUNCTIONAL PORT claim for bounded word entry/lookup and persistence;
+translation and audio breadth remain outside the claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
