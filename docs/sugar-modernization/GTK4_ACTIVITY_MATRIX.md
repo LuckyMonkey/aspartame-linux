@@ -48,7 +48,8 @@ without an orphan process. It does not by itself prove a complete port.
 | Gears | 2-cycle launch plus seeded JSON rotation resume and visible rotation restoration | FUNCTIONAL PORT |
 | Connect the Dots | 2-cycle launch plus seeded JSON connection-progress resume and visible prompt restoration | FUNCTIONAL PORT |
 | Diamond Fusion | 2-cycle launch plus seeded JSON board/score resume and visible score restoration | FUNCTIONAL PORT |
-| TurtleBlocks, Color My World, Level | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
+| TurtleBlocks | 2-cycle launch plus seeded JSON Journal turtle position/heading/lines resume, visible status restoration, and clean stop | FUNCTIONAL PORT |
+| Color My World, Level | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
 | Get Things Done | 2-cycle launch plus seeded JSON Journal task-list resume and clean stop | FUNCTIONAL PORT |
 
 The authoritative class definitions and per-Activity boundaries live in

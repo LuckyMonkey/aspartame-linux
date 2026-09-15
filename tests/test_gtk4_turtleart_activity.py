@@ -11,6 +11,7 @@ def test_turtleart_bundle_is_native_and_registered():
     assert "sugar-activity4 turtleartactivity4.TurtleArtActivity" in info
     assert "class TurtleArtActivity(SimpleActivity)" in source
     assert "set_draw_func" in source and "Forward" in source
+    assert "def read_file" in source and "def write_file" in source
     assert "org.laptop.TurtleArtActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-turtleart-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-turtleart-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
