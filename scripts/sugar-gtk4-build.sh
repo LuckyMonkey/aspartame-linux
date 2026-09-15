@@ -1054,6 +1054,10 @@ jukebox_activity="$repo/packages/gtk4-jukebox-activity"
 test -f "$jukebox_activity/activity/activity.info" || { echo "missing native GTK4 Jukebox Activity bundle" >&2; exit 2; }
 test -f "$jukebox_activity/jukeboxactivity4.py" || { echo "missing native GTK4 Jukebox Activity entrypoint" >&2; exit 2; }
 ln -sfn "$jukebox_activity" "$activity_dir/Jukebox.activity"
+read_activity="$repo/packages/gtk4-read-activity"
+test -f "$read_activity/activity/activity.info" || { echo "missing native GTK4 Read Activity bundle" >&2; exit 2; }
+test -f "$read_activity/readactivity4.py" || { echo "missing native GTK4 Read Activity entrypoint" >&2; exit 2; }
+ln -sfn "$read_activity" "$activity_dir/Read.activity"
 moon_activity="$repo/packages/gtk4-moon-activity"
 test -f "$moon_activity/activity/activity.info" || { echo "missing native GTK4 Moon Activity bundle" >&2; exit 2; }
 test -f "$moon_activity/moonactivity4.py" || { echo "missing native GTK4 Moon Activity entrypoint" >&2; exit 2; }

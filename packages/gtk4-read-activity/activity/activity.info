@@ -1,0 +1,10 @@
+[Activity]
+name = Read
+bundle_id = org.laptop.sugar.ReadActivity
+exec = sugar-activity4 readactivity4.ReadActivity
+icon = read
+activity_version = 1
+show_launcher = yes
+license = GPLv2+
+summary = Read offline documents
+tags = Reading;Literacy;Books
