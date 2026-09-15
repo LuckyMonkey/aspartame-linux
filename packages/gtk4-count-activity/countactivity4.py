@@ -119,6 +119,7 @@ class CountActivity(SimpleActivity):
             .count-canvas { background-color: #f7f8f9; border: 1px solid #c5d1d8; }
             .count-grid button { background: #ffffff; border: 1px solid #6f8794; }
             .count-grid button.occupied { background: #6d767b; }
+            .count-context button { margin: 0; padding: 0; }
             button { min-height: 38px; border-radius: 18px; }
         """)
         display = Gdk.Display.get_default()
@@ -161,13 +162,15 @@ class CountActivity(SimpleActivity):
             # never masquerade as editable cells.
             grid.set_opacity(.20 if relative < 0 else .10)
             grid.set_can_target(False)
+            grid.add_css_class("count-context")
             grid.add_css_class("count-context-back" if relative < 0
                                else "count-context-front")
             for y, row in enumerate(layer):
                 for x, occupied in enumerate(row):
                     button = Gtk.Button()
                     button.set_size_request(82, 82)
-                    button.set_sensitive(False)
+                    button.set_focusable(False)
+                    button.set_can_target(False)
                     if occupied:
                         button.add_css_class("occupied")
                     grid.attach(button, x, y, 1, 1)
