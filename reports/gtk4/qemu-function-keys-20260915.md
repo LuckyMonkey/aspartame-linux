@@ -32,3 +32,8 @@ On a live Count Activity, a physical Tab followed by Space produced no visible
 control-state change (`sugar-20260915-102058-v0.0.31.png`); Tab/Shift+Tab/Space
 remain unverified for the completion gate rather than being inferred from the
 successful function-key transport.
+
+The QEMU injector now supports a real `SHIFT+TAB` chord, so reverse traversal
+can be tested without relying on host key-repeat behavior. A standalone
+Shift+Tab event is delivered, but its focus target has no visible state marker;
+this remains unclaimed until an Activity exposes a deterministic focus result.

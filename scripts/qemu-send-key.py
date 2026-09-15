@@ -10,6 +10,7 @@ KEYCODES.update({letter: letter.lower() for letter in "ABCDEFGHIJKLMNOPQRSTUVWXY
 KEYCODES.update({"TAB": "tab", "ENTER": "ret", "RETURN": "ret",
                  "ESC": "esc", "ESCAPE": "esc", "SPACE": "spc",
                  "BACKSPACE": "backspace"})
+CHORDS = {"SHIFT+TAB": ("shift", "tab")}
 SOCKET = "/tmp/aspartame-qemu-qmp"
 
 
@@ -33,19 +34,21 @@ def _command(sock, events):
 
 def main():
     key = sys.argv[1].upper() if len(sys.argv) == 2 else ""
-    if key not in KEYCODES:
-        raise SystemExit(f"usage: {sys.argv[0]} F1..F12 or A..Z; TAB, ENTER, ESC, SPACE")
+    if key not in KEYCODES and key not in CHORDS:
+        raise SystemExit(f"usage: {sys.argv[0]} F1..F12 or A..Z; TAB, SHIFT+TAB, ENTER, ESC, SPACE")
     with socket.socket(socket.AF_UNIX) as sock:
         sock.settimeout(2)
         sock.connect(SOCKET)
         _reply(sock)
         sock.sendall(b'{"execute":"qmp_capabilities"}\n')
         _reply(sock)
-        qcode = KEYCODES[key]
-        _command(sock, [{"type": "key", "data": {"down": True,
-                                                   "key": {"type": "qcode", "data": qcode}}}])
-        _command(sock, [{"type": "key", "data": {"down": False,
-                                                   "key": {"type": "qcode", "data": qcode}}}])
+        qcodes = CHORDS[key] if key in CHORDS else (KEYCODES[key],)
+        for qcode in qcodes:
+            _command(sock, [{"type": "key", "data": {"down": True,
+                                                       "key": {"type": "qcode", "data": qcode}}}])
+        for qcode in reversed(qcodes):
+            _command(sock, [{"type": "key", "data": {"down": False,
+                                                       "key": {"type": "qcode", "data": qcode}}}])
 
 
 if __name__ == "__main__":

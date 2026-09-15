@@ -22,3 +22,9 @@ def test_gtk4_dev_sync_copies_only_runtime_inputs():
     assert 'gtk4-overlay' in script
     assert 'cp -a' in script
     assert 'Generated guest build trees and runtime state remain untouched' in script
+
+
+def test_qemu_key_sender_supports_reverse_focus_chord():
+    script = (ROOT / "scripts/qemu-send-key.py").read_text()
+    assert '"SHIFT+TAB": ("shift", "tab")' in script
+    assert 'reversed(qcodes)' in script

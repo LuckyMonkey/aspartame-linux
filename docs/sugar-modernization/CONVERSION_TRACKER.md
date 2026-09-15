@@ -75,7 +75,8 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 - [x] Settings, Activity Manager, approval and contextual Help
 - [ ] Physical-event Tab/Shift+Tab/Space (QMP F1–F6, Enter activation, and
       F6→Escape now reach GTK4 through the explicit virtio keyboard, including
-      F4 on a live Activity; remaining focus/input actions still need evidence)
+      F4 on a live Activity; the injector now supports `SHIFT+TAB`, but these
+      focus actions still need a deterministic visible Activity result)
 - [x] Accessible names, roles and states on important controls
 - [x] GTK CSS/build validation, no fatal GTK4 tracebacks or orphaned Activities
 - [x] PASS2 regressions and lifecycle stability run
