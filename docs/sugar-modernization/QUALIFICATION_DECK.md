@@ -103,8 +103,11 @@ inherited until a change plausibly touches them.
   panel. Remaining suspect is the classic shell's `SugarExt.KeyGrabber`
   global X11 grabs surviving a release path that relies on Python `del` for
   GObject finalisation, despite logging "GTK3 released (workspace=1)".
-- **Minimum fix:** unknown until the grabs are observed directly; then make
-  the ungrab explicit rather than finalisation-dependent.
+- **Minimum fix:** in `SugarExt.KeyGrabber` (C, packaged sugar-ext, source not
+  on this guest): `grab_keys()` must `XUngrabKey` the previous set so an empty
+  set is a real ungrab. Confirmed by probe that the shipped release path, a
+  forced `run_dispose()`, and a replacement key set all fail to drop the
+  grabs, and that they free the instant the classic shell exits.
 - **Evidence:** `reports/gtk4/fkey-grab-frontier-20260915.md`
 - **STATUS: OPEN — root cause narrowed to cross-Space X11 grab release**
 
