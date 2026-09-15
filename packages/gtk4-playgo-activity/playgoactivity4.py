@@ -1,5 +1,8 @@
 """Native GTK4 Go board Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -37,3 +40,17 @@ class PlayGoActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.board = [0] * 25; self.turn = 1; self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            board = payload.get("board") if isinstance(payload, dict) else None
+            if isinstance(board, list) and len(board) == 25:
+                self.board = [int(value) if int(value) in (0, 1, 2) else 0 for value in board]
+                self.turn = int(payload.get("turn", 1)) if int(payload.get("turn", 1)) in (1, 2) else 1
+                self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"board": self.board, "turn": self.turn}, sort_keys=True) + "\n", encoding="utf-8")
