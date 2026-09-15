@@ -1,4 +1,12 @@
-"""Native GTK4 Write document Activity."""
+"""Native GTK4 Write document Activity.
+
+The toolkit owns the Journal object and calls :meth:`read_file` and
+:meth:`write_file` around resume/save.  Keeping the document payload as UTF-8
+text preserves the normal Sugar Activity file boundary without coupling this
+Activity to datastore internals.
+"""
+
+from pathlib import Path
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
@@ -20,6 +28,29 @@ class WriteActivity(SimpleActivity):
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def _save(self, _button):
-        start, end = self.document.get_buffer().get_bounds(); count = len(self.document.get_buffer().get_text(start, end, False)); self.status.set_text(f"Draft saved ({count} characters)")
+        start, end = self.document.get_buffer().get_bounds()
+        count = len(self.document.get_buffer().get_text(start, end, False))
+        self.save()
+        self.status.set_text(f"Draft saved ({count} characters)")
 
     def _clear(self, _button): self.document.get_buffer().set_text(""); self.status.set_text("Ready")
+
+    def read_file(self, file_path):
+        """Restore the document body from a Journal object."""
+        try:
+            text = Path(file_path).read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as error:
+            self.status.set_text(f"Unable to open draft: {error}")
+            return
+        self.document.get_buffer().set_text(text)
+        self.status.set_text(f"Draft restored ({len(text)} characters)")
+
+    def write_file(self, file_path):
+        """Write the current document body for the Journal datastore."""
+        start, end = self.document.get_buffer().get_bounds()
+        text = self.document.get_buffer().get_text(start, end, False)
+        try:
+            Path(file_path).write_text(text, encoding="utf-8")
+        except OSError as error:
+            self.status.set_text(f"Unable to save draft: {error}")
+            raise

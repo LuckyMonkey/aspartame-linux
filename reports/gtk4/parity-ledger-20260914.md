@@ -410,6 +410,14 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
 - Spaces runtime round-trip recheck (2026-09-14): the guest switched to the
   GTK3 desktop and passed `runtime-check=ok` for PID `33761`, then switched back
   to GTK4 and passed for PID `265471`. Both processes remained separate.
+- GTK4 Write Journal boundary (2026-09-15): added UTF-8 `read_file` and
+  `write_file` implementations and made the Save draft action call the
+  toolkit's normal `Activity.save()` path. The strengthened probe completed
+  three live Casilda launch/activate/stop cycles (PIDs `493390`, `493482`,
+  `493574`) with `service-ready=PASS`, `shell-active=PASS`, and
+  `cleanup=PASS`. This moves Write's persistence implementation forward but
+  remains a COVERAGE IMPLEMENTATION until a real Journal resume with content is
+  evidenced.
 
 ## Ranked remaining gaps
 
