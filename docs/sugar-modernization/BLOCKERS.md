@@ -234,10 +234,12 @@
   remains alive without a traceback.
 - Status: resolved downstream; fold into the upstreamable lazy-list change.
 
-## GTK4-022 — Activity surface and cleanup verified; input remains open
+## GTK4-022 — Activity surface and cleanup verified; QEMU input transport remains open
 
 The pinned Log Activity is built, installed, and registered. Journal launches
 it through Jarabe; Casilda paints its surface; D-Bus Close, repeated relaunch,
-and abnormal exit all clear the process and bus name. Remaining evidence is
-real pointer/keyboard delivery and focus transfer, currently blocked by the
-QEMU input harness producing no guest `/dev/input/event*` events.
+and abnormal exit all clear the process and bus name. The guest does expose
+PS/2, USB, and virtio keyboard event nodes, but the current QEMU QMP
+`input-send-event` and monitor `sendkey` paths produce no evdev records, so
+physical pointer/keyboard delivery and focus transfer remain unproven. See
+`reports/gtk4/qemu-input-frontier-20260915.md` for the reproduction.
