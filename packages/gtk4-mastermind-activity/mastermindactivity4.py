@@ -33,6 +33,10 @@ class MastermindActivity(SimpleActivity):
         title.add_css_class("title-1"); root.append(title)
         self.status = Gtk.Label(label="Choose four colours, then check your code.", xalign=0)
         root.append(self.status)
+        self.progress = Gtk.Label(label="0 of 6 guesses", xalign=0)
+        self.progress.add_css_class("dim-label")
+        self.progress.update_property([Gtk.AccessibleProperty.LABEL], ["Guess progress"])
+        root.append(self.progress)
         self.board = Gtk.Grid(column_spacing=8, row_spacing=8)
         self.board.set_halign(Gtk.Align.CENTER); self.board.set_valign(Gtk.Align.CENTER)
         root.append(self.board)
@@ -94,6 +98,7 @@ class MastermindActivity(SimpleActivity):
         self.guesses = []; self.current = []; self.status.set_text("Choose four colours, then check your code."); self._render()
 
     def _render(self):
+        self.progress.set_text(f"{len(self.guesses)} of 6 guesses")
         for row, cells in enumerate(self._board_labels):
             values = self.guesses[row] if row < len(self.guesses) else (self.current if row == len(self.guesses) else ())
             for col, cell in enumerate(cells):
