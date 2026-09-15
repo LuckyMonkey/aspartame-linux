@@ -46,10 +46,10 @@ QEMU/evdev transport; Neighborhood collaboration cannot be exercised without
 peers; and additional legacy Activities remain individual porting targets.
 These are not silently counted as GTK4 parity.
 
-The shell-level `ShowJournal()` action is a known presentation gap: it enters
-the Journal Activity state but currently captures as a blank white surface.
-Native Journal Activity launch/resume remains independently verified; that
-evidence does not prove shell-embedded Journal presentation is complete.
+The shell-level `ShowJournal()` action now presents the native Journal surface
+in the modern Space. A 1920x1080 capture shows search, project controls, 415
+entries, row actions, and the Sugar frame; native Journal Activity
+launch/resume remains independently verified as a separate lifecycle path.
 
 TurtleBlocks is now classified as a FUNCTIONAL PORT for its bounded drawing
 workflow. The guest round-trip probe discovers the mapped activity surface by

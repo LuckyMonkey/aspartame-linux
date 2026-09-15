@@ -11,9 +11,9 @@ org.laptop.Shell.ShowJournal -> boolean true
 display -> 1920x1080
 ```
 
-The captured modern-Space surface remains a blank white canvas:
-`reports/screenshots/sugar-20260915-090825-v0.0.31.png`. The healthy Home
-capture immediately before the action was the classic Space; after explicitly
-selecting the modern Space, the blank Journal surface is reproducible. This
-keeps shell-embedded Journal presentation open rather than silently promoting
-it from a service-return check.
+After correcting the stale unconditional `show_main_view()` return and
+restarting the modern shell, the same action now renders the native Journal:
+`reports/screenshots/sugar-20260915-091816-v0.0.31.png`. The capture shows the
+Sugar top bar, Journal search, project controls, 415 Journal entries, row
+actions, and the bottom frame. This is visual evidence in addition to the
+boolean service result.

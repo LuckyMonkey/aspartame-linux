@@ -7,11 +7,13 @@ be a no-op rather than repeating widget reparenting during the same dispatch.
 
 --- a/src/jarabe/journal/journalactivity.py
 +++ b/src/jarabe/journal/journalactivity.py
-@@ -513,6 +513,8 @@
+@@ -513,6 +513,7 @@
      def show_main_view(self):
          if not self._init_done:
              return
 +        if self._active_view == JournalViews.MAIN and \
 +                self.canvas == self._main_view:
 +            return
+-        if self._active_view == JournalViews.MAIN:
+-            return
          self._active_view = JournalViews.MAIN
