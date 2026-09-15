@@ -428,6 +428,14 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
 
 ## Ranked remaining gaps
 
+Superseding runtime finding (2026-09-15): the historical launch/stop counts
+below did not verify saved data. Shell Stop could discard document content,
+and resumed launches omitted the Journal object argument. Patches 0125/0126
+close those two gaps, with three real saved-content round trips and an
+inspected screenshot. See `journal-save-resume-20260915.md`. Continue with
+actual document workflows and save error handling before extending catalog
+coverage. No new runtime architecture was introduced.
+
 1. Physical F1–F6 delivery remains below the QEMU/evdev transport. Semantic
    `ShowHome`, `ShowJournal`, `ShowFrame`, `ShowNeighborhood`, `ShowGroup`, and
    `ShowControlPanel` actions are reliable, so no additional keybinding layer

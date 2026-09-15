@@ -1,0 +1,19 @@
+Subject: [PATCH] toolkit: pass resumed Journal identity to the Activity parser
+
+Owner: sugar-toolkit; upstreamable. ActivityHandle is constructed from parsed
+arguments by activityinstance, not from SUGAR_OBJECT_ID or SUGAR_URI. Live
+Write saved content but reopening that object created an empty new document.
+Preserve the existing command-line contract for object and URI launches.
+
+--- a/src/sugar4/activity/activityfactory.py
++++ b/src/sugar4/activity/activityfactory.py
+@@ -122,5 +122,9 @@
+     command = [command[0], bundle.get_path(), *command[1:]]
+     command.extend(["--activity-id", handle.activity_id])
++    if handle.object_id:
++        command.extend(["--object-id", handle.object_id])
++    if handle.uri:
++        command.extend(["--uri", handle.uri])
+     environment = get_environment(bundle, handle)
+     environment.pop("DISPLAY", None)
+     environment.pop("WAYLAND_DISPLAY", None)

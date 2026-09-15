@@ -1,0 +1,201 @@
+== org.laptop.HelpActivity ==
+cycle=1 pid=506633 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=506633 activity_id=d9cae9f8f544481fbbf4d29576fb57aa stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.aspartame.Count ==
+cycle=1 pid=506744 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=506744 activity_id=197856db1a334175b40012c746ec7bfc stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.aspartame.Calculate ==
+cycle=1 pid=506851 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=506851 activity_id=ade9c0cdc95e4455ad5d53214808fda7 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== tv.alterna.Clock ==
+cycle=1 pid=506957 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=506957 activity_id=d583e284e7514d3d8721cb471569e45d stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.JAMClock ==
+cycle=1 pid=507054 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507054 activity_id=829729b6d8f848a8b5c115ab0fada757 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.ImageViewerActivity ==
+cycle=1 pid=507152 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507152 activity_id=2bdb935886064e348757fd5943ddacb6 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.Terminal ==
+cycle=1 pid=507258 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507258 activity_id=9fa73464b53d43e394e1f6d23d6c3d30 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.WebActivity ==
+cycle=1 pid=507367 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507367 activity_id=1b15fd64143b4b61a3f26a20b544d390 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.Log ==
+cycle=1 pid=507533 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507533 activity_id=70dc6d0d027c407c87df4df4015a9127 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.Mastermind ==
+cycle=1 pid=507640 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507640 activity_id=39cd33d5d8dd4cafb0c047448fa7fe8a stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.worldwideworkshop.PollBuilder ==
+cycle=1 pid=507745 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507745 activity_id=49ca0b22ca1f401d8782a662e4d3608d stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== mulawa.Mancala ==
+cycle=1 pid=507843 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507843 activity_id=2ec6c4f36dcc41f9ac89ac227819aefd stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== net.coderanger.olpc.reversi ==
+cycle=1 pid=507949 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=507949 activity_id=b7a2a37b36aa4cf887f1f386bb5a5ef2 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== mulawa.Jumble ==
+cycle=1 pid=508058 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508058 activity_id=d240f8fa1fc5458e87e922bbb5047958 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.NumRush ==
+cycle=1 pid=508165 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508165 activity_id=0af32a38533349e0a3d8bf17dba7e006 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== mulawa.AcrossDown ==
+cycle=1 pid=508272 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508272 activity_id=b95b3f215cae4baf96e908aa7c7e9e15 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== mulawa.IQ ==
+cycle=1 pid=508377 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508377 activity_id=c0d37d5d282b4274b630e5ccba6f3306 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== mulawa.AppelHaken ==
+cycle=1 pid=508476 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508476 activity_id=6cd7de69f7694c358571c332987f1134 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.BallAndBrick ==
+cycle=1 pid=508574 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508574 activity_id=376f5d1abaca40b0bd86d2d46f808698 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== com.jotaro.ImplodeActivity ==
+cycle=1 pid=508679 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508679 activity_id=aadb867ad8c14e8084d5b7d035066a6d stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.PlayGo ==
+cycle=1 pid=508786 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508786 activity_id=0b50d34cae374b6e85a6b93a9bcb2adf stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.BlockPartyActivity ==
+cycle=1 pid=508885 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508885 activity_id=1ed44c6a39004cb5bc0170212e7960b1 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.community.TypingTurtle ==
+cycle=1 pid=508988 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=508988 activity_id=97cec2fe39904d49b5a76c1e9f13cfdd stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.Memorize ==
+cycle=1 pid=509094 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509094 activity_id=9594219335634995ba8d9f552c289791 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== vu.lux.olpc.Maze ==
+cycle=1 pid=509199 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509199 activity_id=5da7f6e0a7d34e8ea3a419ae1da44759 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.eq.FotoToon ==
+cycle=1 pid=509306 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509306 activity_id=2e856abae2fd43a39b25559b6423659d stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.PortfolioActivity ==
+cycle=1 pid=509411 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509411 activity_id=259c0439cbd14201892f16bf98baabe9 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.Markdown ==
+cycle=1 pid=509517 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509517 activity_id=90ccf8b2c9634cda9064cab8640b9ab7 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.community.Finance ==
+cycle=1 pid=509615 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509615 activity_id=9afb421eb9be4d46af15b778d0836069 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.Words ==
+cycle=1 pid=509721 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509721 activity_id=09ee232d95d84518ae8844fabe0a65d3 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.olpc-france.LOLActivity ==
+cycle=1 pid=509824 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509824 activity_id=3da9c19bdee84492bc6e30cec0d0093e stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.GTDActivity ==
+cycle=1 pid=509931 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=509931 activity_id=16bd81bc540c4257beddb8633edc02ce stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.olpcfrance.Gridpaint ==
+cycle=1 pid=510030 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510030 activity_id=54b6178198b34a6fb4c202a4dbfce6da stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.StopwatchActivity ==
+cycle=1 pid=510135 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510135 activity_id=050352db3d614f248335b17bb9c8655a stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.GearsActivity ==
+cycle=1 pid=510241 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510241 activity_id=2d9bd33379ec48eb9d9bbf39ceeaf614 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.TurtleArtActivity ==
+cycle=1 pid=510348 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510348 activity_id=7322f5b37ded435799cecf46ea698069 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.gameOfLife ==
+cycle=1 pid=510454 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510454 activity_id=bf9391348c5d43e0a1dc7813c221aaf0 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.ColorMyWorldActivity ==
+cycle=1 pid=510568 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510568 activity_id=2cc656a74f5c40f8944da31049d670bc stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== com.homegrownapps.abacus ==
+cycle=1 pid=510700 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510700 activity_id=f53eb435a4d8490491d462f535611570 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.Planets ==
+cycle=1 pid=510830 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510830 activity_id=ac132304c3274f76a6505cbd4fffb94b stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.Write ==
+cycle=1 pid=510953 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=510953 activity_id=a006d4379a894333b6563426ef83f4c0 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.ConnectTheDots ==
+cycle=1 pid=511074 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511074 activity_id=7fda53894f3a49a6bfd6b9ad084ca134 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.Pippy ==
+cycle=1 pid=511179 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511179 activity_id=ff8ddeae668e4f33bdd1fdbaa66c2f84 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.sugarlabs.Paint ==
+cycle=1 pid=511293 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511293 activity_id=8bb728f15ab84b1586288c579b5e0754 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== com.francocorrea.diamondfusion ==
+cycle=1 pid=511406 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511406 activity_id=4449e43f7e724bad964cd0018cbfa2ec stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== net.flossmanuals.LevelActivity ==
+cycle=1 pid=511514 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511514 activity_id=8812ec1c259a496c9bdebbd4c71de77f stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== com.garycmartin.Moon ==
+cycle=1 pid=511622 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511622 activity_id=2adbdf10195543b8a678e410dd2c9844 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.sugar.GetBooksActivity ==
+cycle=1 pid=511729 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511729 activity_id=4621cd24a0da4c25b4cb32abba91b921 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.sugar.Jukebox ==
+cycle=1 pid=511839 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511839 activity_id=b790e790d7fb4cb297298e0599a8a08b stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+== org.laptop.sugar.ReadActivity ==
+cycle=1 pid=511946 service-ready=PASS shell-active=PASS
+cycle=1 launch=(true,) pid=511946 activity_id=75a0dc46b41340db9df60c87e2dec0a9 stop=(true,) cleanup=PASS
+lifecycle-probe=PASS
+activity-matrix=PASS

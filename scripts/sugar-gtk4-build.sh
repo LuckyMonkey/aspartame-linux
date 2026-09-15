@@ -100,6 +100,8 @@ for patch in "$patch_dir"/*.patch; do
         *0122*) target="$root/sources/sugar" ;;
         *0123*) target="$root/sources/sugar" ;;
         *0124*) target="$root/sources/sugar" ;;
+        *0125*) target="$root/sources/sugar" ;;
+        *0126*) target="$toolkit" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0070*|*0071*|*0073*|*0074*|*0075*|*0076*|*0079*|*0080*|*0081*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
@@ -107,6 +109,19 @@ for patch in "$patch_dir"/*.patch; do
     patch_name=$(basename "$patch")
     patch_digest=$(sha256sum "$patch" | cut -d " " -f 1)
     stamp="$patch_state/$patch_name.sha256"
+    if [[ "$patch_name" == 0063-* || "$patch_name" == 0064-* || "$patch_name" == 0065-* ]] &&
+        grep -q 'Activity Close failed: %s' "$shell/src/jarabe/model/shell.py"; then
+        echo "superseded forced Activity close: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == 0125-* || "$patch_name" == 0126-* ]]; then
+        if (cd "$target" && patch --dry-run --reverse --fuzz=0 -p1 < "$patch" >/dev/null 2>&1); then
+            echo "verified Journal lifecycle patch: $patch_name"
+        else
+            (cd "$target" && patch --batch --fuzz=0 -p1 < "$patch")
+        fi
+        continue
+    fi
     # 0124 retires lookup-time path guessing from 0096.
     if [[ "$patch_name" == 0096-* ]] &&
         grep -q 'installed_modern and not bundle_modern' "$shell/src/jarabe/model/bundleregistry.py"; then

@@ -1,0 +1,47 @@
+Subject: [PATCH] gtk4: let Activity Close finish saving before removing its surface
+
+Owner: Jarabe; upstreamable. Live Write lost its entire document when
+StopActivity closed Casilda and sent SIGTERM before the toolkit saved it.
+Use the existing Activity D-Bus Close contract for shell and Frame stops.
+The Activity owns save completion and may refuse closure on failure.
+Retires the forced-close behavior added by preview patches 0063-0065.
+
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -137,2 +137,10 @@
+     def stop(self):
++        if self._service is not None:
++            # Close saves asynchronously. Keep the surface/process alive until
++            # the Activity completes the save or presents a save error.
++            self._service.Close(
++                reply_handler=lambda: None,
++                error_handler=lambda error: logging.error(
++                    'Activity Close failed: %s', error))
++            return
+         # For web activities the Apisocket will connect to the 'stop'
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -96,23 +96,5 @@
+         if activity is None:
+             return False
+-        pid = activity.get_pid()
+         activity.stop()
+-        activity.close_window()
+-        if pid:
+-            try:
+-                os.kill(pid, 15)
+-            except ProcessLookupError:
+-                pass
+-        if not pid:
+-            for entry in os.listdir("/proc"):
+-                if not entry.isdigit():
+-                    continue
+-                try:
+-                    with open(os.path.join("/proc", entry, "cmdline"), "rb") as stream:
+-                        if activity_id.encode() in stream.read():
+-                            os.kill(int(entry), 15)
+-                            break
+-                except (FileNotFoundError, PermissionError, ProcessLookupError):
+-                    continue
+         return True
+     @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')

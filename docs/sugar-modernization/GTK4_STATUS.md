@@ -2,6 +2,14 @@
 
 Status checked: 2026-09-14.
 
+2026-09-15 correction: process cleanup alone did not prove safe closure or
+document resume. Runtime testing found and fixed immediate shell SIGTERM
+interrupting saves (0125) and missing Journal object arguments (0126).
+Three real Write content save/stop/resume cycles now pass; see
+`reports/gtk4/journal-save-resume-20260915.md` and the reproducible
+`scripts/sugar-gtk4-journal-roundtrip.py` probe. Broader Activity behavior is
+still classified separately from launch coverage.
+
 | Component | Aspartame now | Upstream GTK3 | Upstream GTK4 | Usable today? | Blocker / action |
 |---|---|---|---|---|---|
 | Sugar shell | Arch `sugar 0.121-7`, plus isolated GTK4 preview source | Working X11 shell | GTK4 preview shell starts in a separate process | GTK3 and GTK4 preview | Keep GTK3 stable; compare behavior in the modern Space |

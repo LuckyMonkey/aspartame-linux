@@ -31,7 +31,7 @@ Classification used by the migration ledger:
 | Browse | FUNCTIONAL PORT | Native WebKit path; collaboration/download parity is not claimed |
 | Log | FUNCTIONAL PORT | Native log list surface |
 | Read | COVERAGE IMPLEMENTATION | Displays a fixed sample document; cannot yet open a user's document or restore a Journal object |
-| Write | COVERAGE IMPLEMENTATION | Editable UTF-8 document surface with toolkit Journal `read_file`/`write_file` hooks; resume and upstream document-format parity have not yet been demonstrated |
+| Write | COVERAGE IMPLEMENTATION | UTF-8 text editing and three real Journal save/stop/resume cycles verified on 2026-09-15; rich text, upstream formats, and broader Write parity remain absent |
 | Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush | COVERAGE IMPLEMENTATION | Native playable cores used to exercise GTK4 input/render/lifecycle |
 | Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
 | Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Markdown, Finance, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |
@@ -39,6 +39,15 @@ Classification used by the migration ledger:
 | Game Of Life, Color My World, Abacus, Planets | COVERAGE IMPLEMENTATION | Native rendering/interaction cores; not full upstream replacements |
 | Connect the Dots, Pippy, Paint, Diamond Fusion, Level, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
 | Get Books, Jukebox | COVERAGE IMPLEMENTATION | Offline catalog/playlist surfaces; network/media-library parity not claimed |
+
+### Catalog-only Sugarizer entries
+
+The review inventory contains 61 rows with `format=sugarizer-web`. Those are
+source catalog records, not installed GTK4 implementations. They remain
+unported; PLACEHOLDER specifically describes an implemented launchable stub.
+Catalog membership alone does not establish any of the four port classes.
+Several IDs also have native GTK4 coverage implementations in the table above.
+Classify each runtime implementation using its actual behavior and evidence.
 
 No Activity is currently classified **FULL PORT** or **PLACEHOLDER**. The
 absence of FULL PORT entries is intentional: the GTK4 retirement gate must not

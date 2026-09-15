@@ -1,0 +1,4 @@
+cycle=1 pid=506471 resumed_pid=506494 object=f76ccaed-7058-4f82-856b-1350705ff963 payload=PASS resume=PASS service-release=PASS shell-cleanup=PASS
+cycle=2 pid=506514 resumed_pid=506534 object=720dda99-a25a-48bf-9bf1-1eb931b34d8f payload=PASS resume=PASS service-release=PASS shell-cleanup=PASS
+cycle=3 pid=506554 resumed_pid=506574 object=aec3006c-9ea5-4bc0-86eb-c96f3c684850 payload=PASS resume=PASS service-release=PASS shell-cleanup=PASS
+journal-roundtrip=PASS input-method=AT-SPI
