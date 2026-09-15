@@ -14,6 +14,9 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     assert 'SUGAR_WINDOWED=0' in controller
     assert 'place --pid' in controller
     assert 'gtk3_pid()' in controller
+    assert 'dead session bus' in controller
+    assert 'DBUS_SESSION_BUS_ADDRESS=unix:path=' in controller
+    assert '[ -S "$bus_address" ]' in controller
     assert 'python3 -m jarabe' in controller
     assert '--workspace 0' in controller
     assert '--workspace 1 --fullscreen' in controller
