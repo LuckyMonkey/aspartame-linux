@@ -34,7 +34,8 @@ without an orphan process. It does not by itself prove a complete port.
 | Mancala | 2-cycle launch plus seeded JSON board/store/turn resume and visible store restoration | FUNCTIONAL PORT |
 | Reversi | 2-cycle launch plus seeded JSON board/player resume and visible score restoration | FUNCTIONAL PORT |
 | Jumble | 2-cycle launch plus seeded JSON puzzle-index/answer resume and visible prompt restoration | FUNCTIONAL PORT |
-| NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Memorize, Maze, Last One Loses, Gears, TurtleBlocks, Color My World, Connect the Dots, Diamond Fusion, Level | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
+| NumberRush | 2-cycle launch plus seeded JSON round/score resume and visible score restoration | FUNCTIONAL PORT |
+| Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Memorize, Maze, Last One Loses, Gears, TurtleBlocks, Color My World, Connect the Dots, Diamond Fusion, Level | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
 | Get Things Done | 2-cycle launch plus seeded JSON Journal task-list resume and clean stop | FUNCTIONAL PORT |
 
 The authoritative class definitions and per-Activity boundaries live in

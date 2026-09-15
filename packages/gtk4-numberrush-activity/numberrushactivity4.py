@@ -1,5 +1,8 @@
 """GTK4-native arithmetic practice Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -40,3 +43,18 @@ class NumberRushActivity(SimpleActivity):
 
     def _next(self, _button):
         self.round = (self.round + 1) % len(self.ROUNDS); self.answer.set_text(""); self.solved = False; self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                self.round = int(payload.get("round", 0)) % len(self.ROUNDS)
+                self.score = max(0, int(payload.get("score", 0)))
+                self.solved = bool(payload.get("solved", False))
+                self.answer.set_text(str(payload.get("answer", "")))
+                self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"round": self.round, "score": self.score, "solved": self.solved, "answer": self.answer.get_text()}, sort_keys=True) + "\n", encoding="utf-8")

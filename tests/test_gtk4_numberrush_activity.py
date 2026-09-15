@@ -11,4 +11,5 @@ def test_numberrush_bundle_is_native_and_registered():
     assert "class NumberRushActivity(SimpleActivity)" in source
     assert "def _check" in source and "Next round" in source
     assert "self.solved" in source
+    assert "def read_file" in source and "def write_file" in source
     assert "org.sugarlabs.NumRush" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
