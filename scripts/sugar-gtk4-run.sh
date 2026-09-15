@@ -65,6 +65,14 @@ command -v dbus-run-session >/dev/null || { echo "missing dbus-run-session" >&2;
 command -v python3 >/dev/null || { echo "missing python3" >&2; exit 2; }
 
 mkdir -p "$runroot/home" "$runroot/data" "$runroot/config" "$runroot/cache" "$root/logs"
+# Casilda exposes one private Activity compositor per modern Space. Refuse a
+# second launcher before it can compete for the same fullscreen surface.
+session_lock="$runroot/gtk4-session.lock"
+exec 9>"$session_lock"
+flock -n 9 || {
+    echo "GTK4 preview session already running (lock: $session_lock)" >&2
+    exit 1
+}
 # The launcher is commonly invoked by root while the GTK4 session runs as the
 # `aspartame` user.  Keep datastore/Xapian state user-owned so its lockfile can
 # be opened on every restart (a previous root-owned index made Journal crash).
