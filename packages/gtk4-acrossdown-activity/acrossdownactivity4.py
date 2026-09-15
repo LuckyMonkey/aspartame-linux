@@ -1,5 +1,8 @@
 """Native GTK4 crossword-style Across and Down Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -63,3 +66,20 @@ class AcrossDownActivity(SimpleActivity):
 
     def _next(self, _button):
         self.index = (self.index + 1) % len(self.WORDS); self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                self.index = int(payload.get("index", 0)) % len(self.WORDS)
+                self._render()
+                letters = payload.get("letters", [])
+                for button, value in zip(self.buttons, letters):
+                    button.set_label(str(value)[:1].upper() if str(value)[:1].isalpha() else "_")
+                self.selected = min(max(0, int(payload.get("selected", 0))), len(self.buttons) - 1)
+                self._select(self.buttons[self.selected], self.selected)
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"index": self.index, "selected": self.selected, "letters": [button.get_label() for button in self.buttons]}, sort_keys=True) + "\n", encoding="utf-8")
