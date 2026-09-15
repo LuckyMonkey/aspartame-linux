@@ -415,9 +415,10 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
   toolkit's normal `Activity.save()` path. The strengthened probe completed
   three live Casilda launch/activate/stop cycles (PIDs `493390`, `493482`,
   `493574`) with `service-ready=PASS`, `shell-active=PASS`, and
-  `cleanup=PASS`. This moves Write's persistence implementation forward but
-  remains a COVERAGE IMPLEMENTATION until a real Journal resume with content is
-  evidenced.
+  `cleanup=PASS`. A later three-cycle content round trip (PIDs `506471`,
+  `506514`, `506554`, with resumed PIDs `506494`, `506534`, `506574`) restored
+  the exact UTF-8 text from Journal. Write is therefore a FUNCTIONAL PORT;
+  rich-text and upstream format breadth remain outside this claim.
 - GTK4 Stopwatch Journal boundary (2026-09-15): Stopwatch now saves elapsed
   deciseconds as JSON and restores them paused through the standard toolkit
   hooks. After restarting the modern shell against the rebuilt registry, three
@@ -432,9 +433,10 @@ Superseding runtime finding (2026-09-15): the historical launch/stop counts
 below did not verify saved data. Shell Stop could discard document content,
 and resumed launches omitted the Journal object argument. Patches 0125/0126
 close those two gaps, with three real saved-content round trips and an
-inspected screenshot. See `journal-save-resume-20260915.md`. Continue with
-actual document workflows and save error handling before extending catalog
-coverage. No new runtime architecture was introduced.
+inspected screenshot. See `journal-save-resume-20260915.md`. Write's
+principal workflow is now classified FUNCTIONAL PORT; Read and Stopwatch still
+need live object-resume evidence before promotion. No new runtime architecture
+was introduced.
 
 1. Physical F1–F6 delivery remains below the QEMU/evdev transport. Semantic
    `ShowHome`, `ShowJournal`, `ShowFrame`, `ShowNeighborhood`, `ShowGroup`, and
