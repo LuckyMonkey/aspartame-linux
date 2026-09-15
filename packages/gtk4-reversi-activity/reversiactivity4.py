@@ -1,5 +1,8 @@
 """GTK4-native Reversi board with legal capture and flip moves."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -70,3 +73,17 @@ class ReversiActivity(SimpleActivity):
                 elif value == 2: button.add_css_class("white")
 
     def _new_game(self, _button): self._reset_board(); self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            board = payload.get("board") if isinstance(payload, dict) else None
+            if isinstance(board, list) and len(board) == 8 and all(isinstance(row, list) and len(row) == 8 for row in board):
+                self.board = [[int(value) if int(value) in (0, 1, 2) else 0 for value in row] for row in board]
+                self.player = int(payload.get("player", 1)) if int(payload.get("player", 1)) in (1, 2) else 1
+                self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"board": self.board, "player": self.player}, sort_keys=True) + "\n", encoding="utf-8")

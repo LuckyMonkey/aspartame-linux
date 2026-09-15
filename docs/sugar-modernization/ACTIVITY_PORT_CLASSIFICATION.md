@@ -32,9 +32,10 @@ Classification used by the migration ledger:
 | Log | FUNCTIONAL PORT | Native log list surface |
 | Read | FUNCTIONAL PORT | UTF-8 Journal text object resume, visible page restoration, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; PDF/EPUB/format breadth and upstream Read parity remain absent |
 | Write | FUNCTIONAL PORT | UTF-8 text editing, Journal save/stop/resume, and save-failure cancellation/retry verified with real GTK4 Activity processes on 2026-09-15; rich text and upstream document-format parity remain absent |
-| Reversi, Jumble, NumberRush | COVERAGE IMPLEMENTATION | Native playable cores used to exercise GTK4 input/render/lifecycle |
+| Jumble, NumberRush | COVERAGE IMPLEMENTATION | Native playable cores used to exercise GTK4 input/render/lifecycle |
 | Poll | FUNCTIONAL PORT | Question/choice editing, vote/reset workflow, JSON Journal save/resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; collaboration and upstream feature breadth remain absent |
 | Mancala | FUNCTIONAL PORT | Two-row board movement, turn/store state, JSON Journal save/resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full rule/scoring and collaboration breadth remain absent |
+| Reversi | FUNCTIONAL PORT | Eight-by-eight capture/flip workflow, board/player JSON Journal resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full scoring, hints, and collaboration breadth remain absent |
 | Mastermind | FUNCTIONAL PORT | Four-color guess/check/reset workflow, visible guess progress, JSON Journal save/resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full upstream scoring, hints, and collaboration breadth remain absent |
 | Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
 | Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |
