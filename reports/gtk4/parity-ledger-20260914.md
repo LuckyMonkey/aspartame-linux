@@ -15,6 +15,15 @@ through AT-SPI, and stopped cleanly with service release and shell cleanup.
 Read is therefore a FUNCTIONAL PORT for bounded UTF-8 text-object reading;
 PDF/EPUB and full upstream Read format parity remain absent.
 
+Native Stopwatch object resume (2026-09-15):
+`sugar-gtk4-stopwatch-roundtrip.py` passed two real guest cycles. Each cycle
+launched Stopwatch, stopped it through Shell, seeded the saved Journal object's
+JSON elapsed-time payload, resumed the same object through Journal, verified
+the restored visible elapsed time through AT-SPI, and stopped cleanly with
+service release and shell cleanup. Stopwatch is therefore a FUNCTIONAL PORT
+for bounded elapsed-time resume; lap/export/collaboration breadth remains
+outside this claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
@@ -444,8 +453,8 @@ close those two gaps, with three real saved-content round trips and an
 inspected screenshot. See `journal-save-resume-20260915.md`. Write's
 principal workflow is now classified FUNCTIONAL PORT. Read subsequently gained
 live seeded UTF-8 object-resume evidence in `read-roundtrip-20260915.md`;
-Stopwatch still needs a user-visible resume interaction before promotion. No
-new runtime architecture was introduced.
+Stopwatch subsequently gained live seeded JSON elapsed-time resume evidence in
+`stopwatch-roundtrip-20260915.md`. No new runtime architecture was introduced.
 
 1. Physical F1–F6 delivery remains below the QEMU/evdev transport. Semantic
    `ShowHome`, `ShowJournal`, `ShowFrame`, `ShowNeighborhood`, `ShowGroup`, and
