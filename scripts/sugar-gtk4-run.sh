@@ -168,6 +168,7 @@ exec env \
     XDG_DATA_DIRS="$prefix/share:/usr/local/share:/usr/share" \
     DATASTORE_SERVICE="$datastore/bin/datastore-service" \
     DATASTORE_LOG="$root/logs/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
+    ASPARTAME_GTK4_LOG="$log" \
     PYTHON_BIN="$python_bin" \
     PATH="$venv/bin:$prefix/bin:$PATH" \
     SHELL_ENTRY="$shell/src/jarabe/main.py" \

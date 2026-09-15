@@ -81,7 +81,11 @@ if [ "$target" = gtk4 ]; then
     tr '\0' '\n' < "$proc_root/$target_pid/environ" |
         grep -Fxq "XDG_RUNTIME_DIR=$runtime" ||
         fail 'GTK4 process does not own the expected private runtime'
-    if [ ! -r "$log" ]; then
+    session_log=$(tr '\0' '\n' < "$proc_root/$target_pid/environ" |
+        sed -n 's/^ASPARTAME_GTK4_LOG=//p' | head -1)
+    if [ -n "$session_log" ]; then
+        log=$session_log
+    elif [ ! -r "$log" ]; then
         log=$(ls -t "$root/logs"/gtk4-shell-*.log 2>/dev/null | head -1 || true)
     fi
     [ -n "$log" ] && [ -r "$log" ] || fail "GTK4 session log is missing"
