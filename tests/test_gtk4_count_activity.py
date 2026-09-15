@@ -22,6 +22,7 @@ def test_count_is_a_native_gtk4_bundle():
     assert "self.current_layer = max(0, self.current_layer)" in source
     assert "requested_layer = int(state.get(\"current_layer\", 0))" in source
     assert "len(layer) == self.height" in source
+    assert "self._cells[0][0].grab_focus()" in source
     assert "grid.set_can_target(False)" in source
     assert "count-context-back" in source
     assert "count-context-front" in source

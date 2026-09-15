@@ -103,6 +103,8 @@ class CountActivity(SimpleActivity):
         self.set_canvas(root)
         self._install_css()
         self._render()
+        # Start keyboard traversal on the editable plane, not on shell chrome.
+        self._cells[0][0].grab_focus()
 
     @staticmethod
     def _empty_layer():
