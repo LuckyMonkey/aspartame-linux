@@ -17,7 +17,7 @@ class FinanceActivity(SimpleActivity):
         root.set_margin_start(30); root.set_margin_end(30)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Finance tracker"])
         title = Gtk.Label(label="Finance", xalign=0); title.add_css_class("title-1"); root.append(title)
-        self.amount = Gtk.Entry(); self.amount.set_placeholder_text("Amount"); self.amount.set_input_purpose(Gtk.InputPurpose.DECIMAL)
+        self.amount = Gtk.Entry(); self.amount.set_placeholder_text("Amount"); self.amount.set_input_purpose(Gtk.InputPurpose.NUMBER)
         self.amount.update_property([Gtk.AccessibleProperty.LABEL], ["Amount"]); root.append(self.amount)
         self.description = Gtk.Entry(); self.description.set_placeholder_text("Description")
         self.description.update_property([Gtk.AccessibleProperty.LABEL], ["Description"]); root.append(self.description)

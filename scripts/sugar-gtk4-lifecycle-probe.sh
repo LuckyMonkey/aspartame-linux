@@ -46,9 +46,43 @@ for cycle in $(seq 1 "$cycles"); do
         sleep 0.1
     done
     [ -n "$activity_id" ] || { echo "cycle=$cycle launch=FAIL" >&2; exit 1; }
+    # A PID exists before Python imports or widget construction finish. Wait
+    # for the Activity service and Jarabe's launch-completed state before Stop.
+    # This establishes service readiness, not proof of rendered pixels.
+    ready=0
+    for _attempt in $(seq 1 100); do
+        kill -0 "$activity_pid" 2>/dev/null || break
+        owner=$(aspartame_gdbus --dest org.freedesktop.DBus \
+            --object-path /org/freedesktop/DBus \
+            --method org.freedesktop.DBus.GetConnectionUnixProcessID \
+            "org.laptop.Activity$activity_id" 2>/dev/null || true)
+        if [[ "$owner" == "(uint32 $activity_pid,)" ]]; then
+            active=$(aspartame_gdbus --dest org.laptop.Shell \
+                --object-path /org/laptop/Shell \
+                --method org.laptop.Shell.ActivateActivity "$activity_id")
+            responsive=$(aspartame_gdbus --timeout 5 \
+                --dest "org.laptop.Activity$activity_id" \
+                --object-path "/org/laptop/Activity/${activity_id//-/_}" \
+                --method org.laptop.Activity.SetActive true 2>/dev/null || true)
+            if [ "$active" = "(true,)" ] && [ "$responsive" = "()" ]; then
+                ready=1
+                break
+            fi
+        fi
+        sleep 0.1
+    done
+    [ "$ready" -eq 1 ] || {
+        echo "cycle=$cycle pid=$activity_pid activity_id=$activity_id service-ready=FAIL" >&2
+        exit 1
+    }
+    echo "cycle=$cycle pid=$activity_pid service-ready=PASS shell-active=PASS"
     stop=$(aspartame_gdbus --dest org.laptop.Shell \
         --object-path /org/laptop/Shell \
         --method org.laptop.Shell.StopActivity "$activity_id")
+    [ "$stop" = "(true,)" ] || {
+        echo "cycle=$cycle pid=$activity_pid stop=$stop stop-request=FAIL" >&2
+        exit 1
+    }
     for _attempt in $(seq 1 50); do
         pgrep -u aspartame -f "$process_pattern" >/dev/null || break
         sleep 0.1

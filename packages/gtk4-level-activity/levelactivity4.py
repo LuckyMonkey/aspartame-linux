@@ -33,7 +33,9 @@ class LevelActivity(SimpleActivity):
         self.canvas.set_content_width(700); self.canvas.set_content_height(260)
         self.canvas.set_hexpand(True); self.canvas.set_vexpand(True)
         self.canvas.set_draw_func(self._draw)
-        self.canvas.set_accessible_role(Gtk.AccessibleRole.IMAGE)
+        # GTK4 has no IMAGE accessible role; the custom drawing surface is a
+        # labelled group containing the level controls and canvas.
+        self.canvas.set_accessible_role(Gtk.AccessibleRole.GROUP)
         self.canvas.update_property([Gtk.AccessibleProperty.LABEL], ["Spirit level"])
         drag = Gtk.GestureDrag()
         drag.connect("drag-update", self._drag_update)

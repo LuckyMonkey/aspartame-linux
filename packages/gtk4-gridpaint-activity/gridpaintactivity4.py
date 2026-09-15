@@ -17,7 +17,7 @@ class GridPaintActivity(SimpleActivity):
         self.cells = []
         for row in range(10):
             for column in range(10):
-                cell = Gtk.ToggleButton(); cell.set_size_request(38, 38); cell.update_property([Gtk.AccessibleProperty.LABEL], [f"Row {row + 1}, column {column + 1}"]); self.grid.attach(cell, column, row)
+                cell = Gtk.ToggleButton(); cell.set_size_request(38, 38); cell.update_property([Gtk.AccessibleProperty.LABEL], [f"Row {row + 1}, column {column + 1}"]); self.grid.attach(cell, column, row, 1, 1)
                 self.cells.append(cell)
         root.append(self.grid)
         clear = Gtk.Button(label="Clear picture"); clear.connect("clicked", self._clear); root.append(clear)

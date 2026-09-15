@@ -14,7 +14,7 @@ class GameOfLifeActivity(SimpleActivity):
         self.grid = Gtk.Grid(row_spacing=2, column_spacing=2); self.grid.set_halign(Gtk.Align.CENTER); self.grid.set_valign(Gtk.Align.CENTER); self.grid.set_vexpand(True); self.buttons = {}
         for row in range(12):
             for column in range(12):
-                button = Gtk.ToggleButton(); button.set_size_request(30, 30); button.update_property([Gtk.AccessibleProperty.LABEL], [f"Row {row + 1}, column {column + 1}"]); button.connect("toggled", self._changed, row, column); self.grid.attach(button, column, row); self.buttons[(row, column)] = button
+                button = Gtk.ToggleButton(); button.set_size_request(30, 30); button.update_property([Gtk.AccessibleProperty.LABEL], [f"Row {row + 1}, column {column + 1}"]); button.connect("toggled", self._changed, row, column); self.grid.attach(button, column, row, 1, 1); self.buttons[(row, column)] = button
         root.append(self.grid); controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         step = Gtk.Button(label="Step"); step.connect("clicked", self._step); controls.append(step)
         clear = Gtk.Button(label="Clear"); clear.connect("clicked", self._clear); controls.append(clear); root.append(controls)
