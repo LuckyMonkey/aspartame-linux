@@ -2,7 +2,7 @@
 name = IQ
 bundle_id = mulawa.IQ
 exec = sugar-activity4 iqactivity4.IQActivity
-icon = iq
+icon = activity-iq
 activity_version = 24
 show_launcher = yes
 license = GPLv3+

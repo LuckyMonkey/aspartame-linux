@@ -2,7 +2,7 @@
 name = Abacus
 bundle_id = com.homegrownapps.abacus
 exec = sugar-activity4 abacusactivity4.AbacusActivity
-icon = abacus
+icon = activity-abacus
 activity_version = 1
 show_launcher = yes
 license = GPLv3+

@@ -2,7 +2,7 @@
 name = Last One Loses
 bundle_id = org.olpc-france.LOLActivity
 exec = sugar-activity4 lolactivity4.LastOneLosesActivity
-icon = lol
+icon = activity-lol
 activity_version = 1
 show_launcher = yes
 license = GPLv3+

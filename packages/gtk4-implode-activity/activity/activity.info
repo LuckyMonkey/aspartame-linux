@@ -2,7 +2,7 @@
 name = Implode
 bundle_id = com.jotaro.ImplodeActivity
 exec = sugar-activity4 implodeactivity4.ImplodeActivity
-icon = implode
+icon = activity-implode
 activity_version = 21
 show_launcher = yes
 license = GPLv3+

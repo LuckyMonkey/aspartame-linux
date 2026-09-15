@@ -2,7 +2,7 @@
 name = Game Of Life
 bundle_id = org.sugarlabs.gameOfLife
 exec = sugar-activity4 gameoflifeactivity4.GameOfLifeActivity
-icon = life
+icon = activity-life
 activity_version = 1
 show_launcher = yes
 license = GPLv3+

@@ -30,7 +30,8 @@ Classification used by the migration ledger:
 | Terminal | FUNCTIONAL PORT | Native VTE terminal path; terminal feature parity remains bounded |
 | Browse | FUNCTIONAL PORT | Native WebKit path; collaboration/download parity is not claimed |
 | Log | FUNCTIONAL PORT | Native log list surface |
-| Read | FUNCTIONAL PORT | Native offline document reader; library/import parity is not claimed |
+| Read | COVERAGE IMPLEMENTATION | Displays a fixed sample document; cannot yet open a user's document or restore a Journal object |
+| Write | COVERAGE IMPLEMENTATION | Editable document surface; upstream document formats and persistence parity have not been demonstrated |
 | Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush | COVERAGE IMPLEMENTATION | Native playable cores used to exercise GTK4 input/render/lifecycle |
 | Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
 | Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Markdown, Finance, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |
@@ -47,3 +48,9 @@ normal user workflow are evidenced independently.
 
 The runtime matrix remains useful and continues to report lifecycle coverage;
 this ledger is the authoritative qualification boundary for Activity parity.
+
+Evidence correction: the current automated matrix waits for a process ID and
+requests Stop immediately. A PASS proves process creation and termination,
+but does not by itself prove a mapped surface, completed startup, working
+input, persistence, or a usable replacement. See registry-repair-20260914.md
+under reports/gtk4 for the separate Clock screenshot and the probe boundary.

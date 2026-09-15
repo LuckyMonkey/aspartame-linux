@@ -2,7 +2,7 @@
 name = Appel Haken
 bundle_id = mulawa.AppelHaken
 exec = sugar-activity4 appelhakenactivity4.AppelHakenActivity
-icon = appelhaken
+icon = activity-appelhaken
 activity_version = 26
 show_launcher = yes
 license = GPLv3+

@@ -2,7 +2,7 @@
 name = Finance
 bundle_id = org.laptop.community.Finance
 exec = sugar-activity4 financeactivity4.FinanceActivity
-icon = finance
+icon = activity-finance
 activity_version = 15
 show_launcher = yes
 license = GPLv3+

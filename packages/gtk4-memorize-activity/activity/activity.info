@@ -2,7 +2,7 @@
 name = Memorize
 bundle_id = org.laptop.Memorize
 exec = sugar-activity4 memorizeactivity4.MemorizeActivity
-icon = memorize
+icon = activity-memorize
 activity_version = 60
 show_launcher = yes
 license = GPLv3+

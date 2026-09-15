@@ -2,7 +2,7 @@
 name = Portfolio
 bundle_id = org.sugarlabs.PortfolioActivity
 exec = sugar-activity4 portfolioactivity4.PortfolioActivity
-icon = portfolio
+icon = activity-portfolio
 activity_version = 53
 show_launcher = yes
 license = GPLv3+

@@ -2,7 +2,7 @@
 name = Color My World
 bundle_id = org.sugarlabs.ColorMyWorldActivity
 exec = sugar-activity4 colormyworldactivity4.ColorMyWorldActivity
-icon = colorworld
+icon = activity-colorworld
 activity_version = 1
 show_launcher = yes
 license = GPLv3+

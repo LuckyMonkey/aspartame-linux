@@ -2,7 +2,7 @@
 name = Across and Down
 bundle_id = mulawa.AcrossDown
 exec = sugar-activity4 acrossdownactivity4.AcrossDownActivity
-icon = acrossdown
+icon = activity-acrossdown
 activity_version = 26
 show_launcher = yes
 license = GPLv3+

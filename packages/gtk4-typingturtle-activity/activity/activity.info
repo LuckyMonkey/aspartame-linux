@@ -2,7 +2,7 @@
 name = Typing Turtle
 bundle_id = org.laptop.community.TypingTurtle
 exec = sugar-activity4 typingturtleactivity4.TypingTurtleActivity
-icon = typingturtle
+icon = activity-typingturtle
 activity_version = 33
 show_launcher = yes
 license = GPLv3+

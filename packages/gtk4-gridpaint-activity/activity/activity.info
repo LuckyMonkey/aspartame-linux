@@ -2,7 +2,7 @@
 name = Grid Paint
 bundle_id = org.olpcfrance.Gridpaint
 exec = sugar-activity4 gridpaintactivity4.GridPaintActivity
-icon = gridpaint
+icon = activity-gridpaint
 activity_version = 2
 show_launcher = yes
 license = GPLv3+

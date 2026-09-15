@@ -2,7 +2,7 @@
 name = Markdown
 bundle_id = org.sugarlabs.Markdown
 exec = sugar-activity4 markdownactivity4.MarkdownActivity
-icon = markdown
+icon = activity-markdown
 activity_version = 3
 show_launcher = yes
 license = GPLv3+

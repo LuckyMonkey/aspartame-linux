@@ -2,7 +2,7 @@
 name = FotoToon
 bundle_id = org.eq.FotoToon
 exec = sugar-activity4 fototoonactivity4.FotoToonActivity
-icon = fototoon
+icon = activity-fototoon
 activity_version = 27
 show_launcher = yes
 license = GPLv3+

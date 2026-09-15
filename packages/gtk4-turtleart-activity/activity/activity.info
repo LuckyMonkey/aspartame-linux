@@ -2,7 +2,7 @@
 name = TurtleBlocks
 bundle_id = org.laptop.TurtleArtActivity
 exec = sugar-activity4 turtleartactivity4.TurtleArtActivity
-icon = turtleart
+icon = activity-turtleart
 activity_version = 220
 show_launcher = yes
 license = MIT;GPLv2+

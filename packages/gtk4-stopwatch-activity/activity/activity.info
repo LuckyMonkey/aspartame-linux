@@ -2,7 +2,7 @@
 name = Stopwatch
 bundle_id = org.sugarlabs.StopwatchActivity
 exec = sugar-activity4 stopwatchactivity4.StopwatchActivity
-icon = stopwatch
+icon = activity-stopwatch
 activity_version = 1
 show_launcher = yes
 license = GPLv3+

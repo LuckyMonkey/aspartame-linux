@@ -2,7 +2,7 @@
 name = Planets
 bundle_id = org.sugarlabs.Planets
 exec = sugar-activity4 planetsactivity4.PlanetsActivity
-icon = planets
+icon = activity-planets
 activity_version = 1
 show_launcher = yes
 license = GPLv3+

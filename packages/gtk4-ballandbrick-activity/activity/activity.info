@@ -2,7 +2,7 @@
 name = BallAndBrick
 bundle_id = org.sugarlabs.BallAndBrick
 exec = sugar-activity4 ballandbrickactivity4.BallAndBrickActivity
-icon = ballandbrick
+icon = activity-ballandbrick
 activity_version = 4
 show_launcher = yes
 license = GPLv3+
