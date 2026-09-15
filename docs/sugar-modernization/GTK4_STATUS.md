@@ -51,6 +51,12 @@ the Journal Activity state but currently captures as a blank white surface.
 Native Journal Activity launch/resume remains independently verified; that
 evidence does not prove shell-embedded Journal presentation is complete.
 
+TurtleBlocks remains a coverage implementation. Its activity process and
+private service pass the generic lifecycle probe, but the current Casilda
+surface is not discoverable through the guest AT-SPI tree and screenshots show
+the generic fallback surface. It is therefore not promoted to FUNCTIONAL PORT
+until the bundle mapping/observable surface boundary is repaired.
+
 The ISO profile includes GTK4 runtime libraries, but the GTK4 source overlay
 and pinned Activity checkouts are still supplied by the `aspartame-dev` 9p
 share during development. Embedding those sources into a standalone ISO is a
