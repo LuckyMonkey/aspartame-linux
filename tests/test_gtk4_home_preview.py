@@ -41,7 +41,8 @@ def test_gtk4_build_removes_only_dangling_activity_links():
 
 def test_gtk4_runner_exposes_all_verified_bundles_to_isolated_home():
     runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
-    assert "for modern_bundle in Calculate ImageViewer Terminal Browse Log Mastermind Poll Mancala Reversi Jumble NumberRush; do" in runner
+    assert "for modern_bundle in Calculate ImageViewer Terminal Browse Log Mastermind Poll Mancala Reversi Jumble NumberRush" in runner
+    assert "GetThingsDone" in runner and "Jukebox; do" in runner
     assert 'SUGAR_ACTIVITIES_PATH="$modern_activities"' in runner
     assert 'modern_activities/${modern_bundle}.activity' in runner
 
