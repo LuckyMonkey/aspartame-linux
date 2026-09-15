@@ -54,5 +54,5 @@ def test_home_list_uses_existing_gtk4_command_capability_api():
 
 def test_gtk4_runner_excludes_gtk3_overlay_path():
     runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
-    assert 'PYTHONPATH="$project_root/gtk4-overlay/src:$datastore_site' in runner
+    assert 'preview_pythonpath="$project_root/gtk4-overlay/src:$datastore_site' in runner
     assert 'PYTHONPATH="$project_root/gtk4-overlay/src:$project_root/sugar-overlay' not in runner
