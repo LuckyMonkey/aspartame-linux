@@ -1,160 +1,222 @@
 # Aspartame
 
-## GTK4 First Pixels milestone
+> A Python-first Arch Linux environment whose desktop is Sugar.
 
-The isolated GTK4 preview now has a verified Sugar Home workspace in QEMU. The stable GTK3 desktop remains production; GTK4 is an explicitly isolated preview with its own workspace, private Wayland runtime, and mounted source tree.
+[![GTK4 tests](https://img.shields.io/badge/GTK4%20tests-271%20passed-2ea44f)](tests/)
+[![GTK4 build](https://img.shields.io/badge/guest%20build-PASS-2ea44f)](docs/sugar-modernization/GTK4_RUNBOOK.md)
+[![GTK3 reference](https://img.shields.io/badge/GTK3-reference%20preserved-2ea44f)](docs/sugar-modernization/GTK4_STATUS.md)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
 
-The original 2026-09-05 checkpoint proved full-screen Home rendering,
-GTK3/GTK4 workspace switching, and an anchored Sugar palette. Since then, the
-GTK4 Space has verified fifteen modern Activities (including Log, Help,
-Calculate, Count, Clock, JAMClock, Image Viewer, Terminal, Browse, Mastermind,
-Poll, Mancala, Reversi, Jumble, and NumberRush) through repeated three-cycle
-launch/stop probes. Semantic Home/Journal/Frame navigation is verified, while
-physical F-key delivery remains a QEMU/evdev transport limitation. Full parity
-across every Activity and accessibility surface remains an active conversion
-goal; current evidence is in
-`reports/gtk4/runtime-matrix-20260914.md`.
+Aspartame is an Arch-derived Linux distribution and a Sugar modernization
+laboratory. It keeps Sugar's learning-centred model—Home, Activities, Frame,
+Journal, Neighborhood, Group, palettes, XO identity, and visible context—at
+the centre of the operating system while retaining practical Linux tools
+underneath: systemd, pacman, ordinary files, networking, audio, CUPS, SSH, and
+a real terminal.
 
-![GTK4 Home full-screen](reports/gtk4/gtk4-home-fullscreen-20260905.png)
+This is not a GNOME reskin. GTK4 is an implementation modernization of Sugar,
+not a change to Sugar's interaction model.
 
-![GTK4 Sugar palette](reports/gtk4/gtk4-palette-20260905.png)
+## What is here today
 
-![Aspartame banner](aspartame.png)
+The bootable image starts a real Sugar session. The development VM runs two
+separate shell spaces for direct comparison:
 
-**Sugar on Arch.**
-Aspartame is an Arch-derived desktop distribution with Sugar as its primary
-interaction model. It preserves Home, Activities, Journal, Frame, Group,
-Neighborhood, palettes, and Sugar's color/state semantics while building a
-modern general-purpose system around them.
+| Space | Purpose | Boundary |
+| --- | --- | --- |
+| Classic (F7) | Stable GTK3 Sugar reference | X11 + Metacity |
+| Modern (F8) | GTK4 conversion under test | GTK4 shell + Casilda private Wayland Activity surfaces |
 
-The current bootstrap is a reproducible archiso image that boots directly into
-a real Sugar session in QEMU. It includes networking, browser and Terminal
-Activities, persistent user data, audio infrastructure, CUPS, SSH-based
-development control, and a 1920×1080 reference display.
+GTK3 and GTK4 are separate Python processes and never import both GI
+namespaces into one process. Journal/datastore and shell services provide the
+coordination boundary; Casilda owns the embedded Activity surface.
 
-## Quick start
+The modern Space has verified native GTK4 shell surfaces for Home Favorites
+and List views, search, Frame, Journal, Neighborhood/Group empty states,
+Settings, Help, palettes, clipboard transfer, Activity Manager, and approval
+prompts. Real Activity processes launch, receive shell lifecycle events, stop,
+and clear their running state through Casilda.
 
-Large archiso caches and artifacts live on SteamLibrary rather than the Ubuntu
-root filesystem.
+Runtime coverage is deliberately not called behavioral parity. Every Activity
+is classified in [ACTIVITY_PORT_CLASSIFICATION.md](docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md)
+as FULL PORT, FUNCTIONAL PORT, COVERAGE IMPLEMENTATION, or PLACEHOLDER.
+
+## Screenshots
+
+These are captures from the current 1920×1080 QEMU reference session, not
+mockups:
+
+![GTK4 Sugar Home](reports/screenshots/sugar-20260915-151748-v0.0.31.png)
+
+![GTK4 Help Activity](reports/screenshots/sugar-20260915-150938-v0.0.31.png)
+
+The Help Activity is a native dark GTK4 surface with searchable expandable
+English documentation covering the shell, XO identity, Home, Activities,
+Journal saving/resume, Spaces, Casilda surfaces, Count, accessibility, and
+troubleshooting. For the Activity Manager and approval prompt, see the
+[QEMU screenshot gallery](docs/screenshots/README.md).
+
+## Progress at a glance
+
+Progress bars describe verified repository work, not a claim that the full
+retirement gate has passed.
+
+| Goal | Status | Meaning |
+| --- | --- | --- |
+| GTK4 build and CSS validation | `██████████ 100%` | Complete preview build and parser checks pass |
+| Shell surfaces | `█████████░ 90%` | Home, Frame, Journal, Settings, Help, palettes, and empty collaboration views are live |
+| Activity lifecycle | `█████████░ 90%` | Repeated normal/abnormal Casilda launch, input paths, stop, and cleanup are verified |
+| Activity catalog parity | `██████░░░░ 60%` | Many FUNCTIONAL PORTs; no Activity is currently claimed FULL PORT |
+| GTK3 ↔ GTK4 Spaces | `████████░░ 80%` | Semantic switching and process isolation work; physical F-key transport remains environment-sensitive |
+| Collaboration peers | `███░░░░░░░ 30%` | Empty states are verified; peer-backed actions need a second participant |
+| GTK4 retirement gate | `███████░░░ 70%` | Open items are tracked explicitly in the conversion tracker |
+
+The authoritative checklist is [CONVERSION_TRACKER.md](docs/sugar-modernization/CONVERSION_TRACKER.md),
+not a screenshot or a passing unit test alone.
+
+## Architecture
+
+```text
+Aspartame Arch image
+    └─ Sugar session (stable GTK3 or modern GTK4 Space)
+         ├─ Home / Frame / Journal / Neighborhood / Settings / Help
+         ├─ shell model and D-Bus services
+         └─ Casilda
+              └─ private Wayland Activity surfaces
+                   └─ native GTK4 Activity process
+```
+
+The modern shell uses GTK4 layout and input primitives (`GtkBox`, `GtkStack`,
+`GtkListView`, `GtkPopover`, EventControllers, and Snapshot/GSK where custom
+drawing is needed). GTK CSS is validated as GTK CSS; browser properties such as
+flexbox or CSS Grid are not used as layout substitutes. Activity launchers are
+kept behind a bundle-oriented boundary so native Python, Snakepit, and future
+web Activities can be resolved independently.
+
+### Sugar concepts preserved
+
+- Home Favorites and List views, with XOColor and stopped/starting/running/current states.
+- Activities as focused workspaces rather than conventional application windows.
+- Frame navigation, palettes, contextual actions, and keyboard semantics.
+- Journal objects, metadata, search, resume, and datastore service boundaries.
+- Neighborhood and Group models, including an honest no-peer empty state.
+- Activity Manager policy: user Activities can be uninstalled; package-managed
+  Activities are disabled/hidden rather than falsely claimed to be removed.
+- Shell-wide contextual Help and the canonical Sugar stop control.
+
+## Activity status
+
+The current native GTK4 inventory includes functional implementations for
+Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log,
+Read, Write, NumberRush, Poll, Mancala, Reversi, Jumble, Mastermind,
+BlockParty, PlayGo, Implode, BallAndBrick, Appel Haken, IQ, Across and Down,
+Maze, Memorize, Words, Portfolio, FotoToon, Finance, Markdown, Stopwatch,
+TurtleBlocks, Gears, Last One Loses, Grid Paint, Get Things Done, Abacus,
+Planets, Color My World, Game Of Life, Diamond Fusion, Connect the Dots, Pippy,
+Typing Turtle, Moon, Paint, Level, Jukebox, and Get Books.
+
+That list is runtime coverage, not a promise of complete upstream feature
+breadth. Read the classification table for each Activity's workflow and
+boundary. Sugarizer web catalog entries remain catalog-only until an actual
+runtime implementation exists.
+
+## Build and run
+
+Large archiso caches and VM disks live on the host's SteamLibrary volume so the
+root filesystem is not filled by image builds.
 
 ```sh
 git clone https://github.com/LuckyMonkey/aspartame-linux.git
 cd aspartame-linux
-make test
-make iso
-make run
+make test                 # host tests
+make iso                  # bootable Arch image
+make run                  # QEMU reference VM
 ```
 
-### Full ISO handoff
+The generated image is written under `dist/` with a date-stamped filename. The
+development GTK4 source overlay and pinned checkouts are mounted from the
+`aspartame-dev` share during preview work; the current ISO documentation does
+not claim those development sources are embedded.
 
-The complete bootable image is generated as `dist/aspartame-YYYY.MM.DD-x86_64.iso`.
-It includes the Sugar desktop, GTK4 runtime dependencies and preview support,
-English dark Help content, Activity Manager, approval flow, and the overhauled
-layered Count Activity. The development GTK4 source overlay and pinned preview
-checkouts are supplied separately by the `aspartame-dev` share during preview
-development; they are not currently claimed as embedded ISO source.
-Builds are reproducible with `make iso` from an Arch build environment; the live
-VM builder can install `archiso` automatically from the Arch mirror when the host
-privilege boundary is unavailable.
-
-Override QEMU defaults with environment variables:
+Useful overrides:
 
 ```sh
 RAM=8192 CPUS=4 make run
+QEMU_WINDOW_WIDTH=1920 QEMU_WINDOW_HEIGHT=1080 make run
 ```
 
-## Screenshots
-
-The current QEMU reference session:
-
-![Sugar Home](docs/screenshots/home-v0.0.15.png)
-
-![Activity Manager](docs/screenshots/activity-manager-v0.0.15.png)
-
-![Count Activity](docs/screenshots/count-v0.0.14.png)
-
-## Activity Manager milestone
-
-![Activity Manager milestone](docs/screenshots/activity-manager-milestone.jpg)
-
-The Activity Manager is Aspartame's first focused inventory view for the
-installed Sugar Activities. Each row keeps its activity identity, icon,
-version, description, Wong–Baker face rating, and removal action aligned in
-fixed columns so one oversized icon or long description cannot change the
-table layout.
-
-![Wong–Baker activity rating](docs/screenshots/wong-baker-milestone.jpg)
-
-The five faces are a reusable single-choice rating control: Broken, Bad,
-Needs work, Good, and Perfect. An activity begins unrated, with no face
-selected; choosing a face selects exactly one. The rating is stored with the
-activity metadata and remains available across launches. This gives us a
-consistent way to review the installed collection without confusing an
-unanswered review with a negative rating.
-
-This milestone was achieved by keeping the feature inside Sugar's existing
-Control Panel and GTK3 widget conventions. The Activity Manager uses fixed
-GTK layout slots and scaled artwork, while the reusable `FaceRating` widget
-uses independent GTK toggle buttons with one-or-none selection semantics.
-The result preserves existing Activity installation/state data, avoids a new
-desktop panel metaphor, and gives future Activity reviews a shared control
-instead of bespoke rating code.
-
-### Native approval milestone
-
-![Native Sugar approval prompt](docs/screenshots/aspartame-uac-native-confirmation.png)
-
-System Activity removal now opens Aspartame's fullscreen, all-black Sugar
-approval surface instead of a GNOME Polkit dialog or a generic GTK modal. Its
-top-right Stop control is the canonical Sugar `activity-stop` ToolButton; the
-bottom Stop + Cancel control cancels the request. Enter accepts `Y…`, `yes`,
-`sure`, `okay`, `ok`, `confirm`, `please`, `affirmative`, `approve`, `accept`,
-`go`, or `granted`; `N…` cancels. The fixed removal helper then moves the
-bundle to recovery quarantine, preserving Journal work.
-
-See the [QEMU VM screenshot gallery](docs/screenshots/README.md) for captions,
-capture details, and the complete representative set.
-
-## GTK4 preview checkpoint
-
-The live QEMU proof is stored in [GTK4 Home full-screen](reports/gtk4/gtk4-home-fullscreen-20260905.png) (SHA-256 921fd6836244221953eb65c51cd1cb5620930236cc426a7d00df149ec2d7ee84) and [GTK4 Sugar palette](reports/gtk4/gtk4-palette-20260905.png) (SHA-256 bb57a28e05a643a2245a83ececc5b8ee223b3a47c89ce3d4ddfe6f4b74a9a8f0). The palette is black, anchored to the Log icon, and uses Sugar menu styling. Run `scripts/sugar-gtk4-runtime-check.sh gtk3` or `gtk4` inside the guest to verify the active workspace and process. Current lifecycle and Space evidence is documented under `reports/gtk4/`; broader parity remains pending.
-
-## Sugar development
-
-The repository now has one deterministic Sugar development loop:
+Inside a running guest:
 
 ```sh
-make sugar-info
-# Edit sugar-overlay/src/jarabe/...
-make sugar-reload
-make sugar-logs
-make sugar-screenshot
+scripts/sugar-gtk4-runtime-check.sh gtk3
+scripts/sugar-gtk4-runtime-check.sh gtk4
+scripts/sugar-gtk4-space.sh status
 ```
 
-Use `make sugar-session-restart` only for the broader tty1/X/session boundary.
-The runtime/source/process map and recovery procedure are in
-[docs/SUGAR-DEVELOPMENT.md](docs/SUGAR-DEVELOPMENT.md). Styling layers are
-mapped in [docs/SUGAR-STYLING.md](docs/SUGAR-STYLING.md).
+The full preview rebuild, including semantic patch verification, is:
 
-## Architecture
+```sh
+./scripts/sugar-gtk4-build.sh
+```
 
-Aspartame keeps Arch, pacman, systemd, ordinary filesystem paths, and a real
-terminal beneath Sugar. Python is preferred for understandable user-layer
-integration; Arch's system Python and low-level native infrastructure remain
-distribution-owned. CUPS is intentional core infrastructure.
+## Verification widgets
 
-Start with:
+Executable checks and durable evidence live together:
 
-- [architecture](docs/architecture.md)
-- [building](docs/building.md)
-- [QEMU](docs/qemu.md)
-- [Sugar current state](docs/sugar-current-state.md)
-- [Sugar development](docs/SUGAR-DEVELOPMENT.md)
-- [Sugar styling](docs/SUGAR-STYLING.md)
-- [Sugar GTK4 modernization](docs/sugar-modernization/README.md)
-- [known issues](docs/known-issues.md)
+| Check | Command/result |
+| --- | --- |
+| GTK4 regression suite | `pytest -q tests/test_gtk4*` → **271 passed** |
+| Guest source/build | `scripts/sugar-gtk4-build.sh` → **PASS** |
+| Spaces process check | `scripts/sugar-gtk4-runtime-check.sh gtk3/gtk4` |
+| Activity lifecycle | `scripts/sugar-gtk4-activity-roundtrip.py` and `reports/gtk4/` |
+| CSS contracts | `tests/test_gtk4_focus_ring.py` and build-time validation |
+| Visual proof | `scripts/sugar-screenshot.sh` → 1920×1080 PNG + SHA-256 + OCR |
 
-The durable engineering backlog is in [TODO.md](TODO.md).
+Runtime logs prove process IDs, selected Space, GTK/Casilda state, Activity
+service readiness, and cleanup. Screenshots are supplementary evidence, not
+the sole acceptance criterion.
 
-The live image's autologin and root development password are for QEMU
-engineering only and are not an installed-system security model.
+## Runbooks and project guides
+
+- [GTK4 modernization index](docs/sugar-modernization/README.md)
+- [Current GTK4 status](docs/sugar-modernization/GTK4_STATUS.md)
+- [Conversion tracker and gate](docs/sugar-modernization/CONVERSION_TRACKER.md)
+- [Activity classifications](docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md)
+- [GTK4 runtime runbook](docs/sugar-modernization/GTK4_RUNBOOK.md)
+- [Activity lifecycle runbook](docs/sugar-modernization/GTK4_ACTIVITY_RUNBOOK.md)
+- [Journal runbook](docs/sugar-modernization/GTK4_JOURNAL_RUNBOOK.md)
+- [GTK4 debugging](docs/sugar-modernization/GTK4_DEBUGGING.md)
+- [Architecture compatibility](docs/sugar-modernization/ARCH_COMPATIBILITY.md)
+- [Aspartame Chirality steering runbook](docs/sugar-modernization/ASPARTAME_CHIRALITY.md)
+- [QEMU screenshot gallery](docs/screenshots/README.md)
+- [General Sugar development](docs/SUGAR-DEVELOPMENT.md)
+- [Build instructions](docs/building.md)
+- [Known issues](docs/known-issues.md)
+
+Before changing migration code, read the status, tracker, and Chirality
+runbook. They define ownership, evidence boundaries, patch policy, and the
+distinction between a useful coverage implementation and a real port.
+
+## Current open work
+
+The project is intentionally still in conversion. The highest-value remaining
+items are:
+
+1. Prove and improve physical keyboard delivery in the actual QEMU/evdev path;
+   semantic shell actions are separate from transport proof.
+2. Exercise peer-backed Neighborhood/Group actions with a second participant.
+3. Promote individual Activities from FUNCTIONAL PORT toward FULL PORT only
+   when their GTK3 behavior, persistence, input, and accessibility are
+   independently demonstrated.
+4. Package the development overlay and pinned Activity sources into a
+   self-contained release image when that packaging work is ready.
+
+These are tracked gaps, not silent fallbacks. GTK3 remains the healthy
+behavioral and visual reference until the gate is genuinely satisfied.
+
+## Security and licensing
+
+The QEMU image's autologin and development credentials are for local
+engineering only and are not an installed-system security model. Aspartame is
+GPL-3.0-or-later; see [LICENSE](LICENSE) and the individual Activity licenses
+for bundled work.
