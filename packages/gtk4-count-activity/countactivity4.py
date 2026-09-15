@@ -54,6 +54,9 @@ class CountActivity(SimpleActivity):
         overlay.set_child(canvas_back)
         self.grid = Gtk.Grid(column_spacing=3, row_spacing=3)
         self.grid.add_css_class("count-grid")
+        self._grid_size = (self.width * 82 + (self.width - 1) * 3,
+                           self.height * 82 + (self.height - 1) * 3)
+        self.grid.set_size_request(*self._grid_size)
         self.grid.set_halign(Gtk.Align.CENTER)
         self.grid.set_valign(Gtk.Align.CENTER)
         overlay.add_overlay(self.grid)
@@ -157,6 +160,7 @@ class CountActivity(SimpleActivity):
             grid = Gtk.Grid(column_spacing=3, row_spacing=3)
             grid.set_halign(Gtk.Align.CENTER)
             grid.set_valign(Gtk.Align.CENTER)
+            grid.set_size_request(*self._grid_size)
             # All planes share one XY origin. Back planes remain readable
             # through the selected plane; front planes are lighter so they
             # never masquerade as editable cells.
