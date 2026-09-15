@@ -15,3 +15,10 @@ def test_paint_bundle_is_native_and_registered():
     assert "org.sugarlabs.Paint|paintactivity4.PaintActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     for path in ("scripts/sugar-gtk4-dev-sync.sh", "scripts/sugar-gtk4-build.sh"):
         assert "gtk4-paint-activity" in (ROOT / path).read_text()
+
+
+def test_paint_journal_roundtrip_is_json():
+    source = (ROOT / "packages/gtk4-paint-activity/paintactivity4.py").read_text()
+    assert "def read_file(self, file_path)" in source
+    assert "def write_file(self, file_path)" in source
+    assert '"strokes"' in source

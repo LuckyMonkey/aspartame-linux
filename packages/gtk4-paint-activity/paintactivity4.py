@@ -4,6 +4,9 @@ The canvas deliberately keeps its model in Python (strokes are lists of
 points), so pointer input and rendering remain independent of GTK widgets.
 """
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -125,3 +128,32 @@ class PaintActivity(SimpleActivity):
                 cr.fill()
             else:
                 cr.stroke()
+
+    def read_file(self, file_path):
+        """Restore color and stroke geometry from a JSON Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                raise ValueError("payload must be an object")
+            color = payload.get("color", "Black")
+            strokes = payload.get("strokes", [])
+            if color not in self.COLORS or not isinstance(strokes, list):
+                raise ValueError("invalid drawing")
+            restored = []
+            for stroke in strokes:
+                if not isinstance(stroke, dict) or stroke.get("color") not in self.COLORS:
+                    continue
+                points = [tuple(point) for point in stroke.get("points", []) if isinstance(point, list) and len(point) == 2]
+                if points:
+                    restored.append([stroke["color"], points])
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            color, restored = "Black", []
+        self.color = color
+        self.strokes = restored
+        self.status.set_text(f"{self.color} ink · drag to draw")
+        self.canvas.queue_draw()
+
+    def write_file(self, file_path):
+        """Save color and stroke geometry as a JSON Journal object."""
+        payload = {"color": self.color, "strokes": [{"color": color, "points": points} for color, points in self.strokes]}
+        Path(file_path).write_text(json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")

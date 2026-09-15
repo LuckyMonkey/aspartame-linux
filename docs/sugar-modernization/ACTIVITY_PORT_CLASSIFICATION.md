@@ -45,6 +45,7 @@ Classification used by the migration ledger:
 | Get Things Done | FUNCTIONAL PORT | Native task list with add/complete controls and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; collaboration and upstream feature breadth remain absent |
 | Game Of Life, Color My World, Abacus, Planets | COVERAGE IMPLEMENTATION | Native rendering/interaction cores; not full upstream replacements |
 | Connect the Dots, Pippy, Paint, Diamond Fusion, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
+| Paint | FUNCTIONAL PORT | Pointer stroke drawing, color selection, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; image layers/tools remain absent |
 | Level | FUNCTIONAL PORT | Offline inclination controls, drag interaction, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; hardware sensor integration remains outside this claim |
 | Get Books, Jukebox | COVERAGE IMPLEMENTATION | Offline catalog/playlist surfaces; network/media-library parity not claimed |
 | Jukebox | FUNCTIONAL PORT | Offline playlist selection, local-track metadata, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; codec/media playback parity remains absent |

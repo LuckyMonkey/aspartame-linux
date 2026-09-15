@@ -99,6 +99,14 @@ and stopped cleanly with service release and shell cleanup. This supports a
 FUNCTIONAL PORT claim for bounded offline playlist persistence; codec and
 media-playback parity remain outside the claim.
 
+Native Paint object resume (2026-09-15):
+`sugar-gtk4-paint-roundtrip.py` passed two real guest cycles. Each cycle
+launched Paint, stopped it through Shell, seeded the saved Journal object with
+red stroke/color state, resumed it, verified the restored `Red ink` status
+through AT-SPI, and stopped cleanly with service release and shell cleanup.
+This supports a FUNCTIONAL PORT claim for bounded pointer drawing and
+persistence; image layers and advanced tools remain outside the claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
