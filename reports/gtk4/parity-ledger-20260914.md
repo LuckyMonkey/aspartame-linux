@@ -572,3 +572,11 @@ with five rod values, resumed it, verified the visible `Value: 12345` readout
 through AT-SPI, and stopped cleanly with service release and shell cleanup.
 This supports a FUNCTIONAL PORT claim for bounded place-value interaction and
 persistence; advanced bead manipulation remains outside the claim.
+
+Native Pippy object resume (2026-09-15):
+`sugar-gtk4-pippy-roundtrip.py` passed two real guest cycles. Each cycle
+launched Pippy, stopped it through Shell, seeded the saved Journal object with
+UTF-8 Python source, resumed it, verified the restored source through AT-SPI,
+and stopped cleanly with service release and shell cleanup. This supports a
+FUNCTIONAL PORT claim for bounded source editing and persistence; full
+upstream editor/runtime breadth remains outside the claim.

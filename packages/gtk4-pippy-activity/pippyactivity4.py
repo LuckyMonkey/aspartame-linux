@@ -3,6 +3,7 @@
 import subprocess
 import sys
 import threading
+from pathlib import Path
 
 from gi.repository import Gdk, GLib, Gtk
 from sugar4.activity import SimpleActivity
@@ -105,3 +106,17 @@ class PippyActivity(SimpleActivity):
         self.editor.get_buffer().set_text(DEFAULT_PROGRAM)
         self.output.get_buffer().set_text("")
         self.status.set_text("Ready")
+
+    def read_file(self, file_path):
+        """Restore a Python source buffer from a UTF-8 Journal object."""
+        try:
+            program = Path(file_path).read_text(encoding="utf-8")
+        except (OSError, UnicodeError):
+            program = DEFAULT_PROGRAM
+        self.editor.get_buffer().set_text(program)
+        self.output.get_buffer().set_text("")
+        self.status.set_text("Ready")
+
+    def write_file(self, file_path):
+        """Save the Python source buffer as a UTF-8 Journal object."""
+        Path(file_path).write_text(self._program(), encoding="utf-8")
