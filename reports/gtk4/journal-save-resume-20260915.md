@@ -88,10 +88,11 @@ intentional-discard button are not covered by this particular test.
 existing APIs. No new runtime service, abstraction, or dependency was added;
 the new script is test scaffolding only.
 
-Write remains a COVERAGE IMPLEMENTATION. These fixes establish plain-text
-retention, not rich-text or document-format parity. The full GTK4 completion
-gate remains open. Next: verify other real Activity workflows that depend on
-this restored Journal boundary and rank remaining shell gaps from runtime.
+Write is now classified FUNCTIONAL PORT: its principal plain-text editing and
+Journal workflow is evidenced, while rich-text and document-format parity are
+outside this bounded port. The full GTK4 completion gate remains open. Next:
+verify other real Activity workflows that depend on this restored Journal
+boundary and rank remaining shell gaps from runtime.
 
 Correction to the earlier Stopwatch diagnostic: its first failed probe used
 the wrong bundle ID (`org.sugarlabs.Stopwatch`); that failure did not establish
