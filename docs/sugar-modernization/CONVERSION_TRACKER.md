@@ -31,9 +31,11 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   2026-09-14 deployment; current runtime evidence is maintained in
   `reports/gtk4/runtime-matrix-20260914.md` and the parity ledger.
 
-## Current reality (2026-09-14, reconciled)
+## Current reality (2026-09-15, reconciled)
 
-- `master` and `origin/master` are synchronized at `5305fb8`.
+- `master` and `origin/master` are synchronized at `54f2e0b` (the README and
+  planning-runbook documentation continued in subsequent documentation-only
+  commits).
 - Host regression suite: 265 GTK4 tests passed. The guest preview build applies and
   validates patch 0015 and boots the GTK4 shell.
 - Forty-nine modern Activities have live Casilda launch/stop coverage, including
@@ -79,7 +81,8 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       focus actions still need a deterministic visible Activity result)
 - [x] Accessible names, roles and states on important controls
 - [x] GTK CSS/build validation, no fatal GTK4 tracebacks or orphaned Activities
-- [x] PASS2 regressions and lifecycle stability run
+- [x] Regression invariants and lifecycle stability run (repeat this pass as
+      routine tooling; it is not a one-time milestone)
 - [x] Durable screenshots, runtime logs, commands, architecture and runbooks
 - [x] Verified coherent commits pushed to GitHub
 

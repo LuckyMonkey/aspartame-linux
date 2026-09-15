@@ -1,6 +1,7 @@
 # GTK4 status
 
-Status checked: 2026-09-15.
+Status checked: 2026-09-15 (documentation synchronized after the README and
+design-runbook refresh).
 
 2026-09-15 correction: process cleanup alone did not prove safe closure or
 document resume. Runtime testing found and fixed immediate shell SIGTERM
