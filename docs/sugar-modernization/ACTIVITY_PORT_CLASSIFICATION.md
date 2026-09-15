@@ -64,7 +64,8 @@ Classification used by the migration ledger:
 | Planets | FUNCTIONAL PORT | Planet selection, orbit canvas, and JSON Journal selection resume verified with real GTK4 Activity processes on 2026-09-15; full simulation breadth remains absent |
 | Color My World | FUNCTIONAL PORT | Palette selection, rendered swatch, and JSON Journal color resume verified with real GTK4 Activity processes on 2026-09-15; full artwork/collaboration breadth remains absent |
 | Game Of Life | FUNCTIONAL PORT | Finite-grid stepping, live-cell selection, generation summary, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; advanced patterns/collaboration remain absent |
-| Connect the Dots, Pippy, Paint, Diamond Fusion, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
+| Pippy, Paint, Diamond Fusion, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
+| Connect the Dots | FUNCTIONAL PORT | Numbered point selection, visible connection progress, JSON Journal progress resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full artwork and collaboration breadth remain absent |
 | Pippy | FUNCTIONAL PORT | UTF-8 Python source editing, isolated execution surface, and Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; full upstream editor/runtime breadth remains absent |
 | Typing Turtle | FUNCTIONAL PORT | Keyboard exercise progression and JSON Journal exercise-index resume verified with real GTK4 Activity processes on 2026-09-15; scoring/audio breadth remains absent |
 | Moon | FUNCTIONAL PORT | Phase selection, rendered moon view, and JSON Journal phase resume verified with real GTK4 Activity processes on 2026-09-15; full astronomical simulation remains absent |
