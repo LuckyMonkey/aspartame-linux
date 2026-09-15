@@ -83,6 +83,14 @@ AT-SPI, and stopped cleanly with service release and shell cleanup. This
 supports a FUNCTIONAL PORT claim for bounded document editing and persistence;
 rich media and export breadth remain outside the claim.
 
+Native FotoToon object resume (2026-09-15):
+`sugar-gtk4-fototoon-roundtrip.py` passed two real guest cycles. Each cycle
+launched FotoToon, stopped it through Shell, seeded the saved Journal object
+with caption-canvas state, resumed it, verified the restored caption through
+AT-SPI, and stopped cleanly with service release and shell cleanup. This
+supports a FUNCTIONAL PORT claim for bounded caption interaction and
+persistence; image import and layout breadth remain outside the claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
