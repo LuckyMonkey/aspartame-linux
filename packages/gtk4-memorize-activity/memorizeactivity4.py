@@ -1,5 +1,8 @@
 """Native GTK4 card-matching Memorize Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -42,3 +45,19 @@ class MemorizeActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.cards = [0, 1, 2, 3, 0, 1, 2, 3]; self.opened = []; self.matched = set(); self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                cards = payload.get("cards", self.cards)
+                if isinstance(cards, list) and len(cards) == 8:
+                    self.cards = [int(value) % 4 for value in cards]
+                    self.opened = [int(value) for value in payload.get("opened", []) if 0 <= int(value) < 8]
+                    self.matched = {int(value) for value in payload.get("matched", []) if 0 <= int(value) < 8}
+                    self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"cards": self.cards, "opened": self.opened, "matched": sorted(self.matched)}, sort_keys=True) + "\n", encoding="utf-8")

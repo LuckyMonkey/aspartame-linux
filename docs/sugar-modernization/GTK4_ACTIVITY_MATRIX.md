@@ -42,7 +42,8 @@ without an orphan process. It does not by itself prove a complete port.
 | Implode | 2-cycle launch plus seeded JSON block-grid resume and visible remaining-block restoration | FUNCTIONAL PORT |
 | PlayGo | 2-cycle launch plus seeded JSON board/turn resume and visible turn restoration | FUNCTIONAL PORT |
 | BlockParty | 2-cycle launch plus seeded JSON arrangement resume and visible ordering restoration | FUNCTIONAL PORT |
-| Memorize, Maze, Last One Loses, Gears, TurtleBlocks, Color My World, Connect the Dots, Diamond Fusion, Level | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
+| Memorize | 2-cycle launch plus seeded JSON card/match resume and visible pair-count restoration | FUNCTIONAL PORT |
+| Maze, Last One Loses, Gears, TurtleBlocks, Color My World, Connect the Dots, Diamond Fusion, Level | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
 | Get Things Done | 2-cycle launch plus seeded JSON Journal task-list resume and clean stop | FUNCTIONAL PORT |
 
 The authoritative class definitions and per-Activity boundaries live in
