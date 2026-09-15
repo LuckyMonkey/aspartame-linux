@@ -40,21 +40,23 @@ def main():
         if node.get_process_id() == pid:
             try: visible = Atspi.Text.get_text(node, 0, -1)
             except Exception: visible = ""
-            if expected in visible: return node
+            try: name = node.get_name() or ""
+            except Exception: name = ""
+            if expected in visible or expected in name: return node
         for i in range(node.get_child_count()):
             child = node.get_child_at_index(i)
             if child is not None:
                 found = find_text(child, pid, expected, depth + 1)
                 if found is not None: return found
         return None
-    def launch(object_id="", expected="Score: 0"):
+    def launch(object_id="", expected="Select two matching"):
         assert journal.LaunchBundle(BUNDLE_ID, object_id)
         pid, aid = wait_for("process", lambda: next(iter(processes()), None)); wait_for("service", lambda: bus.name_has_owner("org.laptop.Activity" + aid)); assert shell.ActivateActivity(aid)
         return pid, aid, wait_for("visible board status", lambda: find_text(Atspi.get_desktop(0), pid, expected))
     def stop(pid, aid):
         assert shell.StopActivity(aid); wait_for("exit", lambda: not Path(f"/proc/{pid}").exists()); assert not bus.name_has_owner("org.laptop.Activity" + aid); assert not shell.ActivateActivity(aid)
     if processes(): raise SystemExit("Diamond Fusion already running")
-    pid, aid, node = launch(); assert "Score: 0" in Atspi.Text.get_text(node, 0, -1); stop(pid, aid)
+    pid, aid, node = launch(); assert "Select two matching" in Atspi.Text.get_text(node, 0, -1); stop(pid, aid)
     rows, _ = store.find(dbus.Dictionary({"activity_id": aid}, signature="sv"), dbus.Array(["uid"], signature="s")); assert len(rows) == 1
     uid = str(rows[0]["uid"]); filename = Path(str(store.get_filename(uid))); cells = [1] * 36; filename.write_text(json.dumps({"cells": cells, "score": 7}) + "\n")
     pid, aid, node = launch(uid, "Score: 7"); assert "Score: 7" in Atspi.Text.get_text(node, 0, -1); stop(pid, aid)
