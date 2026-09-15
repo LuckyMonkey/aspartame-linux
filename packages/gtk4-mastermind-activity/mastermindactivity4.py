@@ -5,7 +5,9 @@ scored against a deterministic four-colour secret, making the Activity useful
 without a network or legacy GTK runtime.
 """
 
+import json
 import random
+from pathlib import Path
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
@@ -101,3 +103,22 @@ class MastermindActivity(SimpleActivity):
                 if value != "·": cell.add_css_class(value)
                 cell.update_property([Gtk.AccessibleProperty.LABEL], [self.LABELS.get(value, "Empty") + " peg"])
 
+    def read_file(self, file_path):
+        """Restore the deterministic code and guesses from Journal."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            secret = tuple(payload.get("secret", self.secret))
+            guesses = payload.get("guesses", [])
+            current = payload.get("current", [])
+            valid = lambda seq: isinstance(seq, (list, tuple)) and all(value in self.COLORS for value in seq)
+            if len(secret) != 4 or not valid(secret) or not isinstance(guesses, list) or any(len(row) != 4 or not valid(row) for row in guesses) or not valid(current) or len(current) > 4:
+                raise ValueError("invalid Mastermind state")
+            self.secret = secret; self.guesses = [tuple(row) for row in guesses]; self.current = list(current)
+            self.status.set_text("Code cracked! Start a new game to play again." if self.guesses and self.guesses[-1] == self.secret else "Choose four colours, then check your code.")
+            self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            self.secret = ("red", "blue", "yellow", "green"); self.guesses = []; self.current = []; self._render()
+
+    def write_file(self, file_path):
+        """Persist Mastermind progress as a Journal object."""
+        Path(file_path).write_text(json.dumps({"secret": self.secret, "guesses": self.guesses, "current": self.current}, sort_keys=True) + "\n", encoding="utf-8")

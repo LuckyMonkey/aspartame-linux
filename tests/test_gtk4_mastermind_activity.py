@@ -15,5 +15,7 @@ def test_mastermind_bundle_is_native_and_registered():
     assert "bundle_id = org.laptop.Mastermind" in info
     assert "class MastermindActivity(SimpleActivity)" in source
     assert "Gtk.Button" in source and "Check code" in source
+    assert "def read_file(self, file_path)" in source
+    assert '"guesses": self.guesses' in source
     assert "org.laptop.Mastermind" in matrix
     assert "Mastermind" in run and "Mastermind" in build and "gtk4-mastermind-activity" in sync
