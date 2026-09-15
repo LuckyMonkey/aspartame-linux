@@ -1,5 +1,8 @@
 """Native GTK4 BlockParty grid-arrangement Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -35,3 +38,16 @@ class BlockPartyActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.blocks = [0, 1, 2, 3]; self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            blocks = payload.get("blocks") if isinstance(payload, dict) else None
+            if isinstance(blocks, list) and sorted(blocks) == [0, 1, 2, 3]:
+                self.blocks = [int(value) for value in blocks]
+                self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"blocks": self.blocks}, sort_keys=True) + "\n", encoding="utf-8")
