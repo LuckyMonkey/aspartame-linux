@@ -590,6 +590,14 @@ and shell cleanup. This supports a FUNCTIONAL PORT claim for bounded keyboard
 exercise progression and persistence; scoring and audio breadth remain outside
 the claim.
 
+Native Moon object resume (2026-09-15):
+`sugar-gtk4-moon-roundtrip.py` passed two real guest cycles. Each cycle
+launched Moon, stopped it through Shell, seeded the saved Journal object with
+phase 4, resumed it, verified the visible `Full moon · phase 5 of 8` readout
+through AT-SPI, and stopped cleanly with service release and shell cleanup.
+This supports a FUNCTIONAL PORT claim for bounded phase selection and
+persistence; full astronomical simulation remains outside the claim.
+
 Native Planets object resume (2026-09-15):
 `sugar-gtk4-planets-roundtrip.py` passed two real guest cycles. Each cycle
 launched Planets, stopped it through Shell, seeded the saved Journal object

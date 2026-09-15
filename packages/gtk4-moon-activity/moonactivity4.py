@@ -1,5 +1,7 @@
 """Native GTK4 Moon phase viewer."""
 import math
+import json
+from pathlib import Path
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -44,6 +46,19 @@ class MoonActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.phase = 0; self._update()
+
+    def read_file(self, file_path):
+        """Restore the selected lunar phase from a JSON Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            self.phase = int(payload.get("phase", 0)) % len(self.PHASES) if isinstance(payload, dict) else 0
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            self.phase = 0
+        self._update()
+
+    def write_file(self, file_path):
+        """Save the selected lunar phase as a JSON Journal object."""
+        Path(file_path).write_text(json.dumps({"phase": self.phase}, sort_keys=True) + "\n", encoding="utf-8")
 
     def _draw(self, _area, cr, width, height):
         cr.set_source_rgb(0.04, 0.06, 0.12); cr.paint()
