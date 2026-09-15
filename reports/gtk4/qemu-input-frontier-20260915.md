@@ -12,3 +12,8 @@ guest devices exist, but the current QEMU injection path is not reaching them.
 Semantic GTK4 key routing remains implemented and must be tested separately
 once the transport is repaired. This report does not count physical-keyboard
 parity as passed.
+
+The VM was then restarted from the current `scripts/run-qemu.sh` (which omits
+the experimental `virtio-keyboard-pci` device and keeps only the USB keyboard).
+The clean launcher still produced no records for F1, so duplicate virtio input
+ownership is not the sole cause.
