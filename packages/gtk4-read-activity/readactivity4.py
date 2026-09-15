@@ -1,4 +1,6 @@
-"""Native GTK4 Read activity with a small offline document reader."""
+"""Native GTK4 Read activity with Journal-backed document reading."""
+
+from pathlib import Path
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
@@ -19,6 +21,7 @@ class ReadActivity(SimpleActivity):
     def __init__(self, activity_handle=None):
         super().__init__(activity_handle)
         self.set_title("Read")
+        self.pages = list(DOCUMENT["pages"])
         self.page = 0
         self._build()
         self._update_page()
@@ -70,7 +73,7 @@ class ReadActivity(SimpleActivity):
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def _update_page(self):
-        pages = DOCUMENT["pages"]
+        pages = self.pages
         self.page_label.set_text(f"Page {self.page + 1} of {len(pages)}")
         self.text.set_text(pages[self.page])
         self.previous.set_sensitive(self.page > 0)
@@ -78,7 +81,7 @@ class ReadActivity(SimpleActivity):
         self._highlight_search()
 
     def _move(self, _button, delta):
-        self.page = max(0, min(len(DOCUMENT["pages"]) - 1, self.page + delta))
+        self.page = max(0, min(len(self.pages) - 1, self.page + delta))
         self._update_page()
 
     def _search_changed(self, _entry):
@@ -86,6 +89,20 @@ class ReadActivity(SimpleActivity):
 
     def _highlight_search(self):
         query = self.search.get_text().strip().casefold()
-        if query and query in DOCUMENT["pages"][self.page].casefold():
-            self.page_label.set_text(f"Page {self.page + 1} of {len(DOCUMENT['pages'])} · match found")
+        if query and query in self.pages[self.page].casefold():
+            self.page_label.set_text(f"Page {self.page + 1} of {len(self.pages)} · match found")
 
+    def read_file(self, file_path):
+        """Load a Journal text object, retaining the sample for empty objects."""
+        try:
+            text = Path(file_path).read_text(encoding="utf-8")
+        except (OSError, UnicodeError):
+            return
+        if text.strip():
+            self.pages = text.split("\f")
+            self.page = 0
+            self._update_page()
+
+    def write_file(self, file_path):
+        """Persist document pages as UTF-8 text separated by form feeds."""
+        Path(file_path).write_text("\f".join(self.pages), encoding="utf-8")
