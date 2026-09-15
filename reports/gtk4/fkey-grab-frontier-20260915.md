@@ -52,6 +52,15 @@ ungrab. A Python `del` of a local name does not guarantee GObject
 finalisation, so the X11 passive grabs may well outlive the "released" log
 line.
 
+## The classic shell cannot simply be stopped
+
+Stopping the GTK3 shell to test the hypothesis does not work: it is
+supervised and respawned within seconds, and the respawned instance lands on
+whichever workspace is current, covering the modern Space until
+`sugar-gtk4-space.sh setup` reconciles placement. So "run only one shell" is
+not an available workaround, and the fix has to be a correct ungrab rather
+than avoiding the contention.
+
 ## Next step
 
 Verify directly whether the grabs are still held after the release — with
