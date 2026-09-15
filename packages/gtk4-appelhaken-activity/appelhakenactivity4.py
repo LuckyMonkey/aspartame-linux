@@ -1,5 +1,8 @@
 """Native GTK4 four-colour Appel-Haken puzzle Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -38,3 +41,16 @@ class AppelHakenActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.values = [0, 1, 2, 3]; self._render()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            values = payload.get("values") if isinstance(payload, dict) else None
+            if isinstance(values, list) and len(values) == 4:
+                self.values = [int(value) % len(self.COLORS) for value in values]
+                self._render()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"values": self.values}, sort_keys=True) + "\n", encoding="utf-8")
