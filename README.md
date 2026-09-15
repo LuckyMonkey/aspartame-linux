@@ -4,10 +4,17 @@
 
 > A Python-first Arch Linux environment whose desktop is Sugar.
 
+[![GitHub stars](https://img.shields.io/github/stars/LuckyMonkey/aspartame-linux?style=flat-square&logo=github)](https://github.com/LuckyMonkey/aspartame-linux/stargazers)
+[![Issues](https://img.shields.io/github/issues/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux/issues)
+[![Last commit](https://img.shields.io/github/last-commit/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux/commits/master)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux/graphs/commit-activity)
+[![Repository size](https://img.shields.io/github/repo-size/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux)
+
 [![GTK4 tests](https://img.shields.io/badge/GTK4%20tests-271%20passed-2ea44f)](tests/)
 [![GTK4 build](https://img.shields.io/badge/guest%20build-PASS-2ea44f)](docs/sugar-modernization/GTK4_RUNBOOK.md)
 [![GTK3 reference](https://img.shields.io/badge/GTK3-reference%20preserved-2ea44f)](docs/sugar-modernization/GTK4_STATUS.md)
-Aspartame is an Arch-derived Linux distribution and a Sugar modernization
+
+This project is an Arch-derived Linux distribution and a Sugar modernization
 laboratory. It keeps Sugar's learning-centred model—Home, Activities, Frame,
 Journal, Neighborhood, Group, palettes, XO identity, and visible context—at
 the centre of the operating system while retaining practical Linux tools
@@ -17,7 +24,7 @@ a real terminal.
 This is not a GNOME reskin. GTK4 is an implementation modernization of Sugar,
 not a change to Sugar's interaction model.
 
-## What is here today:
+## 🧭 What is here today:
 
 The bootable image starts a real Sugar session. The development VM runs two
 separate shell spaces for direct comparison:
@@ -41,7 +48,7 @@ Runtime coverage is deliberately not called behavioral parity. Every Activity
 is classified in [ACTIVITY_PORT_CLASSIFICATION.md](docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md)
 as FULL PORT, FUNCTIONAL PORT, COVERAGE IMPLEMENTATION, or PLACEHOLDER.
 
-## Screenshots:
+## 🖼️ Screenshots:
 
 These are captures from the current 1920×1080 QEMU reference session, not
 mockups:
@@ -56,28 +63,28 @@ Journal saving/resume, Spaces, Casilda surfaces, Count, accessibility, and
 troubleshooting. For the Activity Manager and approval prompt, see the
 [QEMU screenshot gallery](docs/screenshots/README.md).
 
-## Progress at a glance:
+## 📈 Progress at a glance:
 
 Progress bars describe verified repository work, not a claim that the full
 retirement gate has passed.
 
 | Goal | Status | Verified details |
 | --- | --- | --- |
-| GTK4 build and CSS validation | <span style="color:#2ea44f"><strong>██████████ 100%</strong></span> | ✅ Preview build<br>✅ GTK CSS checks<br>✅ Patch semantics verified |
-| Shell surfaces | <span style="color:#2ea44f"><strong>█████████░ 90%</strong></span> | ✅ Home / Frame / Journal<br>✅ Settings / Help / palettes<br>✅ Honest empty collaboration state |
-| Activity lifecycle | <span style="color:#2ea44f"><strong>█████████░ 90%</strong></span> | ✅ Casilda launch and stop<br>✅ Repeated normal/abnormal cleanup<br>✅ Running-state reconciliation |
-| Activity catalog parity | <span style="color:#2ea44f"><strong>██████░░░░ 60%</strong></span> | ✅ 49 live coverage implementations<br>⚠️ Most are FUNCTIONAL PORTs<br>⬜ No FULL PORT claim yet |
-| GTK3 ↔ GTK4 Spaces | <span style="color:#2ea44f"><strong>████████░░ 80%</strong></span> | ✅ Separate processes<br>✅ Semantic switching<br>⚠️ Physical F-key transport remains environment-sensitive |
-| Collaboration peers | <span style="color:#2ea44f"><strong>███░░░░░░░ 30%</strong></span> | ✅ Empty state<br>⬜ Peer-backed actions need a second participant |
-| GTK4 retirement gate | <span style="color:#2ea44f"><strong>███████░░░ 70%</strong></span> | ✅ Evidence ledger<br>⬜ Physical input and peer gates remain |
+| GTK4 build and CSS validation | <span style="color:#2ea44f"><strong>██████████ 100%</strong></span> | ✅ Preview build<br>🎨 GTK CSS checks<br>🔍 Patch semantics verified |
+| Shell surfaces | <span style="color:#2ea44f"><strong>█████████░ 90%</strong></span> | 🏠 Home / Frame / Journal<br>⚙️ Settings / Help / palettes<br>🤝 Honest empty collaboration state |
+| Activity lifecycle | <span style="color:#2ea44f"><strong>█████████░ 90%</strong></span> | 🚀 Casilda launch and stop<br>🔁 Repeated normal/abnormal cleanup<br>💡 Running-state reconciliation |
+| Activity catalog parity | <span style="color:#2ea44f"><strong>██████░░░░ 60%</strong></span> | ✅ 49 live coverage implementations<br>⚠️ Most are FUNCTIONAL PORTs<br>🧩 No FULL PORT claim yet |
+| GTK3 ↔ GTK4 Spaces | <span style="color:#2ea44f"><strong>████████░░ 80%</strong></span> | 🧬 Separate processes<br>↔️ Semantic switching<br>⚠️ Physical F-key transport remains environment-sensitive |
+| Collaboration peers | <span style="color:#2ea44f"><strong>███░░░░░░░ 30%</strong></span> | 🌐 Empty state<br>👥 Peer-backed actions need a second participant |
+| GTK4 retirement gate | <span style="color:#2ea44f"><strong>███████░░░ 70%</strong></span> | 🧾 Evidence ledger<br>🚧 Physical input and peer gates remain |
 
 The authoritative checklist is [CONVERSION_TRACKER.md](docs/sugar-modernization/CONVERSION_TRACKER.md),
 not a screenshot or a passing unit test alone.
 
-## Architecture:
+## 🧬 Architecture:
 
 ```text
-Aspartame Arch image
+Arch image
     └─ Sugar session (stable GTK3 or modern GTK4 Space)
          ├─ Home / Frame / Journal / Neighborhood / Settings / Help
          ├─ shell model and D-Bus services
@@ -93,7 +100,7 @@ flexbox or CSS Grid are not used as layout substitutes. Activity launchers are
 kept behind a bundle-oriented boundary so native Python, Snakepit, and future
 web Activities can be resolved independently.
 
-### Sugar concepts preserved
+### 🌱 Sugar concepts preserved:
 
 - Home Favorites and List views, with XOColor and stopped/starting/running/current states.
 - Activities as focused workspaces rather than conventional application windows.
@@ -104,7 +111,7 @@ web Activities can be resolved independently.
   Activities are disabled/hidden rather than falsely claimed to be removed.
 - Shell-wide contextual Help and the canonical Sugar stop control.
 
-## Activity status:
+## 🧩 Activity status:
 
 The current native GTK4 inventory includes functional implementations for
 Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log,
@@ -120,7 +127,7 @@ breadth. Read the classification table for each Activity's workflow and
 boundary. Sugarizer web catalog entries remain catalog-only until an actual
 runtime implementation exists.
 
-## Build and run:
+## 🛠️ Build and run:
 
 Large archiso caches and VM disks live on the host's SteamLibrary volume so the
 root filesystem is not filled by image builds.
@@ -159,7 +166,7 @@ The full preview rebuild, including semantic patch verification, is:
 ./scripts/sugar-gtk4-build.sh
 ```
 
-## Verification widgets:
+## 🧪 Verification widgets:
 
 Executable checks and durable evidence live together:
 
@@ -197,7 +204,7 @@ stateDiagram-v2
     Stopped --> Home: shell clears state
 ```
 
-## Runbooks and project guides:
+## 📚 Runbooks and project guides:
 
 - [GTK4 modernization index](docs/sugar-modernization/README.md)
 - [Current GTK4 status](docs/sugar-modernization/GTK4_STATUS.md)
@@ -318,7 +325,7 @@ user explicitly requests otherwise.
 
 ![Native Sugar approval prompt](docs/screenshots/aspartame-uac-native-confirmation.png)
 
-## Current open work
+## 🚧 Current open work:
 
 The project is intentionally still in conversion. The highest-value remaining
 items are:
