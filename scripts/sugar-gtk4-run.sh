@@ -20,6 +20,7 @@ datastore_site="$prefix/lib/python$python_version/site-packages"
 libdir="$prefix/lib"
 runroot=${GTK4_RUNTIME_ROOT:-$root/runtime}
 log="$root/logs/gtk4-shell-$(date -u +%Y%m%dT%H%M%SZ).log"
+: > "$log"
 
 # Resolve the Journal window before starting the session. A distro GTK3 copy
 # can otherwise win the namespace package and leave ShowJournal blank while

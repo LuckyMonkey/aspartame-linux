@@ -83,7 +83,7 @@ if [ "$target" = gtk4 ]; then
         fail 'GTK4 process does not own the expected private runtime'
     session_log=$(tr '\0' '\n' < "$proc_root/$target_pid/environ" |
         sed -n 's/^ASPARTAME_GTK4_LOG=//p' | head -1)
-    if [ -n "$session_log" ]; then
+    if [ -n "$session_log" ] && [ -r "$session_log" ]; then
         log=$session_log
     elif [ ! -r "$log" ]; then
         log=$(ls -t "$root/logs"/gtk4-shell-*.log 2>/dev/null | head -1 || true)
