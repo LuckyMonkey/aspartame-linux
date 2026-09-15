@@ -287,15 +287,14 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   client at the compositor/seat level (a `wl_keyboard` enter operation),
   which is a separate step from GTK4's widget-level focus chain and is
   Casilda's responsibility, not the shell's or the Activity's.
-- Status: partially fixed. `casilda_compositor_focus_toplevel()` — the only
-  caller of `wlr_seat_keyboard_notify_enter()` — was reached from a single
-  `xdg_toplevel_map()` branch covering a fresh, plain, non-maximized map. A
-  maximized/fullscreen map (every Sugar Activity) and a restored-state map
-  both fell through, so only a pointer click could ever establish keyboard
-  focus. Patch `0137-casilda-focus-toplevel-on-map.patch` calls it
-  unconditionally; `0136-shell-focus-activity-compositor.patch` is the
-  shell-side companion. An Activity launched with no pointer and no AT-SPI
-  interaction now reports its own default widget focused. Per-keystroke
-  delivery into the client is still broken — Casilda's per-widget
-  `key_controller` never fires, so `wlr_seat_keyboard_notify_key()` is never
-  called. See `reports/gtk4/casilda-keyboard-focus-20260915.md`.
+- Status: resolved 2026-09-15. Four faults sat in series. The shell overlay
+  owned window focus, so the compositor was never a key event's target
+  (retired by 0140); nothing then claimed focus, and a grab at switch time
+  did not survive the stack transition (0136 grabs from the stack's own
+  signals); `KeyHandler._key_pressed_cb`, attached to four widgets, returned
+  True for every duplicate dispatch and so swallowed keys Sugar never acted
+  on (0139); and Casilda sent each key before the modifier state it was
+  modified by, making Shift apply one keystroke late (0138). With 0137
+  (keyboard focus at map time) these close the path: typing, Tab, Shift+Tab,
+  Enter and Space all reach a real Activity. See
+  `reports/gtk4/keyboard-delivery-20260915.md`.

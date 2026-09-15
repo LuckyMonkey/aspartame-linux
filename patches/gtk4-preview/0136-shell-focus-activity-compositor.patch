@@ -1,31 +1,60 @@
 From: Aspartame GTK4 migration
-Subject: [PATCH] shell: focus the compositor when an Activity view is shown
+Subject: [PATCH] shell: give the compositor focus while an Activity is shown
 
-The shell switches its GTK4 stack to the "activity" page without ever giving
-the Casilda compositor widget GTK keyboard focus. Nothing else on that page
-can hold focus - the embedded Activity is a separate Wayland client, opaque
-to this process's focus chain - so the focused widget stays wherever Home or
-Journal left it. Grab focus on the compositor at both switch points.
+An embedded Activity only receives Wayland key events while the Casilda
+compositor widget is the shell window's focus widget. Nothing else on that
+stack page can take focus - the Activity is a separate Wayland client,
+opaque to this process's focus chain - and a finishing stack transition
+recomputes focus and drops it again, so a single grab at switch time does
+not survive. Claim focus whenever the page becomes visible and again once a
+transition settles.
 
----
- src/jarabe/model/shell.py | 2 ++
- 1 file changed, 2 insertions(+)
+Sugar's F1-F8 capture is unaffected: those controllers sit on the window,
+the overlay and the stack, all ancestors of the compositor, so capture phase
+still reaches them first.
 
 --- a/src/jarabe/model/shell.py
 +++ b/src/jarabe/model/shell.py
-@@ -509,6 +509,7 @@ class ShellModel(Gtk.Application):
+@@ -425,6 +425,14 @@
+         self._main_window = None
+ 
+         self.compositor = Casilda.Compositor(socket="wayland-sugar")
++        # An embedded Activity only receives Wayland key events while the
++        # compositor is the window's focus widget. Nothing else on that stack
++        # page can take focus, and a finishing stack transition recomputes
++        # focus, so claim it whenever the page becomes or settles as visible.
++        self.stack.connect('notify::visible-child',
++                           self._stack_focus_cb)
++        self.stack.connect('notify::transition-running',
++                           self._stack_focus_cb)
+ 
+         self.connect('window-added', self._window_added_cb)
+         self.connect('window-removed', self._window_removed_cb)
+@@ -514,6 +522,7 @@
                  self.stack.set_visible_child_name("journal")
              else:
                  self.stack.set_visible_child_name("activity")
-+                self.compositor.grab_focus()
++                self._focus_compositor()
          else:
              self.stack.set_visible_child_name("home")
-
-@@ -518,6 +519,7 @@ class ShellModel(Gtk.Application):
+ 
+@@ -523,6 +532,19 @@
                  self.stack.set_visible_child_name("journal")
              else:
                  self.stack.set_visible_child_name("activity")
-+                self.compositor.grab_focus()
-
++                self._focus_compositor()
++
++    def _focus_compositor(self):
++        GLib.idle_add(self._grab_compositor_focus)
++
++    def _stack_focus_cb(self, stack, _param):
++        if not stack.get_transition_running():
++            GLib.idle_add(self._grab_compositor_focus)
++
++    def _grab_compositor_focus(self):
++        if self.stack.get_visible_child_name() == 'activity':
++            self.compositor.grab_focus()
++        return False
+ 
      def _get_activities_with_window(self):
          ret = []

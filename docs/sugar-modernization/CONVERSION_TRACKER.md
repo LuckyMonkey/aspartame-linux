@@ -82,18 +82,15 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 - [ ] Neighborhood/Group peer actions (empty state is verified; peer requires a
       second collaboration participant)
 - [x] Settings, Activity Manager, approval and contextual Help
-- [ ] Physical-event Tab/Shift+Tab/Space (QMP F1–F6, Enter activation, and
-      F6→Escape now reach GTK4 through the explicit virtio keyboard, including
-      F4 on a live Activity; the injector now supports `SHIFT+TAB`. Root-caused
-      2026-09-15 via AT-SPI focus probing (GTK4-023/GTK4-024): a bare Tab moves
-      GTK focus once from the shell window into the Casilda compositor widget
-      and then stops there, because keyboard focus is never handed to the
-      embedded Activity's Wayland surface at the seat level. The Activity's own
-      widgets are fully focusable and correctly labeled; none ever reports
-      `STATE_FOCUSED`. Patches 0136/0137 fixed the map-time half: an Activity
-      launched with no pointer and no AT-SPI interaction now reports its own
-      default widget focused. Per-keystroke delivery into the client remains
-      broken, so this item stays unchecked.)
+- [x] Physical-event Tab/Shift+Tab/Space. Closed 2026-09-15: physical typing,
+      Tab, Shift+Tab, Enter and Space all reach a real GTK4 Activity launched
+      without pointer assistance. Four faults in series were removed - the
+      overlay owned window focus (0140), nothing then claimed it (0136), the
+      shell's duplicate-dispatch guard swallowed unhandled keys (0139), and
+      Casilda applied modifiers one keystroke late (0138), on top of
+      keyboard focus at map time (0137). Physical F7/F8 remains open and is
+      tracked as a separate X11/Metacity transport frontier, not a Sugar gap;
+      see `reports/gtk4/keyboard-delivery-20260915.md`.
 - [x] Accessible names, roles and states on important controls
 - [x] GTK CSS/build validation, no fatal GTK4 tracebacks or orphaned Activities
 - [x] Regression invariants and lifecycle stability run (repeat this pass as

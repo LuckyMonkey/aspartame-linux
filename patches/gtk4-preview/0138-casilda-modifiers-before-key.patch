@@ -1,0 +1,44 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] casilda: send modifier state before the key it modifies
+
+casilda_compositor_seat_key_notify() read the current modifier mask, sent
+the key event, and only then sent the modifier update. The mask it reads is
+the state the key event is modified by, so applying it afterwards put every
+modifier one keystroke late: typing Shift+a produced 'a' and the next plain
+key arrived shifted ('aB' instead of 'Ab'). Shift+Tab likewise reached the
+client as a plain Tab, so reverse focus traversal did nothing.
+
+Sending the modifiers first makes Shift, and therefore capitals and
+ISO_Left_Tab, apply to the key they belong to.
+
+Upstream candidate: https://gitlab.gnome.org/jpu/casilda
+
+---
+ src/casilda-compositor.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+--- a/src/casilda-compositor.c
++++ b/src/casilda-compositor.c
+@@ -1747,16 +1747,17 @@ casilda_compositor_seat_key_notify (GtkEventControllerKey    *self,
+    * and we do not use EventControllerKey::modifiers signal because it changes after the mod key release
+    */
+
+-  /* Send key event first */
+-  wlr_seat_keyboard_notify_key (priv->seat, time_msec, key - 8, state);
+-
+-
+-  /* Update modifiers if necessary after */
++  /* Update modifiers first: the mask read above is the state this key event
++   * is modified by, so sending the key before it applied the modifier one
++   * keystroke late - Shift+a arrived as 'a' and the following plain key
++   * arrived shifted. */
+   if (priv->keyboard.modifiers.depressed != depressed)
+     {
+       priv->keyboard.modifiers.depressed = depressed;
+       wlr_seat_keyboard_send_modifiers (priv->seat, &priv->keyboard.modifiers);
+     }
++
++  wlr_seat_keyboard_notify_key (priv->seat, time_msec, key - 8, state);
+ }
+
+ static gboolean

@@ -114,6 +114,9 @@ for patch in "$patch_dir"/*.patch; do
         *0135*) target="$toolkit" ;;
         *0136*) target="$root/sources/sugar" ;;
         *0137*) target="$casilda" ;;
+        *0138*) target="$casilda" ;;
+        *0139*) target="$root/sources/sugar" ;;
+        *0140*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0070*|*0071*|*0073*|*0074*|*0075*|*0076*|*0079*|*0080*|*0081*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
@@ -459,10 +462,13 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing safe Journal canvas reparenting: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0080* ]] &&
-        grep -q '_overlay.set_focusable(True)' "$shell/src/jarabe/main.py" 2>/dev/null; then
+    # 0140 retires 0080: parking window focus on the overlay kept the Casilda
+    # compositor from ever being a key event target, so an embedded Activity
+    # could not receive a keystroke. Capture-phase controllers do not need the
+    # overlay to hold focus, only to be an ancestor of whatever does.
+    if [[ "$patch_name" == *0080* ]]; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing focusable GTK4 key surface: $patch_name"
+        echo "superseded overlay focus sink (see 0140): $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0081* ]] &&
@@ -743,10 +749,13 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing global Frame Escape behavior: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0080* ]] &&
-        grep -q '_overlay.set_focusable(True)' "$shell/src/jarabe/main.py" 2>/dev/null; then
+    # 0140 retires 0080: parking window focus on the overlay kept the Casilda
+    # compositor from ever being a key event target, so an embedded Activity
+    # could not receive a keystroke. Capture-phase controllers do not need the
+    # overlay to hold focus, only to be an ancestor of whatever does.
+    if [[ "$patch_name" == *0080* ]]; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing focusable GTK4 key surface: $patch_name"
+        echo "superseded overlay focus sink (see 0140): $patch_name"
         continue
     fi
     if [ -f "$stamp" ] &&

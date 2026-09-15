@@ -1,0 +1,43 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] keyhandler: repeat the first verdict for a duplicate dispatch
+
+KeyHandler._key_pressed_cb is connected to several widgets - the shell
+window, Home, the Journal and the Casilda compositor - so one physical press
+reaches it once per widget on the propagation path. The duplicate guard
+returned True for every repeat, which tells GTK the key was handled and
+stops propagation, even for keys Sugar never acted on. A letter typed while
+an Activity was focused was therefore consumed by the shell before the
+compositor's own key controller could forward it to the Wayland client.
+
+Remember whether the first dispatch actually handled the key and repeat that
+verdict, so unhandled keys keep travelling to the focused Activity surface.
+
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -83,6 +83,7 @@
+         self._keycode_pressed = 0
+         self._keystate_pressed = 0
+         self._last_dispatch = None
++        self._last_dispatch_handled = False
+         self._handled_windows = set()
+ 
+         self._tabbing_handler = TabbingHandler(self._frame, _TABBING_MODIFIER)
+@@ -244,8 +245,17 @@
+         if event is not None:
+             token = (keyval, keycode, int(state), event.get_time())
+             if token == self._last_dispatch:
+-                return True
++                # This handler is attached to several widgets, so one press
++                # arrives once per widget on the propagation path. Repeat the
++                # first verdict: claiming a key Sugar never acted on stops it
++                # before the focused Activity surface can receive it.
++                return self._last_dispatch_handled
+             self._last_dispatch = token
++        self._last_dispatch_handled = self._dispatch_key(
++            controller, keyval, keycode, state)
++        return self._last_dispatch_handled
++
++    def _dispatch_key(self, controller, keyval, keycode, state):
+         key = Gdk.keyval_name(keyval)
+         logging.warning("GTK4 semantic key event: %s", key)
+         if not key:

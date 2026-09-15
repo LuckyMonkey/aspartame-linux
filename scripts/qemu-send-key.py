@@ -11,6 +11,10 @@ KEYCODES.update({"TAB": "tab", "ENTER": "ret", "RETURN": "ret",
                  "ESC": "esc", "ESCAPE": "esc", "SPACE": "spc",
                  "BACKSPACE": "backspace"})
 CHORDS = {"SHIFT+TAB": ("shift", "tab")}
+# Any SHIFT+<known key> chord, so modifier delivery can be tested directly
+# and not only through Tab.
+CHORDS.update({f"SHIFT+{name}": ("shift", qcode)
+               for name, qcode in KEYCODES.items()})
 SOCKET = "/tmp/aspartame-qemu-qmp"
 
 
