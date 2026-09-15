@@ -1,0 +1,16 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: repair Neighborhood accessibility call ordering
+
+The two historical accessibility patches overlap in meshbox.py. When both
+apply, the role call can land inside update_property's argument list and crash
+MeshBox construction. Restore two independent complete GTK4 calls.
+
+--- a/src/jarabe/desktop/meshbox.py
++++ b/src/jarabe/desktop/meshbox.py
+@@ -371,5 +371,3 @@
+         self.update_property([Gtk.AccessibleProperty.LABEL],
+                              [_('Neighborhood')])
+-        self.update_property([Gtk.AccessibleProperty.LABEL],
+-        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
+-                             [_('Neighborhood')])
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
