@@ -18,3 +18,10 @@ def test_calculate_rejects_non_arithmetic_expression():
     source = (ROOT / "packages/gtk4-calculate-activity/calculateactivity4.py").read_text()
     assert "raise ValueError(\"unsupported expression\")" in source
     assert "Invalid expression" in source
+
+
+def test_calculate_restores_journal_expression():
+    source = (ROOT / "packages/gtk4-calculate-activity/calculateactivity4.py").read_text()
+    assert "def read_file(self, file_path)" in source
+    assert "Path(file_path).read_text" in source
+    assert "self._calculate()" in source

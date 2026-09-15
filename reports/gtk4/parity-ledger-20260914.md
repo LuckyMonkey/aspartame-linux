@@ -34,6 +34,14 @@ FUNCTIONAL PORT for bounded offline task-list persistence; collaboration and
 full upstream feature breadth remain outside this claim. AT-SPI cache warnings
 were nonfatal and are retained in the command output as runtime evidence.
 
+Native Calculate object resume (2026-09-15):
+`sugar-gtk4-calculate-roundtrip.py` passed two real guest cycles. Each cycle
+launched Calculate, stopped it through Shell, seeded the saved Journal object
+with `7 * 6`, resumed the object, verified the expression and computed result
+`42` through AT-SPI, and stopped cleanly with service release and shell cleanup.
+This closes the bounded expression persistence workflow; advanced calculator
+features remain outside the FUNCTIONAL PORT claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).

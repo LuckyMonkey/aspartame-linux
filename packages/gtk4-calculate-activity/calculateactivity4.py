@@ -2,6 +2,7 @@
 
 import ast
 import operator
+from pathlib import Path
 
 import gi
 
@@ -100,3 +101,14 @@ class CalculateActivity(SimpleActivity):
     def write_file(self, file_path):
         with open(file_path, "w", encoding="utf-8") as stream:
             stream.write(self.entry.get_text())
+
+    def read_file(self, file_path):
+        """Restore the expression and calculate it from a Journal object."""
+        try:
+            expression = Path(file_path).read_text(encoding="utf-8").strip()
+        except (OSError, UnicodeError):
+            expression = ""
+        self.entry.set_text(expression)
+        self.result.set_text("")
+        if expression:
+            self._calculate()
