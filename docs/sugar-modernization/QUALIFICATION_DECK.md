@@ -21,6 +21,11 @@ Operating rules:
 Ledger fields: WORKFLOW / GTK3 REFERENCE / GTK4 RESULT / GAP / MINIMUM FIX /
 EVIDENCE / STATUS.
 
+Provenance: W1, W3 and W5 were verified against the live guest on
+2026-09-15. W2, W4, W7, W8, W9 and W10 carry PASS from existing evidence
+reports in this repository and were not re-run that day; treat them as
+inherited until a change plausibly touches them.
+
 ---
 
 ## W1 — Launch an Activity, type into it, stop it
@@ -45,10 +50,20 @@ EVIDENCE / STATUS.
 
 ## W3 — Home search
 
-- **GTK3 reference:** typing filters Home; clearing restores the Favorites ring.
-- **GTK4 result:** search and clear exercised in the modern Space.
-- **Evidence:** `reports/gtk4/home-list-runtime-20260915.md`
-- **STATUS: PASS**
+- **GTK3 reference:** typing anywhere on Home goes into the search entry and
+  filters; clearing restores the Favorites ring.
+- **GTK4 result:** typing `Clock` on Home now filters to
+  "2 matching activities (of 54)" — Clock and JAMClock. Previously physical
+  typing reached Home not at all: nothing on the page held focus, so
+  HomeWindow's existing type-to-search handler never ran. The character that
+  summons the entry is also no longer swallowed (`Clock`, not `lock`).
+- **Gap:** clearing the query with physical Backspace does not reach the
+  entry, so the Favorites ring is not restored that way. The `x` affordance
+  and Escape were not confirmed either.
+- **Minimum fix:** patches 0136 (visible page owns focus) and 0141 (keep the
+  summoning key).
+- **Evidence:** `reports/screenshots/sugar-20260915-174125-v0.0.31.png`
+- **STATUS: PASS for type-to-filter; clearing recorded as an open residual**
 
 ## W4 — Abnormal Activity exit
 

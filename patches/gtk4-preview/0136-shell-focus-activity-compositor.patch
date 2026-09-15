@@ -1,18 +1,21 @@
 From: Aspartame GTK4 migration
-Subject: [PATCH] shell: give the compositor focus while an Activity is shown
+Subject: [PATCH] shell: let the visible stack page own keyboard focus
 
-An embedded Activity only receives Wayland key events while the Casilda
-compositor widget is the shell window's focus widget. Nothing else on that
-stack page can take focus - the Activity is a separate Wayland client,
-opaque to this process's focus chain - and a finishing stack transition
-recomputes focus and drops it again, so a single grab at switch time does
-not survive. Claim focus whenever the page becomes visible and again once a
-transition settles.
+Whichever page is showing has to own focus, or key events stop at the window
+and never reach that page's own controllers. Two workflows were broken by
+this: an embedded Activity never saw a keystroke, because the Casilda
+compositor was not the event target; and Home never ran its type-to-search,
+because HomeWindow was not on the propagation path.
+
+Nothing on the Activity page can take focus by itself - the Activity is a
+separate Wayland client, opaque to this process's focus chain - and a
+finishing stack transition recomputes focus and drops it again, so a grab
+issued at switch time does not survive. Claim focus for the visible page
+when it becomes visible and again once a transition settles.
 
 Sugar's F1-F8 capture is unaffected: those controllers sit on the window,
-the overlay and the stack, all ancestors of the compositor, so capture phase
+the overlay and the stack, all ancestors of both pages, so capture phase
 still reaches them first.
-
 --- a/src/jarabe/model/shell.py
 +++ b/src/jarabe/model/shell.py
 @@ -425,6 +425,14 @@
@@ -38,7 +41,7 @@ still reaches them first.
          else:
              self.stack.set_visible_child_name("home")
  
-@@ -523,6 +532,19 @@
+@@ -523,6 +532,27 @@
                  self.stack.set_visible_child_name("journal")
              else:
                  self.stack.set_visible_child_name("activity")
@@ -52,8 +55,16 @@ still reaches them first.
 +            GLib.idle_add(self._grab_compositor_focus)
 +
 +    def _grab_compositor_focus(self):
-+        if self.stack.get_visible_child_name() == 'activity':
++        # Whichever page is showing has to own focus, or key events stop at
++        # the window and never reach the page's own controllers: the Activity
++        # never sees a keystroke, and Home never runs its type-to-search.
++        name = self.stack.get_visible_child_name()
++        if name == 'activity':
 +            self.compositor.grab_focus()
++        elif name == 'home':
++            page = self.stack.get_child_by_name('home')
++            if page is not None:
++                page.grab_focus()
 +        return False
  
      def _get_activities_with_window(self):

@@ -1,0 +1,25 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: keep the character that summons the search entry
+
+Home implements Sugar's type-to-search: the first printable key moves focus
+to the search entry. GTK has already chosen the event target by then, so the
+character that triggered the move was never delivered and typing "Clock"
+searched for "lock". Insert it directly and consume the event, which is what
+GTK3 Sugar does.
+--- a/src/jarabe/desktop/homewindow.py
++++ b/src/jarabe/desktop/homewindow.py
+@@ -239,7 +239,13 @@
+ 
+             if not has_focus:
+                 search_entry.grab_focus()
+-
++                # Focus moved mid-dispatch, so GTK will not deliver this key
++                # to the entry. The character that summoned search belongs in
++                # it, as it does in GTK3 Sugar.
++                search_entry.set_text(
++                    search_entry.get_text() + chr(unicode_char))
++                search_entry.set_position(-1)
++                return True
+ 
+         return False
+ 
