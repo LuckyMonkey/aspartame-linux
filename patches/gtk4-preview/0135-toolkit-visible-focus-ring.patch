@@ -1,0 +1,25 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: make Activity keyboard focus visible
+
+GTK4 Activities use native focus traversal, but the Sugar theme can leave the
+focused child visually indistinguishable from its neighbours. Install a small
+per-display focus style at the toolkit boundary so keyboard actions remain
+discoverable without changing Activity layout or behavior.
+
+--- a/src/sugar4/graphics/window.py
++++ b/src/sugar4/graphics/window.py
+@@ -142,7 +142,14 @@
+     def __init__(self, **kwargs):
+         super().__init__(**kwargs)
+
++        provider = Gtk.CssProvider()
++        provider.load_from_data(b"button:focus, entry:focus, textview:focus { outline-style: solid; outline-width: 3px; outline-color: #2f88bd; outline-offset: 2px; }")
++        display = Gdk.Display.get_default()
++        if display:
++            Gtk.StyleContext.add_provider_for_display(
++                display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++
+         self._enable_fullscreen_mode = True
+         self._is_fullscreen = False
+         self._unfullscreen_button = None
+         self._unfullscreen_button_timeout_id = None
