@@ -1,0 +1,43 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: keep focus in the search entry while a query is typed
+
+Entering a query switches Home to List View, and the view switch grabbed
+focus into the results. The user is still typing at that point, so the next
+keystroke - and Backspace - went to a result row instead of the entry: the
+query could be typed but never corrected or cleared, so the Favorites ring
+could not be restored from the keyboard.
+
+Skip the view's focus grab while the search entry has focus.
+--- a/src/jarabe/desktop/homebox.py
++++ b/src/jarabe/desktop/homebox.py
+@@ -193,15 +193,28 @@
+         """Show the native GTK4 installed-Activity list."""
+         self._set_view(self._list_view_index)
+ 
++    def _searching(self):
++        """Whether the user is currently typing in the Home search entry."""
++        entry = getattr(self._toolbar, 'search_entry', None)
++        if entry is None:
++            return False
++        return bool(entry.get_state_flags() & Gtk.StateFlags.FOCUS_WITHIN)
++
+     def _set_view(self, view):
++        # A query switches Home to List View while the user is still typing.
++        # Pulling focus into the results would send the next keystroke, and
++        # Backspace, to a row instead of the entry.
++        keep_focus = self._searching()
+         if view in self._favorites_views_indicies:
+             favorite = self._favorites_views_indicies.index(view)
+             self._view_stack.set_visible_child_name(f"favorite_{favorite}")
+-            self._favorites_boxes[favorite].grab_focus()
++            if not keep_focus:
++                self._favorites_boxes[favorite].grab_focus()
+         elif view == self._list_view_index:
+             self._ensure_list_view(self._toolbar)
+             self._view_stack.set_visible_child_name("list")
+-            self._list_view.grab_focus()
++            if not keep_focus:
++                self._list_view.grab_focus()
+         else:
+             raise ValueError('Invalid view: %r' % view)
+ 

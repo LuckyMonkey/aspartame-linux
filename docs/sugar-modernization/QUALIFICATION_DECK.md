@@ -52,18 +52,17 @@ inherited until a change plausibly touches them.
 
 - **GTK3 reference:** typing anywhere on Home goes into the search entry and
   filters; clearing restores the Favorites ring.
-- **GTK4 result:** typing `Clock` on Home now filters to
-  "2 matching activities (of 54)" — Clock and JAMClock. Previously physical
-  typing reached Home not at all: nothing on the page held focus, so
-  HomeWindow's existing type-to-search handler never ran. The character that
-  summons the entry is also no longer swallowed (`Clock`, not `lock`).
-- **Gap:** clearing the query with physical Backspace does not reach the
-  entry, so the Favorites ring is not restored that way. The `x` affordance
-  and Escape were not confirmed either.
-- **Minimum fix:** patches 0136 (visible page owns focus) and 0141 (keep the
-  summoning key).
-- **Evidence:** `reports/screenshots/sugar-20260915-174125-v0.0.31.png`
-- **STATUS: PASS for type-to-filter; clearing recorded as an open residual**
+- **GTK4 result:** typing `Clock` filters to "2 matching activities (of 54)"
+  (Clock, JAMClock); five Backspaces clear the query and the Favorites ring
+  returns. Previously physical typing reached Home not at all.
+- **Gap:** three faults — nothing on the page held focus so HomeWindow's
+  type-to-search never ran; the character that summoned the entry was eaten;
+  and the query's switch to List View pulled focus into the results, so
+  Backspace went to a row instead of the entry.
+- **Minimum fix:** patches 0136, 0141, 0142.
+- **Evidence:** `reports/screenshots/sugar-20260915-174125-v0.0.31.png` (filtered),
+  `sugar-20260915-180029-v0.0.31.png` (cleared, ring restored)
+- **STATUS: PASS** (2026-09-15)
 
 ## W4 — Abnormal Activity exit
 
@@ -98,9 +97,21 @@ inherited until a change plausibly touches them.
 ## W7 — Frame navigation
 
 - **GTK3 reference:** F6 reveals the Frame; Escape dismisses it.
-- **GTK4 result:** F6 reveal and F6→Escape verified.
-- **Evidence:** `reports/gtk4/qemu-function-keys-20260915.md`
-- **STATUS: PASS**
+- **GTK4 result:** **failing as of 2026-09-15 18:02.** Physical F6 on Home
+  produces no visible change across repeated presses; the Frame never
+  appears. Earlier evidence the same day (`qemu-function-keys-20260915.md`,
+  ~10:19) recorded F6 reveal working, so this regressed at some point during
+  the day.
+- **Gap:** not caused by this session's focus work — isolated by reverting
+  0140 (restoring the overlay focus sink), restarting, and retesting: F6
+  still produced nothing, so the Frame fault is independent of the input
+  path changes. F6 is consumed by the window's capture controller before
+  KeyHandler, so the key is being delivered and `notify_key_press()` is
+  reached; the Frame view itself does not present.
+- **Minimum fix:** unknown; needs a look at the Frame view's presentation,
+  not at key delivery.
+- **Evidence:** `reports/screenshots/sugar-20260915-180212-v0.0.31.png`
+- **STATUS: OPEN — newly observed, isolated, not yet fixed**
 
 ## W8 — Palette interaction
 
@@ -135,9 +146,9 @@ inherited until a change plausibly touches them.
 
 ## Next
 
-Deck is green except W6 (X11/Metacity transport frontier) and W11 (needs a
-second participant). Neither is closable without either a subsystem-sized
-investigation or an external participant, so both stay recorded and open.
+Open: W6 (Metacity X11 F7/F8 grab), W7 (Frame does not present), W11 (needs a
+second participant). W7 is the only one that is both code-side and
+unblocked, so it is the next rotation target.
 
 The remaining breadth risk is Activity catalog depth: most Activities are
 classified FUNCTIONAL PORT rather than FULL PORT in
