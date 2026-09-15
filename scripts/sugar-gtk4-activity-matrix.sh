@@ -14,7 +14,7 @@ declare -a activities=(
     'org.laptop.JAMClock|jamclockactivity4.JAMClockActivity'
     'org.laptop.ImageViewerActivity|ImageViewerActivity.ImageViewerActivity'
     'org.laptop.Terminal|terminalactivity4.TerminalActivity'
-    'org.laptop.WebActivity|webactivity.WebActivity'
+    'org.laptop.WebActivity|browseactivity4.BrowseActivity'
     'org.laptop.Log|logviewer.LogActivity'
     'org.laptop.Mastermind|mastermindactivity4.MastermindActivity'
     'org.worldwideworkshop.PollBuilder|pollactivity4.PollActivity'

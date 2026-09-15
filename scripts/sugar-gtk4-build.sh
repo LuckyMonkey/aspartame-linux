@@ -24,6 +24,7 @@ imageviewer_activity="$root/sources/imageviewer-activity"
 terminal_activity="$root/sources/terminal-activity"
 native_terminal_activity="$repo/packages/gtk4-terminal-activity"
 browse_activity="$root/sources/browse-activity"
+native_browse_activity="$repo/packages/gtk4-browse-activity"
 prefix="$root/prefix"
 venv="$root/venv"
 log="$root/logs/gtk4-build-$(date -u +%Y%m%dT%H%M%SZ).log"
@@ -1148,11 +1149,11 @@ test -f "$imageviewer_activity/activity/activity.info" || {
 }
 ln -sfn "$imageviewer_activity" "$activity_dir/ImageViewer.activity"
 ln -sfn "$native_terminal_activity" "$activity_dir/Terminal.activity"
-test -f "$browse_activity/activity/activity.info" || {
-    echo "missing pinned Browse Activity bundle: $browse_activity" >&2
+test -f "$native_browse_activity/activity/activity.info" || {
+    echo "missing native GTK4 Browse Activity bundle: $native_browse_activity" >&2
     exit 2
 }
-ln -sfn "$browse_activity" "$activity_dir/Browse.activity"
+ln -sfn "$native_browse_activity" "$activity_dir/Browse.activity"
 
 for dep in 'gtk4 >= 4.22.2' 'wlroots-0.20 >= 0.20' 'vte-2.91-gtk4 >= 0.84' 'webkitgtk-6.0 >= 2.50'; do
     pkg-config --exists "$dep" || { echo "missing guest build dependency: $dep"; exit 2; }

@@ -1,0 +1,9 @@
+[Activity]
+name = Browse
+bundle_id = org.laptop.WebActivity
+exec = sugar-activity4 browseactivity4.BrowseActivity
+icon = browse
+activity_version = 1
+license = GPLv3+
+summary = Browse web pages inside Sugar
+categories = network
