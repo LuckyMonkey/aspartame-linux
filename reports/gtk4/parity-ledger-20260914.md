@@ -390,6 +390,10 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
   with previous/next/reset controls and accessible illustration/status labels.
   Guest build and three direct Casilda launch/stop cycles passed
   (`cleanup=PASS`, PIDs `445509`, `445531`, `445552`).
+- Native Get Books Activity (2026-09-14): added an offline GTK4 searchable
+  sample-book catalog with details and read-preview action. Guest build and
+  three direct Casilda launch/stop cycles passed (`cleanup=PASS`, PIDs
+  `448722`, `448743`, `448764`).
 - Spaces runtime round-trip recheck (2026-09-14): the guest switched to the
   GTK3 desktop and passed `runtime-check=ok` for PID `33761`, then switched back
   to GTK4 and passed for PID `265471`. Both processes remained separate.
