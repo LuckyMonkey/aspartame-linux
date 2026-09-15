@@ -42,6 +42,14 @@ with `7 * 6`, resumed the object, verified the expression and computed result
 This closes the bounded expression persistence workflow; advanced calculator
 features remain outside the FUNCTIONAL PORT claim.
 
+Native Level object resume (2026-09-15):
+`sugar-gtk4-level-roundtrip.py` passed two real guest cycles. Each cycle
+launched Level, stopped it through Shell, seeded the saved Journal object with
+an inclination of `-17`, resumed it, verified the visible `-17° inclination`
+readout through AT-SPI, and stopped cleanly with service release and shell
+cleanup. This supports a FUNCTIONAL PORT claim for offline controls and
+persistence; physical orientation sensors remain unclaimed.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).

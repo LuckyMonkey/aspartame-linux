@@ -24,3 +24,10 @@ def test_level_is_staged_and_matrix_registered():
     assert "gtk4-level-activity" in build
     assert "gtk4-level-activity" in sync
     assert "net.flossmanuals.LevelActivity|levelactivity4.LevelActivity" in matrix
+
+
+def test_level_persists_inclination_in_journal():
+    source = (PACKAGE / "levelactivity4.py").read_text()
+    assert "def write_file(self, file_path)" in source
+    assert 'json.dump({"angle": self.angle}' in source
+    assert "def read_file(self, file_path)" in source
