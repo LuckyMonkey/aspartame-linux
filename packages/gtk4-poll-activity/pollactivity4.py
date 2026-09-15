@@ -1,5 +1,8 @@
 """GTK4-native Poll Activity with a local, readable voting model."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -45,3 +48,20 @@ class PollActivity(SimpleActivity):
         for _entry, count in self.options: count.set_text("0 votes")
         self.status.set_text("Votes reset.")
 
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                self.question.set_text(str(payload.get("question", self.question.get_text())))
+                choices = payload.get("choices", [])
+                for (entry, _count), text in zip(self.options, choices): entry.set_text(str(text))
+                self.votes = [max(0, int(v)) for v in payload.get("votes", self.votes)][:3]
+                self.votes += [0] * (3 - len(self.votes)); self._render_counts()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"question": self.question.get_text(), "choices": [e.get_text() for e, _ in self.options], "votes": self.votes}) + "\n", encoding="utf-8")
+
+    def _render_counts(self):
+        for value, (_entry, count) in zip(self.votes, self.options): count.set_text(f"{value} vote{'s' if value != 1 else ''}")
