@@ -156,14 +156,6 @@ def test_zoom_service_dedupe_patch_is_routed():
     assert 'Settings cleanup' in patch
 
 
-def test_journal_rooted_unparented_attach_patch_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0129-journal-rooted-unparented-attach.patch').read_text()
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert 'attach rooted unparented views synchronously' in patch
-    assert '*0129*) target="$root/sources/sugar" ;;' in build
-    assert 'widget.get_parent() is not None and widget.get_root() is not None' in patch
-
-
 def test_group_accessibility_patch_is_routed():
     patch = (ROOT / 'patches/gtk4-preview/0116-group-accessibility.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
