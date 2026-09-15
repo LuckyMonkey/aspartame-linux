@@ -1,0 +1,15 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: explicitly select the Journal stack child
+
+GTK4 can receive ShowJournal while the model is already in Activity zoom. In
+that case no zoom-level signal is emitted, leaving the stack on an empty
+surface. Select the registered Journal child explicitly after activation.
+
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -107,6 +107,7 @@
+         model._set_active_activity(model.get_activity_by_id(
+             journal.activity_id))
+         model.set_zoom_level(model.ZOOM_ACTIVITY)
++        model.stack.set_visible_child_name("journal")
+         return True
