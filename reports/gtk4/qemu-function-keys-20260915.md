@@ -27,3 +27,8 @@ closed the revealed Frame and returned to Home. Evidence:
 
 From Journal, physical Enter activated the selected Clock entry and produced a
 live Clock Activity surface (`sugar-20260915-101822-v0.0.31.png`).
+
+On a live Count Activity, a physical Tab followed by Space produced no visible
+control-state change (`sugar-20260915-102058-v0.0.31.png`); Tab/Shift+Tab/Space
+remain unverified for the completion gate rather than being inferred from the
+successful function-key transport.
