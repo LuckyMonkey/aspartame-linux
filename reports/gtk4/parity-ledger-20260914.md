@@ -99,6 +99,14 @@ and stopped cleanly with service release and shell cleanup. This supports a
 FUNCTIONAL PORT claim for bounded offline playlist persistence; codec and
 media-playback parity remain outside the claim.
 
+Native Grid Paint object resume (2026-09-15):
+`sugar-gtk4-gridpaint-roundtrip.py` passed two real guest cycles. Each cycle
+launched Grid Paint, stopped it through Shell, seeded the saved Journal object
+with selected cells, resumed it, verified the visible `2 cells selected`
+summary through AT-SPI, and stopped cleanly with service release and shell
+cleanup. This supports a FUNCTIONAL PORT claim for bounded cell painting and
+persistence; advanced layer/fill tools remain outside the claim.
+
 Native Paint object resume (2026-09-15):
 `sugar-gtk4-paint-roundtrip.py` passed two real guest cycles. Each cycle
 launched Paint, stopped it through Shell, seeded the saved Journal object with
