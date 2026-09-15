@@ -1,15 +1,22 @@
-# GTK3/GTK4 Spaces runtime verification — 2026-09-15
+# GTK3/GTK4 Spaces runtime evidence — 2026-09-15
 
-The live guest switched to the classic Space and back to the modern Space
-without restarting the OS session. `sugar-gtk4-space.sh status` reported
-`current=0` with the GTK3 process, then `current=1` with the GTK4 process;
-both remained present as distinct Jarabe processes.
+The guest reports both spaces alive and selectable without restarting the
+session:
 
-Evidence captures:
+```text
+current=1
+count=4
+gtk3_pid=531079
+gtk4_pid=533252
+keys=F7:GTK3,F8:GTK4
+```
 
-- GTK3 classic Home: `reports/screenshots/sugar-20260915-080314-v0.0.31.png`
-- GTK4 modern Home List: `reports/screenshots/sugar-20260915-080322-v0.0.31.png`
+Semantic `gtk3` then `gtk4` selection produced separate 1920x1080 captures:
 
-The captures differ in both visual composition and SHA-256, confirming that
-workspace switching selected the intended Space rather than merely relabeling
-one surface.
+- `reports/screenshots/sugar-20260915-092148-v0.0.31.png` — classic GTK3
+  Sugar Home with the established artwork/background.
+- `reports/screenshots/sugar-20260915-092150-v0.0.31.png` — modern GTK4
+  Sugar Home with the GTK4 shell renderer.
+
+Both processes remained alive while switching, and the modern Space retained
+its independent GTK4 preview process and private Casilda boundary.
