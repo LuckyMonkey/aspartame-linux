@@ -100,6 +100,13 @@ def test_gtk4_main_window_routes_space_keys_semantically():
     assert "subprocess.Popen" in patch
 
 
+def test_gtk4_runner_rejects_system_journal_window_import():
+    runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    assert "GTK4 Journal window resolved outside preview sources" in runner
+    assert "preview_pythonpath" in runner
+    assert "jarabe.journal.journalwindow" in runner
+
+
 def test_gtk4_global_key_grabber_patch_is_retired_when_sugarext_lacks_api():
     patch = (ROOT / "patches/gtk4-preview/0094-modern-space-keygrabber.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()

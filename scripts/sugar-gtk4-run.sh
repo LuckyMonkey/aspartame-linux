@@ -21,6 +21,17 @@ libdir="$prefix/lib"
 runroot=${GTK4_RUNTIME_ROOT:-$root/runtime}
 log="$root/logs/gtk4-shell-$(date -u +%Y%m%dT%H%M%SZ).log"
 
+# Resolve the Journal window before starting the session. A distro GTK3 copy
+# can otherwise win the namespace package and leave ShowJournal blank while
+# the rest of the GTK4 shell appears healthy.
+preview_pythonpath="$project_root/gtk4-overlay/src:$datastore_site:$datastore/src:$shell/src:$toolkit/src"
+journal_window_path=$(PYTHONPATH="$preview_pythonpath" "$python_bin" -c \
+    'import jarabe.journal.journalwindow as module; print(module.__file__)')
+case "$journal_window_path" in
+    "$shell/src/jarabe/journal/journalwindow.py"|"$project_root/gtk4-overlay/src/jarabe/journal/journalwindow.py") ;;
+    *) echo "GTK4 Journal window resolved outside preview sources: $journal_window_path" >&2; exit 2 ;;
+esac
+
 for path in "$shell/src/jarabe/main.py" "$toolkit/src/sugar4" \
             "$datastore/bin/datastore-service" \
             "$libdir/girepository-1.0/Casilda-1.0.typelib" \
@@ -143,7 +154,7 @@ exec env \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
     SUGAR_ACTIVITIES_PATH="$modern_activities" \
     SUGAR_WINDOWED="${SUGAR_WINDOWED:-0}" \
-    PYTHONPATH="$project_root/gtk4-overlay/src:$datastore_site:$datastore/src:$shell/src:$toolkit/src" \
+    PYTHONPATH="$preview_pythonpath" \
     GI_TYPELIB_PATH="$libdir/girepository-1.0" \
     LD_LIBRARY_PATH="$libdir" \
     XDG_DATA_DIRS="$prefix/share:/usr/local/share:/usr/share" \
