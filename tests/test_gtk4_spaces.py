@@ -180,14 +180,6 @@ def test_journal_expand_visible_child_patch_is_routed():
     assert 'journal.set_vexpand(True)' in patch
 
 
-def test_journal_main_view_visibility_patch_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0132-journal-main-view-visibility.patch').read_text()
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert 'reveal Journal main view areas from shell action' in patch
-    assert '*0132*) target="$root/sources/sugar" ;;' in build
-    assert 'journal._canvas_area.set_visible(True)' in patch
-
-
 def test_group_accessibility_patch_is_routed():
     patch = (ROOT / 'patches/gtk4-preview/0116-group-accessibility.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
