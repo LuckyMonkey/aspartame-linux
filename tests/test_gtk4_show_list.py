@@ -44,7 +44,9 @@ def test_journal_main_view_restoration_is_idempotent():
     patch = (ROOT / "patches/gtk4-preview/0106-journal-main-view-idempotent.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "self._active_view == JournalViews.MAIN" in patch
-    assert "if self._active_view == JournalViews.MAIN:" in patch
+    assert "if self._active_view == JournalViews.MAIN and" in patch
+    assert "self.canvas == self._main_view" in patch
+    assert patch.count("+            return") == 1
     assert '*0106*) target="$root/sources/sugar" ;;' in build
 
 
@@ -71,4 +73,3 @@ def test_journal_toolbar_reattach_is_deferred_when_still_rooted():
     assert "toolbar.get_parent() == self._toolbar_area" in patch
     assert "GLib.idle_add(self.set_toolbar_box, toolbar)" in patch
     assert '*0109*) target="$root/sources/sugar" ;;' in build
-

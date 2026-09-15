@@ -153,6 +153,7 @@ def test_neighborhood_accessibility_order_fix_is_routed():
     assert 'repair Neighborhood accessibility call ordering' in patch
     assert '*0127*) target="$root/sources/sugar" ;;' in build
     assert 'set_accessible_role(Gtk.AccessibleRole.GROUP)' in patch
+    assert 'retired obsolete Neighborhood accessibility ordering patch' in build
 
 
 def test_zoom_service_dedupe_patch_is_routed():
@@ -161,6 +162,25 @@ def test_zoom_service_dedupe_patch_is_routed():
     assert 'one authoritative zoom action implementation' in patch
     assert '*0128*) target="$root/sources/sugar" ;;' in build
     assert 'Settings cleanup' in patch
+
+
+def test_journal_rooted_unparented_attach_patch_is_routed():
+    patch = (ROOT / 'patches/gtk4-preview/0129-journal-rooted-unparented-attach.patch').read_text()
+    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
+    assert 'blank page' in patch
+    assert 'get_parent() is not None and widget.get_root() is not None' in patch
+    assert '*0129*) target="$root/sources/sugar" ;;' in build
+
+
+def test_journal_show_action_stack_visibility_patches_are_routed():
+    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
+    for number, marker in (
+            ('0130', 'model.stack.set_visible_child_name("journal")'),
+            ('0131', 'journal.set_hexpand(True)'),
+            ('0132', 'journal._canvas_area.set_visible(True)')):
+        patch = next((ROOT / 'patches/gtk4-preview').glob(f'{number}-*.patch')).read_text()
+        assert marker in patch
+        assert f'*{number}*) target="$root/sources/sugar" ;;' in build
 
 
 def test_group_accessibility_patch_is_routed():

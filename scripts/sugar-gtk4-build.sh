@@ -104,6 +104,10 @@ for patch in "$patch_dir"/*.patch; do
         *0126*) target="$toolkit" ;;
         *0127*) target="$root/sources/sugar" ;;
         *0128*) target="$root/sources/sugar" ;;
+        *0129*) target="$root/sources/sugar" ;;
+        *0130*) target="$root/sources/sugar" ;;
+        *0131*) target="$root/sources/sugar" ;;
+        *0132*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0040*|*0041*|*0042*|*0043*|*0044*|*0045*|*0046*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0070*|*0071*|*0073*|*0074*|*0075*|*0076*|*0079*|*0080*|*0081*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
@@ -138,6 +142,37 @@ for patch in "$patch_dir"/*.patch; do
     if [[ "$patch_name" == *0039* ]]; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "retired obsolete preview patch: $patch_name (registry filtering superseded)"
+        continue
+    fi
+    if [[ "$patch_name" == *0127* ]] &&
+        grep -q "self.set_accessible_role(Gtk.AccessibleRole.GROUP)" "$shell/src/jarabe/desktop/meshbox.py" &&
+        grep -q "\[_('Neighborhood')\]" "$shell/src/jarabe/desktop/meshbox.py"; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "retired obsolete Neighborhood accessibility ordering patch: $patch_name (calls already separated)"
+        continue
+    fi
+    if [[ "$patch_name" == *0129* ]] &&
+        grep -q "get_parent() is not None and widget.get_root() is not None" "$shell/src/jarabe/journal/journalwindow.py"; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "retired obsolete rooted-unparented Journal patch: $patch_name (guard already narrowed)"
+        continue
+    fi
+    if [[ "$patch_name" == *0130* ]] &&
+        grep -q 'model.stack.set_visible_child_name("journal")' "$shell/src/jarabe/view/service.py"; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "retired obsolete Journal stack-selection patch: $patch_name (selection already explicit)"
+        continue
+    fi
+    if [[ "$patch_name" == *0131* ]] &&
+        grep -q 'journal.set_hexpand(True)' "$shell/src/jarabe/view/service.py"; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "retired obsolete Journal expansion patch: $patch_name (expansion already explicit)"
+        continue
+    fi
+    if [[ "$patch_name" == *0132* ]] &&
+        grep -q 'journal._canvas_area.set_visible(True)' "$shell/src/jarabe/view/service.py"; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "retired obsolete Journal visibility patch: $patch_name (areas already revealed)"
         continue
     fi
     if [[ "$patch_name" == *0042* ]] && grep -Eq "journalactivity\.get_journal\(\)\.show_journal\(\)|journal = journalactivity\.get_journal\(\)" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then

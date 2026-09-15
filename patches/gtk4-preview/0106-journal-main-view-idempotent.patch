@@ -11,6 +11,7 @@ be a no-op rather than repeating widget reparenting during the same dispatch.
      def show_main_view(self):
          if not self._init_done:
              return
-+        if self._active_view == JournalViews.MAIN:
++        if self._active_view == JournalViews.MAIN and \
++                self.canvas == self._main_view:
 +            return
          self._active_view = JournalViews.MAIN

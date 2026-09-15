@@ -99,6 +99,28 @@
   the live `wayland-sugar` socket.
 - Status: resolved; host approach retired.
 
+## GTK4-013 — Neighborhood accessibility patch drift
+
+- Category: `UPSTREAM-SHELL` / preview patch maintenance
+- Reproduction: the historical 0127 patch expected two overlapping malformed
+  accessibility hunks in `meshbox.py`; current source already has independent
+  `update_property()` and `set_accessible_role()` calls from 0114/0115.
+- Resolution: the build now retires 0127 when those semantic calls are present,
+  recording the patch digest without applying a stale textual diff.
+- Status: resolved; no new runtime behavior was required.
+
+## GTK4-014 — Journal rooted unparented view attachment
+
+- Category: UPSTREAM-SHELL / GTK4 widget ownership
+- Reproduction: JournalActivity constructs its main/detail views after the
+  JournalWindow is rooted. The generic rooted-widget guard deferred even
+  unparented views, so set_canvas() retried forever and ShowJournal() remained
+  blank.
+- Fix: 0129 defers only widgets still attached to another parent; an
+  unparented rooted view is appended immediately to the Journal canvas area.
+- Status: fixed in the GTK4 preview; runtime verification follows the guest
+  rebuild.
+
 ## GTK4-013 — Arch splits `glib-mkenums` into `glib2-devel`
 
 - Category: `ARCH-PACKAGING`
