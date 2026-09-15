@@ -85,36 +85,28 @@ inherited until a change plausibly touches them.
 
 - **GTK3 reference:** F7 and F8 switch between the classic and modern Spaces.
 - **GTK4 result:** semantic switching round-trips cleanly and is the working
-  comparison mechanism. **Physical** F7/F8 does not fire: Metacity holds the
-  X11 grab (`switch-to-workspace-1 = ['F7', '<Super>Home']`,
-  `switch-to-workspace-2 = ['F8']`) and an injected F7 produces no workspace
-  change and never reaches the shell process.
-- **Gap:** X11/Metacity key transport, not Sugar.
-- **Minimum fix:** unknown; needs an isolated Metacity grab reproduction.
-- **Evidence:** `reports/gtk4/keyboard-delivery-20260915.md` (frontier section)
-- **STATUS: OPEN — frontier recorded, rotated away from**
+  comparison mechanism. **No function key** reaches the modern shell.
+- **Gap:** see W7 — the two collapse into one frontier,
+  `reports/gtk4/fkey-grab-frontier-20260915.md`.
+- **STATUS: OPEN — merged into the F-key grab frontier**
 
 ## W7 — Frame navigation
 
 - **GTK3 reference:** F6 reveals the Frame; Escape dismisses it.
-- **GTK4 result:** **failing as of 2026-09-15.** From a verified Home view,
-  physical F6 produces no change across repeated presses, and the top-left
-  hot corner does not reveal it either.
-- **Gap, narrowed:** not key delivery and not this session's focus work.
-  - Reverting 0140 (restoring the overlay focus sink), restarting and
-    retesting still produced nothing, so the input changes are not the cause.
-  - F6 and the hot corner reach the same `Frame.toggle()`; both fail, so the
-    fault is below the trigger, in `show()` / revealer presentation.
-  - The four `FrameWindow` revealers are constructed and added to the shell
-    overlay (`frame.py` adds each via `_overlay.add_overlay`), and no
-    exception appears in the shell log.
-  - Earlier evidence the same day (`qemu-function-keys-20260915.md`, ~10:19)
-    recorded F6 reveal working, so this regressed during the day.
-- **Minimum fix:** unknown. Next step is to confirm whether `show()` runs and
-  whether the revealers get a non-zero allocation — not to touch key routing.
-- **Evidence:** `reports/screenshots/sugar-20260915-180823-v0.0.31.png` (F6),
-  `sugar-20260915-180839-v0.0.31.png` (hot corner)
-- **STATUS: OPEN — isolated to Frame presentation, next rotation target**
+- **GTK4 result:** failing. Not a Frame defect: `Frame.toggle()` never runs on
+  F6 (instrumented and silent), and the hot corner — same `toggle()` — also
+  fails from a verified Home view.
+- **Gap:** no function key reaches the GTK4 shell at all. Instrumenting the
+  shell's own first capture point showed `a` arriving three times and F1/F3/
+  F5/F6 never arriving. Ruled out: this session's focus work (0140 revert
+  test), stuck modifiers, Metacity (only binds F7/F8), and the GTK3 control
+  panel. Remaining suspect is the classic shell's `SugarExt.KeyGrabber`
+  global X11 grabs surviving a release path that relies on Python `del` for
+  GObject finalisation, despite logging "GTK3 released (workspace=1)".
+- **Minimum fix:** unknown until the grabs are observed directly; then make
+  the ungrab explicit rather than finalisation-dependent.
+- **Evidence:** `reports/gtk4/fkey-grab-frontier-20260915.md`
+- **STATUS: OPEN — root cause narrowed to cross-Space X11 grab release**
 
 ## W8 — Palette interaction
 
@@ -149,12 +141,10 @@ inherited until a change plausibly touches them.
 
 ## Next
 
-Open: W6 (Metacity X11 F7/F8 grab), W7 (Frame does not present), W11 (needs a
-second participant). W7 is the only one that is both code-side and
-unblocked, so it is the next rotation target.
+Open: the F-key grab frontier (W6 + W7, same cause) and W11 (needs a second
+participant). Everything else passes.
 
-The remaining breadth risk is Activity catalog depth: most Activities are
-classified FUNCTIONAL PORT rather than FULL PORT in
-`ACTIVITY_PORT_CLASSIFICATION.md`. Promotion is per-Activity evidence work,
-not a shell gap. Add a workflow here only when a specific user-visible
-behavior is observed failing.
+The F-key frontier is the single highest-value remaining item: it is what
+stands between the current state and human F7/F8 parity testing. It needs one
+direct observation — are the X11 grabs actually released? — before any code
+changes.
