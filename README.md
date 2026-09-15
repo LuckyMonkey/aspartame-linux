@@ -7,8 +7,6 @@
 [![GTK4 tests](https://img.shields.io/badge/GTK4%20tests-271%20passed-2ea44f)](tests/)
 [![GTK4 build](https://img.shields.io/badge/guest%20build-PASS-2ea44f)](docs/sugar-modernization/GTK4_RUNBOOK.md)
 [![GTK3 reference](https://img.shields.io/badge/GTK3-reference%20preserved-2ea44f)](docs/sugar-modernization/GTK4_STATUS.md)
-[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
-
 Aspartame is an Arch-derived Linux distribution and a Sugar modernization
 laboratory. It keeps Sugar's learning-centred model—Home, Activities, Frame,
 Journal, Neighborhood, Group, palettes, XO identity, and visible context—at
