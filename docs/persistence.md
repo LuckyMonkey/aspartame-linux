@@ -1,4 +1,6 @@
-# Aspartame persistence
+# 💾 Aspartame persistence:
+
+> **Status:** current Journal and VM storage contract
 
 The QEMU development image has two deliberately separate persistence layers:
 
@@ -47,3 +49,10 @@ disk.
 Do not install packages with signature verification disabled. The test VM's
 pacman keyring and official mirror must be initialized before live package
 installation.
+
+## Journal meaning:
+
+An Activity save is an Object with an Activity association and metadata. A
+successful process stop must not erase it; a resume must restore the saved
+state. This distinction is why lifecycle evidence and storage evidence are
+recorded separately in the GTK4 runbooks.

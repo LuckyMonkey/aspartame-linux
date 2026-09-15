@@ -1,4 +1,10 @@
-# Universal Help: What's This?
+# ❓ Universal Help: What's This?
+
+> **Status:** current design and GTK4 implementation reference
+
+## Visual reference:
+
+![Native GTK4 Help Activity](../reports/screenshots/sugar-20260915-150938-v0.0.31.png)
 
 ## Purpose
 

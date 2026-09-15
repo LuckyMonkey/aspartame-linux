@@ -1,4 +1,6 @@
-# QEMU reference machine
+# 🖥️ QEMU reference machine:
+
+> **Status:** current VM operating guide · **Reference:** 1920×1080 capture
 
 ```sh
 make iso
@@ -32,6 +34,21 @@ qemu-system-x86_64
 ![Sugar Home in QEMU](screenshots/home-v0.0.15.png)
 
 The repository's [screenshot gallery](screenshots/README.md) records the Activity Manager and Count views as well.
+
+## Session flow:
+
+```mermaid
+flowchart TD
+    A[run-qemu.sh] --> B[Arch guest]
+    B --> C[SSH localhost:2222]
+    C --> D[GTK3 / GTK4 Space]
+    D --> E[screenshot + log + runtime check]
+```
+
+- 🎛️ `zoom-to-fit` keeps the guest at the intended reference geometry.
+- 🪟 `grab-on-hover` keeps the QEMU window floating and resizable.
+- ⌨️ QMP input is a transport probe, not proof of GTK focus or Activity input.
+- 📸 Pair every screenshot with the command and SHA-256 emitted by the capture script.
 
 ## Development control
 

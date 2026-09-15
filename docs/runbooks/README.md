@@ -1,4 +1,7 @@
-# Aspartame runbooks
+# 📚 Aspartame runbooks:
+
+> Design notes are grouped by implementation status so a future reader can
+> tell **current behavior**, **verification procedure**, and **future ideas**.
 
 ## Current visual reference
 
@@ -17,3 +20,13 @@ The images are reference snapshots from the QEMU development VM. See the screens
 - [Scale Activity](SCALE_ACTIVITY_RUNBOOK.md) — future activity direction
 - [Pets](../planned/ASPARTAME_PETS_RUNBOOK.md) — planned/maybe/future idea only
 - [GTK4 modernization](../sugar-modernization/README.md) — active conversion runbooks
+
+<details>
+<summary>🧭 How to use a runbook</summary>
+
+1. Read the purpose and non-goals first.
+2. Follow the primary interaction model before adding controls.
+3. Record evidence at the boundary the runbook names.
+4. Update the owning status table and screenshot/log links.
+
+</details>

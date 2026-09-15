@@ -1,5 +1,7 @@
 # Aspartame architecture
 
+> **Status:** current architecture map · **Audience:** builders and porters 🧭
+
 Aspartame is an Arch Linux live image built by `archiso`. Sugar is the primary
 session and retains its Home, Activity, Frame, Journal, Group, Neighborhood,
 palette, and XO-color interaction model. The underlying system remains
@@ -27,3 +29,18 @@ These are reference captures of the current Sugar-based vertical slice, not subs
 The authoritative runtime/process/import/development map is
 [SUGAR-DEVELOPMENT.md](SUGAR-DEVELOPMENT.md). The visual layer map is
 [SUGAR-STYLING.md](SUGAR-STYLING.md).
+
+## Ownership boundaries:
+
+| Layer | Owns | Must not own |
+| --- | --- | --- |
+| Arch image | packages, units, kernel, users, persistence | Sugar widget behavior |
+| Stable Space | GTK3 Sugar shell and reference behavior | GTK4 GI imports |
+| Modern Space | GTK4 shell presentation and semantic actions | GTK3 widgets or X11-only Activity windows |
+| Casilda | private Activity Wayland surfaces | shell-wide Journal policy |
+| Datastore | Journal objects and metadata | visual list layout |
+
+The boundary is intentionally boring: failures can be assigned to one owner,
+tested in isolation, and compared through the Spaces mechanism. See the
+[current GTK4 status](sugar-modernization/GTK4_STATUS.md) before treating a
+native replacement as a complete behavioral port.

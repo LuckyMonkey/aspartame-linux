@@ -24,6 +24,62 @@ a real terminal.
 This is not a GNOME reskin. GTK4 is an implementation modernization of Sugar,
 not a change to Sugar's interaction model.
 
+## What this is — and is not:
+
+| Layer | What it is | What it is **not** |
+| --- | --- | --- |
+| **Linux** 🐧 | The kernel and the low-level platform that talks to hardware | A desktop, distribution, package manager, or Sugar experience |
+| **Arch Linux** 🏹 | The upstream distribution foundation: packages, pacman, systemd, conventions, and rolling release | This project's interaction model or a promise that every Arch package is Sugar-aware |
+| **Sugar** 🍬 | An activity-centric learning environment and shell vocabulary: Home, Frame, Journal, XO identity, and collaboration | A conventional window manager, a GNOME fork, or merely a theme |
+| **Aspartame** 🧬 | A product and integration layer that boots Arch into a Sugar-first system, adds bounded tooling, and carries the GTK4 migration | A replacement Linux kernel, a generic desktop reskin, or upstream Sugar itself |
+
+The distinction matters: **Linux supplies the ground**, **Arch supplies the
+materials**, **Sugar supplies the language**, and this project composes them
+into a reproducible system with its own evidence, policies, and migration
+work. A bug in one layer is not silently attributed to another.
+
+## Why the concepts are unusual:
+
+### A Sugar HIG, not a desktop theme:
+
+The Human Interface Guidelines here describe relationships and exits, not just
+colors. A person should know where they are, what owns the current work, how
+to get back, and what will happen before an action occurs. Large targets,
+visible focus, attached palettes, XOColor state, and a canonical Stop action
+make those relationships legible to children and experienced users alike.
+
+### Activities, not application windows:
+
+An **Activity** is a focused context with a lifecycle and a Journal
+relationship. Launching creates a known identity; running state is authoritative
+shell state; stopping clears the process and surface; resuming returns to an
+object. This is different from opening an arbitrary window and hoping its files
+remain discoverable.
+
+### Objects, not a hidden file tree:
+
+An **Object** is a meaningful piece of work with metadata, an owning Activity,
+and a resumable history in the Journal. The object boundary supports learning:
+the user can search by what they did, not only where a file happened to be
+stored. Persistence is therefore a user-facing concept and a service contract,
+not an implementation detail.
+
+### Neighborhood, not a contact list:
+
+The **Neighborhood** is a contextual view of nearby people, shared work, and
+available collaboration. It may honestly be empty. It does not invent peers,
+turn the shell into a social feed, or hide networking failures behind fake
+content. Presence and shared Activities remain separate from the local Journal.
+
+### Chirality, not duplication:
+
+**Chirality** names the disciplined coexistence of two hands with one purpose:
+the stable GTK3 reference and the modern GTK4 implementation. They mirror
+semantics while retaining separate processes, toolkit ownership, and failure
+boundaries. The bridge carries models and service contracts; it does not carry
+widgets, global focus, or mixed GI namespaces. This makes comparison fast,
+regression visible, and eventual retirement evidence-based.
+
 ## 🧭 What is here today:
 
 The bootable image starts a real Sugar session. The development VM runs two
@@ -207,6 +263,7 @@ stateDiagram-v2
 ## 📚 Runbooks and project guides:
 
 - [GTK4 modernization index](docs/sugar-modernization/README.md)
+- [Complete documentation index](docs/README.md)
 - [Current GTK4 status](docs/sugar-modernization/GTK4_STATUS.md)
 - [Conversion tracker and gate](docs/sugar-modernization/CONVERSION_TRACKER.md)
 - [Activity classifications](docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md)

@@ -1,4 +1,6 @@
-# Networking
+# 🌐 Networking:
+
+> **Status:** current platform notes; collaboration claims require live peers
 
 NetworkManager is the system authority in the bootstrap image. Avahi and
 `nss-mdns` provide passive DNS-SD/mDNS discovery. Neighborhood 2.0 should
@@ -13,4 +15,10 @@ Active scanning must remain an explicit action on unknown, corporate, hotel,
 or public networks. VPN is a
 future Sugar view with backend-neutral support for WireGuard, NetworkManager
 VPN plugins, OpenVPN, and optionally Tailscale.
+## Sugar boundary:
 
+NetworkManager and the kernel own connectivity. Neighborhood consumes a
+contextual peer model and must report an honest empty state when no peers are
+available. A connected network is not, by itself, proof of collaboration.
+
+![Neighborhood reference surface](../reports/screenshots/sugar-20260915-151748-v0.0.31.png)

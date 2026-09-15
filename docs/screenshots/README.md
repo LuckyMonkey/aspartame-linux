@@ -1,8 +1,17 @@
-# Aspartame VM screenshots
+# 🖼️ Aspartame VM screenshots:
+
+> **Status:** curated visual references; pair captures with runtime reports
+> when using them as acceptance evidence.
 
 These images are captured from the QEMU reference VM at 1920x1080 using ./scripts/sugar-screenshot.sh. They document the visible bootstrap state without using the host screenshot hotkey.
 
-## Current views
+## Current views:
+
+### GTK4 modern Space:
+
+![GTK4 Home](../../reports/screenshots/sugar-20260915-151748-v0.0.31.png)
+
+![GTK4 Help](../../reports/screenshots/sugar-20260915-150938-v0.0.31.png)
 
 ### Sugar Home
 

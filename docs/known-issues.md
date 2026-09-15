@@ -1,4 +1,6 @@
-# Known issues
+# 🚧 Known issues:
+
+> **Status:** current limitations; historical items are labelled below.
 
 - The current shell reload boundary recreates Sugar's private session D-Bus and
   Metacity while keeping Xorg alive. Survival of an independently running,
@@ -15,5 +17,11 @@
   local package database results.
 - Artwork is still the upstream `sugar-artwork` package. This pass established
   how it works but did not add a hot-reloadable Aspartame artwork source tree.
-- Sugar uses X11/Metacity and GTK 3. GTK4/Wayland migration was not attempted.
+- The stable Space uses X11/Metacity/GTK3. The modern Space uses a GTK4 shell
+  with Casilda's private Wayland Activity surfaces; this is not a complete
+  host-session Wayland migration.
+- Physical QEMU F1–F6 delivery remains transport-sensitive even where the
+  corresponding semantic shell action is implemented.
+- Peer-backed Neighborhood/Group behavior requires a second collaboration
+  participant for live proof.
 - A full graphical-session restart intentionally ends running Activities.

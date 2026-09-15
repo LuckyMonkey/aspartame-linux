@@ -1,7 +1,8 @@
-# Current Sugar state — bootstrap research
+# 🧭 Current Sugar state — bootstrap research:
 
-Research date: 2026-08-31. The live QEMU session was rechecked with
-`make sugar-info`.
+**Research date:** 2026-08-31 baseline, reconciled 2026-09-15 with the active
+GTK4 status ledger. The historical package facts below remain useful context;
+the current conversion evidence is linked where the older probe was superseded.
 
 ## Upstream revisions inspected
 
@@ -62,5 +63,16 @@ The ISO has been built and booted in QEMU. The live development loop has
 verified the Sugar shell, Home X window, Metacity, the shell D-Bus service,
 SSH control, and 1920×1080 X11 capture. Audio, CUPS, network access, HiDPI,
 multi-monitor behavior, and every Activity remain separate runtime test items.
-The GTK4 probe currently reports incomplete because GTK4 introspection and an
-upstream `sugar-toolkit-gtk4` checkout are not installed on the host.
+The GTK4 preview is now built and exercised in the guest with GTK 4.22.4,
+Casilda 1.5.0, and wlroots 0.20.2. The host still keeps the GTK3 package path
+as the behavioral reference. See [GTK4_STATUS](sugar-modernization/GTK4_STATUS.md)
+and [CONVERSION_TRACKER](sugar-modernization/CONVERSION_TRACKER.md) for the
+current evidence boundary rather than treating this bootstrap note as a live
+completion report.
+
+## Reading this file:
+
+- 🧱 The package and X11 facts describe the stable foundation.
+- 🧬 The Spaces model describes the isolated modern experiment.
+- 🧪 Runtime claims belong in dated reports under `reports/gtk4/`.
+- 🚧 Open limitations are tracked explicitly; they are not hidden by fallback UI.
