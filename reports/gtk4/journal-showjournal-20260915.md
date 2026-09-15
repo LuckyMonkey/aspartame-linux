@@ -17,3 +17,7 @@ restarting the modern shell, the same action now renders the native Journal:
 Sugar top bar, Journal search, project controls, 415 Journal entries, row
 actions, and the bottom frame. This is visual evidence in addition to the
 boolean service result.
+
+The repaired shell was then exercised with the three-cycle Write Journal
+round-trip probe; all cycles reported `payload=PASS resume=PASS
+service-release=PASS shell-cleanup=PASS`.
