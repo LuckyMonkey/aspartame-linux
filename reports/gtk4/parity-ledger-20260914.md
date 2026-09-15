@@ -75,6 +75,14 @@ AT-SPI, and stopped cleanly with service release and shell cleanup. This
 supports a FUNCTIONAL PORT claim for bounded word entry/lookup and persistence;
 translation and audio breadth remain outside the claim.
 
+Native Portfolio object resume (2026-09-15):
+`sugar-gtk4-portfolio-roundtrip.py` passed two real guest cycles. Each cycle
+launched Portfolio, stopped it through Shell, seeded the saved Journal object
+with UTF-8 title/body content, resumed it, verified the restored title through
+AT-SPI, and stopped cleanly with service release and shell cleanup. This
+supports a FUNCTIONAL PORT claim for bounded document editing and persistence;
+rich media and export breadth remain outside the claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).

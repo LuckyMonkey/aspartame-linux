@@ -16,7 +16,8 @@ without an orphan process. It does not by itself prove a complete port.
 | Markdown | 2-cycle launch plus seeded UTF-8 Journal source resume and visible editor restoration | FUNCTIONAL PORT |
 | Finance | 2-cycle launch plus seeded JSON transaction resume and visible balance restoration | FUNCTIONAL PORT |
 | Words | 2-cycle launch plus seeded JSON word resume and visible lookup restoration | FUNCTIONAL PORT |
-| Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Last One Loses, Grid Paint, Gears, TurtleBlocks, Game Of Life, Color My World, Abacus, Planets, Connect the Dots, Pippy, Paint, Diamond Fusion, Level, Moon, Get Books, Jukebox | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
+| Portfolio | 2-cycle launch plus seeded JSON title/body resume and visible title restoration | FUNCTIONAL PORT |
+| Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, FotoToon, Last One Loses, Grid Paint, Gears, TurtleBlocks, Game Of Life, Color My World, Abacus, Planets, Connect the Dots, Pippy, Paint, Diamond Fusion, Level, Moon, Get Books, Jukebox | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
 | Get Things Done | 2-cycle launch plus seeded JSON Journal task-list resume and clean stop | FUNCTIONAL PORT |
 
 The authoritative class definitions and per-Activity boundaries live in

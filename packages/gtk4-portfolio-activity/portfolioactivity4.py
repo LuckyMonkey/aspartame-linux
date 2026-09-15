@@ -1,5 +1,8 @@
 """Native GTK4 Portfolio writing Activity."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -29,3 +32,21 @@ class PortfolioActivity(SimpleActivity):
 
     def _clear(self, _button):
         self.name.set_text(""); self.body.get_buffer().set_text(""); self.status.set_text("Write about your project.")
+
+    def read_file(self, file_path):
+        """Restore project title and description from a Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            payload = {}
+        title = str(payload.get("title", "")) if isinstance(payload, dict) else ""
+        body = str(payload.get("body", "")) if isinstance(payload, dict) else ""
+        self.name.set_text(title)
+        self.body.get_buffer().set_text(body)
+        self.status.set_text("Draft restored: %s" % (title or "Untitled project"))
+
+    def write_file(self, file_path):
+        """Save project title and description as a JSON Journal object."""
+        buffer = self.body.get_buffer()
+        start, end = buffer.get_bounds()
+        Path(file_path).write_text(json.dumps({"title": self.name.get_text(), "body": buffer.get_text(start, end, False)}, sort_keys=True) + "\n", encoding="utf-8")
