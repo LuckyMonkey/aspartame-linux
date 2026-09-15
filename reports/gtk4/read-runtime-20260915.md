@@ -19,6 +19,7 @@ stop cycles:
     cycle=2 pid=513026 service-ready=PASS shell-active=PASS cleanup=PASS
     lifecycle-probe=PASS
 
-This proves module loading and lifecycle coverage only. A Journal object resume
-with a user document remains required before Read can move above
-`COVERAGE IMPLEMENTATION` in the classification ledger.
+This initial check proved module loading and lifecycle coverage only. The later
+`read-roundtrip-20260915.md` probe added live seeded UTF-8 Journal object
+resume evidence, promoting Read to a bounded `FUNCTIONAL PORT` while leaving
+PDF/EPUB and full upstream format parity unclaimed.

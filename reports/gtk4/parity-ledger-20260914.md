@@ -7,6 +7,14 @@ and passed `sugar-gtk4-runtime-check.sh gtk3` (`pid=33761`, active window
 separate throughout. This proves shell/runtime ownership and switching, not the
 full GTK3 Activity launch/input/stop gate.
 
+Native Read object resume (2026-09-15): `sugar-gtk4-read-roundtrip.py` passed
+two real guest cycles. Each cycle launched Read, stopped it through Shell,
+seeded the saved Journal object's UTF-8 backing file with form-feed-separated
+pages, resumed the same object through Journal, verified the restored page text
+through AT-SPI, and stopped cleanly with service release and shell cleanup.
+Read is therefore a FUNCTIONAL PORT for bounded UTF-8 text-object reading;
+PDF/EPUB and full upstream Read format parity remain absent.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
@@ -434,9 +442,10 @@ below did not verify saved data. Shell Stop could discard document content,
 and resumed launches omitted the Journal object argument. Patches 0125/0126
 close those two gaps, with three real saved-content round trips and an
 inspected screenshot. See `journal-save-resume-20260915.md`. Write's
-principal workflow is now classified FUNCTIONAL PORT; Read and Stopwatch still
-need live object-resume evidence before promotion. No new runtime architecture
-was introduced.
+principal workflow is now classified FUNCTIONAL PORT. Read subsequently gained
+live seeded UTF-8 object-resume evidence in `read-roundtrip-20260915.md`;
+Stopwatch still needs a user-visible resume interaction before promotion. No
+new runtime architecture was introduced.
 
 1. Physical F1–F6 delivery remains below the QEMU/evdev transport. Semantic
    `ShowHome`, `ShowJournal`, `ShowFrame`, `ShowNeighborhood`, `ShowGroup`, and

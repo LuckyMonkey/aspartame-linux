@@ -21,3 +21,13 @@ def test_read_bundle_is_native_offline_and_registered():
     assert "org.laptop.sugar.ReadActivity|readactivity4.ReadActivity" in matrix
     for script in ("sugar-gtk4-dev-sync.sh", "sugar-gtk4-build.sh"):
         assert "gtk4-read-activity" in (ROOT / "scripts" / script).read_text()
+
+
+def test_read_roundtrip_probe_targets_journal_resume():
+    probe = (ROOT / "scripts/sugar-gtk4-read-roundtrip.py").read_text()
+    assert 'BUNDLE_ID = "org.laptop.sugar.ReadActivity"' in probe
+    assert 'PROCESS_MARKER = "readactivity4.ReadActivity"' in probe
+    assert 'expected_text in visible_text' in probe
+    assert 'journal.LaunchBundle(BUNDLE_ID, object_id)' in probe
+    assert 'filename.write_text(payload, encoding="utf-8")' in probe
+    assert "read-roundtrip=PASS" in probe

@@ -9,7 +9,7 @@ without an orphan process. It does not by itself prove a complete port.
 |---|---|---|
 | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log | 3-cycle Casilda launch/activate/stop evidence | FUNCTIONAL PORT (bounded workflows) |
 | Write | 3-cycle launch plus UTF-8 Journal save/resume and save-failure cancellation/retry | FUNCTIONAL PORT |
-| Read | 2-cycle launch/activate/stop; Journal UTF-8 hooks compile in guest | COVERAGE IMPLEMENTATION (live resume pending) |
+| Read | 2-cycle launch plus seeded UTF-8 Journal object resume and visible page restoration | FUNCTIONAL PORT |
 | Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Markdown, Finance, Words, Last One Loses, Get Things Done, Grid Paint, Stopwatch, Gears, TurtleBlocks, Game Of Life, Color My World, Abacus, Planets, Connect the Dots, Pippy, Paint, Diamond Fusion, Level, Moon, Get Books, Jukebox | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
 
 The authoritative class definitions and per-Activity boundaries live in
@@ -31,5 +31,5 @@ Promotion requires evidence appropriate to the claimed class:
 - comparison with the stable GTK3 behavior before claiming parity.
 
 The full matrix is a coverage instrument, not a retirement gate. The remaining
-highest-value parity work is live Read/Stopwatch object resume, peer-backed
+highest-value parity work is live Stopwatch object resume, peer-backed
 Neighborhood behavior, and physical input delivery below the QEMU transport.

@@ -30,7 +30,7 @@ Classification used by the migration ledger:
 | Terminal | FUNCTIONAL PORT | Native VTE terminal path; terminal feature parity remains bounded |
 | Browse | FUNCTIONAL PORT | Native WebKit path; collaboration/download parity is not claimed |
 | Log | FUNCTIONAL PORT | Native log list surface |
-| Read | COVERAGE IMPLEMENTATION | GTK4 reader now accepts UTF-8 Journal objects as form-feed-separated pages; live object resume and format breadth are not yet evidenced |
+| Read | FUNCTIONAL PORT | UTF-8 Journal text object resume, visible page restoration, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; PDF/EPUB/format breadth and upstream Read parity remain absent |
 | Write | FUNCTIONAL PORT | UTF-8 text editing, Journal save/stop/resume, and save-failure cancellation/retry verified with real GTK4 Activity processes on 2026-09-15; rich text and upstream document-format parity remain absent |
 | Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush | COVERAGE IMPLEMENTATION | Native playable cores used to exercise GTK4 input/render/lifecycle |
 | Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
