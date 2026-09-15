@@ -20,3 +20,7 @@ delivery and shell view transitions only.
 An F5 → Escape sequence first dismissed the pointer-opened palette; a second
 Escape cancelled an active Journal title edit and returned the row to its normal
 presentation. Journal detail Escape remains a separate navigation check.
+
+After adding the shell-level Escape shortcut, a live F6 → Escape sequence
+closed the revealed Frame and returned to Home. Evidence:
+`sugar-20260915-101954-v0.0.31.png`.
