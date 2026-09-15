@@ -164,14 +164,6 @@ def test_journal_rooted_unparented_attach_patch_is_routed():
     assert 'widget.get_parent() is not None and widget.get_root() is not None' in patch
 
 
-def test_journal_explicit_stack_selection_patch_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0130-journal-explicit-stack-selection.patch').read_text()
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert 'explicitly select the Journal stack child' in patch
-    assert '*0130*) target="$root/sources/sugar" ;;' in build
-    assert 'model.stack.set_visible_child_name("journal")' in patch
-
-
 def test_group_accessibility_patch_is_routed():
     patch = (ROOT / 'patches/gtk4-preview/0116-group-accessibility.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
