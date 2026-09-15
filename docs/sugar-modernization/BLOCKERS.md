@@ -241,5 +241,7 @@ it through Jarabe; Casilda paints its surface; D-Bus Close, repeated relaunch,
 and abnormal exit all clear the process and bus name. The guest does expose
 PS/2, USB, and virtio keyboard event nodes, but the current QEMU QMP
 `input-send-event` and monitor `sendkey` paths produce no evdev records, so
-physical pointer/keyboard delivery and focus transfer remain unproven. See
-`reports/gtk4/qemu-input-frontier-20260915.md` for the reproduction.
+Pointer delivery is separately proven: an absolute-tablet click opened a Help
+expander in the live GTK4 surface; keyboard delivery and keyboard-driven focus
+transfer remain unproven. See `reports/gtk4/qemu-input-frontier-20260915.md`
+and `qemu-pointer-frontier-20260915.md` for the reproductions.

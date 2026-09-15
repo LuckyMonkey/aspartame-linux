@@ -1,0 +1,33 @@
+n help
+
+{ype to search these topics
+
+How Sugar is organized
+
+Sugar is a focused learning environment built around Home, Activities, the Frame, and the Journal. Each view has one clear purpose and can be reached without leaving your work.
+
+Home and Activities
+
+coum.
+
+The Journal saves work as objects rather than a traditional file tree. Search by title or Activity, inspect metadata, resume an entry, or open it in its associated Activity. Use Projects to show entries assigned to a project, and edit a ttle or project directly in its row. Stopping an Activity does not delete its Journal entries.
+
+Frame and navigation
+
+Neighborhood and collaboration
+
+Count Activity
+
+Calculate Activity
+
+Clock and JAMClock
+
+Image Viewer Activity
+
+Terminal and Browse Activities
+
+How Activity surfaces work
+
+Keyboard and accessibility
+
+Further reading
