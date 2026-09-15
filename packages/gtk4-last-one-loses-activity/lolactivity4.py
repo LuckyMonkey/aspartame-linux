@@ -1,5 +1,8 @@
 """Native GTK4 Last One Loses take-away game."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -32,3 +35,15 @@ class LastOneLosesActivity(SimpleActivity):
         if self.pile == 0: return
         self.pile = max(0, self.pile - amount); self.pile_label.set_text("● " * self.pile)
         self.status.set_text("You took the last token — you lose!" if self.pile == 0 else f"{self.pile} tokens remain.")
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                self.pile = max(0, min(15, int(payload.get("pile", 15))))
+                self._build()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"pile": self.pile}, sort_keys=True) + "\n", encoding="utf-8")
