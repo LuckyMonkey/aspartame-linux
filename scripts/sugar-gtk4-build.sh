@@ -577,6 +577,8 @@ for patch in "$patch_dir"/*.patch; do
     fi
     if [[ "$patch_name" == *0106* ]] &&
         sed -n '/def show_main_view/,/def _show_secondary_view/p' "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
+            grep -q 'self.canvas == self._main_view' &&
+        ! sed -n '/def show_main_view/,/def _show_secondary_view/p' "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
             grep -q 'if self._active_view == JournalViews.MAIN:'; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified idempotent Journal main view: $patch_name"
