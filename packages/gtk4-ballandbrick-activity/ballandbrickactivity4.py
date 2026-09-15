@@ -1,5 +1,8 @@
 """Native GTK4 Ball and Brick Activity with pointer paddle control."""
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -34,3 +37,16 @@ class BallAndBrickActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.bricks = 6; self.status.set_text("Bricks remaining: 6"); self.area.queue_draw()
+
+    def read_file(self, file_path):
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if isinstance(payload, dict):
+                self.bricks = min(6, max(0, int(payload.get("bricks", 6))))
+                self.status.set_text("You cleared the last brick!" if not self.bricks else "Bricks remaining: %d" % self.bricks)
+                self.area.queue_draw()
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+
+    def write_file(self, file_path):
+        Path(file_path).write_text(json.dumps({"bricks": self.bricks}, sort_keys=True) + "\n", encoding="utf-8")

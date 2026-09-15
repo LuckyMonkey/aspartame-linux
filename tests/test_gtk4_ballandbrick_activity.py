@@ -11,6 +11,7 @@ def test_ballandbrick_bundle_is_native_and_registered():
     assert "sugar-activity4 ballandbrickactivity4.BallAndBrickActivity" in info
     assert "class BallAndBrickActivity(SimpleActivity)" in source
     assert "Reset game" in source
+    assert "def read_file" in source and "def write_file" in source
     assert "org.sugarlabs.BallAndBrick" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-ballandbrick-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-ballandbrick-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
