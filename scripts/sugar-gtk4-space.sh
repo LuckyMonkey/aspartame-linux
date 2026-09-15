@@ -69,6 +69,12 @@ gtk4_pid() {
         bus_address=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
             sed -n 's/^DBUS_SESSION_BUS_ADDRESS=unix:path=\([^,]*\).*$/\1/p' | head -1)
         [ -n "$bus_address" ] && [ -S "$bus_address" ] || continue
+        if command -v dbus-send >/dev/null 2>&1; then
+            DBUS_SESSION_BUS_ADDRESS="unix:path=$bus_address" \
+                timeout 2 dbus-send --session --print-reply=literal \
+                --dest=org.laptop.Shell /org/laptop/Shell \
+                org.freedesktop.DBus.Peer.Ping >/dev/null 2>&1 || continue
+        fi
         echo "$pid"; return
     done
 }
@@ -80,7 +86,17 @@ retire_stale_gtk4() {
             grep -qx 'ASPARTAME_GTK4_PREVIEW=1' || continue
         bus_address=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
             sed -n 's/^DBUS_SESSION_BUS_ADDRESS=unix:path=\([^,]*\).*$/\1/p' | head -1)
-        if [ -z "$bus_address" ] || [ ! -S "$bus_address" ]; then
+        bus_ok=0
+        if [ -n "$bus_address" ] && [ -S "$bus_address" ]; then
+            if command -v dbus-send >/dev/null 2>&1 && ! \
+                DBUS_SESSION_BUS_ADDRESS="unix:path=$bus_address" \
+                timeout 2 dbus-send --session --print-reply=literal \
+                --dest=org.laptop.Shell /org/laptop/Shell \
+                org.freedesktop.DBus.Peer.Ping >/dev/null 2>&1; then
+                bus_ok=1
+            fi
+        fi
+        if [ "$bus_ok" -eq 1 ]; then
             echo "Retiring stale GTK4 shell PID $pid" >&2
             kill "$pid" 2>/dev/null || true
         fi
