@@ -14,3 +14,10 @@ def test_markdown_bundle_is_native_and_registered():
     assert "org.sugarlabs.Markdown" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-markdown-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-markdown-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+
+
+def test_markdown_journal_roundtrip_is_utf8():
+    source = (ROOT / "packages/gtk4-markdown-activity/markdownactivity4.py").read_text()
+    assert "def read_file(self, file_path)" in source
+    assert "def write_file(self, file_path)" in source
+    assert 'encoding="utf-8"' in source

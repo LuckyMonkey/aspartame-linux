@@ -1,5 +1,7 @@
 """Native GTK4 Markdown writing Activity."""
 
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -42,3 +44,17 @@ class MarkdownActivity(SimpleActivity):
 
     def _clear(self, _button):
         self.editor.get_buffer().set_text("")
+
+    def read_file(self, file_path):
+        """Restore UTF-8 Markdown source from a Journal object."""
+        try:
+            text = Path(file_path).read_text(encoding="utf-8")
+        except (OSError, UnicodeError):
+            text = ""
+        self.editor.get_buffer().set_text(text)
+
+    def write_file(self, file_path):
+        """Save UTF-8 Markdown source as the Journal object payload."""
+        buffer = self.editor.get_buffer()
+        start, end = buffer.get_bounds()
+        Path(file_path).write_text(buffer.get_text(start, end, False), encoding="utf-8")

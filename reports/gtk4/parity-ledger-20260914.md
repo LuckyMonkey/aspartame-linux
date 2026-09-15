@@ -50,6 +50,14 @@ readout through AT-SPI, and stopped cleanly with service release and shell
 cleanup. This supports a FUNCTIONAL PORT claim for offline controls and
 persistence; physical orientation sensors remain unclaimed.
 
+Native Markdown object resume (2026-09-15):
+`sugar-gtk4-markdown-roundtrip.py` passed two real guest cycles. Each cycle
+launched Markdown, stopped it through Shell, seeded the saved Journal object
+with UTF-8 Markdown source, resumed it, verified the restored source through
+AT-SPI, and stopped cleanly with service release and shell cleanup. This
+supports a FUNCTIONAL PORT claim for UTF-8 editing/preview and persistence;
+full Markdown parser/rendering parity remains outside the claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).
