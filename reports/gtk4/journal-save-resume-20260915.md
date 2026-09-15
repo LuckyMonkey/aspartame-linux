@@ -65,6 +65,22 @@ Semantic Spaces switching and runtime checks passed for classic PID 496608
 and modern PID 506262 (`journal-spaces-20260915.log`). No GTK3 code changed;
 this round checks GTK3 shell availability, not its full Activity catalog.
 
+### Save failure and cancellation
+
+A separate live Write test used Activity ID
+`f783113760524c14beca2dcd546c3b19`. Its own `instance` directory was temporarily
+changed from mode 0755 to 0500, while its parent directories and the datastore
+remained untouched. Stop triggered the expected PermissionError. The process
+remained alive, AT-SPI still read `Save failure preserves this draft`, and the
+native alert exposed `Don't stop` and `Stop anyway`. Permissions were restored
+to 0755 in a `finally` block.
+
+Activating `Don't stop` through AT-SPI kept the Activity open. Editing the text
+to `Draft edited after cancelling Stop` and retrying shell Stop then wrote that
+exact payload to Journal object `4d269299-26a5-4371-a8b1-a305bb0a76c9` and exited.
+This verifies the save-failure/cancel/retry route; physical input and the
+intentional-discard button are not covered by this particular test.
+
 ## Ownership and next gap
 
 0125 belongs to Jarabe and retires the forced-stop behavior of 0063–0065.
@@ -74,8 +90,8 @@ the new script is test scaffolding only.
 
 Write remains a COVERAGE IMPLEMENTATION. These fixes establish plain-text
 retention, not rich-text or document-format parity. The full GTK4 completion
-gate remains open. Next: verify save failure/cancel behavior and other real
-Activity workflows that depend on this restored Journal boundary.
+gate remains open. Next: verify other real Activity workflows that depend on
+this restored Journal boundary and rank remaining shell gaps from runtime.
 
 Correction to the earlier Stopwatch diagnostic: its first failed probe used
 the wrong bundle ID (`org.sugarlabs.Stopwatch`); that failure did not establish
