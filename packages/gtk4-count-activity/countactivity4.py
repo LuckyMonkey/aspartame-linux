@@ -156,9 +156,13 @@ class CountActivity(SimpleActivity):
             grid = Gtk.Grid(column_spacing=3, row_spacing=3)
             grid.set_halign(Gtk.Align.CENTER)
             grid.set_valign(Gtk.Align.CENTER)
-            grid.set_opacity(.24 if relative > 0 else .16)
-            grid.set_margin_start(relative * 18)
-            grid.set_margin_top(relative * -12)
+            # All planes share one XY origin. Back planes remain readable
+            # through the selected plane; front planes are lighter so they
+            # never masquerade as editable cells.
+            grid.set_opacity(.20 if relative < 0 else .10)
+            grid.set_can_target(False)
+            grid.add_css_class("count-context-back" if relative < 0
+                               else "count-context-front")
             for y, row in enumerate(layer):
                 for x, occupied in enumerate(row):
                     button = Gtk.Button()
