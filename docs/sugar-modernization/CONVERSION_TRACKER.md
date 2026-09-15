@@ -33,12 +33,14 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
 
 ## Current reality (2026-09-14, reconciled)
 
-- `master` and `origin/master` are synchronized at `12e2c26`.
-- Host regression suite: 205 tests passed. The guest preview build applies and
+- `master` and `origin/master` are synchronized at `5305fb8`.
+- Host regression suite: 265 GTK4 tests passed. The guest preview build applies and
   validates patch 0015 and boots the GTK4 shell.
-- Thirty-nine modern Activities have live Casilda launch/stop evidence, including
+- Forty-nine modern Activities have live Casilda launch/stop coverage, including
   Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log,
-  and the 30 additional native GTK4 ports listed in the status matrix.
+  and the additional native GTK4 ports listed in the status matrix. The
+  2026-09-15 one-cycle matrix passed every registered bundle; this remains
+  coverage evidence, not a FULL PORT claim.
 - Remaining parity work is user-visible: physical QEMU function-key transport,
   peer-backed Neighborhood/Group behavior, and individual ports for the
   remaining legacy Activity catalog. No additional keybinding or Spaces
