@@ -1,0 +1,31 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: focus the compositor when an Activity view is shown
+
+The shell switches its GTK4 stack to the "activity" page without ever giving
+the Casilda compositor widget GTK keyboard focus. Nothing else on that page
+can hold focus - the embedded Activity is a separate Wayland client, opaque
+to this process's focus chain - so the focused widget stays wherever Home or
+Journal left it. Grab focus on the compositor at both switch points.
+
+---
+ src/jarabe/model/shell.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -509,6 +509,7 @@ class ShellModel(Gtk.Application):
+                 self.stack.set_visible_child_name("journal")
+             else:
+                 self.stack.set_visible_child_name("activity")
++                self.compositor.grab_focus()
+         else:
+             self.stack.set_visible_child_name("home")
+
+@@ -518,6 +519,7 @@ class ShellModel(Gtk.Application):
+                 self.stack.set_visible_child_name("journal")
+             else:
+                 self.stack.set_visible_child_name("activity")
++                self.compositor.grab_focus()
+
+     def _get_activities_with_window(self):
+         ret = []

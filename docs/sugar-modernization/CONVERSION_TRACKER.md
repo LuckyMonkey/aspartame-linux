@@ -90,8 +90,10 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       and then stops there, because keyboard focus is never handed to the
       embedded Activity's Wayland surface at the seat level. The Activity's own
       widgets are fully focusable and correctly labeled; none ever reports
-      `STATE_FOCUSED`. This gate item now waits on Casilda-side keyboard-focus
-      handoff, not on shell input routing.)
+      `STATE_FOCUSED`. Patches 0136/0137 fixed the map-time half: an Activity
+      launched with no pointer and no AT-SPI interaction now reports its own
+      default widget focused. Per-keystroke delivery into the client remains
+      broken, so this item stays unchecked.)
 - [x] Accessible names, roles and states on important controls
 - [x] GTK CSS/build validation, no fatal GTK4 tracebacks or orphaned Activities
 - [x] Regression invariants and lifecycle stability run (repeat this pass as

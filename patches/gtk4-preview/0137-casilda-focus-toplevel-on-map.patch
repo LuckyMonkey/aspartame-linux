@@ -1,0 +1,38 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] casilda: give every mapped toplevel Wayland keyboard focus
+
+casilda_compositor_focus_toplevel() is the only path that calls
+wlr_seat_keyboard_notify_enter(), and xdg_toplevel_map() only reached it for
+a fresh, plain, non-maximized map. A toplevel that maps maximized or
+fullscreen - which is every Sugar Activity filling the compositor viewport -
+and a toplevel remapped from saved state both fell through without ever
+receiving keyboard focus, so the client's own widgets stayed unfocused until
+a pointer click happened to grab focus for them. Keyboard-only interaction
+could therefore never reach an Activity.
+
+focus_toplevel() already returns early when the surface is focused or the
+toplevel owns child toplevels, so calling it unconditionally is safe.
+
+Upstream candidate: https://gitlab.gnome.org/jpu/casilda
+
+diff --git a/src/casilda-compositor.c b/src/casilda-compositor.c
+index 5606b10..fc27289 100644
+--- a/src/casilda-compositor.c
++++ b/src/casilda-compositor.c
+@@ -2769,8 +2769,14 @@ xdg_toplevel_map (struct wl_listener *listener, G_GNUC_UNUSED void *data)
+                                              gtk_widget_get_width (widget),
+                                              gtk_widget_get_height (widget));
+     }
+-  else
+-    casilda_compositor_focus_toplevel (toplevel, xdg_toplevel->base->surface);
++
++  /* Grant Wayland keyboard focus regardless of how this toplevel mapped.
++   * A maximized/fullscreen map (the common case for a Sugar Activity
++   * filling the compositor viewport) and a restored-state map previously
++   * fell through without ever calling wlr_seat_keyboard_notify_enter, so
++   * the toplevel's own widgets never saw keyboard focus until a pointer
++   * click first grabbed it. */
++  casilda_compositor_focus_toplevel (toplevel, xdg_toplevel->base->surface);
+ 
+   casilda_compositor_queue_draw (toplevel->priv);
+ }

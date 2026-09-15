@@ -287,8 +287,15 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   client at the compositor/seat level (a `wl_keyboard` enter operation),
   which is a separate step from GTK4's widget-level focus chain and is
   Casilda's responsibility, not the shell's or the Activity's.
-- Status: root-caused, not fixed. See
-  `reports/gtk4/focus-transfer-frontier-20260915.md`. Next step is Casilda's
-  own GTK4 widget API for seat/keyboard-focus handoff when the compositor
-  widget becomes the visible stack child; out of scope for a small
-  reviewable shell patch.
+- Status: partially fixed. `casilda_compositor_focus_toplevel()` — the only
+  caller of `wlr_seat_keyboard_notify_enter()` — was reached from a single
+  `xdg_toplevel_map()` branch covering a fresh, plain, non-maximized map. A
+  maximized/fullscreen map (every Sugar Activity) and a restored-state map
+  both fell through, so only a pointer click could ever establish keyboard
+  focus. Patch `0137-casilda-focus-toplevel-on-map.patch` calls it
+  unconditionally; `0136-shell-focus-activity-compositor.patch` is the
+  shell-side companion. An Activity launched with no pointer and no AT-SPI
+  interaction now reports its own default widget focused. Per-keystroke
+  delivery into the client is still broken — Casilda's per-widget
+  `key_controller` never fires, so `wlr_seat_keyboard_notify_key()` is never
+  called. See `reports/gtk4/casilda-keyboard-focus-20260915.md`.
