@@ -30,7 +30,8 @@ without an orphan process. It does not by itself prove a complete port.
 | Paint | 2-cycle launch plus seeded JSON stroke/color resume and visible status restoration | FUNCTIONAL PORT |
 | FotoToon | 2-cycle launch plus seeded JSON caption-canvas resume and visible caption restoration | FUNCTIONAL PORT |
 | Mastermind | 2-cycle launch plus seeded JSON guess history resume and visible guess-progress restoration | FUNCTIONAL PORT |
-| Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Memorize, Maze, Last One Loses, Gears, TurtleBlocks, Color My World, Connect the Dots, Diamond Fusion, Level | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
+| Poll | 2-cycle launch plus seeded JSON question/choice/vote resume and visible count restoration | FUNCTIONAL PORT |
+| Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Memorize, Maze, Last One Loses, Gears, TurtleBlocks, Color My World, Connect the Dots, Diamond Fusion, Level | 3-cycle matrix evidence | COVERAGE IMPLEMENTATION |
 | Get Things Done | 2-cycle launch plus seeded JSON Journal task-list resume and clean stop | FUNCTIONAL PORT |
 
 The authoritative class definitions and per-Activity boundaries live in
