@@ -36,7 +36,8 @@ Classification used by the migration ledger:
 | Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty | COVERAGE IMPLEMENTATION | Native puzzle/game cores; upstream feature parity not established |
 | Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Markdown, Finance, Words | COVERAGE IMPLEMENTATION | Native task surfaces; reduced from original feature sets |
 | Stopwatch | FUNCTIONAL PORT | JSON Journal elapsed-time resume, visible time restoration, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; lap/export/collaboration breadth is not claimed |
-| Last One Loses, Get Things Done, Grid Paint, Gears, TurtleBlocks | COVERAGE IMPLEMENTATION | Native interaction cores; full upstream parity is not established |
+| Last One Loses, Grid Paint, Gears, TurtleBlocks | COVERAGE IMPLEMENTATION | Native interaction cores; full upstream parity is not established |
+| Get Things Done | FUNCTIONAL PORT | Native task list with add/complete controls and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; collaboration and upstream feature breadth remain absent |
 | Game Of Life, Color My World, Abacus, Planets | COVERAGE IMPLEMENTATION | Native rendering/interaction cores; not full upstream replacements |
 | Connect the Dots, Pippy, Paint, Diamond Fusion, Level, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
 | Get Books, Jukebox | COVERAGE IMPLEMENTATION | Offline catalog/playlist surfaces; network/media-library parity not claimed |

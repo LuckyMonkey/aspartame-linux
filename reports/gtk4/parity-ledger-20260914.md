@@ -24,6 +24,16 @@ service release and shell cleanup. Stopwatch is therefore a FUNCTIONAL PORT
 for bounded elapsed-time resume; lap/export/collaboration breadth remains
 outside this claim.
 
+Native Get Things Done object resume (2026-09-15):
+`sugar-gtk4-gtd-roundtrip.py` passed two real guest cycles. Each cycle
+launched the GTK4 task list, stopped it through Shell, seeded the saved Journal
+object with two tasks (one complete), resumed that object through Journal,
+verified the visible `2 tasks · 1 complete` summary through AT-SPI, and stopped
+cleanly with service release and shell cleanup. Get Things Done is therefore a
+FUNCTIONAL PORT for bounded offline task-list persistence; collaboration and
+full upstream feature breadth remain outside this claim. AT-SPI cache warnings
+were nonfatal and are retained in the command output as runtime evidence.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).

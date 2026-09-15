@@ -1,4 +1,12 @@
-"""Native GTK4 Get Things Done task list Activity."""
+"""Native GTK4 Get Things Done task list Activity.
+
+Tasks are stored as a small JSON Journal object.  This keeps the Activity
+independent of datastore internals while making the useful offline workflow
+survive a normal Sugar stop/resume cycle.
+"""
+
+import json
+from pathlib import Path
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
@@ -32,3 +40,39 @@ class GTDActivity(SimpleActivity):
         rows = [row.get_child() for row in self.tasks]
         done = sum(button.get_active() for button in rows)
         self.summary.set_text(f"{len(rows)} tasks · {done} complete")
+
+    def read_file(self, file_path):
+        """Restore task text and completion state from a Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            tasks = payload.get("tasks", []) if isinstance(payload, dict) else []
+            if not isinstance(tasks, list):
+                raise ValueError("tasks must be a list")
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            tasks = []
+        for row in list(self.tasks):
+            self.tasks.remove(row)
+        for task in tasks:
+            if not isinstance(task, dict):
+                continue
+            text = str(task.get("text", "")).strip()
+            if not text:
+                continue
+            check = Gtk.CheckButton(label=text)
+            check.set_hexpand(True)
+            check.set_halign(Gtk.Align.START)
+            check.set_active(bool(task.get("done", False)))
+            check.update_property([Gtk.AccessibleProperty.LABEL], [text])
+            check.connect("toggled", self._update_summary)
+            self.tasks.append(Gtk.ListBoxRow(child=check))
+        self._update_summary()
+
+    def write_file(self, file_path):
+        """Write task text and completion state as a Journal object."""
+        tasks = []
+        for row in self.tasks:
+            check = row.get_child()
+            tasks.append({"text": check.get_label(), "done": check.get_active()})
+        Path(file_path).write_text(
+            json.dumps({"tasks": tasks}, sort_keys=True) + "\n", encoding="utf-8"
+        )
