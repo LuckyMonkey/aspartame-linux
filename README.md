@@ -1,6 +1,6 @@
 # Aspartame
 
-![Aspartame banner](aspartame.png)
+![Aspartame banner](aspartame.jpg)
 
 > A Python-first Arch Linux environment whose desktop is Sugar.
 
