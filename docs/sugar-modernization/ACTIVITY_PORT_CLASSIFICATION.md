@@ -73,7 +73,6 @@ Classification used by the migration ledger:
 | Moon | FUNCTIONAL PORT | Phase selection, rendered moon view, and JSON Journal phase resume verified with real GTK4 Activity processes on 2026-09-15; full astronomical simulation remains absent |
 | Paint | FUNCTIONAL PORT | Pointer stroke drawing, color selection, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; image layers/tools remain absent |
 | Level | FUNCTIONAL PORT | Offline inclination controls, drag interaction, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; hardware sensor integration remains outside this claim |
-| Get Books, Jukebox | COVERAGE IMPLEMENTATION | Offline catalog/playlist surfaces; network/media-library parity not claimed |
 | Jukebox | FUNCTIONAL PORT | Offline playlist selection, local-track metadata, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; codec/media playback parity remains absent |
 | Get Books | FUNCTIONAL PORT | Offline catalog search, selected-book metadata, and JSON Journal query/selection resume verified with real GTK4 Activity processes on 2026-09-15; network catalogs/downloads remain absent |
 
