@@ -1,6 +1,6 @@
 # GTK4 status
 
-Status checked: 2026-09-14.
+Status checked: 2026-09-15.
 
 2026-09-15 correction: process cleanup alone did not prove safe closure or
 document resume. Runtime testing found and fixed immediate shell SIGTERM
@@ -51,11 +51,12 @@ the Journal Activity state but currently captures as a blank white surface.
 Native Journal Activity launch/resume remains independently verified; that
 evidence does not prove shell-embedded Journal presentation is complete.
 
-TurtleBlocks remains a coverage implementation. Its activity process and
-private service pass the generic lifecycle probe, but the current Casilda
-surface is not discoverable through the guest AT-SPI tree and screenshots show
-the generic fallback surface. It is therefore not promoted to FUNCTIONAL PORT
-until the bundle mapping/observable surface boundary is repaired.
+TurtleBlocks is now classified as a FUNCTIONAL PORT for its bounded drawing
+workflow. The guest round-trip probe discovers the mapped activity surface by
+real process ID through AT-SPI, restores seeded position/heading/line data from
+Journal, and verifies clean process and D-Bus cleanup. Full upstream Logo block
+language, collaboration, and feature breadth remain intentionally unclaimed;
+see `reports/gtk4/turtleart-runtime-20260915.md`.
 
 The ISO profile includes GTK4 runtime libraries, but the GTK4 source overlay
 and pinned Activity checkouts are still supplied by the `aspartame-dev` 9p
