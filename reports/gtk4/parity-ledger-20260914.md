@@ -418,6 +418,13 @@ three cycles. The latest Reversi and Jumble cycles used PIDs `293799`–`293913`
   `cleanup=PASS`. This moves Write's persistence implementation forward but
   remains a COVERAGE IMPLEMENTATION until a real Journal resume with content is
   evidenced.
+- GTK4 Stopwatch Journal boundary (2026-09-15): Stopwatch now saves elapsed
+  deciseconds as JSON and restores them paused through the standard toolkit
+  hooks. After restarting the modern shell against the rebuilt registry, three
+  direct Casilda launch/activate/stop cycles (PIDs `497330`, `497421`, `497511`)
+  reported `service-ready=PASS`, `shell-active=PASS`, and `cleanup=PASS`.
+  Classification remains COVERAGE IMPLEMENTATION pending a user-visible
+  resume interaction.
 
 ## Ranked remaining gaps
 

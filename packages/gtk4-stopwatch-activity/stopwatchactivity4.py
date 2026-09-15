@@ -1,4 +1,7 @@
-"""Native GTK4 Stopwatch Activity."""
+"""Native GTK4 Stopwatch Activity with Journal resume support."""
+
+import json
+from pathlib import Path
 
 from gi.repository import Gdk, GLib, Gtk
 from sugar4.activity import SimpleActivity
@@ -28,7 +31,28 @@ class StopwatchActivity(SimpleActivity):
 
     def _tick(self):
         if not self.running: self._timer = None; return GLib.SOURCE_REMOVE
-        self.elapsed += 1; self.display.set_text(f"{self.elapsed // 600}:{(self.elapsed // 10) % 60:02d}.{self.elapsed % 10}"); return GLib.SOURCE_CONTINUE
+        self.elapsed += 1; self._update_display(); return GLib.SOURCE_CONTINUE
 
     def _reset(self, _button):
-        self.running = False; self.toggle.set_label("Start"); self.elapsed = 0; self.display.set_text("00:00.0")
+        self.running = False; self.toggle.set_label("Start"); self.elapsed = 0; self._update_display()
+
+    def _update_display(self):
+        self.display.set_text(f"{self.elapsed // 600}:{(self.elapsed // 10) % 60:02d}.{self.elapsed % 10}")
+
+    def read_file(self, file_path):
+        """Restore elapsed time from a Journal object without restarting it."""
+        try:
+            state = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            self.elapsed = max(0, int(state.get("elapsed", 0)))
+        except (OSError, ValueError, TypeError, json.JSONDecodeError):
+            self.elapsed = 0
+        self.running = False
+        self.toggle.set_label("Start")
+        self._update_display()
+
+    def write_file(self, file_path):
+        """Save elapsed time as a small, forward-compatible Journal object."""
+        Path(file_path).write_text(
+            json.dumps({"elapsed": self.elapsed}, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
