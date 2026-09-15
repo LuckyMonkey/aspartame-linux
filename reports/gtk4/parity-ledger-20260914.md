@@ -580,3 +580,11 @@ UTF-8 Python source, resumed it, verified the restored source through AT-SPI,
 and stopped cleanly with service release and shell cleanup. This supports a
 FUNCTIONAL PORT claim for bounded source editing and persistence; full
 upstream editor/runtime breadth remains outside the claim.
+
+Native Planets object resume (2026-09-15):
+`sugar-gtk4-planets-roundtrip.py` passed two real guest cycles. Each cycle
+launched Planets, stopped it through Shell, seeded the saved Journal object
+with the selected planet `Mars`, resumed it, verified the visible selection
+through AT-SPI, and stopped cleanly with service release and shell cleanup.
+This supports a FUNCTIONAL PORT claim for bounded planet selection and
+persistence; full simulation breadth remains outside the claim.

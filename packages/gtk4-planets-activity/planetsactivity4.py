@@ -1,6 +1,8 @@
 """Native GTK4 Planets orbit Activity."""
 
 import math
+import json
+from pathlib import Path
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
@@ -23,6 +25,21 @@ class PlanetsActivity(SimpleActivity):
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def _select(self, _button, name): self.selected = name; self.info.set_text(f"{name} — selected planet"); self.canvas.queue_draw()
+
+    def read_file(self, file_path):
+        """Restore the selected planet from a JSON Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            selected = payload.get("selected", "Earth") if isinstance(payload, dict) else "Earth"
+            if selected not in {"Mercury", "Venus", "Earth", "Mars", "Jupiter"}:
+                selected = "Earth"
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            selected = "Earth"
+        self._select(None, selected)
+
+    def write_file(self, file_path):
+        """Save the selected planet as a JSON Journal object."""
+        Path(file_path).write_text(json.dumps({"selected": self.selected}, sort_keys=True) + "\n", encoding="utf-8")
 
     def _draw(self, _area, cr, width, height):
         cr.set_source_rgb(0.02, 0.04, 0.12); cr.paint(); cx, cy = width / 2, height / 2; cr.set_source_rgb(1, 0.75, 0.1); cr.arc(cx, cy, 18, 0, 2 * math.pi); cr.fill()
