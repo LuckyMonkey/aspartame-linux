@@ -1,16 +1,18 @@
 # GTK4 runtime matrix — 2026-09-14
 
 Fresh evidence after the modern Home registry path and JAMClock/Clock ports.
-The synchronized development share includes forty-nine modern bundles. A
+The synchronized development share includes fifty modern bundles. A
 fresh one-cycle matrix covered all 43 bundles registered at that point; Paint,
 Diamond Fusion, Level, Moon, Get Books, and Jukebox then passed three direct
-cycles (final Jukebox PID `460524`).
+cycles (final Jukebox PID `460524`). Read subsequently passed three direct
+cycles after its isolated modern-bundle mirror was corrected (PIDs `464758`,
+`464781`, `464803`).
 
 | Area | Evidence | Status |
 | --- | --- | --- |
 | GTK4 shell | `sugar-gtk4-runtime-check.sh gtk4` (desktop 1, pid `445246`) | PASS |
 | Guest build | `sugar-gtk4-build.sh`, including patch 0015 | PASS |
-| Home inventory | All forty-nine verified GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH` | PASS |
+| Home inventory | All fifty registered GTK4 bundles exposed through `SUGAR_ACTIVITIES_PATH`; Read mirror verified after restart | PASS |
 | Activity lifecycle | Full 43-bundle matrix (`425527` latest) plus direct three-cycle probes for Connect the Dots, Pippy, Paint, Diamond Fusion, Level, Moon, Get Books, and Jukebox | PASS: all matrix and direct cycles reported `cleanup=PASS` |
 | Casilda | 232 real Journal launch/stop cycles across the three-cycle 41-bundle run, one-cycle 42/43-bundle rechecks, and direct probes | PASS |
 | Spaces | semantic `sugar-gtk4-space.sh gtk3`, `gtk4`, and `status` round-trip | PASS: GTK3 pid `33761`, GTK4 pid `445246`, current workspace 1 |
