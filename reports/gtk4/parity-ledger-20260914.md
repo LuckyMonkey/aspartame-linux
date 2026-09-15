@@ -91,6 +91,14 @@ AT-SPI, and stopped cleanly with service release and shell cleanup. This
 supports a FUNCTIONAL PORT claim for bounded caption interaction and
 persistence; image import and layout breadth remain outside the claim.
 
+Native Jukebox object resume (2026-09-15):
+`sugar-gtk4-jukebox-roundtrip.py` passed two real guest cycles. Each cycle
+launched Jukebox, stopped it through Shell, seeded the saved Journal object
+with a playlist entry, resumed it, verified the restored track through AT-SPI,
+and stopped cleanly with service release and shell cleanup. This supports a
+FUNCTIONAL PORT claim for bounded offline playlist persistence; codec and
+media-playback parity remain outside the claim.
+
 Native Write (2026-09-14): a GTK4 document editor with draft status and clear
 action was staged under `org.sugarlabs.Write`. Three guest Casilda launch/stop
 cycles passed with `cleanup=PASS` (PIDs `410904`, `410932`, `410957`).

@@ -21,3 +21,10 @@ def test_jukebox_is_staged_and_registered():
         assert "gtk4-jukebox-activity" in (ROOT / "scripts" / script).read_text()
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "org.laptop.sugar.Jukebox|jukeboxactivity4.JukeboxActivity" in matrix
+
+
+def test_jukebox_journal_roundtrip_is_json():
+    source = (PACKAGE / "jukeboxactivity4.py").read_text()
+    assert "def read_file(self, file_path)" in source
+    assert "def write_file(self, file_path)" in source
+    assert '"tracks"' in source

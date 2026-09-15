@@ -47,6 +47,7 @@ Classification used by the migration ledger:
 | Connect the Dots, Pippy, Paint, Diamond Fusion, Moon | COVERAGE IMPLEMENTATION | Bounded native demos proving distinct GTK4 activity paths |
 | Level | FUNCTIONAL PORT | Offline inclination controls, drag interaction, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; hardware sensor integration remains outside this claim |
 | Get Books, Jukebox | COVERAGE IMPLEMENTATION | Offline catalog/playlist surfaces; network/media-library parity not claimed |
+| Jukebox | FUNCTIONAL PORT | Offline playlist selection, local-track metadata, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; codec/media playback parity remains absent |
 
 ### Catalog-only Sugarizer entries
 

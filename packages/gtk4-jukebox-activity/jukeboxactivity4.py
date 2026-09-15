@@ -7,6 +7,9 @@ network, or media file in the test image.  Local files may also be added to
 the playlist for a future media backend.
 """
 
+import json
+from pathlib import Path
+
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
@@ -132,3 +135,28 @@ class JukeboxActivity(SimpleActivity):
             self._refresh_playlist()
             self.status.set_text("Added: %s" % name)
 
+    def read_file(self, file_path):
+        """Restore playlist and selection from a JSON Journal object."""
+        try:
+            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                raise ValueError("payload must be an object")
+            tracks = payload.get("tracks", [])
+            if not isinstance(tracks, list):
+                raise ValueError("tracks must be a list")
+        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+            return
+        restored = []
+        for track in tracks:
+            if isinstance(track, list) and len(track) == 2:
+                restored.append((str(track[0]), str(track[1])))
+        if restored:
+            self._tracks = restored
+        self._selected = max(0, min(int(payload.get("selected", 0)), len(self._tracks) - 1))
+        self._playing = False
+        self._refresh_playlist()
+        self.status.set_text("Ready: %s" % self._tracks[self._selected][0])
+
+    def write_file(self, file_path):
+        """Save playlist and selected track as a JSON Journal object."""
+        Path(file_path).write_text(json.dumps({"tracks": self._tracks, "selected": self._selected}, sort_keys=True) + "\n", encoding="utf-8")
