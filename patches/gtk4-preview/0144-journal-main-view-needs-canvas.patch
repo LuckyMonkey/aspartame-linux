@@ -1,0 +1,47 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] journal: stop bailing out before the main view gets a canvas
+
+show_main_view() opens with the correct guard - skip the rebuild when MAIN is
+already the active view *and* already the canvas - but it was followed by six
+identical bare copies:
+
+    if self._active_view == JournalViews.MAIN:
+        return
+
+Those return whenever the active view is MAIN regardless of whether the canvas
+was ever set. _active_view starts as MAIN, so the first call during _setup()
+returned before reaching set_canvas(self._main_view) and the Journal was left
+permanently blank: pressing F5 produced an empty white surface with no
+toolbar, search or entries.
+
+Removing the bare duplicates leaves the original compound guard, which is the
+one that was written to be correct.
+
+--- a/src/jarabe/journal/journalactivity.py
++++ b/src/jarabe/journal/journalactivity.py
+@@ -520,21 +520,13 @@
+     def show_main_view(self):
+         if not self._init_done:
+             return
++        # Only skip the rebuild when MAIN is already on screen. Bare
++        # '_active_view == MAIN' guards used to return here even when the
++        # canvas had never been set, so the first call left the Journal
++        # permanently blank.
+         if self._active_view == JournalViews.MAIN and \
+                 self.canvas == self._main_view:
+             return
+-        if self._active_view == JournalViews.MAIN:
+-            return
+-        if self._active_view == JournalViews.MAIN:
+-            return
+-        if self._active_view == JournalViews.MAIN:
+-            return
+-        if self._active_view == JournalViews.MAIN:
+-            return
+-        if self._active_view == JournalViews.MAIN:
+-            return
+-        if self._active_view == JournalViews.MAIN:
+-            return
+         self._active_view = JournalViews.MAIN
+         self.project_metadata = None
+         if self._editing_mode:
