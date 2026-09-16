@@ -1,0 +1,48 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home toolbar: centre the toolbar items instead of stretching them
+
+Home's GTK4 toolbar is a plain Gtk.Box, and a Gtk.Box gives its children
+valign=FILL. Both the search entry and the view buttons therefore grew to
+the toolbar's full height instead of sitting at their natural size, which
+is what GTK3's Gtk.Toolbar did for its tool items.
+
+Measured on the live guest at 1920x1080, inside the 75px bar:
+
+  search entry     75px -> 42px   (GTK3: 38px)
+  selection box    73px -> 65px   (GTK3: 52px)
+
+The stretched entry is the "too tall" search field. The stretched view
+buttons are the clipped selection chrome: a checked Sugar tool button
+paints its background over its whole allocation, so the selected view's
+frame ran the full height of the bar and was cut off by the bar edges
+rather than framing the icon.
+
+--- a/src/jarabe/desktop/viewtoolbar.py
++++ b/src/jarabe/desktop/viewtoolbar.py
+@@ -75,7 +75,13 @@
+         self.search_entry.set_width_chars(25)
+         self.search_entry.connect('activate', self._entry_activated_cb)
+         self.search_entry.connect('changed', self._entry_changed_cb)
+-        
++
++        # This toolbar is a plain Gtk.Box, whose children default to
++        # valign=FILL, so the entry grew to the toolbar's whole 75px
++        # height. GTK3's Gtk.Toolbar centred its items at their natural
++        # size; match that.
++        self.search_entry.set_valign(Gtk.Align.CENTER)
++
+         self.append(self.search_entry)
+         self.search_entry.set_visible(True)
+ 
+@@ -101,6 +107,11 @@
+         toolitem = Gtk.Box()
+         toolitem.append(self._button_box)
+         toolitem.set_visible(True)
++        # Same reason as the entry: stretched view buttons painted their
++        # selected background over the full toolbar height, so the
++        # selection ran behind the bar edges instead of framing the icon.
++        self._button_box.set_valign(Gtk.Align.CENTER)
++        toolitem.set_valign(Gtk.Align.CENTER)
+         self.append(toolitem)
+ 
+         self._add_separator()

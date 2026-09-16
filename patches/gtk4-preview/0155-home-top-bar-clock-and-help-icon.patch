@@ -1,0 +1,206 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: restore the top bar clock and the universal help icon
+
+The classic Space's Home toolbar carries a centred clock and the universal
+help icon. Neither was ever ported, so the modern Space's top bar was
+empty between the search entry and the view buttons.
+
+Clock. Built in the toolbar but placed by HomeWindow as an overlay child,
+which is what the GTK3 shell does: keeping it out of the toolbar's
+allocation flow stops a changing search entry or view button count from
+shifting the time sideways. It takes the toolbar band's height and lets
+the label centre its own text, rather than being offset by its natural
+height - that centres the line box and leaves the digits sitting high.
+Measured in the 75px band, the glyphs land at rows 25..41 against a band
+centre of 37, matching the classic Space's placement.
+
+Help icon. Sugar SVGs colour themselves through internal DTD entities
+(&stroke_color;, &fill_color;), and the GdkPixbuf loader behind
+Gtk.Image.new_from_file() does not expand them: the icon rasterises
+completely transparent. Rendering this file through Gtk.Image produced a
+200x200 texture whose PNG is 263 bytes - an empty image - against 2366
+bytes once the entities are substituted by hand. Sugar's own Icon does
+that substitution and hands the result to librsvg, so use it.
+
+The classic shell turns this icon into Select-a-Thing, which has no GTK4
+port. Until it does, the button opens the Help activity - the same thing
+the icon points at - rather than leaving the control out of the toolbar.
+
+--- a/src/jarabe/desktop/viewtoolbar.py
++++ b/src/jarabe/desktop/viewtoolbar.py
+@@ -19,15 +19,20 @@
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
++from datetime import datetime
+ from gettext import gettext as _
++import locale
+ import logging
++import os
+ 
++from gi.repository import Gio
+ from gi.repository import Gtk
+ from gi.repository import GObject
+ from gi.repository import GLib
+ 
+ from sugar4.graphics import style
+ from sugar4.graphics import iconentry
++from sugar4.graphics.icon import Icon
+ from sugar4.graphics.radiotoolbutton import RadioToolButton
+ 
+ 
+@@ -85,8 +90,12 @@
+         self.append(self.search_entry)
+         self.search_entry.set_visible(True)
+ 
++        self._build_help_button()
++
+         self._add_separator(expand=True)
+ 
++        self._build_clock()
++
+         self._button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+         self._favorites_buttons = []
+         for i in range(desktop.get_number_of_views()):
+@@ -116,6 +125,121 @@
+ 
+         self._add_separator()
+ 
++    def _build_help_button(self):
++        """The universal help icon, as the classic Space shows it.
++
++        The classic shell turns this into Select-a-Thing, which has no GTK4
++        port yet. Until it does, open the Help activity - the same thing the
++        icon points at - rather than leave the control out of the toolbar.
++        """
++        help_path = ('/usr/share/sugar/activities/Help.activity/'
++                     'activity/activity-help.svg')
++        if not os.path.exists(help_path):
++            self._help_button = None
++            return
++
++        # Sugar SVGs colour themselves through internal DTD entities
++        # (&stroke_color;, &fill_color;). The GdkPixbuf loader behind
++        # Gtk.Image.new_from_file() does not expand them, so the icon
++        # rasterises completely transparent. Sugar's own Icon substitutes
++        # the entities and hands the result to librsvg.
++        image = Icon(file_name=help_path,
++                     pixel_size=style.STANDARD_ICON_SIZE)
++
++        self._help_button = Gtk.Button()
++        self._help_button.set_child(image)
++        self._help_button.add_css_class('aspartame-help-button')
++        self._help_button.set_has_frame(False)
++        self._help_button.set_valign(Gtk.Align.CENTER)
++        self._help_button.set_tooltip_text(
++            _('What is this? - Learn what something on the screen does.'))
++        self._help_button.update_property(
++            [Gtk.AccessibleProperty.LABEL], [_('Help')])
++        self._help_button.connect('clicked', self.__help_clicked_cb)
++
++        provider = Gtk.CssProvider()
++        provider.load_from_data(b"""
++            .aspartame-help-button {
++                padding: 0;
++                border: 0;
++                border-radius: 999px;
++                background: transparent;
++                background-image: none;
++                box-shadow: none;
++            }
++        """)
++        self._help_button.get_style_context().add_provider(
++            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++
++        self.append(self._help_button)
++
++    def __help_clicked_cb(self, button):
++        from jarabe.journal import misc
++        from jarabe.model import bundleregistry
++
++        bundle = bundleregistry.get_registry().get_bundle(
++            'org.laptop.HelpActivity')
++        if bundle is None:
++            logging.warning('Help activity is not installed')
++            return
++        misc.launch(bundle)
++
++    def _build_clock(self):
++        """Passive clock for HomeWindow's centred overlay.
++
++        It is not appended to this toolbar: HomeWindow overlays it on the
++        window centre so that a changing search entry or view button count
++        cannot shift the time sideways, which is what the GTK3 shell does.
++        """
++        self._clock_label = Gtk.Label(label='--:--')
++        self._clock_label.set_halign(Gtk.Align.CENTER)
++        self._clock_label.set_valign(Gtk.Align.START)
++        self._clock_label.set_focusable(False)
++        self._clock_label.add_css_class('aspartame-clock')
++        # Give the label the toolbar band's height and let it centre its own
++        # text; offsetting by the label's natural height centres the line
++        # box and leaves the digits sitting high in it.
++        self._clock_label.set_size_request(-1, style.GRID_CELL_SIZE)
++
++        provider = Gtk.CssProvider()
++        provider.load_from_data(b"""
++            .aspartame-clock {
++                background: transparent;
++                color: #ffffff;
++                font-size: 24px;
++                font-weight: bold;
++            }
++        """)
++        self._clock_label.get_style_context().add_provider(
++            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++
++        self._clock_settings = Gio.Settings.new('org.aspartame.clock')
++        self._clock_settings.connect('changed::format',
++                                     self.__clock_format_changed_cb)
++        self.__update_clock_cb()
++        GLib.timeout_add_seconds(30, self.__update_clock_cb)
++
++    def get_clock_widget(self):
++        """Return the passive clock for HomeWindow's centred overlay."""
++        return self._clock_label
++
++    def __clock_format_changed_cb(self, settings, key):
++        self.__update_clock_cb()
++
++    def __update_clock_cb(self):
++        locale.setlocale(locale.LC_TIME, '')
++        clock_format = self._clock_settings.get_string('format')
++        if clock_format:
++            text = datetime.now().strftime(clock_format)
++        else:
++            time_format = locale.nl_langinfo(locale.T_FMT)
++            if '%I' in time_format or '%p' in time_format:
++                text = datetime.now().strftime('%I:%M %p').lstrip('0')
++            else:
++                text = datetime.now().strftime('%H:%M')
++        self._clock_label.set_text(text)
++        return True
++
+     def _add_favorites_button(self, i):
+         logging.debug('adding FavoritesButton %d' % (i))
+         self._favorites_buttons.append(FavoritesButton(i))
+--- a/src/jarabe/desktop/homewindow.py
++++ b/src/jarabe/desktop/homewindow.py
+@@ -126,7 +126,16 @@
+ 
+         self._view_stack.set_visible_child_name('home')
+ 
+-        self.append(self._box)
++        # Shell content still owns normal layout. The only overlay is the
++        # passive clock, centred against this window rather than against a
++        # changing toolbar allocation.
++        self._overlay = Gtk.Overlay()
++        self._overlay.set_child(self._box)
++
++        self._clock = self._toolbar.get_clock_widget()
++        self._overlay.add_overlay(self._clock)
++
++        self.append(self._overlay)
+ 
+         self._transition_box.connect('completed',
+                                      self._transition_completed_cb)
