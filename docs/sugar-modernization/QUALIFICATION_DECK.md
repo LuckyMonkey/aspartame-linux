@@ -148,24 +148,20 @@ them.
 - **Evidence:** `reports/gtk4/neighborhood-runtime-20260915.md`
 - **STATUS: OPEN — blocked on a second participant, not on code**
 
-## W12 — Ending the session should not be one unguarded click
+## W12 — A refused session action must not destroy the session
 
-- **GTK3 reference:** shutdown and logout live behind the XO owner palette and
-  are chosen deliberately.
-- **GTK4 result:** clicking the top-right shell control at (1812, 37) on Home
-  ended the modern shell immediately, leaving a black screen. The shell log
-  shows it attempted a systemd stop, failed with
-  `InteractiveAuthorizationRequired`, and exited anyway. No confirmation was
-  shown and no work was offered a chance to save.
-- **Gap:** a single unconfirmed click ends the session. In a learning
-  environment that is a data-loss path, and the failed systemd call suggests
-  the shutdown route is only half wired.
-- **Minimum fix:** unknown; needs the control identified first. Its accessible
-  node is an unnamed panel, which is its own accessibility gap - the control
-  cannot be described to a screen reader either.
-- **Evidence:** `reports/screenshots/sugar-20260915-213926-v0.0.31.png` (black
-  screen after the click)
-- **STATUS: OPEN — found 2026-09-15**
+- **GTK3 reference:** shutdown and logout live behind the XO owner palette,
+  are confirmed, and do nothing to the desktop if the system refuses.
+- **GTK4 result:** choosing Shutdown raises the existing confirmation alert;
+  Cancel returns safely; a refused `PowerOff` now leaves the session running
+  and logs one plain warning instead of a fatal traceback.
+- **Gap:** `shutdown_completed()` quit the shell whether or not the privileged
+  call succeeded - `# Always quit the shell model to ensure we exit` - so a
+  polkit refusal destroyed the desktop and shut nothing down.
+- **Minimum fix:** patch 0143.
+- **Evidence:** `reports/gtk4/w12-session-control-20260915.md`
+- **STATUS: PASS** (2026-09-15), with one limitation recorded: teardown of
+  Activities still begins before authorization is known.
 
 ---
 
