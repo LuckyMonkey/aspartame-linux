@@ -281,10 +281,16 @@ class ActivitiesList(Gtk.Box):
         list_item.get_child().bind(list_item.get_item())
 
     def _unbind_row(self, factory, list_item):
-        list_item.get_child().unbind()
+        # GTK4 can unset the child before these run while it recycles rows,
+        # so the factory callbacks have to tolerate an absent one.
+        row = list_item.get_child()
+        if row is not None:
+            row.unbind()
 
     def _teardown_row(self, factory, list_item):
         row = list_item.get_child()
+        if row is None:
+            return
         row.unbind()
         self._rows.discard(row)
 
