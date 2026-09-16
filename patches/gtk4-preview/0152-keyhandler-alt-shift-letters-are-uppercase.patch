@@ -1,0 +1,38 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] keyhandler: match Alt+Shift letters by their lowercase name
+
+Every Alt+Shift global key was dead: Alt+Shift+F (Frame), Alt+Shift+M
+(Settings), Alt+Shift+O (search), Alt+Shift+Q (logout) and Alt+Shift+D
+(dump UI tree) all did nothing.
+
+Holding Shift makes the keyval the capital letter, so
+Gdk.keyval_name() returns 'M', not 'm'. The branch that builds the
+'<alt><shift>' prefix tested membership in ['f', 'm', 'o', 'q', 'd'], so
+it never fired, the key stayed 'M', and _actions_table - which is keyed
+'<alt><shift>m' - never matched. The shell log shows it plainly:
+
+  WARNING:root:GTK4 semantic key event: Alt_L
+  WARNING:root:GTK4 semantic key event: Shift_L
+  WARNING:root:GTK4 semantic key event: M
+
+and no control panel.
+
+Test the lowercase form and build the key from it.
+
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -276,9 +276,12 @@
+                 key = '<alt>Escape'
+             elif key in ['F11', 'F12']:
+                 key = '<alt>' + key
+-            elif key in ['f', 'm', 'o', 'q', 'd']:
++            elif key.lower() in ['f', 'm', 'o', 'q', 'd']:
+                 if state & Gdk.ModifierType.SHIFT_MASK:
+-                    key = '<alt><shift>' + key
++                    # Shift makes the keyval - and so keyval_name() - the
++                    # capital letter, but _actions_table is keyed by the
++                    # lowercase one.
++                    key = '<alt><shift>' + key.lower()
+ 
+         if key in _actions_table:
+             action = _actions_table[key]
