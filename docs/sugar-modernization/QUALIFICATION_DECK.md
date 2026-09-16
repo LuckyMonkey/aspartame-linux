@@ -64,12 +64,19 @@ change plausibly touches them.
   `sugar-20260915-180029-v0.0.31.png` (cleared, ring restored)
 - **STATUS: PASS** (2026-09-15)
 
-## W4 — Abnormal Activity exit
+## W4 — Activity lifecycle and cleanup
 
-- **GTK3 reference:** a killed Activity clears its process, service and shell state.
-- **GTK4 result:** cleanup verified, repeated.
-- **Evidence:** `reports/gtk4/activity-abnormal-exit-20260913.md`
-- **STATUS: PASS**
+- **GTK3 reference:** launch, activate, stop; the process, its service and the
+  shell's running state all clear.
+- **GTK4 result:** `sugar-gtk4-lifecycle-probe.sh 3` passes three cycles,
+  `service-ready=PASS shell-active=PASS ... cleanup=PASS` each time.
+- **Harness defect found and fixed:** the probe took the first process matching
+  its pattern, so an instance left running from earlier work made it stop that
+  one, find its own launch still alive, and report `cleanup=FAIL` - a failure
+  that said nothing about the lifecycle. It now refuses to run when an
+  instance is already present.
+- **Evidence:** re-run 2026-09-15; `reports/gtk4/activity-abnormal-exit-20260913.md`
+- **STATUS: PASS** (2026-09-15)
 
 ## W5 — Accessibility navigation
 
@@ -110,10 +117,13 @@ change plausibly touches them.
 
 ## W8 — Palette interaction
 
-- **GTK3 reference:** palettes stay attached to their target and dismiss predictably.
-- **GTK4 result:** palettes exercised in the modern Space.
-- **Evidence:** `reports/gtk4/gtk4-palette-20260905.png`
-- **STATUS: PASS**
+- **GTK3 reference:** palettes stay attached to their target and dismiss
+  predictably.
+- **GTK4 result:** hovering the Clock icon in the Favorites ring opens its
+  palette attached to the icon, with the Sugar header (`Clock / Clock
+  Activity`), a `Start new` action and the resumable Journal entries beneath.
+- **Evidence:** `reports/screenshots/sugar-20260915-213859-v0.0.31.png`
+- **STATUS: PASS** (2026-09-15)
 
 ## W9 — Clipboard transfer
 
@@ -136,6 +146,25 @@ change plausibly touches them.
 - **Gap:** requires a second live participant.
 - **Evidence:** `reports/gtk4/neighborhood-runtime-20260915.md`
 - **STATUS: OPEN — blocked on a second participant, not on code**
+
+## W12 — Ending the session should not be one unguarded click
+
+- **GTK3 reference:** shutdown and logout live behind the XO owner palette and
+  are chosen deliberately.
+- **GTK4 result:** clicking the top-right shell control at (1812, 37) on Home
+  ended the modern shell immediately, leaving a black screen. The shell log
+  shows it attempted a systemd stop, failed with
+  `InteractiveAuthorizationRequired`, and exited anyway. No confirmation was
+  shown and no work was offered a chance to save.
+- **Gap:** a single unconfirmed click ends the session. In a learning
+  environment that is a data-loss path, and the failed systemd call suggests
+  the shutdown route is only half wired.
+- **Minimum fix:** unknown; needs the control identified first. Its accessible
+  node is an unnamed panel, which is its own accessibility gap - the control
+  cannot be described to a screen reader either.
+- **Evidence:** `reports/screenshots/sugar-20260915-213926-v0.0.31.png` (black
+  screen after the click)
+- **STATUS: OPEN — found 2026-09-15**
 
 ---
 

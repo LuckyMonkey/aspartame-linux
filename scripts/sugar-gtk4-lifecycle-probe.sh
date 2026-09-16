@@ -19,6 +19,16 @@ esac
     exit 2
 }
 
+# An instance left running from earlier work would otherwise be picked up as
+# "the" Activity: the probe would stop that one, find the instance it actually
+# launched still alive, and report a cleanup failure that says nothing about
+# the lifecycle. Measure a clean launch instead of a misleading one.
+if pgrep -u aspartame -f "$process_pattern" >/dev/null; then
+    echo "An instance of $process_pattern is already running." >&2
+    echo 'Stop it first; this probe measures a launch it owns.' >&2
+    exit 2
+fi
+
 gtk4_pid=$(pgrep -u aspartame -f '/sources/sugar/src/jarabe/main.py' | head -1 || true)
 [ -n "$gtk4_pid" ] || { echo 'GTK4 shell is not running' >&2; exit 1; }
 dbus_address=$(tr '\0' '\n' <"/proc/$gtk4_pid/environ" |
