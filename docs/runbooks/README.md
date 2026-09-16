@@ -15,7 +15,8 @@ The images are reference snapshots from the QEMU development VM. See the screens
 
 ## Runbooks
 
-- [Snakepit](SNAKEPIT_RUNBOOK.md) — **planned, not implemented**; Python compatibility qualification, Wong-Baker evidence, runtime minimization, and the resolve → run → observe → remediate → retest loop
+- [Autonomous contribution](AUTONOMOUS_CONTRIBUTION_RUNBOOK.md) — bounded agent/human contribution doctrine: progress over saturation, qualification-deck discipline, real-defect selection, receipts, and the `fix -> prove -> document -> get out` rule
+- [Snakepit](SNAKEPIT_RUNBOOK.md) — **planned, not implemented**; reverse package-management/compatibility qualification, environment selection, runtime minimization, and the resolve → run → observe → remediate → retest loop
 - [Count Activity](COUNT_ACTIVITY_RUNBOOK.md) — behavior and data model
 - [Universal Help](UNIVERSAL_HELP_RUNBOOK.md) — contextual help system
 - [Scale Activity](SCALE_ACTIVITY_RUNBOOK.md) — future activity direction
@@ -30,5 +31,7 @@ The images are reference snapshots from the QEMU development VM. See the screens
 3. Record evidence at the boundary the runbook names.
 4. Update the owning status table and screenshot/log links.
 5. Do not turn a planned runbook into implied implementation. Runtime evidence decides what exists.
+6. For bounded work, stop when the claimed workflow passes. A discovered problem is allowed to remain open.
+7. If you swing a hammer, document it: what changed, why, evidence, rejected attempts, remaining weirdness, and reproduction.
 
 </details>
