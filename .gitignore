@@ -5,6 +5,17 @@ work/
 *.qcow2
 *.log
 __pycache__/
+.pytest_cache/
 
+# Raw capture output. Evidence a report actually cites is committed under a
+# descriptive name (home-search-20260902.png); the timestamped files below are
+# whatever sugar-screenshot.sh emitted while someone was looking. Add a cited
+# capture deliberately with `git add -f`.
 reports/screenshots/
 reports/reloads/
+reports/gtk4/sugar-*-v*.png
+reports/gtk4/sugar-*-v*.txt
+
+# Coding-agent scratch directories. Working notes, not project material.
+.codex-tmp/
+.codex-patch-probe
