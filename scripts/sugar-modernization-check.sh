@@ -11,19 +11,19 @@ grep -q '^SUGAR_VERSION=' "$root/sugar-overlay/UPSTREAM" || {
     echo 'FAIL: stable Sugar pin is missing'; failures=$((failures + 1)); }
 grep -qx 'sugar-toolkit-gtk3' "$stable_profile" || {
     echo 'FAIL: stable GTK3 toolkit pin is missing'; failures=$((failures + 1)); }
-if rg -n 'require_version\(.+Gtk.+4\.0|from sugar4|import sugar4' "$overlay" >/dev/null; then
+if grep -rqE 'require_version\(.+Gtk.+4\.0|from sugar4|import sugar4' "$overlay"; then
     echo 'FAIL: GTK4 code entered the stable GTK3 overlay'; failures=$((failures + 1))
 else
     echo 'stable GTK4 contamination: PASS'
 fi
 
-if rg -n 'Gdk\.Screen|Gtk\.Menu|pack_start|add_events|Gtk\.Clipboard' "$overlay" >/dev/null; then
+if grep -rqE 'Gdk\.Screen|Gtk\.Menu|pack_start|add_events|Gtk\.Clipboard' "$overlay"; then
     echo 'legacy GTK3 APIs: REVIEW (existing stable code; do not mass-convert)'
 else
     echo 'legacy GTK3 APIs: none found'
 fi
 
-if rg -n 'GdkX11|Gtk\.Window\.get_window|xrandr|DISPLAY' "$overlay" >/dev/null; then
+if grep -rqE 'GdkX11|Gtk\.Window\.get_window|xrandr|DISPLAY' "$overlay"; then
     echo 'X11-sensitive code: REVIEW (expected in stable session)'
 else
     echo 'X11-sensitive code: none found'
