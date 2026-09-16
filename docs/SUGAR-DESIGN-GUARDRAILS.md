@@ -1,7 +1,9 @@
 # Sugar design guardrails
 
 This document is the design constitution for Aspartame shell work. Aspartame
-modernizes Sugar; it does not redesign Sugar into a conventional desktop.
+modernizes Sugar; it does not redesign Sugar into a conventional desktop. Read
+[ASPARTAME-DOCTRINE.md](ASPARTAME-DOCTRINE.md) and
+[ASPARTAME-HIG.md](ASPARTAME-HIG.md) alongside this file.
 
 ## Constitution
 
@@ -14,6 +16,8 @@ modernizes Sugar; it does not redesign Sugar into a conventional desktop.
 - Group means “my deliberately associated group or community.”
 - Activity means “what I am doing.”
 - Journal means “what I have done.”
+- **Capability means what the computer can provide and what an interaction
+  requires. Capability is demonstrated, not presumed.**
 - The Frame is contextual peripheral UI, not a taskbar.
 - Activities are not conventional application windows.
 - Journal is not merely a file manager.
@@ -24,6 +28,11 @@ modernizes Sugar; it does not redesign Sugar into a conventional desktop.
 - Preserve Sugar’s spatial hierarchy and direct-manipulation concepts.
 - Preserve “low floor, no ceiling”: simple primary interaction with deeper
   capability available progressively.
+- Do not assume literacy, pointer knowledge, keyboard knowledge, sight, hearing,
+  or prior computer experience merely because a setup screen can be displayed.
+- Do not create demographic interfaces such as child mode, blind mode, senior
+  mode, or expert mode where one semantic interface with different capabilities
+  can serve the interaction.
 - Avoid permanent chrome unless the information genuinely needs to be globally
   available.
 - Conventional Linux functionality may exist underneath without becoming the
@@ -48,9 +57,13 @@ commit message:
    avoided?
 4. Does it preserve low-floor/no-ceiling?
 5. Is new permanent information actually necessary?
-6. Does color retain semantic meaning?
+6. Does color retain semantic meaning without becoming the sole carrier of it?
 7. Does this preserve the meaning of the current Sugar zoom level?
 8. Can this be done with less chrome?
+9. Which human capability does the interaction require: selection, activation,
+   reading, writing, navigation, pointer control, or something else?
+10. Does the interaction accidentally require knowledge Aspartame has not given
+    a first-time user an opportunity to discover?
 
 If the answers are unclear, perform archaeology and runtime observation first.
 A source diff is not evidence that a design problem exists.
@@ -84,10 +97,30 @@ assumptions must not silently replace it.
 
 ## Progressive capability
 
-The primary path should remain understandable without Linux expertise. Deeper
-capability should remain available through palettes, inspection, Activities,
-terminal tools, and conventional filesystem/network interfaces. Simplifying the
-first action must not remove the underlying capability.
+The primary path should remain understandable without Linux expertise or even
+prior GUI expertise. Deeper capability should remain available through palettes,
+inspection, Activities, terminal tools, Python, and conventional
+filesystem/network interfaces. Simplifying the first action must not remove the
+underlying capability.
+
+Aspartame should be able to introduce the computer itself. First-use teaching
+may use spoken instruction, symbolic imagery, animation, and direct cause/effect
+to introduce pointer movement, selection, activation, typing, scrolling, and
+other interaction concepts without requiring literacy first. Teaching narration
+must be separable from persistent spoken-text/screen-reader capability.
+
+A pre-literate child and a blind adult may require the same spoken-text or
+semantic-navigation capability for different reasons. The system should not need
+to classify either person to provide it, and it must not speak to either in a
+patronizing special-mode voice.
+
+## Color grammar
+
+Aspartame's default machine duotone is orange/blue, especially for two-sided
+relationships such as future Chirality. Orange and blue are peers, not good/bad
+or primary/secondary. Hue is supplemental: position, glyph, labels, spoken
+semantics, focus, and bindings must carry the same meaning when color cannot.
+XOColor continues to identify the person; orange/blue is machine grammar.
 
 ## Upstream reference
 
