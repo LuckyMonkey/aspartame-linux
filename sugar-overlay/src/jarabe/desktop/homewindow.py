@@ -111,6 +111,7 @@ class HomeWindow(Gtk.Window):
         self._clock = self._toolbar.get_clock_widget()
         self._clock.set_halign(Gtk.Align.CENTER)
         self._clock.set_valign(Gtk.Align.START)
+        self._clock_band_height = None
         self._toolbar.connect('size-allocate', self.__toolbar_size_allocate_cb)
         self._overlay.add_overlay(self._clock)
         self._clock.show()
@@ -128,10 +129,15 @@ class HomeWindow(Gtk.Window):
         self._alt_timeout_sid = None
 
     def __toolbar_size_allocate_cb(self, toolbar, allocation):
-        # Vertically center the overlay label in the actual toolbar allocation.
-        # This is allocation-based rather than a resolution-specific offset.
-        _minimum, natural = self._clock.get_preferred_height()
-        self._clock.set_margin_top(max(0, (allocation.height - natural) // 2))
+        # Give the clock the toolbar's own height and let the label centre
+        # its text inside it. Offsetting by the label's natural height
+        # centred the *line box*, and digits occupy only its ascent, so the
+        # time sat visibly above the middle of the bar.
+        if self._clock_band_height == allocation.height:
+            return
+        self._clock_band_height = allocation.height
+        self._clock.set_margin_top(0)
+        self._clock.set_size_request(-1, allocation.height)
 
     def add_alert(self, alert):
         self._alert = alert
