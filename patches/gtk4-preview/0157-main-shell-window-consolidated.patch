@@ -1,0 +1,151 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] main: consolidate the shell window chain
+
+main.py accumulated 22 patches, 20 of which touched nothing else.
+Most were written with zero-context hunks (@@ -334,1 +334,1 @@), so `git
+apply` could not place them and `patch --fuzz` placed several inside the
+wrong function: replaying the old series produced a main.py that failed to
+parse with `IndentationError: unexpected indent` at line 310.
+
+Several of the folded patches also cancel out. 0051/0053/0054 add and move
+an overlay focus sink that 0140 then retires; 0094 installs a SugarExt
+global grabber that 0111 removes; 0048's zoom capture is corrected by 0090.
+Replaying that history is not needed to reach the verified tree.
+
+This patch is a single exact-context diff from the pinned baseline to the
+main.py the qualified preview is running, so the result is reproducible with
+`git apply` alone.
+
+Folded patches, in their original order:
+
+  0041  
+  0048  shell: capture Sugar zoom keys at the top-level window
+  0050  shell: route Frame and Journal keys through GTK4 window
+  0051  shell: focus the GTK4 overlay after controller setup
+  0053  shell: place overlay focus after key handler setup
+  0054  shell: focus overlay after controller attachment
+  0061  
+  0070  main: capture Sugar shortcuts on the Casilda activity surface
+  0071  main: dismiss Frame when a zoom shortcut changes view
+  0074  main: capture Sugar shortcuts on the Home surface
+  0080  main: keep semantic key surface focusable
+  0084  gtk4: route Sugar keys through Journal surface
+  0089  gtk4: capture Sugar keys on overlay focus descendants
+  0090  gtk4: route zoom keys through ShellModel
+  0091  gtk4: keep application window focusable for Sugar keys
+  0092  gtk4: install global Sugar shortcut controller
+  0094  gtk4: use workspace-gated SugarExt key grabber
+  0111  gtk4: remove unavailable runtime key grabber block
+  0134  gtk4: close the Sugar Frame with physical Escape
+  0140  main: stop parking window focus on the shell overlay
+
+The main.py hunks of 0027 and 0153 are folded in here too and were removed
+from those patches, which keep their other files.
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -114,6 +114,10 @@
+ def setup_journal_cb():
+     logging.debug('STARTUP: setup_journal_cb')
+     journalactivity.start()
++    journal = journalactivity.get_journal()
++    semantic_keys = keyhandler.get_instance()
++    if semantic_keys is not None:
++        semantic_keys.add_window(journal)
+ 
+ 
+ def setup_notification_service_cb():
+@@ -166,6 +170,17 @@
+ 
+     shell_instance.stack.add_named(home_window, "home")
+     shell_instance.stack.add_named(shell_instance.compositor, "activity")
++    # Casilda owns focus while an Activity is active.  Mirror the shell's
++    # semantic key controller on that widget so Sugar shortcuts are still
++    # handled before the Activity client consumes them.
++    semantic_keys = keyhandler.get_instance()
++    if semantic_keys is not None:
++        activity_keys = Gtk.EventControllerKey()
++        activity_keys.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
++        activity_keys.connect("key-pressed", semantic_keys._key_pressed_cb)
++        shell_instance.compositor.add_controller(activity_keys)
++        shell_instance._activity_key_controller = activity_keys
++        semantic_keys.add_window(home_window)
+     shell_instance.stack.set_visible_child_name("home")
+ 
+     os.environ["WAYLAND_DISPLAY"] = "wayland-sugar"
+@@ -274,13 +289,76 @@
+ def _setup_main_window(shell_instance):
+     if not shell_instance._main_window:
+         shell_instance._main_window = Gtk.ApplicationWindow(application=shell_instance)
++        shell_instance._main_window.set_focusable(True)
+         shell_instance._main_window.set_title("Sugar")
+         
+         shell_instance._overlay = Gtk.Overlay()
+         shell_instance._overlay.set_child(shell_instance.stack)
+         
+         shell_instance._main_window.set_child(shell_instance._overlay)
++        from gi.repository import Gdk
++        zoom_keys = {
++            Gdk.KEY_F1: shell_instance.ZOOM_MESH,
++            Gdk.KEY_F2: shell_instance.ZOOM_GROUP,
++            Gdk.KEY_F3: shell_instance.ZOOM_HOME,
++            Gdk.KEY_F4: shell_instance.ZOOM_ACTIVITY,
++        }
++        zoom_controller = Gtk.EventControllerKey()
++        zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
++        # F7/F8 belong to the shell's key handler, which follows every
++        # window it is attached to. Handling them here as well bound them
++        # to this window alone.
++
++        def _capture_zoom_key(_controller, keyval, _keycode, _state):
++            if keyval == Gdk.KEY_F5:
++                from jarabe.journal import journalactivity
++                journalactivity.get_journal().show_journal()
++                return True
++            if keyval == Gdk.KEY_F6:
++                from jarabe import frame
++                frame.get_view().notify_key_press()
++                return True
++            level = zoom_keys.get(keyval)
++            if level is None:
++                return False
++            from jarabe import frame
++            frame.get_view().hide()
++            shell_instance.get_model().set_zoom_level(level)
++            return True
++
++        zoom_controller.connect("key-pressed", _capture_zoom_key)
++        shortcut_controller = Gtk.ShortcutController()
++        shortcut_controller.set_scope(Gtk.ShortcutScope.GLOBAL)
++        def _escape_shell(_widget, _args):
++            from jarabe import frame
++            frame_view = frame.get_view()
++            if not frame_view.visible:
++                return False
++            frame_view.hide()
++            return True
++        shortcut_controller.add_shortcut(Gtk.Shortcut.new(
++            Gtk.KeyvalTrigger.new(Gdk.KEY_Escape, 0),
++            Gtk.CallbackAction.new(_escape_shell)))
++        for _shortcut_key in (Gdk.KEY_F1, Gdk.KEY_F2, Gdk.KEY_F3,
++                              Gdk.KEY_F4, Gdk.KEY_F5, Gdk.KEY_F6):
++            _trigger = Gtk.KeyvalTrigger.new(_shortcut_key, 0)
++            _action = Gtk.CallbackAction.new(
++                lambda _widget, _args, keyval=_shortcut_key:
++                    _capture_zoom_key(None, keyval, 0, 0))
++            shortcut_controller.add_shortcut(Gtk.Shortcut.new(_trigger,
++                                                               _action))
++        shell_instance._main_window.add_controller(shortcut_controller)
++        shell_instance._main_window.add_controller(zoom_controller)
++        for _focus_surface in (shell_instance._overlay, shell_instance.stack):
++            _surface_controller = Gtk.EventControllerKey()
++            _surface_controller.set_propagation_phase(
++                Gtk.PropagationPhase.CAPTURE)
++            _surface_controller.connect("key-pressed", _capture_zoom_key)
++            _focus_surface.add_controller(_surface_controller)
++        shell_instance._sugar_zoom_controller = zoom_controller
++
+         if os.environ.get('SUGAR_WINDOWED', '0') == '1':
++            shell_instance._main_window.set_decorated(False)
+             shell_instance._main_window.set_default_size(1024, 768)
+         else:
+             shell_instance._main_window.fullscreen()

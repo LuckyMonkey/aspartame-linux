@@ -85,19 +85,30 @@ def test_activate_sends_pager_request_to_target_window():
 
 
 def test_gtk4_main_window_routes_sugar_function_keys():
-    patch = (ROOT / "patches/gtk4-preview/0027-shell-windowed-frame.patch").read_text()
+    # The zoom capture now arrives through the consolidated main.py patch.
+    # Assert the end state rather than the patch that first introduced it:
+    # 0090 corrected the setter to go through ShellModel.
+    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
     assert "Gtk.EventControllerKey()" in patch
     assert "Gtk.PropagationPhase.CAPTURE" in patch
     for key in ("Gdk.KEY_F1", "Gdk.KEY_F2", "Gdk.KEY_F3", "Gdk.KEY_F4"):
         assert key in patch
-    assert "shell_instance.set_zoom_level(level)" in patch
+    assert "shell_instance.get_model().set_zoom_level(level)" in patch
+    assert "shell_instance.set_zoom_level(level)" not in patch
 
 
-def test_gtk4_main_window_routes_space_keys_semantically():
-    patch = (ROOT / "patches/gtk4-preview/0061-main-space-key-capture.patch").read_text()
-    assert "Gdk.KEY_F7" in patch and "Gdk.KEY_F8" in patch
-    assert "ASPARTAME_SPACE_SWITCHER" in patch
-    assert "subprocess.Popen" in patch
+def test_gtk4_space_keys_are_owned_by_the_shell_key_handler():
+    # 0153 moved F7/F8 out of main.py, where they were bound to one window,
+    # and made them shell actions. main.py must no longer own them.
+    keys = (ROOT / "patches/gtk4-preview/"
+            "0153-shell-space-keys-work-from-every-window.patch").read_text()
+    main = (ROOT / "patches/gtk4-preview/"
+            "0157-main-shell-window-consolidated.patch").read_text()
+    assert "ASPARTAME_SPACE_SWITCHER" in keys
+    assert "subprocess.Popen" in keys
+    assert "'F7': 'space_classic'," in keys
+    assert "'F8': 'space_modern'," in keys
+    assert "Gdk.KEY_F7" not in main and "Gdk.KEY_F8" not in main
 
 
 def test_gtk4_runner_rejects_system_journal_window_import():
@@ -107,24 +118,16 @@ def test_gtk4_runner_rejects_system_journal_window_import():
     assert "jarabe.journal.journalwindow" in runner
 
 
-def test_gtk4_global_key_grabber_patch_is_retired_when_sugarext_lacks_api():
-    patch = (ROOT / "patches/gtk4-preview/0094-modern-space-keygrabber.patch").read_text()
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "SugarExt.KeyGrabber" in patch
-    assert 'retired unavailable SugarExt global key-grabber preview patch' in build
-
-
-def test_build_does_not_accept_stale_key_grabber_patch_as_verified():
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert '*0094*) echo "retired unavailable SugarExt global key-grabber preview patch"; continue ;;' in build
-
-
-def test_invalid_runtime_grabber_block_is_removed_when_present():
-    patch = (ROOT / "patches/gtk4-preview/0111-retire-invalid-runtime-grabber-block.patch").read_text()
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "SugarExt 2.0" in patch
-    assert "SugarExt.KeyGrabber" in patch
-    assert '*0111*) target="$root/sources/sugar" ;;' in build
+def test_no_preview_patch_reintroduces_the_sugarext_global_grabber():
+    # 0094 installed a SugarExt.KeyGrabber in the modern shell and 0111
+    # removed it again because the GIR lacks the API. Both are folded away;
+    # what must stay true is that nothing puts it back.
+    offenders = [
+        path.name
+        for path in (ROOT / "patches/gtk4-preview").glob("*.patch")
+        if "SugarExt.KeyGrabber" in path.read_text(errors="ignore")
+    ]
+    assert offenders == [], offenders
 
 
 def test_mesh_empty_state_and_drift_guards_are_present():
@@ -134,8 +137,6 @@ def test_mesh_empty_state_and_drift_guards_are_present():
     assert '_empty_state' in patch
     assert 'existing idempotent Activity removal' in build
     assert 'existing Group view gettext import' in build
-    assert 'existing Casilda activity key capture' in build
-    assert 'existing Frame dismissal on zoom' in build
 
 
 def test_neighborhood_accessibility_patch_is_routed():

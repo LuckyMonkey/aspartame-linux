@@ -1,0 +1,202 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: consolidate the HomeWindow chain
+
+homewindow.py had the same problem on a smaller scale: 8 patches, 6 of them
+single-file, with zero-context hunks. Replaying them produced a homewindow.py
+that also failed to parse.
+
+This patch is a single exact-context diff from the pinned baseline to the
+homewindow.py the qualified preview is running.
+
+Folded patches, in their original order:
+
+  0010  
+  0031  
+  0085  gtk4: handle zoom keys on focused Home surface
+  0086  gtk4: select Home view stack for zoom keys
+  0088  gtk4: keep Home surface focusable for Sugar shortcuts
+  0141  home: keep the character that summons the search entry
+
+The homewindow.py hunks of 0027 and 0155 are folded in here too and were
+removed from those patches, which keep their other files.
+--- a/src/jarabe/desktop/homewindow.py
++++ b/src/jarabe/desktop/homewindow.py
+@@ -57,9 +57,11 @@
+     def __init__(self):
+         logging.debug('STARTUP: Loading the desktop window')
+         super().__init__(orientation=Gtk.Orientation.VERTICAL)
++        self.set_focusable(True)
+         self.add_css_class('home-window')
+         self.add_css_class('background')
+ 
++        self._windowed = os.environ.get('SUGAR_WINDOWED', '0') == '1'
+         self._active = False
+         self._fully_obscured = True
+ 
+@@ -71,8 +73,9 @@
+         if self._monitors.get_n_items() > 0:
+             self._current_monitor = self._monitors.get_item(0)
+             self._monitor_geom_hid = self._current_monitor.connect('notify::geometry', self.__screen_size_changed_cb)
+-            geom = self._current_monitor.get_geometry()
+-            self.set_size_request(geom.width, geom.height)
++            if not self._windowed:
++                geom = self._current_monitor.get_geometry()
++                self.set_size_request(geom.width, geom.height)
+ 
+         icons_path = os.path.join(config.data_path, 'icons')
+         icon_theme = Gtk.IconTheme.get_for_display(display)
+@@ -113,18 +116,26 @@
+         self._resume_mode = setting.get_boolean('resume-activity')
+         self._home_box.set_resume_mode(self._resume_mode)
+ 
+-        self._group_box = GroupBox(self._toolbar)
+-        self._view_stack.add_named(self._group_box, 'group')
+-        
+-        self._mesh_box = MeshBox(self._toolbar)
+-        self._view_stack.add_named(self._mesh_box, 'mesh')
++        # Group and Neighborhood have optional service dependencies. Defer
++        # them until selected so the default Home view can start independently.
++        self._group_box = None
++        self._mesh_box = None
+         
+         self._transition_box = TransitionBox()
+         self._view_stack.add_named(self._transition_box, 'transition')
+ 
+         self._view_stack.set_visible_child_name('home')
+ 
+-        self.append(self._box)
++        # Shell content still owns normal layout. The only overlay is the
++        # passive clock, centred against this window rather than against a
++        # changing toolbar allocation.
++        self._overlay = Gtk.Overlay()
++        self._overlay.set_child(self._box)
++
++        self._clock = self._toolbar.get_clock_widget()
++        self._overlay.add_overlay(self._clock)
++
++        self.append(self._overlay)
+ 
+         self._transition_box.connect('completed',
+                                      self._transition_completed_cb)
+@@ -152,12 +163,24 @@
+         if self._alert:
+             self._box.remove(self._alert)
+ 
++    def _ensure_group_box(self):
++        if self._group_box is None:
++            self._group_box = GroupBox(self._toolbar)
++            self._view_stack.add_named(self._group_box, 'group')
++        return self._group_box
++
++    def _ensure_mesh_box(self):
++        if self._mesh_box is None:
++            self._mesh_box = MeshBox(self._toolbar)
++            self._view_stack.add_named(self._mesh_box, 'mesh')
++        return self._mesh_box
++
+     def _deactivate_view(self, level):
+         group = palettegroup.get_group('default')
+         group.popdown()
+         if level == ShellModel.ZOOM_HOME:
+             self._home_box.suspend()
+-        elif level == ShellModel.ZOOM_MESH:
++        elif level == ShellModel.ZOOM_MESH and self._mesh_box is not None:
+             self._mesh_box.suspend()
+ 
+     def __screen_size_changed_cb(self, *args):
+@@ -168,14 +191,17 @@
+                     self._current_monitor.disconnect(self._monitor_geom_hid)
+                 self._current_monitor = monitor
+                 self._monitor_geom_hid = monitor.connect('notify::geometry', self.__screen_size_changed_cb)
+-            geom = monitor.get_geometry()
+-            self.set_size_request(geom.width, geom.height)
++            if not self._windowed:
++                geom = monitor.get_geometry()
++                self.set_size_request(geom.width, geom.height)
+ 
+     def _activate_view(self, level):
+         if level == ShellModel.ZOOM_HOME:
+             self._home_box.resume()
++        elif level == ShellModel.ZOOM_GROUP:
++            self._ensure_group_box()
+         elif level == ShellModel.ZOOM_MESH:
+-            self._mesh_box.resume()
++            self._ensure_mesh_box().resume()
+ 
+     def __is_alt(self, keyval, state):
+         # with Shift held, Alt reports as Meta
+@@ -184,6 +210,22 @@
+             keyval in [Gdk.KEY_Meta_L, Gdk.KEY_Meta_R] and shift
+ 
+     def __key_pressed_cb(self, controller, keyval, keycode, state):
++        zoom_levels = {
++            Gdk.KEY_F1: ShellModel.ZOOM_MESH,
++            Gdk.KEY_F2: ShellModel.ZOOM_GROUP,
++            Gdk.KEY_F3: ShellModel.ZOOM_HOME,
++            Gdk.KEY_F4: ShellModel.ZOOM_ACTIVITY,
++        }
++        if keyval in zoom_levels:
++            shell.get_model().set_zoom_level(zoom_levels[keyval])
++            if keyval == Gdk.KEY_F1:
++                self._ensure_mesh_box()
++                self._view_stack.set_visible_child_name('mesh')
++            elif keyval == Gdk.KEY_F2:
++                self._ensure_group_box()
++                self._view_stack.set_visible_child_name('group')
++            return True
++
+         if self.__is_alt(keyval, state) and not getattr(self, '_alt_held', False):
+             self._home_box.set_resume_mode(not self._resume_mode)
+             self._alt_held = True
+@@ -206,7 +248,13 @@
+ 
+             if not has_focus:
+                 search_entry.grab_focus()
+-
++                # Focus moved mid-dispatch, so GTK will not deliver this key
++                # to the entry. The character that summoned search belongs in
++                # it, as it does in GTK3 Sugar.
++                search_entry.set_text(
++                    search_entry.get_text() + chr(unicode_char))
++                search_entry.set_position(-1)
++                return True
+ 
+         return False
+ 
+@@ -229,6 +277,14 @@
+         self._deactivate_view(old_level)
+         self._activate_view(new_level)
+ 
++        # TransitionBox resizes a managed canvas widget and never completes
++        # reliably under GTK4 allocation.  Switch the already-owned stack
++        # synchronously in the modern space; the GTK3 reference keeps its
++        # established animated transition path.
++        if os.environ.get('ASPARTAME_GTK4_PREVIEW') == '1':
++            self._update_view(new_level)
++            return
++
+         if old_level != ShellModel.ZOOM_ACTIVITY and \
+            new_level != ShellModel.ZOOM_ACTIVITY:
+             self._hide_alert()
+@@ -268,17 +324,19 @@
+             self._toolbar.show_view_buttons()
+             GLib.idle_add(self._home_box.grab_focus)
+         elif level == ShellModel.ZOOM_GROUP:
++            group_box = self._ensure_group_box()
+             self._view_stack.set_visible_child_name('group')
+             self._toolbar.clear_query()
+             self._toolbar.set_placeholder_text_for_view(_('Group'))
+             self._toolbar.show_view_buttons()
+-            GLib.idle_add(self._group_box.grab_focus)
++            GLib.idle_add(group_box.grab_focus)
+         elif level == ShellModel.ZOOM_MESH:
++            mesh_box = self._ensure_mesh_box()
+             self._view_stack.set_visible_child_name('mesh')
+             self._toolbar.clear_query()
+             self._toolbar.set_placeholder_text_for_view(_('Neighborhood'))
+             self._toolbar.hide_view_buttons()
+-            GLib.idle_add(self._mesh_box.grab_focus)
++            GLib.idle_add(mesh_box.grab_focus)
+         self._show_alert()
+ 
+     def do_dispose(self):

@@ -73,7 +73,6 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         "*0036*",
         "*0037*",
         "*0038*",
-        "*0041*",
         "*0042*",
         "*0043*",
         "*0044*",
@@ -122,9 +121,9 @@ def test_launcher_restores_activity_surface_after_overlay():
 
 
 def test_main_does_not_install_duplicate_zoom_key_controller():
-    patch = _patch("0041-main-use-semantic-keyhandler.patch")
-    assert "_sugar_key_pressed" in patch
-    assert "shell_instance._sugar_key_controller" in patch
+    patch = _patch("0157-main-shell-window-consolidated.patch")
+    assert "_capture_zoom_key" in patch
+    assert "shell_instance._sugar_zoom_controller" in patch
 
 
 def test_home_filters_favorites_with_missing_bundle_paths():

@@ -14,7 +14,7 @@ def test_single_process_activity_activation_reuses_window():
 def test_activity_activation_guard_is_routed_by_guest_build():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "*0047*" in build and "target=\"$toolkit\"" in build
-    assert '*0048*' in build and '*0057*' in build
+    assert '*0057*' in build
     assert '"$patch_name" == *0047*' in build
 
 
@@ -44,24 +44,25 @@ def test_qemu_key_helper_supports_activity_text_input():
 
 
 def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
-    patch = (ROOT / "patches/gtk4-preview/0048-main-zoom-key-capture.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
     for key in ("Gdk.KEY_F1", "Gdk.KEY_F2", "Gdk.KEY_F3", "Gdk.KEY_F4"):
         assert key in patch
     assert "Gtk.PropagationPhase.CAPTURE" in patch
     assert "_sugar_zoom_controller" in patch
-    assert "set_focus(shell_instance._overlay)" in patch
-    assert "Gdk.KEY_F5" not in patch
+    # 0140 retired the overlay focus sink; it must not come back.
+    assert "set_focus(shell_instance._overlay)" not in patch
+    assert "_overlay.set_focusable(True)" not in patch
 
 
 def test_sugar_shortcuts_are_registered_on_home_surface():
-    patch = (ROOT / "patches/gtk4-preview/0074-main-home-key-capture.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "semantic_keys.add_window(home_window)" in patch
-    assert "*0074*" in build and 'target="$root/sources/sugar"' in build
+    assert '*0157*' in build and 'target="$root/sources/sugar"' in build
 
 
 def test_frame_and_journal_keys_are_captured_by_gtk4_shell():
-    patch = (ROOT / "patches/gtk4-preview/0050-main-frame-journal-key-capture.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
     assert "Gdk.KEY_F5" in patch
     assert "Gdk.KEY_F6" in patch
     assert "notify_key_press()" in patch
@@ -75,18 +76,18 @@ def test_journal_unique_values_uses_datastore_variant_dictionary():
 
 
 def test_journal_surface_receives_semantic_sugar_keys():
-    patch = (ROOT / "patches/gtk4-preview/0084-main-journal-key-routing.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
     assert "semantic_keys.add_window(journal)" in patch
 
 
 def test_home_surface_handles_semantic_zoom_keys():
-    patch = (ROOT / "patches/gtk4-preview/0085-home-semantic-zoom-keys.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0158-home-window-consolidated.patch").read_text()
     assert "zoom_levels =" in patch
     assert "ShellModel.ZOOM_MESH" in patch
 
 
 def test_home_zoom_selects_gtk4_view_stack():
-    patch = (ROOT / "patches/gtk4-preview/0086-home-zoom-stack-selection.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0158-home-window-consolidated.patch").read_text()
     assert "set_visible_child_name('mesh')" in patch
     assert "set_visible_child_name('group')" in patch
 
@@ -98,26 +99,14 @@ def test_semantic_zoom_actions_patch_is_valid():
 
 
 def test_home_focus_surface_patch():
-    patch = (ROOT / "patches/gtk4-preview/0088-home-focus-key-surface.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0158-home-window-consolidated.patch").read_text()
     assert "self.set_focusable(True)" in patch
-
-
-def test_gtk4_overlay_focus_patch_is_routed():
-    patch = (ROOT / "patches/gtk4-preview/0051-main-focus-overlay.patch").read_text()
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "set_focus(shell_instance._overlay)" in patch
-    assert "*0051*" in build
 
 
 def test_shell_exposes_semantic_frame_action():
     patch = (ROOT / "patches/gtk4-preview/0052-shell-show-frame-action.patch").read_text()
     assert "def ShowFrame" in patch
     assert "frame.get_view().show()" in patch
-
-
-def test_focus_overlay_final_patch_is_idempotent():
-    patch = (ROOT / "patches/gtk4-preview/0054-main-focus-overlay-final.patch").read_text()
-    assert "set_focus(shell_instance._overlay)" in patch
 
 
 def test_empty_collaboration_state_is_routed_into_guest_sugar():
@@ -220,18 +209,18 @@ def test_group_view_imports_gettext_for_empty_state():
 
 
 def test_compositor_key_capture_patch_is_routed():
-    patch = (ROOT / "patches/gtk4-preview/0070-main-compositor-key-capture.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "shell_instance.compositor.add_controller(activity_keys)" in patch
     assert "Gtk.PropagationPhase.CAPTURE" in patch
-    assert "*0070*" in build
+    assert "*0157*" in build
 
 
 def test_zoom_shortcuts_dismiss_frame_overlay():
-    patch = (ROOT / "patches/gtk4-preview/0071-main-zoom-hides-frame.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "frame.get_view().hide()" in patch
-    assert "*0071*" in build
+    assert "*0157*" in build
 
 
 def test_home_activity_icons_expose_accessible_identity():

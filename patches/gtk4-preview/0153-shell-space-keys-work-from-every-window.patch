@@ -77,38 +77,6 @@ new application window into a phantom entry in the activity list.
      def handle_dump_ui_tree(self, event_time):
          if uitree:
              print(uitree.get_root().dump())
---- a/src/jarabe/main.py
-+++ b/src/jarabe/main.py
-@@ -305,18 +305,9 @@
-         }
-         zoom_controller = Gtk.EventControllerKey()
-         zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
--        import subprocess
--        space_keys = {Gdk.KEY_F7: "gtk3", Gdk.KEY_F8: "gtk4"}
--        def _switch_space(target):
--            controller = os.environ.get("ASPARTAME_SPACE_SWITCHER", "/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh")
--            subprocess.Popen([controller, target], close_fds=True)
--        def _capture_space_key(_controller, keyval, _keycode, _state):
--            target = space_keys.get(keyval)
--            if target is None:
--                return False
--            _switch_space(target)
--            return True
--        zoom_controller.connect("key-pressed", _capture_space_key)
-+        # F7/F8 belong to the shell's key handler, which follows every
-+        # window it is attached to. Handling them here as well bound them
-+        # to this window alone.
- 
-         def _capture_zoom_key(_controller, keyval, _keycode, _state):
-             if keyval == Gdk.KEY_F5:
-@@ -362,7 +353,6 @@
-             _surface_controller = Gtk.EventControllerKey()
-             _surface_controller.set_propagation_phase(
-                 Gtk.PropagationPhase.CAPTURE)
--            _surface_controller.connect("key-pressed", _capture_space_key)
-             _surface_controller.connect("key-pressed", _capture_zoom_key)
-             _focus_surface.add_controller(_surface_controller)
-         shell_instance._sugar_zoom_controller = zoom_controller
 --- a/src/jarabe/controlpanel/gui.py
 +++ b/src/jarabe/controlpanel/gui.py
 @@ -88,6 +88,15 @@

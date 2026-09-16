@@ -12,27 +12,37 @@ compositor's own key controller could forward it to the Wayland client.
 Remember whether the first dispatch actually handled the key and repeat that
 verdict, so unhandled keys keep travelling to the focused Activity surface.
 
+The guard this patch originally assumed - `self._last_dispatch` and the
+`token == self._last_dispatch` block - existed only in the hand-edited
+preview checkout and was never carried by any patch in the series, so the
+patch could not apply to a clean baseline. It now introduces the whole
+mechanism.
+
 --- a/src/jarabe/view/keyhandler.py
 +++ b/src/jarabe/view/keyhandler.py
-@@ -83,6 +83,7 @@
+@@ -82,6 +82,8 @@
+         self._key_pressed = None
          self._keycode_pressed = 0
          self._keystate_pressed = 0
-         self._last_dispatch = None
++        self._last_dispatch = None
 +        self._last_dispatch_handled = False
          self._handled_windows = set()
  
          self._tabbing_handler = TabbingHandler(self._frame, _TABBING_MODIFIER)
-@@ -244,8 +245,17 @@
-         if event is not None:
-             token = (keyval, keycode, int(state), event.get_time())
-             if token == self._last_dispatch:
--                return True
+@@ -239,6 +241,21 @@
+             logging.warning("uitree module not available.")
+ 
+     def _key_pressed_cb(self, controller, keyval, keycode, state):
++        event = controller.get_current_event()
++        if event is not None:
++            token = (keyval, keycode, int(state), event.get_time())
++            if token == self._last_dispatch:
 +                # This handler is attached to several widgets, so one press
 +                # arrives once per widget on the propagation path. Repeat the
 +                # first verdict: claiming a key Sugar never acted on stops it
 +                # before the focused Activity surface can receive it.
 +                return self._last_dispatch_handled
-             self._last_dispatch = token
++            self._last_dispatch = token
 +        self._last_dispatch_handled = self._dispatch_key(
 +            controller, keyval, keycode, state)
 +        return self._last_dispatch_handled

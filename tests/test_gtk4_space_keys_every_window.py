@@ -38,10 +38,13 @@ def test_the_switcher_stays_overridable():
 
 
 def test_main_window_no_longer_owns_the_space_keys():
-    removed = _removed()
-    assert 'space_keys = {Gdk.KEY_F7: "gtk3", Gdk.KEY_F8: "gtk4"}' in removed
-    assert 'zoom_controller.connect("key-pressed", _capture_space_key)' in removed
-    assert '_surface_controller.connect("key-pressed", _capture_space_key)' in removed
+    # 0153 took F7/F8 out of main.py; the consolidated main.py patch is the
+    # end state, so assert the absence there rather than a removal line.
+    main = (ROOT / 'patches/gtk4-preview/'
+            '0157-main-shell-window-consolidated.patch').read_text()
+    assert 'space_keys = {Gdk.KEY_F7: "gtk3", Gdk.KEY_F8: "gtk4"}' not in main
+    assert '_capture_space_key' not in main
+    assert 'Gdk.KEY_F7' not in main
 
 
 def test_zoom_keys_keep_their_own_handling():

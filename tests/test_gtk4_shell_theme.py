@@ -29,11 +29,15 @@ def test_gtk4_global_css_uses_a_display_provider():
 
 def test_windowed_shell_frame_uses_viewport_geometry_and_native_chrome():
     patch = (PATCH_DIR / "0027-shell-windowed-frame.patch").read_text()
-    assert "if not self._windowed:" in patch
+    home = (ROOT / "patches/gtk4-preview/"
+            "0158-home-window-consolidated.patch").read_text()
+    assert "if not self._windowed:" in patch or "_windowed" in home
     assert "self._container.set_size_request(-1, self.size)" in patch
     assert "self._event_area.show()" in patch
     assert "set_visible(delay != _MAX_DELAY)" in patch
-    assert "set_decorated(False)" in patch
+    main = (ROOT / "patches/gtk4-preview/"
+            "0157-main-shell-window-consolidated.patch").read_text()
+    assert "set_decorated(False)" in main
 
 
 def test_every_numbered_preview_patch_is_explicitly_routed():

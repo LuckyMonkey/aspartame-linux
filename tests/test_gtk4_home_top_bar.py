@@ -45,10 +45,12 @@ def test_clock_is_built_and_exposed():
 
 def test_clock_is_placed_as_an_overlay_child():
     # Keeping it out of the toolbar's allocation flow is what stops the
-    # search and view controls from shifting the time sideways.
-    added = _added(FURNITURE)
-    assert 'self._overlay.add_overlay(self._clock)' in added
-    assert 'self._overlay.set_child(self._box)' in added
+    # search and view controls from shifting the time sideways. The
+    # HomeWindow half of this now lives in the consolidated patch.
+    home = (ROOT / 'patches/gtk4-preview/'
+            '0158-home-window-consolidated.patch').read_text()
+    assert 'self._overlay.add_overlay(self._clock)' in home
+    assert 'self._overlay.set_child(self._box)' in home
 
 
 def test_clock_takes_the_band_height_rather_than_a_margin():

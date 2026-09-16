@@ -64,16 +64,7 @@ for patch in "$patch_dir"/*.patch; do
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
         *0083*) target="$root/sources/sugar" ;;
-        *0084*) target="$root/sources/sugar" ;;
-        *0085*) target="$root/sources/sugar" ;;
-        *0086*) target="$root/sources/sugar" ;;
         *0087*) target="$root/sources/sugar" ;;
-        *0088*) target="$root/sources/sugar" ;;
-        *0089*) target="$root/sources/sugar" ;;
-        *0090*) target="$root/sources/sugar" ;;
-        *0091*) target="$root/sources/sugar" ;;
-        *0092*) target="$root/sources/sugar" ;;
-        *0094*) echo "retired unavailable SugarExt global key-grabber preview patch"; continue ;;
         *0095*) target="$root/sources/sugar" ;;
         *0096*) target="$root/sources/sugar" ;;
         *0097*) target="$root/sources/sugar" ;;
@@ -88,7 +79,6 @@ for patch in "$patch_dir"/*.patch; do
         *0107*) target="$root/sources/sugar" ;;
         *0108*) target="$root/sources/sugar" ;;
         *0109*) target="$root/sources/sugar" ;;
-        *0111*) target="$root/sources/sugar" ;;
         *0112*) target="$root/sources/sugar" ;;
         *0113*) target="$root/sources/sugar" ;;
         *0114*) target="$root/sources/sugar" ;;
@@ -110,14 +100,12 @@ for patch in "$patch_dir"/*.patch; do
         *0130*) target="$root/sources/sugar" ;;
         *0131*) target="$root/sources/sugar" ;;
         *0132*) target="$root/sources/sugar" ;;
-        *0133*|*0134*) target="$root/sources/sugar" ;;
+        *0133*) target="$root/sources/sugar" ;;
         *0135*) target="$toolkit" ;;
         *0136*) target="$root/sources/sugar" ;;
         *0137*) target="$casilda" ;;
         *0138*) target="$casilda" ;;
         *0139*) target="$root/sources/sugar" ;;
-        *0140*) target="$root/sources/sugar" ;;
-        *0141*) target="$root/sources/sugar" ;;
         *0142*) target="$root/sources/sugar" ;;
         *0143*) target="$root/sources/sugar" ;;
         *0144*) target="$root/sources/sugar" ;;
@@ -133,8 +121,10 @@ for patch in "$patch_dir"/*.patch; do
         *0154*) target="$root/sources/sugar" ;;
         *0155*) target="$root/sources/sugar" ;;
         *0156*) target="$root/sources/sugar" ;;
+        *0157*) target="$root/sources/sugar" ;;
+        *0158*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *0005*|*0007*|*0008*|*0009*|*0010*|*0011*|*0012*|*0019*|*0021*|*0027*|*0031*|*0034*|*0036*|*0037*|*0038*|*0039*|*0041*|*0042*|*0043*|*0044*|*0048*|*0049*|*0050*|*0051*|*0052*|*0053*|*0054*|*0055*|*0057*|*0058*|*0061*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0070*|*0071*|*0073*|*0074*|*0075*|*0076*|*0079*|*0080*|*0081*) target="$root/sources/sugar" ;;
+        *0005*|*0007*|*0008*|*0009*|*0011*|*0012*|*0019*|*0021*|*0027*|*0034*|*0036*|*0037*|*0038*|*0039*|*0042*|*0043*|*0044*|*0049*|*0052*|*0055*|*0057*|*0058*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0073*|*0075*|*0076*|*0079*|*0081*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
     patch_name=$(basename "$patch")
@@ -217,11 +207,6 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing Journal stack zoom: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0041* ]] && grep -q "_sugar_zoom_controller" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified obsolete zoom-controller removal: $patch_name"
-        continue
-    fi
     # 0044 added a keystroke probe to _dispatch_key and 0156 removes it
     # again. 0044's own context predates 0139's restructuring of that
     # function, so it only ever re-applies through this check; treat the
@@ -234,42 +219,14 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified key observability: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0048* ]] && grep -q "_sugar_zoom_controller" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing top-level zoom capture: $patch_name"
-        continue
-    fi
     if [[ "$patch_name" == *0049* ]] && grep -q "def ShowJournal" "$shell/src/jarabe/view/service.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing semantic Journal action: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0050* ]] && grep -q "keyval == Gdk.KEY_F6" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing Frame/Journal key capture: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0051* ]] && grep -q "set_focus(shell_instance._overlay)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing GTK4 overlay focus: $patch_name"
-        continue
-    fi
     if [[ "$patch_name" == *0052* ]] && grep -q "def ShowFrame" "$shell/src/jarabe/view/service.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing semantic Frame action: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0053* ]] && sed -n '299,307p' "$shell/src/jarabe/main.py" 2>/dev/null | grep -q "set_focus(shell_instance._overlay)"; then
-        # Leave malformed placement to the compatibility hunk below.
-        :
-    elif [[ "$patch_name" == *0053* ]] && grep -q "set_focus(shell_instance._overlay)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified focus placement correction: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0054* ]] && grep -q "set_focus(shell_instance._overlay)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified final GTK4 overlay focus: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0055* ]] && grep -q "No friends are nearby yet\." "$shell/src/jarabe/desktop/groupbox.py" 2>/dev/null && grep -q "self\._empty_state" "$shell/src/jarabe/desktop/groupbox.py" 2>/dev/null; then
@@ -280,11 +237,6 @@ for patch in "$patch_dir"/*.patch; do
     if [[ "$patch_name" == *0068* ]] && grep -q "def set_image(self, image):" "$toolkit/src/sugar4/graphics/menuitem.py" 2>/dev/null && grep -q "self\._content_box\.prepend(image)" "$toolkit/src/sugar4/graphics/menuitem.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing MenuItem image compatibility: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0074* ]] && grep -q "semantic_keys\.add_window(home_window)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified Home surface shortcut capture: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0075* ]] && grep -q "Loading Journal" "$shell/src/jarabe/journal/listview.py" 2>/dev/null; then
@@ -348,19 +300,6 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'from gettext import gettext as _' "$shell/src/jarabe/desktop/groupbox.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Group view gettext import: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0070* ]] &&
-        grep -q 'activity_keys.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)' "$shell/src/jarabe/main.py" 2>/dev/null &&
-        grep -q 'shell_instance.compositor.add_controller(activity_keys)' "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing Casilda activity key capture: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0071* ]] &&
-        grep -q 'frame.get_view().hide()' "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing Frame dismissal on zoom: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0073* ]] &&
@@ -488,11 +427,6 @@ for patch in "$patch_dir"/*.patch; do
     # compositor from ever being a key event target, so an embedded Activity
     # could not receive a keystroke. Capture-phase controllers do not need the
     # overlay to hold focus, only to be an ancestor of whatever does.
-    if [[ "$patch_name" == *0080* ]]; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "superseded overlay focus sink (see 0140): $patch_name"
-        continue
-    fi
     if [[ "$patch_name" == *0081* ]] &&
         grep -q "marshaled = dbus.Dictionary({}, signature='sv')" "$shell/src/jarabe/journal/model.py" 2>/dev/null &&
         grep -q "dbus.Array(PROPERTIES, signature='s')" "$shell/src/jarabe/journal/model.py" 2>/dev/null; then
@@ -504,64 +438,6 @@ for patch in "$patch_dir"/*.patch; do
         grep -q "empty_dict = dbus.Dictionary({}, signature='sv')" "$shell/src/jarabe/journal/model.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified Journal unique-values signature: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0084* ]] &&
-        grep -q "semantic_keys.add_window(journal)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified Journal key routing: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0085* ]] &&
-        grep -q "zoom_levels =" "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified Home semantic zoom keys: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0086* ]] &&
-        grep -q "if keyval == Gdk.KEY_F1:" "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null &&
-        grep -q "self._view_stack.set_visible_child_name('mesh')" "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified Home zoom stack selection: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0088* ]] &&
-        grep -q "self.set_focusable(True)" "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified Home focus surface: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0089* ]] &&
-        grep -q "_focus_surface in (shell_instance._overlay, shell_instance.stack)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified descendant key capture: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0090* ]] &&
-        grep -q "shell_instance.get_model().set_zoom_level(level)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified ShellModel zoom setter: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0091* ]] &&
-        grep -q "_main_window.set_focusable(True)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified focusable GTK4 application window: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0092* ]] &&
-        grep -q "Gtk.ShortcutScope.GLOBAL" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified global Sugar shortcut controller: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0094* ]] &&
-        grep -q "_modern_key_grabber" "$shell/src/jarabe/main.py" 2>/dev/null &&
-        grep -q "def _modern_key_pressed(grabber, keycode, state):" \
-            "$shell/src/jarabe/main.py" 2>/dev/null &&
-        grep -q "Gdk.keyval_from_name(key)" "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified workspace-gated GTK4 key grabber: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0095* ]] &&
@@ -656,12 +532,6 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'GLib.idle_add(self.set_toolbar_box, toolbar)' "$shell/src/jarabe/journal/journalwindow.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified deferred Journal toolbar attach: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0111* ]] &&
-        ! grep -q '_modern_key_grabber' "$shell/src/jarabe/main.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified retired unavailable runtime key grabber: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0112* ]] &&
@@ -762,24 +632,10 @@ for patch in "$patch_dir"/*.patch; do
     # 0134's semantic result may already be present in a source checkout whose
     # surrounding shortcut block moved.  Do not replay a stale textual hunk:
     # the invariant is a global Escape trigger that hides only a visible Frame.
-    if [[ "$patch_name" == *0134* ]] &&
-        grep -q 'def _escape_shell' "$shell/src/jarabe/main.py" 2>/dev/null &&
-        grep -q 'Gtk.KeyvalTrigger.new(Gdk.KEY_Escape, 0)' "$shell/src/jarabe/main.py" 2>/dev/null &&
-        sed -n '/def _escape_shell/,/shortcut_controller.add_shortcut/p' "$shell/src/jarabe/main.py" 2>/dev/null |
-            grep -q 'frame_view.visible'; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing global Frame Escape behavior: $patch_name"
-        continue
-    fi
     # 0140 retires 0080: parking window focus on the overlay kept the Casilda
     # compositor from ever being a key event target, so an embedded Activity
     # could not receive a keystroke. Capture-phase controllers do not need the
     # overlay to hold focus, only to be an ancestor of whatever does.
-    if [[ "$patch_name" == *0080* ]]; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "superseded overlay focus sink (see 0140): $patch_name"
-        continue
-    fi
     if [ -f "$stamp" ] &&
         grep -qx "$patch_digest" "$stamp" &&
         git -C "$target" apply --reverse --check "$patch" >/dev/null 2>&1; then
@@ -796,56 +652,11 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "applied Journal datastore signature patch: $patch_name"
-    elif [[ "$patch_name" == *0084* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=2 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=2 -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied Journal key routing patch: $patch_name"
-    elif [[ "$patch_name" == *0085* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied Home semantic zoom patch: $patch_name"
-    elif [[ "$patch_name" == *0086* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied Home zoom stack patch: $patch_name"
     elif [[ "$patch_name" == *0087* ]] &&
         (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "applied semantic zoom actions: $patch_name"
-    elif [[ "$patch_name" == *0088* ]] &&
-        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied Home focus surface: $patch_name"
-    elif [[ "$patch_name" == *0089* ]] &&
-        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied descendant key capture: $patch_name"
-    elif [[ "$patch_name" == *0090* ]] &&
-        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied ShellModel zoom setter: $patch_name"
-    elif [[ "$patch_name" == *0091* ]] &&
-        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied focusable GTK4 application window: $patch_name"
-    elif [[ "$patch_name" == *0092* ]] &&
-        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied global Sugar shortcut controller: $patch_name"
-    elif [[ "$patch_name" == *0094* ]] &&
-        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch -p1 < "$patch" >/dev/null)
-        printf '%s\n' "$patch_digest" > "$stamp"
-        echo "applied workspace-gated GTK4 key grabber: $patch_name"
     elif [[ "$patch_name" == *0095* ]] &&
         (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch -p1 < "$patch" >/dev/null)
@@ -906,11 +717,6 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied deferred Journal toolbar attach: $patch_name"
-    elif [[ "$patch_name" == *0111* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf "%s\n" "$patch_digest" > "$stamp"
-        echo "removed unavailable runtime key grabber: $patch_name"
     elif [[ "$patch_name" == *0112* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
@@ -976,7 +782,7 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "relocated current Frame accessibility calls: $patch_name"
-    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0041* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0047* || "$patch_name" == *0048* || "$patch_name" == *0049* || "$patch_name" == *0050* || "$patch_name" == *0051* || "$patch_name" == *0052* || "$patch_name" == *0053* || "$patch_name" == *0054* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
+    elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0047* || "$patch_name" == *0049* || "$patch_name" == *0052* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"

@@ -75,7 +75,6 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
         "0007-home-renderer-signal-compat.patch",
         "0008-home-lazy-legacy-list.patch",
         "0009-home-lazy-list-signal.patch",
-        "0010-home-defer-optional-views.patch",
         "0011-frame-neighborhood-optional.patch",
         "0012-home-lazy-list-search.patch",
         "0013-toolkit-palette-icon-compat.patch",
@@ -87,7 +86,6 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
         "0019-home-icon-pixel-size.patch",
         "0020-toolkit-cell-renderer-scrolling.patch",
         "0021-home-retain-toolbar.patch",
-        "0031-shell-native-zoom.patch",
     ]
     positions = [names.index(name) for name in expected]
     assert positions == sorted(positions)
@@ -97,9 +95,12 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
     )
     assert "CellRendererFavorite" in text
     assert "supported_prefixes" in text
-    assert "_ensure_group_box" in text
+    home = (ROOT / "patches/gtk4-preview/"
+            "0158-home-window-consolidated.patch").read_text()
+    assert "_ensure_group_box" in text or "_ensure_group_box" in home
     assert "Neighborhood unavailable for FriendsTray" in text
     assert "child.set_pixel_size(icon_size)" in text
     assert "def connect_to_scroller(self, scrolled):" in text
     assert "self._toolbar = toolbar" in text
-    assert "TransitionBox resizes a managed canvas widget" in text
+    assert ("TransitionBox resizes a managed canvas widget" in text
+            or "TransitionBox resizes a managed canvas widget" in home)
