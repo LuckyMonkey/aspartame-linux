@@ -1,0 +1,68 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] ShareButton must not claim a share that never happened
+
+Activity.share() raises NotImplementedError in the GTK4 port. The Share
+palette's "My Neighborhood" item calls it straight from its clicked
+handler, so GTK swallows the exception, nothing is shared, the user is
+told nothing, and the radio stays selected on "My Neighborhood" - the
+toolbar then reports the activity as shared with the neighborhood for
+the rest of the session. Every one of the 50 preview Activities has this
+button, and it is sensitive in all of them.
+
+Put the radio back on "Private" and raise the toolkit's own alert so the
+refusal is visible, the same shape as the refused-shutdown fix in 0143.
+This does not implement sharing; it stops the toolbar from lying about it.
+
+--- a/src/sugar4/activity/widgets.py
++++ b/src/sugar4/activity/widgets.py
+@@ -20,7 +20,9 @@
+ from gi.repository import Gdk
+ from gi.repository import Gtk
+ from gi.repository import GObject
++from gi.repository import GLib
+ import gettext
++import logging
+ 
+ from sugar4.debug import debug_print
+ 
+@@ -182,8 +184,39 @@
+             self.props.sensitive = False
+ 
+     def __neighborhood_clicked_cb(self, button, activity):
+-        if hasattr(activity, "share"):
++        if not hasattr(activity, "share"):
++            return
++        try:
+             activity.share()
++        except NotImplementedError as error:
++            # Sharing is not wired up in the GTK4 port. Leaving the radio
++            # on "My Neighborhood" would report the activity as shared
++            # when nothing was shared, so put it back and say why.
++            GLib.idle_add(self._revert_to_private)
++            self._report_share_failure(activity, error)
++
++    def _revert_to_private(self):
++        # RadioPalette's own clicked handler runs after this one and
++        # re-activates whatever was clicked, so the undo has to wait until
++        # the emission is over. Clicking "Private" is the same path the
++        # user takes, so the menu button's icon and label follow too.
++        self.private.emit("clicked")
++        return GLib.SOURCE_REMOVE
++
++    def _report_share_failure(self, activity, error):
++        from sugar4.graphics.alert import NotifyAlert
++
++        logging.warning("Activity sharing is unavailable: %s", error)
++        if not hasattr(activity, "add_alert"):
++            return
++        alert = NotifyAlert()
++        alert.props.title = _("Sharing is unavailable")
++        alert.props.msg = _("This activity could not be shared with your "
++                            "neighborhood.")
++        alert.connect("response",
++                      lambda alert_, response: activity.remove_alert(alert_))
++        activity.add_alert(alert)
++        alert.show()
+ 
+     def __update_share_cb(self, activity):
+         self.neighborhood.handler_block(self._neighborhood_handle)
