@@ -1,10 +1,10 @@
-# Snakepit qualification runbook
+# 🐍 Snakepit qualification runbook
 
 **Status: planned; implementation has not begun.**
 
 This runbook records the intended boundary before code exists so future autonomous work does not turn `reverse package manager` into six projects wearing a trench coat.
 
-## Purpose
+## 🎯 Purpose
 
 `Reverse package manager` is deliberately a loaded description. A conventional package manager begins with a chosen package and asks:
 
@@ -18,63 +18,67 @@ Snakepit therefore answers a stronger question than `did dependency resolution s
 
 > **Can this software actually run in an Aspartame environment, why or why not, and what did we learn when we tried?**
 
-It may delegate dependency solving and installation to existing machinery. Its distinctive responsibility is environment selection, empirical qualification, failure diagnosis, bounded remediation, and preservation of the recipe/evidence.
+Snakepit still performs package-manager work: select software, inspect requirements, choose an environment, resolve/install dependencies, and manage the resulting installation. It may delegate dependency solving and installation to existing machinery. Its distinguishing behavior is that the transaction does not conceptually end at `installed successfully`. It checks back against reality.
 
-Package managers resolve dependencies. Snakepit also resolves **where software can exist** and investigates **why it failed**.
+Package managers resolve dependencies. Snakepit also resolves **where software can exist**, investigates **why it failed**, and preserves what was learned.
 
-## Direction of resolution
-
-The basic direction is:
+## 🔄 Direction of resolution
 
 ```text
 desired Python application/capability
-          |
-inspect constraints
-          |
+          │
+          ▼
+   inspect constraints
+          │
+          ▼
 Python versions / ABI / GUI / native libs / conflicts
-          |
+          │
+          ▼
 choose or construct viable isolated environment
-          |
+          │
+          ▼
 resolve/install using appropriate existing tools
-          |
-exercise a real workflow
-          |
-explain success or failure
+          │
+          ▼
+ exercise a real workflow
+          │
+          ▼
+ explain success or failure
 ```
 
 A later discovery layer may map a human capability request such as `edit EXIF` to candidate Python software, but that is not required for Snakepit v0. Do not build app discovery, a capability marketplace, or an AI recommendation system before the environment-resolution loop exists.
 
-## Core loop
+## 🧪 Core loop
 
 ```text
 request software
-      |
+      │
 existing compatibility evidence?
-      |
+      │
 choose smallest plausible environment
-      |
+      │
 resolve/install
-      |
+      │
 exercise real workflow
-      |
+      │
     worked?
     /    \
   yes     no
-   |       |
+   │       │
 record    why?
-recipe     |
-   |    classify observed failure
-   |       |
-   |    smallest remediation
-   |       |
-   +----> retest
-            |
+recipe     │
+   │    classify observed failure
+   │       │
+   │    smallest remediation
+   │       │
+   └────> retest
+            │
         preserve result
 ```
 
 Installation success never implies operational success. Failure is useful state when it is reproducible and recorded.
 
-## V0 contract
+## 🧱 V0 contract
 
 > **Snakepit does not install arbitrary packages into system Python. Snakepit finds or constructs a Python environment in which the requested software can correctly exist—and explains every decision it made.**
 
@@ -86,7 +90,7 @@ The core question is:
 
 An explainable result should identify why an interpreter was selected, why isolation was necessary, what dependencies/native capabilities were required, what was changed, what was observed, and how to repeat the qualification.
 
-## Capability model
+## 🧩 Capability model
 
 Snakepit uses the same capability question as Aspartame's human interface:
 
@@ -98,7 +102,22 @@ A failure should become a capability gap when evidence supports that conclusion.
 
 After remediation, retest. Capability is demonstrated, not presumed.
 
-## Runtime minimization
+```text
+package requires capability
+          │
+          ▼
+environment provides it? ── yes ──> exercise workflow
+          │ no
+          ▼
+ identify exact gap
+          │
+          ▼
+provide / translate / patch / choose another runtime
+          │
+          └────────────────────────> RETEST
+```
+
+## 🐍 Runtime minimization
 
 Aspartame intentionally minimizes language runtimes and Python interpreter proliferation. Snakepit must not default to `one application, one arbitrary Python forever` merely because isolation makes that easy.
 
@@ -108,7 +127,9 @@ Multiple Python versions are intentional compatibility tools, not an excuse for 
 
 The system Python is protected substrate, not a dumping ground for arbitrary application dependencies. Isolation may use venv/uv/pipx-like prefixes or other appropriate mechanisms; the exact tool is subordinate to the explainable environment contract.
 
-## Wong-Baker compatibility
+This is how Snakepit can make Python version fragmentation less visible to the user without pretending incompatible interpreter versions are magically compatible. The user asks for software; Snakepit owns the ugly question of which known environment actually makes it work.
+
+## 🙂 Wong-Baker compatibility
 
 Wong-Baker is a human-readable compatibility/pain projection backed by structured evidence. It is not a review score and must not replace the underlying facts.
 
@@ -131,17 +152,33 @@ Wong-Baker projection
 evidence/provenance
 ```
 
-The face or rating is the projection; the evidence is authoritative. Do not invent a precise Wong-Baker level when evidence is incomplete. Unknown is a valid state.
+The face or rating is the projection; the evidence is authoritative. Do not invent a precise Wong-Baker level when evidence is incomplete. **Unknown is a valid state.**
 
-## Failure taxonomy
+## 🔬 Failure taxonomy
 
 Initial investigation may classify failures such as interpreter incompatibility, Python dependency conflict, inaccurate metadata, missing native library, native ABI mismatch, GUI/display/backend requirement, permission/policy failure, packaging defect, upstream application defect, or unknown.
 
-The taxonomy exists to guide investigation, not to force every failure into a premature category. Declared metadata and observed compatibility are separate facts.
+The taxonomy exists to guide investigation, not to force every failure into a premature category.
 
-## Agents and the enrichment center
+Declared metadata and observed compatibility are separate facts. An upstream package may claim a broad interpreter range while qualification demonstrates a narrower one. Preserve both rather than silently rewriting history.
 
-A future Snakepit laboratory may use disposable workers across a version/environment matrix, but that is later infrastructure, not v0.
+## 🤖 Agents and the enrichment center
+
+A future Snakepit laboratory may use a small controller/VPS to schedule disposable workers across a version/environment matrix. Workers should be replaceable and isolated; do not assume one long-lived VPS must directly execute every specimen. This is later infrastructure, not v0.
+
+```text
+             🧠 controller / scheduler
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+      worker A      worker B      worker C
+      Py 3.x        Py 3.y        Py 3.z
+          │            │            │
+          └────── qualification ─────┘
+                       │
+                       ▼
+             evidence / recipes
+```
 
 Agents may inspect tracebacks, compare successful and failing environments, propose pins, select alternate interpreters, build patches, search upstream history, and generate candidate remediation.
 
@@ -153,7 +190,9 @@ Agents do **not** declare software qualified. A deterministic harness or explici
 
 Do not repeatedly spend inference rediscovering a solved compatibility problem. A successful investigation should become durable compatibility knowledge: preserve a verified recipe and reuse it until a relevant environmental change invalidates its evidence.
 
-## First implementation slice
+The economic value, if this ever becomes a hosted or funded service, is not “AI ran a command.” It is that one expensive investigation can become reusable compatibility knowledge for many later installations: **reason when needed, verify mechanically, preserve the recipe, reinvestigate only when relevant conditions change.**
+
+## 🥇 First implementation slice
 
 Do not begin with a universal resolver, capability marketplace, compatibility cloud, distributed worker fleet, AI remediation service, generalized Activity integration, or a new package ecosystem.
 
@@ -173,7 +212,7 @@ The first milestone is not `many packages`. It is **one complete explainable loo
 
 The second specimen exists to prove the first design did not merely hard-code one happy path.
 
-## Minimal / server / desktop targets
+## 🧰 Minimal / server / desktop targets
 
 Qualification must name the target rather than treating Aspartame as one undifferentiated environment.
 
@@ -183,7 +222,15 @@ Qualification must name the target rather than treating Aspartame as one undiffe
 
 A package may qualify for one target and be irrelevant or unsupported on another.
 
-## Research corpus
+Django is a useful demonstration specimen, not a declaration that Django is universally superior. The server profile should be able to explain exactly why its Django stack works: interpreter, dependencies, native requirements, pins, patches, target, and qualification evidence.
+
+```text
+🧪 minimal   → prove the Python substrate
+🌐 server    → prove serious Python services / Django
+🍬 desktop   → prove the complete human-facing computer
+```
+
+## 📚 Research corpus
 
 Long term, Snakepit may maintain reproducible evidence across:
 
@@ -193,31 +240,33 @@ Every axis moves. New Python releases, dependency changes, native ABI transition
 
 The durable output is not perpetual Snakepit feature growth. It is the compatibility corpus, diagnosed failures, remediation recipes, reproducible environments, upstreamable fixes, and longitudinal measurements.
 
-## Qualification and upstream repair
+Useful research questions include which applications survive a new interpreter release, which dependencies cause the largest compatibility cliffs, where declared metadata differs from observed behavior, which remediations can be safely automated, and which compatibility runtimes can be retired after the corpus moves forward.
 
-A healthy loop is:
+A failed qualification is not wasted compute when it records exact environment, observed failure, cause when known, and whether alternate configurations succeed.
+
+## 🩹 Qualification and upstream repair
 
 ```text
 observe incompatibility
-      |
+      │
 determine smallest cause
-      |
+      │
 propose remediation
-      |
+      │
 verify across relevant matrix
-      |
+      │
 preserve Aspartame recipe
-      |
+      │
 upstream fix when appropriate
-      |
+      │
 new upstream release
-      |
+      │
 requalify and remove local repair when possible
 ```
 
 Local patches are evidence and containment, not trophies. Prefer retiring a local patch when upstream behavior makes it unnecessary.
 
-## Non-goals
+## 🚧 Non-goals
 
 Snakepit is not required to make every Python program work, replace pacman, replace pip/uv/conda/mamba merely for ownership, hide native Linux dependencies, or call arbitrary software supported after a successful install.
 
@@ -227,8 +276,10 @@ Unknown software may enter investigation because `anything is possible`; qualifi
 
 The owner may always leave the qualified path and use the underlying Arch system. `Unqualified` means Aspartame does not currently make a compatibility promise; it does not mean forbidden.
 
-## Documentation rule
+If someone asks Snakepit to install a whole alternate desktop environment such as GNOME, first ask what capability they actually want. Aspartame does not need to qualify a second operating environment merely because Arch can install one. If the owner truly wants it, the underlying machine remains theirs.
+
+## 🧾 Documentation rule
 
 Every compatibility intervention that becomes part of a qualified recipe must leave receipts: what changed, why, evidence, rejected attempts where useful, remaining constraints, and how to reproduce the qualification.
 
-If you swing a hammer, document it.
+> **If you swing a hammer, document it.**
