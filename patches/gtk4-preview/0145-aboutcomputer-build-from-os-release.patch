@@ -1,0 +1,50 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] aboutcomputer: read the build from os-release
+
+get_build_number() probed /boot/olpc_build, then /etc/redhat-release, then
+lsb_release. None of those exist on Aspartame, so Settings -> About my
+Computer reported
+
+    Build: Not available
+
+on a system whose /etc/os-release says IMAGE_ID=aspartame with an image
+version. Telling the user their build is unknown when the machine states it
+plainly is a small lie in the one screen whose whole job is identifying the
+machine.
+
+Fall back to os-release before giving up. Serial Number and Wireless Firmware
+still read "Not available" on a virtual machine, which is honest.
+
+--- a/extensions/cpsection/aboutcomputer/model.py
++++ b/extensions/cpsection/aboutcomputer/model.py
+@@ -16,6 +16,7 @@
+ 
+ import os
+ import logging
++import platform
+ import subprocess
+ from gettext import gettext as _
+ import errno
+@@ -94,6 +95,22 @@
+             build_no = build_no.strip().decode()
+ 
+     if build_no is None or not build_no:
++        # Every modern distribution identifies itself in os-release. Without
++        # this the OLPC and Red Hat specific probes above are the only
++        # sources, so Aspartame reported its build as 'Not available' on a
++        # system that names itself plainly.
++        try:
++            os_release = platform.freedesktop_os_release()
++        except (OSError, ValueError):
++            os_release = {}
++        build_no = (os_release.get('IMAGE_ID') or
++                    os_release.get('PRETTY_NAME') or
++                    os_release.get('NAME'))
++        build_id = os_release.get('IMAGE_VERSION') or os_release.get('BUILD_ID')
++        if build_no and build_id:
++            build_no = '%s %s' % (build_no, build_id)
++
++    if build_no is None or not build_no:
+         build_no = _not_available
+ 
+     return build_no
