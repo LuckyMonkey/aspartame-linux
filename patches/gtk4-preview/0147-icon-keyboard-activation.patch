@@ -1,0 +1,37 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] icon: activate a focused CanvasIcon from the keyboard
+
+CanvasIcon emits "activate" only from its click gesture. ActivityIcon marks
+itself focusable and reports AccessibleRole.BUTTON with a label, so it
+advertises an operable button that a keyboard user could focus and then not
+operate: on Home, Tab reached an Activity icon and Enter did nothing.
+
+Emit the existing "clicked" and "activate" signals on Enter, keypad Enter and
+Space, which is what the role already promises. No new signal or activation
+path; the contract was already there, only the keyboard trigger was missing.
+
+--- a/src/sugar4/graphics/icon.py
++++ b/src/sugar4/graphics/icon.py
+@@ -836,6 +836,22 @@
+         click_gesture.connect("released", self._on_released)
+         self.add_controller(click_gesture)
+ 
++        # A focusable icon that reports AccessibleRole.BUTTON has to be
++        # operable from the keyboard too. Only the click gesture emitted
++        # "activate", so Home's Activity icons could be reached with Tab and
++        # then not launched with Enter.
++        key_controller = Gtk.EventControllerKey()
++        key_controller.connect("key-pressed", self._on_key_pressed)
++        self.add_controller(key_controller)
++
++    def _on_key_pressed(self, controller, keyval, keycode, state):
++        """Activate on Enter or Space, as a button does."""
++        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter, Gdk.KEY_space):
++            self.emit("clicked")
++            self.emit("activate")
++            return True
++        return False
++
+     def _on_pressed(self, gesture: Gtk.GestureClick, n_press: int, x: float, y: float):
+         """Handle press events."""
+         self.emit("pressed", x, y)

@@ -1,0 +1,29 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: let focus enter the Favorites ring
+
+FavoritesView called set_can_focus(False) on the container that holds every
+Activity icon, the owner icon and the current-activity icon. In GTK3 that only
+stopped the container itself becoming a focus stop. GTK4 changed the meaning:
+can-focus gates whether focus may enter the widget *or any of its children*,
+so the whole ring became unreachable by keyboard. Tab on Home cycled between
+the search entry and two toolbar buttons and never touched an Activity.
+
+set_focusable(False) is the GTK4 spelling of the original intent: this widget
+is not itself a focus stop, its children still are.
+
+--- a/src/jarabe/desktop/favoritesview.py
++++ b/src/jarabe/desktop/favoritesview.py
+@@ -124,7 +124,12 @@
+         ViewContainer.__init__(self, layout=self._layout,
+                                owner_icon=owner_icon,
+                                activity_icon=current_activity)
+-        self.set_can_focus(False)
++        # GTK3's set_can_focus(False) only stopped this container taking
++        # focus. In GTK4 can-focus gates whether focus may enter the widget
++        # *or any of its children*, so it made every Activity icon in the
++        # ring unreachable by keyboard. set_focusable(False) is the GTK4
++        # spelling of the original intent.
++        self.set_focusable(False)
+ 
+         # Drag and drop is set only for the Random layout.
+         self._dragging_mode = False
