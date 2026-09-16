@@ -299,39 +299,64 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   Enter and Space all reach a real Activity. See
   `reports/gtk4/keyboard-delivery-20260915.md`.
 
-## GTK4-025 — the preview patch series no longer applies end to end
+## GTK4-025 — the preview patch series does not reconstruct the preview
 
 - Category: `BUILD` / patch pipeline
-- Found: 2026-09-16, during a repository cleanup pass. Not caused by that
-  pass; confirmed by re-running the build with the cleanup's own changes
-  reverted, which drifts at exactly the same patch.
-- Reproduction: inside the development guest, run
-  `scripts/sugar-gtk4-build.sh`. It stops with:
+- Reproduction: inside the development guest, `make sugar-gtk4-series-check`.
+  It builds a pristine tree per repository with `git archive HEAD` from the
+  pinned baseline SHAs, applies the series with no idempotence heuristics,
+  and reports how each patch lands.
+- Current state (2026-09-16, after the first repair pass):
 
   ```text
-  GTK4 preview patch drift: 0012-home-lazy-list-search.patch
-  target: .../gtk4-preview/sources/sugar
+  exact=79 fuzz=32 failed=9 skipped=1 uncompilable=0
+  Result: PASS (a clean rebuild compiles)
   ```
 
-- Evidence: `build/applied-patches/` holds 135 stamps while the series now
-  carries 156 patches, and the newest stamp is `0135`. So the last full
-  successful run predates `0136`. Everything from `0136` onward has been
-  applied by hand during investigation sessions and has never been
-  re-derived from the series.
-- Root cause: the pipeline's idempotence model. A patch is considered
-  satisfied when `git apply --reverse --check` succeeds, which stops being
-  true once a *later* patch edits the same region. `0012` touches
-  `homebox.py`, and `0141`/`0142` later rewrote the Home search/view code
-  in the same file, so `0012` can now be neither applied nor reverse
-  verified. The 84 hand-written `verified ...` special cases in
-  `sugar-gtk4-build.sh` exist to paper over earlier instances of this.
-- Consequence: the preview tree in the guest is currently the only copy of
-  the post-`0135` state. It is reproducible from a clean checkout only up
-  to `0011`. This is a reproducibility risk, not a runtime defect; the
-  running preview is healthy.
-- Deliberately not fixed here. The honest repair is to rebase the series
-  against the current preview tree so each patch's context matches, which
-  is a substantial change to the project's patch model and needs its own
-  pass with its own evidence. Recorded so it is visible rather than
-  discovered again.
-- Status: OPEN.
+- What was repaired in that pass:
+  - `0040` appended `model.stack.set_visible_child_name("home")` on every
+    build run through a context-free hunk; the live checkout accumulated
+    348 copies. `0038` had itself been regenerated from that corrupted tree.
+    0038 is now an exact diff and 0040 is gone.
+  - `0045` (a hunk that deletes a line from between `else:` and its body,
+    which cannot match a valid file) and `0046` are removed; `0156` carries
+    their intent.
+  - `0139` assumed `self._last_dispatch` already existed. It did not exist
+    in any patch - only in the hand-edited checkout - so the patch could
+    never apply to a clean baseline. It now introduces the whole mechanism.
+  - The `main.py` and `homewindow.py` chains are folded into `0157` and
+    `0158`. Replaying the old chains produced a `main.py` that failed to
+    parse (`IndentationError` at line 310); both files are now byte-identical
+    to the verified preview after a clean replay.
+
+- What remains open, and why this is still a blocker:
+  **A clean replay compiles but does not run.** Started against the rebuilt
+  tree, the shell aborts during startup:
+
+  ```text
+  File ".../jarabe/desktop/favoritesview.py", line 92, in set_resume_mode
+  ```
+
+  `patch --fuzz` places content in the wrong scope. In `favoritesview.py`
+  it put the accessibility calls (`set_focusable`, `update_property`,
+  `set_accessible_role`) at the end of the preceding class's method instead
+  of inside `ActivityIcon.__init__`, so they act on the wrong object.
+  `groupbox.py` gains a duplicated `update_property` block and `meshbox.py`
+  has two statements in the opposite order.
+
+  32 patches still need fuzz and 9 still fail outright:
+  `0030`, `0103`, `0106`, `0109`, `0121`, `0122`, `0123`, `0127`, `0144`.
+  The remaining failures are concentrated in the Frame accessibility chain
+  (`0118`-`0123`), the Journal (`0104`-`0109`, `0144`) and
+  `service.py` (`0100`-`0103`).
+
+- Consequence: the running preview is healthy and is still the only complete
+  copy of the post-`0135` state. A fresh checkout can now rebuild a tree that
+  imports, but not one that starts.
+- Next step: the same treatment applied to `main.py` and `homewindow.py` -
+  replay to each failing patch's position, regenerate it as an exact-context
+  diff, and fold the chains whose intermediate steps cancel out. The
+  per-file work left is `favoritesview.py`, `groupbox.py`, `meshbox.py`,
+  `service.py`, `journalactivity.py`, `journalwindow.py`,
+  `controlpanel/gui.py` and `datastore.py`.
+- Status: OPEN, reduced.
