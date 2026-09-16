@@ -298,3 +298,40 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   (keyboard focus at map time) these close the path: typing, Tab, Shift+Tab,
   Enter and Space all reach a real Activity. See
   `reports/gtk4/keyboard-delivery-20260915.md`.
+
+## GTK4-025 — the preview patch series no longer applies end to end
+
+- Category: `BUILD` / patch pipeline
+- Found: 2026-09-16, during a repository cleanup pass. Not caused by that
+  pass; confirmed by re-running the build with the cleanup's own changes
+  reverted, which drifts at exactly the same patch.
+- Reproduction: inside the development guest, run
+  `scripts/sugar-gtk4-build.sh`. It stops with:
+
+  ```text
+  GTK4 preview patch drift: 0012-home-lazy-list-search.patch
+  target: .../gtk4-preview/sources/sugar
+  ```
+
+- Evidence: `build/applied-patches/` holds 135 stamps while the series now
+  carries 156 patches, and the newest stamp is `0135`. So the last full
+  successful run predates `0136`. Everything from `0136` onward has been
+  applied by hand during investigation sessions and has never been
+  re-derived from the series.
+- Root cause: the pipeline's idempotence model. A patch is considered
+  satisfied when `git apply --reverse --check` succeeds, which stops being
+  true once a *later* patch edits the same region. `0012` touches
+  `homebox.py`, and `0141`/`0142` later rewrote the Home search/view code
+  in the same file, so `0012` can now be neither applied nor reverse
+  verified. The 84 hand-written `verified ...` special cases in
+  `sugar-gtk4-build.sh` exist to paper over earlier instances of this.
+- Consequence: the preview tree in the guest is currently the only copy of
+  the post-`0135` state. It is reproducible from a clean checkout only up
+  to `0011`. This is a reproducibility risk, not a runtime defect; the
+  running preview is healthy.
+- Deliberately not fixed here. The honest repair is to rebase the series
+  against the current preview tree so each patch's context matches, which
+  is a substantial change to the project's patch model and needs its own
+  pass with its own evidence. Recorded so it is visible rather than
+  discovered again.
+- Status: OPEN.
