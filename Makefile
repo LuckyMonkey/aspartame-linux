@@ -3,7 +3,7 @@ BUILD_ROOT ?= /media/freezer/SteamLibrary/vms/aspartame-build
 OUT_DIR ?= $(BUILD_ROOT)/artifacts/out
 WORK_DIR ?= $(BUILD_ROOT)/artifacts/work
 
-.PHONY: iso run rebuild-run clean test mdm-check mdm-run sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-visual-check sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-init sugar-gtk4-build sugar-gtk4-run sugar-gtk4-smoke sugar-gtk4-check sugar-gtk4-update sugar-gtk4-status sugar-modernization-check activity-review-inventory activity-review-check activity-review-capture activity-contract-check count-deploy
+.PHONY: iso run rebuild-run clean test mdm-check mdm-run sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-visual-check sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-init sugar-gtk4-build sugar-gtk4-run sugar-gtk4-smoke sugar-gtk4-check sugar-gtk4-update sugar-gtk4-status sugar-gtk4-series-check sugar-modernization-check activity-review-inventory activity-review-check activity-review-capture activity-contract-check count-deploy
 
 iso:
 	./scripts/build-in-arch-root.sh
@@ -74,6 +74,9 @@ sugar-gtk4-update:
 
 sugar-gtk4-status:
 	./scripts/sugar-gtk4-upstream-status.sh
+
+sugar-gtk4-series-check:
+	./scripts/sugar-gtk4-series-check.sh
 
 activity-review-inventory:
 	./scripts/activity-review-inventory.py
