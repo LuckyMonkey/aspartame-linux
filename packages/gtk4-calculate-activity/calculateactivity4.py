@@ -85,7 +85,10 @@ class CalculateActivity(SimpleActivity):
         if label == "=":
             self._calculate()
         else:
-            self.entry.insert_text(label, self.entry.get_text_length(), None)
+            # Gtk.Editable.insert_text takes (text, position). Passing a
+            # separate length raised TypeError inside the clicked handler on
+            # every press, so the keypad silently inserted nothing.
+            self.entry.insert_text(label, self.entry.get_text_length())
             self.entry.grab_focus()
 
     def _calculate(self, *_args):
