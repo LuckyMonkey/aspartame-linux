@@ -79,6 +79,13 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 - [x] Home/Activity switching and semantic classic/modern Spaces
 - [x] Frame, palettes, notifications, clipboard and DnD at the supported level
 - [x] Journal entries/search/resume/details/chooser and datastore persistence
+- [x] Physical function keys in the modern Space. Closed 2026-09-15: F1/F3/F5
+      reach Neighborhood/Home/Journal, F6 reveals the Frame and Escape
+      dismisses it, and physical F7/F8 switch Spaces across two round trips.
+      Root cause was `SugarKeyGrabber` never releasing its X11 passive grabs,
+      fixed in `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`;
+      see `reports/gtk4/fkey-grab-resolved-20260915.md`. The rebuilt library
+      is a packaging debt for the ISO.
 - [ ] Neighborhood/Group peer actions (empty state is verified; peer requires a
       second collaboration participant)
 - [x] Settings, Activity Manager, approval and contextual Help

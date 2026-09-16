@@ -1,0 +1,107 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] key-grabber: release grabs so another shell can own the keys
+
+SugarKeyGrabber only ever took X11 passive grabs. grab_keys() grabbed each
+key in the new list and appended it, without ungrabbing the previous set, so
+the grabs were cumulative and an empty list was a no-op: a caller could never
+hand a key back. dispose() freed the key list without ungrabbing either, and
+left the GDK event filter installed with the freed object as its data, so
+events kept being dispatched against freed memory once the grabber went away
+("instance of invalid non-instantiatable type 'void'").
+
+This matters wherever two shells share a display. Aspartame runs a classic
+GTK3 Space and a modern GTK4 Space on one X display and hands key ownership
+to whichever is selected. The classic shell called grab_keys([]) on switching
+away and logged that it had released, but F1-F8 stayed grabbed for the life
+of the process, so no function key ever reached the modern shell - no view
+switching, no Frame, no Space switching - while ordinary keys worked. Probing
+with XGrabKey/BadAccess showed F1-F8 held and Tab/letters free, and the keys
+came free the instant the classic shell exited.
+
+grab_keys() now ungrabs and frees the previous set before taking the new one,
+and dispose() ungrabs, detaches the event filter and chains up.
+
+Upstream candidate: https://github.com/sugarlabs/sugar-toolkit-gtk3
+
+Applies to sugar-toolkit-gtk3 v0.121 (Arch package sugar-toolkit-gtk3
+0.121-7). Aspartame carries it as a rebuilt /usr/lib/libsugarext.so until it
+lands upstream; see docs/sugar-modernization/GTK4_RUNBOOK.md.
+
+diff --git a/src/sugar3/sugar-key-grabber.c b/src/sugar3/sugar-key-grabber.c
+index a4c0096..07e63f2 100644
+--- a/src/sugar3/sugar-key-grabber.c
++++ b/src/sugar3/sugar-key-grabber.c
+@@ -51,6 +51,9 @@ typedef struct {
+ 
+ G_DEFINE_TYPE(SugarKeyGrabber, sugar_key_grabber, G_TYPE_OBJECT)
+ 
++static void grab_key (SugarKeyGrabber *grabber, Key *key, gboolean grab);
++static GdkFilterReturn filter_events (GdkXEvent *xevent, GdkEvent *event, gpointer data);
++
+ static guint signals[N_SIGNALS];
+ 
+ static void
+@@ -66,10 +69,32 @@ sugar_key_grabber_dispose (GObject *object)
+ 	SugarKeyGrabber *grabber = SUGAR_KEY_GRABBER(object);
+ 
+ 	if (grabber->keys) {
++		GList *key;
++
++		/* Hand the keys back to the display. Freeing the list without
++		 * ungrabbing left the X11 passive grabs in place for the life
++		 * of the process, so no other shell could ever receive them. */
++		for (key = grabber->keys; key != NULL; key = key->next) {
++			gdk_error_trap_push();
++			grab_key(grabber, key->data, FALSE);
++			gdk_flush();
++			gdk_error_trap_pop_ignored();
++		}
++
+ 		g_list_foreach(grabber->keys, (GFunc)free_key_info, NULL);
+ 		g_list_free(grabber->keys);
+ 		grabber->keys = NULL;
+ 	}
++
++	if (grabber->root) {
++		/* The filter was installed in init with this object as its data.
++		 * Leaving it behind means events keep being dispatched against
++		 * freed memory once the grabber goes away. */
++		gdk_window_remove_filter(grabber->root, filter_events, grabber);
++		grabber->root = NULL;
++	}
++
++	G_OBJECT_CLASS(sugar_key_grabber_parent_class)->dispose(object);
+ }
+ 
+ static void
+@@ -237,10 +262,30 @@ sugar_key_grabber_grab_keys(SugarKeyGrabber *grabber,
+     const char *key;
+     Key *keyinfo = NULL;
+     gint min_keycodes, max_keycodes;
++    GList *old_key;
+ 
+     XDisplayKeycodes(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()),
+                      &min_keycodes, &max_keycodes);
+ 
++    /* Release the keys grabbed by a previous call before taking the new set.
++     * Without this the grabber only ever accumulates grabs: passing an empty
++     * list did nothing at all, so a caller could never hand a key back, and
++     * the X11 passive grabs outlived both the call and the object. Sugar
++     * relies on giving keys up when another shell owns the display. */
++    for (old_key = grabber->keys; old_key != NULL; old_key = old_key->next) {
++        Key *previous = old_key->data;
++
++        gdk_error_trap_push();
++        grab_key(grabber, previous, FALSE);
++        gdk_flush();
++        gdk_error_trap_pop_ignored();
++
++        g_free(previous->key);
++        g_free(previous);
++    }
++    g_list_free(grabber->keys);
++    grabber->keys = NULL;
++
+     for (i = 0; i < n_elements; i++){
+ 	keyinfo = g_new0 (Key, 1);
+ 	keyinfo->key = g_strdup(keys[i]);

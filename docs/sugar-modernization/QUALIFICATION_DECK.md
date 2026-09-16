@@ -21,10 +21,10 @@ Operating rules:
 Ledger fields: WORKFLOW / GTK3 REFERENCE / GTK4 RESULT / GAP / MINIMUM FIX /
 EVIDENCE / STATUS.
 
-Provenance: W1, W3 and W5 were verified against the live guest on
-2026-09-15. W2, W4, W7, W8, W9 and W10 carry PASS from existing evidence
-reports in this repository and were not re-run that day; treat them as
-inherited until a change plausibly touches them.
+Provenance: W1, W2, W3, W5, W6 and W7 were verified against the live guest on
+2026-09-15. W4, W8, W9 and W10 carry PASS from existing evidence reports in
+this repository and were not re-run that day; treat them as inherited until a
+change plausibly touches them.
 
 ---
 
@@ -84,34 +84,29 @@ inherited until a change plausibly touches them.
 ## W6 — Repeated F7/F8 Space comparison
 
 - **GTK3 reference:** F7 and F8 switch between the classic and modern Spaces.
-- **GTK4 result:** semantic switching round-trips cleanly and is the working
-  comparison mechanism. **No function key** reaches the modern shell.
-- **Gap:** see W7 — the two collapse into one frontier,
-  `reports/gtk4/fkey-grab-frontier-20260915.md`.
-- **STATUS: OPEN — merged into the F-key grab frontier**
+- **GTK4 result:** physical F7/F8 switch correctly, verified over two
+  consecutive round trips with `runtime-check=ok` for gtk3 on desktop 0 and
+  gtk4 on desktop 1 each time.
+- **Gap:** was the shared key grab — see W7; one cause, both workflows.
+- **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`
+- **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
+- **STATUS: PASS** (2026-09-15)
 
 ## W7 — Frame navigation
 
 - **GTK3 reference:** F6 reveals the Frame; Escape dismisses it.
-- **GTK4 result:** failing. Not a Frame defect: `Frame.toggle()` never runs on
-  F6 (instrumented and silent), and the hot corner — same `toggle()` — also
-  fails from a verified Home view.
-- **Gap:** no function key reaches the GTK4 shell at all. Instrumenting the
-  shell's own first capture point showed `a` arriving three times and F1/F3/
-  F5/F6 never arriving. Ruled out: this session's focus work (0140 revert
-  test), stuck modifiers, Metacity (only binds F7/F8), and the GTK3 control
-  panel. Remaining suspect is the classic shell's `SugarExt.KeyGrabber`
-  global X11 grabs surviving a release path that relies on Python `del` for
-  GObject finalisation, despite logging "GTK3 released (workspace=1)".
-- **Minimum fix:** in `SugarExt.KeyGrabber`, shipped by
-  **`sugar-toolkit-gtk3 0.121-7`** (`/usr/lib/libsugarext.so`):
-  `grab_keys()` must `XUngrabKey` the previous set so an empty set is a real
-  ungrab. Proven by probe that the shipped release path, a forced
-  `run_dispose()`, and a replacement key set all fail to drop the grabs, and
-  that they free the instant the classic shell exits. Requires rebuilding
-  that package; upstream candidate.
-- **Evidence:** `reports/gtk4/fkey-grab-frontier-20260915.md`
-- **STATUS: OPEN — root cause narrowed to cross-Space X11 grab release**
+- **GTK4 result:** F6 reveals all four Frame panels — zoom toolbar, Journal
+  and Help, the XO owner icon, and the device tray — and Escape dismisses it.
+  F1/F3/F5 also reach Neighborhood, Home and Journal.
+- **Gap:** never a Frame defect. `SugarKeyGrabber` only ever took X11 passive
+  grabs: `grab_keys()` never ungrabbed the previous set, so the classic
+  shell's release was a no-op and F1-F8 stayed owned for the life of that
+  process while ordinary keys flowed normally. `dispose()` likewise never
+  ungrabbed and left its GDK event filter on freed memory.
+- **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
+  rebuilt into `/usr/lib/libsugarext.so`.
+- **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
+- **STATUS: PASS** (2026-09-15)
 
 ## W8 — Palette interaction
 
@@ -146,10 +141,14 @@ inherited until a change plausibly touches them.
 
 ## Next
 
-Open: the F-key grab frontier (W6 + W7, same cause) and W11 (needs a second
-participant). Everything else passes.
+Only W11 remains open, and it is blocked on a second live participant rather
+than on code. Every other workflow in the deck passes with runtime evidence.
 
-The F-key frontier is the single highest-value remaining item: it is what
-stands between the current state and human F7/F8 parity testing. It needs one
-direct observation — are the X11 grabs actually released? — before any code
-changes.
+That makes this the point the deck was built for: **human F7/F8 parity
+testing**, not another autonomous hardening phase.
+
+One packaging debt to clear first: the guest runs a rebuilt
+`/usr/lib/libsugarext.so` carrying
+`patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`. A fresh
+ISO will not have it until the `sugar-toolkit-gtk3` package is rebuilt with
+that patch, and without it no function key reaches the modern Space.
