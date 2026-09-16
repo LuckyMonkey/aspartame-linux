@@ -21,10 +21,10 @@ Operating rules:
 Ledger fields: WORKFLOW / GTK3 REFERENCE / GTK4 RESULT / GAP / MINIMUM FIX /
 EVIDENCE / STATUS.
 
-Provenance: W1, W2, W3, W5, W6 and W7 were verified against the live guest on
-2026-09-15. W4, W8, W9 and W10 carry PASS from existing evidence reports in
-this repository and were not re-run that day; treat them as inherited until a
-change plausibly touches them.
+Provenance: W1-W8 were verified against the live guest on 2026-09-15. W9 and
+W10 carry PASS from existing evidence reports in this repository and were not
+re-run that day; treat them as inherited until a change plausibly touches
+them.
 
 ---
 
