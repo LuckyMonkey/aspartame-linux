@@ -44,6 +44,8 @@ The UI owns `selected`, `activate`, `secondary_action`, `back`, `next`, and `pre
 
 A visual icon reacting to pointer presence, a screen reader announcing an object, and controller focus landing on the same object are presentations of the same semantic selection state.
 
+Keyboard minimum: Tab moves to the next interactive object, Shift+Tab moves backward, Enter activates, Space activates/toggles where appropriate, and Escape dismisses or goes back. Focus must be visible, deterministic, and free of traps. Important objects require meaningful accessible names and roles, plus state and description where needed.
+
 ## 4. First-use learning is demonstrated
 
 A foundational curriculum may introduce capabilities only as needed:
@@ -76,13 +78,13 @@ The same interface semantics must remain available through assistive technology.
 
 Do not ask `what kind of user is this?` when the useful question is `what capability must the computer provide?`
 
-## 7. Orange/blue machine grammar
+## 7. Machine grammar and personal identity
 
-The default Aspartame duotone is orange/blue. Use it as a familiar two-part visual language, especially for Left Hand / Right Hand Chirality. Do not assign moral or hierarchical meaning to the pair.
+Machine state and personal identity are separate visual concepts. XOColor identifies the person. Machine grammar may use a stable two-sided treatment where a product interaction needs two nonhierarchical sides, but hue must never be the only carrier of meaning.
 
-Prior exposure to orange/blue paired imagery may make the distinction feel familiar even to a young first-time user, but Aspartame must never require knowledge of a particular game, film, brand, or cultural reference. Familiarity is a head start, not a prerequisite.
+Preserve semantics with position, shape/glyph, labels, spoken names, focus, and bindings. A color pair may make a relationship quickly recognizable; it must not become a prerequisite for understanding it.
 
-Never rely on hue alone. Preserve semantics with position, shape/glyph, labels, spoken names, focus, and bindings. XOColor identifies the person; orange/blue identifies the machine's two-sided grammar.
+For Chirality, the authoritative concepts are **Left Hand** and **Right Hand**, not `A/B`, `primary/secondary`, `source/destination`, or a particular pair of colors. The two hands are peers.
 
 ## 8. Low floor, no ceiling
 
@@ -90,7 +92,19 @@ The primary interaction can be obvious enough for a first encounter with a compu
 
 Do not replace the simple interface with an unrelated `advanced mode`. The expert should be descending into the same computer the beginner was already using.
 
+A useful progression is:
+
+```text
+first encounter: symbols, Activities, obvious actions
+later: Journal, objects, files, settings
+deeper: terminal, scripting, inspection
+further: Python APIs, services, internals
+expert: edit the desktop itself
+```
+
 The target range is intentionally broad: a pre-literate child, a blind adult, an older first-time or casual user, and a scientist or developer should not require four different operating-system personalities. They require different capabilities and different depths of the same system.
+
+> **There should be no obvious skill level at which a user has to outgrow Aspartame.**
 
 ## 9. Activity, Object, Journal, Capability
 
@@ -122,3 +136,37 @@ The system should be able to bootstrap the user's interaction vocabulary from ca
 Aspartame should be credible as the operating system a parent introduces before Windows, macOS, or another conventional desktop. Success means the person learns transferable concepts: pointer, selection, activation, text entry, navigation, creation, persistence, and eventually inspection and programming.
 
 Do not teach conventional desktop metaphors merely because they are conventional. Teach the computer first. Other operating systems can then be understood as alternative organizations of concepts the user already owns.
+
+## 13. Chirality: bounded multitasking
+
+Future Aspartame multitasking is intentionally bounded by attention rather than process count.
+
+> **Two hands. One focus. No third hand.**
+
+A task may have zero, one, or two hands. With two hands, one Activity is visible and active while the other preserves context. The model is not split-screen, tiling, arbitrary workspace management, or a third hidden application slot.
+
+```text
+hands <= 2
+active_hands == 1
+visible_activities == 1
+```
+
+The Left Hand and Right Hand are nonhierarchical. One may hold steady while the other changes the object or task, but `left` does not mean source and `right` does not mean destination. Sending and receiving are contextual behaviors, not permanent identities.
+
+Chirality is object/task-centered: the two Activities cooperate around meaningful work. Processes may remain alive elsewhere; the attention model does not pretend the operating system can only execute two processes.
+
+During GTK4 migration, F7/F8 belong to the GTK3-reference/GTK4-candidate behavioral oracle. Do not turn those keys into Chirality until migration is complete. Reuse proven switching behavior later, not migration scaffolding.
+
+## 14. Transitions animate pixels, not managed windows
+
+Cross-window transparency and managed-window geometry are not product requirements. For shell transitions, prefer a fixed opaque transition surface containing a snapshot/framebuffer representation of the source or destination, then animate alpha, clipping, scale, or transform inside that surface.
+
+> **Animate pixels, not managed shell windows.**
+
+Do not make Jarabe transitions depend on arbitrary window movement/resizing or compositor-specific cross-top-level transparency. This keeps the interaction model compatible with the modern Wayland/Casilda direction.
+
+## 15. Sugar remains Sugar
+
+GTK4 modernization is not permission to redesign Sugar into a conventional desktop. Preserve Home, Frame, Journal, Neighborhood, palettes, XO identity, Activities, object continuity, and visible context where they express the human model.
+
+Use ordinary GTK widgets for ordinary forms, text, and lists. Use Snapshot/GSK where Sugar genuinely needs custom visual composition. Platform abstractions should exist at real seams—lifecycle, notifications, clipboard, Journal/file interaction, dialogs, session/window behavior, launching, theme tokens, input, and collaboration—not around every widget merely because a port is underway.
