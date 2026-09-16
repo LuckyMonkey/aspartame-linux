@@ -101,7 +101,14 @@ them.
 - **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
   shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`
 - **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
-- **STATUS: PASS** (2026-09-15)
+- **STATUS: REGRESSED — needs re-verification from a clean boot** (2026-09-16).
+  After a full graphical-session restart, F8 still reaches the modern Space
+  but F7 no longer returns to the classic one. EWMH switching works, and the
+  key-grab probe shows nothing holds F1-F8 while the modern Space is current
+  (`grabbed-elsewhere=none`) against `F1..F8` while the classic one is. The
+  rebuilt toolkit package is installed and carries the fix. No change in the
+  2026-09-16 pass touches F-key routing. See
+  `reports/gtk4/five-fix-pass-2-20260916.md`.
 
 ## W7 — Frame navigation
 
@@ -117,7 +124,8 @@ them.
 - **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
   shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`.
 - **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
-- **STATUS: PASS** (2026-09-15)
+- **STATUS: PASS** (2026-09-15), with the F7 half regressed on 2026-09-16 —
+  see W6.
 
 ## W8 — Palette interaction
 
@@ -171,6 +179,26 @@ them.
 
 ---
 
+## Open findings from the second five-fix pass (2026-09-16)
+
+Reproduced and left open. Full evidence in
+`reports/gtk4/five-fix-pass-2-20260916.md`.
+
+- **Settings → Language crashes on construction.** The image ships three
+  locales, so `read_all_languages()` returns nothing, `_add_row()` falls
+  back to `'English'`, and `_build_country_list` raises `KeyError:
+  'English'`. Found as the sixth defect of a five-defect pass, so recorded
+  rather than fixed.
+- **The Settings control panel cannot be dismissed from the keyboard.**
+  Escape, F3 and F4 leave it up and every keystroke reaches its search
+  entry. Related to the 2026-09-15 finding that it does not cover the
+  screen.
+- **The shell logs every keystroke at WARNING**, so typed text lands in the
+  shell log and real warnings are buried.
+- **Alt+Tab selects the next Activity but its surface is not raised.** The
+  shell has one compositor page for all Activities and Casilda exposes no
+  way to raise a chosen toplevel. Compositor work, not a bounded fix.
+
 ## Open findings from the five-fix pass (2026-09-15)
 
 Reproduced and left open rather than pursued, each recorded because it exceeds
@@ -194,14 +222,16 @@ a bounded fix. See `reports/gtk4/five-fix-pass-20260915.md`.
 
 ## Next
 
-Only W11 remains open, and it is blocked on a second live participant rather
-than on code. Every other workflow in the deck passes with runtime evidence.
+W11 remains open and is blocked on a second live participant rather than on
+code. W6 regressed on 2026-09-16: F8 still reaches the modern Space, F7 no
+longer returns from it. Every other workflow in the deck passes with runtime
+evidence.
 
-That makes this the point the deck was built for: **human F7/F8 parity
+**Re-verify F7 from a clean boot first.** It is the one thing standing
+between here and the point the deck was built for: **human F7/F8 parity
 testing**, not another autonomous hardening phase.
 
 The key grabber fix now ships as a rebuilt package
 (`packages/sugar-toolkit-gtk3/PKGBUILD`, installed from the profile's
 `[aspartame]` repository) rather than a hand-installed library. Running
-`mkarchiso` against that repository is the one step not yet executed, because
-the host's SteamLibrary volume is unmounted and `/` has 3.9 GB free.
+`mkarchiso` against that repository is the one step not yet executed.
