@@ -84,8 +84,11 @@ them.
   rating control is reachable by keyboard.
 - **GTK4 result:** Activity trees expose named, focusable controls. The GTK3
   Activity Manager's faces and Remove pills were unnamed and unreachable and
-  are now fixed.
-- **Evidence:** `reports/gtk4/activity-manager-accessible-20260915.md`
+  are now fixed. Home's Favorites ring is reachable by Tab and launchable with
+  Enter (patches 0146/0147), and Sugar tool buttons carry accessible names
+  (0148).
+- **Evidence:** `reports/gtk4/activity-manager-accessible-20260915.md`,
+  `reports/gtk4/five-fix-pass-20260915.md`
 - **STATUS: PASS**
 
 ## W6 — Repeated F7/F8 Space comparison
@@ -136,8 +139,11 @@ them.
 ## W10 — Settings and Activity Manager
 
 - **GTK3 reference:** control panel opens, sections render, removal policy holds.
-- **GTK4 result:** navigation, Activity Manager policy and approval prompt verified.
-- **Evidence:** `reports/gtk4/settings-runtime-20260915.md`
+- **GTK4 result:** navigation, Activity Manager policy and approval prompt
+  verified. About my Computer reports the real build rather than
+  "Not available" (patch 0145).
+- **Evidence:** `reports/gtk4/settings-runtime-20260915.md`,
+  `reports/gtk4/five-fix-pass-20260915.md`
 - **STATUS: PASS**
 
 ## W11 — Neighborhood / Group collaboration with a peer
@@ -162,6 +168,27 @@ them.
 - **Evidence:** `reports/gtk4/w12-session-control-20260915.md`
 - **STATUS: PASS** (2026-09-15), with one limitation recorded: teardown of
   Activities still begins before authorization is known.
+
+---
+
+## Open findings from the five-fix pass (2026-09-15)
+
+Reproduced and left open rather than pursued, each recorded because it exceeds
+a bounded fix. See `reports/gtk4/five-fix-pass-20260915.md`.
+
+- **F5 does not open the Journal.** `show_journal()` calls `reveal()`, which
+  uses top-level window semantics, and never moves the shell's view state to
+  the Journal page. Poking the stack directly was tried and rejected: it left
+  F3 unable to return Home. The coherent fix drives the shell's zoom and
+  active-activity state. The Journal is reachable from the Frame meanwhile.
+- **Journal list rows render their palette inline.** Every entry shows three
+  full-width action bars, so ~4 of 697 entries fit on screen. The row actions
+  belong in the palette that `listview.py` already builds; the fault is in the
+  GTK4 list-row/palette-invoker port.
+- **The Settings window does not cover the screen.** Home's toolbar and search
+  entry stay visible above a modal control panel, leaving two stacked search
+  entries. Calling `fullscreen()` on the window had no effect, so this is
+  window management between the shell and a transient modal under Metacity.
 
 ---
 
