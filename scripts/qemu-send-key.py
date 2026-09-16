@@ -19,6 +19,10 @@ CHORDS.update({f"SHIFT+{name}": ("shift", qcode)
 # reaches them.
 CHORDS.update({f"CTRL+{name}": ("ctrl", qcode)
                for name, qcode in KEYCODES.items()})
+CHORDS.update({f"ALT+{name}": ("alt", qcode)
+               for name, qcode in KEYCODES.items()})
+CHORDS.update({f"ALT+SHIFT+{name}": ("alt", "shift", qcode)
+               for name, qcode in KEYCODES.items()})
 SOCKET = "/tmp/aspartame-qemu-qmp"
 
 

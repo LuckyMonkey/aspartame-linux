@@ -1,0 +1,85 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: Alt+Tab must walk the activities the shell tracks
+
+Alt+Tab raised ValueError on every press and switched nothing:
+
+  File "jarabe/model/shell.py", line 581, in get_next_activity
+    i = activities.index(current)
+  ValueError: list.index(x): x not in list
+
+get_next_activity()/get_previous_activity() walk
+_get_activities_with_window(), which keeps only entries that registered a
+Gtk window with the shell. That was true in GTK3, where each Activity had
+an X window the shell saw. In the modern Space an Activity is a Wayland
+client inside the Casilda compositor and never registers one, so with two
+Activities running the shell model holds
+
+  all=[None, 'tv.alterna.Clock', 'org.sugarlabs.StopwatchActivity']
+  with_window=[None]
+  active='org.sugarlabs.StopwatchActivity'
+
+- every real Activity is tracked, none is window-backed, and the active
+one is never in the list being indexed. The emptiness check sat after the
+index() call, so it could never run either.
+
+Walk the activities the shell actually tracks, which is the same set the
+Frame shows, and skip the shell's own window-backed entry: it has no
+bundle id and is not somewhere Alt+Tab should land.
+
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -561,26 +561,47 @@
+                 ret.append(i)
+         return ret
+ 
++    def _get_tabbing_activities(self):
++        """The activities Alt+Tab can walk.
++
++        _get_activities_with_window() only sees entries that registered a
++        Gtk window with the shell. In the modern Space an Activity is a
++        Wayland client inside the compositor and never registers one, so
++        that list holds nothing but the shell's own window - which is not
++        an Activity and has no bundle id. Walk the activities the shell
++        tracks through their D-Bus service instead; that is the same set
++        the Frame shows.
++        """
++        return [activity for activity in self._activities
++                if activity.get_bundle_id() is not None]
++
+     def get_previous_activity(self, current=None):
+         if not current:
+             current = self._active_activity
+ 
+-        activities = self._get_activities_with_window()
+-        i = activities.index(current)
+-        if len(activities) == 0:
++        activities = self._get_tabbing_activities()
++        if not activities:
+             return None
++        if current not in activities:
++            # The active entry can be the shell's own window, which Alt+Tab
++            # should not land on. Indexing it raised ValueError and the
++            # emptiness check below it could never run.
++            return activities[-1]
++        i = activities.index(current)
+         if i - 1 >= 0:
+             return activities[i - 1]
+-        return activities[len(activities) - 1]
++        return activities[-1]
+ 
+     def get_next_activity(self, current=None):
+         if not current:
+             current = self._active_activity
+ 
+-        activities = self._get_activities_with_window()
+-        i = activities.index(current)
+-        if len(activities) == 0:
++        activities = self._get_tabbing_activities()
++        if not activities:
+             return None
++        if current not in activities:
++            return activities[0]
++        i = activities.index(current)
+         if i + 1 < len(activities):
+             return activities[i + 1]
+         return activities[0]
