@@ -25,3 +25,12 @@
 - Peer-backed Neighborhood/Group behavior requires a second collaboration
   participant for live proof.
 - A full graphical-session restart intentionally ends running Activities.
+- `make activity-contract-check` has been failing since `gtk4-verified`
+  entered `docs/activity-reviews/REVIEWS.tsv`. The checker's allowed
+  `STATES` set in `scripts/activity-contract-check.py` was defined once and
+  never extended, so 18 rows using that status abort it with
+  `activity contract: invalid status gtk4-verified`. Deliberately left
+  unfixed: whether `gtk4-verified` is a status the vocabulary should gain,
+  or those rows should read `pass`, is a project decision rather than a
+  cleanup one. Everything else the checker validates is unexercised until
+  it is settled.
