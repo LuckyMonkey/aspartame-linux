@@ -1,0 +1,60 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] toolbutton: install the accelerator once the window has an application
+
+activityinstance builds the Activity - toolbar and all - and only then
+calls app.add_window(activity). So when a ToolButton's notify::root
+fires, root.get_application() is still None, _add_accelerator() returns
+early, and nothing ever retries: no Gio action is created and the
+accelerator is bound to nothing for the life of the process.
+
+ToggleToolButton already has the missing half - it connects "map" and
+re-runs _add_accelerator there, by which time add_window() has happened.
+ToolButton was never given the same retry, so Sugar's plain tool button
+accelerators (Stop's <Ctrl>Q, Copy's <Ctrl>C, Paste's <Ctrl>V, and every
+accelerator an Activity sets on a ToolButton) are dead in the GTK4 port.
+
+Give ToolButton the same map retry, and remember the installed action so
+a repeated map replaces it instead of leaking a new one, which is what
+ToggleToolButton does.
+
+--- a/src/sugar4/graphics/toolbutton.py
++++ b/src/sugar4/graphics/toolbutton.py
+@@ -78,6 +78,11 @@
+     # GTK4: Use application shortcuts instead of AccelGroup
+     app = root.get_application() if hasattr(root, "get_application") else None
+     if app and hasattr(app, "set_accels_for_action"):
++        # Replace anything installed on an earlier attempt.
++        previous = getattr(tool_button, "_accel_action_name", None)
++        if previous:
++            app.remove_action(previous)
++
+         # Create a unique action name for this button
+         action_name = f"toolbutton.{id(tool_button)}"
+ 
+@@ -90,11 +95,13 @@
+             app.set_accels_for_action(
+                 f"app.{action_name}", [tool_button.props.accelerator]
+             )
++            tool_button._accel_action_name = action_name
+         elif hasattr(root, "add_action"):
+             root.add_action(action)
+             app.set_accels_for_action(
+                 f"win.{action_name}", [tool_button.props.accelerator]
+             )
++            tool_button._accel_action_name = action_name
+ 
+ 
+ def _hierarchy_changed_cb(tool_button):
+@@ -108,6 +115,12 @@
+         tool_button.connect(
+             "notify::root", lambda *args: _hierarchy_changed_cb(tool_button)
+         )
++        # activityinstance builds the toolbar, then hands the window to the
++        # Gtk.Application, so notify::root fires while get_application() is
++        # still None and the action is never installed. ToggleToolButton
++        # already retries on map; ToolButton did not, which left every
++        # Sugar tool button accelerator dead.
++        tool_button.connect("map", lambda *args: _add_accelerator(tool_button))
+ 
+ 
+ class ToolButton(Gtk.Button):

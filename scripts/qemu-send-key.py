@@ -15,6 +15,10 @@ CHORDS = {"SHIFT+TAB": ("shift", "tab")}
 # and not only through Tab.
 CHORDS.update({f"SHIFT+{name}": ("shift", qcode)
                for name, qcode in KEYCODES.items()})
+# Same for Ctrl, so toolbar accelerators can be tested the way a user
+# reaches them.
+CHORDS.update({f"CTRL+{name}": ("ctrl", qcode)
+               for name, qcode in KEYCODES.items()})
 SOCKET = "/tmp/aspartame-qemu-qmp"
 
 
@@ -39,7 +43,7 @@ def _command(sock, events):
 def main():
     key = sys.argv[1].upper() if len(sys.argv) == 2 else ""
     if key not in KEYCODES and key not in CHORDS:
-        raise SystemExit(f"usage: {sys.argv[0]} F1..F12 or A..Z; TAB, SHIFT+TAB, ENTER, ESC, SPACE")
+        raise SystemExit(f"usage: {sys.argv[0]} F1..F12 or A..Z; TAB, ENTER, ESC, SPACE; SHIFT+<key>, CTRL+<key>")
     with socket.socket(socket.AF_UNIX) as sock:
         sock.settimeout(2)
         sock.connect(SOCKET)
