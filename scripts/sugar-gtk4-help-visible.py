@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Launch Help in the modern Space, activate it, and report visible text."""
-import os, subprocess, sys, time
+import os, subprocess, time
 from pathlib import Path
 
 if "IMAGE_ID=aspartame" not in Path("/etc/os-release").read_text():
