@@ -5,9 +5,9 @@ root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 test -f "$root/Makefile"
 test -f "$root/archiso/aspartame/profiledef.sh"
 test -f "$root/archiso/aspartame/packages.x86_64"
-rg -q '^sugar$' "$root/archiso/aspartame/packages.x86_64"
-rg -q '^cups$' "$root/archiso/aspartame/packages.x86_64"
-rg -q '^networkmanager$' "$root/archiso/aspartame/packages.x86_64"
+grep -q '^sugar$' "$root/archiso/aspartame/packages.x86_64"
+grep -q '^cups$' "$root/archiso/aspartame/packages.x86_64"
+grep -q '^networkmanager$' "$root/archiso/aspartame/packages.x86_64"
 
 required_scripts=(
     build-iso.sh run-qemu.sh ssh-asp sugar-info.sh sugar-reload.sh
