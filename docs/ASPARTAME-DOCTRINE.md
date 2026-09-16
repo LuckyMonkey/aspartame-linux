@@ -18,6 +18,19 @@ The proof is not a manifesto. **The proof boots.** A Python-heavy desktop, servi
 
 Sugar is chosen because it is unusually compatible with that experiment: its shell, toolkit-facing logic, and Activity culture are deeply Python-oriented. Sugar is not sacred. The Python-first, inspectable-computer idea is the larger project.
 
+```text
+🐧 Linux / native substrate
+        ↓
+🐍 Python common language
+        ├── 🍬 Sugar / Jarabe desktop
+        ├── 🧩 Activities
+        ├── 🌐 Django / server services
+        ├── 🛠️ system tooling and automation
+        └── 🧪 Snakepit qualification
+```
+
+The native substrate is not denied; it is kept at the layer where native code is appropriate. The experiment is to avoid multiplying high-level runtimes above it without a demonstrated reason.
+
 ## Capability is demonstrated, not presumed
 
 **Capability** is the common vocabulary for people, software, and environments.
@@ -29,6 +42,35 @@ Aspartame avoids treating accessibility as a separate kind of computer for a sep
 For a person, the requirement might be selection, activation, reading, writing, hearing information, navigation, or pointer control. For software, it might be an interpreter version, ABI, module, native library, display backend, network service, storage interface, or patch.
 
 When a capability is missing, determine whether the environment can provide, teach, translate, substitute, or otherwise satisfy the missing capability. Then demonstrate the result.
+
+```text
+                    ASPARTAME CAPABILITY MODEL
+
+          PERSON                              SOFTWARE
+            │                                    │
+            ▼                                    ▼
+     required interaction                 required runtime
+        capabilities                        capabilities
+            │                                    │
+            ├─ select                            ├─ Python version
+            ├─ activate                          ├─ ABI / module
+            ├─ read / hear                       ├─ native library
+            ├─ type                              ├─ display backend
+            └─ navigate                          └─ patch / service
+            │                                    │
+            └──────────────┬─────────────────────┘
+                           ▼
+                 DOES THE ENVIRONMENT
+                 PROVIDE WHAT IS NEEDED?
+                         /     \
+                       yes      no
+                        │        │
+                    demonstrate  identify gap
+                        │        │
+                    preserve     remediate
+                    evidence        │
+                                   retry
+```
 
 A checkbox is not demonstration. A dependency solver returning success is not demonstration. A window appearing is not demonstration. Qualification should exercise the real interaction or principal workflow at the boundary being claimed.
 
@@ -44,6 +86,22 @@ The system adapts to requested or demonstrated capabilities, not identity catego
 
 > **There should be no obvious skill level at which a user has to outgrow Aspartame.**
 
+```text
+👶 first contact      icons → selection → Activities
+        ↓
+📚 growing fluency    Journal → objects → creation
+        ↓
+⌨️ curious user       terminal → scripting
+        ↓
+🐍 programmer         Python APIs → services → internals
+        ↓
+🔬 expert             scientific/development workloads
+        ↓
+🛠️ hacker             edit the fucking desktop
+
+                 SAME COMPUTER
+```
+
 A useful long arc is icons and Activities -> Journal and objects -> terminal and scripting -> Python APIs and internals -> editing the desktop itself. This is progressive disclosure of the same computer, not an unrelated advanced mode.
 
 ## The first computer
@@ -53,6 +111,24 @@ Aspartame aims to be a computer a parent can show a child before Windows or anot
 First-use interaction must not assume literacy or prior GUI knowledge. The computer may speak before it asks the user to read. It should be able to demonstrate pointer movement, targeting, selection, activation, keyboard input, erasing, Enter, scrolling, and dragging through cause and effect.
 
 Teach experience before terminology where practical. Instruction must remain respectful and capability-based. Teaching narration may recede when no longer wanted while screen-reader or spoken-text capability remains independently available.
+
+```text
+🖐️ move physical mouse
+        ↓
+🖱️ pointer moves
+        ↓
+🎯 pointer reaches target
+        ↓
+✨ target visibly/spokenly selects
+        ↓
+👆 press button
+        ↓
+▶️ target activates
+        ↓
+💬 only then name the concept: “click”
+```
+
+The same semantic lesson can be expressed through keyboard, touch, controller, speech, or screen-reader navigation. The computer teaches the capability; it does not classify the person.
 
 > **No prerequisite interaction may require knowledge that Aspartame has not yet given the user an opportunity to discover.**
 
@@ -69,9 +145,22 @@ Where Aspartame controls product vocabulary, prefer **Capability** over using `A
 
 ## Identity and machine grammar
 
-XOColor is personal identity. Machine-state grammar is separate and must never depend on hue alone. Where Aspartame uses a two-sided visual language, position, glyph, semantic names, spoken labels, focus, and bindings remain authoritative.
+XOColor is personal identity. Machine-state grammar is separate and must never depend on hue alone.
+
+Aspartame's default two-sided machine grammar is **orange + blue**. 🟠🔵 It is intentionally familiar before it is explained: many users, including very young users, have already encountered orange/blue as a paired visual distinction in games, videos, toys, diagrams, and popular culture. That prior exposure is useful cognitive scaffolding, not a dependency and not a reference the user must recognize.
+
+```text
+          🟠 LEFT HAND       RIGHT HAND 🔵
+                │                │
+                └──── one task ──┘
+                       one focus
+```
+
+Orange does not mean warning and blue does not mean safe. Neither means primary, good, source, or preferred. They mean two related sides. Position, glyph, semantic names, spoken labels, focus, and bindings remain authoritative so color is never the only carrier of meaning.
 
 For Chirality, the concepts are **Left Hand** and **Right Hand**. Do not collapse them into `A/B`, `primary/secondary`, or permanent `source/destination` roles. The hands are peers.
+
+> **XOColor identifies the person. Orange/blue explains the machine.**
 
 ## Product family
 
@@ -81,7 +170,22 @@ Aspartame is larger than the Sugar desktop.
 - **aspartame-server** omits Sugar but includes the server stack, including Django for API and administration surfaces where that stack is defined.
 - **Aspartame desktop** adds Sugar, GTK4/native graphical substrate, Journal, Activities, and the human-facing capability model.
 
+```text
+                         ASPARTAME
+                            │
+             ┌──────────────┼──────────────┐
+             ▼              ▼              ▼
+       🧪 MINIMAL       🌐 SERVER       🍬 DESKTOP
+          Python           Python          Python
+          substrate        substrate       substrate
+             │              │              │
+          Snakepit       Django/API     Sugar/GTK4
+          specimen         admin        Journal/Activities
+```
+
 Sugar and Django are sibling demonstrations on the Aspartame substrate. Neither is included as a declaration that it is universally superior; each demonstrates serious software inhabiting the same coherent Python-oriented platform.
+
+Django is deliberately useful as a demonstrative load: not “Django is good,” but “this serious Python service stack can run here, and the environment can explain why.” The desktop is the spectacular human-facing proof; Minimal is the control specimen; Server is the service proof.
 
 ## Snakepit: reverse package management as a compatibility laboratory
 
@@ -121,7 +225,29 @@ The package manager is not authoritative about whether software works. **Reality
 >
 > **The model does not declare compatibility. The test chamber does.**
 
-See the Snakepit runbook for the qualification corpus, runtime-minimization rules, and non-goals.
+A future qualification laboratory may use a small controller/VPS and disposable workers across Python/package/native-version matrices. The valuable output is not inference itself; it is durable compatibility knowledge: exact failures, verified fixes, recipes, patches, evidence, and the conditions under which those results remain true.
+
+```text
+new Python/package code
+        ↓
+🧪 disposable test matrix
+        ↓
+install → exercise → observe
+        ↓
+      failure?
+      /     \
+    no       yes
+    │         ↓
+ preserve   agent investigates
+ evidence      ↓
+             bounded fix
+                ↓
+              RETEST
+                ↓
+        preserve reusable recipe
+```
+
+See the Snakepit runbook for the qualification corpus, runtime-minimization rules, Wong-Baker projection, and non-goals.
 
 ## GTK4 modernization is a parity program
 
@@ -190,9 +316,9 @@ See the autonomous contribution runbook.
 
 Aspartame is deliberately constrained; the owner is not. Snakepit and the Aspartame product should qualify a coherent environment rather than pretend every possible Arch package belongs in it.
 
-When a user asks for a large alternate stack, first determine the capability they actually want. If they truly want the alternate environment, the underlying Arch system and terminal remain theirs.
+When a user asks for a large alternate stack such as another desktop environment, first determine the capability they actually want. They may be reaching for a file browser, setting, workflow, or familiar tool rather than truly wanting a second operating environment.
 
-Aspartame clearly distinguishes **unsupported/unqualified** from **forbidden**.
+If they genuinely want GNOME, KDE, another runtime, or some other unqualified stack, the underlying Arch system and terminal remain theirs. The machine belongs to the owner. Aspartame clearly distinguishes **unsupported/unqualified** from **forbidden**.
 
 ## Documentation is memory
 
