@@ -1,0 +1,30 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] toolbutton: expose the Sugar tooltip as the accessible name
+
+ToolButton.set_tooltip() clears the GTK tooltip on purpose, because Sugar's
+palette is the tooltip implementation and a second desktop-themed popup would
+be wrong. Nothing then supplied an accessible name, so an icon-only Sugar tool
+button reported name='' to assistive technology even though the label text was
+sitting right there in the palette.
+
+On Home the two view switchers are exactly that: AT-SPI reported two anonymous
+buttons where a user should hear "Favorites view" and "List view". This is
+more visible now that focus can reach them.
+
+Set the accessible label from the same string that feeds the palette.
+
+--- a/src/sugar4/graphics/toolbutton.py
++++ b/src/sugar4/graphics/toolbutton.py
+@@ -198,6 +198,12 @@
+ 
+         self._tooltip = tooltip
+ 
++        # The palette replaces the GTK tooltip visually, but assistive
++        # technology still needs the name. Without this an icon-only Sugar
++        # tool button reports an empty accessible name, so Home's view
++        # switchers announced nothing at all.
++        self.update_property([Gtk.AccessibleProperty.LABEL], [tooltip])
++
+         if not self.get_palette():
+             palette = Palette(tooltip)
+             self.set_palette(palette)
