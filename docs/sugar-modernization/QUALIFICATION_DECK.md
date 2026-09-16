@@ -95,7 +95,8 @@ them.
   consecutive round trips with `runtime-check=ok` for gtk3 on desktop 0 and
   gtk4 on desktop 1 each time.
 - **Gap:** was the shared key grab — see W7; one cause, both workflows.
-- **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`
+- **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
+  shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`
 - **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
 - **STATUS: PASS** (2026-09-15)
 
@@ -111,7 +112,7 @@ them.
   process while ordinary keys flowed normally. `dispose()` likewise never
   ungrabbed and left its GDK event filter on freed memory.
 - **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
-  rebuilt into `/usr/lib/libsugarext.so`.
+  shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`.
 - **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
 - **STATUS: PASS** (2026-09-15)
 
@@ -176,8 +177,8 @@ than on code. Every other workflow in the deck passes with runtime evidence.
 That makes this the point the deck was built for: **human F7/F8 parity
 testing**, not another autonomous hardening phase.
 
-One packaging debt to clear first: the guest runs a rebuilt
-`/usr/lib/libsugarext.so` carrying
-`patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`. A fresh
-ISO will not have it until the `sugar-toolkit-gtk3` package is rebuilt with
-that patch, and without it no function key reaches the modern Space.
+The key grabber fix now ships as a rebuilt package
+(`packages/sugar-toolkit-gtk3/PKGBUILD`, installed from the profile's
+`[aspartame]` repository) rather than a hand-installed library. Running
+`mkarchiso` against that repository is the one step not yet executed, because
+the host's SteamLibrary volume is unmounted and `/` has 3.9 GB free.

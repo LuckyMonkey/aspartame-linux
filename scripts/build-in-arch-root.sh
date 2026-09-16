@@ -69,6 +69,14 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# The image installs a rebuilt sugar-toolkit-gtk3 from the profile's
+# [aspartame] repository, so that package has to exist before mkarchiso runs.
+chroot "$build_root" /bin/bash -lc '
+    set -euo pipefail
+    ASPARTAME_PKG_REPO=/mnt/aspartame-artifacts/repo \
+    /mnt/aspartame/scripts/build-sugar-toolkit-package.sh
+'
+
 chroot "$build_root" /bin/bash -lc '
     set -euo pipefail
     PROFILE=/mnt/aspartame/archiso/aspartame \

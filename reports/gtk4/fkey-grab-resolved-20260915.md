@@ -64,8 +64,44 @@ the restart), and the Activity keyboard path still passes: a Help Activity
 launched with no pointer interaction accepted `Yo` with correct
 capitalisation.
 
-## Packaging note
+## Packaging
 
-The guest now runs a rebuilt `/usr/lib/libsugarext.so` that is not the one
-pacman installed. A package rebuild carrying this patch is required for the
-ISO; until then a fresh image will still show the old behaviour.
+The fix ships as a rebuilt Arch package, not a hand-installed library:
+
+- `packages/sugar-toolkit-gtk3/PKGBUILD` is Arch's recipe for
+  extra/sugar-toolkit-gtk3 0.121-7 plus the carried patch, at `pkgrel=7.1` so
+  pacman prefers it. Its `pkgdesc` names the delta.
+- `scripts/build-sugar-toolkit-package.sh` builds that one package and
+  publishes it to a local repository.
+- `archiso/aspartame/pacman.conf` adds that repository ahead of `[extra]`, and
+  `profiledef.sh` points `pacman_conf` at it so the profile carries its own
+  configuration.
+- `scripts/build-in-arch-root.sh` builds the package before `mkarchiso` runs.
+
+Arch's recipe has to be followed exactly, not approximated. A first attempt
+that used `autogen.sh` and default flags produced a package whose
+cross-library symbols failed to resolve at load time
+(`libsugarext.so.0: undefined symbol: sugar_event_controller_reset`), which
+broke the classic shell outright. Arch drops `-fno-plt` and `-Wl,-z,now`
+with the comment "Hardened build is not supported"; that adjustment is
+required, and the three upstream `sed` fixes are carried too.
+
+Verified by installing the built package over the stock one:
+
+    pacman -Qo /usr/lib/libsugarext.so.0.0.0
+      -> owned by sugar-toolkit-gtk3 0.121-7.1
+
+with an A/B either side of it: the stock library reported F1/F6/F7 `HELD by
+another client`, the packaged rebuild reports F1-F8 `free` while the classic
+shell stays alive (pid 90516), the classic session reports healthy on every
+check, F1/F3/F5/F6 and Escape all work, physical F7->F8 round-trips twice,
+and a Help Activity launched without pointer interaction accepts `Ab`.
+
+## Still to prove on the next ISO build
+
+`mkarchiso` consuming the package from the profile's `[aspartame]` repository
+has not been executed. The host's SteamLibrary volume is not mounted, so the
+build root, VM disks and artifacts all sit on `/` with 3.9 GB free, and a full
+image build is not safe to start there. The package path itself is proven up
+to and including installation; what remains is one ISO build once that volume
+is back.

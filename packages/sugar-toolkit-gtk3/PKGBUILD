@@ -1,0 +1,74 @@
+# Aspartame rebuild of Arch's sugar-toolkit-gtk3.
+#
+# This is Arch's packaging for extra/sugar-toolkit-gtk3 0.121-7 with exactly
+# one addition: patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch,
+# which makes SugarKeyGrabber release its X11 passive grabs. Without it the
+# classic GTK3 Space keeps F1-F8 grabbed for the life of its process and no
+# function key ever reaches the modern GTK4 Space.
+#
+# Everything else is deliberately kept identical to Arch's recipe, including
+# the three upstream sed fixes and the unhardened build flags. Dropping the
+# flag adjustment produces a library whose cross-library symbols fail to
+# resolve at load time, which breaks the classic shell.
+#
+# pkgrel 7.1 is the Arch convention for a downstream rebuild of 0.121-7: it
+# sorts above the stock package so pacman prefers it, and the difference is
+# visible in `pacman -Qi` and in the ISO package manifest.
+
+pkgname=sugar-toolkit-gtk3
+pkgver=0.121
+pkgrel=7.1
+pkgdesc='Sugar GTK library (Aspartame rebuild: key grabber releases its grabs)'
+arch=('x86_64')
+url="https://github.com/sugarlabs/$pkgname"
+license=('LGPL-2.1-or-later')
+depends=(alsa-lib at-spi2-core bash gdk-pixbuf2 glib2 glibc gst-plugins-espeak
+         gst-python gstreamer gtk3 libice librsvg libsm libx11 libxfixes libxi
+         pango python python-cairo python-dateutil python-dbus python-decorator
+         python-gobject python-six sugar-artwork sugar-datastore telepathy-glib
+         telepathy-mission-control unzip)
+makedepends=(git glib2-devel gobject-introspection intltool)
+optdepends=('webkit2gtk-4.1: run sugar-activity-web')
+source=("git+https://github.com/sugarlabs/$pkgname.git#tag=v$pkgver"
+        '0001-sugar-toolkit-gtk3-keygrabber-release.patch')
+sha256sums=('SKIP'
+            'SKIP')
+
+prepare() {
+  cd $pkgname
+
+  # Aspartame delta: release X11 passive grabs so the modern Space can own
+  # the function keys.
+  patch -p1 < "$srcdir/0001-sugar-toolkit-gtk3-keygrabber-release.patch"
+
+  # https://github.com/sugarlabs/sugar/issues/1004
+  sed -i 's/ssh-dss /ssh-rsa /' src/sugar3/profile.py
+
+  # https://github.com/sugarlabs/sugar-toolkit-gtk3/pull/490
+  sed -i 's/usage: %prog/%(prog)s/' src/sugar3/activity/activityinstance.py
+
+  # https://github.com/sugarlabs/sugar-toolkit-gtk3/pull/491
+  sed -i 's/cp.readfp/cp.read_file/' src/sugar3/{bundle/contentbundle.py,graphics/icon.py}
+
+  autoreconf -fiv
+}
+
+build() {
+  cd $pkgname
+
+  # Hardened build is not supported
+  export CFLAGS=${CFLAGS/ -fno-plt}
+  export LDFLAGS=${LDFLAGS/-Wl,-z,now}
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var
+  make -j1
+}
+
+package() {
+  cd $pkgname
+  make DESTDIR="$pkgdir" install
+  rm "$pkgdir/usr/bin/sugar-activity"
+}

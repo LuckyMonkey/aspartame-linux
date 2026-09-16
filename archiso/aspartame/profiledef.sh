@@ -7,7 +7,10 @@ install_dir="arch"
 buildmodes=('iso')
 bootmodes=('bios.syslinux')
 arch=('x86_64')
-pacman_conf="/etc/pacman.conf"
+# Profile-local so the [aspartame] repository carrying the rebuilt
+# sugar-toolkit-gtk3 travels with the profile instead of depending on
+# whatever the build root happens to have configured.
+pacman_conf="pacman.conf"
 airootfs_image_type="squashfs"
 file_permissions=(
   ["/etc/shadow"]="0:0:400"

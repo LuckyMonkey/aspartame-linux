@@ -84,8 +84,10 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       dismisses it, and physical F7/F8 switch Spaces across two round trips.
       Root cause was `SugarKeyGrabber` never releasing its X11 passive grabs,
       fixed in `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`;
-      see `reports/gtk4/fkey-grab-resolved-20260915.md`. The rebuilt library
-      is a packaging debt for the ISO.
+      see `reports/gtk4/fkey-grab-resolved-20260915.md`. It ships as a rebuilt
+      package, `packages/sugar-toolkit-gtk3/PKGBUILD`, installed from the
+      profile's `[aspartame]` repository; one ISO build remains to exercise
+      that path.
 - [ ] Neighborhood/Group peer actions (empty state is verified; peer requires a
       second collaboration participant)
 - [x] Settings, Activity Manager, approval and contextual Help
