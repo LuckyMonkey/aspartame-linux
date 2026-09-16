@@ -14,7 +14,9 @@ Runtime minimization is a design constraint. Do not add another language runtime
 
 This is not Python advocacy and it is not a claim that Python is good merely because it is Python. Aspartame is, in part, an adversarial proof of concept: Python's version fragmentation, packaging archaeology, native bindings, abandoned metadata, dependency conflicts, and environment conventions are real defects in the experience of using its ecosystem. The project treats those failures as engineering problems to observe, contain, document, and where practical repair.
 
-The proof is not a manifesto. **The proof boots.** A Python-heavy desktop, service stack, Activities, tooling, automation, and package-qualification system are deliberately visible demonstrations of how far one high-level language can carry a complete computing environment.
+The proof is not a manifesto. **The proof boots.** A Python-heavy desktop, service stack, Activities, tooling, automation, and future package-qualification system are deliberately visible demonstrations of how far one high-level language can carry a complete computing environment.
+
+Sugar is chosen because it is unusually compatible with that experiment: its shell, toolkit-facing logic, and Activity culture are deeply Python-oriented. Sugar is not sacred. The Python-first, inspectable-computer idea is the larger project.
 
 ## Capability is demonstrated, not presumed
 
@@ -26,26 +28,7 @@ Aspartame avoids treating accessibility as a separate kind of computer for a sep
 
 For a person, the requirement might be selection, activation, reading, writing, hearing information, navigation, or pointer control. For software, it might be an interpreter version, ABI, module, native library, display backend, network service, storage interface, or patch.
 
-When a capability is missing, do not classify the participant as defective. Determine whether the environment can provide, teach, translate, substitute, or otherwise satisfy the missing capability. Then demonstrate the result.
-
-```text
-participant + environment
-        |
-required capabilities
-        |
-provided capabilities
-        |
-      works?
-      /   \
-    yes    no
-     |      |
- preserve  identify gap
- evidence   |
-            v
-        remediation
-            |
-           retry
-```
+When a capability is missing, determine whether the environment can provide, teach, translate, substitute, or otherwise satisfy the missing capability. Then demonstrate the result.
 
 A checkbox is not demonstration. A dependency solver returning success is not demonstration. A window appearing is not demonstration. Qualification should exercise the real interaction or principal workflow at the boundary being claimed.
 
@@ -55,13 +38,13 @@ A checkbox is not demonstration. A dependency solver returning success is not de
 
 Aspartame should be usable by a person who cannot yet read, a blind adult, an experienced everyday user, and an expert or scientist without creating demographic editions of the interface.
 
-The system adapts to requested or demonstrated capabilities, not identity categories. Do not ask whether someone is a child, disabled, elderly, or an expert in order to choose what computer they receive. Ask what the computer needs to provide: spoken text, visual text, deterministic selection, pointer instruction, keyboard navigation, dictation, magnification, or deeper inspection.
-
-A beginner should not receive a toy computer. An expert should not need to replace the simple interface to reach the real machine. Complexity is revealed progressively through the same system.
+The system adapts to requested or demonstrated capabilities, not identity categories. A beginner should not receive a toy computer. An expert should not need to replace the simple interface to reach the real machine. Complexity is revealed progressively through the same system.
 
 > **Make the surface understandable enough for someone who knows nothing, while making the substrate inspectable enough for someone who knows everything.**
 
-A user should not have to outgrow Aspartame. The same machine may be someone's first computer and later their development or scientific workstation. Expertise descends into the same computer rather than graduating to a different one.
+> **There should be no obvious skill level at which a user has to outgrow Aspartame.**
+
+A useful long arc is icons and Activities -> Journal and objects -> terminal and scripting -> Python APIs and internals -> editing the desktop itself. This is progressive disclosure of the same computer, not an unrelated advanced mode.
 
 ## The first computer
 
@@ -69,13 +52,9 @@ Aspartame aims to be a computer a parent can show a child before Windows or anot
 
 First-use interaction must not assume literacy or prior GUI knowledge. The computer may speak before it asks the user to read. It should be able to demonstrate pointer movement, targeting, selection, activation, keyboard input, erasing, Enter, scrolling, and dragging through cause and effect.
 
-Teach experience before terminology where practical: move the physical mouse and observe the pointer; point at a target and observe selection; press the highlighted button and observe activation; then name the action as a click. Typing begins with finding and pressing keys before formal typing technique.
-
-Instruction must remain respectful and capability-based. A pre-literate child and a blind forty-year-old may use the same spoken-text capability for entirely different reasons. Neither should be placed in a patronizing special mode. Teaching narration may recede when no longer wanted while screen-reader or spoken-text capability remains independently available.
+Teach experience before terminology where practical. Instruction must remain respectful and capability-based. Teaching narration may recede when no longer wanted while screen-reader or spoken-text capability remains independently available.
 
 > **No prerequisite interaction may require knowledge that Aspartame has not yet given the user an opportunity to discover.**
-
-Aspartame should teach the concept of a computer before teaching the conventions of a particular incumbent operating system. A person who later encounters Windows, macOS, or another environment should be able to recognize that those systems made design choices; those choices are not the definition of computing itself.
 
 ## Activity, capability, object
 
@@ -88,13 +67,11 @@ Aspartame inherits Sugar's useful refusal to let implementation nouns define the
 
 Where Aspartame controls product vocabulary, prefer **Capability** over using `Accessibility` as a segregating product category. This does not rename standards such as AT-SPI or erase precise upstream technical terminology.
 
-Implementation details remain inspectable, but they do not have to be the first vocabulary a person learns.
+## Identity and machine grammar
 
-## Orange and blue
+XOColor is personal identity. Machine-state grammar is separate and must never depend on hue alone. Where Aspartame uses a two-sided visual language, position, glyph, semantic names, spoken labels, focus, and bindings remain authoritative.
 
-Aspartame's default machine duotone is **orange and blue**. The pair is a deliberately familiar two-part visual grammar: two related sides without implying good/bad or primary/secondary. Existing cultural exposure to orange/blue paired systems can reduce the amount of entirely novel visual language a first-time user must learn. Aspartame must still teach its own semantics through interaction rather than assuming a particular reference or media knowledge.
-
-The pair is particularly suitable for Chirality's Left Hand / Right Hand model. Color must never be the sole carrier of meaning. Position, glyph, focus, spoken labels, semantic names, and input bindings must preserve the distinction for users who cannot perceive the colors. XOColor remains personal identity; orange/blue is machine grammar.
+For Chirality, the concepts are **Left Hand** and **Right Hand**. Do not collapse them into `A/B`, `primary/secondary`, or permanent `source/destination` roles. The hands are peers.
 
 ## Product family
 
@@ -104,44 +81,129 @@ Aspartame is larger than the Sugar desktop.
 - **aspartame-server** omits Sugar but includes the server stack, including Django for API and administration surfaces where that stack is defined.
 - **Aspartame desktop** adds Sugar, GTK4/native graphical substrate, Journal, Activities, and the human-facing capability model.
 
-Sugar and Django are sibling demonstrations on the Aspartame substrate. Django is not included because the project declares it universally superior; it is useful evidence that serious Python service software can inhabit the same coherent platform. Likewise, Sugar is not merely decoration over Aspartame: the desktop is the most visible demonstration that Python can coordinate a complete human-facing computing environment.
+Sugar and Django are sibling demonstrations on the Aspartame substrate. Neither is included as a declaration that it is universally superior; each demonstrates serious software inhabiting the same coherent Python-oriented platform.
 
-## Snakepit: the compatibility enrichment center
+## Snakepit: reverse package management as a compatibility laboratory
 
-Snakepit is planned work; it is not yet an implemented subsystem. Its purpose is not to promise that arbitrary Python software magically works. Its purpose is to make Python compatibility empirical, explainable, and reusable.
+**Snakepit has not been implemented.** The idea is intentionally constrained in documentation before code begins.
 
-A conventional package transaction can end when declared dependencies resolve and files install. Snakepit's important question begins there:
+Calling it a `reverse package manager` is deliberately loaded. A conventional package manager begins with a chosen package and asks what it requires. Snakepit begins with desired Python software or capability and asks:
 
-> **Did the software actually work?**
+> **Where can this safely and correctly exist on this machine, and can we prove that it works there?**
 
-The intended loop is resolve/install, exercise, observe, rate, diagnose failure, remediate, retest, and preserve what was learned. Wong-Baker compatibility ratings are a human-readable projection of structured evidence, not a popularity score. A successful configuration should retain the interpreter, dependencies, native requirements, patches, launch method, qualification procedure, platform context, and evidence explaining why it works.
+The system Python is protected substrate, not the destination for arbitrary application dependencies. Snakepit should prefer the newest already-qualified common runtime, use isolated environments where needed, introduce older interpreters only when demonstrated compatibility requires them, record why they exist, and collapse applications upward when later qualification makes compatibility state unnecessary.
 
-Unknown software may be investigated because **anything is possible**, but it does not become qualified merely because installation succeeded. Failure is useful data when the environment and cause are recorded.
+Its first implementation must be one complete explainable vertical slice, not a universal resolver, app store, compatibility cloud, distributed worker fleet, or six projects wearing a trench coat:
 
-Snakepit should minimize runtime proliferation rather than casually create one interpreter universe per application. It may use existing solvers and environment tools where useful; it should not reinvent dependency solving merely to own it. Its distinctive responsibility is the feedback loop around those tools and the durable compatibility knowledge produced by real execution.
+```text
+requested Python application
+        |
+inspect requirements
+        |
+choose viable interpreter/environment
+        |
+resolve dependencies without contaminating system Python
+        |
+exercise one meaningful workflow
+        |
+record exact success/failure and why
+        |
+remediate once if bounded
+        |
+retest and preserve evidence
+```
+
+Then repeat with a second application that creates a real interpreter or dependency tension.
 
 The package manager is not authoritative about whether software works. **Reality is.**
-
-Agents may investigate failures, compare environments, propose pins or patches, and automate experiments. Deterministic qualification machinery decides whether the claimed workflow passed.
 
 > **AI investigates. Reality judges.**
 >
 > **The model does not declare compatibility. The test chamber does.**
 
-The long-term research value is a reproducible multi-version Python compatibility corpus: what runs, under which Python/runtime conditions, what fails, why it fails, which remediation works, and whether the fix survives retesting. New Python and package releases naturally create new qualification work without requiring architectural churn in Snakepit itself.
+See the Snakepit runbook for the qualification corpus, runtime-minimization rules, and non-goals.
 
-A successful investigation should become reusable knowledge rather than recurring inference cost: reason when needed, verify mechanically, preserve the recipe, and reinvestigate when relevant conditions change.
+## GTK4 modernization is a parity program
+
+GTK4 is not permission to redesign Sugar into a conventional desktop. The migration exists to modernize the implementation while preserving and proving the human model.
+
+Stable GTK3 Sugar remains an executable specification while the port is active. F7 selects the known-good GTK3 reference; F8 selects the GTK4 candidate. Perform the same normal workflow on both. A meaningful difference is a parity gap.
+
+> **Behavioral parity, not launch count, is the GTK3 retirement meter.**
+
+A process starting, a window appearing, or an automated matrix passing proves only the boundary actually exercised. Activity classifications must remain honest: FULL PORT, FUNCTIONAL PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER are different claims.
+
+Port by runtime milestone rather than directory. Prefer pure Python state/model logic where useful and GTK4 presentation at the edge. Use normal widgets for normal UI and Snapshot/GSK for genuinely custom Sugar graphics. Abstract platform seams, not every widget.
+
+GTK CSS is not web CSS. Geometry belongs in GTK layout APIs; styling belongs in supported GTK CSS. Parse CSS with the real provider rather than trusting browser intuition.
+
+Wayland and GTK4 are related but separate milestones. Casilda is the intended embedded Wayland surface for modern Activity integration; do not casually replace it because another compositor architecture looks interesting.
+
+For transitions:
+
+> **Animate pixels, not managed shell windows.**
+
+Prefer a fixed opaque transition surface containing a snapshot/framebuffer representation. Do not make the product depend on arbitrary managed-window geometry or compositor-specific cross-top-level transparency.
+
+## Chirality: bounded attention
+
+After GTK4 parity, Aspartame's advanced multitasking doctrine is Chirality:
+
+> **Two hands. One focus. No third hand.**
+
+A task may have Left Hand and Right Hand Activities, but only one is visible and active at a time. The other holds context. This is not split screen, tiling, arbitrary workspaces, or a claim that only two processes may run.
+
+```text
+hands <= 2
+active_hands == 1
+visible_activities == 1
+```
+
+Human work is often cooperative rather than parallel: one hand holds steady while the other ratchets. Chirality bounds the attention surface while allowing the underlying system to remain a full computer.
+
+During GTK4 migration, F7/F8 belong exclusively to the reference/candidate oracle. Reuse proven switching behavior for Chirality only after the migration gate; do not preserve migration scaffolding merely because the keys will later have a product role.
+
+## Progress over saturation
+
+Long-running autonomous work can accidentally turn one reasonable local choice into apparent doctrine:
+
+```text
+reasonable choice
+  -> tests encode it
+  -> docs explain it
+  -> next agent assumes intent
+  -> another subsystem integrates it
+  -> accident now looks architectural
+```
+
+Therefore Aspartame optimizes for verified forward motion, not subsystem saturation.
+
+> **Does this close a real user-visible gap, or am I making an existing implementation more elaborate?**
+
+When a bounded workflow passes, leave that subsystem. A discovered problem is allowed to remain open. Do not create a framework-sized answer to a defect-sized question.
+
+Independent contributors are welcome to disagree. Distinguish `actually wrong` from `I would have implemented this differently`. Runtime evidence settles behavioral claims; doctrine settles intentional product invariants; style preference alone does neither.
+
+See the autonomous contribution runbook.
 
 ## Ownership and escape hatch
 
-Aspartame is deliberately constrained; the owner is not. Snakepit and the Aspartame product should qualify a coherent environment rather than pretend every possible Arch package belongs in it. Installing an entire alternate desktop such as GNOME is outside that qualified product model because it duplicates or replaces the very environment Aspartame is defining.
+Aspartame is deliberately constrained; the owner is not. Snakepit and the Aspartame product should qualify a coherent environment rather than pretend every possible Arch package belongs in it.
 
-When a user asks for a large alternate stack, first determine the capability they actually want. They may want a file browser, setting, Activity, or workflow rather than a second desktop environment. If they truly want the alternate environment, the underlying Arch system and terminal remain theirs.
+When a user asks for a large alternate stack, first determine the capability they actually want. If they truly want the alternate environment, the underlying Arch system and terminal remain theirs.
 
-Aspartame should clearly distinguish **unsupported/unqualified** from **forbidden**.
+Aspartame clearly distinguishes **unsupported/unqualified** from **forbidden**.
 
 ## Documentation is memory
 
-If you swing a hammer, document it. For meaningful changes, preserve enough evidence to answer: what changed, why, what was tried, what was rejected, how it was verified, what remains strange, and how another person can reproduce the result.
+> **If you swing a hammer, document it.**
+
+For meaningful changes, preserve enough evidence to answer: what changed, why, what was tried, what was rejected, how it was verified, what remains strange, and how another person can reproduce the result.
+
+Documentation does not make a decision sacred. It lets the next person disagree intelligently.
 
 Do not let agent-generated tests and documentation turn an accidental architectural choice into unquestioned doctrine. Runtime evidence outranks confident prose. A discovered problem is allowed to remain open.
+
+The desired contribution rhythm is:
+
+> **fix -> prove -> document -> get out.**
