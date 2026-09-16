@@ -80,7 +80,7 @@ class KeyHandler(_packaged.KeyHandler):
                 "ASPARTAME_SPACE_SWITCHER",
                 "/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh",
             )
-            logging.warning("GTK3 semantic Space key: %s", key)
+            logging.debug("GTK3 semantic Space key: %s", key)
             subprocess.Popen([controller, target], close_fds=True)
             return True
         return super()._key_pressed_cb(grabber, keycode, state, event_time)
@@ -130,7 +130,12 @@ class KeyHandler(_packaged.KeyHandler):
                 grabber.grab_keys([])
                 del grabber
         self._classic_space_active = classic_active
-        logging.warning(
+        # Which Space owns F1-F8 decides whether the other one sees them at
+        # all, so this transition is worth recording - but it is a normal
+        # state change, not a warning. Raise SUGAR_LOGGER_LEVEL to see it;
+        # reports/gtk4/f7-space-key-rootcause-20260916.md explains why it
+        # matters.
+        logging.info(
             "Spaces key ownership: GTK3 %s (workspace=%s)",
             "active" if classic_active else "released",
             workspace,

@@ -1,0 +1,35 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] keyhandler: stop logging every keystroke
+
+Patch 0044 added a WARNING-level probe to the shell's key dispatch while
+input delivery was being investigated. It records every key the shell
+sees, including text the user types, into the shell log:
+
+  WARNING:root:GTK4 semantic key event: q
+  WARNING:root:GTK4 semantic key event: 7
+  WARNING:root:GTK4 semantic key event: M
+
+Two later patches tried to take it out again. 0045 is malformed - its
+hunk deletes a line from between `else:` and that branch's body, which
+cannot match a valid file - and it left `keyhandler.py.orig` and
+`keyhandler.py.rej` in the preview checkout. 0046 then tried to delete
+the line with a context-free hunk and could not apply either. The probe
+has been live ever since.
+
+Remove it, and leave a note so the next investigation reaches for
+`logging.debug` instead. Ordinary key dispatch is not an operational
+event, and user input does not belong in a log file.
+
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -275,7 +275,9 @@
+ 
+     def _dispatch_key(self, controller, keyval, keycode, state):
+         key = Gdk.keyval_name(keyval)
+-        logging.warning("GTK4 semantic key event: %s", key)
++        # Key dispatch is deliberately not logged: a probe here records
++        # every keystroke, typed text included. Use logging.debug if you
++        # need one temporarily.
+         if not key:
+             return False
+ 
