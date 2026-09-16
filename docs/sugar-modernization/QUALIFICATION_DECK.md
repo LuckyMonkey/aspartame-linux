@@ -101,14 +101,15 @@ them.
 - **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
   shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`
 - **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
-- **STATUS: REGRESSED — needs re-verification from a clean boot** (2026-09-16).
-  After a full graphical-session restart, F8 still reaches the modern Space
-  but F7 no longer returns to the classic one. EWMH switching works, and the
-  key-grab probe shows nothing holds F1-F8 while the modern Space is current
-  (`grabbed-elsewhere=none`) against `F1..F8` while the classic one is. The
-  rebuilt toolkit package is installed and carries the fix. No change in the
-  2026-09-16 pass touches F-key routing. See
-  `reports/gtk4/five-fix-pass-2-20260916.md`.
+- **STATUS: PASS** (2026-09-16, re-verified after patch 0153). The F7 half
+  regressed and was root-caused: Sugar disables every window manager
+  keybinding at startup, so the Metacity `switch-to-workspace-1 = ['F7']`
+  binding never fired; F7/F8 were bolted onto the modern shell's main window
+  only; and the Settings control panel is a plain `Gtk.Window` that never
+  joins the application, so no shell key reached the keyboard while it was
+  open. Patch 0153 makes the Space keys shell actions and registers the
+  control panel with the key handler. See
+  `reports/gtk4/f7-space-key-rootcause-20260916.md`.
 
 ## W7 — Frame navigation
 

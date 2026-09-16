@@ -1,0 +1,129 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: the Space keys must work from every shell window
+
+F7 did not return from the modern Space to the classic one whenever the
+Settings control panel was open, and the panel could not be dismissed
+either - no shell key worked at all while it had focus. Verified: with the
+panel up, F3, F7 and Escape produce no "GTK4 semantic key event" line, so
+the shell never saw them.
+
+The chain:
+
+1. jarabe/main.py runs `metacity-message disable-keybindings` at startup,
+   so the window manager owns no keys. The Metacity keybinding the Spaces
+   controller writes (switch-to-workspace-1 = ['F7']) can never fire, and
+   clearing it changes nothing. Every global key must come from the shell.
+2. F7/F8 were handled by a capture controller bolted onto _main_window,
+   _overlay and stack in main.py, not by the shell's key handler, so they
+   were bound to that one window.
+3. ControlPanel is a plain Gtk.Window built without `application=`, so it
+   never joins the Gtk.Application, 'window-added' never fires, and
+   KeyHandler.add_window() never attached its controller.
+
+So while the control panel was focused nothing listened for F7, and the
+classic Space had already released its own grab - correctly, that is what
+lets the modern Space own F1-F8 at all.
+
+Give the Space keys a single owner in _actions_table, drop the duplicate
+in main.py, and register the control panel with the key handler it was
+missing. The modal gate keeps working as before: F1-F6 are in
+_non_modal_action_keys and stay suppressed while the panel is up, while
+F7/F8 are not, so leaving the Space keeps working.
+
+Registering the window with the handler is deliberately not the same as
+adding it to the application: ShellModel._window_added_cb would turn a
+new application window into a phantom entry in the activity list.
+
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -17,6 +17,7 @@
+ import os
+ import logging
+ import importlib
++import subprocess
+ import types
+ 
+ from gi.repository import GLib
+@@ -66,7 +67,12 @@
+     '<alt><shift>m': 'open_controlpanel',
+     '<alt><shift>o': 'open_search',
+     '<alt><shift>q': 'logout',
+-    '<alt><shift>d': 'dump_ui_tree'
++    '<alt><shift>d': 'dump_ui_tree',
++    # Aspartame Spaces. Sugar disables every window manager keybinding at
++    # startup, so nothing outside the shell can switch workspaces: these
++    # have to be shell actions like the rest of the table.
++    'F7': 'space_classic',
++    'F8': 'space_modern',
+ }
+ 
+ # These keys will not be trigger a action if a modal dialog is opened
+@@ -234,6 +240,18 @@
+             panel.set_transient_for(shell_model._main_window)
+         panel.set_visible(True)
+ 
++    def _switch_space(self, target):
++        controller = os.environ.get(
++            'ASPARTAME_SPACE_SWITCHER',
++            '/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh')
++        subprocess.Popen([controller, target], close_fds=True)
++
++    def handle_space_classic(self, event_time):
++        self._switch_space('gtk3')
++
++    def handle_space_modern(self, event_time):
++        self._switch_space('gtk4')
++
+     def handle_dump_ui_tree(self, event_time):
+         if uitree:
+             print(uitree.get_root().dump())
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -305,18 +305,9 @@
+         }
+         zoom_controller = Gtk.EventControllerKey()
+         zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+-        import subprocess
+-        space_keys = {Gdk.KEY_F7: "gtk3", Gdk.KEY_F8: "gtk4"}
+-        def _switch_space(target):
+-            controller = os.environ.get("ASPARTAME_SPACE_SWITCHER", "/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh")
+-            subprocess.Popen([controller, target], close_fds=True)
+-        def _capture_space_key(_controller, keyval, _keycode, _state):
+-            target = space_keys.get(keyval)
+-            if target is None:
+-                return False
+-            _switch_space(target)
+-            return True
+-        zoom_controller.connect("key-pressed", _capture_space_key)
++        # F7/F8 belong to the shell's key handler, which follows every
++        # window it is attached to. Handling them here as well bound them
++        # to this window alone.
+ 
+         def _capture_zoom_key(_controller, keyval, _keycode, _state):
+             if keyval == Gdk.KEY_F5:
+@@ -362,7 +353,6 @@
+             _surface_controller = Gtk.EventControllerKey()
+             _surface_controller.set_propagation_phase(
+                 Gtk.PropagationPhase.CAPTURE)
+-            _surface_controller.connect("key-pressed", _capture_space_key)
+             _surface_controller.connect("key-pressed", _capture_zoom_key)
+             _focus_surface.add_controller(_surface_controller)
+         shell_instance._sugar_zoom_controller = zoom_controller
+--- a/src/jarabe/controlpanel/gui.py
++++ b/src/jarabe/controlpanel/gui.py
+@@ -88,6 +88,15 @@
+         key_controller.connect('key-pressed', self.__key_press_event_cb)
+         self.add_controller(key_controller)
+ 
++        # This window is not a Gtk.ApplicationWindow, so 'window-added'
++        # never fires for it and the shell's key handler never attached.
++        # Nothing the shell owns reached the keyboard while the control
++        # panel was up - including the keys that leave the Space.
++        from jarabe.view import keyhandler as _keyhandler
++        _handler = _keyhandler.get_instance()
++        if _handler is not None:
++            _handler.add_window(self)
++
+         self._toolbar = None
+         self._canvas = None
+         self._table = None
