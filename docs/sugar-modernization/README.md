@@ -19,6 +19,20 @@ Current upstream starting points:
 - [Sugar Datastore](https://github.com/sugarlabs/sugar-datastore)
 - [Sugar Labs GTK4 proposals](https://github.com/sugarlabs/GSoC/blob/master/Ideas-2026.md)
 
+## Where to look
+
+| Question | Document |
+| --- | --- |
+| What works right now, as user-visible workflows? | [QUALIFICATION_DECK.md](QUALIFICATION_DECK.md) — the W1-W12 deck, kept current with runtime evidence |
+| What is broken or deferred? | [BLOCKERS.md](BLOCKERS.md) (numbered `GTK4-NNN` registry) and the open-findings sections of the deck |
+| Is this component usable? | [GTK4_STATUS.md](GTK4_STATUS.md) component matrix |
+| Is this Activity ported, and how far? | [ACTIVITY_PORT_CLASSIFICATION.md](ACTIVITY_PORT_CLASSIFICATION.md) |
+| How do I reproduce a past result? | `reports/gtk4/` — each report names the script or key sequence that produced it |
+
+`CONVERSION_TRACKER.md`, `MIGRATION_TODO.md` and `RACE_STATUS.md` are
+execution history from earlier passes. They are kept as memory, not as
+current status; prefer the deck when the two disagree.
+
 Read [GTK4_STATUS.md](GTK4_STATUS.md) before attempting a port.
 For the current Journal migration scope and acceptance gates, read [GTK4_JOURNAL_RUNBOOK.md](GTK4_JOURNAL_RUNBOOK.md).
 For the Activity conversion/port sequence, read [GTK4_ACTIVITY_RUNBOOK.md](GTK4_ACTIVITY_RUNBOOK.md).

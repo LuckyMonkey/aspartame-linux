@@ -23,6 +23,11 @@ The images are reference snapshots from the QEMU development VM. See the screens
 - [Pets](../planned/ASPARTAME_PETS_RUNBOOK.md) — planned/maybe/future idea only
 - [GTK4 modernization](../sugar-modernization/README.md) — active conversion runbooks
 
+`neighborhood-board.txt` is the original longer plain-text draft behind
+[Neighborhood Board](../NEIGHBORHOOD-BOARD.md). The `.md` is a condensed
+summary, so the draft is kept for the detail it dropped rather than deleted.
+It is planning material, not an implementation target.
+
 <details>
 <summary>🧭 How to use a runbook</summary>
 
