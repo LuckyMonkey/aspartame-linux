@@ -15,6 +15,7 @@ The images are reference snapshots from the QEMU development VM. See the screens
 
 ## Runbooks
 
+- [Snakepit](SNAKEPIT_RUNBOOK.md) — **planned, not implemented**; Python compatibility qualification, Wong-Baker evidence, runtime minimization, and the resolve → run → observe → remediate → retest loop
 - [Count Activity](COUNT_ACTIVITY_RUNBOOK.md) — behavior and data model
 - [Universal Help](UNIVERSAL_HELP_RUNBOOK.md) — contextual help system
 - [Scale Activity](SCALE_ACTIVITY_RUNBOOK.md) — future activity direction
@@ -28,5 +29,6 @@ The images are reference snapshots from the QEMU development VM. See the screens
 2. Follow the primary interaction model before adding controls.
 3. Record evidence at the boundary the runbook names.
 4. Update the owning status table and screenshot/log links.
+5. Do not turn a planned runbook into implied implementation. Runtime evidence decides what exists.
 
 </details>
