@@ -359,6 +359,9 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   Fresh post-build runtime evidence is recorded in
   `reports/gtk4/runtime-20260919-build-lifecycle.md`: the GTK4 runtime check
   passes and Help and Count each complete three real lifecycle cycles.
+  The rebuilt one-cycle Activity matrix also passes all 50 registered bundles;
+  see `reports/gtk4/activity-matrix-20260919.md`. This remains coverage
+  evidence, not a FULL PORT claim for the individual Activities.
 
   Historical failure evidence (kept for provenance) showed the shell aborting
   during startup:
