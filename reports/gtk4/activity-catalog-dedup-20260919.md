@@ -25,6 +25,8 @@ catalog policy, not an Activity visual rewrite or a package uninstall.
 - Native Calculate appears once with its GTK4 icon and `Stopped` state.
 - Other classic-only entries remain explicitly available as Classic Space
   activities.
+- Direct rebuilt-shell verification: two Calculate launch/stop/resume cycles
+  passed (`calculate-roundtrip=PASS`, service release and shell cleanup PASS).
 
 The Activity launch task ledger remains the authority for per-Activity parity;
 this change only removes a shared shell catalog ambiguity.
