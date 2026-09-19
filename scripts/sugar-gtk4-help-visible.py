@@ -1,7 +1,32 @@
 #!/usr/bin/env python3
 """Launch Help in the modern Space, activate it, and report visible text."""
+import atexit
 import os, subprocess, time
 from pathlib import Path
+
+MODERN_ATSPI_BUS = ("unix:path=/home/aspartame/Development/"
+                    "gtk4-preview/runtime/at-spi/bus_0")
+
+
+def pin_modern_atspi_bus():
+    """Keep Help accessibility queries on the modern Space's bus."""
+    try:
+        result = subprocess.run(["xprop", "-root", "AT_SPI_BUS"],
+                                capture_output=True, text=True, check=True)
+        _, _, value = result.stdout.partition("= ")
+        original = value.strip().strip('"')
+        subprocess.run(["xprop", "-root", "-f", "AT_SPI_BUS", "8s",
+                        "-set", "AT_SPI_BUS", MODERN_ATSPI_BUS], check=True,
+                       stdout=subprocess.DEVNULL)
+    except (OSError, subprocess.CalledProcessError):
+        return
+
+    def restore():
+        subprocess.run(["xprop", "-root", "-f", "AT_SPI_BUS", "8s",
+                        "-set", "AT_SPI_BUS", original],
+                       check=False, stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL)
+    atexit.register(restore)
 
 if "IMAGE_ID=aspartame" not in Path("/etc/os-release").read_text():
     raise SystemExit("guest-only")
@@ -12,6 +37,7 @@ if os.getuid() == 0:
     os.setgroups([]); os.setgid(1000); os.setuid(1000); os.execve(py, [py, __file__], env)
 import dbus
 from gi.repository import Atspi
+pin_modern_atspi_bus()
 bus = dbus.SessionBus()
 journal = dbus.Interface(bus.get_object("org.laptop.Journal", "/org/laptop/Journal"), "org.laptop.Journal")
 shell = dbus.Interface(bus.get_object("org.laptop.Shell", "/org/laptop/Shell"), "org.laptop.Shell")

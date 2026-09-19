@@ -1,10 +1,34 @@
 #!/usr/bin/env python3
 """Guest regression: restore a Calculate expression from the Journal."""
+import atexit
 import os, subprocess, sys, time
 from pathlib import Path
 
 BUNDLE_ID = "org.aspartame.Calculate"
 PROCESS_MARKER = "calculateactivity4.CalculateActivity"
+MODERN_ATSPI_BUS = ("unix:path=/home/aspartame/Development/"
+                    "gtk4-preview/runtime/at-spi/bus_0")
+
+
+def _pin_modern_atspi_bus():
+    """Keep AT-SPI queries on the modern Space while both Spaces run."""
+    try:
+        result = subprocess.run(["xprop", "-root", "AT_SPI_BUS"],
+                                capture_output=True, text=True, check=True)
+        _, _, value = result.stdout.partition("= ")
+        original = value.strip().strip('"')
+        subprocess.run(["xprop", "-root", "-f", "AT_SPI_BUS", "8s",
+                        "-set", "AT_SPI_BUS", MODERN_ATSPI_BUS], check=True,
+                       stdout=subprocess.DEVNULL)
+    except (OSError, subprocess.CalledProcessError):
+        return
+
+    def restore():
+        subprocess.run(["xprop", "-root", "-f", "AT_SPI_BUS", "8s",
+                        "-set", "AT_SPI_BUS", original],
+                       check=False, stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL)
+    atexit.register(restore)
 
 def wait_for(description, callback):
     deadline = time.monotonic() + 15
@@ -23,6 +47,7 @@ def main():
         interpreter = "/home/aspartame/Development/gtk4-preview/venv/bin/python"
         os.setgroups([]); os.setgid(1000); os.setuid(1000); os.execve(interpreter, [interpreter, __file__, *sys.argv[1:]], env)
     import dbus, gi
+    _pin_modern_atspi_bus()
     gi.require_version("Atspi", "2.0")
     from gi.repository import Atspi
     bus = dbus.SessionBus()
