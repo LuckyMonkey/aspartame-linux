@@ -1,0 +1,26 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: keep the Casilda activity surface opaque
+
+The GTK4 shell's Casilda widget owns the Activity page in the shell stack.
+When an Activity surface is being mapped, a short allocation gap exposed the
+widget's default white background between the Sugar top bar and the Activity's
+own canvas. That produced a bright stripe and made the launch transition look
+like an extra window or piece of chrome. The shell boundary should be opaque;
+the Activity remains responsible for its own internal presentation.
+
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -425,2 +425,13 @@ class ShellModel(Gtk.Application):
+         self.compositor = Casilda.Compositor(socket="wayland-sugar")
++        self.compositor.add_css_class('sugar-activity-compositor')
++        compositor_css = Gtk.CssProvider()
++        compositor_css.load_from_data(b'''
++            .sugar-activity-compositor {
++                background-color: #000000;
++            }
++        ''')
++        display = Gdk.Display.get_default()
++        if display is not None:
++            Gtk.StyleContext.add_provider_for_display(
++                display, compositor_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+         # An embedded Activity only receives Wayland key events while the

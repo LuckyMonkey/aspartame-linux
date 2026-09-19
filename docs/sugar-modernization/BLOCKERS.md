@@ -17,6 +17,21 @@
   next evidence step.
 - Status: fixed in the overlay; guest runtime verification pending.
 
+## GTK4-019 — Casilda surface exposed a launch-time white allocation stripe
+
+- Category: `UPSTREAM-SHELL` / Casilda presentation boundary
+- Reproduction: launch Help into the modern Space and capture the 1920×1080
+  surface while the Activity is mapped; a white stripe appeared immediately
+  below the Sugar top bar before the Activity's black canvas.
+- Fix: patch `0159-shell-opaque-activity-surface.patch` gives the Casilda page
+  an explicit opaque black GTK background. The Activity still owns its internal
+  canvas and layout.
+- Verification: rebuilt guest, restarted GTK4 PID `44019`, launched Help PID
+  `44522`, and captured `reports/screenshots/sugar-20260919-125340-v0.0.31.png`;
+  the stripe is absent. Help visibility/search both pass.
+- Status: fixed in the GTK4 shell; other Activity-specific chrome remains
+  deferred by policy.
+
 ## GTK4-001 — toolkit uses unavailable enum member
 
 - Category: `UPSTREAM-TOOLKIT` / Arch integration

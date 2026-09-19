@@ -1,0 +1,25 @@
+urna
+
+10 topics match
+
+How Sugar is organized
+
+Sugar is a focused learning environment built around Home, Activities, the Frame, and the Journal. Each view has one clear purpose and can be reached without leaving your work.
+
+The Sugar shell
+
+Journal
+
+Saving and resuming
+
+Frame and navigation
+
+Classic and modern Spaces
+
+Count Activity
+
+Image Viewer Activity
+
+When an Activity will not open
+
+Further reading
