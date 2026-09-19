@@ -1,0 +1,117 @@
+12:54
+
+(m= 3@
+
+©
+
+54 installed activities
+
+‘Abacus
+
+Learn place value with an abacus
+
+Stopped
+
+‘Across and Down
+
+Build words across and down in a crossword grid
+
+Stopped
+
+26
+
+Appel Haken
+
+Solve the Appel Haken color puzzle
+
+Stopped
+
+26
+
+BallAndBrick
+
+Clear the bricks with a ball
+
+Stopped
+
+BlockParty
+
+Arrange blocks in a grid
+
+Stopped
+
+13
+
+Browse
+
+Browse web pages inside Sugar
+
+Stopped
+
+Calculate
+
+Assimple Sugar calculator
+
+Stopped
+
+Calculate
+
+ooo
+
+This is the place to get the answer to a quick problem, but that is not the limit! You can also explore Algebra, Trigonometry, Boolean and more!
+
+47
+
+ooo
+
+Classic Space activity
+
+ooo
+
+Clock
+
+Assimple Sugar clock
+
+Stopped
+
+KR
+
+Color My World
+
+Explore colors and names
+
+Stopped
+
+Connect the Dots
+
+Connect the numbered dots in order
+
+Stopped
+
+Count
+
+Count cells and layers in a simple grid
+
+Stopped
+
+Diamond Fusion
+
+Match neighbouring diamonds and fuse them
+
+Stopped
+
+Finance
+
+Track income, expenses, and balance
+
+Stopped
+
+15
+
+FotcToon
+
+Create a simple photo caption panel
+
+Stopped
+
+a
