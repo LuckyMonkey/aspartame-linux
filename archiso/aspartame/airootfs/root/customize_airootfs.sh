@@ -124,6 +124,8 @@ if id aspartame >/dev/null 2>&1 && test -d /usr/lib/aspartame/gtk4-preview; then
         /usr/lib/aspartame/gtk4-preview/runtime/data \
         /usr/lib/aspartame/gtk4-preview/runtime/config \
         /usr/lib/aspartame/gtk4-preview/runtime/cache \
+        /usr/lib/aspartame/gtk4-preview/runtime/dconf \
+        /usr/lib/aspartame/gtk4-preview/runtime/doc \
         /usr/lib/aspartame/gtk4-preview/runtime/activities
     chown -R aspartame:aspartame \
         /usr/lib/aspartame/gtk4-preview/logs \
@@ -131,6 +133,8 @@ if id aspartame >/dev/null 2>&1 && test -d /usr/lib/aspartame/gtk4-preview; then
         /usr/lib/aspartame/gtk4-preview/runtime/data \
         /usr/lib/aspartame/gtk4-preview/runtime/config \
         /usr/lib/aspartame/gtk4-preview/runtime/cache \
+        /usr/lib/aspartame/gtk4-preview/runtime/dconf \
+        /usr/lib/aspartame/gtk4-preview/runtime/doc \
         /usr/lib/aspartame/gtk4-preview/runtime/activities 2>/dev/null || true
 fi
 # The color-only intro deliberately omits the legacy age page. Patch the
