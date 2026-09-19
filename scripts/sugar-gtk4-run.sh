@@ -70,7 +70,9 @@ command -v python3 >/dev/null || { echo "missing python3" >&2; exit 2; }
 mkdir -p "$runroot/home" "$runroot/data" "$runroot/config" "$runroot/cache" "$root/logs"
 # Casilda exposes one private Activity compositor per modern Space. Refuse a
 # second launcher before it can compete for the same fullscreen surface.
-session_lock="$runroot/gtk4-session.lock"
+# The packaged runtime tree is read-only except for its explicit state
+# subdirectories. Keep the process lock in the user-writable session tmpfs.
+session_lock="${XDG_RUNTIME_DIR:-/tmp}/aspartame-gtk4-session.lock"
 exec 9>"$session_lock"
 flock -n 9 || {
     echo "GTK4 preview session already running (lock: $session_lock)" >&2
