@@ -356,6 +356,9 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   semantic verification for changes already present in the maintained checkout.
   The current full guest build passes; runtime startup and visual parity remain
   separate gates.
+  Fresh post-build runtime evidence is recorded in
+  `reports/gtk4/runtime-20260919-build-lifecycle.md`: the GTK4 runtime check
+  passes and Help and Count each complete three real lifecycle cycles.
 
   Historical failure evidence (kept for provenance) showed the shell aborting
   during startup:
