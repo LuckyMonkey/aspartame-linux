@@ -216,10 +216,10 @@ a bounded fix. See `reports/gtk4/five-fix-pass-20260915.md`.
   never moved the shell stack to the Journal page. Closed by 0163, which gives
   the keyboard route the same semantic zoom, active-activity, and visibility
   contract as `ShowJournal()`; the Journal remains reachable from the Frame.
-- **Journal list rows render their palette inline.** Every entry shows three
-  full-width action bars, so ~4 of 697 entries fit on screen. The row actions
-  belong in the palette that `listview.py` already builds; the fault is in the
-  GTK4 list-row/palette-invoker port.
+- **Journal list rows rendered their palette inline.** Closed by the bounded
+  GTK4 row-action fix recorded in `reports/gtk4/journal-row-actions-20260919.md`:
+  Keep/Edit/Delete/Project remain available from an accessible Actions
+  popover, while the primary list stays compact.
 - **The Settings window does not cover the screen.** Home's toolbar and search
   entry stay visible above a modal control panel, leaving two stacked search
   entries. Calling `fullscreen()` on the window had no effect, so this is

@@ -29,6 +29,10 @@ def test_gtk4_journal_list_uses_native_selection_api():
     assert "External volume: %s" in source
     assert "mountpoint" in source
     assert "Gtk.ToggleButton(label=_('Projects'))" in source
+    assert "Gtk.MenuButton(label=_('Actions'))" in source
+    assert "Journal entry actions" in source
+    assert "actions.set_popover(popover)" in source
+    assert "actions_box.append(keep)" in source
     assert "def get_projects_view_active(self): return self._projects_only" in source
     assert "if self._projects_only and not metadata.get('project_id')" in source
     assert "self._empty.set_visible(shown == 0)" in source

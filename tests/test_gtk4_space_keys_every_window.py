@@ -74,3 +74,9 @@ def test_subprocess_is_imported_where_it_is_now_used():
 def test_build_routes_the_patch_to_the_shell_checkout():
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert '*0153*) target="$root/sources/sugar" ;;' in build
+
+
+def test_build_verifies_semantic_result_after_patch_drift():
+    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
+    assert 'verified existing Space key ownership from every shell window' in build
+    assert 'grep -q "def handle_space_classic"' in build

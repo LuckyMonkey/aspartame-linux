@@ -110,7 +110,9 @@ class ListView(Gtk.Box):
                 title_entry.set_hexpand(True)
                 title_entry.set_visible(False)
                 box.append(title_entry)
-                box.append(Gtk.Label(label=activity, xalign=0))
+                activity_label = Gtk.Label(label=activity, xalign=0)
+                activity_label.add_css_class('dim-label')
+                box.append(activity_label)
                 mountpoint = str(metadata.get('mountpoint') or '/')
                 if mountpoint != '/':
                     volume = Gtk.Label(
@@ -124,18 +126,15 @@ class ListView(Gtk.Box):
                                 in ('1', 'true'))
                 keep.set_tooltip_text(_('Keep this entry in the Journal'))
                 keep.connect('toggled', self._keep_toggled, uid, metadata)
-                box.append(keep)
                 edit = Gtk.Button(label=_('Edit title'))
                 edit.set_tooltip_text(_('Change this Journal entry title'))
                 edit.connect('clicked', self._edit_title, edit, title_label,
                              title_entry, metadata)
                 title_entry.connect('activate', self._finish_title, edit,
                                     title_label, title_entry, metadata)
-                box.append(edit)
                 delete = Gtk.Button(label=_('Delete'))
                 delete.set_tooltip_text(_('Delete this Journal entry'))
                 delete.connect('clicked', self._delete_clicked, uid)
-                box.append(delete)
                 project_id = str(metadata.get('project_id') or '')
                 project_label = (_('Project: %s') % project_id
                                  if project_id else _('Project'))
@@ -143,8 +142,34 @@ class ListView(Gtk.Box):
                 project.set_tooltip_text(_('Assign this entry to a project'))
                 project.connect('clicked', self._project_clicked, metadata,
                                 project)
-                box.append(project)
-                row.set_child(box)
+                # Journal actions belong to the row palette, not the primary
+                # result surface.  Keeping them in a popover preserves the
+                # GTK3 contextual-action semantics while allowing many more
+                # entries to remain visible in the GTK4 list.
+                actions = Gtk.MenuButton(label=_('Actions'))
+                actions.set_tooltip_text(_('Journal entry actions'))
+                actions.update_property(
+                    [Gtk.AccessibleProperty.LABEL],
+                    [_('Actions for %s') % title])
+                actions_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,
+                                      spacing=6)
+                actions_box.set_margin_start(12)
+                actions_box.set_margin_end(12)
+                actions_box.set_margin_top(12)
+                actions_box.set_margin_bottom(12)
+                actions_box.append(keep)
+                actions_box.append(edit)
+                actions_box.append(delete)
+                actions_box.append(project)
+                popover = Gtk.Popover()
+                popover.set_child(actions_box)
+                actions.set_popover(popover)
+                row_content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL,
+                                      spacing=12)
+                box.set_hexpand(True)
+                row_content.append(box)
+                row_content.append(actions)
+                row.set_child(row_content)
                 # Make keyboard traversal explicit in GTK4. ListBox otherwise
                 # only guarantees pointer activation for rows whose child
                 # hierarchy happens to be focusable.

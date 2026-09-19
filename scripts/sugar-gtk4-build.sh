@@ -577,6 +577,16 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing duplicate key-dispatch verdict: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0153* ]] &&
+        grep -q "'F7': 'space_classic'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q "'F8': 'space_modern'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q "def handle_space_classic" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q "def handle_space_modern" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q "_handler.add_window(self)" "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Space key ownership from every shell window: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0144* ]] &&
         sed -n '/def show_main_view/,/def _show_secondary_view/p' "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
             grep -q 'self.canvas == self._main_view'; then
