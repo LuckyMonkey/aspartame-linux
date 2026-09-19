@@ -1,0 +1,32 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] keyhandler: put Journal action on the visible shell stack
+
+The Sugar open-search shortcut is the Journal entry point in the GTK4 shell.
+Calling only JournalActivity.show_journal() initializes the object but leaves
+the Home stack page visible. Drive the same semantic zoom/visibility contract
+used by the D-Bus ShowJournal action so the keyboard route reaches the actual
+Journal surface.
+
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -210,6 +210,20 @@ class KeyHandler(object):
+     def handle_open_search(self, event_time):
+         try:
+             journal = journalactivity.get_journal()
+             journal.show_journal()
++            model = shell.get_model()
++            model._set_active_activity(model.get_activity_by_id(
++                journal.activity_id))
++            model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)
++            model.stack.set_visible_child_name('journal')
++            journal.set_hexpand(True)
++            journal.set_vexpand(True)
++            journal.set_visible(True)
++            if journal._main_view is not None:
++                journal._main_view.set_visible(True)
++            if journal._main_toolbox is not None:
++                journal._main_toolbox.set_visible(True)
++            journal._toolbar_area.set_visible(True)
++            journal._canvas_area.set_visible(True)
+         except Exception as e:
+             logging.exception('Error in handle_open_search')

@@ -199,8 +199,9 @@ Reproduced and left open. Full evidence in
   Escape, F3 and F4 leave it up and every keystroke reaches its search
   entry. Related to the 2026-09-15 finding that it does not cover the
   screen.
-- **The shell logs every keystroke at WARNING**, so typed text lands in the
-  shell log and real warnings are buried.
+- **The shell logged every keystroke at WARNING**, so typed text landed in the
+  shell log and real warnings were buried. Closed by 0156; the current
+  dispatcher deliberately emits no per-keystroke warning.
 - **Alt+Tab selects the next Activity but its surface is not raised.** The
   shell has one compositor page for all Activities and Casilda exposes no
   way to raise a chosen toplevel. Compositor work, not a bounded fix.
@@ -210,11 +211,10 @@ Reproduced and left open. Full evidence in
 Reproduced and left open rather than pursued, each recorded because it exceeds
 a bounded fix. See `reports/gtk4/five-fix-pass-20260915.md`.
 
-- **F5 does not open the Journal.** `show_journal()` calls `reveal()`, which
-  uses top-level window semantics, and never moves the shell's view state to
-  the Journal page. Poking the stack directly was tried and rejected: it left
-  F3 unable to return Home. The coherent fix drives the shell's zoom and
-  active-activity state. The Journal is reachable from the Frame meanwhile.
+- **F5 did not open the Journal.** `show_journal()` initialized the object but
+  never moved the shell stack to the Journal page. Closed by 0163, which gives
+  the keyboard route the same semantic zoom, active-activity, and visibility
+  contract as `ShowJournal()`; the Journal remains reachable from the Frame.
 - **Journal list rows render their palette inline.** Every entry shows three
   full-width action bars, so ~4 of 697 entries fit on screen. The row actions
   belong in the palette that `listview.py` already builds; the fault is in the
