@@ -122,6 +122,7 @@ for patch in "$patch_dir"/*.patch; do
         *0162*) target="$root/sources/sugar" ;;
         *0163*) target="$root/sources/sugar" ;;
         *0164*) target="$root/sources/sugar" ;;
+        *0168*) target="$root/sources/sugar" ;;
         *0167*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0011*|*0012*|*0019*|*0021*|*0027*|*0034*|*0036*|*0037*|*0038*|*0039*|*0042*|*0043*|*0044*|*0049*|*0052*|*0055*|*0057*|*0058*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0073*|*0075*|*0076*|*0079*|*0081*) target="$root/sources/sugar" ;;
@@ -785,6 +786,51 @@ path.write_text(text.replace(old, new, 1))
 PY
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "repaired full-monitor Control Panel geometry: $patch_name"
+    elif [[ "$patch_name" == *0168* ]] &&
+        grep -q 'self\._lifecycle_changed()' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null &&
+        grep -q '^        else:$' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null; then
+        python3 - "$shell/src/jarabe/desktop/favoritesview.py" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+start = text.index('    def _update(self):')
+end = text.index('    def create_palette', start)
+replacement = '''    def _update(self):
+        self.palette = None
+        if not self._resume_mode or not self._journal_entries:
+            xo_color = XoColor('%s,%s' % (style.COLOR_BUTTON_GREY.get_svg(),
+                                          style.COLOR_WHITE.get_svg()))
+        else:
+            xo_color = misc.get_icon_color(self._journal_entries[0])
+        self.props.xo_color = xo_color
+        self._lifecycle_changed()
+
+    def _lifecycle_changed(self, *_args):
+        state, activity = self._presentation.state(self.bundle_id)
+        if state in ('launching', 'running', 'active') and activity is not None:
+            self.props.xo_color = activity.get_icon_color()
+            return
+        # A stopped Activity is still resumable, but must not look active.
+        self.props.xo_color = XoColor('%s,%s' % (
+            style.COLOR_BUTTON_GREY.get_svg(), style.COLOR_WHITE.get_svg()))
+
+'''
+path.write_text(text[:start] + replacement + text[end:])
+PY
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "repaired malformed authoritative Favorites Activity state: $patch_name"
+    elif [[ "$patch_name" == *0168* ]] &&
+        grep -q 'self\._presentation = activitypresentation\.get_model()' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null &&
+        grep -q 'def _lifecycle_changed' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "verified authoritative Favorites Activity state: $patch_name"
+    elif [[ "$patch_name" == *0168* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied authoritative Favorites Activity state: $patch_name"
     elif [[ "$patch_name" == *0120* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)

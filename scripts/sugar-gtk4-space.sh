@@ -60,13 +60,15 @@ else
 fi
 
 gtk4_pid() {
+    local env_data
     for pid in $(pgrep -u "$(id -u)" -f 'python3 -m jarabe\.main|jarabe/main.py'); do
-        tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
-            grep -qx 'ASPARTAME_GTK4_PREVIEW=1' || continue
+        [ -r "/proc/$pid/environ" ] || continue
+        env_data=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null) || continue
+        printf '%s\n' "$env_data" | grep -qx 'ASPARTAME_GTK4_PREVIEW=1' || continue
         # A dead session bus can leave the Python process and fullscreen
         # surface alive while all semantic shell actions have stopped working.
         # Only report a modern Space PID while its private bus endpoint exists.
-        bus_address=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
+        bus_address=$(printf '%s\n' "$env_data" |
             sed -n 's/^DBUS_SESSION_BUS_ADDRESS=unix:path=\([^,]*\).*$/\1/p' | head -1)
         [ -n "$bus_address" ] && [ -S "$bus_address" ] || continue
         if command -v dbus-send >/dev/null 2>&1; then
@@ -80,11 +82,12 @@ gtk4_pid() {
 }
 
 retire_stale_gtk4() {
-    local pid bus_address
+    local pid bus_address env_data
     for pid in $(pgrep -u "$(id -u)" -f 'python3 -m jarabe\.main|jarabe/main.py'); do
-        tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
-            grep -qx 'ASPARTAME_GTK4_PREVIEW=1' || continue
-        bus_address=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
+        [ -r "/proc/$pid/environ" ] || continue
+        env_data=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null) || continue
+        printf '%s\n' "$env_data" | grep -qx 'ASPARTAME_GTK4_PREVIEW=1' || continue
+        bus_address=$(printf '%s\n' "$env_data" |
             sed -n 's/^DBUS_SESSION_BUS_ADDRESS=unix:path=\([^,]*\).*$/\1/p' | head -1)
         bus_ok=0
         if [ -n "$bus_address" ] && [ -S "$bus_address" ]; then
@@ -104,9 +107,11 @@ retire_stale_gtk4() {
 }
 
 gtk3_pid() {
+    local env_data
     for pid in $(pgrep -u "$(id -u)" -f 'python3 -m jarabe\.main|jarabe/main.py'); do
-        if ! tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null |
-            grep -q '^ASPARTAME_GTK4_PREVIEW=1$'; then
+        [ -r "/proc/$pid/environ" ] || continue
+        env_data=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null) || continue
+        if ! printf '%s\n' "$env_data" | grep -q '^ASPARTAME_GTK4_PREVIEW=1$'; then
             echo "$pid"; return
         fi
     done

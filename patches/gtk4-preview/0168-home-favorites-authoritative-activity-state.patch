@@ -1,0 +1,40 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: derive Favorites icon state from the Activity model
+
+GTK4 Home's list view already subscribes to the authoritative Activity
+Presentation model, but the Favorites ring continued to set XO color only
+from the most recent Journal entry. After an Activity stopped, its ring icon
+could therefore remain lit as if it were running. Subscribe the ring icon to
+the same model and keep stopped Activities neutral.
+
+--- a/src/jarabe/desktop/favoritesview.py
++++ b/src/jarabe/desktop/favoritesview.py
+@@ -48,3 +48,4 @@ from jarabe.view.buddymenu import BuddyMenu
+ from jarabe.journal import misc
+ from jarabe.model import bundleregistry
+ from jarabe.model import desktop
++from jarabe.desktop import activitypresentation
+@@ -391,2 +392,4 @@ class ActivityIcon(CanvasIcon):
+         self._activity_info = activity_info
+         self._journal_entries = []
++        self._presentation = activitypresentation.get_model()
++        self._presentation.connect('changed', self._lifecycle_changed)
+@@ -442,8 +444,19 @@ class ActivityIcon(CanvasIcon):
+     def _update(self):
+         self.palette = None
+         if not self._resume_mode or not self._journal_entries:
+             xo_color = XoColor('%s,%s' % (style.COLOR_BUTTON_GREY.get_svg(),
+                                           style.COLOR_WHITE.get_svg()))
+         else:
+             xo_color = misc.get_icon_color(self._journal_entries[0])
+         self.props.xo_color = xo_color
++        self._lifecycle_changed()
++
++    def _lifecycle_changed(self, *_args):
++        state, activity = self._presentation.state(self.bundle_id)
++        if state in ('launching', 'running', 'active') and activity is not None:
++            self.props.xo_color = activity.get_icon_color()
++            return
++        # A stopped Activity is still resumable, but must not look active.
++        self.props.xo_color = XoColor('%s,%s' % (
++            style.COLOR_BUTTON_GREY.get_svg(), style.COLOR_WHITE.get_svg()))

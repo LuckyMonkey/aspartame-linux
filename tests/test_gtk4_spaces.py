@@ -200,3 +200,10 @@ def test_frame_accessibility_patch_is_routed():
     assert not (ROOT / 'patches/gtk4-preview/0121-frame-accessibility-final-placement.patch').exists()
     assert not (ROOT / 'patches/gtk4-preview/0122-frame-accessibility-relocate-final.patch').exists()
     assert not (ROOT / 'patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch').exists()
+
+
+def test_space_controller_handles_racing_process_exit():
+    controller = (ROOT / 'scripts/sugar-gtk4-space.sh').read_text()
+    # pgrep can observe a helper that exits before /proc is read. The guard
+    # keeps set -e from aborting a valid Space switch in that race.
+    assert controller.count('[ -r "/proc/$pid/environ" ] || continue') >= 3
