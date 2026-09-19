@@ -1,0 +1,22 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] controlpanel: let Escape and zoom keys dismiss Settings
+
+The GTK4 ControlPanel is a modal top-level window. Its key controller was in
+the default bubble phase, so a focused search entry and the global key handler
+could consume Escape/F3/F4 before the panel had a chance to close. Capture
+these shell navigation keys at the panel boundary and return to Home through
+the existing stop path.
+
+--- a/src/jarabe/controlpanel/gui.py
++++ b/src/jarabe/controlpanel/gui.py
+@@ -84,3 +84,4 @@ class ControlPanel(Gtk.Window):
+         key_controller = Gtk.EventControllerKey()
+         key_controller.connect('key-pressed', self.__key_press_event_cb)
++        key_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+         self.add_controller(key_controller)
+@@ -336,4 +337,4 @@ class ControlPanel(Gtk.Window):
+-        if keyval == Gdk.KEY_Escape:
++        if keyval in (Gdk.KEY_Escape, Gdk.KEY_F3, Gdk.KEY_F4):
+             if self._toolbar == self._main_toolbar:
+                 self.__stop_clicked_cb(None)
+                 self.close()

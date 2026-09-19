@@ -195,10 +195,11 @@ Reproduced and left open. Full evidence in
   make the window disappear while the next `ShowControlPanel()` was refused.
   Closed by 0162, which releases `_has_modal` ownership in the shared shell
   close path.
-- **The Settings control panel cannot be dismissed from the keyboard.**
-  Escape, F3 and F4 leave it up and every keystroke reaches its search
-  entry. Related to the 2026-09-15 finding that it does not cover the
-  screen.
+- **The Settings control panel could not be dismissed from the keyboard.**
+  Closed in 0164: the panel key controller now captures Escape, F3 and F4
+  before the focused search entry/global modal handler, and routes them
+  through the existing stop/close path. Physical key delivery remains subject
+  to the documented guest evdev transport limitation.
 - **The shell logged every keystroke at WARNING**, so typed text landed in the
   shell log and real warnings were buried. Closed by 0156; the current
   dispatcher deliberately emits no per-keystroke warning.

@@ -121,6 +121,7 @@ for patch in "$patch_dir"/*.patch; do
         *0161*) target="$root/sources/sugar" ;;
         *0162*) target="$root/sources/sugar" ;;
         *0163*) target="$root/sources/sugar" ;;
+        *0164*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0011*|*0012*|*0019*|*0021*|*0027*|*0034*|*0036*|*0037*|*0038*|*0039*|*0042*|*0043*|*0044*|*0049*|*0052*|*0055*|*0057*|*0058*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0073*|*0075*|*0076*|*0079*|*0081*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
