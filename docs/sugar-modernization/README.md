@@ -27,6 +27,7 @@ Current upstream starting points:
 | What is broken or deferred? | [BLOCKERS.md](BLOCKERS.md) (numbered `GTK4-NNN` registry) and the open-findings sections of the deck |
 | Is this component usable? | [GTK4_STATUS.md](GTK4_STATUS.md) component matrix |
 | Is this Activity ported, and how far? | [ACTIVITY_PORT_CLASSIFICATION.md](ACTIVITY_PORT_CLASSIFICATION.md) |
+| What remains for each Activity after launch coverage? | [ACTIVITY_LAUNCH_TASKS.md](ACTIVITY_LAUNCH_TASKS.md) |
 | How do I reproduce a past result? | `reports/gtk4/` — each report names the script or key sequence that produced it |
 
 `CONVERSION_TRACKER.md`, `MIGRATION_TODO.md` and `RACE_STATUS.md` are
