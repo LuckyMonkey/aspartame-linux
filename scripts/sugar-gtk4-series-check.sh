@@ -31,7 +31,7 @@ route() {
         *0014*) echo sugar-datastore ;;
         *0029*) echo log-activity ;;
         *0137*|*0138*) echo casilda ;;
-        *0159*) echo sugar ;;
+        *0159*|*0160*) echo sugar ;;
         *0003*) echo SKIP ;;
         *) echo sugar ;;
     esac

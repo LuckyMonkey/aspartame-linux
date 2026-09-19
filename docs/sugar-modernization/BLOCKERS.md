@@ -437,3 +437,25 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   demonstrates that it blocks behavior.
 - Status: resolved as a build/runtime blocker; historical fuzz debt retained
   for provenance.
+
+## GTK4-026 — Activity service loss could leave a stale Running entry
+
+- Category: `RUNTIME` / Activity lifecycle state
+- Reproduction: launch the native GTK4 Calculate Activity, stop it, confirm
+  that its process and `org.laptop.Activity<id>` D-Bus name disappear, then
+  return to Home. Before the fix, Home could still render Calculate as
+  `Running` because a launch/stop race missed the one-shot owner-loss callback.
+- Root cause: Casilda Activities have no GTK top-level window for the old
+  cleanup path to observe. The D-Bus owner-loss callback is authoritative, but
+  subscribing after a fast owner transition can leave a launched model object
+  behind.
+- Fix: `0160-shell-reconcile-lost-activity-service.patch` adds a small
+  250-ms ShellModel reconciliation timer. It checks only activities already in
+  `LAUNCHED` state and removes them when the authoritative service name is no
+  longer owned. This is lifecycle state repair, not a visual fallback.
+- Evidence (2026-09-19): rebuilt guest applied 0160; one Calculate launch,
+  resume, stop, process exit, and service release passed; a fresh 1920x1080
+  Home List screenshot shows Calculate as `Stopped` immediately after the
+  round trip (`reports/screenshots/sugar-20260919-132250-v0.0.31.png`).
+- Status: resolved; retain repeated lifecycle and abnormal-exit checks in the
+  regular GTK4 qualification matrix.

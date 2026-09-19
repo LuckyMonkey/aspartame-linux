@@ -1,0 +1,48 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: reconcile Activity entries whose service is gone
+
+Casilda Activities do not register a GTK window with the shell. Their normal
+cleanup path is therefore the D-Bus NameOwnerChanged signal. A launch/stop
+race can subscribe after the owner has already disappeared, leaving a stale
+LAUNCHED model entry and a permanently lit Home/Frame icon. Reconcile the
+authoritative service name at a short interval as a safety net. This removes
+only entries already marked launched whose service is no longer owned; it does
+not interfere with normal launch startup or Activity-specific UI.
+
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -177,4 +177,12 @@ class Activity(GObject.GObject):
+ 
+         return self._service
++
++    def service_name_owned(self):
++        if not self._activity_id:
++            return False
++        try:
++            return dbus.SessionBus().name_has_owner(self._get_service_name())
++        except dbus.DBusException:
++            return False
+ 
+     def get_title(self):
+@@ -454,6 +462,7 @@ class ShellModel(Gtk.Application):
+         self._active_activity = None
+         self._tabbing_activity = None
+         self._launchers = {}
+         self._modal_dialogs_counter = 0
++        self._activity_reconcile_source = GLib.timeout_add(250, self._reconcile_activity_services)
+ 
+         settings = Gio.Settings.new('org.sugarlabs')
+@@ -850,4 +858,13 @@ class ShellModel(Gtk.Application):
+         self.emit('activity-removed', home_activity)
+         self._activities.remove(home_activity)
+
++    def _reconcile_activity_services(self):
++        for activity in list(self._activities):
++            if (activity.get_launch_status() == Activity.LAUNCHED and
++                    not activity.service_name_owned()):
++                logging.warning('Removing stale Activity service: %s',
++                                activity.get_activity_id())
++                self._remove_activity(activity)
++        return True
++
+     def notify_launch(self, activity_id, service_name):
