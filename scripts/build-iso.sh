@@ -51,6 +51,13 @@ for activity in Log Help; do
         esac
     fi
 done
+# ImageViewer is pinned in the preview source tree rather than a repository
+# package; resolve that guest-home link into the staged prefix as well.
+imageviewer="$activities/ImageViewer.activity"
+if test -L "$imageviewer" && test -d "$preview_root/gtk4-preview/sources/imageviewer-activity"; then
+    rm -f "$imageviewer"
+    cp -a "$preview_root/gtk4-preview/sources/imageviewer-activity" "$imageviewer"
+fi
 # Resolve the remaining development-only Activity links by package basename.
 # This covers the catalog without hard-coding every bundle name and also
 # handles nested executable links such as Count.activity/gtk4-count-activity.
