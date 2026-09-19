@@ -19,7 +19,21 @@ python_version=$($python_bin -c 'import sys; print(f"{sys.version_info.major}.{s
 datastore_site="$prefix/lib/python$python_version/site-packages"
 libdir="$prefix/lib"
 runroot=${GTK4_RUNTIME_ROOT:-$root/runtime}
-log="$root/logs/gtk4-shell-$(date -u +%Y%m%dT%H%M%SZ).log"
+state_root=$runroot
+resources=$runroot
+log_root="$root/logs"
+if test -f "$root/STANDALONE-MANIFEST"; then
+    # Installed code stays immutable. Only user data belongs on the optional
+    # persistent home disk; sockets/portal mounts must be recreated each boot.
+    state_root=${GTK4_RUNTIME_ROOT:-/home/aspartame/.local/share/aspartame/gtk4}
+    resources="$root/runtime"
+    runroot="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/aspartame-gtk4"
+    log_root="$state_root/logs"
+    mkdir -p "$runroot"
+    chmod 700 "$runroot"
+fi
+mkdir -p "$log_root"
+log="$log_root/gtk4-shell-$(date -u +%Y%m%dT%H%M%SZ).log"
 : > "$log"
 # Keep the session log authoritative while retaining normal launcher output.
 exec > >(tee -a "$log") 2>&1
@@ -38,7 +52,7 @@ esac
 for path in "$shell/src/jarabe/main.py" "$toolkit/src/sugar4" \
             "$datastore/bin/datastore-service" \
             "$libdir/girepository-1.0/Casilda-1.0.typelib" \
-            "$runroot/schemas/gschemas.compiled" "$runroot/group-labels.json" \
+            "$resources/schemas/gschemas.compiled" "$resources/group-labels.json" \
             "$prefix/share/themes/sugar-72/gtk-4.0/gtk.css"; do
     test -e "$path" || { echo "missing GTK4 preview requirement: $path" >&2; exit 2; }
 done
@@ -67,7 +81,7 @@ test -n "$metadata_reader" || { echo "missing GTK4 datastore metadata reader" >&
 command -v dbus-run-session >/dev/null || { echo "missing dbus-run-session" >&2; exit 2; }
 command -v python3 >/dev/null || { echo "missing python3" >&2; exit 2; }
 
-mkdir -p "$runroot/home" "$runroot/data" "$runroot/config" "$runroot/cache" "$root/logs"
+mkdir -p "$state_root/home" "$state_root/data" "$state_root/config" "$state_root/cache"
 # Casilda exposes one private Activity compositor per modern Space. Refuse a
 # second launcher before it can compete for the same fullscreen surface.
 # The packaged runtime tree is read-only except for its explicit state
@@ -81,8 +95,10 @@ flock -n 9 || {
 # The launcher is commonly invoked by root while the GTK4 session runs as the
 # `aspartame` user.  Keep datastore/Xapian state user-owned so its lockfile can
 # be opened on every restart (a previous root-owned index made Journal crash).
-chown -R aspartame:aspartame "$runroot/home" "$runroot/data" \
-    "$runroot/config" "$runroot/cache"
+if [ "$(id -u)" -eq 0 ]; then
+    chown -R aspartame:aspartame "$state_root/home" "$state_root/data" \
+        "$state_root/config" "$state_root/cache"
+fi
 modern_activities="$runroot/activities"
 mkdir -p "$modern_activities"
 ln -sfn "$prefix/share/sugar/activities/Help.activity" \
@@ -120,9 +136,6 @@ test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2
 }
-# The packaged runtime root is read-only; only its state subdirectories are
-# writable and are prepared above.
-
 # Keep modern bundle resolution isolated from ~/Activities, where the stable
 # GTK3 Help bundle otherwise wins duplicate bundle_id lookup.
 
@@ -131,7 +144,7 @@ xvfb_pid=
 if [ -z "$display" ]; then
     command -v Xvfb >/dev/null || { echo "DISPLAY is unset and Xvfb is unavailable" >&2; exit 2; }
     display=:99
-    Xvfb "$display" -screen 0 1280x800x24 -nolisten tcp >"$root/logs/xvfb-gtk4-run.log" 2>&1 &
+    Xvfb "$display" -screen 0 1280x800x24 -nolisten tcp >"$log_root/xvfb-gtk4-run.log" 2>&1 &
     xvfb_pid=$!
     trap 'kill "$xvfb_pid" 2>/dev/null || true' EXIT INT TERM
     sleep 1
@@ -144,6 +157,7 @@ Aspartame GTK4 Sugar preview
   toolkit: $(git -C "$toolkit" rev-parse HEAD)
   display: $display
   runtime: $runroot
+  state:   $state_root
   log:     $log
 EOF
 
@@ -156,14 +170,14 @@ exec env \
     DISPLAY="$display" \
     GDK_BACKEND=x11 \
     CASILDA_FORCE_SOFTWARE="${CASILDA_FORCE_SOFTWARE:-1}" \
-    SUGAR_HOME="$runroot/home" \
+    SUGAR_HOME="$state_root/home" \
     SUGAR_PROFILE=default \
     XDG_RUNTIME_DIR="$runroot" \
-    XDG_DATA_HOME="$runroot/data" \
-    XDG_CONFIG_HOME="$runroot/config" \
-    XDG_CACHE_HOME="$runroot/cache" \
-    GSETTINGS_SCHEMA_DIR="$runroot/schemas" \
-    SUGAR_GROUP_LABELS="$runroot/group-labels.json" \
+    XDG_DATA_HOME="$state_root/data" \
+    XDG_CONFIG_HOME="$state_root/config" \
+    XDG_CACHE_HOME="$state_root/cache" \
+    GSETTINGS_SCHEMA_DIR="$resources/schemas" \
+    SUGAR_GROUP_LABELS="$resources/group-labels.json" \
     SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
     SUGAR_ACTIVITIES_PATH="$modern_activities" \
@@ -173,7 +187,7 @@ exec env \
     LD_LIBRARY_PATH="$libdir" \
     XDG_DATA_DIRS="$prefix/share:/usr/local/share:/usr/share" \
     DATASTORE_SERVICE="$datastore/bin/datastore-service" \
-    DATASTORE_LOG="$root/logs/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
+    DATASTORE_LOG="$log_root/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
     ASPARTAME_GTK4_LOG="$log" \
     PYTHON_BIN="$python_bin" \
     PATH="$venv/bin:$prefix/bin:$PATH" \

@@ -44,7 +44,7 @@ if ! grep -qx 'exec /usr/local/bin/aspartame-x-session' /home/aspartame/.xinitrc
     fi
     install -o aspartame -g aspartame /etc/skel/.xinitrc /home/aspartame/.xinitrc
 fi
-if test ! -e /home/aspartame/.bash_profile; then
+if test ! -s /home/aspartame/.bash_profile; then
     install -o aspartame -g aspartame /etc/skel/.bash_profile \
         /home/aspartame/.bash_profile
 fi
