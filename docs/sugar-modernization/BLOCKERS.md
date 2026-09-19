@@ -423,17 +423,17 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   `groupbox.py` gains a duplicated `update_property` block and `meshbox.py`
   has two statements in the opposite order.
 
-  32 patches still need fuzz and 0 still fail outright.
-  The remaining failures are concentrated in the Frame accessibility chain
-  (`0118`-`0120`) and `service.py` (`0100`-`0103`).
+  32 historical patches still need fuzz and 0 fail outright. The clean replay
+  compiles, and the maintained guest checkout has semantic verification for
+  the moved Frame/service hunks. These fuzz counts are patch-fidelity debt,
+  not a current runtime accessibility failure.
 
-- Consequence: the running preview is healthy and is still the only complete
-  copy of the post-`0135` state. A fresh checkout can now rebuild a tree that
-  imports, but not one that starts.
-- Next step: the same treatment applied to `main.py` and `homewindow.py` -
-  replay to each failing patch's position, regenerate it as an exact-context
-  diff, and fold the chains whose intermediate steps cancel out. The
-  per-file work left is `favoritesview.py`, `groupbox.py`, `meshbox.py`,
-  `service.py`, `journalactivity.py`, `journalwindow.py`,
-  `controlpanel/gui.py` and `datastore.py`.
-- Status: OPEN, reduced.
+- Consequence: the maintained preview is healthy, the guest rebuild passes,
+  and a pristine replay compiles. Runtime startup and visual parity remain
+  separate gates; patch-fidelity cleanup should not displace them.
+- Next step: prioritize real user-visible gaps: peer-backed Neighborhood
+  behavior when a second participant is available, then the per-Activity task
+  lists. Revisit fuzz cleanup only when a fresh build or runtime regression
+  demonstrates that it blocks behavior.
+- Status: resolved as a build/runtime blocker; historical fuzz debt retained
+  for provenance.

@@ -8,7 +8,7 @@
 | sugar-artwork | main, `3c4854d` | pinned checkout | not installed | shell integration |
 | datastore | main, `7aa97e7` | native reader built; private service runs | stable D-Bus contract verified | preserve API while porting Journal |
 | Casilda | main, `cecb869` | 1.5.0 installed in isolated prefix | `wayland-sugar` and protocols verified | output reports 0x0 until an embedded surface is allocated |
-| GTK4 Activity coverage set | pinned/bundled native ports | registered preview bundles | 40 Activities pass repeated launch/stop coverage | classify parity in `ACTIVITY_PORT_CLASSIFICATION.md` |
+| GTK4 Activity coverage set | pinned/bundled native ports | registered preview bundles | 50 Activities pass one-cycle launch/activation/stop/cleanup coverage (2026-09-19) | classify parity in `ACTIVITY_PORT_CLASSIFICATION.md`; coverage is not full port parity |
 
 The shell/toolkit rows are fetched from sugarlabs/* pull-request refs, not
 contributor-fork branch names. This keeps the preview connected to the actual
