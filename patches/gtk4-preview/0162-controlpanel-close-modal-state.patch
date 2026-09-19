@@ -1,0 +1,19 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] controlpanel: release modal state when shell closes window
+
+GTK4 Settings can be closed by a semantic shell action such as ShowHome or
+ShowFrame.  Those paths call the window close operation directly; relying on
+the old destroy callback leaves ShellModel.has_modal() true and blocks the
+next Settings open.  Release the same ownership flag used by the stop button
+before closing the panel.
+
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -122,4 +122,7 @@ class UIService(service.Object):
+         panel = getattr(self, '_control_panel', None)
+         if panel is not None:
+             panel.destroy()
+             self._control_panel = None
++            if getattr(panel, '_has_modal', False):
++                panel._has_modal = False
++                self._shell_model.pop_modal()

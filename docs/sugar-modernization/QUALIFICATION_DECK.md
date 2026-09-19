@@ -188,8 +188,13 @@ Reproduced and left open. Full evidence in
 - **Settings → Language crashes on construction.** The image ships three
   locales, so `read_all_languages()` returns nothing, `_add_row()` falls
   back to `'English'`, and `_build_country_list` raises `KeyError:
-  'English'`. Found as the sixth defect of a five-defect pass, so recorded
-  rather than fixed.
+  'English'`. Closed by 0161 with an English/USA `C.UTF-8` fallback row;
+  `scripts/sugar-gtk4-language-settings.py` now constructs the real section
+  and passes on the rebuilt guest.
+- **Settings semantic close left the modal counter set.** `ShowHome()` could
+  make the window disappear while the next `ShowControlPanel()` was refused.
+  Closed by 0162, which releases `_has_modal` ownership in the shared shell
+  close path.
 - **The Settings control panel cannot be dismissed from the keyboard.**
   Escape, F3 and F4 leave it up and every keystroke reaches its search
   entry. Related to the 2026-09-15 finding that it does not cover the

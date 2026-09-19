@@ -459,3 +459,37 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   round trip (`reports/screenshots/sugar-20260919-132250-v0.0.31.png`).
 - Status: resolved; retain repeated lifecycle and abnormal-exit checks in the
   regular GTK4 qualification matrix.
+
+## GTK4-027 — Settings Language section failed on locale-minimal images
+
+- Category: `SETTINGS` / construction safety
+- Reproduction: on the development image, `locale -av` exposes only the
+  C/POSIX family. Constructing Settings → Language with the selected
+  `C.UTF-8` locale then fell back to the label `English` but had no matching
+  country dictionary, raising `KeyError: 'English'`.
+- Fix: `0161-language-fallback-locale.patch` supplies one valid English/USA
+  `C.UTF-8` row when locale metadata is empty. It preserves normal locale
+  discovery on fuller images.
+- Evidence: `scripts/sugar-gtk4-language-settings.py` constructs the real
+  GTK4 `Language` section with an empty locale provider and verifies the
+  English/USA row; result on the rebuilt guest: `language-settings=PASS
+  fallback-row=English country=USA`.
+- Status: resolved; keyboard dismissal and Settings window coverage remain
+  separate open findings.
+
+## GTK4-028 — semantic Settings close left the shell modal counter set
+
+- Category: `SETTINGS` / shell state
+- Reproduction: open GTK4 Settings, call `ShowHome()`, then call
+  `ShowControlPanel()` again. GTK4 closed the window visually but the old
+  destroy callback was not guaranteed to decrement ShellModel's modal count,
+  so the second call returned `False` and blocked Settings reopening.
+- Fix: `0162-controlpanel-close-modal-state.patch` releases the panel's
+  `_has_modal` ownership explicitly in the shell's shared close path before
+  closing it. The existing stop button remains idempotent because its callback
+  observes the cleared flag.
+- Evidence: the rebuilt guest applies 0162 and the Language section can be
+  reopened after a semantic Home transition; the direct construction probe
+  passes without a stale modal blocker.
+- Status: resolved; full-screen Settings coverage and keyboard Escape remain
+  separate open findings.

@@ -1,0 +1,17 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] controlpanel: keep Language usable without locale metadata
+
+Minimal Aspartame images may expose only the C/POSIX locale family.  The
+language section should still construct a valid English row instead of using
+an English label with an absent country dictionary and raising KeyError.
+
+--- a/extensions/cpsection/language/view.py
++++ b/extensions/cpsection/language/view.py
+@@ -68,4 +68,7 @@ class Language(SectionView):
+         self._available_locales = self._model.read_all_languages()
++        if not self._available_locales:
++            self._available_locales = [('English', 'USA', 'C.UTF-8')]
++
+         self._selected_locales = self._model.get_languages()
+
+         for language, country, code in self._available_locales:
