@@ -119,6 +119,12 @@ if test -f /usr/lib/aspartame/gtk4-preview/venv/bin/sugar-activity4; then
 fi
 if id aspartame >/dev/null 2>&1 && test -d /usr/lib/aspartame/gtk4-preview; then
     install -d -o aspartame -g aspartame /usr/lib/aspartame/gtk4-preview/logs
+    install -d -o aspartame -g aspartame \
+        /usr/lib/aspartame/gtk4-preview/runtime/home \
+        /usr/lib/aspartame/gtk4-preview/runtime/data \
+        /usr/lib/aspartame/gtk4-preview/runtime/config \
+        /usr/lib/aspartame/gtk4-preview/runtime/cache \
+        /usr/lib/aspartame/gtk4-preview/runtime/activities
     chown -R aspartame:aspartame \
         /usr/lib/aspartame/gtk4-preview/logs \
         /usr/lib/aspartame/gtk4-preview/runtime/home \
