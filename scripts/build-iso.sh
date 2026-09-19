@@ -37,6 +37,13 @@ test -x "$preview_root/gtk4-preview/venv/bin/python" || {
     echo 'standalone GTK4 archive is missing venv/bin/python' >&2
     exit 2
 }
+# The preview's generated Python config records the development prefix. Rewrite
+# that prefix in staged Python sources so Frame/extensions and control-panel
+# discovery stay inside the standalone image.
+while IFS= read -r -d '' source_file; do
+    sed -i 's#/home/aspartame/Development/gtk4-preview#/usr/lib/aspartame/gtk4-preview#g' \
+        "$source_file"
+done < <(find "$preview_root/gtk4-preview/sources" -type f -name '*.py' -print0)
 # The guest prefix contains development symlinks for these two shell-owned
 # Activities. Resolve them from the repository while staging the image so no
 # `/home/aspartame` or `/mnt/aspartame-dev` path leaks into the ISO.
