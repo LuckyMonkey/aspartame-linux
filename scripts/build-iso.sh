@@ -51,6 +51,21 @@ for activity in Log Help; do
         esac
     fi
 done
+# Resolve the remaining development-only Activity links by package basename.
+# This covers the catalog without hard-coding every bundle name and also
+# handles nested executable links such as Count.activity/gtk4-count-activity.
+while IFS= read -r -d '' link; do
+    target=$(readlink "$link")
+    package=$(basename "$target")
+    source="$project_root/packages/$package"
+    test -e "$source" || continue
+    rm -f "$link"
+    if test -d "$source"; then
+        cp -a "$source" "$link"
+    else
+        cp -a "$source" "$link"
+    fi
+done < <(find "$activities" -type l -print0)
 install -d "$preview_root/gtk4-preview/gtk4-overlay/src" \
           "$preview_root/gtk4-preview/scripts"
 cp -a "$project_root/gtk4-overlay/." \
