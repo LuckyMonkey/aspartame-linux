@@ -86,9 +86,6 @@ for patch in "$patch_dir"/*.patch; do
         *0118*) target="$root/sources/sugar" ;;
         *0119*) target="$root/sources/sugar" ;;
         *0120*) target="$root/sources/sugar" ;;
-        *0121*) target="$root/sources/sugar" ;;
-        *0122*) target="$root/sources/sugar" ;;
-        *0123*) target="$root/sources/sugar" ;;
         *0124*) target="$root/sources/sugar" ;;
         *0125*) target="$root/sources/sugar" ;;
         *0126*) target="$toolkit" ;;
@@ -223,6 +220,13 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing empty Group view state: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0057* ]] &&
+        grep -q 'if activity is not None:' "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q 'panel.set_transient_for(shell_model._main_window)' "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Home-owned Control Panel behavior: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0068* ]] && grep -q "def set_image(self, image):" "$toolkit/src/sugar4/graphics/menuitem.py" 2>/dev/null && grep -q "self\._content_box\.prepend(image)" "$toolkit/src/sugar4/graphics/menuitem.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing MenuItem image compatibility: $patch_name"
@@ -338,6 +342,13 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'def _ensure_list_view' "$shell/src/jarabe/desktop/homebox.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing lazy Home list result: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0012* ]] &&
+        grep -q 'def _ensure_list_view' "$shell/src/jarabe/desktop/homebox.py" 2>/dev/null &&
+        grep -q 'self\._ensure_list_view(toolbar)' "$shell/src/jarabe/desktop/homebox.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Home lazy-search wiring: $patch_name"
         continue
     fi
     # 0016 later changes CellRendererIcon's class and adds native GObject
@@ -546,41 +557,18 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified Frame accessibility gettext import: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0121* ]] &&
-        sed -n '/def __init__(self, position)/,/if self\.is_vertical()/p' "$shell/src/jarabe/frame/framewindow.py" 2>/dev/null |
-            grep -q 'AccessibleRole.GROUP'; then
+    if [[ "$patch_name" == *0139* ]] &&
+        grep -q 'self\._last_dispatch_handled' "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q 'def _dispatch_key' "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified final Frame accessibility placement: $patch_name"
+        echo "verified existing duplicate key-dispatch verdict: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0121* ]] &&
-        ! (cd "$shell" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+    if [[ "$patch_name" == *0144* ]] &&
+        sed -n '/def show_main_view/,/def _show_secondary_view/p' "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
+            grep -q 'self.canvas == self._main_view'; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "superseded drifted Frame placement patch: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0122* ]] &&
-        sed -n '/def __init__(self, position)/,/def do_dispose/p' "$shell/src/jarabe/frame/framewindow.py" 2>/dev/null |
-            grep -q 'AccessibleRole.GROUP' &&
-        ! sed -n '/def do_dispose/,/def get_child_box/p' "$shell/src/jarabe/frame/framewindow.py" 2>/dev/null |
-            grep -q 'AccessibleRole.GROUP'; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified final Frame accessibility relocation: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0122* ]] &&
-        ! (cd "$shell" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "superseded drifted Frame relocation patch: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0123* ]] &&
-        sed -n '/def __init__(self, position)/,/def do_dispose/p' "$shell/src/jarabe/frame/framewindow.py" 2>/dev/null |
-            grep -q 'AccessibleRole.GROUP' &&
-        ! sed -n '/def do_dispose/,/def get_child_box/p' "$shell/src/jarabe/frame/framewindow.py" 2>/dev/null |
-            grep -q 'AccessibleRole.GROUP'; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified current Frame accessibility relocation: $patch_name"
+        echo "verified existing Journal main-view idempotence: $patch_name"
         continue
     fi
     # 0134's semantic result may already be present in a source checkout whose
@@ -706,26 +694,11 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied Frame accessibility gettext import: $patch_name"
-    elif [[ "$patch_name" == *0121* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf "%s\n" "$patch_digest" > "$stamp"
-        echo "repaired final Frame accessibility placement: $patch_name"
-    elif [[ "$patch_name" == *0122* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf "%s\n" "$patch_digest" > "$stamp"
-        echo "relocated final Frame accessibility calls: $patch_name"
     elif [[ "$patch_name" == *0124* ]] &&
         (cd "$target" && patch --dry-run --fuzz=0 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=0 -p1 < "$patch")
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "applied authoritative registry selection: $patch_name"
-    elif [[ "$patch_name" == *0123* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf "%s\n" "$patch_digest" > "$stamp"
-        echo "relocated current Frame accessibility calls: $patch_name"
     elif [[ "$patch_name" == *0029* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0047* || "$patch_name" == *0049* || "$patch_name" == *0052* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)

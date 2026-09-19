@@ -191,16 +191,12 @@ def test_group_accessibility_patch_is_routed():
 
 def test_frame_accessibility_patch_is_routed():
     patch = (ROOT / 'patches/gtk4-preview/0118-frame-accessibility.patch').read_text()
-    final_patch = (ROOT / 'patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert "[_('Frame')]" in patch
     assert "AccessibleRole.GROUP" in patch
     assert '*0118*) target="$root/sources/sugar" ;;' in build
     assert '*0119*) target="$root/sources/sugar" ;;' in build
     assert '*0120*) target="$root/sources/sugar" ;;' in build
-    assert '*0121*) target="$root/sources/sugar" ;;' in build
-    assert '*0122*) target="$root/sources/sugar" ;;' in build
-    assert '*0123*) target="$root/sources/sugar" ;;' in build
-    assert "Move the accessibility metadata" in final_patch
-    assert "self._position = position" in final_patch
-    assert "super().do_dispose()" in final_patch
+    assert not (ROOT / 'patches/gtk4-preview/0121-frame-accessibility-final-placement.patch').exists()
+    assert not (ROOT / 'patches/gtk4-preview/0122-frame-accessibility-relocate-final.patch').exists()
+    assert not (ROOT / 'patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch').exists()

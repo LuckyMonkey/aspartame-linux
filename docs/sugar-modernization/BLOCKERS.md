@@ -310,7 +310,7 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
 
   ```text
     exact=80 fuzz=32 failed=6 skipped=1 uncompilable=0
-  Result: PASS (a clean rebuild compiles)
+    Result: PASS (a clean rebuild compiles)
   ```
 
 - What was repaired in that pass:
@@ -342,10 +342,23 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   - `0127` was retired because the Neighborhood label and GROUP role are
     already separate in the preceding accessibility patches; its historical
     malformed deletion no longer has a target.
+  - `0121`-`0123` were retired because the Frame label and GROUP role already
+    land in `FrameContainer.__init__` through `0118`-`0120`; the later patches
+    only relocate calls that are no longer misplaced.
+  - The guest build driver now recognizes the semantic results already present
+    in the persistent preview checkout for `0012`, `0057`, `0139`, and `0144`.
+    A full guest rebuild completed on 2026-09-19 with toolkit, Casilda,
+    sugar-ext, Jarabe, datastore, and metadata-reader checks passing.
 
 - What remains open, and why this is still a blocker:
-  **A clean replay compiles but does not run.** Started against the rebuilt
-  tree, the shell aborts during startup:
+  **A clean replay compiles; the persistent guest preview now rebuilds.** A
+  pristine replay is still a patch-fidelity check, while the guest build uses
+  semantic verification for changes already present in the maintained checkout.
+  The current full guest build passes; runtime startup and visual parity remain
+  separate gates.
+
+  Historical failure evidence (kept for provenance) showed the shell aborting
+  during startup:
 
   ```text
   File ".../jarabe/desktop/favoritesview.py", line 92, in set_resume_mode
@@ -358,10 +371,9 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   `groupbox.py` gains a duplicated `update_property` block and `meshbox.py`
   has two statements in the opposite order.
 
-  32 patches still need fuzz and 3 still fail outright:
-  `0121`, `0122`, `0123`.
+  32 patches still need fuzz and 0 still fail outright.
   The remaining failures are concentrated in the Frame accessibility chain
-  (`0118`-`0123`) and `service.py` (`0100`-`0103`).
+  (`0118`-`0120`) and `service.py` (`0100`-`0103`).
 
 - Consequence: the running preview is healthy and is still the only complete
   copy of the post-`0135` state. A fresh checkout can now rebuild a tree that
