@@ -203,9 +203,12 @@ Reproduced and left open. Full evidence in
 - **The shell logged every keystroke at WARNING**, so typed text landed in the
   shell log and real warnings were buried. Closed by 0156; the current
   dispatcher deliberately emits no per-keystroke warning.
-- **Alt+Tab selects the next Activity but its surface is not raised.** The
-  shell has one compositor page for all Activities and Casilda exposes no
-  way to raise a chosen toplevel. Compositor work, not a bounded fix.
+- **Alt+Tab selects the next Activity but its surface is not raised.**
+  Investigated through the installed Casilda GIR and source. The public
+  compositor API exposes no raise/activation method; the only focus helper is
+  an internal C function over an opaque toplevel. This remains a Casilda-owned
+  follow-up rather than a Jarabe/X11 workaround. Evidence:
+  `reports/gtk4/casilda-alt-tab-boundary-20260919.md`.
 
 ## Open findings from the five-fix pass (2026-09-15)
 
