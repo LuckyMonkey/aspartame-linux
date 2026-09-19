@@ -120,7 +120,8 @@ test -d "$prefix/share/sugar/extensions" || {
     echo "missing staged Sugar extensions: $prefix/share/sugar/extensions" >&2
     exit 2
 }
-chmod 700 "$runroot"
+# The packaged runtime root is read-only; only its state subdirectories are
+# writable and are prepared above.
 
 # Keep modern bundle resolution isolated from ~/Activities, where the stable
 # GTK3 Help bundle otherwise wins duplicate bundle_id lookup.
