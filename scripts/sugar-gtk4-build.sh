@@ -122,6 +122,7 @@ for patch in "$patch_dir"/*.patch; do
         *0162*) target="$root/sources/sugar" ;;
         *0163*) target="$root/sources/sugar" ;;
         *0164*) target="$root/sources/sugar" ;;
+        *0167*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0011*|*0012*|*0019*|*0021*|*0027*|*0034*|*0036*|*0037*|*0038*|*0039*|*0042*|*0043*|*0044*|*0049*|*0052*|*0055*|*0057*|*0058*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0073*|*0075*|*0076*|*0079*|*0081*) target="$root/sources/sugar" ;;
         *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
@@ -763,6 +764,27 @@ path.write_text(text.replace(needle, replacement, 1))
 PY
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "repaired control panel modal state semantically: $patch_name"
+    elif [[ "$patch_name" == *0167* ]] &&
+        grep -q 'width = sw$' "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null &&
+        grep -q 'height = sh$' "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "verified full-monitor Control Panel geometry: $patch_name"
+    elif [[ "$patch_name" == *0167* ]] &&
+        grep -q 'width = sw - offset \* 2' "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null; then
+        python3 - "$shell/src/jarabe/controlpanel/gui.py" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+old = "        width = sw - offset * 2\n        height = sh - offset * 2\n"
+new = "        width = sw\n        height = sh\n"
+if old not in text:
+    raise SystemExit('Control Panel geometry contract not found')
+path.write_text(text.replace(old, new, 1))
+PY
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "repaired full-monitor Control Panel geometry: $patch_name"
     elif [[ "$patch_name" == *0120* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)

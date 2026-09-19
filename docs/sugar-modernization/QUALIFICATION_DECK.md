@@ -220,10 +220,11 @@ a bounded fix. See `reports/gtk4/five-fix-pass-20260915.md`.
   GTK4 row-action fix recorded in `reports/gtk4/journal-row-actions-20260919.md`:
   Keep/Edit/Delete/Project remain available from an accessible Actions
   popover, while the primary list stays compact.
-- **The Settings window does not cover the screen.** Home's toolbar and search
-  entry stay visible above a modal control panel, leaving two stacked search
-  entries. Calling `fullscreen()` on the window had no effect, so this is
-  window management between the shell and a transient modal under Metacity.
+- **The Settings window did not cover the screen.** Closed by preview patch
+  0167, which requests the complete monitor geometry for the shell-owned
+  Control Panel. The Sugar top bar remains visible while the Settings surface
+  covers the full content area. Evidence:
+  `reports/gtk4/settings-full-monitor-20260919.md`.
 
 ---
 

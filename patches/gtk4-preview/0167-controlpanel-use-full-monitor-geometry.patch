@@ -1,0 +1,16 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] controlpanel: use the complete monitor geometry
+
+The GTK4 Control Panel already owns the Settings surface, but its geometry
+was deliberately reduced by two Sugar grid cells.  That leaves the Home
+toolbar and white margins visible around the modal panel.  Request the full
+monitor dimensions; Activity surfaces and the shell remain separate.
+
+--- a/src/jarabe/controlpanel/gui.py
++++ b/src/jarabe/controlpanel/gui.py
+@@ -183,3 +183,3 @@ class ControlPanel(Gtk.Window):
+         offset = style.GRID_CELL_SIZE
+-        width = sw - offset * 2
+-        height = sh - offset * 2
++        width = sw
++        height = sh
