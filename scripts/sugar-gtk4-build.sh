@@ -93,7 +93,6 @@ for patch in "$patch_dir"/*.patch; do
         *0125*) target="$root/sources/sugar" ;;
         *0126*) target="$toolkit" ;;
         *0127*) target="$root/sources/sugar" ;;
-        *0128*) target="$root/sources/sugar" ;;
         *0129*) target="$root/sources/sugar" ;;
         *0130*) target="$root/sources/sugar" ;;
         *0131*) target="$root/sources/sugar" ;;

@@ -336,6 +336,9 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   - `0103` was regenerated against the single navigation-method block in the
     pinned baseline. It preserves modal dismissal and active Activity clearing
     without recreating the historical duplicate methods.
+  - `0128` was retired because the duplicate zoom methods it removed no longer
+    exist after the corrected `0103` navigation fold; the first modal-aware
+    implementation remains authoritative.
 
 - What remains open, and why this is still a blocker:
   **A clean replay compiles but does not run.** Started against the rebuilt
@@ -352,10 +355,10 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   `groupbox.py` gains a duplicated `update_property` block and `meshbox.py`
   has two statements in the opposite order.
 
-  32 patches still need fuzz and 6 still fail outright:
-  `0030`, `0121`, `0122`, `0123`, `0127`, `0128`.
+  32 patches still need fuzz and 5 still fail outright:
+  `0030`, `0121`, `0122`, `0123`, `0127`.
   The remaining failures are concentrated in the Frame accessibility chain
-  (`0118`-`0123`) and `service.py` (`0100`-`0103`, `0128`).
+  (`0118`-`0123`) and `service.py` (`0100`-`0103`).
 
 - Consequence: the running preview is healthy and is still the only complete
   copy of the post-`0135` state. A fresh checkout can now rebuild a tree that
