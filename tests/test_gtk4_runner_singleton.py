@@ -6,7 +6,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_modern_runner_serializes_casilda_session_ownership():
     runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
-    assert 'session_lock="$runroot/gtk4-session.lock"' in runner
+    # The packaged preview root is read-only in a standalone image.  The
+    # singleton lock therefore belongs in the writable runtime tmpfs, while
+    # still being shared by every invocation of this launcher.
+    assert 'session_lock="${XDG_RUNTIME_DIR:-/tmp}/aspartame-gtk4-session.lock"' in runner
     assert 'flock -n 9' in runner
     assert "already running" in runner
     assert 'ASPARTAME_GTK4_LOG="$log"' in runner
