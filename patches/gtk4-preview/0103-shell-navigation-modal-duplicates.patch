@@ -1,7 +1,14 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: clear active Activity before modal navigation
+
+The preview shell must dismiss Settings and clear the current Activity when a
+semantic navigation action changes shell space. The historical patch also
+targeted a duplicate method block that is not present in the pinned baseline;
+keep the behavior and drop that obsolete duplicate hunk.
+
 --- a/src/jarabe/view/service.py
 +++ b/src/jarabe/view/service.py
-@@ -153,22 +153,30 @@
- 
+@@ -154,22 +154,30 @@
      @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
      def ShowNeighborhood(self):
 +        self._close_control_panel()
@@ -31,18 +38,3 @@
          from jarabe.desktop import homewindow
          homewindow.get_instance().get_home_box().show_list_view()
          self._shell_model.set_zoom_level(self._shell_model.ZOOM_HOME)
-@@ -176,10 +180,14 @@
- 
-     @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
-     def ShowNeighborhood(self):
-+        self._close_control_panel()
-+        self._shell_model._set_active_activity(None)
-         self._shell_model.set_zoom_level(self._shell_model.ZOOM_MESH)
-         return True
- 
-     @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
-     def ShowGroup(self):
-+        self._close_control_panel()
-+        self._shell_model._set_active_activity(None)
-         self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
-         return True

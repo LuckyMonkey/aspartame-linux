@@ -156,7 +156,9 @@ cp -a "$repo/gtk4-overlay/." "$share/gtk4-overlay/"
 # Remove compatibility patches retired from the host tree so a persistent
 # virtio share cannot replay stale staging decisions.
 rm -f "$share/patches/gtk4-preview/0124-terminal-vte-compat.patch" \
-      "$share/patches/gtk4-preview/0125-terminal-vte-typelib.patch"
+      "$share/patches/gtk4-preview/0125-terminal-vte-typelib.patch" \
+      "$share/patches/gtk4-preview/0106-journal-main-view-idempotent.patch" \
+      "$share/patches/gtk4-preview/0109-journal-defer-rooted-toolbar.patch"
 
 printf 'GTK4 dev share synchronized: %s\n' "$share"
 printf 'patches=%s scripts=%s help_icon=%s\n' \

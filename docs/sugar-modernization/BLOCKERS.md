@@ -306,10 +306,10 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   It builds a pristine tree per repository with `git archive HEAD` from the
   pinned baseline SHAs, applies the series with no idempotence heuristics,
   and reports how each patch lands.
-- Current state (2026-09-16, after the first repair pass):
+- Current state (2026-09-19, after the Journal/navigation repair pass):
 
   ```text
-  exact=79 fuzz=32 failed=9 skipped=1 uncompilable=0
+    exact=80 fuzz=32 failed=6 skipped=1 uncompilable=0
   Result: PASS (a clean rebuild compiles)
   ```
 
@@ -328,6 +328,14 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
     `0158`. Replaying the old chains produced a `main.py` that failed to
     parse (`IndentationError` at line 310); both files are now byte-identical
     to the verified preview after a clean replay.
+  - `0106` was retired and its idempotent Journal guard was regenerated as
+    `0144` against the pinned baseline. The clean replay now applies that
+    guard and no longer reports either Journal patch as a failure.
+  - `0109` was retired because its rooted-toolbar guard is already supplied by
+    the earlier canvas/toolbar ownership change. No behavior was removed.
+  - `0103` was regenerated against the single navigation-method block in the
+    pinned baseline. It preserves modal dismissal and active Activity clearing
+    without recreating the historical duplicate methods.
 
 - What remains open, and why this is still a blocker:
   **A clean replay compiles but does not run.** Started against the rebuilt
@@ -344,11 +352,10 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   `groupbox.py` gains a duplicated `update_property` block and `meshbox.py`
   has two statements in the opposite order.
 
-  32 patches still need fuzz and 9 still fail outright:
-  `0030`, `0103`, `0106`, `0109`, `0121`, `0122`, `0123`, `0127`, `0144`.
+  32 patches still need fuzz and 6 still fail outright:
+  `0030`, `0121`, `0122`, `0123`, `0127`, `0128`.
   The remaining failures are concentrated in the Frame accessibility chain
-  (`0118`-`0123`), the Journal (`0104`-`0109`, `0144`) and
-  `service.py` (`0100`-`0103`).
+  (`0118`-`0123`) and `service.py` (`0100`-`0103`, `0128`).
 
 - Consequence: the running preview is healthy and is still the only complete
   copy of the post-`0135` state. A fresh checkout can now rebuild a tree that

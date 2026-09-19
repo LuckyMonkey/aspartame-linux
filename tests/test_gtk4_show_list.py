@@ -29,7 +29,7 @@ def test_duplicate_navigation_methods_are_covered():
     assert "ShowGroup" in patch
     assert "ShowHome" in patch
     assert "ShowList" in patch
-    assert patch.count("self._shell_model._set_active_activity(None)") >= 5
+    assert patch.count("self._shell_model._set_active_activity(None)") == 4
 
 
 def test_journal_canvas_reattach_is_deferred_when_still_rooted():
@@ -41,13 +41,13 @@ def test_journal_canvas_reattach_is_deferred_when_still_rooted():
 
 
 def test_journal_main_view_restoration_is_idempotent():
-    patch = (ROOT / "patches/gtk4-preview/0106-journal-main-view-idempotent.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/0144-journal-main-view-needs-canvas.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "self._active_view == JournalViews.MAIN" in patch
-    assert "if self._active_view == JournalViews.MAIN and" in patch
+    assert "self._active_view == JournalViews.MAIN and" in patch
     assert "self.canvas == self._main_view" in patch
     assert patch.count("+            return") == 1
-    assert '*0106*) target="$root/sources/sugar" ;;' in build
+    assert '*0144*) target="$root/sources/sugar" ;;' in build
 
 
 def test_journal_detail_escape_returns_to_main_view():
@@ -66,10 +66,6 @@ def test_keyhandler_routes_escape_for_journal_detail():
     assert '*0108*) target="$root/sources/sugar" ;;' in build
 
 
-def test_journal_toolbar_reattach_is_deferred_when_still_rooted():
-    patch = (ROOT / "patches/gtk4-preview/0109-journal-defer-rooted-toolbar.patch").read_text()
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "toolbar.get_root() is not None" in patch
-    assert "toolbar.get_parent() == self._toolbar_area" in patch
-    assert "GLib.idle_add(self.set_toolbar_box, toolbar)" in patch
-    assert '*0109*) target="$root/sources/sugar" ;;' in build
+def test_obsolete_journal_patches_are_retired():
+    assert not (ROOT / "patches/gtk4-preview/0106-journal-main-view-idempotent.patch").exists()
+    assert not (ROOT / "patches/gtk4-preview/0109-journal-defer-rooted-toolbar.patch").exists()

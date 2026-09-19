@@ -15,20 +15,11 @@ def _patch_text():
     return PATCH.read_text()
 
 
-def test_patch_removes_every_bare_main_view_guard():
-    removed = [line for line in _patch_text().splitlines()
-               if line.startswith('-') and '_active_view == JournalViews.MAIN' in line]
-    # Six bare guards, each a two-line 'if'/'return' pair.
-    assert len(removed) >= 6, removed
-
-
-def test_patch_keeps_the_compound_guard_that_checks_the_canvas():
+def test_patch_adds_the_compound_guard_that_checks_the_canvas():
     lines = _patch_text().splitlines()
-    # The canvas-aware guard survives as context, and nothing removes it.
-    assert any(line.startswith(' ') and 'self.canvas == self._main_view' in line
+    assert any(line.startswith('+') and 'self.canvas == self._main_view' in line
                for line in lines), 'the canvas-aware guard must survive'
-    assert not any(line.startswith('-') and 'self.canvas == self._main_view' in line
-                   for line in lines), 'the canvas-aware guard must not be removed'
+    assert 'The GTK4 Journal starts with MAIN' in _patch_text()
 
 
 def test_patch_targets_show_main_view():

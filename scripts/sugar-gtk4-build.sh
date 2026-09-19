@@ -75,10 +75,8 @@ for patch in "$patch_dir"/*.patch; do
         *0102*) target="$root/sources/sugar" ;;
         *0103*) target="$root/sources/sugar" ;;
         *0104*) target="$root/sources/sugar" ;;
-        *0106*) target="$root/sources/sugar" ;;
         *0107*) target="$root/sources/sugar" ;;
         *0108*) target="$root/sources/sugar" ;;
-        *0109*) target="$root/sources/sugar" ;;
         *0112*) target="$root/sources/sugar" ;;
         *0113*) target="$root/sources/sugar" ;;
         *0114*) target="$root/sources/sugar" ;;
@@ -492,29 +490,6 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified deferred Journal canvas attach: $patch_name"
         continue
     fi
-    # The idempotence guard is the semantic result of 0106.  The persistent
-    # guest checkout may contain additional equivalent early-return guards
-    # from earlier patch passes, so a textual reverse-check is insufficient.
-    if [[ "$patch_name" == *0106* ]] &&
-        sed -n '/def show_main_view/,/def _show_secondary_view/p' \
-            "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
-            grep -q 'self._active_view == JournalViews.MAIN and' &&
-        sed -n '/def show_main_view/,/def _show_secondary_view/p' \
-            "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
-            grep -q 'self.canvas == self._main_view'; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing Journal main-view idempotence: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0106* ]] &&
-        sed -n '/def show_main_view/,/def _show_secondary_view/p' "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
-            grep -q 'self.canvas == self._main_view' &&
-        ! sed -n '/def show_main_view/,/def _show_secondary_view/p' "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null |
-            grep -q 'if self._active_view == JournalViews.MAIN:'; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified idempotent Journal main view: $patch_name"
-        continue
-    fi
     if [[ "$patch_name" == *0107* ]] &&
         grep -A3 -q "elif self._active_view == JournalViews.DETAIL:" "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null &&
         grep -A3 "elif self._active_view == JournalViews.DETAIL:" "$shell/src/jarabe/journal/journalactivity.py" 2>/dev/null | grep -q "keyname == 'Escape'"; then
@@ -526,12 +501,6 @@ for patch in "$patch_dir"/*.patch; do
         grep -q "active_activity.show_main_view()" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified Journal detail Escape keyhandler route: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0109* ]] &&
-        grep -q 'GLib.idle_add(self.set_toolbar_box, toolbar)' "$shell/src/jarabe/journal/journalwindow.py" 2>/dev/null; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified deferred Journal toolbar attach: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0112* ]] &&
@@ -697,11 +666,6 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied deferred Journal canvas attach: $patch_name"
-    elif [[ "$patch_name" == *0106* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf "%s\n" "$patch_digest" > "$stamp"
-        echo "applied idempotent Journal main view: $patch_name"
     elif [[ "$patch_name" == *0107* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
@@ -712,11 +676,6 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied Journal detail Escape keyhandler route: $patch_name"
-    elif [[ "$patch_name" == *0109* ]] &&
-        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
-        printf "%s\n" "$patch_digest" > "$stamp"
-        echo "applied deferred Journal toolbar attach: $patch_name"
     elif [[ "$patch_name" == *0112* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
