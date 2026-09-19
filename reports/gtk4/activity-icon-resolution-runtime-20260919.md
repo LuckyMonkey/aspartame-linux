@@ -14,6 +14,6 @@ Diamond Fusion, Finance, FotoToon, and the other visible rows.
   explicitly labeled `Classic Space activity`.
 
 This validates the shared metadata → icon renderer path in the live GTK4
-shell. The duplicate display name for native and legacy Calculate is a
-registry/catalog presentation decision, not an icon-loading failure; it is
-queued separately rather than hidden by a visual workaround.
+shell. The duplicate display name for native and legacy Calculate was a
+registry/catalog presentation issue, fixed separately by the catalog dedup
+policy in the subsequent runtime pass.

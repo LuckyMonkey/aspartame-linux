@@ -375,6 +375,13 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing GTK4 Log ListBox result: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0136* ]] &&
+        grep -q 'def _stack_focus_cb' "$shell/src/jarabe/model/shell.py" 2>/dev/null &&
+        grep -q 'def _focus_compositor' "$shell/src/jarabe/model/shell.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Casilda focus result: $patch_name"
+        continue
+    fi
     # 0032 intentionally adjusts the toolbar snapshot hunk from 0028. The
     # surrounding Sugar interaction changes remain present; verify their
     # semantic markers rather than replaying the superseded context.

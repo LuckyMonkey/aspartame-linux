@@ -32,6 +32,20 @@
 - Status: fixed in the GTK4 shell; other Activity-specific chrome remains
   deferred by policy.
 
+## GTK4-020 — Home listed native and classic replacements twice
+
+- Category: `UPSTREAM-SHELL` / Activity catalog policy
+- Reproduction: GTK4 Home List showed native `org.aspartame.Calculate` and an
+  unsupported classic Calculate row with the same display name.
+- Fix: `_catalog_bundles()` keeps classic-only entries, but suppresses an
+  unsupported bundle when a resolvable GTK4 bundle has the same normalized
+  Activity name. No bundle is removed from disk and no Activity artwork is
+  rewritten.
+- Verification: rebuilt and restarted GTK4 PID `48013`; `ShowList` screenshot
+  reports 51 activities and contains one native Calculate row.
+- Status: fixed in the GTK4 Home catalog; classic-only Activities remain
+  available and explicitly labeled.
+
 ## GTK4-001 — toolkit uses unavailable enum member
 
 - Category: `UPSTREAM-TOOLKIT` / Arch integration

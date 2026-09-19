@@ -90,6 +90,41 @@ def _set_bundle_icon(icon, bundle, color=None):
         icon.props.xo_color = color
 
 
+def _catalog_bundles(registry):
+    """Return one visible bundle per modern replacement name.
+
+    The GTK4 prefix intentionally contains native replacements alongside
+    distro GTK3 bundles.  If both expose the same display name, showing the
+    unsupported GTK3 row beside the working GTK4 row makes Home look like it
+    has duplicate Activities.  Keep classic entries when no modern replacement
+    exists; suppress only the unsupported duplicate.
+    """
+    bundles = list(registry)
+    modern_names = set()
+    for bundle in bundles:
+        try:
+            if bundle.get_show_launcher() and supports_bundle(bundle):
+                modern_names.add(normalize_string(bundle.get_name()))
+        except (AttributeError, TypeError, ValueError, OSError):
+            logging.exception('Invalid Activity metadata while selecting modern catalog: %r', bundle)
+    visible = []
+    for bundle in bundles:
+        try:
+            if not bundle.get_show_launcher():
+                continue
+            if bundle.get_bundle_id() == 'org.laptop.JournalActivity':
+                continue
+            name = normalize_string(bundle.get_name())
+            if name in modern_names and not supports_bundle(bundle):
+                logging.info('Hide classic duplicate from GTK4 Home: %s (%s)',
+                             bundle.get_name(), bundle.get_bundle_id())
+                continue
+            visible.append(bundle)
+        except (AttributeError, TypeError, ValueError, OSError):
+            logging.exception('Invalid Activity metadata in Home inventory: %r', bundle)
+    return visible
+
+
 class ActivityItem(GObject.GObject):
     def __init__(self, bundle):
         super().__init__()
@@ -342,13 +377,7 @@ class ActivitiesList(Gtk.Box):
     def _reload(self):
         selected = self._selection.get_selected_item()
         selected_id = selected.bundle_id if selected is not None else None
-        items = []
-        for bundle in self.registry:
-            try:
-                if bundle.get_show_launcher() and bundle.get_bundle_id() != 'org.laptop.JournalActivity':
-                    items.append(ActivityItem(bundle))
-            except (AttributeError, TypeError, ValueError, OSError):
-                logging.exception('Invalid Activity metadata in Home inventory: %r', bundle)
+        items = [ActivityItem(bundle) for bundle in _catalog_bundles(self.registry)]
         items.sort(key=lambda item: (normalize_string(item.name), item.bundle_id))
         self._store.splice(0, self._store.get_n_items(), items)
         if selected_id is not None:
