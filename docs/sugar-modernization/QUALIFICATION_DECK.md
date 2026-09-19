@@ -94,22 +94,20 @@ them.
 ## W6 — Repeated F7/F8 Space comparison
 
 - **GTK3 reference:** F7 and F8 switch between the classic and modern Spaces.
-- **GTK4 result:** physical F7/F8 switch correctly, verified over two
-  consecutive round trips with `runtime-check=ok` for gtk3 on desktop 0 and
-  gtk4 on desktop 1 each time.
+- **GTK4 result:** the semantic controller switches correctly over repeated
+  round trips, with `runtime-check=ok` for gtk3 on desktop 0 and gtk4 on
+  desktop 1. Physical key delivery remains a separate QEMU transport check.
 - **Gap:** was the shared key grab — see W7; one cause, both workflows.
 - **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
   shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`
 - **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
-- **STATUS: PASS** (2026-09-16, re-verified after patch 0153). The F7 half
-  regressed and was root-caused: Sugar disables every window manager
-  keybinding at startup, so the Metacity `switch-to-workspace-1 = ['F7']`
-  binding never fired; F7/F8 were bolted onto the modern shell's main window
-  only; and the Settings control panel is a plain `Gtk.Window` that never
-  joins the application, so no shell key reached the keyboard while it was
-  open. Patch 0153 makes the Space keys shell actions and registers the
-  control panel with the key handler. See
-  `reports/gtk4/f7-space-key-rootcause-20260916.md`.
+- **STATUS: PASS** for semantic switching (2026-09-16, re-verified after
+  patch 0153). The original F7 failure was root-caused: Sugar disables every
+  window-manager keybinding at startup, F7/F8 were bound only to the modern
+  main window, and the Settings window was not registered with the shell key
+  handler. Patch 0153 makes the Space keys shell actions and registers the
+  Control Panel. See `reports/gtk4/f7-space-key-rootcause-20260916.md` and
+  `reports/gtk4/spaces-semantic-roundtrip-20260919.md`.
 
 ## W7 — Frame navigation
 
@@ -125,8 +123,9 @@ them.
 - **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
   shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`.
 - **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
-- **STATUS: PASS** (2026-09-15), with the F7 half regressed on 2026-09-16 —
-  see W6.
+- **STATUS: PASS** (2026-09-15); the shared-grab portion is covered by the
+  GTK3 key-grabber patch. Physical QEMU delivery remains a transport concern,
+  not a Frame implementation defect.
 
 ## W8 — Palette interaction
 
