@@ -44,41 +44,35 @@ while IFS= read -r -d '' source_file; do
     sed -i 's#/home/aspartame/Development/gtk4-preview#/usr/lib/aspartame/gtk4-preview#g' \
         "$source_file"
 done < <(find "$preview_root/gtk4-preview/sources" -type f -name '*.py' -print0)
-# The guest prefix contains development symlinks for these two shell-owned
-# Activities. Resolve them from the repository while staging the image so no
-# `/home/aspartame` or `/mnt/aspartame-dev` path leaks into the ISO.
+# Stage the built GTK4 upstream Activities from the archive, not their GTK3
+# reference copies in packages/upstream-activities. Refresh Help and Count
+# from this checkout even when an older preview left a real bundle directory:
+# ln -sfn into that directory only created an unused nested link.
 activities="$preview_root/gtk4-preview/prefix/share/sugar/activities"
-for activity in Log Help; do
+for activity in Log ImageViewer Help Count; do
     target="$activities/$activity.activity"
-    if test -L "$target"; then
-        rm -f "$target"
-        case "$activity" in
-            Log) cp -a "$project_root/packages/upstream-activities/log-activity" "$target" ;;
-            Help) cp -a "$project_root/packages/gtk4-help-activity/." "$target" ;;
-        esac
-    fi
+    case "$activity" in
+        Log) source="$preview_root/gtk4-preview/sources/log-activity" ;;
+        ImageViewer) source="$preview_root/gtk4-preview/sources/imageviewer-activity" ;;
+        Help) source="$project_root/packages/gtk4-help-activity" ;;
+        Count) source="$project_root/packages/gtk4-count-activity" ;;
+    esac
+    test -f "$source/activity/activity.info" || {
+        echo "missing standalone GTK4 $activity source: $source" >&2
+        exit 2
+    }
+    rm -rf -- "$target"
+    cp -a "$source" "$target"
 done
-# ImageViewer is pinned in the preview source tree rather than a repository
-# package; resolve that guest-home link into the staged prefix as well.
-imageviewer="$activities/ImageViewer.activity"
-if test -L "$imageviewer" && test -d "$preview_root/gtk4-preview/sources/imageviewer-activity"; then
-    rm -f "$imageviewer"
-    cp -a "$preview_root/gtk4-preview/sources/imageviewer-activity" "$imageviewer"
-fi
 # Resolve the remaining development-only Activity links by package basename.
-# This covers the catalog without hard-coding every bundle name and also
-# handles nested executable links such as Count.activity/gtk4-count-activity.
+# This covers the catalog without hard-coding every bundle name.
 while IFS= read -r -d '' link; do
     target=$(readlink "$link")
     package=$(basename "$target")
     source="$project_root/packages/$package"
     test -e "$source" || continue
     rm -f "$link"
-    if test -d "$source"; then
-        cp -a "$source" "$link"
-    else
-        cp -a "$source" "$link"
-    fi
+    cp -a "$source" "$link"
 done < <(find "$activities" -type l -print0)
 install -d "$preview_root/gtk4-preview/gtk4-overlay/src" \
           "$preview_root/gtk4-preview/scripts"
