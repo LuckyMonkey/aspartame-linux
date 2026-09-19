@@ -123,6 +123,11 @@ lifecycle evidence exist; they are not equivalent to a FULL PORT claim. See
 
 - [ ] Track Python/GTK API deprecations and Arch package drift.
 - [x] Add the guest-only GTK4/Casilda build dependencies to the ISO profile.
+- [x] Embed the GTK4 preview root and pinned Activity trees in a shareless
+  standalone ISO; boot and repeated Calculate launch/stop evidence is in
+  `reports/gtk4/standalone-image-runtime-20260919.md`.
+- [ ] Verify a writable data-disk reboot and Journal persistence on a clean
+  standalone boot. Do not treat the shareless boot as persistence proof.
 
 ## P6 — optional modernization
 

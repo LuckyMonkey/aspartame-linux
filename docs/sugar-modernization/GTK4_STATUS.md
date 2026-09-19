@@ -59,10 +59,13 @@ Journal, and verifies clean process and D-Bus cleanup. Full upstream Logo block
 language, collaboration, and feature breadth remain intentionally unclaimed;
 see `reports/gtk4/turtleart-runtime-20260915.md`.
 
-The ISO profile includes GTK4 runtime libraries, but the GTK4 source overlay
-and pinned Activity checkouts are still supplied by the `aspartame-dev` 9p
-share during development. Embedding those sources into a standalone ISO is a
-separate packaging task and is not yet claimed.
+The ISO profile now embeds the GTK4 preview root, generated prefix, helper
+scripts, and pinned Activity trees under `/usr/lib/aspartame/gtk4-preview`.
+The 2026-09-19 shareless boot evidence is recorded in
+`reports/gtk4/standalone-image-runtime-20260919.md`; `aspartame-dev` is now an
+optional development override rather than a runtime dependency. A writable
+data-disk reboot and persistence check remain unproven because the host VM
+volume was read-only during the acceptance run.
 
 The GTK4 toolkit repository describes itself as a GTK4 toolkit and documents
 `sugar4` APIs, while the main Sugar repository still documents GTK3 toolkit
