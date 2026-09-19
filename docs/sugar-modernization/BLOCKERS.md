@@ -339,6 +339,9 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   - `0128` was retired because the duplicate zoom methods it removed no longer
     exist after the corrected `0103` navigation fold; the first modal-aware
     implementation remains authoritative.
+  - `0127` was retired because the Neighborhood label and GROUP role are
+    already separate in the preceding accessibility patches; its historical
+    malformed deletion no longer has a target.
 
 - What remains open, and why this is still a blocker:
   **A clean replay compiles but does not run.** Started against the rebuilt
@@ -355,8 +358,8 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
   `groupbox.py` gains a duplicated `update_property` block and `meshbox.py`
   has two statements in the opposite order.
 
-  32 patches still need fuzz and 5 still fail outright:
-  `0030`, `0121`, `0122`, `0123`, `0127`.
+  32 patches still need fuzz and 3 still fail outright:
+  `0121`, `0122`, `0123`.
   The remaining failures are concentrated in the Frame accessibility chain
   (`0118`-`0123`) and `service.py` (`0100`-`0103`).
 

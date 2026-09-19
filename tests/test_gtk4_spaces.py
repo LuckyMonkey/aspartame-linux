@@ -148,13 +148,10 @@ def test_neighborhood_accessibility_patch_is_routed():
     assert '*0115*) target="$root/sources/sugar" ;;' in build
 
 
-def test_neighborhood_accessibility_order_fix_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0127-neighborhood-accessibility-order.patch').read_text()
+def test_neighborhood_accessibility_order_patch_is_retired_after_fold():
+    assert not (ROOT / 'patches/gtk4-preview/0127-neighborhood-accessibility-order.patch').exists()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert 'repair Neighborhood accessibility call ordering' in patch
-    assert '*0127*) target="$root/sources/sugar" ;;' in build
-    assert 'set_accessible_role(Gtk.AccessibleRole.GROUP)' in patch
-    assert 'retired obsolete Neighborhood accessibility ordering patch' in build
+    assert '*0127*) target="$root/sources/sugar" ;;' not in build
 
 
 def test_zoom_service_dedupe_patch_is_retired_after_navigation_fold():

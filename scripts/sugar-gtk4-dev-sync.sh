@@ -159,7 +159,9 @@ rm -f "$share/patches/gtk4-preview/0124-terminal-vte-compat.patch" \
       "$share/patches/gtk4-preview/0125-terminal-vte-typelib.patch" \
       "$share/patches/gtk4-preview/0106-journal-main-view-idempotent.patch" \
       "$share/patches/gtk4-preview/0109-journal-defer-rooted-toolbar.patch" \
-      "$share/patches/gtk4-preview/0128-service-dedupe-zoom-actions.patch"
+      "$share/patches/gtk4-preview/0128-service-dedupe-zoom-actions.patch" \
+      "$share/patches/gtk4-preview/0030-toolkit-reject-gtk3-launchers.patch" \
+      "$share/patches/gtk4-preview/0127-neighborhood-accessibility-order.patch"
 
 printf 'GTK4 dev share synchronized: %s\n' "$share"
 printf 'patches=%s scripts=%s help_icon=%s\n' \

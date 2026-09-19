@@ -59,7 +59,7 @@ mkdir -p "$patch_state"
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
     case "$patch" in
-        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0030*|*0032*|*0033*|*0035*|*0047*|*0059*|*0060*|*0066*|*0068*) target="$toolkit" ;;
+        *0001*|*0004*|*0006*|*0013*|*0015*|*0016*|*0017*|*0018*|*0020*|*0022*|*0023*|*0024*|*0025*|*0026*|*0028*|*0032*|*0033*|*0035*|*0047*|*0059*|*0060*|*0066*|*0068*) target="$toolkit" ;;
         *0029*) target="$log_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
@@ -92,7 +92,6 @@ for patch in "$patch_dir"/*.patch; do
         *0124*) target="$root/sources/sugar" ;;
         *0125*) target="$root/sources/sugar" ;;
         *0126*) target="$toolkit" ;;
-        *0127*) target="$root/sources/sugar" ;;
         *0129*) target="$root/sources/sugar" ;;
         *0130*) target="$root/sources/sugar" ;;
         *0131*) target="$root/sources/sugar" ;;
@@ -154,13 +153,6 @@ for patch in "$patch_dir"/*.patch; do
     if [[ "$patch_name" == *0039* ]]; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "retired obsolete preview patch: $patch_name (registry filtering superseded)"
-        continue
-    fi
-    if [[ "$patch_name" == *0127* ]] &&
-        grep -q "self.set_accessible_role(Gtk.AccessibleRole.GROUP)" "$shell/src/jarabe/desktop/meshbox.py" &&
-        grep -q "\[_('Neighborhood')\]" "$shell/src/jarabe/desktop/meshbox.py"; then
-        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "retired obsolete Neighborhood accessibility ordering patch: $patch_name (calls already separated)"
         continue
     fi
     if [[ "$patch_name" == *0129* ]] &&
@@ -336,12 +328,6 @@ for patch in "$patch_dir"/*.patch; do
         grep -q "def SetActive" "$toolkit/src/sugar4/activity/activityservice.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified superseded preview patch: $patch_name"
-        continue
-    fi
-    if [[ "$patch_name" == *0030* ]] &&
-        grep -q 'launcher_name == "sugar-activity3"' "$toolkit/src/sugar4/activity/activityfactory.py" 2>/dev/null; then
-        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
-        echo "verified existing GTK3 launcher guard: $patch_name"
         continue
     fi
     # Later homebox fixes extend the lazy-list hunk from 0008. Accept that
