@@ -180,9 +180,10 @@ them.
 
 ---
 
-## Open findings from the second five-fix pass (2026-09-16)
+## Resolved findings from the second five-fix pass (2026-09-16)
 
-Reproduced and left open. Full evidence in
+These findings were reproduced, fixed, and re-verified. The historical
+qualification report remains available at
 `reports/gtk4/five-fix-pass-2-20260916.md`.
 
 - **Settings → Language crashes on construction.** The image ships three
@@ -234,13 +235,12 @@ a bounded fix. See `reports/gtk4/five-fix-pass-20260915.md`.
 ## Next
 
 W11 remains open and is blocked on a second live participant rather than on
-code. W6 regressed on 2026-09-16: F8 still reaches the modern Space, F7 no
-longer returns from it. Every other workflow in the deck passes with runtime
-evidence.
-
-**Re-verify F7 from a clean boot first.** It is the one thing standing
-between here and the point the deck was built for: **human F7/F8 parity
-testing**, not another autonomous hardening phase.
+code. W6's semantic controller handoff is currently passing: the live guest
+round trip is recorded in `reports/gtk4/spaces-semantic-roundtrip-20260919.md`.
+Physical F7/F8 delivery still needs a QEMU process with a live QMP socket;
+the current stale socket is not treated as evidence of key behavior. Every
+other workflow in the deck passes with runtime evidence or has an explicit
+owner/boundary recorded above.
 
 The key grabber fix now ships as a rebuilt package
 (`packages/sugar-toolkit-gtk3/PKGBUILD`, installed from the profile's
