@@ -38,7 +38,7 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   commits).
 - Host regression suite: 265 GTK4 tests passed. The guest preview build applies and
   validates patch 0015 and boots the GTK4 shell.
-- Forty-nine modern Activities have live Casilda launch/stop coverage, including
+- Fifty modern Activities have live Casilda launch/stop coverage, including
   Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log,
   and the additional native GTK4 ports listed in the status matrix. The
   2026-09-15 one-cycle matrix passed every registered bundle; this remains

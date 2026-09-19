@@ -1,5 +1,22 @@
 # GTK4 blockers
 
+## GTK4-018 — Activity icon resolution differed between Home and palettes
+
+- Category: `UPSTREAM-SHELL` / shared GTK4 presentation
+- Reproduction: a bundle whose metadata reader returned a basename could be
+  passed directly to one `Icon.props.file` caller while another caller used a
+  resolved path, producing an empty icon in one surface and no useful error.
+- Fix: `jarabe.desktop.activitieslist` now resolves absolute and bundle-relative
+  icon paths once for both Home rows and Activity palettes. Missing metadata is
+  logged and receives a visible Sugar `activity-start` fallback rather than a
+  blank surface.
+- Scope: this is a shell boundary fix; it does not normalize Activity-internal
+  artwork or claim per-Activity visual parity.
+- Verification: all 48 shipped GTK4 package metadata icons resolve in the host
+  inventory check; `make test` passes 388 tests. A guest runtime rebuild is the
+  next evidence step.
+- Status: fixed in the overlay; guest runtime verification pending.
+
 ## GTK4-001 — toolkit uses unavailable enum member
 
 - Category: `UPSTREAM-TOOLKIT` / Arch integration

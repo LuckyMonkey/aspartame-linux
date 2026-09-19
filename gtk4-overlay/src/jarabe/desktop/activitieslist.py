@@ -48,6 +48,48 @@ def explain_unsupported(bundle):
     return _('This activity is not available in the GTK4 Space.')
 
 
+def _bundle_icon_file(bundle):
+    """Resolve an Activity icon without assuming a particular bundle layout.
+
+    Older bundle implementations return an absolute filename while newer
+    metadata readers may return a basename.  Home and palettes must share the
+    same resolution path so a layout difference cannot produce a blank icon in
+    only one surface.
+    """
+    value = bundle.get_icon()
+    if not value:
+        return None
+    candidates = [value]
+    root = bundle.get_path()
+    if not os.path.isabs(value):
+        candidates.extend((
+            os.path.join(root, value),
+            os.path.join(root, value + '.svg'),
+            os.path.join(root, 'activity', value),
+            os.path.join(root, 'activity', value + '.svg'),
+        ))
+    for candidate in candidates:
+        if os.path.isfile(candidate):
+            return candidate
+    logging.warning('Activity icon is missing: bundle=%s icon=%s',
+                    bundle.get_bundle_id(), value)
+    return None
+
+
+def _set_bundle_icon(icon, bundle, color=None):
+    """Set a bundle icon, retaining a visible Sugar fallback on bad metadata."""
+    icon_file = _bundle_icon_file(bundle)
+    if icon_file is not None:
+        icon.props.file = icon_file
+        if color is not None:
+            icon.props.xo_color = color
+        return
+    icon.props.file = None
+    icon.props.icon_name = 'activity-start'
+    if color is not None:
+        icon.props.xo_color = color
+
+
 class ActivityItem(GObject.GObject):
     def __init__(self, bundle):
         super().__init__()
@@ -122,7 +164,7 @@ class ActivityRow(Gtk.Box):
         bundle = item.bundle
         self.name.set_text(item.name)
         self.summary.set_text(bundle.get_summary() or '')
-        self.icon.props.file = bundle.get_icon()
+        _set_bundle_icon(self.icon, bundle)
         self.version.set_text(str(bundle.get_activity_version()))
         self.actions.update_property([Gtk.AccessibleProperty.LABEL],
                                      [_('Actions for %s') % item.name])
@@ -437,9 +479,11 @@ class ActivityListPalette(Palette):
     __gsignals__ = {'erase-activated': (GObject.SignalFlags.RUN_FIRST, None, (str,))}
 
     def __init__(self, bundle):
+        palette_icon = Icon(xo_color=profile.get_color(),
+                            pixel_size=style.STANDARD_ICON_SIZE)
+        _set_bundle_icon(palette_icon, bundle, profile.get_color())
         super().__init__(primary_text=bundle.get_name(),
-                         icon=Icon(file=bundle.get_icon(), xo_color=profile.get_color(),
-                                   pixel_size=style.STANDARD_ICON_SIZE))
+                         icon=palette_icon)
         box = PaletteMenuBox()
         self.set_content(box)
         supported = supports_bundle(bundle)
