@@ -2,9 +2,9 @@
 
 **Status:** launch coverage is proven; parity work is explicitly queued per Activity.
 
-The 2026-09-19 one-cycle matrix proved that each bundle below can be resolved,
-started through the GTK4 launcher/Casilda boundary, activated, and stopped
-without leaving an orphan process. That is **runtime coverage**, not a claim
+The 2026-09-19 live one-cycle matrix proved all 50 bundles below can be
+resolved, started through the GTK4 launcher/Casilda boundary, activated, and
+stopped without leaving an orphan process. That is **runtime coverage**, not a claim
 that the Activity is a complete port. The authoritative port class remains in
 [`ACTIVITY_PORT_CLASSIFICATION.md`](ACTIVITY_PORT_CLASSIFICATION.md).
 
