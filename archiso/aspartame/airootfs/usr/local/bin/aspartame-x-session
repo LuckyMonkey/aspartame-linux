@@ -3,7 +3,9 @@ export XDG_CURRENT_DESKTOP=Sugar
 export XDG_SESSION_DESKTOP=sugar
 # Optional live source overlay exported by QEMU at /mnt/aspartame-dev.
 # A checkout placed at aspartame-dev/sugar with Python sources under src/
-# overrides the packaged Sugar shell for the next session restart.
+# overrides the packaged GTK3 shell for the next session restart. The GTK4
+# preview is packaged at /usr/lib/aspartame/gtk4-preview for standalone boots;
+# a development tree may override that location with ASPARTAME_GTK4_ROOT.
 # A separate /dev/vdb data disk is optional.  When present it provides
 # persistence; on a plain ISO boot Sugar uses the writable live overlay.
 if mountpoint -q /home/aspartame &&
@@ -17,8 +19,39 @@ for _ in 1 2 3 4 5; do
     mountpoint -q /mnt/aspartame-dev && break
     sleep 1
 done
+gtk4_root=${ASPARTAME_GTK4_ROOT:-/usr/lib/aspartame/gtk4-preview}
 if test -d /mnt/aspartame-dev/sugar/src; then
     export PYTHONPATH="/usr/share/aspartame:/mnt/aspartame-dev/sugar/src${PYTHONPATH:+:$PYTHONPATH}"
+fi
+
+
+gtk4_space="$gtk4_root/scripts/sugar-gtk4-space.sh"
+
+# Sugar's GTK3 logger uses the current epoch second as its backup directory.
+# A rapid session restart can therefore encounter the directory created by the
+# previous attempt and abort before either Space appears. Remove only that
+# same-second transient directory; older logs remain available for diagnosis.
+if test -d "$HOME/.sugar/default/logs"; then
+    rm -rf -- "$HOME/.sugar/default/logs/$(date +%s)"
+fi
+
+# Start the modern Space after the classic shell has created Metacity and its
+# display/session state. If the packaged preview is absent (for example on a
+# GTK3-only development image), retain the classic-only behavior.
+start_classic() {
+    dbus-run-session -- /usr/local/bin/aspartame-session
+}
+
+start_classic >/tmp/aspartame-classic-session.log 2>&1 &
+classic_pid=$!
+if test -x "$gtk4_space"; then
+    for _ in 1 2 3 4 5 6 7 8 9 10; do
+        pgrep -u "$(id -u)" -x metacity >/dev/null 2>&1 && break
+        sleep 1
+    done
+    GTK4_ROOT="$gtk4_root" "$gtk4_space" setup \
+        >/tmp/aspartame-gtk4-space.log 2>&1 ||
+        echo "GTK4 Space did not start; see /tmp/aspartame-gtk4-space.log" >&2
 fi
 
 # Ensure the isolated TCP SSH helper is active once networking is available.
@@ -37,7 +70,7 @@ gsettings set org.sugarlabs.user.background alpha-level 1.0
 (
     for _ in 1 2 3 4 5; do
         output=$(xrandr --query 2>/dev/null | awk '/ connected/{print $1; exit}')
-        if test -n "$output"; then
+if test -n "$output"; then
             xrandr --output "$output" --mode 1920x1080 2>/dev/null || \
                 xrandr --fb 1920x1080 2>/dev/null || true
             break
@@ -46,10 +79,12 @@ gsettings set org.sugarlabs.user.background alpha-level 1.0
     done
 ) &
 
+wait "$classic_pid" || true
+
 # Keep the graphical session recoverable during Sugar development.
 mkdir -p "$HOME/.cache"
 aspartame-version-overlay >/home/aspartame/.cache/aspartame-version-overlay.log 2>&1 &
 while true; do
-    dbus-run-session -- /usr/local/bin/aspartame-session
+    start_classic
     sleep 1
 done

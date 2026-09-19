@@ -99,6 +99,34 @@ done < /usr/share/aspartame/activities/INSTALL-MANIFEST
 site_packages=$(python3 -c 'import sugar3, os; print(os.path.dirname(sugar3.__file__))')
 patch -d "$(dirname "$site_packages")" -p0 < \
     /usr/share/aspartame/0001-integrated-navigation.patch
+# The carried navigation patch targets the development checkout's keyhandler
+# shape.  The standalone preview also contains the exact upstream GTK3 source;
+# restore that module after applying the other shell changes so the reference
+# Space remains importable and never executes GTK4-only code.
+gtk3_keyhandler=/usr/lib/aspartame/gtk4-preview/sources/sugar/src/jarabe/view/keyhandler.py
+if test -f "$gtk3_keyhandler"; then
+    install -m 0644 "$gtk3_keyhandler" \
+        "$(dirname "$site_packages")/jarabe/view/keyhandler.py"
+fi
+# mkarchiso's profile copy normalizes regular-file modes. Restore executable
+# bits for the packaged Space/session entry points in the final airootfs.
+if test -d /usr/lib/aspartame/gtk4-preview/scripts; then
+    chmod 0755 /usr/lib/aspartame/gtk4-preview/scripts/*.sh \
+        /usr/lib/aspartame/gtk4-preview/scripts/*.py 2>/dev/null || true
+fi
+if test -f /usr/lib/aspartame/gtk4-preview/venv/bin/sugar-activity4; then
+    chmod 0755 /usr/lib/aspartame/gtk4-preview/venv/bin/sugar-activity4
+fi
+if id aspartame >/dev/null 2>&1 && test -d /usr/lib/aspartame/gtk4-preview; then
+    install -d -o aspartame -g aspartame /usr/lib/aspartame/gtk4-preview/logs
+    chown -R aspartame:aspartame \
+        /usr/lib/aspartame/gtk4-preview/logs \
+        /usr/lib/aspartame/gtk4-preview/runtime/home \
+        /usr/lib/aspartame/gtk4-preview/runtime/data \
+        /usr/lib/aspartame/gtk4-preview/runtime/config \
+        /usr/lib/aspartame/gtk4-preview/runtime/cache \
+        /usr/lib/aspartame/gtk4-preview/runtime/activities 2>/dev/null || true
+fi
 # The color-only intro deliberately omits the legacy age page. Patch the
 # installed completion path after the broad navigation patch so an unset age
 # cannot terminate Sugar when the user accepts a color.

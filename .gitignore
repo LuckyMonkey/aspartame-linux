@@ -19,3 +19,6 @@ reports/gtk4/sugar-*-v*.txt
 # Coding-agent scratch directories. Working notes, not project material.
 .codex-tmp/
 .codex-patch-probe
+
+# Generated input copied from the pinned guest preview for standalone ISO builds.
+.gtk4-preview-standalone.tar.gz

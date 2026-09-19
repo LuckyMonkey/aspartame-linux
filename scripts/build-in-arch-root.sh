@@ -69,6 +69,31 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# mkarchiso requires these tools even when the build root was created from an
+# older profile. Install cached copies after the root is mounted so pacman can
+# account for the filesystem correctly; no network access is needed here.
+chroot "$build_root" /bin/bash -lc '
+    set -euo pipefail
+    missing=()
+    pacman -Q fakeroot >/dev/null 2>&1 || missing+=(/var/cache/pacman/pkg/fakeroot-*.pkg.tar.zst)
+    pacman -Q debugedit >/dev/null 2>&1 || missing+=(/var/cache/pacman/pkg/debugedit-*.pkg.tar.zst)
+    if ((${#missing[@]})); then
+        pacman -U --noconfirm "${missing[@]}"
+    fi
+'
+
+# Populate the build root with the profile dependencies before the downstream
+# sugar-toolkit rebuild. mkarchiso would install these later, but makepkg needs
+# GTK3/Sugar headers and tools while producing the local package.
+profile_packages=$(awk '!/^[[:space:]]*#/ && NF {print $1}' \
+    "$project_root/archiso/aspartame/packages.x86_64" |
+    grep -vx 'sugar-toolkit-gtk3' | tr '\n' ' ')
+chroot "$build_root" /bin/bash -lc "
+    set -euo pipefail
+    pacman -Sy --noconfirm
+    pacman -S --needed --noconfirm $profile_packages
+"
+
 # The image installs a rebuilt sugar-toolkit-gtk3 from the profile's
 # [aspartame] repository, so that package has to exist before mkarchiso runs.
 chroot "$build_root" /bin/bash -lc '

@@ -40,7 +40,10 @@ if [ "${ASPARTAME_PKG_PREPARED:-0}" != 1 ]; then
 fi
 
 cd "$build_dir"
-makepkg --force --syncdeps --noconfirm --needed
+# The ArchISO build installs the profile dependencies before this helper runs.
+# Avoid makepkg's interactive dependency installer: the isolated builder user
+# has no password-bearing sudo/su session in the chroot.
+makepkg --force --nodeps --noconfirm
 
 built=$(ls -1t "$build_dir"/*.pkg.tar.* 2>/dev/null | head -1)
 test -n "$built" || { echo 'makepkg produced no package' >&2; exit 1; }
