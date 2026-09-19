@@ -102,3 +102,44 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     assert not (staged / "Count.activity/gtk4-count-activity").exists()
     assert (staged / "Calculate.activity/calculateactivity4.py").is_file()
     assert not any(path.is_symlink() for path in staged.rglob("*"))
+
+
+def test_export_contains_built_runtime_without_user_state(tmp_path):
+    root = tmp_path / "custom-preview-root"
+    for directory in (
+        "sources/sugar/src", "prefix/lib", "venv/bin", "runtime/schemas",
+        "runtime/home", "runtime/config", "runtime/activities", "logs", "build",
+    ):
+        (root / directory).mkdir(parents=True)
+    for required in (
+        "PINS.tsv", "sources/sugar/src/main.py", "prefix/lib/libcasilda.so",
+        "runtime/schemas/gschemas.compiled", "runtime/group-labels.json",
+    ):
+        (root / required).write_text("built input\n")
+    for private in (
+        "runtime/home/journal", "runtime/config/settings", "runtime/wayland-sugar.lock",
+        "runtime/activities/stale", "logs/shell.log", "build/compiler-output",
+    ):
+        (root / private).write_text("must not ship\n")
+    (root / "venv/bin/python").symlink_to("./python3")
+    archive = tmp_path / "artifacts/preview.tar.gz"
+    subprocess.run(
+        ["bash", str(ROOT / "scripts/sugar-gtk4-export.sh"), str(archive)],
+        env={**os.environ, "GTK4_ROOT": str(root)},
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    with tarfile.open(archive) as exported:
+        names = set(exported.getnames())
+        assert "gtk4-preview/sources/sugar/src/main.py" in names
+        assert "gtk4-preview/prefix/lib/libcasilda.so" in names
+        assert "gtk4-preview/PINS.tsv" in names
+        assert exported.getmember("gtk4-preview/venv/bin/python").linkname == "./python3"
+        assert {name for name in names if name.startswith("gtk4-preview/runtime/")} == {
+            "gtk4-preview/runtime/schemas",
+            "gtk4-preview/runtime/schemas/gschemas.compiled",
+            "gtk4-preview/runtime/group-labels.json",
+        }
+        assert not any(name.startswith(("gtk4-preview/logs/", "gtk4-preview/build/"))
+                       for name in names)

@@ -23,9 +23,50 @@ when it is absent the packaged tree is used directly.
 
 ## Build
 
-The archive is generated from the pinned guest build and is deliberately kept
-out of Git. Place it beside the ISO output (the default location is
-`/media/freezer/SteamLibrary/vms/aspartame-build/artifacts/`) and run:
+The archive is generated from a completed pinned guest build and is kept out
+of Git. It can be recreated from a guest-local checkout: the development
+share is not required to build or run the exported image. Use an Aspartame
+build guest with the profile's GTK4/wlroots/compiler dependencies installed.
+The build guest and ISO package set must use a compatible Python version and
+native-library ABI; this is a reproducible procedure, not a claim of
+bit-for-bit reproducibility across rolling Arch package updates.
+
+Inside the guest, as `aspartame`, start with a fresh checkout/build directory:
+
+```bash
+mkdir -p /home/aspartame/Projects
+git clone https://github.com/LuckyMonkey/aspartame-linux.git \
+  /home/aspartame/Projects/aspartame
+cd /home/aspartame/Projects/aspartame
+export GTK4_ROOT=/home/aspartame/Development/gtk4-preview
+./scripts/sugar-gtk4-init.sh "$GTK4_ROOT"
+./scripts/sugar-gtk4-build.sh
+bash ./scripts/sugar-gtk4-export.sh /tmp/gtk4-preview-standalone.tar.gz
+```
+
+Use the same repository revision in the guest and on the ISO build host.
+The initializer records upstream revisions in `PINS.tsv`; the build applies
+this checkout's patches and compiles Casilda, sugar-ext, and the datastore
+metadata reader. Run the exporter only after the build succeeds and while no
+build is modifying its outputs. To export an already completed preview, run
+only the last command with its `GTK4_ROOT` set.
+
+The exporter includes `sources/`, `prefix/`, `venv/`, `PINS.tsv`, and just the
+compiled schemas/group labels from `runtime/`. It excludes Journal/profile
+data, settings, caches, compositor sockets, logs, and stale runtime Activity
+copies. It preserves symlinks for the ISO staging step to resolve, always
+uses `gtk4-preview/` as the archive root, and prints the resulting SHA-256.
+
+On the host, copy the archive from the guest SSH port (the default QEMU
+forward is `2222`; use your configured guest credentials):
+
+```bash
+mkdir -p /media/freezer/SteamLibrary/vms/aspartame-build/artifacts
+scp -P 2222 aspartame@127.0.0.1:/tmp/gtk4-preview-standalone.tar.gz \
+  /media/freezer/SteamLibrary/vms/aspartame-build/artifacts/
+```
+
+Then, from the matching host checkout with the Arch build root prepared, run:
 
 ```bash
 SUDO_ASKPASS=/tmp/aspartame-askpass sudo -A \
