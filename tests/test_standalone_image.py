@@ -32,6 +32,22 @@ def test_live_session_prefers_packaged_preview_without_dev_share():
     assert "mountpoint -q /mnt/aspartame-dev" in script
 
 
+def test_standalone_preserves_the_gtk3_handler_for_the_space_wrapper():
+    customize = (
+        ROOT
+        / "archiso"
+        / "aspartame"
+        / "airootfs"
+        / "root"
+        / "customize_airootfs.sh"
+    ).read_text()
+    overlay = (ROOT / "sugar-overlay/src/jarabe/view/keyhandler.py").read_text()
+    assert "gtk3-keyhandler-upstream.py" in customize
+    assert "ASPARTAME_GTK3_KEYHANDLER" in overlay
+    assert "gtk4_keyhandler" not in customize
+    assert "gtk4-preview/sources/sugar/src/jarabe/view/keyhandler.py" not in customize
+
+
 def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     """Exercise ISO staging with the two broken layouts from the guest archive."""
     project = tmp_path / "project"

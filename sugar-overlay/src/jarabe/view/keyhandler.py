@@ -24,17 +24,30 @@ from gi.repository import GLib, Wnck
 def _load_packaged_handler():
     """Load the distro handler without recursively importing this overlay."""
     current = Path(__file__).resolve()
-    for entry in sys.path:
-        if not entry:
-            continue
-        candidate = (Path(entry) / "jarabe/view/keyhandler.py").resolve()
+    candidates = []
+    configured = os.environ.get("ASPARTAME_GTK3_KEYHANDLER")
+    if configured:
+        candidates.append(Path(configured))
+    # In the standalone image the installed module is replaced by this
+    # workspace-aware wrapper.  customize_airootfs preserves the pinned
+    # distro module at this stable path before applying the generated patch.
+    candidates.append(Path("/usr/lib/aspartame/gtk3-keyhandler-upstream.py"))
+    candidates.extend(
+        Path(entry) / "jarabe/view/keyhandler.py"
+        for entry in sys.path
+        if entry
+    )
+    for candidate in candidates:
+        candidate = candidate.resolve()
         if not candidate.is_file() or candidate == current:
             continue
         # The Aspartame overlay is present in both /usr/share and the
         # development bind mount.  Neither is the upstream GTK3 handler; if
         # we load either one again this loader recurses until startup crashes.
         # Only accept the distro-installed module from Python's site-packages.
-        if "site-packages" not in candidate.parts:
+        if "site-packages" not in candidate.parts and candidate != Path(
+            "/usr/lib/aspartame/gtk3-keyhandler-upstream.py"
+        ).resolve():
             continue
         spec = spec_from_file_location("_aspartame_packaged_keyhandler", candidate)
         if spec is None or spec.loader is None:

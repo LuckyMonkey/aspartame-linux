@@ -97,17 +97,13 @@ while IFS=$'\t' read -r repo bundle; do
 done < /usr/share/aspartame/activities/INSTALL-MANIFEST
 
 site_packages=$(python3 -c 'import sugar3, os; print(os.path.dirname(sugar3.__file__))')
+# Preserve the distro GTK3 handler before the generated Aspartame wrapper
+# replaces it.  The wrapper delegates to this copy in a standalone image;
+# without it the classic Space can accidentally import GTK4 shell code.
+install -D -m 0644 "$(dirname "$site_packages")/jarabe/view/keyhandler.py" \
+    /usr/lib/aspartame/gtk3-keyhandler-upstream.py
 patch -d "$(dirname "$site_packages")" -p0 < \
     /usr/share/aspartame/0001-integrated-navigation.patch
-# The carried navigation patch targets the development checkout's keyhandler
-# shape.  The standalone preview also contains the exact upstream GTK3 source;
-# restore that module after applying the other shell changes so the reference
-# Space remains importable and never executes GTK4-only code.
-gtk3_keyhandler=/usr/lib/aspartame/gtk4-preview/sources/sugar/src/jarabe/view/keyhandler.py
-if test -f "$gtk3_keyhandler"; then
-    install -m 0644 "$gtk3_keyhandler" \
-        "$(dirname "$site_packages")/jarabe/view/keyhandler.py"
-fi
 # mkarchiso's profile copy normalizes regular-file modes. Restore executable
 # bits for the packaged Space/session entry points in the final airootfs.
 if test -d /usr/lib/aspartame/gtk4-preview/scripts; then
