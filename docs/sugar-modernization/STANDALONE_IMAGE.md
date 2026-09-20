@@ -116,6 +116,12 @@ The current shareless reboot acceptance is recorded in
 `/dev/vdb` mounting, both Spaces, Calculate input and stop, and Journal payload
 survival across a systemd reboot.
 
+The GTK3 reference boot check for the rebuilt image is recorded in
+`reports/gtk4/standalone-image-gtk3-keyhandler-20260920.md`. The image keeps
+the distro GTK3 key handler as a private delegate for the workspace-aware
+wrapper; it must never substitute the GTK4 `ShellModel` handler into the
+classic package.
+
 ## Troubleshooting
 
 * `/tmp/aspartame-gtk4-space.log` contains the modern Space startup trace.
