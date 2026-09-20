@@ -111,6 +111,11 @@ The development share is optional evidence, not a pass condition. A boot that
 only works when `/mnt/aspartame-dev` is mounted is a development preview, not a
 standalone image.
 
+The current shareless reboot acceptance is recorded in
+`reports/gtk4/standalone-image-reboot-20260919.md`. It covers a fresh ISO,
+`/dev/vdb` mounting, both Spaces, Calculate input and stop, and Journal payload
+survival across a systemd reboot.
+
 ## Troubleshooting
 
 * `/tmp/aspartame-gtk4-space.log` contains the modern Space startup trace.
