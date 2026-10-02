@@ -45,7 +45,7 @@ never promoted to FULL PORT by itself.
 | --- | --- | --- |
 | Help (`org.laptop.HelpActivity`) | PASS | ICON, CHROME, INPUT, STATE, A11Y, PORT — retain child-readable help and finish shell-wide chrome boundary. |
 | Count (`org.aspartame.Count`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — keep the current voxel workflow; separately document layer/grid editing gaps. |
-| Calculate (`org.aspartame.Calculate`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — exercise editor focus, expression errors, and Journal resume. |
+| Calculate (`org.aspartame.Calculate`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — exercise editor focus, expression errors, and Journal resume. | PORT progress 2026-10-02: functions, variables, history, angle modes, specific errors; v1 plain-expression payload preserved. |
 | Clock (`tv.alterna.Clock`) | PASS | ICON, CHROME, STATE, A11Y, PORT — verify time refresh, stop cleanup, and reference presentation. |
 | JAMClock (`org.laptop.JAMClock`) | PASS | ICON, CHROME, STATE, A11Y, PORT — verify clock identity/icon mapping and shell state transitions. |
 | Image Viewer (`org.laptop.ImageViewerActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — verify selection, zoom/navigation, and object resume. |

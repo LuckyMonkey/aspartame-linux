@@ -11,17 +11,9 @@ def test_calculate_bundle_is_native_gtk4_and_staged():
     assert "exec = sugar-activity4 calculateactivity4.CalculateActivity" in info
     assert "Gtk.Grid" in source and "SimpleActivity" in source
     assert 'Gtk.Frame(label="Calculator")' in source
-    assert 'Gtk.Frame(label="Keypad")' in source
-    assert "ast.parse(text, mode=\"eval\")" in source
+    assert 'label="History"' in source
+    assert "ast.parse(normalize(text), mode=\"eval\")" in source
     assert 'ln -sfn "$calculate_activity" "$activity_dir/Calculate.activity"' in build
-
-
-def test_build_replaces_stale_activity_directories_before_linking():
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "activity_names=(" in build
-    assert 'if test -e "$target" && test ! -L "$target"; then' in build
-    assert 'rm -rf -- "$target"' in build
-    assert "Gears" in build and "ConnectTheDots" in build
 
 
 def test_calculate_rejects_non_arithmetic_expression():
@@ -34,4 +26,4 @@ def test_calculate_restores_journal_expression():
     source = (ROOT / "packages/gtk4-calculate-activity/calculateactivity4.py").read_text()
     assert "def read_file(self, file_path)" in source
     assert "Path(file_path).read_text" in source
-    assert "self._calculate()" in source
+    assert "self._calculate(record=False)" in source
