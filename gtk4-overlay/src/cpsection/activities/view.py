@@ -6,12 +6,17 @@ from gi.repository import Gtk
 
 from jarabe.controlpanel.sectionview import SectionView
 
+from cpsection.activities import wongbaker
+from cpsection.activities.faces import FaceRating, ScoreBadge
+
 
 class ActivityManager(SectionView):
     def __init__(self, activity_model, alerts):
         super().__init__()
         self._model = activity_model
         self._rows = []
+        # Equal-width action buttons keep the face columns aligned row to row.
+        self._action_width = Gtk.SizeGroup(mode=Gtk.SizeGroupMode.HORIZONTAL)
         self.set_spacing(12)
         self.set_margin_top(24)
         self.set_margin_bottom(24)
@@ -24,6 +29,13 @@ class ActivityManager(SectionView):
         self.append(Gtk.Label(
             label=_('Installed activities. System activities are managed by the OS.'),
             xalign=0))
+        hint = Gtk.Label(
+            label=_('Rate each Activity with a face: how much does using it hurt? '
+                    'Choose the same face again to clear your answer.'),
+            xalign=0)
+        hint.set_wrap(True)
+        hint.set_opacity(0.78)
+        self.append(hint)
         self._count = Gtk.Label(xalign=0)
         self.append(self._count)
         self._status = Gtk.Label(xalign=0)
@@ -43,6 +55,8 @@ class ActivityManager(SectionView):
         while (child := self._list.get_row_at_index(0)) is not None:
             self._list.remove(child)
         self._rows = self._model.list_activities()
+        ratings = self._model.load_ratings()
+        port_status = self._model.load_port_status()
         self._count.set_text(_('%d installed activities') % len(self._rows))
         for activity in self._rows:
             row = Gtk.ListBoxRow()
@@ -59,7 +73,14 @@ class ActivityManager(SectionView):
                     activity['version'],
                     _('System-managed') if activity['managed']
                     else _('User-installed')), xalign=0))
+            status = port_status.get(activity['id'])
+            if status:
+                info.append(self._port_line(status))
             box.append(info)
+            faces = FaceRating(score=ratings.get(activity['id']),
+                               context=activity['name'])
+            faces.connect('rating-changed', self._rating_changed, activity)
+            box.append(faces)
             action = Gtk.Button(label=_('Request approval') if activity['managed']
                                 else _('Remove'))
             action.set_sensitive(True)
@@ -72,6 +93,7 @@ class ActivityManager(SectionView):
                  Gtk.AccessibleProperty.DESCRIPTION],
                 [action.get_label(), action.get_tooltip_text()])
             action.connect('clicked', self._remove_clicked, activity)
+            self._action_width.add_widget(action)
             box.append(action)
             row.set_child(box)
             row.update_property([Gtk.AccessibleProperty.LABEL,
@@ -79,6 +101,37 @@ class ActivityManager(SectionView):
                                 [activity['name'], activity['id']])
             row.set_accessible_role(Gtk.AccessibleRole.LIST_ITEM)
             self._list.append(row)
+
+    def _port_line(self, status):
+        line = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        port_class = Gtk.Label(label=status.get('class', ''), xalign=0)
+        port_class.add_css_class('dim-label')
+        line.append(port_class)
+        parity = status.get('parity')
+        if parity and parity.get('score') is not None:
+            score = parity['score']
+            line.append(ScoreBadge(score, _('Side-by-side %s: %s') % (
+                parity.get('date', ''), wongbaker.label(score))))
+        elif parity:
+            line.append(Gtk.Label(
+                label=_('Side-by-side in progress (%s)') % parity.get('progress', ''),
+                xalign=0))
+        else:
+            line.append(Gtk.Label(label=_('Not yet compared with GTK3'), xalign=0))
+        return line
+
+    def _rating_changed(self, _faces, score, activity):
+        score = None if score < 0 else score
+        try:
+            self._model.save_rating(activity['id'], score)
+        except (OSError, ValueError) as error:
+            self._status.set_text(_('Rating not saved: %s') % error)
+            return
+        if score is None:
+            self._status.set_text(_('Cleared your rating for %s.') % activity['name'])
+        else:
+            self._status.set_text(_('Rated %s: %s.') % (
+                activity['name'], wongbaker.label(score)))
 
     def apply(self):
         return None

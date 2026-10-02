@@ -3,7 +3,7 @@ BUILD_ROOT ?= /media/freezer/SteamLibrary/vms/aspartame-build
 OUT_DIR ?= $(BUILD_ROOT)/artifacts/out
 WORK_DIR ?= $(BUILD_ROOT)/artifacts/work
 
-.PHONY: iso run rebuild-run clean test mdm-check mdm-run sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-visual-check sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-init sugar-gtk4-build sugar-gtk4-run sugar-gtk4-smoke sugar-gtk4-check sugar-gtk4-update sugar-gtk4-status sugar-gtk4-series-check sugar-modernization-check activity-review-inventory activity-review-check activity-review-capture activity-contract-check count-deploy
+.PHONY: iso run rebuild-run clean test mdm-check mdm-run sugar-info sugar-reload sugar-session-restart sugar-logs sugar-screenshot sugar-visual-check sugar-patch-check sugar-open-control-panel sugar-upstream-sync sugar-gtk4-init sugar-gtk4-build sugar-gtk4-run sugar-gtk4-smoke sugar-gtk4-check sugar-gtk4-update sugar-gtk4-status sugar-gtk4-series-check sugar-modernization-check activity-review-inventory activity-review-check activity-review-capture activity-contract-check count-deploy parity-pairs parity-new parity-export parity-check
 
 iso:
 	./scripts/build-in-arch-root.sh
@@ -95,3 +95,18 @@ sugar-modernization-check:
 
 count-deploy:
 	./scripts/count-deploy.sh
+
+# Side-by-side GTK3 (F7) vs GTK4 (F8) parity workflow; see
+# docs/sugar-modernization/parity/README.md.
+parity-pairs:
+	python3 scripts/sugar-parity.py pairs
+
+parity-new:
+	@test -n "$(BUNDLE)" || { echo 'usage: make parity-new BUNDLE=org.sugarlabs.Write' >&2; exit 2; }
+	python3 scripts/sugar-parity.py new $(BUNDLE)
+
+parity-export:
+	python3 scripts/sugar-parity.py export
+
+parity-check:
+	python3 scripts/sugar-parity.py check

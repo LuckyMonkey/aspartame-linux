@@ -1,0 +1,260 @@
+{
+ "activities": {
+  "com.francocorrea.diamondfusion": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Diamond Fusion",
+   "parity": null
+  },
+  "com.garycmartin.Moon": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Moon",
+   "parity": null
+  },
+  "com.homegrownapps.abacus": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Abacus",
+   "parity": null
+  },
+  "com.jotaro.ImplodeActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Implode",
+   "parity": null
+  },
+  "mulawa.AcrossDown": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Across and Down",
+   "parity": null
+  },
+  "mulawa.AppelHaken": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Appel Haken",
+   "parity": null
+  },
+  "mulawa.IQ": {
+   "class": "FUNCTIONAL PORT",
+   "name": "IQ",
+   "parity": null
+  },
+  "mulawa.Jumble": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Jumble",
+   "parity": null
+  },
+  "mulawa.Mancala": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Mancala",
+   "parity": null
+  },
+  "net.coderanger.olpc.reversi": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Reversi",
+   "parity": null
+  },
+  "net.flossmanuals.LevelActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Level",
+   "parity": null
+  },
+  "org.aspartame.Calculate": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Calculate",
+   "parity": null
+  },
+  "org.aspartame.Count": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Count",
+   "parity": null
+  },
+  "org.eq.FotoToon": {
+   "class": "FUNCTIONAL PORT",
+   "name": "FotoToon",
+   "parity": null
+  },
+  "org.laptop.BlockPartyActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "BlockParty",
+   "parity": null
+  },
+  "org.laptop.HelpActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Help",
+   "parity": null
+  },
+  "org.laptop.ImageViewerActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Image Viewer",
+   "parity": null
+  },
+  "org.laptop.JAMClock": {
+   "class": "FUNCTIONAL PORT",
+   "name": "JAMClock",
+   "parity": null
+  },
+  "org.laptop.Log": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Log",
+   "parity": null
+  },
+  "org.laptop.Mastermind": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Mastermind",
+   "parity": null
+  },
+  "org.laptop.Memorize": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Memorize",
+   "parity": null
+  },
+  "org.laptop.Pippy": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Pippy",
+   "parity": null
+  },
+  "org.laptop.PlayGo": {
+   "class": "FUNCTIONAL PORT",
+   "name": "PlayGo",
+   "parity": null
+  },
+  "org.laptop.RecordActivity": {
+   "class": "UNCLASSIFIED",
+   "name": "Record",
+   "parity": null
+  },
+  "org.laptop.Terminal": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Terminal",
+   "parity": null
+  },
+  "org.laptop.TurtleArtActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "TurtleBlocks",
+   "parity": null
+  },
+  "org.laptop.WebActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Browse",
+   "parity": null
+  },
+  "org.laptop.Words": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Words",
+   "parity": null
+  },
+  "org.laptop.community.Finance": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Finance",
+   "parity": null
+  },
+  "org.laptop.community.TypingTurtle": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Typing Turtle",
+   "parity": null
+  },
+  "org.laptop.sugar.GetBooksActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Get Books",
+   "parity": null
+  },
+  "org.laptop.sugar.Jukebox": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Jukebox",
+   "parity": null
+  },
+  "org.laptop.sugar.ReadActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Read",
+   "parity": null
+  },
+  "org.olpc-france.LOLActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Last One Loses",
+   "parity": null
+  },
+  "org.olpcfrance.Gridpaint": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Grid Paint",
+   "parity": null
+  },
+  "org.sugarlabs.BallAndBrick": {
+   "class": "FUNCTIONAL PORT",
+   "name": "BallAndBrick",
+   "parity": null
+  },
+  "org.sugarlabs.ColorMyWorldActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Color My World",
+   "parity": null
+  },
+  "org.sugarlabs.ConnectTheDots": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Connect the Dots",
+   "parity": null
+  },
+  "org.sugarlabs.GTDActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Get Things Done",
+   "parity": null
+  },
+  "org.sugarlabs.GearsActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Gears",
+   "parity": null
+  },
+  "org.sugarlabs.Markdown": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Markdown",
+   "parity": null
+  },
+  "org.sugarlabs.NumRush": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Number Rush",
+   "parity": null
+  },
+  "org.sugarlabs.Paint": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Paint",
+   "parity": null
+  },
+  "org.sugarlabs.Planets": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Planets",
+   "parity": null
+  },
+  "org.sugarlabs.PortfolioActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Portfolio",
+   "parity": null
+  },
+  "org.sugarlabs.StopwatchActivity": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Stopwatch",
+   "parity": null
+  },
+  "org.sugarlabs.Write": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Write",
+   "parity": null
+  },
+  "org.sugarlabs.gameOfLife": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Game Of Life",
+   "parity": null
+  },
+  "org.worldwideworkshop.PollBuilder": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Poll",
+   "parity": null
+  },
+  "tv.alterna.Clock": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Clock",
+   "parity": null
+  },
+  "vu.lux.olpc.Maze": {
+   "class": "FUNCTIONAL PORT",
+   "name": "Maze",
+   "parity": null
+  }
+ },
+ "version": 1
+}

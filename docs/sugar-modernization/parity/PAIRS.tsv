@@ -1,0 +1,52 @@
+bundle_id	name	gtk3_reference	gtk4_source	port_class
+com.homegrownapps.abacus	Abacus	sugarizer-web:packages/sugarizer/activities/Abacus.activity	packages/gtk4-abacus-activity	FUNCTIONAL PORT
+mulawa.AcrossDown	Across and Down	packages/upstream-activities/across-and-down-activity	packages/gtk4-acrossdown-activity	FUNCTIONAL PORT
+mulawa.AppelHaken	Appel Haken	packages/upstream-activities/appel-haken-activity	packages/gtk4-appelhaken-activity	FUNCTIONAL PORT
+org.sugarlabs.BallAndBrick	BallAndBrick	packages/upstream-activities/ball-and-brick-activity	packages/gtk4-ballandbrick-activity	FUNCTIONAL PORT
+org.laptop.BlockPartyActivity	BlockParty	packages/upstream-activities/block-party-activity	packages/gtk4-blockparty-activity	FUNCTIONAL PORT
+org.laptop.WebActivity	Browse	sugar-activity-browse	packages/gtk4-browse-activity	FUNCTIONAL PORT
+org.aspartame.Calculate	Calculate	sugar-activity-calculate	packages/gtk4-calculate-activity	FUNCTIONAL PORT
+tv.alterna.Clock	Clock	packages/upstream-activities/clock-activity	packages/gtk4-clock-activity	FUNCTIONAL PORT
+org.sugarlabs.ColorMyWorldActivity	Color My World	sugarizer-web:packages/sugarizer/activities/ColorMyWorld.activity	packages/gtk4-colormyworld-activity	FUNCTIONAL PORT
+org.sugarlabs.ConnectTheDots	Connect the Dots	packages/upstream-activities/connect-the-dots-activity	packages/gtk4-connect-the-dots-activity	FUNCTIONAL PORT
+org.aspartame.Count	Count	packages/aspartame-count/Count.activity	packages/gtk4-count-activity	FUNCTIONAL PORT
+com.francocorrea.diamondfusion	Diamond Fusion	packages/upstream-activities/diamond-fusion-activity	packages/gtk4-diamond-fusion-activity	FUNCTIONAL PORT
+org.laptop.community.Finance	Finance	packages/upstream-activities/finance-activity	packages/gtk4-finance-activity	FUNCTIONAL PORT
+org.eq.FotoToon	FotoToon	packages/upstream-activities/fototoon-activity	packages/gtk4-fototoon-activity	FUNCTIONAL PORT
+org.sugarlabs.gameOfLife	Game Of Life	sugarizer-web:packages/sugarizer/activities/GameOfLife.activity	packages/gtk4-gameoflife-activity	FUNCTIONAL PORT
+org.sugarlabs.GearsActivity	Gears	sugarizer-web:packages/sugarizer/activities/Gears.activity	packages/gtk4-gears-activity	FUNCTIONAL PORT
+org.laptop.sugar.GetBooksActivity	Get Books	packages/upstream-activities/get-books-activity	packages/gtk4-get-books-activity	FUNCTIONAL PORT
+org.sugarlabs.GTDActivity	Get Things Done	sugarizer-web:packages/sugarizer/activities/GetThingsDone.activity	packages/gtk4-gtd-activity	FUNCTIONAL PORT
+org.olpcfrance.Gridpaint	Grid Paint	sugarizer-web:packages/sugarizer/activities/Gridpaint.activity	packages/gtk4-gridpaint-activity	FUNCTIONAL PORT
+org.laptop.HelpActivity	Help	packages/upstream-activities/help-activity	packages/gtk4-help-activity	FUNCTIONAL PORT
+org.laptop.ImageViewerActivity	Image Viewer	sugar-activity-imageviewer	pinned:imageviewer-activity	FUNCTIONAL PORT
+com.jotaro.ImplodeActivity	Implode	packages/upstream-activities/implode-activity	packages/gtk4-implode-activity	FUNCTIONAL PORT
+mulawa.IQ	IQ	packages/upstream-activities/iq-activity	packages/gtk4-iq-activity	FUNCTIONAL PORT
+org.laptop.JAMClock	JAMClock	packages/upstream-activities/jam-clock-activity	packages/gtk4-jamclock-activity	FUNCTIONAL PORT
+org.laptop.sugar.Jukebox	Jukebox	sugar-activity-jukebox	packages/gtk4-jukebox-activity	FUNCTIONAL PORT
+mulawa.Jumble	Jumble	packages/upstream-activities/jumble-activity	packages/gtk4-jumble-activity	FUNCTIONAL PORT
+org.olpc-france.LOLActivity	Last One Loses	sugarizer-web:packages/sugarizer/activities/LastOneLoses.activity	packages/gtk4-last-one-loses-activity	FUNCTIONAL PORT
+net.flossmanuals.LevelActivity	Level	packages/upstream-activities/level-activity	packages/gtk4-level-activity	FUNCTIONAL PORT
+org.laptop.Log	Log	packages/upstream-activities/log-activity	pinned:log-activity	FUNCTIONAL PORT
+mulawa.Mancala	Mancala	packages/upstream-activities/mancala-activity	packages/gtk4-mancala-activity	FUNCTIONAL PORT
+org.sugarlabs.Markdown	Markdown	sugarizer-web:packages/sugarizer/activities/Markdown.activity	packages/gtk4-markdown-activity	FUNCTIONAL PORT
+org.laptop.Mastermind	Mastermind	packages/upstream-activities/mastermind-activity	packages/gtk4-mastermind-activity	FUNCTIONAL PORT
+vu.lux.olpc.Maze	Maze	packages/upstream-activities/maze-activity	packages/gtk4-maze-activity	FUNCTIONAL PORT
+org.laptop.Memorize	Memorize	packages/upstream-activities/memorize-activity	packages/gtk4-memorize-activity	FUNCTIONAL PORT
+com.garycmartin.Moon	Moon	packages/upstream-activities/moon-activity	packages/gtk4-moon-activity	FUNCTIONAL PORT
+org.sugarlabs.NumRush	Number Rush	packages/upstream-activities/numberrush-activity	packages/gtk4-numberrush-activity	FUNCTIONAL PORT
+org.sugarlabs.Paint	Paint	sugar-activity-paint	packages/gtk4-paint-activity	FUNCTIONAL PORT
+org.laptop.Pippy	Pippy	sugar-activity-pippy	packages/gtk4-pippy-activity	FUNCTIONAL PORT
+org.sugarlabs.Planets	Planets	sugarizer-web:packages/sugarizer/activities/Planets.activity	packages/gtk4-planets-activity	FUNCTIONAL PORT
+org.laptop.PlayGo	PlayGo	packages/upstream-activities/playgo-activity	packages/gtk4-playgo-activity	FUNCTIONAL PORT
+org.worldwideworkshop.PollBuilder	Poll	packages/upstream-activities/poll-activity	packages/gtk4-poll-activity	FUNCTIONAL PORT
+org.sugarlabs.PortfolioActivity	Portfolio	packages/upstream-activities/portfolio-activity	packages/gtk4-portfolio-activity	FUNCTIONAL PORT
+org.laptop.sugar.ReadActivity	Read	sugar-activity-read	packages/gtk4-read-activity	FUNCTIONAL PORT
+org.laptop.RecordActivity	Record	sugar-activity-record	packages/gtk4-record-activity	UNCLASSIFIED
+net.coderanger.olpc.reversi	Reversi	packages/upstream-activities/reversi-activity	packages/gtk4-reversi-activity	FUNCTIONAL PORT
+org.sugarlabs.StopwatchActivity	Stopwatch	sugarizer-web:packages/sugarizer/activities/Stopwatch.activity	packages/gtk4-stopwatch-activity	FUNCTIONAL PORT
+org.laptop.Terminal	Terminal	sugar-activity-terminal	packages/gtk4-terminal-activity	FUNCTIONAL PORT
+org.laptop.TurtleArtActivity	TurtleBlocks	packages/upstream-activities/turtleart-activity	packages/gtk4-turtleart-activity	FUNCTIONAL PORT
+org.laptop.community.TypingTurtle	Typing Turtle	packages/upstream-activities/typing-turtle-activity	packages/gtk4-typingturtle-activity	FUNCTIONAL PORT
+org.laptop.Words	Words	packages/upstream-activities/words-activity	packages/gtk4-words-activity	FUNCTIONAL PORT
+org.sugarlabs.Write	Write	sugarizer-web:packages/sugarizer/activities/Write.activity	packages/gtk4-write-activity	FUNCTIONAL PORT
