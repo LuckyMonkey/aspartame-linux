@@ -10,7 +10,7 @@ def test_calculate_bundle_is_native_gtk4_and_staged():
     assert "bundle_id = org.aspartame.Calculate" in info
     assert "exec = sugar-activity4 calculateactivity4.CalculateActivity" in info
     assert "Gtk.Grid" in source and "SimpleActivity" in source
-    assert "ast.parse(text, mode=\"eval\")" in source
+    assert "ast.parse(normalize(text), mode=\"eval\")" in source
     assert 'ln -sfn "$calculate_activity" "$activity_dir/Calculate.activity"' in build
 
 
@@ -24,4 +24,4 @@ def test_calculate_restores_journal_expression():
     source = (ROOT / "packages/gtk4-calculate-activity/calculateactivity4.py").read_text()
     assert "def read_file(self, file_path)" in source
     assert "Path(file_path).read_text" in source
-    assert "self._calculate()" in source
+    assert "self._calculate(record=False)" in source

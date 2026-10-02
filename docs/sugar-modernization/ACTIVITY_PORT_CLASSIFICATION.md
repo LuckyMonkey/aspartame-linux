@@ -23,7 +23,7 @@ Classification used by the migration ledger:
 | --- | --- | --- |
 | Help | FUNCTIONAL PORT | Native topic/help surface; shell-wide Help parity still separate |
 | Count | FUNCTIONAL PORT | Native voxel/grid interaction; advanced layer behavior remains separate |
-| Calculate | FUNCTIONAL PORT | Safe arithmetic editor; not a claim of full upstream feature parity |
+| Calculate | FUNCTIONAL PORT | Safe arithmetic editor; not a claim of full upstream feature parity. Update 2026-10-02 (host-verified, guest pending): functions, pi/e, `ans`, variables, `^`, degrees/radians, clickable history, specific error messages; fixed an unbounded power that could stall the Activity and an uncaught float overflow. Plotting and number bases remain absent |
 | Clock | FUNCTIONAL PORT | Native time/date presentation |
 | JAMClock | FUNCTIONAL PORT | Native time/date replacement under the original identity |
 | Image Viewer | FUNCTIONAL PORT | Native image surface through the pinned bundle path |
