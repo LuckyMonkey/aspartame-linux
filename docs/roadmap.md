@@ -17,6 +17,9 @@
 - 🌐 Add peer-backed Neighborhood testing when a second participant is available.
 - 📦 Package the development overlay only after the runtime boundary is stable.
 
+The ordered plan from here to an installable, updatable everyday OS is in
+[MILESTONES.md](MILESTONES.md).
+
 See the [conversion tracker](sugar-modernization/CONVERSION_TRACKER.md) for
 gates and the [Chirality runbook](sugar-modernization/ASPARTAME_CHIRALITY.md)
 for the reasoning behind the order.

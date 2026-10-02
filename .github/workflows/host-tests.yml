@@ -1,0 +1,23 @@
+name: host tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  host:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GTK3, GTK4, and GStreamer introspection
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            python3-gi python3-pytest xvfb xauth \
+            gir1.2-gtk-3.0 gir1.2-gtk-4.0 \
+            gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0 \
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+      - name: Repository smoke test
+        run: ./scripts/smoke-test.sh
+      - name: Host suite with the headless GTK4 harness
+        run: xvfb-run -a /usr/bin/python3 -m pytest -q -rs tests

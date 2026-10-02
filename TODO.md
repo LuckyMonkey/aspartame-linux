@@ -2,6 +2,8 @@
 
 Active program (2026-09-11): complete the GTK4 conversion using
 [the execution record](docs/sugar-modernization/CONVERSION_TRACKER.md).
+The forward plan from conversion to an everyday OS is
+[MILESTONES.md](docs/MILESTONES.md).
 The milestone lists below are historical backlog, not the current runtime
 scorecard. Preserve GTK3 as the behavioral reference throughout conversion.
 
