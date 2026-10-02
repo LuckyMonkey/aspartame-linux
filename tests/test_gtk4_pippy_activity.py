@@ -12,7 +12,8 @@ def test_pippy_bundle_is_native_and_registered():
     assert "sugar-activity4 pippyactivity4.PippyActivity" in info
     assert "class PippyActivity(SimpleActivity)" in source
     assert 'label="Run"' in source and "Program output" in source
-    assert "subprocess.run" in source and '"-I"' in source
+    # Programs run in an isolated (-I), stoppable process group.
+    assert "subprocess.Popen" in source and '"-I"' in source and "start_new_session=True" in source
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "org.laptop.Pippy|pippyactivity4.PippyActivity" in matrix
     for script in ("sugar-gtk4-dev-sync.sh", "sugar-gtk4-build.sh"):

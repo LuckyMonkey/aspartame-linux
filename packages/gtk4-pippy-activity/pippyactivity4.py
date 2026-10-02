@@ -1,5 +1,18 @@
-"""Small, offline GTK4 Python playground for Sugar."""
+"""Small, offline GTK4 Python playground for Sugar.
 
+Closer to GTK3 Pippy than the first port: a library of examples, Run and Stop
+(programs run in a separate isolated Python process and can be stopped at any
+time), text typed into "Program input" is given to the program, output streams
+while the program runs, Tab/Enter follow Python indentation, and an error
+jumps the cursor to the failing line.  Syntax colouring, Pygame/Sugar
+examples, and exporting a program as an Activity bundle remain unported.
+
+The Journal payload is unchanged: the plain UTF-8 program text.
+"""
+
+import os
+import re
+import signal
 import subprocess
 import sys
 import threading
@@ -13,6 +26,49 @@ DEFAULT_PROGRAM = '''print("Hello from Pippy!")
 for number in range(1, 4):
     print("Python number", number)
 '''
+EXAMPLES = {
+    "Hello": DEFAULT_PROGRAM,
+    "Times table": '''number = 7
+for row in range(1, 11):
+    print(number, "x", row, "=", number * row)
+''',
+    "Guess the number": '''import random
+import sys
+
+secret = random.randint(1, 20)
+# Type guesses in "Program input", separated by ;, then press Run.
+for line in sys.stdin:
+    if not line.strip():
+        continue
+    guess = int(line)
+    if guess == secret:
+        print(guess, "is right!")
+        break
+    print(guess, "is too", "low" if guess < secret else "high")
+else:
+    print("Out of guesses. It was", secret)
+''',
+    "Fibonacci": '''a, b = 0, 1
+while a < 1000:
+    print(a)
+    a, b = b, a + b
+''',
+    "Text art": '''for size in range(1, 8):
+    print(" " * (8 - size) + "*" * (2 * size - 1))
+print(" " * 7 + "|")
+''',
+    "Primes": '''def is_prime(n):
+    if n < 2:
+        return False
+    for d in range(2, int(n ** 0.5) + 1):
+        if n % d == 0:
+            return False
+    return True
+
+print([n for n in range(100) if is_prime(n)])
+''',
+}
+MAX_OUTPUT = 200_000
 
 
 class PippyActivity(SimpleActivity):
@@ -42,6 +98,9 @@ class PippyActivity(SimpleActivity):
         self.editor.set_vexpand(True)
         self.editor.update_property([Gtk.AccessibleProperty.LABEL], ["Python program editor"])
         self.editor.get_buffer().set_text(DEFAULT_PROGRAM)
+        keys = Gtk.EventControllerKey()
+        keys.connect("key-pressed", self._editor_key)
+        self.editor.add_controller(keys)
         editor_scroll = Gtk.ScrolledWindow()
         editor_scroll.set_min_content_height(260)
         editor_scroll.set_vexpand(True)
@@ -49,14 +108,31 @@ class PippyActivity(SimpleActivity):
         root.append(editor_scroll)
 
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        run = Gtk.Button(label="Run")
-        run.add_css_class("suggested-action")
-        run.connect("clicked", self._run_program)
-        controls.append(run)
+        self.run = Gtk.Button(label="Run")
+        self.run.add_css_class("suggested-action")
+        self.run.set_tooltip_text("Run the program (Ctrl+Enter)")
+        self.run.connect("clicked", self._run_program)
+        controls.append(self.run)
+        self.stop = Gtk.Button(label="Stop")
+        self.stop.set_tooltip_text("Stop the running program")
+        self.stop.update_property([Gtk.AccessibleProperty.LABEL], ["Stop the program"])
+        self.stop.set_sensitive(False)
+        self.stop.connect("clicked", lambda _b: self._stop_program())
+        controls.append(self.stop)
+        self.examples = Gtk.DropDown.new_from_strings(list(EXAMPLES))
+        self.examples.set_tooltip_text("Examples")
+        self.examples.update_property([Gtk.AccessibleProperty.LABEL], ["Examples"])
+        controls.append(self.examples)
         reset = Gtk.Button(label="Reset example")
+        reset.set_tooltip_text("Replace the program with the chosen example")
         reset.connect("clicked", self._reset)
         controls.append(reset)
         root.append(controls)
+
+        self.stdin = Gtk.Entry(placeholder_text="Program input (separate lines with ;)")
+        self.stdin.update_property([Gtk.AccessibleProperty.LABEL], ["Program input"])
+        root.append(self.stdin)
+        self._process = None
 
         self.output = Gtk.TextView()
         self.output.set_editable(False)
@@ -82,30 +158,112 @@ class PippyActivity(SimpleActivity):
         start, end = self.editor.get_buffer().get_bounds()
         return self.editor.get_buffer().get_text(start, end, False)
 
-    def _run_program(self, _button):
+    def _run_program(self, _button=None):
+        if self._process is not None:
+            return
+        self.output.get_buffer().set_text("")
         self.status.set_text("Running…")
-        threading.Thread(target=self._execute, args=(self._program(),), daemon=True).start()
-
-    def _execute(self, program):
+        stdin = "\n".join(part.strip() for part in self.stdin.get_text().split(";")) + "\n"
         try:
-            result = subprocess.run([sys.executable, "-I", "-c", program], capture_output=True,
-                                    text=True, timeout=5, check=False)
-            text = result.stdout
-            if result.stderr:
-                text += ("\n" if text else "") + result.stderr
-            GLib.idle_add(self._show_result, text or "(program finished without output)", result.returncode)
-        except (subprocess.TimeoutExpired, OSError) as error:
-            GLib.idle_add(self._show_result, str(error), 1)
+            self._process = subprocess.Popen(
+                [sys.executable, "-I", "-u", "-c", self._program()],
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                text=True, start_new_session=True)
+        except OSError as error:
+            self._show_result(str(error), 1)
+            return
+        self.run.set_sensitive(False)
+        self.stop.set_sensitive(True)
+        threading.Thread(target=self._execute, args=(self._process, stdin), daemon=True).start()
 
-    def _show_result(self, text, returncode):
-        self.output.get_buffer().set_text(text)
-        self.status.set_text("Finished" if returncode == 0 else "Program returned an error")
+    def _execute(self, process, stdin):
+        try:
+            process.stdin.write(stdin)
+            process.stdin.close()
+        except OSError:
+            pass
+        size = 0
+        for line in process.stdout:
+            size += len(line)
+            if size > MAX_OUTPUT:
+                GLib.idle_add(self._append, "\n[output cut off: too long]\n")
+                self._stop_program()
+                break
+            GLib.idle_add(self._append, line)
+        GLib.idle_add(self._show_result, None, process.wait())
+
+    def _append(self, text):
+        buffer = self.output.get_buffer()
+        buffer.insert(buffer.get_end_iter(), text)
         return GLib.SOURCE_REMOVE
 
+    def _stop_program(self):
+        process = self._process
+        if process is not None and process.poll() is None:
+            try:
+                os.killpg(process.pid, signal.SIGTERM)
+            except OSError:
+                pass
+
+    def _show_result(self, text, returncode):
+        buffer = self.output.get_buffer()
+        if text is not None:
+            buffer.set_text(text)
+        start, end = buffer.get_bounds()
+        output = buffer.get_text(start, end, False)
+        if not output:
+            buffer.set_text("(program finished without output)")
+        self._process = None
+        self.run.set_sensitive(True)
+        self.stop.set_sensitive(False)
+        if returncode == 0:
+            self.status.set_text("Finished")
+        elif returncode in (-signal.SIGTERM, -signal.SIGKILL):
+            self.status.set_text("Stopped")
+        else:
+            lines = re.findall(r'File "<string>", line (\d+)', output)
+            if lines:
+                self._goto_line(int(lines[-1]))
+                self.status.set_text("Program returned an error on line %s" % lines[-1])
+            else:
+                self.status.set_text("Program returned an error")
+        return GLib.SOURCE_REMOVE
+
+    def _goto_line(self, number):
+        buffer = self.editor.get_buffer()
+        found = buffer.get_iter_at_line(max(0, number - 1))
+        where = found[1] if isinstance(found, tuple) else found
+        end = where.copy()
+        if not end.ends_line():
+            end.forward_to_line_end()
+        buffer.select_range(where, end)
+        self.editor.scroll_to_iter(where, 0.2, False, 0, 0)
+
+    def _editor_key(self, _controller, keyval, _keycode, state):
+        buffer = self.editor.get_buffer()
+        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter) and state & Gdk.ModifierType.CONTROL_MASK:
+            self._run_program()
+            return True
+        if keyval == Gdk.KEY_Tab and not state & Gdk.ModifierType.SHIFT_MASK:
+            buffer.insert_at_cursor("    ")
+            return True
+        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+            cursor = buffer.get_iter_at_mark(buffer.get_insert())
+            start = cursor.copy(); start.set_line_offset(0)
+            line = buffer.get_text(start, cursor, False)
+            indent = line[:len(line) - len(line.lstrip(" "))]
+            if line.rstrip().endswith(":"):
+                indent += "    "
+            buffer.insert_at_cursor("\n" + indent)
+            self.editor.scroll_mark_onscreen(buffer.get_insert())
+            return True
+        return False
+
     def _reset(self, _button):
-        self.editor.get_buffer().set_text(DEFAULT_PROGRAM)
+        name = list(EXAMPLES)[self.examples.get_selected()]
+        self.editor.get_buffer().set_text(EXAMPLES[name])
         self.output.get_buffer().set_text("")
-        self.status.set_text("Ready")
+        self.status.set_text("Ready: %s example" % name)
 
     def read_file(self, file_path):
         """Restore a Python source buffer from a UTF-8 Journal object."""

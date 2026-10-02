@@ -85,7 +85,7 @@ never promoted to FULL PORT by itself.
 | Planets (`org.sugarlabs.Planets`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare simulation controls and object recovery. |
 | Write (`org.sugarlabs.Write`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve text save/resume while tracking rich document gaps. | PORT progress 2026-10-02: formatting, headings, alignment, undo, find, zoom, word count, export; first side-by-side report is the next step. |
 | Connect the Dots (`org.sugarlabs.ConnectTheDots`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare full artwork, undo, and completion semantics. |
-| Pippy (`org.laptop.Pippy`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare editor/runtime breadth, errors, and project recovery. |
+| Pippy (`org.laptop.Pippy`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare editor/runtime breadth, errors, and project recovery. | PORT progress 2026-10-02: examples, Stop, input, indentation, error-line jump. |
 | Paint (`org.sugarlabs.Paint`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare layers, tools, undo, and image object recovery. | PORT progress 2026-10-02: shape tools, eraser, sizes, custom colour, undo/redo, PNG export. |
 | Diamond Fusion (`com.francocorrea.diamondfusion`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare cascade/scoring and board recovery. |
 | Level (`net.flossmanuals.LevelActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare calibration and hardware-sensor boundary. |
