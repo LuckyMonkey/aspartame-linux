@@ -11,7 +11,7 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux/graphs/commit-activity)
 [![Repository size](https://img.shields.io/github/repo-size/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux)
 
-[![GTK4 tests](https://img.shields.io/badge/GTK4%20tests-271%20passed-2ea44f)](tests/)
+[![Host tests](https://img.shields.io/badge/host%20tests-461%20passed-2ea44f)](tests/)
 [![GTK4 build](https://img.shields.io/badge/guest%20build-PASS-2ea44f)](docs/sugar-modernization/GTK4_RUNBOOK.md)
 [![GTK3 reference](https://img.shields.io/badge/GTK3-reference%20preserved-2ea44f)](docs/sugar-modernization/GTK4_STATUS.md)
 
@@ -154,7 +154,9 @@ GTK, GLib, GObject, Casilda, the compositor, kernel, drivers, codecs, and other 
 
 ## 🧩 Activity status
 
-The current native GTK4 inventory includes functional implementations for Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Read, Write, NumberRush, Poll, Mancala, Reversi, Jumble, Mastermind, BlockParty, PlayGo, Implode, BallAndBrick, Appel Haken, IQ, Across and Down, Maze, Memorize, Words, Portfolio, FotoToon, Finance, Markdown, Stopwatch, TurtleBlocks, Gears, Last One Loses, Grid Paint, Get Things Done, Abacus, Planets, Color My World, Game Of Life, Diamond Fusion, Connect the Dots, Pippy, Typing Turtle, Moon, Paint, Level, Jukebox, and Get Books.
+The current native GTK4 inventory includes functional implementations for Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Read, Write, NumberRush, Poll, Mancala, Reversi, Jumble, Mastermind, BlockParty, PlayGo, Implode, BallAndBrick, Appel Haken, IQ, Across and Down, Maze, Memorize, Words, Portfolio, FotoToon, Finance, Markdown, Stopwatch, TurtleBlocks, Gears, Last One Loses, Grid Paint, Get Things Done, Abacus, Planets, Color My World, Game Of Life, Diamond Fusion, Connect the Dots, Pippy, Typing Turtle, Moon, Paint, Level, Jukebox, and Get Books. Record (photo, video, and audio through GStreamer) is implemented and host-verified, and awaits its guest run before it is classified.
+
+Every native GTK4 bundle also runs through a headless host harness on each push: it constructs the Activity, clicks every button, and checks that a Journal save resumes byte-identically and that corrupt Journal objects cannot crash it. Its first run found and fixed seven defects (2026-10-02).
 
 That list is runtime coverage, not a promise of complete upstream feature breadth. Read the classification table for each Activity's workflow and boundary. Sugarizer web catalog entries remain catalog-only until an actual runtime implementation exists.
 
@@ -179,6 +181,14 @@ Difference?
 This keeps the stable GTK3 implementation as the executable specification while the GTK4 side matures. Tests, docs, and automated lifecycle checks support this process, but they do not replace human comparison of real workflows.
 
 The important retirement metric is **behavioral parity**, not launch count.
+
+Each comparison is now recorded with the [side-by-side parity workflow](docs/sugar-modernization/parity/README.md): `make parity-new BUNDLE=<id>` creates a report with eight standard steps, each step is done in F7 then F8, and the GTK4 side is scored on a six-face scale (0 no hurt … 10 unusable). A report's score is its worst step. `make parity-export` publishes the scores to the modern Activity Manager. This F7/F8 workflow stays in place until GTK3 is retired; Chirality later replaces the key instructions, not the evidence.
+
+### ⭐ Rating Activities with faces
+
+The modern Settings → Activity Manager shows three things per Activity: its port class, its latest side-by-side score, and **your own rating** on a Wong-Baker-style six-face scale ("how much does using this Activity hurt?"). Choosing the selected face again clears it. Ratings from the classic five-face manager are carried over (Perfect→0 … Broken→10) and the classic file is never rewritten. The faces are Aspartame's own drawings, not Wong-Baker FACES® artwork.
+
+![Activity Manager face ratings (host render)](reports/gtk4/activity-manager-wong-baker-host-20261002.png)
 
 ## 🛠️ Build and run
 
@@ -380,6 +390,9 @@ The README is intentionally the front door. The runbooks hold the strict contrac
 - [GTK4 debugging](docs/sugar-modernization/GTK4_DEBUGGING.md)
 - [Architecture compatibility](docs/sugar-modernization/ARCH_COMPATIBILITY.md)
 - [Aspartame Chirality steering runbook](docs/sugar-modernization/ASPARTAME_CHIRALITY.md)
+- [Side-by-side parity workflow](docs/sugar-modernization/parity/README.md)
+- [Milestones toward an everyday OS](docs/MILESTONES.md)
+- [Notes for AI agents](AGENTS.md)
 
 ### Project and visual references
 
@@ -401,7 +414,7 @@ Before changing migration code, read the status, tracker, classification table, 
 
 The project is intentionally still in conversion. The highest-value remaining items are:
 
-1. **Human GTK3↔GTK4 parity qualification** — use F7/F8 as the executable oracle and exercise real workflows, not only lifecycle probes.
+1. **Human GTK3↔GTK4 parity qualification** — use F7/F8 as the executable oracle and exercise real workflows, not only lifecycle probes. Record each session with `make parity-new` (no reports exist yet; Write is the recommended first).
 2. **Physical input proof** — continue proving keyboard delivery through the actual QEMU/evdev path while keeping semantic shell actions separate from transport.
 3. **Peer-backed collaboration** — exercise Neighborhood/Group behavior with a second real participant.
 4. **Activity promotion** — move Activities from COVERAGE IMPLEMENTATION → FUNCTIONAL PORT → FULL PORT only when GTK3 behavior, persistence, input, accessibility, and user-visible state justify it.

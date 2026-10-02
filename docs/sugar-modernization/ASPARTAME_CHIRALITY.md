@@ -1270,3 +1270,10 @@ Chirality is not split-screen multitasking. It is not tiling. It is not window m
 It is a constraint on immediate attention.
 
 Two hands. One focus. No third hand.
+
+## Addendum 2026-10-02: parity evidence survives the handoff
+
+The side-by-side workflow in `parity/README.md` is the recorded form of the
+F7/F8 oracle. When the Spaces are repurposed as Left Hand / Right Hand, keep
+the reports and scores; only the "press F7, then F8" instructions change.
+Repurpose the Spaces only after the retirement gate passes, as above.

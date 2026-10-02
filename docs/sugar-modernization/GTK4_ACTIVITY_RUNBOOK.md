@@ -301,6 +301,15 @@ An Activity can be marked **usable** only when all applicable checks pass:
 
 If a check is not applicable, write why. Do not silently mark it passed.
 
+Added 2026-10-02 — two further checks apply to every native bundle:
+
+- [ ] the host harness passes (`tests/test_gtk4_activity_harness.py`):
+  construction, every button, byte-stable save/resume, and malformed Journal
+  objects;
+- [ ] a side-by-side report exists (`make parity-new BUNDLE=<id>`, see
+  `parity/README.md`) before any move to FULL PORT; its worst step is the
+  Activity's parity score.
+
 ## 11. Failure routing
 
 | Symptom | First place to look | Do not do first |
@@ -313,6 +322,7 @@ If a check is not applicable, write why. Do not silently mark it passed.
 | Journal row is empty/stale | datastore D-Bus/query path | hard-code sample rows |
 | palette appears detached | Popover parent/pointing widget | add another top-level window |
 | GTK3 namespace error | process environment and import order | weaken stable `sitecustomize` |
+| Harness fails only on malformed objects | `read_file` exception handling and non-object JSON | catch bare `Exception` and hide the error |
 
 The next valid milestone is a single migrated Activity that passes the launch,
 D-Bus, first-paint, Stop, and relaunch checks. Porting multiple Activities

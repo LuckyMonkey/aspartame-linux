@@ -15,8 +15,9 @@ index is the map for engineers, testers, and curious learners.
 | Understand future Python qualification | [Snakepit runbook](runbooks/SNAKEPIT_RUNBOOK.md) |
 | Build or boot the image | [Building](building.md), [Boot](boot.md), [QEMU](qemu.md) |
 | Work on the Sugar shell | [Sugar development](SUGAR-DEVELOPMENT.md), [Sugar styling](SUGAR-STYLING.md) |
+| Plan what comes next | [Milestones](MILESTONES.md), [notes for AI agents](../AGENTS.md) |
 | Port an Activity | [Activity contract](ASPARTAME-ACTIVITY-CONTRACT.md), [Activity runbook](sugar-modernization/GTK4_ACTIVITY_RUNBOOK.md), [classification](sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md) |
-| Verify GTK4 parity | [Qualification deck](sugar-modernization/QUALIFICATION_DECK.md) (current workflow status), [component status](sugar-modernization/GTK4_STATUS.md), [debugging](sugar-modernization/GTK4_DEBUGGING.md) |
+| Verify GTK4 parity | [Side-by-side parity workflow](sugar-modernization/parity/README.md) (F7/F8 reports and scores), [Qualification deck](sugar-modernization/QUALIFICATION_DECK.md) (current workflow status), [component status](sugar-modernization/GTK4_STATUS.md), [debugging](sugar-modernization/GTK4_DEBUGGING.md) |
 | Find a known GTK4 defect | [Blockers](sugar-modernization/BLOCKERS.md), plus the open findings in the [qualification deck](sugar-modernization/QUALIFICATION_DECK.md) |
 | Learn the user-facing model | [Universal Help](UNIVERSAL-HELP.md), [Activity Help catalog](ACTIVITY-HELP-CATALOG.md), [Sugar current state](sugar-current-state.md) |
 

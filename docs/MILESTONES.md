@@ -35,6 +35,12 @@ new surfaces.
 - [ ] Make the modern Space the default once the above hold, with the GTK3
   Space one keystroke away. Retiring GTK3 is a later, separate decision.
 
+- [x] Side-by-side parity workflow and Activity Manager face ratings
+  (`parity/README.md`, 2026-10-02). No reports exist yet.
+- Handoff 2026-10-02: none of the M0 guest runs were possible from the
+  container used; start with the guest matrix, then
+  `make parity-new BUNDLE=org.sugarlabs.Write`.
+
 **Exit:** a person boots the image, lands in GTK4 Sugar, and every shipped
 Activity either works or says honestly what it cannot do.
 

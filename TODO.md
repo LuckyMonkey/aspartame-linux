@@ -28,6 +28,12 @@ milestone so future sessions can resume without relying on chat history.
   unanswered state, the `rating-changed` value, out-of-range clamping, the
   selection style class, keyboard reachability, accessible names, and
   missing face artwork.
+- [x] GTK4 Activity Manager: six-face Wong-Baker-style rating per Activity,
+  port class, and side-by-side parity score on each row (2026-10-02). Classic
+  five-level answers are read as a fallback and never rewritten; covered by
+  `tests/gtk4_harness/activity_manager_probe.py`.
+- [ ] Verify the GTK4 face ratings in the guest Settings window (host render:
+  `reports/gtk4/activity-manager-wong-baker-host-20261002.png`).
 - [ ] Add UI tests for activity-icon fallback and row layout. Both live in
   `view.py`, which cannot be imported headless (it needs `sugar3` and
   `jarabe.controlpanel`); they need a guest-side harness or a seam that

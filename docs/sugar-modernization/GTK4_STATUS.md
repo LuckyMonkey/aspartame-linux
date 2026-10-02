@@ -33,6 +33,16 @@ still classified separately from launch coverage.
 | Read | GTK3 legacy Activity | Native GTK4 bundle | UTF-8 text reader with form-feed pages and Journal resume | GTK4 verified 2026-09-15 | `org.laptop.sugar.ReadActivity` resumes seeded Journal text objects; PDF/EPUB parity is not claimed |
 | Stopwatch | GTK3 legacy Activity | Native GTK4 bundle | Elapsed-time display with JSON Journal resume | GTK4 verified 2026-09-15 | `org.sugarlabs.StopwatchActivity` resumes seeded elapsed-time objects; lap/export parity is not claimed |
 
+| Record | GTK3 Activity (`sugar-activity-record`) | Native GTK4 bundle | GStreamer photo (PNG), video (WebM) and audio (Ogg/Opus) capture; honest no-camera/no-microphone states; zip Journal object | Host-verified 2026-10-02; guest pending | Run the lifecycle matrix and `sugar-gtk4-record-roundtrip.py`; no viewfinder, timers, video sound, or collaboration |
+
+Added 2026-10-02: the headless host harness now runs every native bundle. It
+found and fixed construction errors in Help (wrong wrap-mode enum) and Jukebox
+(status label used before creation), and resume crashes on corrupt or
+non-object Journal data in Count, Level, Finance, Mastermind and Stopwatch.
+The earlier guest evidence for those seven predates the fixes and should be
+re-run. The modern Activity Manager now shows port class, side-by-side parity
+score, and a six-face user rating per Activity.
+
 Current verified checkpoint: GTK4 Home Favorites/List/search, Frame,
 native Journal Activity search/resume/edit/selection, Settings navigation,
 Neighborhood/Group empty states, Sugar palettes, clipboard transfer, Help,
