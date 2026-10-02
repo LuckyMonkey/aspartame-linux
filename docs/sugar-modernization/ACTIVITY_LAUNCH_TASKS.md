@@ -50,7 +50,7 @@ never promoted to FULL PORT by itself.
 | JAMClock (`org.laptop.JAMClock`) | PASS | ICON, CHROME, STATE, A11Y, PORT — verify clock identity/icon mapping and shell state transitions. |
 | Image Viewer (`org.laptop.ImageViewerActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — verify selection, zoom/navigation, and object resume. |
 | Terminal (`org.laptop.Terminal`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — retain the functional command surface while checking terminal focus and object recovery. | PORT progress 2026-10-02: VTE emulator with tabs, copy/paste, zoom, scrollback and directory resume; check AT-SPI exposure of VTE text in the guest. |
-| Browse (`org.laptop.WebActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — document the offline boundary; do not imply WebKit/download parity. |
+| Browse (`org.laptop.WebActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — document the offline boundary; do not imply WebKit/download parity. | PORT progress 2026-10-02: WebKit 6.0 tabs, navigation, bookmarks, downloads, Journal resume; verify WebKit's sandbox and network inside the Casilda surface in the guest. |
 | Log (`org.laptop.Log`) | PASS | ICON, CHROME, INPUT, STATE, A11Y, PORT — verify filtering, scrolling, and readable focus behavior. |
 | Mastermind (`org.laptop.Mastermind`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare scoring, hints, and reset semantics. |
 | Poll (`org.worldwideworkshop.PollBuilder`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PEER, PORT — preserve editor/vote separation and document collaboration scope. |
