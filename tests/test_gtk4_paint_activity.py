@@ -11,8 +11,9 @@ def test_paint_bundle_is_native_and_registered():
     assert "sugar-activity4 paintactivity4.PaintActivity" in info
     assert "class PaintActivity(SimpleActivity)" in source
     assert "Gtk.GestureDrag" in source and "set_draw_func" in source
-    assert "set_content_height(480)" in source and 'Gtk.Frame(label="Drawing canvas")' in source and "set_hexpand(True)" in source
-    assert "cr.rectangle(2, 2" in source
+    assert "set_content_height(440)" in source and 'Gtk.Frame(label="Drawing canvas")' in source and "set_hexpand(True)" in source
+    assert 'TOOL_LABELS = {' in source and '"eraser"' in source
+    assert "_do_undo" in source and "_do_redo" in source and "_export" in source
     assert (package / "activity/paint.svg").is_file()
     assert "org.sugarlabs.Paint|paintactivity4.PaintActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     for path in ("scripts/sugar-gtk4-dev-sync.sh", "scripts/sugar-gtk4-build.sh"):
