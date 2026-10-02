@@ -94,3 +94,8 @@ do not import the Wong-Baker Foundation's artwork.
   matrix, the Record round-trip, and the first side-by-side report (Write
   is the recommended first FULL PORT candidate). The container used for this
   work had no VM, so none of this has guest evidence yet.
+- 2026-10-02 (later): Jukebox local tracks now play through `Gtk.MediaFile`
+  (host-verified only). Guest to-do list, in order: rebuild preview →
+  activity matrix → Record and Jukebox round-trips → re-run round-trips for
+  Help, Count, Level, Finance, Mastermind, Stopwatch → first parity report
+  (Write) → check the face ratings render in guest Settings.
