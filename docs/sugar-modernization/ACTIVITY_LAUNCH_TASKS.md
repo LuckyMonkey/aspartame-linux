@@ -76,14 +76,14 @@ never promoted to FULL PORT by itself.
 | LOL (`org.olpc-france.LOLActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — identify the reference workflow before expanding coverage. |
 | Get Things Done (`org.sugarlabs.GTDActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare task ordering, filtering, and recovery. |
 | Grid Paint (`org.olpcfrance.Gridpaint`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare drag-fill, layers, and export semantics. |
-| Stopwatch (`org.sugarlabs.StopwatchActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare laps, timing accuracy, and resume. |
+| Stopwatch (`org.sugarlabs.StopwatchActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare laps, timing accuracy, and resume. | PORT progress 2026-10-02: marks, multiple named stopwatches, monotonic timing. |
 | Gears (`org.sugarlabs.GearsActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare animation controls and object recovery. |
 | TurtleBlocks (`org.laptop.TurtleArtActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare block language, drawing, and project recovery. |
 | Game Of Life (`org.sugarlabs.gameOfLife`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare pattern editing, stepping, and generation persistence. |
 | Color My World (`org.sugarlabs.ColorMyWorldActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare artwork tools, palette semantics, and object recovery. |
 | Abacus (`com.homegrownapps.abacus`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare bead manipulation and place-value workflows. |
 | Planets (`org.sugarlabs.Planets`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare simulation controls and object recovery. |
-| Write (`org.sugarlabs.Write`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve text save/resume while tracking rich document gaps. |
+| Write (`org.sugarlabs.Write`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve text save/resume while tracking rich document gaps. | PORT progress 2026-10-02: formatting, headings, alignment, undo, find, zoom, word count, export; first side-by-side report is the next step. |
 | Connect the Dots (`org.sugarlabs.ConnectTheDots`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare full artwork, undo, and completion semantics. |
 | Pippy (`org.laptop.Pippy`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare editor/runtime breadth, errors, and project recovery. |
 | Paint (`org.sugarlabs.Paint`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare layers, tools, undo, and image object recovery. |
@@ -93,6 +93,7 @@ never promoted to FULL PORT by itself.
 | Get Books (`org.laptop.sugar.GetBooksActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve offline catalog behavior and document network/download scope. |
 | Jukebox (`org.laptop.sugar.Jukebox`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare playlist, codec, and media playback boundaries. |
 | Read (`org.laptop.sugar.ReadActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve UTF-8 resume while tracking PDF/EPUB breadth. |
+| Record (`org.laptop.RecordActivity`) | not yet run (added 2026-10-02) | LAUNCH, ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — run the matrix and `sugar-gtk4-record-roundtrip.py`; then test with a real camera and microphone. |
 
 ## Shell-wide queue (do once, not once per Activity)
 

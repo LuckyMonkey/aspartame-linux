@@ -9,7 +9,10 @@ def test_stopwatch_exposes_a_journal_state_boundary():
     source = next(package.glob("*activity4.py")).read_text()
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source
-    assert 'json.dumps({"elapsed": self.elapsed}' in source
+    # v2 payload keeps the v1 "elapsed" tenths alongside named watches/marks.
+    assert '"elapsed": watches[0]["elapsed_ms"] // 100' in source
+    assert '"version": 2, "watches": watches' in source
+    assert "time.monotonic()" in source
 
 
 def test_stopwatch_roundtrip_probe_targets_journal_resume():
