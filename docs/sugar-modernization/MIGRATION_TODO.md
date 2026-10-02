@@ -59,6 +59,15 @@ lifecycle evidence exist; they are not equivalent to a FULL PORT claim. See
   `docs/activity-reviews/REVIEWS.tsv`, refreshed 2026-09-14).
 - [ ] Port the remaining legacy Fructose activities. Keep each Activity a
   separate reviewable change.
+- [x] Port Record (`org.laptop.RecordActivity`), the last image-shipped GTK3
+  Activity without a GTK4 counterpart: GStreamer photo/video/audio capture
+  with honest no-device states and a self-contained zip Journal object.
+  Host capture/resume evidence passes; guest matrix and
+  `sugar-gtk4-record-roundtrip.py` remain to run.
+- [x] Run every native GTK4 bundle through the headless host harness
+  (`tests/test_gtk4_activity_harness.py`): construction, every button,
+  byte-stable save/resume, and malformed Journal objects. Its first run fixed
+  seven defects (Help, Jukebox, Count, Level, Finance, Mastermind, Stopwatch).
 - [x] Port Across and Down as a native GTK4 Activity and verify three repeated
   Casilda launch/stop cycles (`mulawa.AcrossDown`).
 - [x] Port IQ as a native GTK4 Activity and verify three repeated Casilda
