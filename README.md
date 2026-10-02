@@ -11,7 +11,7 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux/graphs/commit-activity)
 [![Repository size](https://img.shields.io/github/repo-size/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux)
 
-[![Host tests](https://img.shields.io/badge/host%20tests-461%20passed-2ea44f)](tests/)
+[![Host tests](https://img.shields.io/badge/host%20tests-463%20passed-2ea44f)](tests/)
 [![GTK4 build](https://img.shields.io/badge/guest%20build-PASS-2ea44f)](docs/sugar-modernization/GTK4_RUNBOOK.md)
 [![GTK3 reference](https://img.shields.io/badge/GTK3-reference%20preserved-2ea44f)](docs/sugar-modernization/GTK4_STATUS.md)
 
@@ -157,6 +157,8 @@ GTK, GLib, GObject, Casilda, the compositor, kernel, drivers, codecs, and other 
 The current native GTK4 inventory includes functional implementations for Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Read, Write, NumberRush, Poll, Mancala, Reversi, Jumble, Mastermind, BlockParty, PlayGo, Implode, BallAndBrick, Appel Haken, IQ, Across and Down, Maze, Memorize, Words, Portfolio, FotoToon, Finance, Markdown, Stopwatch, TurtleBlocks, Gears, Last One Loses, Grid Paint, Get Things Done, Abacus, Planets, Color My World, Game Of Life, Diamond Fusion, Connect the Dots, Pippy, Typing Turtle, Moon, Paint, Level, Jukebox, and Get Books. Record (photo, video, and audio through GStreamer) is implemented and host-verified, and awaits its guest run before it is classified.
 
 Every native GTK4 bundle also runs through a headless host harness on each push: it constructs the Activity, clicks every button, and checks that a Journal save resumes byte-identically and that corrupt Journal objects cannot crash it. Its first run found and fixed seven defects (2026-10-02).
+
+The core Fructose Activities also gained real breadth on 2026-10-02 (host-verified; guest runs pending): Terminal is a real VTE terminal with tabs, Browse renders pages with WebKit 6.0, Read opens PDF and EPUB, Write formats text with undo/find/export, Calculate has functions/variables/history, Paint has shape tools and undo, Pippy can stop programs and take input, and Jukebox plays local files. See [GTK4_STATUS.md](docs/sugar-modernization/GTK4_STATUS.md).
 
 That list is runtime coverage, not a promise of complete upstream feature breadth. Read the classification table for each Activity's workflow and boundary. Sugarizer web catalog entries remain catalog-only until an actual runtime implementation exists.
 

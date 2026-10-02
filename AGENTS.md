@@ -99,3 +99,10 @@ do not import the Wong-Baker Foundation's artwork.
   activity matrix → Record and Jukebox round-trips → re-run round-trips for
   Help, Count, Level, Finance, Mastermind, Stopwatch → first parity report
   (Write) → check the face ratings render in guest Settings.
+- 2026-10-02 (PORT pass): Write, Calculate, Terminal (VTE), Browse (WebKit
+  6.0), Read (PDF/EPUB), Paint, Pippy and Stopwatch gained real workflow
+  breadth; see the 2026-10-02 table in `GTK4_STATUS.md`. All host-verified
+  only. Payload changes are append-only and documented in each module's
+  docstring; keep it that way. Terminal declares `VOLATILE_SAVE_REASON` for
+  the harness. Guest checks to add: VTE and WebKit inside Casilda (sandbox,
+  AT-SPI text), Poppler GI presence, PipeWire playback for Jukebox/Record.

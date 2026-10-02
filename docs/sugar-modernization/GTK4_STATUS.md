@@ -43,6 +43,26 @@ The earlier guest evidence for those seven predates the fixes and should be
 re-run. The modern Activity Manager now shows port class, side-by-side parity
 score, and a six-face user rating per Activity.
 
+Added 2026-10-02 (PORT breadth, host-verified, guest pending) for the core
+Fructose set:
+
+| Activity | Gained |
+| --- | --- |
+| Write | Bold/italic/underline/strikethrough, headings, alignment, undo/redo, find, zoom, word count, .txt/.html export; formatted documents save as marked HTML |
+| Calculate | Functions, constants, `ans`, variables, `^`, degrees/radians, history, specific errors; unbounded powers and float overflow fixed |
+| Terminal | Real VTE (`vte4`) emulator with tabs, copy/paste, zoom, scrollback and directory resume; runner kept as fallback |
+| Browse | Real WebKit 6.0 pages with tabs, navigation, bookmarks, downloads, error pages, tab resume; text fetcher kept as fallback |
+| Read | PDF via Poppler, EPUB as text, page restore via `Read_current_page`, find across pages; documents never converted |
+| Paint | Pencil/line/rectangle/ellipse/eraser, sizes, custom colour, undo/redo, PNG export |
+| Pippy | Examples, Stop, program input, indentation, error-line jump |
+| Stopwatch | Monotonic timing, marks, multiple named stopwatches |
+| Jukebox | Local files play through `Gtk.MediaFile` |
+
+Every change keeps older Journal objects readable and the guest probes'
+expectations intact (Terminal's probe now checks a marker file). The guest
+lifecycle matrix and round-trips must be re-run before any of this counts as
+guest evidence.
+
 Current verified checkpoint: GTK4 Home Favorites/List/search, Frame,
 native Journal Activity search/resume/edit/selection, Settings navigation,
 Neighborhood/Group empty states, Sugar palettes, clipboard transfer, Help,

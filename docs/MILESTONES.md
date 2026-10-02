@@ -41,6 +41,12 @@ new surfaces.
   container used; start with the guest matrix, then
   `make parity-new BUNDLE=org.sugarlabs.Write`.
 
+- [x] PORT breadth for the core Fructose set (Write, Calculate, Terminal,
+  Browse, Read, Paint, Pippy, Stopwatch, Jukebox), 2026-10-02, host only.
+- Handoff 2026-10-02 (later): the FULL PORT candidates Write, Calculate and
+  Terminal now have the workflows a side-by-side report needs. Run the
+  guest matrix first, then `make parity-new` for each.
+
 **Exit:** a person boots the image, lands in GTK4 Sugar, and every shipped
 Activity either works or says honestly what it cannot do.
 
