@@ -27,7 +27,7 @@ Classification used by the migration ledger:
 | Clock | FUNCTIONAL PORT | Native time/date presentation |
 | JAMClock | FUNCTIONAL PORT | Native time/date replacement under the original identity |
 | Image Viewer | FUNCTIONAL PORT | Native image surface through the pinned bundle path |
-| Terminal | FUNCTIONAL PORT | Native GTK4 command/output surface, command input, and clean lifecycle verified 2026-09-15; full terminal-emulator features remain outside this claim |
+| Terminal | FUNCTIONAL PORT | Native GTK4 command/output surface, command input, and clean lifecycle verified 2026-09-15; full terminal-emulator features remain outside this claim. Update 2026-10-02 (host-verified, guest pending): with the image's `vte4`, Terminal is now a real VTE emulator with tabs, copy/paste, zoom, 10,000-line scrollback, a restart path after the shell exits, and Journal resume of each tab's directory and scrollback; the command runner remains as the fallback when VTE for GTK4 is missing. The guest probe now confirms command delivery through a marker file |
 | Browse | FUNCTIONAL PORT | Native GTK4 URL/status surface; full WebKit browsing and collaboration/download parity is not claimed |
 | Log | FUNCTIONAL PORT | Native log list surface |
 | Read | FUNCTIONAL PORT | UTF-8 Journal text object resume, visible page restoration, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; PDF/EPUB/format breadth and upstream Read parity remain absent |

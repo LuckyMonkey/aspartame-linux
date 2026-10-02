@@ -49,7 +49,7 @@ never promoted to FULL PORT by itself.
 | Clock (`tv.alterna.Clock`) | PASS | ICON, CHROME, STATE, A11Y, PORT — verify time refresh, stop cleanup, and reference presentation. |
 | JAMClock (`org.laptop.JAMClock`) | PASS | ICON, CHROME, STATE, A11Y, PORT — verify clock identity/icon mapping and shell state transitions. |
 | Image Viewer (`org.laptop.ImageViewerActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — verify selection, zoom/navigation, and object resume. |
-| Terminal (`org.laptop.Terminal`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — retain the functional command surface while checking terminal focus and object recovery. |
+| Terminal (`org.laptop.Terminal`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — retain the functional command surface while checking terminal focus and object recovery. | PORT progress 2026-10-02: VTE emulator with tabs, copy/paste, zoom, scrollback and directory resume; check AT-SPI exposure of VTE text in the guest. |
 | Browse (`org.laptop.WebActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — document the offline boundary; do not imply WebKit/download parity. |
 | Log (`org.laptop.Log`) | PASS | ICON, CHROME, INPUT, STATE, A11Y, PORT — verify filtering, scrolling, and readable focus behavior. |
 | Mastermind (`org.laptop.Mastermind`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare scoring, hints, and reset semantics. |

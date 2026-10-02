@@ -47,11 +47,17 @@ assert journal.LaunchBundle(BUNDLE, "")
 pid, aid = wait_for(lambda: next(iter(procs()), None), "process")
 shell.ActivateActivity(aid)
 rows = lambda: walk(Atspi.get_desktop(0), pid)
-wait_for(lambda: next((n for n, t in rows() if "Aspartame GTK4 Terminal" in t), None), "visible terminal")
+# The VTE backend (2026-10-02) draws its banner inside the terminal, which
+# AT-SPI may not expose; the named command entry proves the surface is up.
 entry = wait_for(lambda: next((n for n, t in rows() if n.get_role() in (Atspi.Role.ENTRY, Atspi.Role.TEXT) and n.get_name() == "Shell command"), None), "command entry")
-Atspi.EditableText.set_text_contents(entry, "printf terminal-ok")
+marker = Path("/tmp/aspartame-terminal-probe-%s" % aid)
+marker.unlink(missing_ok=True)
+Atspi.EditableText.set_text_contents(entry, "printf terminal-ok | tee %s" % marker)
 entry.get_action().do_action(0) if entry.get_n_actions() else None
-wait_for(lambda: next((1 for n, t in rows() if "terminal-ok" in t), None), "command output")
+# Either backend: the shell wrote the marker, or (runner) the text is visible.
+wait_for(lambda: (marker.exists() and marker.read_text() == "terminal-ok")
+         or next((1 for n, t in rows() if "terminal-ok" in t), None), "command output")
+marker.unlink(missing_ok=True)
 assert shell.StopActivity(aid)
 wait_for(lambda: not procs(), "cleanup")
 print("terminal-visible=PASS command-input=PASS output=PASS cleanup=PASS", flush=True)

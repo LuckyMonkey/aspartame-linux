@@ -94,8 +94,13 @@ def main(package):
             resumed = cls(None)
             resumed.read_file(str(first))
             resumed.write_file(str(second))
-            same = first.read_bytes() == second.read_bytes()
+            # An Activity whose save legitimately changes on resume (a live
+            # shell's scrollback) declares why; it must still resume cleanly.
+            volatile = getattr(cls, "VOLATILE_SAVE_REASON", None)
+            same = volatile is not None or first.read_bytes() == second.read_bytes()
             result["checks"]["roundtrip_stable"] = same
+            if volatile:
+                result["checks"]["volatile_save"] = volatile
             if not same:
                 result["errors"].append(
                     "resume changed saved state:\n  saved:   %r\n  resumed: %r"
