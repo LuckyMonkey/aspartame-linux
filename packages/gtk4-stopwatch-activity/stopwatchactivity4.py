@@ -50,6 +50,8 @@ class StopwatchActivity(SimpleActivity):
         """Restore elapsed time from a Journal object without restarting it."""
         try:
             state = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if not isinstance(state, dict):
+                raise ValueError("state must be an object")
             self.elapsed = max(0, int(state.get("elapsed", 0)))
         except (OSError, ValueError, TypeError, json.JSONDecodeError):
             self.elapsed = 0

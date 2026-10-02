@@ -1,6 +1,6 @@
 """Readable, native GTK4 Help Activity for the modern Sugar Space."""
 
-from gi.repository import Gdk, GLib, Gtk
+from gi.repository import Gdk, GLib, Gtk, Pango
 from sugar4.activity import SimpleActivity
 
 
@@ -64,7 +64,7 @@ class HelpActivity(SimpleActivity):
             expander.update_property([Gtk.AccessibleProperty.LABEL], [heading])
             label = Gtk.Label(label=text, xalign=0)
             label.set_wrap(True)
-            label.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+            label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
             label.set_selectable(True)
             label.set_margin_start(12)
             label.set_margin_end(12)

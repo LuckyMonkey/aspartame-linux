@@ -114,6 +114,8 @@ class FinanceActivity(SimpleActivity):
         """Restore transactions from a JSON Journal object."""
         try:
             payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                raise ValueError("payload must be an object")
             transactions = payload.get("transactions", [])
             if not isinstance(transactions, list):
                 raise ValueError("transactions must be a list")
