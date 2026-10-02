@@ -92,7 +92,7 @@ never promoted to FULL PORT by itself.
 | Moon (`com.garycmartin.Moon`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare phase model and astronomy breadth. |
 | Get Books (`org.laptop.sugar.GetBooksActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve offline catalog behavior and document network/download scope. |
 | Jukebox (`org.laptop.sugar.Jukebox`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare playlist, codec, and media playback boundaries. |
-| Read (`org.laptop.sugar.ReadActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve UTF-8 resume while tracking PDF/EPUB breadth. |
+| Read (`org.laptop.sugar.ReadActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve UTF-8 resume while tracking PDF/EPUB breadth. | PORT progress 2026-10-02: PDF (Poppler) and EPUB opening, page restore, find across pages; confirm Poppler GI is present in the guest. |
 | Record (`org.laptop.RecordActivity`) | not yet run (added 2026-10-02) | LAUNCH, ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — run the matrix and `sugar-gtk4-record-roundtrip.py`; then test with a real camera and microphone. |
 
 ## Shell-wide queue (do once, not once per Activity)
