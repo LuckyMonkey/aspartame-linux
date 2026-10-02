@@ -3,8 +3,12 @@
 The original Jukebox can play arbitrary media.  This port keeps the useful
 playlist interaction self-contained for the shell: bundled demo tracks can be
 selected and their play/stop state is visible without requiring a codec,
-network, or media file in the test image.  Local files may also be added to
-the playlist for a future media backend.
+network, or media file in the test image.  Local files added to the playlist
+play through GTK4's own media backend (``Gtk.MediaFile``, GStreamer on Arch);
+demo tracks have no audio and say so.
+
+Journal objects store each track as ``[name, detail]`` or, since 2026-10-02,
+``[name, detail, path]`` for a playable local file.  Both shapes are read.
 """
 
 import json
@@ -19,6 +23,7 @@ DEMO_TRACKS = (
     ("Library Walk", "Demo track · 03:08"),
     ("Stars Above", "Demo track · 01:52"),
 )
+LOCAL_DETAIL = "Local file"
 
 
 class JukeboxActivity(SimpleActivity):
@@ -28,6 +33,7 @@ class JukeboxActivity(SimpleActivity):
         self._tracks = list(DEMO_TRACKS)
         self._selected = 0
         self._playing = False
+        self._media = None
         self._build()
 
     def _build(self):
@@ -84,7 +90,8 @@ class JukeboxActivity(SimpleActivity):
     def _refresh_playlist(self):
         while (row := self.playlist.get_row_at_index(0)) is not None:
             self.playlist.remove(row)
-        for index, (name, detail) in enumerate(self._tracks):
+        for index, track in enumerate(self._tracks):
+            name, detail = track[0], track[1]
             row = Gtk.ListBoxRow()
             row.track_index = index
             box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
@@ -107,14 +114,45 @@ class JukeboxActivity(SimpleActivity):
         row = self.playlist.get_selected_row()
         if row is not None:
             self._selected = row.track_index
-        name = self._tracks[self._selected][0]
+        track = self._tracks[self._selected]
+        name = track[0]
+        path = track[2] if len(track) > 2 else None
+        if path and not Path(path).is_file():
+            self.status.set_text("Cannot play %s: the file is no longer there." % name)
+            return
+        self._release_media()
+        if path:
+            self._media = Gtk.MediaFile.new_for_filename(path)
+            self._media.connect("notify::error", self._media_error)
+            self._media.connect("notify::ended", self._media_ended)
+            self._media.play()
+            self.status.set_text("Playing: %s" % name)
+        else:
+            self.status.set_text("Playing: %s (demo track, no audio)" % name)
         self._playing = True
-        self.status.set_text("Playing: %s" % name)
         self.play.set_label("Playing")
         self.play.set_sensitive(False)
         self.stop.set_sensitive(True)
 
+    def _release_media(self):
+        if self._media is not None:
+            self._media.pause()
+            self._media.clear()
+            self._media = None
+
+    def _media_error(self, media, _pspec):
+        error = media.get_error()
+        if error is not None:
+            self._stop(None)
+            self.status.set_text("Cannot play %s: %s" % (self._tracks[self._selected][0], error.message))
+
+    def _media_ended(self, media, _pspec):
+        if media.get_ended():
+            self._stop(None)
+            self.status.set_text("Finished: %s" % self._tracks[self._selected][0])
+
     def _stop(self, _button):
+        self._release_media()
         self._playing = False
         self.status.set_text("Stopped: %s" % self._tracks[self._selected][0])
         self.play.set_label("Play")
@@ -132,7 +170,11 @@ class JukeboxActivity(SimpleActivity):
             return
         if file_obj is not None:
             name = file_obj.get_basename() or "Local track"
-            self._tracks.append((name, "Local file · playback backend pending"))
+            path = file_obj.get_path()
+            if path:
+                self._tracks.append((name, LOCAL_DETAIL, path))
+            else:
+                self._tracks.append((name, "Remote file · not playable offline"))
             self._selected = len(self._tracks) - 1
             self._refresh_playlist()
             self.status.set_text("Added: %s" % name)
@@ -152,9 +194,16 @@ class JukeboxActivity(SimpleActivity):
         for track in tracks:
             if isinstance(track, list) and len(track) == 2:
                 restored.append((str(track[0]), str(track[1])))
+            elif isinstance(track, list) and len(track) == 3 and isinstance(track[2], str):
+                restored.append((str(track[0]), str(track[1]), track[2]))
         if restored:
             self._tracks = restored
-        self._selected = max(0, min(int(payload.get("selected", 0)), len(self._tracks) - 1))
+        try:
+            selected = int(payload.get("selected", 0))
+        except (TypeError, ValueError):
+            selected = 0
+        self._selected = max(0, min(selected, len(self._tracks) - 1))
+        self._release_media()
         self._playing = False
         self._refresh_playlist()
         self.status.set_text("Ready: %s" % self._tracks[self._selected][0])

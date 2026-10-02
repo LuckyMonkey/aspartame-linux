@@ -69,7 +69,7 @@ Classification used by the migration ledger:
 | Moon | FUNCTIONAL PORT | Phase selection, rendered moon view, and JSON Journal phase resume verified with real GTK4 Activity processes on 2026-09-15; full astronomical simulation remains absent |
 | Paint | FUNCTIONAL PORT | Pointer stroke drawing, color selection, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; image layers/tools remain absent |
 | Level | FUNCTIONAL PORT | Offline inclination controls, drag interaction, and JSON Journal resume verified with real GTK4 Activity processes on 2026-09-15; hardware sensor integration remains outside this claim |
-| Jukebox | FUNCTIONAL PORT | Offline playlist selection, local-track metadata, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; codec/media playback parity remains absent |
+| Jukebox | FUNCTIONAL PORT | Offline playlist selection, local-track metadata, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; codec/media playback parity remains absent. Correction 2026-10-02: local files added to the playlist now play through `Gtk.MediaFile` (host-verified with a generated Ogg file, including end-of-track, missing-file, and old-object compatibility; guest playback with PipeWire not yet run). Demo tracks state that they have no audio; broad codec parity is still not claimed |
 | Get Books | FUNCTIONAL PORT | Offline catalog search, selected-book metadata, and JSON Journal query/selection resume verified with real GTK4 Activity processes on 2026-09-15; network catalogs/downloads remain absent |
 
 ### Implemented, awaiting guest evidence
