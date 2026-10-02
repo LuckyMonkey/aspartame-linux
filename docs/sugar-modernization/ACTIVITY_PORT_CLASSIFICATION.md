@@ -72,6 +72,16 @@ Classification used by the migration ledger:
 | Jukebox | FUNCTIONAL PORT | Offline playlist selection, local-track metadata, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; codec/media playback parity remains absent |
 | Get Books | FUNCTIONAL PORT | Offline catalog search, selected-book metadata, and JSON Journal query/selection resume verified with real GTK4 Activity processes on 2026-09-15; network catalogs/downloads remain absent |
 
+### Implemented, awaiting guest evidence
+
+These native GTK4 bundles exist and pass host-side checks, but have not yet
+run through the guest lifecycle matrix or their Journal round-trip probe. They
+carry no class until that evidence exists.
+
+| Activity | Host evidence | Guest gate |
+| --- | --- | --- |
+| Record | `tests/gtk4_harness/record_capture.py` captures a real PNG photo, WebM video and Ogg/Opus audio clip through GStreamer test sources, switches the preview, removes a clip, resumes the session byte-identically from the Activity's zip Journal object, and rejects a path-traversal manifest | `scripts/sugar-gtk4-record-roundtrip.py` (seeded photo resume, media preserved) and the lifecycle matrix entry. Expected class on pass: FUNCTIONAL PORT. A live viewfinder, timers, per-capture Journal objects, video with sound, and collaboration remain unported; a camera-less VM can only show the honest "No camera was found" state |
+
 ### Catalog-only Sugarizer entries
 
 The review inventory contains 61 rows with `format=sugarizer-web`. Those are

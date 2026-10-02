@@ -54,6 +54,7 @@ mkdir -p "$share/patches/gtk4-preview" "$share/scripts" \
          "$share/packages/gtk4-get-books-activity" \
          "$share/packages/gtk4-jukebox-activity" \
          "$share/packages/gtk4-read-activity" \
+         "$share/packages/gtk4-record-activity" \
          "$share/packages/gtk4-moon-activity" \
          "$share/gtk4-overlay"
 
@@ -152,6 +153,8 @@ cp -a "$repo/packages/gtk4-jukebox-activity/." \
       "$share/packages/gtk4-jukebox-activity/"
 cp -a "$repo/packages/gtk4-read-activity/." \
       "$share/packages/gtk4-read-activity/"
+cp -a "$repo/packages/gtk4-record-activity/." \
+      "$share/packages/gtk4-record-activity/"
 cp -a "$repo/packages/gtk4-moon-activity/." \
       "$share/packages/gtk4-moon-activity/"
 cp -a "$repo/gtk4-overlay/." "$share/gtk4-overlay/"

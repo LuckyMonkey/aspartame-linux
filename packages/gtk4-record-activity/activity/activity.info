@@ -1,0 +1,10 @@
+[Activity]
+name = Record
+bundle_id = org.laptop.RecordActivity
+exec = sugar-activity4 recordactivity4.RecordActivity
+icon = activity-record
+activity_version = 1
+show_launcher = yes
+license = MIT;GPLv2+
+summary = Take photos, record video, and record sound
+tags = Media;Art;Music

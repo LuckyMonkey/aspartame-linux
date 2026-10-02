@@ -1182,6 +1182,10 @@ read_activity="$repo/packages/gtk4-read-activity"
 test -f "$read_activity/activity/activity.info" || { echo "missing native GTK4 Read Activity bundle" >&2; exit 2; }
 test -f "$read_activity/readactivity4.py" || { echo "missing native GTK4 Read Activity entrypoint" >&2; exit 2; }
 ln -sfn "$read_activity" "$activity_dir/Read.activity"
+record_activity="$repo/packages/gtk4-record-activity"
+test -f "$record_activity/activity/activity.info" || { echo "missing native GTK4 Record Activity bundle" >&2; exit 2; }
+test -f "$record_activity/recordactivity4.py" || { echo "missing native GTK4 Record Activity entrypoint" >&2; exit 2; }
+ln -sfn "$record_activity" "$activity_dir/Record.activity"
 test -f "$native_terminal_activity/activity/activity.info" || {
     echo "missing native GTK4 Terminal Activity bundle: $native_terminal_activity" >&2
     exit 2
