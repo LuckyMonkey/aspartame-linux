@@ -580,8 +580,8 @@ for patch in "$patch_dir"/*.patch; do
         continue
     fi
     if [[ "$patch_name" == *0153* ]] &&
-        grep -q "'F7': 'space_classic'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
-        grep -q "'F8': 'space_modern'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q "'F9': 'space_classic'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q "'F10': 'space_modern'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
         grep -q "def handle_space_classic" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
         grep -q "def handle_space_modern" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
         grep -q "_handler.add_window(self)" "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null; then

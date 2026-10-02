@@ -84,19 +84,24 @@ from those patches, which keep their other files.
          
          shell_instance._main_window.set_child(shell_instance._overlay)
 +        from gi.repository import Gdk
++        semantic_keys = keyhandler.get_instance()
 +        zoom_keys = {
 +            Gdk.KEY_F1: shell_instance.ZOOM_MESH,
 +            Gdk.KEY_F2: shell_instance.ZOOM_GROUP,
 +            Gdk.KEY_F3: shell_instance.ZOOM_HOME,
 +            Gdk.KEY_F4: shell_instance.ZOOM_ACTIVITY,
 +        }
++        space_keys = (Gdk.KEY_F9, Gdk.KEY_F10)
 +        zoom_controller = Gtk.EventControllerKey()
 +        zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-+        # F7/F8 belong to the shell's key handler, which follows every
++        # F9/F10 belong to the shell's key handler, which follows every
 +        # window it is attached to. Handling them here as well bound them
 +        # to this window alone.
 +
 +        def _capture_zoom_key(_controller, keyval, _keycode, _state):
++            if keyval in space_keys and semantic_keys is not None:
++                return semantic_keys._key_pressed_cb(
++                    _controller, keyval, _keycode, _state)
 +            if keyval == Gdk.KEY_F5:
 +                from jarabe.journal import journalactivity
 +                journalactivity.get_journal().show_journal()
@@ -116,6 +121,12 @@ from those patches, which keep their other files.
 +        zoom_controller.connect("key-pressed", _capture_zoom_key)
 +        shortcut_controller = Gtk.ShortcutController()
 +        shortcut_controller.set_scope(Gtk.ShortcutScope.GLOBAL)
++        def _switch_space_shortcut(_widget, _args, target):
++            if semantic_keys is None:
++                return False
++            semantic_keys._switch_space(target)
++            return True
++
 +        def _escape_shell(_widget, _args):
 +            from jarabe import frame
 +            frame_view = frame.get_view()
@@ -126,6 +137,14 @@ from those patches, which keep their other files.
 +        shortcut_controller.add_shortcut(Gtk.Shortcut.new(
 +            Gtk.KeyvalTrigger.new(Gdk.KEY_Escape, 0),
 +            Gtk.CallbackAction.new(_escape_shell)))
++        for _space_key, _space_target in ((Gdk.KEY_F9, "gtk3"),
++                                           (Gdk.KEY_F10, "gtk4")):
++            _trigger = Gtk.KeyvalTrigger.new(_space_key, 0)
++            _action = Gtk.CallbackAction.new(
++                lambda _widget, _args, target=_space_target:
++                    _switch_space_shortcut(_widget, _args, target))
++            shortcut_controller.add_shortcut(Gtk.Shortcut.new(_trigger,
++                                                               _action))
 +        for _shortcut_key in (Gdk.KEY_F1, Gdk.KEY_F2, Gdk.KEY_F3,
 +                              Gdk.KEY_F4, Gdk.KEY_F5, Gdk.KEY_F6):
 +            _trigger = Gtk.KeyvalTrigger.new(_shortcut_key, 0)

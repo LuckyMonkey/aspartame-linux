@@ -25,6 +25,7 @@ QEMU_GRAB_ON_HOVER=${QEMU_GRAB_ON_HOVER:-on}
 # once the host window appears.  Set either value to 0 to disable this helper.
 QEMU_WINDOW_WIDTH=${QEMU_WINDOW_WIDTH:-1600}
 QEMU_WINDOW_HEIGHT=${QEMU_WINDOW_HEIGHT:-900}
+SSH_FORWARD_PORT=${SSH_FORWARD_PORT:-2222}
 
 test -f "$ISO" || { echo "missing ISO: $ISO" >&2; exit 2; }
 mkdir -p "$(dirname "$DISK")"
@@ -50,7 +51,7 @@ qemu-system-x86_64 \
     -monitor "unix:$QEMU_MONITOR,server,nowait" \
     -qmp "unix:$QEMU_QMP,server=on,wait=off" \
     -serial "file:$SERIAL_LOG" \
-    -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:2222-:22 \
+    -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:${SSH_FORWARD_PORT}-:22 \
     -audiodev "driver=$AUDIO_BACKEND,id=a0" -device AC97,audiodev=a0 \
     -device qemu-xhci -device usb-tablet -device usb-kbd -device virtio-keyboard-pci \
     -virtfs "local,path=$DEV_SHARE,mount_tag=aspartame-dev,security_model=none" \

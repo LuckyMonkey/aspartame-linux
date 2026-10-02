@@ -26,6 +26,10 @@ fi
 
 
 gtk4_space="$gtk4_root/scripts/sugar-gtk4-space.sh"
+# Both GTK3's workspace-aware key handler and the GTK4 shell dispatch F7/F8
+# through this controller. Export the resolved packaged path so standalone
+# boots do not fall back to the optional /mnt/aspartame-dev helper.
+export ASPARTAME_SPACE_SWITCHER="$gtk4_space"
 
 # Sugar's GTK3 logger uses the current epoch second as its backup directory.
 # A rapid session restart can therefore encounter the directory created by the

@@ -44,15 +44,15 @@ if [ "$have_gsettings_bus" -eq 1 ]; then
     fi
 fi
 
-# F1-F6 retain Sugar navigation. F7 and F8 select the two test spaces.
+# F1-F8 retain Sugar navigation. F9 and F10 select the two test spaces.
 if [ "$have_gsettings_bus" -eq 1 ]; then
     gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 \
-        "['F7', '<Super>Home']"
+        "['F9', '<Super>Home']"
     gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 \
-        "['F8']"
+        "['F10']"
     key_one=$(gsettings get org.gnome.desktop.wm.keybindings switch-to-workspace-1)
     key_two=$(gsettings get org.gnome.desktop.wm.keybindings switch-to-workspace-2)
-    if [[ "$key_one" != *F7* || "$key_two" != *F8* ]]; then
+    if [[ "$key_one" != *F9* || "$key_two" != *F10* ]]; then
         echo 'Metacity keybindings unavailable; semantic Space switching remains enabled.' >&2
     fi
 else
@@ -173,7 +173,7 @@ case "$action" in
         start_gtk4
         "$workspace_tool" switch 0
         "$workspace_tool" activate --pid "$GTK3_PID" >/dev/null
-        echo 'Sugar Spaces ready: F7 = GTK3, F8 = GTK4'
+        echo 'Sugar Spaces ready: F9 = GTK3, F10 = GTK4'
         ;;
     gtk3)
         select_gtk3
@@ -195,7 +195,7 @@ case "$action" in
         printf 'gtk3_pid=%s\n' "${pid:-stopped}"
         pid=$(gtk4_pid || true)
         printf 'gtk4_pid=%s\n' "${pid:-stopped}"
-        printf 'keys=F7:GTK3,F8:GTK4\n'
+        printf 'keys=F9:GTK3,F10:GTK4\n'
         ;;
     *)
         echo 'usage: sugar-gtk4-space.sh {setup|gtk3|gtk4|toggle|status}' >&2

@@ -166,6 +166,7 @@ EOF
 # boundary when discovered through the extended jarabe package path.
 exec env \
     ASPARTAME_GTK4_PREVIEW=1 \
+    ASPARTAME_SPACE_SWITCHER="${ASPARTAME_SPACE_SWITCHER:-$project_root/scripts/sugar-gtk4-space.sh}" \
     LANG="$locale_name" \
     DISPLAY="$display" \
     GDK_BACKEND=x11 \

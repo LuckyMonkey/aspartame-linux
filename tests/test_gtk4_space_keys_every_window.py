@@ -1,10 +1,10 @@
-"""F7/F8 must reach the shell from every window it owns.
+"""F9/F10 must reach the shell from every window it owns.
 
 Sugar disables all window manager keybindings at startup, so the Metacity
-`switch-to-workspace-1 = ['F7']` binding can never fire and the Space keys
+`switch-to-workspace-1 = ['F9']` binding can never fire and the Space keys
 have to be shell actions. They were bolted onto the main window only, and
 the control panel is a plain Gtk.Window that never joins the application,
-so nothing listened for F7 while Settings was open.
+so nothing listened for F9 while Settings was open.
 """
 
 from pathlib import Path
@@ -26,8 +26,8 @@ def _removed():
 
 def test_space_keys_become_shell_actions():
     added = _added()
-    assert "'F7': 'space_classic'," in added
-    assert "'F8': 'space_modern'," in added
+    assert "'F9': 'space_classic'," in added
+    assert "'F10': 'space_modern'," in added
     assert 'def handle_space_classic' in added
     assert 'def handle_space_modern' in added
 
@@ -38,13 +38,13 @@ def test_the_switcher_stays_overridable():
 
 
 def test_main_window_no_longer_owns_the_space_keys():
-    # 0153 took F7/F8 out of main.py; the consolidated main.py patch is the
-    # end state, so assert the absence there rather than a removal line.
+    # 0153 keeps action ownership in the semantic handler; the consolidated
+    # main.py patch only delegates a top-level delivery fallback to it.
     main = (ROOT / 'patches/gtk4-preview/'
             '0157-main-shell-window-consolidated.patch').read_text()
-    assert 'space_keys = {Gdk.KEY_F7: "gtk3", Gdk.KEY_F8: "gtk4"}' not in main
+    assert 'space_keys = {Gdk.KEY_F9: "gtk3", Gdk.KEY_F10: "gtk4"}' not in main
     assert '_capture_space_key' not in main
-    assert 'Gdk.KEY_F7' not in main
+    assert 'semantic_keys._key_pressed_cb' in main
 
 
 def test_zoom_keys_keep_their_own_handling():

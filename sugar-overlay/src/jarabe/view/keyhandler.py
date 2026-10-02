@@ -69,11 +69,11 @@ for _name, _value in vars(_packaged).items():
         globals()[_name] = _value
 
 # SugarExt.KeyGrabber only accepts key names known to the upstream action
-# table.  F7/F8 are Aspartame semantic Space actions, so register them as
+# table.  F9/F10 are Aspartame semantic Space actions, so register them as
 # sentinel entries before the workspace-aware grabber requests its key set;
 # dispatch is handled by _key_pressed_cb below.
-_actions_table.setdefault("F7", "aspartame_space")
-_actions_table.setdefault("F8", "aspartame_space")
+_actions_table.setdefault("F9", "aspartame_space")
+_actions_table.setdefault("F10", "aspartame_space")
 
 
 class KeyHandler(_packaged.KeyHandler):
@@ -87,8 +87,8 @@ class KeyHandler(_packaged.KeyHandler):
 
     def _key_pressed_cb(self, grabber, keycode, state, event_time):
         key = grabber.get_key(keycode, state)
-        if key in ("F7", "F8"):
-            target = "gtk3" if key == "F7" else "gtk4"
+        if key in ("F9", "F10"):
+            target = "gtk3" if key == "F9" else "gtk4"
             controller = os.environ.get(
                 "ASPARTAME_SPACE_SWITCHER",
                 "/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh",
@@ -129,21 +129,22 @@ class KeyHandler(_packaged.KeyHandler):
                                           self._key_released_cb)
             # Spaces keys are semantic shell actions, not upstream Sugar
             # actions.  Include them in the passive grab explicitly so the
-            # classic Space can hand F8 back to the coordinator (and keep
-            # F7 idempotent) while the modern Space is isolated.
+            # classic Space can hand F10 back to the coordinator (and keep
+            # F9 idempotent) while the modern Space is isolated.
             keys = list(_actions_table.keys())
-            for space_key in ("F7", "F8"):
+            for space_key in ("F9", "F10"):
                 if space_key not in keys:
                     keys.append(space_key)
             self._key_grabber.grab_keys(keys)
         else:
-            grabber = self._key_grabber
-            self._key_grabber = None
-            if grabber is not None:
-                grabber.grab_keys([])
-                del grabber
+            # Keep the existing GTK3 grabber alive for the two semantic Space
+            # keys, while releasing the ordinary Sugar keys. Recreating the
+            # grabber here made the return key intermittent after GTK4 placed
+            # its window on the modern workspace.
+            if self._key_grabber is not None:
+                self._key_grabber.grab_keys(["F9", "F10"])
         self._classic_space_active = classic_active
-        # Which Space owns F1-F8 decides whether the other one sees them at
+        # Which Space owns F1-F10 decides whether the other one sees them at
         # all, so this transition is worth recording - but it is a normal
         # state change, not a warning. Raise SUGAR_LOGGER_LEVEL to see it;
         # reports/gtk4/f7-space-key-rootcause-20260916.md explains why it

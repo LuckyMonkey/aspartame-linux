@@ -2,6 +2,7 @@
 """Inject a key through QEMU's QMP USB keyboard for guest-input tests."""
 
 import json
+import os
 import socket
 import sys
 
@@ -23,7 +24,7 @@ CHORDS.update({f"ALT+{name}": ("alt", qcode)
                for name, qcode in KEYCODES.items()})
 CHORDS.update({f"ALT+SHIFT+{name}": ("alt", "shift", qcode)
                for name, qcode in KEYCODES.items()})
-SOCKET = "/tmp/aspartame-qemu-qmp"
+SOCKET = os.environ.get("ASPARTAME_QEMU_QMP", "/tmp/aspartame-qemu-qmp")
 
 
 def _reply(sock):

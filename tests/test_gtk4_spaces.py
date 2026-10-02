@@ -8,8 +8,8 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     controller = (ROOT / 'scripts/sugar-gtk4-space.sh').read_text()
     assert 'switch-to-workspace-1' in controller
     assert 'switch-to-workspace-2' in controller
-    assert 'F7' in controller
-    assert 'F8' in controller
+    assert 'F9' in controller
+    assert 'F10' in controller
     assert 'sugar-gtk4-run.sh' in controller
     assert 'SUGAR_WINDOWED=0' in controller
     assert 'place --pid' in controller
@@ -37,18 +37,31 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     assert 'xdotool' not in controller
 
 
-def test_classic_keyhandler_releases_global_grabs_for_modern_space():
+def test_standalone_session_exports_the_resolved_space_switcher():
+    session = (ROOT / 'archiso/aspartame/airootfs/usr/local/bin/'
+               'aspartame-x-session').read_text()
+    assert 'gtk4_root=${ASPARTAME_GTK4_ROOT:-/usr/lib/aspartame/gtk4-preview}' in session
+    assert 'gtk4_space="$gtk4_root/scripts/sugar-gtk4-space.sh"' in session
+    assert 'export ASPARTAME_SPACE_SWITCHER="$gtk4_space"' in session
+
+
+def test_direct_modern_runner_exports_its_space_switcher():
+    runner = (ROOT / 'scripts/sugar-gtk4-run.sh').read_text()
+    assert 'ASPARTAME_SPACE_SWITCHER="${ASPARTAME_SPACE_SWITCHER:-$project_root/scripts/sugar-gtk4-space.sh}"' in runner
+
+
+def test_classic_keyhandler_keeps_f9_return_grab_for_modern_space():
     handler = (ROOT / 'sugar-overlay/src/jarabe/view/keyhandler.py').read_text()
     assert 'SugarExt.KeyGrabber' in handler
     assert 'get_active_workspace' in handler
     assert 'self._key_grabber.grab_keys(keys)' in handler
     assert 'workspace == 0' in handler
     assert 'Spaces key ownership' in handler
-    assert 'self._key_grabber = None' in handler
+    assert 'self._key_grabber.grab_keys(["F9", "F10"])' in handler
     assert 'SugarExt.KeyGrabber()' in handler
-    assert 'for space_key in ("F7", "F8")' in handler
-    assert '_actions_table.setdefault("F7"' in handler
-    assert '_actions_table.setdefault("F8"' in handler
+    assert 'for space_key in ("F9", "F10")' in handler
+    assert '_actions_table.setdefault("F9"' in handler
+    assert '_actions_table.setdefault("F10"' in handler
     assert 'site-packages' in handler
     assert 'loader recurses' in handler
 
@@ -97,18 +110,26 @@ def test_gtk4_main_window_routes_sugar_function_keys():
     assert "shell_instance.set_zoom_level(level)" not in patch
 
 
+def test_gtk4_main_window_falls_back_to_semantic_space_actions():
+    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    assert "space_keys = (Gdk.KEY_F9, Gdk.KEY_F10)" in patch
+    assert "semantic_keys._key_pressed_cb" in patch
+    assert "Gdk.KEY_F9, Gdk.KEY_F10" in patch
+
+
 def test_gtk4_space_keys_are_owned_by_the_shell_key_handler():
-    # 0153 moved F7/F8 out of main.py, where they were bound to one window,
-    # and made them shell actions. main.py must no longer own them.
+    # 0153 moved the action ownership into the shell key handler. The
+    # consolidated main window has only a delivery fallback for startup/focus
+    # races and delegates back to that same handler.
     keys = (ROOT / "patches/gtk4-preview/"
             "0153-shell-space-keys-work-from-every-window.patch").read_text()
     main = (ROOT / "patches/gtk4-preview/"
             "0157-main-shell-window-consolidated.patch").read_text()
     assert "ASPARTAME_SPACE_SWITCHER" in keys
     assert "subprocess.Popen" in keys
-    assert "'F7': 'space_classic'," in keys
-    assert "'F8': 'space_modern'," in keys
-    assert "Gdk.KEY_F7" not in main and "Gdk.KEY_F8" not in main
+    assert "'F9': 'space_classic'," in keys
+    assert "'F10': 'space_modern'," in keys
+    assert "semantic_keys._key_pressed_cb" in main
 
 
 def test_gtk4_runner_rejects_system_journal_window_import():

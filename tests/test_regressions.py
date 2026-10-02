@@ -22,7 +22,12 @@ def test_sugar_reload_can_write_every_shared_visual_asset():
 def test_make_test_runs_the_python_suite_after_static_smoke_checks():
     makefile = (ROOT / "Makefile").read_text()
 
-    assert "test:\n\t./scripts/smoke-test.sh\n\tpython3 -m pytest -q tests\n" in makefile
+    assert (
+        "test:\n"
+        "\t./scripts/smoke-test.sh\n"
+        "\t$(MAKE) activity-matrix-check\n"
+        "\tpython3 -m pytest -q tests\n"
+    ) in makefile
 
 
 def test_gtk4_tools_share_the_same_guest_preview_default():
