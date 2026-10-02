@@ -253,8 +253,13 @@ class CountActivity(SimpleActivity):
             json.dump({"layers": self.layers, "current_layer": self.current_layer}, stream)
 
     def read_file(self, file_path):
-        with open(file_path, encoding="utf-8") as stream:
-            state = json.load(stream)
+        try:
+            with open(file_path, encoding="utf-8") as stream:
+                state = json.load(stream)
+        except (OSError, ValueError):
+            state = {}
+        if not isinstance(state, dict):
+            state = {}
         layers = state.get("layers")
         if isinstance(layers, list):
             layers = [layer for layer in layers

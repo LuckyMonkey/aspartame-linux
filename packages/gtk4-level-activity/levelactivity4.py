@@ -109,7 +109,10 @@ class LevelActivity(SimpleActivity):
             json.dump({"angle": self.angle}, stream)
 
     def read_file(self, file_path):
-        with open(file_path, encoding="utf-8") as stream:
-            state = json.load(stream)
-        self.angle = max(-45, min(45, int(state.get("angle", 0))))
+        try:
+            with open(file_path, encoding="utf-8") as stream:
+                state = json.load(stream)
+            self.angle = max(-45, min(45, int(state.get("angle", 0))))
+        except (OSError, ValueError, TypeError, AttributeError):
+            self.angle = 0
         self._render()

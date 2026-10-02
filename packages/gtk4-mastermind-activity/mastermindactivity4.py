@@ -112,6 +112,8 @@ class MastermindActivity(SimpleActivity):
         """Restore the deterministic code and guesses from Journal."""
         try:
             payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                raise ValueError("payload must be an object")
             secret = tuple(payload.get("secret", self.secret))
             guesses = payload.get("guesses", [])
             current = payload.get("current", [])

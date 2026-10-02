@@ -46,6 +46,10 @@ class JukeboxActivity(SimpleActivity):
         intro.add_css_class("dim-label")
         root.append(intro)
 
+        # Selecting the initial row reports through the status label, so it must
+        # exist before the playlist is populated (it is appended below the list).
+        self.status = Gtk.Label(label="Select a track to begin.", xalign=0)
+        self.status.update_property([Gtk.AccessibleProperty.LABEL], ["Playback status"])
         self.playlist = Gtk.ListBox(selection_mode=Gtk.SelectionMode.SINGLE)
         self.playlist.set_vexpand(True)
         self.playlist.update_property([Gtk.AccessibleProperty.LABEL], ["Playlist"])
@@ -54,8 +58,6 @@ class JukeboxActivity(SimpleActivity):
         root.append(scroll)
         self._refresh_playlist()
 
-        self.status = Gtk.Label(label="Select a track to begin.", xalign=0)
-        self.status.update_property([Gtk.AccessibleProperty.LABEL], ["Playback status"])
         root.append(self.status)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         self.play = Gtk.Button(label="Play")
