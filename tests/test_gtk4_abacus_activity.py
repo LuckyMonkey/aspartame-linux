@@ -11,6 +11,10 @@ def test_abacus_bundle_is_native_and_registered():
     assert "class AbacusActivity(SimpleActivity)" in source
     assert "place value" in source and 'label="Clear"' in source
     assert 'Gtk.Frame(label="Place-value rods")' in source and "set_hexpand(True)" in source
+    assert "self._beads = []" in source
+    assert "def _render_beads" in source
+    assert 'font-size: 34px' in source
+    assert 'clear.set_halign(Gtk.Align.END)' in source
     assert "com.homegrownapps.abacus" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-abacus-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-abacus-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()

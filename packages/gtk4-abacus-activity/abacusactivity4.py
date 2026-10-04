@@ -14,24 +14,34 @@ class AbacusActivity(SimpleActivity):
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12); root.set_margin_top(28); root.set_margin_bottom(28); root.set_margin_start(32); root.set_margin_end(32); root.set_hexpand(True); root.set_vexpand(True); root.update_property([Gtk.AccessibleProperty.LABEL], ["Abacus place value"])
         title = Gtk.Label(label="Abacus", xalign=0); title.add_css_class("title-1"); root.append(title)
-        self.value_label = Gtk.Label(label="Value: 0", xalign=0); root.append(self.value_label)
+        self.value_label = Gtk.Label(label="Value: 0", xalign=0); self.value_label.add_css_class("abacus-value"); root.append(self.value_label)
         self.rods = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8); self.rods.set_hexpand(True); self.rods.set_vexpand(True)
         rods_frame = Gtk.Frame(label="Place-value rods"); rods_frame.set_hexpand(True); rods_frame.set_vexpand(True); rods_frame.set_child(self.rods); root.append(rods_frame)
+        self._beads = []
         for index in range(5):
-            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8); row.set_hexpand(True); row.set_vexpand(True); label = Gtk.Label(label=f"10^{4-index}", width_chars=6); row.append(label)
-            minus = Gtk.Button(label="−"); minus.connect("clicked", self._change, index, -1); row.append(minus)
-            bead = Gtk.Label(label="○ ○ ○ ○ ○ ○ ○ ○ ○ ○", hexpand=True); bead.set_halign(Gtk.Align.CENTER); bead.update_property([Gtk.AccessibleProperty.LABEL], [f"Rod {index + 1} beads"]); row.append(bead)
-            plus = Gtk.Button(label="+"); plus.connect("clicked", self._change, index, 1); row.append(plus); self.rods.append(row)
-        clear = Gtk.Button(label="Clear"); clear.connect("clicked", self._clear); root.append(clear); self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"frame { border: 2px solid #8aa8b8; border-radius: 8px; padding: 8px; } button { min-height: 42px; min-width: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12); row.set_hexpand(True); row.set_vexpand(True); row.add_css_class("abacus-row")
+            label = Gtk.Label(label=f"10^{4-index}", width_chars=6, xalign=0); label.set_hexpand(False); row.append(label)
+            minus = Gtk.Button(label="−"); minus.set_tooltip_text(f"Decrease 10^{4-index}"); minus.connect("clicked", self._change, index, -1); row.append(minus)
+            bead = Gtk.Label(hexpand=True); bead.set_halign(Gtk.Align.CENTER); bead.add_css_class("abacus-beads"); bead.update_property([Gtk.AccessibleProperty.LABEL], [f"Rod {index + 1} beads"]); row.append(bead); self._beads.append(bead)
+            plus = Gtk.Button(label="+"); plus.set_tooltip_text(f"Increase 10^{4-index}"); plus.connect("clicked", self._change, index, 1); row.append(plus); self.rods.append(row)
+        clear = Gtk.Button(label="Clear"); clear.set_halign(Gtk.Align.END); clear.connect("clicked", self._clear); root.append(clear); self.set_canvas(root)
+        provider = Gtk.CssProvider(); provider.load_from_data(b"frame { border: 2px solid #8aa8b8; border-radius: 8px; padding: 8px; } .abacus-row { padding: 6px 10px; } .abacus-value { font-size: 22px; font-weight: bold; color: #2f88bd; } .abacus-beads { font-size: 34px; letter-spacing: 4px; } button { min-height: 42px; min-width: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        self._render_beads()
+
+    def _render_beads(self):
+        for index, bead in enumerate(self._beads):
+            value = self.values[index]
+            bead.set_text("● " * value + "○ " * (10 - value))
+            bead.update_property([Gtk.AccessibleProperty.LABEL], [
+                f"Rod {index + 1}, value {value} of 9"])
 
     def _change(self, _button, index, delta):
-        self.values[index] = max(0, min(9, self.values[index] + delta)); self._update_value()
+        self.values[index] = max(0, min(9, self.values[index] + delta)); self._update_value(); self._render_beads()
 
     def _update_value(self): self.value_label.set_text(f"Value: {sum(v * 10 ** (4-i) for i, v in enumerate(self.values))}")
 
-    def _clear(self, _button): self.values = [0] * 5; self._update_value()
+    def _clear(self, _button): self.values = [0] * 5; self._update_value(); self._render_beads()
 
     def read_file(self, file_path):
         """Restore rod values from a JSON Journal object."""
@@ -43,7 +53,7 @@ class AbacusActivity(SimpleActivity):
             self.values = [max(0, min(9, int(value))) for value in values]
         except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
             self.values = [0] * 5
-        self._update_value()
+        self._update_value(); self._render_beads()
 
     def write_file(self, file_path):
         """Save rod values as a JSON Journal object."""
