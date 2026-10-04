@@ -18,15 +18,21 @@ class TurtleArtActivity(SimpleActivity):
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         root.set_margin_top(22); root.set_margin_bottom(22); root.set_margin_start(28); root.set_margin_end(28)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["TurtleBlocks drawing canvas"])
         title = Gtk.Label(label="TurtleBlocks", xalign=0); title.add_css_class("title-1"); root.append(title)
         self.status = Gtk.Label(label="Position: (0, 0) · heading 0°", xalign=0); self.status.add_css_class("dim-label"); root.append(self.status)
-        self._drawing_area = Gtk.DrawingArea(); self._drawing_area.set_content_width(640); self._drawing_area.set_content_height(420); self._drawing_area.set_vexpand(True); self._drawing_area.set_draw_func(self._draw); self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Turtle drawing"]); root.append(self._drawing_area)
+        self._drawing_area = Gtk.DrawingArea(); self._drawing_area.set_content_width(640); self._drawing_area.set_content_height(420); self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True); self._drawing_area.set_draw_func(self._draw); self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Turtle drawing"])
+        canvas_frame = Gtk.Frame(label="Drawing canvas")
+        canvas_frame.add_css_class("turtle-canvas")
+        canvas_frame.set_hexpand(True); canvas_frame.set_vexpand(True)
+        canvas_frame.set_child(self._drawing_area)
+        root.append(canvas_frame)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         for label, callback in (("Forward", self._forward), ("Turn right", self._turn), ("Clear", self._reset)):
             button = Gtk.Button(label=label); button.connect("clicked", callback); controls.append(button)
         root.append(controls); self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"button { min-height: 42px; border-radius: 19px; }")
+        provider = Gtk.CssProvider(); provider.load_from_data(b"frame.turtle-canvas { border: 1px solid #8aa8b8; border-radius: 10px; } button { min-height: 42px; border-radius: 19px; }")
         display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
