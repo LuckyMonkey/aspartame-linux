@@ -41,7 +41,7 @@ def native_entries():
 
 def main():
     matrix = dict(matrix_entries())
-    assert len(matrix) == 50, f"expected 50 matrix entries, found {len(matrix)}"
+    assert len(matrix) == 51, f"expected 51 matrix entries, found {len(matrix)}"
     assert len(matrix) == len(matrix_entries()), "duplicate matrix bundle ID"
 
     native = native_entries()

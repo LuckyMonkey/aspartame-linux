@@ -189,6 +189,10 @@ class CalculateActivity(SimpleActivity):
         self.result.update_property([Gtk.AccessibleProperty.LABEL], ["Result"])
         main.append(self.result)
         grid = Gtk.Grid(row_spacing=8, column_spacing=8)
+        grid.set_hexpand(True)
+        grid.set_vexpand(True)
+        grid.set_column_homogeneous(True)
+        grid.set_row_homogeneous(True)
         keys = ("7", "8", "9", "/", "(", "4", "5", "6", "*", ")",
                 "1", "2", "3", "-", "^", "0", ".", "=", "+", "%")
         for index, label in enumerate(keys):
@@ -203,7 +207,16 @@ class CalculateActivity(SimpleActivity):
         functions = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         for name in ("sin", "cos", "tan", "log", "ln", "factorial"):
             functions.append(self._key(name, name + "(", name))
-        main.append(functions)
+        keypad = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        keypad.set_hexpand(True)
+        keypad.set_vexpand(True)
+        keypad.append(grid)
+        keypad.append(functions)
+        keypad_frame = Gtk.Frame(label="Keypad")
+        keypad_frame.set_hexpand(True)
+        keypad_frame.set_vexpand(True)
+        keypad_frame.set_child(keypad)
+        main.append(keypad_frame)
         bottom = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self.angle_button = Gtk.ToggleButton(label="Radians")
         self.angle_button.set_tooltip_text("Switch trigonometry between radians and degrees")
@@ -240,6 +253,8 @@ class CalculateActivity(SimpleActivity):
     def _key(self, label, text, name=None):
         button = Gtk.Button(label=label)
         button.set_size_request(64, 48)
+        button.set_hexpand(True)
+        button.set_vexpand(True)
         button.update_property([Gtk.AccessibleProperty.LABEL], [name or label])
         button.connect("clicked", self._button_clicked, label if text == label else text)
         return button

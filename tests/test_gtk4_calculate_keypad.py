@@ -42,8 +42,8 @@ def test_calculate_layout_centers_a_responsive_keypad():
     assert "Gtk.Clamp" not in source
     assert 'Gtk.Frame(label="Calculator")' in source
     assert 'Gtk.Frame(label="Keypad")' in source
-    assert "content.set_halign(Gtk.Align.FILL)" in source
-    assert "content.set_valign(Gtk.Align.FILL)" in source
+    assert "main.set_hexpand(True)" in source
+    assert "main.set_vexpand(True)" in source
     assert "surface.set_hexpand(True)" in source
     assert "surface.set_vexpand(True)" in source
     assert "grid.set_column_homogeneous(True)" in source

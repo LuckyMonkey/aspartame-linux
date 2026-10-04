@@ -15,7 +15,7 @@ def test_activity_matrix_matches_native_activity_catalog():
         text=True,
     )
     assert result.returncode == 0, result.stdout + result.stderr
-    assert "50 entries, 48 native, PASS" in result.stdout
+    assert "51 entries, 49 native, PASS" in result.stdout
 
 
 def test_activity_matrix_covers_registered_modern_bundles():

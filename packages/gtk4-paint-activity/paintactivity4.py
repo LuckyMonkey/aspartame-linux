@@ -108,13 +108,13 @@ class PaintActivity(SimpleActivity):
             tools.append(button)
         body.append(tools)
 
-        self.canvas = Gtk.DrawingArea()
-        self.canvas.set_content_width(720)
-        self.canvas.set_content_height(440)
-        self.canvas.set_hexpand(True)
-        self.canvas.set_vexpand(True)
-        self.canvas.set_draw_func(self._draw)
-        self.canvas.update_property(
+        self._drawing_area = Gtk.DrawingArea()
+        self._drawing_area.set_content_width(720)
+        self._drawing_area.set_content_height(440)
+        self._drawing_area.set_hexpand(True)
+        self._drawing_area.set_vexpand(True)
+        self._drawing_area.set_draw_func(self._draw)
+        self._drawing_area.update_property(
             [Gtk.AccessibleProperty.LABEL, Gtk.AccessibleProperty.DESCRIPTION],
             ["Drawing canvas", "Drag the pointer across the canvas to draw"],
         )
@@ -123,11 +123,11 @@ class PaintActivity(SimpleActivity):
         drag.connect("drag-begin", self._drag_begin)
         drag.connect("drag-update", self._drag_update)
         drag.connect("drag-end", self._drag_end)
-        self.canvas.add_controller(drag)
+        self._drawing_area.add_controller(drag)
         canvas_frame = Gtk.Frame(label="Drawing canvas")
         canvas_frame.set_hexpand(True)
         canvas_frame.set_vexpand(True)
-        canvas_frame.set_child(self.canvas)
+        canvas_frame.set_child(self._drawing_area)
         body.append(canvas_frame)
 
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
@@ -203,7 +203,7 @@ class PaintActivity(SimpleActivity):
         self._active_stroke = [self.color, [(x, y)], self.tool, self.width]
         self._push_undo()
         self.strokes.append(self._active_stroke)
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def _drag_update(self, gesture, offset_x, offset_y):
         if self._active_stroke is None:
@@ -215,7 +215,7 @@ class PaintActivity(SimpleActivity):
         else:
             # Shapes keep only their two defining corners.
             self._active_stroke[1][1:] = [point]
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def _drag_end(self, _gesture, _offset_x, _offset_y):
         self._active_stroke = None
@@ -245,13 +245,13 @@ class PaintActivity(SimpleActivity):
         if self._undo:
             self._redo.append(self._snapshot())
             self.strokes = self._undo.pop()
-            self.canvas.queue_draw()
+            self._drawing_area.queue_draw()
 
     def _do_redo(self):
         if self._redo:
             self._undo.append(self._snapshot())
             self.strokes = self._redo.pop()
-            self.canvas.queue_draw()
+            self._drawing_area.queue_draw()
 
     def _clear(self, _button):
         if self.strokes:
@@ -259,7 +259,7 @@ class PaintActivity(SimpleActivity):
         self.strokes = []
         self._update_status()
         self.status.set_text(self.status.get_text() + " · cleared (Undo brings it back)")
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     # -- drawing -------------------------------------------------------
 
@@ -305,8 +305,8 @@ class PaintActivity(SimpleActivity):
 
     def render_png(self, path):
         import cairo
-        width = max(1, self.canvas.get_width() or 720)
-        height = max(1, self.canvas.get_height() or 440)
+        width = max(1, self._drawing_area.get_width() or 720)
+        height = max(1, self._drawing_area.get_height() or 440)
         surface = cairo.ImageSurface(cairo.FORMAT_RGB24, width, height)
         cr = cairo.Context(surface)
         cr.set_source_rgb(1, 1, 1); cr.paint()
@@ -366,7 +366,7 @@ class PaintActivity(SimpleActivity):
         if width in WIDTHS:
             self.width_choice.set_selected(WIDTHS.index(width))
         self._update_status()
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def write_file(self, file_path):
         """Save tool, colour, and marks as a JSON Journal object."""
