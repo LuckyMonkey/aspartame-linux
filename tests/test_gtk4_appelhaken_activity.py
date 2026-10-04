@@ -11,6 +11,8 @@ def test_appelhaken_bundle_is_native_and_registered():
     assert "sugar-activity4 appelhakenactivity4.AppelHakenActivity" in info
     assert "class AppelHakenActivity(SimpleActivity)" in source
     assert "Reset puzzle" in source
+    assert 'Gtk.Frame(label="Colour regions")' in source
+    assert "button.add_css_class(name.lower())" in source
     assert "def read_file" in source and "def write_file" in source
     assert "mulawa.AppelHaken" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-appelhaken-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()

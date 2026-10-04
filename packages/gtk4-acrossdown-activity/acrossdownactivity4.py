@@ -21,10 +21,13 @@ class AcrossDownActivity(SimpleActivity):
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         root.set_margin_top(28); root.set_margin_bottom(28); root.set_margin_start(32); root.set_margin_end(32)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Across and Down"])
         title = Gtk.Label(label="Across and Down", xalign=0); title.add_css_class("title-1"); root.append(title)
         self.clue = Gtk.Label(xalign=0); root.append(self.clue)
-        self.grid = Gtk.Grid(row_spacing=3, column_spacing=3); self.grid.set_halign(Gtk.Align.CENTER); root.append(self.grid)
+        grid_frame = Gtk.Frame(label="Answer grid"); grid_frame.set_hexpand(True); grid_frame.set_vexpand(True)
+        grid_content = Gtk.Box(); grid_content.set_hexpand(True); grid_content.set_vexpand(True); grid_content.set_halign(Gtk.Align.CENTER); grid_content.set_valign(Gtk.Align.CENTER)
+        self.grid = Gtk.Grid(row_spacing=3, column_spacing=3); self.grid.set_halign(Gtk.Align.CENTER); grid_content.append(self.grid); grid_frame.set_child(grid_content); root.append(grid_frame)
         self.entry = Gtk.Entry(); self.entry.set_max_length(1); self.entry.set_placeholder_text("Letter"); self.entry.update_property([Gtk.AccessibleProperty.LABEL], ["Selected letter"]); self.entry.connect("activate", self._set_letter); root.append(self.entry)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         set_button = Gtk.Button(label="Set letter"); set_button.connect("clicked", self._set_letter); controls.append(set_button)
@@ -32,7 +35,7 @@ class AcrossDownActivity(SimpleActivity):
         next_button = Gtk.Button(label="Next clue"); next_button.connect("clicked", self._next); controls.append(next_button); root.append(controls)
         self.status = Gtk.Label(xalign=0); self.status.add_css_class("dim-label"); root.append(self.status)
         self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"button { min-width: 90px; min-height: 38px; border-radius: 18px; } entry { min-height: 38px; font-size: 20px; } .cell { min-width: 54px; min-height: 54px; font-size: 22px; }")
+        provider = Gtk.CssProvider(); provider.load_from_data(b"frame { border: 2px solid #8aa8b8; border-radius: 8px; padding: 8px; } button { min-width: 90px; min-height: 38px; border-radius: 18px; } entry { min-height: 38px; font-size: 20px; } .cell { min-width: 54px; min-height: 54px; font-size: 22px; }")
         display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 

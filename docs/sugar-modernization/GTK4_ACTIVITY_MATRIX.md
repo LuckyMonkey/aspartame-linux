@@ -102,3 +102,10 @@ the work surface. Each passed two Journal roundtrip cycles; the full headless
 visual sweep completed 50/50. The roundtrip harnesses also gained a packaged
 interpreter fallback instead of depending on a developer-only absolute path.
 See [`gtk4-activity-ux-pass-20261004-canvas.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-canvas.md).
+
+The fourth UX batch qualified IQ, Jumble, Appel Haken, and Across and Down at
+1920×1080. Their learning tasks now sit in labeled responsive panels rather
+than presenting controls as isolated top-aligned widgets; Appel Haken also
+uses visible color semantics for its region controls. All four passed two
+Journal roundtrip cycles and the full headless sweep remained 50/50. See
+[`gtk4-activity-ux-pass-20261004-games.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games.md).
