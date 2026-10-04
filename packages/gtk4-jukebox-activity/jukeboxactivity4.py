@@ -38,18 +38,14 @@ class JukeboxActivity(SimpleActivity):
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Jukebox audio player"])
         root.set_accessible_role(Gtk.AccessibleRole.GROUP)
 
-        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
-        body.set_hexpand(True); body.set_halign(Gtk.Align.FILL); body.set_valign(Gtk.Align.FILL); body.set_vexpand(True)
-        root.append(body)
-
         title = Gtk.Label(label="Jukebox", xalign=0)
         title.add_css_class("title-1")
-        body.append(title)
+        root.append(title)
         intro = Gtk.Label(
             label="Choose a track. Demo tracks show the player controls without requiring audio files.",
             xalign=0, wrap=True)
         intro.add_css_class("dim-label")
-        body.append(intro)
+        root.append(intro)
 
         # Selecting the initial row reports through the status label, so it must
         # exist before the playlist is populated (it is appended below the list).
@@ -79,10 +75,10 @@ class JukeboxActivity(SimpleActivity):
         panes.set_column_homogeneous(True)
         panes.attach(playlist_frame, 0, 0, 1, 1)
         panes.attach(player_frame, 1, 0, 1, 1)
-        body.append(panes)
+        root.append(panes)
         self._refresh_playlist()
 
-        body.append(self.status)
+        root.append(self.status)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         self.play = Gtk.Button(label="Play")
         self.play.update_property([Gtk.AccessibleProperty.LABEL], ["Play selected track"])
@@ -95,7 +91,7 @@ class JukeboxActivity(SimpleActivity):
         self.add.connect("clicked", self._add_local)
         controls.append(self.play); controls.append(self.stop); controls.append(self.add)
         controls.set_halign(Gtk.Align.END)
-        body.append(controls)
+        root.append(controls)
         self.set_canvas(root)
         self._install_css()
 
