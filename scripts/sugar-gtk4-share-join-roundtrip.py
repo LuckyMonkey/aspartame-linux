@@ -67,6 +67,18 @@ BUDDY_INFO = "org.laptop.Telepathy.BuddyInfo"
 ACTIVITY_PROPERTIES = "org.laptop.Telepathy.ActivityProperties"
 
 
+def debug_enabled():
+    return os.environ.get("ASPARTAME_PEER_DEBUG", "").lower() not in {
+        "",
+        "0",
+        "false",
+        "no",
+    }
+
+
+debug = debug_enabled()
+
+
 bus = dbus.SessionBus()
 manager = dbus.Interface(
     bus.get_object(ACCOUNT_MANAGER, ACCOUNT_MANAGER_PATH),
@@ -103,9 +115,28 @@ group = dbus.Interface(bus.get_object(connection_name, channel_path), GROUP_IFAC
 
 
 def find_public_calculate():
-    for contact_handle in group.GetMembers():
-        for activity_id, room_handle in buddy_info.GetActivities(contact_handle):
+    members = list(group.GetMembers())
+    if debug:
+        print(f"peer-debug members={members!r}", flush=True)
+    for contact_handle in members:
+        activities = list(buddy_info.GetActivities(contact_handle))
+        if debug:
+            print(
+                f"peer-debug handle={contact_handle!r} "
+                f"activities={activities!r}",
+                flush=True,
+            )
+        for activity_id, room_handle in activities:
             properties = activity_properties.GetProperties(room_handle)
+            if debug:
+                print(
+                    f"peer-debug candidate activity_id={activity_id!s} "
+                    f"room_handle={int(room_handle)} "
+                    f"name={str(properties.get('name', ''))!r} "
+                    f"private={bool(properties.get('private', True))!r} "
+                    f"type={str(properties.get('type', ''))!r}",
+                    flush=True,
+                )
             if (
                 str(properties.get("name", "")) == "Calculate Activity"
                 and not bool(properties.get("private", True))
@@ -115,14 +146,26 @@ def find_public_calculate():
     return None
 
 
-activity_id, room_handle = wait_for(
-    "public Calculate Activity", find_public_calculate
-)
+try:
+    activity_id, room_handle = wait_for(
+        "public Calculate Activity", find_public_calculate
+    )
+except RuntimeError as error:
+    raise SystemExit(
+        "share-join=BLOCKED phase=discovery "
+        f"reason={error}"
+    ) from error
 pservice = presenceservice.get_instance()
-activity = wait_for(
-    "presence Activity object",
-    lambda: pservice.get_activity(activity_id, warn_if_none=False),
-)
+try:
+    activity = wait_for(
+        "presence Activity object",
+        lambda: pservice.get_activity(activity_id, warn_if_none=False),
+    )
+except RuntimeError as error:
+    raise SystemExit(
+        "share-join=BLOCKED phase=activity-object "
+        f"activity_id={activity_id} reason={error}"
+    ) from error
 
 joined = {"success": None, "error": None}
 loop = GLib.MainLoop()
@@ -144,7 +187,9 @@ loop.run()
 
 if joined["success"] is not True:
     raise SystemExit(
-        f"GTK4 presence join failed for {activity_id}: {joined['error'] or 'timeout'}"
+        "share-join=BLOCKED phase=join "
+        f"activity_id={activity_id} "
+        f"reason={joined['error'] or 'timeout'}"
     )
 
 print(

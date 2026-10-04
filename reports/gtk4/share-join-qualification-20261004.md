@@ -33,6 +33,21 @@ peer discovery/join and user-facing shared Activity actions remain open. The
 qualification harness and clean-shell restart procedure are now in place for
 the next network/session pass.
 
+## Fresh headless rerun
+
+A second bounded two-guest run on the rebuilt image repeated owner
+publication (`share-roundtrip=PASS`) but the peer again failed in discovery,
+before `Activity.join()` was reached. Both guests had the documented private
+NIC (`10.77.0.1/24` and `10.77.0.2/24`) and Avahi was active; the peer's
+`_presence._tcp` browse saw only its local records during this run. The owner
+fixture was then terminated after its hold session stopped responding to SSH.
+
+The join probe now emits `share-join=BLOCKED phase=discovery|activity-object|join`
+and, with `ASPARTAME_PEER_DEBUG=1`, records contact handles, advertised
+Activities, and candidate properties. This makes the current transport/session
+failure measurable without conflating it with GTK4 UI behavior or looping the
+same opaque timeout.
+
 ## Follow-up trace
 
 The hold-window propagation defect in the owner probe was fixed separately;

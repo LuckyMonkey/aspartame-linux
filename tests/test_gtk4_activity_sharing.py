@@ -118,6 +118,17 @@ def test_peer_join_probe_uses_the_real_sugar4_presence_join_contract():
     assert 'contract=sugar4.presence.Activity' in probe
 
 
+def test_peer_join_probe_reports_discovery_state_and_failure_phase():
+    probe = (ROOT / "scripts/sugar-gtk4-share-join-roundtrip.py").read_text()
+
+    assert 'ASPARTAME_PEER_DEBUG' in probe
+    assert 'peer-debug members=' in probe
+    assert 'peer-debug candidate activity_id=' in probe
+    assert 'phase=discovery' in probe
+    assert 'phase=activity-object' in probe
+    assert 'phase=join' in probe
+
+
 def test_peer_observer_uses_the_live_neighborhood_model():
     observer = (ROOT / "scripts/sugar-gtk4-share-peer-observer.py").read_text()
 
