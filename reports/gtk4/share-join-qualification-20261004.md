@@ -48,6 +48,12 @@ Activities, and candidate properties. This makes the current transport/session
 failure measurable without conflating it with GTK4 UI behavior or looping the
 same opaque timeout.
 
+The live peer log also exposed a separate shell lifecycle race: duplicate
+shared-Activity removal reached `ShellModel.remove_shared_activity()` after
+Neighborhood cleanup and raised `KeyError`. Preview patch `0188` makes that
+map removal idempotent. It is applied and dry-run verified against the live
+guest source; a rebuilt two-guest join receipt remains outstanding.
+
 ## Follow-up trace
 
 The hold-window propagation defect in the owner probe was fixed separately;

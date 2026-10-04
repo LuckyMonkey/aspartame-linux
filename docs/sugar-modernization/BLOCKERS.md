@@ -1,5 +1,19 @@
 # GTK4 blockers
 
+## GTK4-021 — duplicate shared Activity removal raised in the shell model
+
+- Category: `UPSTREAM-SHELL` / collaboration lifecycle
+- Reproduction: during the 2026-10-04 two-guest GTK4 sharing fixture, Salut
+  delivered a shared-Activity removal after Neighborhood had already removed
+  its icon. `ShellModel.remove_shared_activity()` used `del` and raised
+  `KeyError`, leaving traceback noise in the live shell.
+- Fix: preview patch `0188` makes removal an idempotent `pop(..., None)` at
+  the shell-model boundary, matching the existing Neighborhood cleanup guard.
+- Verification: patch dry-run applies cleanly to the live GTK4 guest source;
+  the focused sharing suite passes. A rebuilt two-guest Activity join receipt
+  is still required before this collaboration gate is closed.
+- Status: fixed in the overlay; rebuilt peer-join verification pending.
+
 ## GTK4-018 — Activity icon resolution differed between Home and palettes
 
 - Category: `UPSTREAM-SHELL` / shared GTK4 presentation

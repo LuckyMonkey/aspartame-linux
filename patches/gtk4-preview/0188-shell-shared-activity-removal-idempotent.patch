@@ -1,0 +1,13 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] shell: tolerate duplicate shared Activity removal
+
+Salut can deliver a removal signal after Neighborhood has already discarded
+the corresponding shared Activity.  The shell model is the authoritative
+owner of the shared-activity color map, so removal must be idempotent at this
+boundary as well as in the Neighborhood view.
+
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -518,1 +518,1 @@
+-        del self._shared_activities[activity_id]
++        self._shared_activities.pop(activity_id, None)

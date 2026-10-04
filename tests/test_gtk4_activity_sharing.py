@@ -78,6 +78,15 @@ def test_neighborhood_removal_signals_are_idempotent():
     assert "applied GTK4 Neighborhood removal race guard" in build
 
 
+def test_shell_shared_activity_removal_is_idempotent():
+    patch = (ROOT /
+             "patches/gtk4-preview/0188-shell-shared-activity-removal-idempotent.patch").read_text()
+    build = BUILD.read_text()
+
+    assert "self._shared_activities.pop(activity_id, None)" in patch
+    assert '*0188*) target="$root/sources/sugar" ;;' in build
+
+
 def test_shared_activity_is_published_to_peer_presence():
     patch = (ROOT /
              "patches/gtk4-preview/0185-toolkit-publish-current-activity.patch").read_text()
