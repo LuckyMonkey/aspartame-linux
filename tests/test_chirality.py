@@ -10,6 +10,17 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import aspartame_chirality as chirality
 
 
+def test_single_surface_space_bridge_keeps_spaces_and_chirality_separate():
+    bridge = (ROOT / "scripts/sugar-chirality-space.sh").read_text()
+    assert 'left)' in bridge
+    assert 'right)' in bridge
+    assert '"$switcher" gtk3' in bridge
+    assert '"$switcher" gtk4' in bridge
+    assert 'mode=single-surface' in bridge
+    assert 'side-by-side' not in bridge
+    assert 'geometry' not in bridge
+
+
 def test_direct_hand_selection_preserves_each_activity_state():
     session = chirality.ChiralSession()
     session.assign(
