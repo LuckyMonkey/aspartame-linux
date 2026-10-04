@@ -5,10 +5,16 @@ set -euo pipefail
 : "${DATASTORE_LOG:?DATASTORE_LOG is required}"
 : "${SHELL_ENTRY:?SHELL_ENTRY is required}"
 python_bin=${PYTHON_BIN:-python3}
+resume_pid=
 
 "$python_bin" "$DATASTORE_SERVICE" >"$DATASTORE_LOG" 2>&1 &
 datastore_pid=$!
-cleanup() { kill "$datastore_pid" 2>/dev/null || true; }
+cleanup() {
+    if [ -n "$resume_pid" ]; then
+        kill "$resume_pid" 2>/dev/null || true
+    fi
+    kill "$datastore_pid" 2>/dev/null || true
+}
 trap cleanup EXIT INT TERM
 
 datastore_ready=0
@@ -31,4 +37,22 @@ if [ "$datastore_ready" -ne 1 ]; then
     exit 1
 fi
 
-exec "$python_bin" "$SHELL_ENTRY"
+"$python_bin" "$SHELL_ENTRY" &
+shell_pid=$!
+
+# Rehydrate only the explicit persistent Chirality state.  The helper waits
+# for the new shell and Journal names, so it cannot race shell construction.
+resume_script=${ASPARTAME_CHIRALITY_RESUME_SCRIPT:-}
+resume_state=${ASPARTAME_CHIRALITY_STATE_FILE:-}
+if [ -n "$resume_script" ] && [ -f "$resume_script" ] &&
+   [ -n "$resume_state" ] && [ -f "$resume_state" ]; then
+    "$python_bin" "$resume_script" --state-file "$resume_state" &
+    resume_pid=$!
+fi
+
+set +e
+wait "$shell_pid"
+shell_status=$?
+set -e
+cleanup
+exit "$shell_status"

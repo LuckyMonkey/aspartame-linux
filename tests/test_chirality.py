@@ -78,6 +78,18 @@ def test_resuming_a_hand_replaces_activity_but_preserves_object():
     assert session.left_hand == chirality.Hand("new", "journal:text", "UTF-8 note")
 
 
+def test_resuming_a_hand_preserves_its_bundle_for_session_restart():
+    session = chirality.ChiralSession()
+    session.assign(
+        chirality.Side.LEFT,
+        chirality.Hand("old", "journal:text", "UTF-8 note", "org.sugarlabs.Write"),
+    )
+    session.resume_activity(chirality.Side.LEFT, "new")
+
+    assert session.left_hand.bundle_id == "org.sugarlabs.Write"
+    assert session.to_dict()["left_hand"]["bundle_id"] == "org.sugarlabs.Write"
+
+
 def test_object_handoff_is_reference_only_and_has_no_history():
     session = chirality.ChiralSession()
     session.assign(

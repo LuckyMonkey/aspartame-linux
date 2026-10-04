@@ -17,8 +17,13 @@ from aspartame_chirality import ChiralSession, Hand, Side, Spaces
 
 
 def default_state_path() -> Path:
-    runtime = os.environ.get("XDG_RUNTIME_DIR", "/tmp")
-    return Path(runtime) / "aspartame" / "chirality.json"
+    configured = os.environ.get("ASPARTAME_CHIRALITY_STATE_FILE")
+    if configured:
+        return Path(configured)
+    state_home = os.environ.get(
+        "XDG_STATE_HOME", str(Path.home() / ".local" / "state")
+    )
+    return Path(state_home) / "aspartame" / "chirality.json"
 
 
 def default_spaces_state_path() -> Path:

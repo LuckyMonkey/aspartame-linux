@@ -96,13 +96,11 @@ The GTK4-only Activity adapter is now available for headless qualification:
 
 ```sh
 python3 /usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-activity.py \
-  --state-file "$XDG_RUNTIME_DIR/aspartame/chirality.json" \
-  assign left ACTIVITY_A
+  assign left ACTIVITY_A --bundle-id org.sugarlabs.Write
 python3 /usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-activity.py \
-  --state-file "$XDG_RUNTIME_DIR/aspartame/chirality.json" \
-  assign right ACTIVITY_B
+  assign right ACTIVITY_B --bundle-id org.laptop.sugar.ReadActivity
 python3 /usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-activity.py \
-  --state-file "$XDG_RUNTIME_DIR/aspartame/chirality.json" activate left
+  activate left
 ```
 
 `activate` calls the modern GTK4 Shell's single-surface Activity activation
@@ -140,4 +138,8 @@ Activity replacement/resume is qualified with:
 
 It preserves the persisted hand's Journal UID while replacing its old
 Activity ID with a newly launched GTK4 Write client. Full shell/session
-restart recovery remains a separate gate.
+restart recovery now uses the persistent state file and the automatic
+`sugar-gtk4-chirality-session-resume.py` hook. On a new GTK4 shell it
+relaunches each declared bundle with its Journal UID, replaces stale Activity
+IDs, and restores the previously active hand. Hands without a bundle ID are
+left untouched and reported as skipped; no launch history is recorded.

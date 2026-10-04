@@ -214,13 +214,18 @@ def main():
                 uid,
                 "--object-title",
                 "UTF-8 Chirality object",
+                "--bundle-id",
+                WRITE_BUNDLE,
             )
             left = run_adapter(state, "activate", "left")
             assert left["active_hand"] == "left"
 
             read = launch(READ_BUNDLE, READ_MARKER, uid, expected=content)
             live.append(read[:2])
-            run_adapter(state, "assign", "right", read[1])
+            run_adapter(
+                state, "assign", "right", read[1],
+                "--bundle-id", READ_BUNDLE,
+            )
             handed = run_adapter(state, "handoff-object", "left", "right")
             assert handed["hands"][0]["object_ref"] == uid
             assert handed["hands"][1]["object_ref"] == uid

@@ -21,8 +21,13 @@ from aspartame_chirality import ChiralSession, Hand, Side
 
 
 def default_state_path() -> Path:
-    runtime = os.environ.get("XDG_RUNTIME_DIR", "/tmp")
-    return Path(runtime) / "aspartame" / "chirality.json"
+    configured = os.environ.get("ASPARTAME_CHIRALITY_STATE_FILE")
+    if configured:
+        return Path(configured)
+    state_home = os.environ.get(
+        "XDG_STATE_HOME", str(Path.home() / ".local" / "state")
+    )
+    return Path(state_home) / "aspartame" / "chirality.json"
 
 
 def load(path: Path) -> ChiralSession:
@@ -99,11 +104,13 @@ def parser() -> argparse.ArgumentParser:
     assign.add_argument("activity_id")
     assign.add_argument("--object-ref")
     assign.add_argument("--object-title")
+    assign.add_argument("--bundle-id")
     assign.add_argument("--replace", action="store_true")
 
     resume = commands.add_parser("resume")
     resume.add_argument("side", type=side)
     resume.add_argument("activity_id")
+    resume.add_argument("--bundle-id")
 
     activate = commands.add_parser("activate")
     activate.add_argument("side", type=side)
@@ -126,12 +133,17 @@ def main() -> int:
     if args.command == "assign":
         session.assign(
             args.side,
-            Hand(args.activity_id, args.object_ref, args.object_title),
+            Hand(
+                args.activity_id,
+                args.object_ref,
+                args.object_title,
+                args.bundle_id,
+            ),
             replace=args.replace,
         )
     elif args.command == "resume":
         _activate_activity(args.activity_id)
-        session.resume_activity(args.side, args.activity_id)
+        session.resume_activity(args.side, args.activity_id, args.bundle_id)
     elif args.command == "activate":
         hand = session.get(args.side)
         if hand is None:

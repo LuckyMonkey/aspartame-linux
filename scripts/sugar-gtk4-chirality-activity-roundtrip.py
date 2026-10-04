@@ -16,6 +16,8 @@ CASES = (
     ("org.aspartame.Calculate", "calculateactivity4.CalculateActivity"),
     ("tv.alterna.Clock", "clockactivity4.ClockActivity"),
 )
+CALCULATE_BUNDLE = CASES[0][0]
+CLOCK_BUNDLE = CASES[1][0]
 
 
 def wait_for(description, callback):
@@ -101,8 +103,14 @@ def main():
         try:
             for bundle, marker in CASES:
                 activities.append(launch(bundle, marker))
-            run_adapter(state, "assign", "left", activities[0][1])
-            run_adapter(state, "assign", "right", activities[1][1])
+            run_adapter(
+                state, "assign", "left", activities[0][1],
+                "--bundle-id", CALCULATE_BUNDLE,
+            )
+            run_adapter(
+                state, "assign", "right", activities[1][1],
+                "--bundle-id", CLOCK_BUNDLE,
+            )
             active_sequence = []
             for selected in ("left", "right", "left"):
                 payload = run_adapter(state, "activate", selected)

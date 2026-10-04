@@ -128,10 +128,13 @@ class Hand:
     activity_id: str
     object_ref: str | None = None
     object_title: str | None = None
+    bundle_id: str | None = None
 
     def __post_init__(self) -> None:
         if not self.activity_id.strip():
             raise ChiralityError("activity_id must not be empty")
+        if self.bundle_id is not None and not self.bundle_id.strip():
+            raise ChiralityError("bundle_id must not be empty")
 
 
 @dataclass
@@ -232,7 +235,12 @@ class ChiralSession:
                 return side
         return None
 
-    def resume_activity(self, side: Side, activity_id: str) -> None:
+    def resume_activity(
+        self,
+        side: Side,
+        activity_id: str,
+        bundle_id: str | None = None,
+    ) -> None:
         """Attach a replacement Activity while retaining the held object."""
 
         current = self.get(side)
@@ -247,6 +255,9 @@ class ChiralSession:
                 activity_id=activity_id,
                 object_ref=current.object_ref,
                 object_title=current.object_title,
+                bundle_id=(
+                    current.bundle_id if bundle_id is None else bundle_id
+                ),
             ),
         )
         self._validate()
@@ -284,6 +295,7 @@ class ChiralSession:
                 "activity_id": hand.activity_id if hand else None,
                 "object_ref": hand.object_ref if hand else None,
                 "object_title": hand.object_title if hand else None,
+                "bundle_id": hand.bundle_id if hand else None,
             }
 
         return {
@@ -297,11 +309,14 @@ class ChiralSession:
         def encode(hand: Hand | None) -> dict[str, str | None] | None:
             if hand is None:
                 return None
-            return {
+            encoded = {
                 "activity_id": hand.activity_id,
                 "object_ref": hand.object_ref,
                 "object_title": hand.object_title,
             }
+            if hand.bundle_id is not None:
+                encoded["bundle_id"] = hand.bundle_id
+            return encoded
 
         return {
             "left_hand": encode(self.left_hand),
@@ -320,6 +335,7 @@ class ChiralSession:
                 activity_id=str(value["activity_id"]),
                 object_ref=value.get("object_ref"),
                 object_title=value.get("object_title"),
+                bundle_id=value.get("bundle_id"),
             )
 
         active = data.get("active_hand")

@@ -109,8 +109,10 @@ The remaining gates are explicit:
 
 1. define and qualify graceful refusal for unsupported object formats or
    Activity/object combinations;
-2. qualify full shell/session restart while a hand is held; Activity
-   replacement/resume is now qualified;
+2. qualify full shell/session restart while a hand is held. The persistent
+   bundle/object state and automatic GTK4 session rehydrator are now wired;
+   Activity replacement/resume is already qualified, but the two-shell guest
+   receipt remains open;
 3. only then add user-facing “Use with…” or “Give to Other Hand” actions.
 
 The companion probe

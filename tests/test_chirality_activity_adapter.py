@@ -56,6 +56,29 @@ def test_activity_adapter_exposes_resume_as_a_single_hand_replacement(tmp_path):
     assert "session.resume_activity" in source
 
 
+def test_activity_state_defaults_to_persistent_user_state():
+    source = ADAPTER.read_text()
+    assert "ASPARTAME_CHIRALITY_STATE_FILE" in source
+    assert "XDG_STATE_HOME" in source
+    assert ".local" in source
+
+
+def test_session_restart_resume_hook_is_wired_into_the_modern_session():
+    resume = (ROOT / "scripts/sugar-gtk4-chirality-session-resume.py").read_text()
+    session = (ROOT / "scripts/sugar-gtk4-session.sh").read_text()
+    runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    build = (ROOT / "scripts/build-iso.sh").read_text()
+    assert "journal.LaunchBundle" in resume
+    assert "SUGAR_BUNDLE_ID" in resume
+    assert "session.resume_activity" in resume
+    assert "history=none" in resume
+    assert "ASPARTAME_CHIRALITY_RESUME_SCRIPT" in session
+    assert 'wait "$shell_pid"' in session
+    assert "ASPARTAME_CHIRALITY_STATE_FILE" in runner
+    assert "sugar-gtk4-chirality-session-resume.py" in runner
+    assert "sugar-gtk4-chirality-session-resume.py" in build
+
+
 def test_iso_packages_the_activity_adapter():
     build = (ROOT / "scripts/build-iso.sh").read_text()
     assert "sugar-chirality-activity.py" in build

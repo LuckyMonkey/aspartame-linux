@@ -141,6 +141,7 @@ install -D -m 0755 "$project_root/scripts/snakepit.py" \
 for helper in sugar-gtk4-run.sh sugar-gtk4-session.sh sugar-gtk4-space.sh \
              sugar-chirality-space.sh \
              sugar-chirality-activity.py \
+             sugar-gtk4-chirality-session-resume.py \
              sugar-gtk4-chirality-activity-roundtrip.py \
              sugar-gtk4-chirality-object-roundtrip.py \
              sugar-gtk4-chirality-crash-roundtrip.py \

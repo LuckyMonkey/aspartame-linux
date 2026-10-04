@@ -33,6 +33,8 @@ if test -f "$root/STANDALONE-MANIFEST"; then
     chmod 700 "$runroot"
 fi
 mkdir -p "$log_root"
+chirality_state_root=${ASPARTAME_CHIRALITY_STATE_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}/aspartame}
+mkdir -p "$chirality_state_root"
 log="$log_root/gtk4-shell-$(date -u +%Y%m%dT%H%M%SZ).log"
 : > "$log"
 # Keep the session log authoritative while retaining normal launcher output.
@@ -191,6 +193,8 @@ exec env \
     DATASTORE_SERVICE="$datastore/bin/datastore-service" \
     DATASTORE_LOG="$log_root/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
     ASPARTAME_GTK4_LOG="$log" \
+    ASPARTAME_CHIRALITY_STATE_FILE="$chirality_state_root/chirality.json" \
+    ASPARTAME_CHIRALITY_RESUME_SCRIPT="$root/scripts/sugar-gtk4-chirality-session-resume.py" \
     PYTHON_BIN="$python_bin" \
     PATH="$venv/bin:$prefix/bin:$PATH" \
     SHELL_ENTRY="$shell/src/jarabe/main.py" \

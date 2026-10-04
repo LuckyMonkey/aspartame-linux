@@ -205,6 +205,8 @@ def main():
                 uid,
                 "--object-title",
                 "UTF-8 resume object",
+                "--bundle-id",
+                BUNDLE,
             )
             active = run_adapter(state, "activate", "left")
             assert active["active_hand"] == "left"
