@@ -13,6 +13,7 @@ def test_read_bundle_is_native_offline_and_registered():
     assert "DOCUMENT" in source and "Gtk.SearchEntry" in source
     assert "root.set_hexpand(True); root.set_vexpand(True)" in source
     assert "Previous page" in source and "Next page" in source
+    assert 'Gtk.Frame(label="Reading page")' in source and "root.append(page_frame)" in source
     assert "def read_file" in source
     assert "def write_file" in source
     assert 'encoding="utf-8"' in source

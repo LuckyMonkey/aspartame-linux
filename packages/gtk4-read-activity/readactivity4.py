@@ -51,9 +51,13 @@ class ReadActivity(SimpleActivity):
         self.text = Gtk.Label(xalign=0, wrap=True, selectable=True)
         self.text.set_vexpand(True); self.text.set_valign(Gtk.Align.START)
         self.text.set_margin_top(20); self.text.set_margin_bottom(20)
+        self.text.set_margin_start(24); self.text.set_margin_end(24)
         self.text.update_property([Gtk.AccessibleProperty.LABEL], ["Document text"])
-        scroll = Gtk.ScrolledWindow(); scroll.set_child(self.text); scroll.set_vexpand(True)
-        root.append(scroll)
+        scroll = Gtk.ScrolledWindow(); scroll.set_hexpand(True); scroll.set_vexpand(True); scroll.set_child(self.text)
+        page_frame = Gtk.Frame(label="Reading page")
+        page_frame.add_css_class("reading-page")
+        page_frame.set_hexpand(True); page_frame.set_vexpand(True); page_frame.set_child(scroll)
+        root.append(page_frame)
 
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self.previous = Gtk.Button(label="Previous")
@@ -68,7 +72,7 @@ class ReadActivity(SimpleActivity):
         self.set_canvas(root)
 
         provider = Gtk.CssProvider()
-        provider.load_from_data(b"label { font-size: 16px; } button { min-height: 42px; border-radius: 19px; padding: 0 18px; }")
+        provider.load_from_data(b"label { font-size: 16px; } frame.reading-page { border: 2px solid #8aa8b8; border-radius: 10px; padding: 8px; } button { min-height: 42px; border-radius: 19px; padding: 0 18px; }")
         display = Gdk.Display.get_default()
         if display:
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
