@@ -89,6 +89,8 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   Words now owns an expanding Word explorer and Meaning/translation surface,
   while Calculate has explicit Calculator and Keypad work surfaces that fill
   the activity allocation. These are source checkpoints for the next image.
+- GTD now gives its empty task list an explicit “No tasks yet” action cue
+  instead of presenting an unexplained blank panel.
 - Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
   transport, and Neighborhood peer behavior with a second participant. The
   semantic button/controller and explicit Chirality bridge are the reliable
