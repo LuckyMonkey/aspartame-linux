@@ -64,6 +64,16 @@ def test_home_exposes_semantic_space_actions_from_accessible_button():
     assert '*0169*) target="$root/sources/sugar"' in build
 
 
+def test_classic_home_exposes_return_to_modern_space_button():
+    toolbar = (ROOT / 'sugar-overlay/src/jarabe/desktop/viewtoolbar.py').read_text()
+    assert 'def _build_spaces_button' in toolbar
+    assert 'Gtk.MenuToolButton.new(image, _(\'Spaces\'))' in toolbar
+    assert "('gtk4', _('Modern Space (GTK4)'))" in toolbar
+    assert "('side-by-side', _('Compare Spaces side by side'))" in toolbar
+    assert 'ASPARTAME_SPACE_SWITCHER' in toolbar
+    assert 'subprocess.Popen([controller, target]' in toolbar
+
+
 def test_side_by_side_reapplies_geometry_after_gtk4_window_map():
     controller = (ROOT / 'scripts/sugar-gtk4-space.sh').read_text()
     assert 'GTK4 may apply its windowed default size' in controller

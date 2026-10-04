@@ -23,6 +23,8 @@ from gettext import gettext as _
 from datetime import datetime
 import locale
 import logging
+import os
+import subprocess
 import sys
 
 from gi.repository import Gtk
@@ -221,9 +223,45 @@ class ViewToolbar(Gtk.Toolbar):
         help_toolitem.show_all()
         GLib.idle_add(self._install_help_key_handler)
 
+        self._build_spaces_button()
+
         aspartame_help.guard(self._list_button, 'org.aspartame.shell.list')
 
         self._add_separator()
+
+    def _build_spaces_button(self):
+        """Expose the same semantic Space actions from classic Home."""
+        image = Gtk.Image.new_from_icon_name(
+            'view-grid-symbolic', Gtk.IconSize.LARGE_TOOLBAR)
+        self._spaces_button = Gtk.MenuToolButton.new(image, _('Spaces'))
+        self._spaces_button.set_tooltip_text(_('Spaces'))
+        menu = Gtk.Menu()
+        for target, label in (
+                ('gtk4', _('Modern Space (GTK4)')),
+                ('side-by-side', _('Compare Spaces side by side'))):
+            item = Gtk.MenuItem(label=label)
+            item.connect('activate', self.__space_action_cb, target)
+            menu.append(item)
+        menu.show_all()
+        self._spaces_button.set_menu(menu)
+        toolitem = Gtk.ToolItem()
+        toolitem.add(self._spaces_button)
+        self.insert(toolitem, -1)
+        toolitem.show_all()
+
+    def __space_action_cb(self, _item, target):
+        controller = os.environ.get(
+            'ASPARTAME_SPACE_SWITCHER',
+            '/usr/lib/aspartame/gtk4-preview/scripts/sugar-gtk4-space.sh')
+        if not os.access(controller, os.X_OK):
+            logging.warning('Spaces controller is not executable: %s',
+                            controller)
+            return
+        try:
+            subprocess.Popen([controller, target], close_fds=True)
+        except OSError as error:
+            logging.warning('Could not start Spaces action %s: %s',
+                            target, error)
 
     def __help_clicked_cb(self, _button, _event):
         active = aspartame_help.toggle()
