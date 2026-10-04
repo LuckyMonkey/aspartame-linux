@@ -33,6 +33,9 @@ def test_finance_transactions_use_aligned_description_and_amount_columns():
     assert "form = Gtk.Grid(column_spacing=12, row_spacing=6)" in source
     assert "form.attach(self.description, 0, 1, 1, 1)" in source
     assert "form.attach(self.amount, 1, 1, 1, 1)" in source
+    assert 'Gtk.Frame(label="New transaction")' in source
+    assert 'Gtk.Frame(label="Transactions")' in source
+    assert 'self.rows.set_size_request(-1, 300)' in source
     assert 'description_heading = Gtk.Label(label="Description"' in source
     assert 'amount_heading = Gtk.Label(label="Amount"' in source
     assert 'table_row.attach(amount_label, 1, 0, 1, 1)' in source
