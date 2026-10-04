@@ -16,7 +16,7 @@ def main():
         pids = subprocess.check_output(["pgrep", "-u", "aspartame", "-f", "/sources/sugar/src/jarabe/main.py"], text=True).splitlines()
         if len(pids) != 1: raise SystemExit("Expected one modern shell")
         env = dict(item.split("=", 1) for item in Path(f"/proc/{pids[0]}/environ").read_bytes().decode().split("\0") if "=" in item)
-        interpreter = "/home/aspartame/Development/gtk4-preview/venv/bin/python"; os.setgroups([]); os.setgid(1000); os.setuid(1000); os.execve(interpreter, [interpreter, __file__, *sys.argv[1:]], env)
+        interpreter = os.environ.get("GTK4_PYTHON", "/usr/lib/aspartame/gtk4-preview/venv/bin/python"); os.setgroups([]); os.setgid(1000); os.setuid(1000); os.execve(interpreter, [interpreter, __file__, *sys.argv[1:]], env)
     import dbus, gi; gi.require_version("Atspi", "2.0")
     from gi.repository import Atspi
     bus = dbus.SessionBus(); journal = dbus.Interface(bus.get_object("org.laptop.Journal", "/org/laptop/Journal"), "org.laptop.Journal"); shell = dbus.Interface(bus.get_object("org.laptop.Shell", "/org/laptop/Shell"), "org.laptop.Shell"); store = dbus.Interface(bus.get_object("org.laptop.sugar.DataStore", "/org/laptop/sugar/DataStore"), "org.laptop.sugar.DataStore")

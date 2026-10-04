@@ -24,7 +24,7 @@ class FotoToonActivity(SimpleActivity):
         self.status = Gtk.Label(label="Click the canvas to place a panel.", xalign=0); self.status.add_css_class("dim-label"); root.append(self.status)
         reset = Gtk.Button(label="Clear canvas"); reset.set_halign(Gtk.Align.CENTER); reset.connect("clicked", self._reset); root.append(reset)
         self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"entry { min-height: 42px; } button { min-height: 42px; border-radius: 19px; }")
+        provider = Gtk.CssProvider(); provider.load_from_data(b"frame { border: 2px solid #8aa8b8; border-radius: 8px; padding: 8px; } entry { min-height: 42px; } button { min-height: 42px; border-radius: 19px; }")
         display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 

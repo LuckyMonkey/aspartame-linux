@@ -41,7 +41,7 @@ class PaintActivity(SimpleActivity):
         body.set_hexpand(True)
         body.set_vexpand(True)
         body.set_halign(Gtk.Align.FILL)
-        body.set_valign(Gtk.Align.CENTER)
+        body.set_valign(Gtk.Align.FILL)
         root.append(body)
 
         title = Gtk.Label(label="Paint", xalign=0)
@@ -91,7 +91,8 @@ class PaintActivity(SimpleActivity):
 
         provider = Gtk.CssProvider()
         provider.load_from_data(
-            b"drawingarea { background: #ffffff; border: 2px solid #8aa8b8; } "
+            b"frame { border: 2px solid #8aa8b8; border-radius: 8px; padding: 8px; } "
+            b"drawingarea { background: #ffffff; } "
             b"button { min-height: 42px; border-radius: 19px; }"
         )
         display = Gdk.Display.get_default()
@@ -127,6 +128,10 @@ class PaintActivity(SimpleActivity):
     def _draw(self, _area, cr, width, height):
         cr.set_source_rgb(1, 1, 1)
         cr.paint()
+        cr.set_source_rgb(0.54, 0.66, 0.72)
+        cr.set_line_width(4)
+        cr.rectangle(2, 2, max(0, width - 4), max(0, height - 4))
+        cr.stroke()
         cr.set_line_width(5)
         cr.set_line_cap(1)  # round
         cr.set_line_join(1)

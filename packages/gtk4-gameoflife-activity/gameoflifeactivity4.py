@@ -21,7 +21,7 @@ class GameOfLifeActivity(SimpleActivity):
         board_frame = Gtk.Frame(label="Life board"); board_frame.set_hexpand(True); board_frame.set_vexpand(True); board_frame.set_child(self.grid); root.append(board_frame); self.summary = Gtk.Label(label="Generation: 0 · 0 cells", xalign=0); self.summary.update_property([Gtk.AccessibleProperty.LABEL], ["Generation summary"]); root.append(self.summary); controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8); controls.set_halign(Gtk.Align.CENTER)
         step = Gtk.Button(label="Step"); step.connect("clicked", self._step); controls.append(step)
         clear = Gtk.Button(label="Clear"); clear.connect("clicked", self._clear); controls.append(clear); root.append(controls)
-        self.set_canvas(root); provider = Gtk.CssProvider(); provider.load_from_data(b"togglebutton:checked { background: #2c78a8; } button { min-height: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
+        self.set_canvas(root); provider = Gtk.CssProvider(); provider.load_from_data(b"frame { border: 2px solid #8aa8b8; border-radius: 8px; padding: 8px; } togglebutton:checked { background: #2c78a8; } button { min-height: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def _changed(self, button, row, column):

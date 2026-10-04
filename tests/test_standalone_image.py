@@ -182,9 +182,10 @@ def test_staged_layout_activities_replace_nested_archive_copies(tmp_path):
         work / "profile/airootfs/usr/lib/aspartame/gtk4-preview"
         / "prefix/share/sugar/activities/Gears.activity"
     )
-    assert "set_size_request(980, 520)" in (
-        ROOT / "packages/gtk4-gears-activity/gearsactivity4.py"
-    ).read_text()
+    gears_source = (ROOT / "packages/gtk4-gears-activity/gearsactivity4.py").read_text()
+    assert "set_content_height(420)" in gears_source
+    assert 'Gtk.Frame(label="Gears canvas")' in gears_source
+    assert "set_hexpand(True)" in gears_source and "set_vexpand(True)" in gears_source
     assert (staged / "gearsactivity4.py").read_bytes() == (
         ROOT / "packages/gtk4-gears-activity/gearsactivity4.py"
     ).read_bytes()

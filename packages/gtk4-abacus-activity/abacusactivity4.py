@@ -23,7 +23,7 @@ class AbacusActivity(SimpleActivity):
             bead = Gtk.Label(label="○ ○ ○ ○ ○ ○ ○ ○ ○ ○", hexpand=True); bead.set_halign(Gtk.Align.CENTER); bead.update_property([Gtk.AccessibleProperty.LABEL], [f"Rod {index + 1} beads"]); row.append(bead)
             plus = Gtk.Button(label="+"); plus.connect("clicked", self._change, index, 1); row.append(plus); self.rods.append(row)
         clear = Gtk.Button(label="Clear"); clear.connect("clicked", self._clear); root.append(clear); self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"button { min-height: 42px; min-width: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
+        provider = Gtk.CssProvider(); provider.load_from_data(b"frame { border: 2px solid #8aa8b8; border-radius: 8px; padding: 8px; } button { min-height: 42px; min-width: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def _change(self, _button, index, delta):

@@ -94,3 +94,11 @@ surfaces now have clear bounds and fill the available Activity area; Pippy,
 Jukebox, and Color My World also passed two Journal roundtrip cycles, while
 Write passed three launch/activate/stop cycles. They are the next
 modern-Space retirement candidates under the same fallback-preserving boundary.
+
+The third UX batch qualified Gears, Moon, Paint, FotoToon, Game Of Life, and
+Abacus at 1920×1080. Canvas surfaces now expand into the Activity area with
+explicit labels, visible boundaries where useful, and controls placed beside
+the work surface. Each passed two Journal roundtrip cycles; the full headless
+visual sweep completed 50/50. The roundtrip harnesses also gained a packaged
+interpreter fallback instead of depending on a developer-only absolute path.
+See [`gtk4-activity-ux-pass-20261004-canvas.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-canvas.md).

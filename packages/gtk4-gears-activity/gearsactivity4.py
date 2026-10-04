@@ -30,7 +30,7 @@ class GearsActivity(SimpleActivity):
         turn = Gtk.Button(label="Turn gears"); turn.connect("clicked", self._turn); controls.append(turn)
         reset = Gtk.Button(label="Reset"); reset.connect("clicked", self._reset); controls.append(reset); body.append(controls)
         self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"button { min-height: 42px; border-radius: 19px; }")
+        provider = Gtk.CssProvider(); provider.load_from_data(b"frame { border: 2px solid #8aa8b8; border-radius: 8px; padding: 8px; } button { min-height: 42px; border-radius: 19px; }")
         display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 

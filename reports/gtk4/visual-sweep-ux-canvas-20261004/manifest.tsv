@@ -1,0 +1,7 @@
+bundle\tresolution\tvisual_status\tsource_overlay
+org.sugarlabs.GearsActivity\t1920x1080\tPASS\tpackages/gtk4-gears-activity/gearsactivity4.py
+com.garycmartin.Moon\t1920x1080\tPASS\tpackages/gtk4-moon-activity/moonactivity4.py
+org.sugarlabs.Paint\t1920x1080\tPASS\tpackages/gtk4-paint-activity/paintactivity4.py
+org.eq.FotoToon\t1920x1080\tPASS\tpackages/gtk4-fototoon-activity/fototoonactivity4.py
+org.sugarlabs.gameOfLife\t1920x1080\tPASS\tpackages/gtk4-gameoflife-activity/gameoflifeactivity4.py
+com.homegrownapps.abacus\t1920x1080\tPASS\tpackages/gtk4-abacus-activity/abacusactivity4.py

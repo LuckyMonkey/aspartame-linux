@@ -19,7 +19,7 @@ if "IMAGE_ID=aspartame" not in Path("/etc/os-release").read_text():
 if os.getuid() == 0:
     shell_pid = subprocess.check_output(["pgrep", "-u", "aspartame", "-f", "/sources/sugar/src/jarabe/main.py"], text=True).splitlines()[0]
     env = dict(x.split("=", 1) for x in Path(f"/proc/{shell_pid}/environ").read_bytes().decode().split("\0") if "=" in x)
-    py = "/home/aspartame/Development/gtk4-preview/venv/bin/python"
+    py = os.environ.get("GTK4_PYTHON", "/usr/lib/aspartame/gtk4-preview/venv/bin/python")
     os.setgroups([]); os.setgid(1000); os.setuid(1000); os.execve(py, [py, __file__], env)
 
 import dbus, gi
