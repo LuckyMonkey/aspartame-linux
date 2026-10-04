@@ -11,7 +11,10 @@ def test_connect_the_dots_bundle_is_native_and_registered():
     assert "sugar-activity4 connectthedotsactivity4.ConnectTheDotsActivity" in info
     assert "class ConnectTheDotsActivity(SimpleActivity)" in source
     assert "Puzzle complete!" in source
-    assert "set_size_request(980, 540)" in source and "set_content_height(540)" in source and "Gtk.Frame" in source and "set_vexpand(True)" in source and "Align.CENTER" in source
+    assert "set_content_width(640)" in source and "set_content_height(360)" in source
+    assert "Gtk.AspectFrame.new" in source and "980 / 540" in source
+    assert "Gtk.Frame" in source and "set_vexpand(True)" in source
+    assert "hit_radius" in source
     assert "def read_file(self, file_path)" in source
     assert '"connected": self._connected' in source
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()

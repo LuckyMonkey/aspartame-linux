@@ -9,8 +9,9 @@ def test_planets_bundle_is_native_and_registered():
     assert "bundle_id = org.sugarlabs.Planets" in info
     assert "sugar-activity4 planetsactivity4.PlanetsActivity" in info
     assert "class PlanetsActivity(SimpleActivity)" in source
-    assert "set_draw_func" in source and "set_content_height(600)" in source and "Gtk.Frame" in source and "set_vexpand(True)" in source and "Earth" in source
-    assert "set_size_request(1000, 600)" in source and "Align.CENTER" in source
+    assert "set_draw_func" in source and "set_content_height(384)" in source and "Gtk.Frame" in source and "set_vexpand(True)" in source and "Earth" in source
+    assert "Gtk.AspectFrame.new" in source and "1000 / 600" in source
+    assert "scale = min(width / 1000, height / 600)" in source
     assert "org.sugarlabs.Planets" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-planets-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-planets-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()

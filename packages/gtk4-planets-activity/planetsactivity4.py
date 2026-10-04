@@ -14,10 +14,11 @@ class PlanetsActivity(SimpleActivity):
 
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); root.set_margin_top(24); root.set_margin_bottom(24); root.set_margin_start(30); root.set_margin_end(30); root.set_hexpand(True); root.set_vexpand(True); root.update_property([Gtk.AccessibleProperty.LABEL], ["Planets orbit canvas"])
-        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); body.set_size_request(1000, 760); body.set_hexpand(False); body.set_vexpand(True); body.set_halign(Gtk.Align.CENTER); body.set_valign(Gtk.Align.CENTER); root.append(body)
+        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); body.set_hexpand(True); body.set_vexpand(True); root.append(body)
         title = Gtk.Label(label="Planets", xalign=0); title.add_css_class("title-1"); body.append(title)
-        self._drawing_area = Gtk.DrawingArea(); self._drawing_area.set_size_request(1000, 600); self._drawing_area.set_content_width(1000); self._drawing_area.set_content_height(600); self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True); self._drawing_area.set_draw_func(self._draw); self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Solar system illustration"])
-        canvas_frame = Gtk.Frame(); canvas_frame.set_size_request(1000, 600); canvas_frame.set_hexpand(True); canvas_frame.set_vexpand(True); canvas_frame.set_child(self._drawing_area); body.append(canvas_frame)
+        self._drawing_area = Gtk.DrawingArea(); self._drawing_area.set_content_width(640); self._drawing_area.set_content_height(384); self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True); self._drawing_area.set_draw_func(self._draw); self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Solar system illustration"])
+        aspect = Gtk.AspectFrame.new(None, 0.5, 0.5, 1000 / 600, False); aspect.set_hexpand(True); aspect.set_vexpand(True); aspect.set_child(self._drawing_area)
+        canvas_frame = Gtk.Frame(); canvas_frame.set_hexpand(True); canvas_frame.set_vexpand(True); canvas_frame.set_child(aspect); body.append(canvas_frame)
         self.info = Gtk.Label(label="Earth — our home planet", xalign=0); body.append(self.info)
         buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         for name in ("Mercury", "Venus", "Earth", "Mars", "Jupiter"):
@@ -44,7 +45,7 @@ class PlanetsActivity(SimpleActivity):
         Path(file_path).write_text(json.dumps({"selected": self.selected}, sort_keys=True) + "\n", encoding="utf-8")
 
     def _draw(self, _area, cr, width, height):
-        cr.set_source_rgb(0.02, 0.04, 0.12); cr.paint(); cx, cy = width / 2, height / 2; cr.set_source_rgb(1, 0.75, 0.1); cr.arc(cx, cy, 18, 0, 2 * math.pi); cr.fill()
+        cr.set_source_rgb(0.02, 0.04, 0.12); cr.paint(); cx, cy = width / 2, height / 2; scale = min(width / 1000, height / 600); cr.set_source_rgb(1, 0.75, 0.1); cr.arc(cx, cy, 18 * scale, 0, 2 * math.pi); cr.fill()
         colors = {"Mercury": (0.55, 0.55, 0.55), "Venus": (0.85, 0.55, 0.2), "Earth": (0.2, 0.5, 0.9), "Mars": (0.8, 0.25, 0.15), "Jupiter": (0.75, 0.55, 0.35)}
         for index, name in enumerate(colors):
-            radius = 48 + index * 36; cr.set_source_rgb(0.25, 0.3, 0.5); cr.set_line_width(1); cr.arc(cx, cy, radius, 0, 2 * math.pi); cr.stroke(); angle = index * 1.1; px, py = cx + radius * math.cos(angle), cy + radius * math.sin(angle); cr.set_source_rgb(*colors[name]); cr.arc(px, py, 7 if name != "Jupiter" else 12, 0, 2 * math.pi); cr.fill()
+            radius = (48 + index * 36) * scale; cr.set_source_rgb(0.25, 0.3, 0.5); cr.set_line_width(max(1, scale)); cr.arc(cx, cy, radius, 0, 2 * math.pi); cr.stroke(); angle = index * 1.1; px, py = cx + radius * math.cos(angle), cy + radius * math.sin(angle); cr.set_source_rgb(*colors[name]); cr.arc(px, py, (7 if name != "Jupiter" else 12) * scale, 0, 2 * math.pi); cr.fill()
