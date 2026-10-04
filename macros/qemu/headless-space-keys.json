@@ -1,0 +1,9 @@
+[
+  {"action": "sleep", "seconds": 3},
+  {"action": "key", "keys": "F7"},
+  {"action": "sleep", "seconds": 2},
+  {"action": "screenshot", "path": "reports/gtk4/qemu-f7-space.png"},
+  {"action": "key", "keys": "F8"},
+  {"action": "sleep", "seconds": 2},
+  {"action": "screenshot", "path": "reports/gtk4/qemu-f8-space.png"}
+]

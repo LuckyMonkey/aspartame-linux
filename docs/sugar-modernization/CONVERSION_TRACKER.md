@@ -96,10 +96,10 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
 - Chirality now has an explicit packaged-ready `Space`/`Spaces` primitive:
   one active full-surface selection with controller tokens, independent of
   hand Activity/object state and without split-screen or history state.
-- Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
-  transport, and Neighborhood peer behavior with a second participant. The
-  semantic button/controller and explicit Chirality bridge are the reliable
-  action paths while F7/F8 transport remains open.
+- Remaining retirement gates are Neighborhood peer behavior with a second
+  participant, complete Activity parity, and clean writable-disk persistence.
+  GTK3 Home input, three-cycle lifecycle, and headless F7/F8 Space transport
+  are now qualified on the newest image.
 
 ## Execution and ownership
 
@@ -116,12 +116,10 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 
 ## Completion gate (all require runtime proof)
 
-- [ ] GTK3 Home, Activity launch/input/stop and regression invariants. Fresh
-      GTK3 launch/stop evidence is now recorded in
-      `reports/gtk4/gtk3-lifecycle-20261002.md`; the rebuilt
-      `2026.10.03` image now passes the packaged GTK3 and GTK4 lifecycle
-      probes, and the host regression suite passes. Physical input and F7/F8
-      transport remain.
+- [x] GTK3 Home, Activity launch/input/stop and regression invariants. The
+      newest image passes three GTK3 and three GTK4 lifecycle cycles, the
+      packaged Sugar health check, and a headless GTK3 Home click/type macro;
+      see `reports/gtk4/gtk3-gtk4-runtime-20261004.md`.
 - [x] GTK4 startup/reload and GTK namespace isolation
 - [x] Home Favorites/List/search/clear/XO and real running state
 - [x] Real GTK4 Activity launch/input/active/stop repeated three times (99-cycle
@@ -135,14 +133,12 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       The shared `SugarKeyGrabber` passive-grab defect is fixed in
       `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch` and
       ships through `packages/sugar-toolkit-gtk3/PKGBUILD`.
-- [ ] Physical GTK3/GTK4 Space selection through F7/F8. The QEMU/Metacity
-      transport still consumes or drops those keys before Sugar. Semantic
-      controller actions (`gtk3`, `gtk4`, `side-by-side`) and the fresh-image
-      comparison workflow pass without relying on that transport; see
-      `reports/gtk4/side-by-side-runtime-20261002.md` and
-      `reports/gtk4/space-key-transport-20261002.md`.
-- [ ] Neighborhood/Group peer actions (empty state is verified; peer requires a
-      second collaboration participant)
+- [x] Physical GTK3/GTK4 Space selection through F7/F8. Headless QMP F7 now
+      selects Classic/workspace 0 and F8 selects Modern/workspace 1 on the
+      newest standalone image; both shell PIDs remain alive. See
+      `reports/gtk4/space-key-transport-20261004.md`.
+- [ ] Neighborhood/Group peer actions (empty state is verified; peer behavior
+      still requires a second collaboration participant)
 - [x] Settings, Activity Manager, approval and contextual Help
 - [x] Physical-event Tab/Shift+Tab/Space. Closed 2026-09-15: physical typing,
       Tab, Shift+Tab, Enter and Space all reach a real GTK4 Activity launched

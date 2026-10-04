@@ -101,17 +101,16 @@ them.
   path: on the 2026-10-02 fresh ISO it placed clickable GTK3 and GTK4 Spaces
   at 960x1080 beside each other, so behavioral comparison no longer depends
   on transporting a function key through QEMU.
-- **Gap:** was the shared key grab — see W7; one cause, both workflows.
+- **Gap:** none on the supported headless QEMU path; human host-window
+  transport remains a separate convenience check.
 - **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
   shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`
 - **Evidence:** `reports/gtk4/fkey-grab-resolved-20260915.md`
-- **STATUS: PASS** for semantic switching (2026-09-16, re-verified after
-  patch 0153). The original F7 failure was root-caused: Sugar disables every
-  window-manager keybinding at startup, F7/F8 were bound only to the modern
-  main window, and the Settings window was not registered with the shell key
-  handler. Patch 0153 makes the Space keys shell actions and registers the
-  Control Panel. See `reports/gtk4/f7-space-key-rootcause-20260916.md` and
-  `reports/gtk4/spaces-semantic-roundtrip-20260919.md`.
+- **STATUS: PASS** for semantic and headless physical switching
+  (2026-10-04). Patch 0153 makes the Space keys shell actions and registers
+  the Control Panel; QMP F7/F8 now produces workspace 0/1 transitions in the
+  packaged image. See `reports/gtk4/f7-space-key-rootcause-20260916.md` and
+  `reports/gtk4/space-key-transport-20261004.md`.
 
 ## W7 — Frame navigation
 

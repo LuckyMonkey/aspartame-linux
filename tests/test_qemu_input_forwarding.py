@@ -12,6 +12,14 @@ def test_qemu_forwards_keyboard_by_default_while_remaining_floating():
     assert '-device virtio-vga,id=video0' in script
     assert '-device usb-kbd,id=usb_keyboard,display=video0' in script
     assert '-device virtio-keyboard-pci,id=virtio_keyboard,display=video0' in script
+
+
+def test_qemu_runner_can_add_a_private_peer_network_without_changing_ssh():
+    script = (ROOT / "scripts/run-qemu.sh").read_text()
+    assert 'QEMU_EXTRA_NIC=${QEMU_EXTRA_NIC:-}' in script
+    assert 'EXTRA_NIC_ARGS=(-nic "$QEMU_EXTRA_NIC")' in script
+    assert '"${EXTRA_NIC_ARGS[@]}"' in script
+    assert 'hostfwd=tcp:127.0.0.1:${SSH_FORWARD_PORT}-:22' in script
     assert 'QEMU_WINDOW_WIDTH=${QEMU_WINDOW_WIDTH:-1600}' in script
     assert 'QEMU_WINDOW_HEIGHT=${QEMU_WINDOW_HEIGHT:-900}' in script
     assert 'xdotool windowsize' in script

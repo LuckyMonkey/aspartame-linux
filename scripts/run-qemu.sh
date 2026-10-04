@@ -15,6 +15,14 @@ SERIAL_LOG=${SERIAL_LOG:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime
 DEV_SHARE=${DEV_SHARE:-/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev}
 QEMU_MONITOR=${QEMU_MONITOR:-/tmp/aspartame-qemu-monitor}
 QEMU_QMP=${QEMU_QMP:-/tmp/aspartame-qemu-qmp}
+# Keep SSH on the management NIC, but allow a second private NIC for a
+# headless collaboration-peer fixture.  The default remains one user-mode
+# network exactly as before.
+QEMU_EXTRA_NIC=${QEMU_EXTRA_NIC:-}
+EXTRA_NIC_ARGS=()
+if test -n "$QEMU_EXTRA_NIC"; then
+    EXTRA_NIC_ARGS=(-nic "$QEMU_EXTRA_NIC")
+fi
 # Keep the window floating while automatically forwarding keyboard/pointer
 # events when the pointer is over the guest.  Without the grab, GTK4's
 # fullscreen shell can look focused on the host but QEMU never delivers F1-F8
@@ -74,6 +82,7 @@ qemu-system-x86_64 \
     -qmp "unix:$QEMU_QMP,server=on,wait=off" \
     -serial "file:$SERIAL_LOG" \
     -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:${SSH_FORWARD_PORT}-:22 \
+    "${EXTRA_NIC_ARGS[@]}" \
     -audiodev "driver=$AUDIO_BACKEND,id=a0" -device AC97,audiodev=a0 \
     -device qemu-xhci,id=usb_controller \
     -device usb-tablet,id=usb_tablet,display=video0 \

@@ -42,10 +42,11 @@ have real Casilda Activity-surface and process evidence. The complete matrix
 is maintained in `reports/gtk4/runtime-matrix-20260914.md` (with the earlier
 2026-09-13 report retained as historical evidence).
 
-Remaining limits are explicit: physical F1-F6 delivery is below the current
-QEMU/evdev transport; Neighborhood collaboration cannot be exercised without
-peers; and additional legacy Activities remain individual porting targets.
-These are not silently counted as GTK4 parity.
+Remaining limits are explicit: Neighborhood collaboration cannot be exercised
+without a second peer; and additional legacy Activities remain individual
+porting targets. Headless QMP F7/F8 Space selection is now qualified on the
+2026-10-04 image; host-window pointer/grab behavior remains a separate
+convenience check. These limits are not silently counted as GTK4 parity.
 
 The shell-level `ShowJournal()` action now presents the native Journal surface
 in the modern Space. A 1920x1080 capture shows search, project controls, 415
@@ -71,9 +72,8 @@ The GTK4 toolkit repository describes itself as a GTK4 toolkit and documents
 `sugar4` APIs, while the main Sugar repository still documents GTK3 toolkit
 dependencies. Aspartame therefore keeps the stable GTK3 Space as a behavioral
 reference while operating a separately tested GTK4 preview Space. The preview
-is materially usable, but the full completion gate is not claimed because the
-physical function-key transport, peer collaboration, and complete Activity
-catalog remain open.
+is materially usable, but the full completion gate is not claimed because peer
+collaboration and complete Activity parity remain open.
 
 References:
 

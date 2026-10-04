@@ -194,6 +194,14 @@ only as historical context. Current evidence is maintained in
   implemented in the native row; full ProjectView navigation remains a
   separate, explicitly unverified target.
 
+### 2026-10-04 runtime checkpoint
+
+The packaged standalone image completed two GTK4 Journal payload/resume
+roundtrip cycles with service release and shell cleanup on every cycle. The
+durable command/output record is
+`reports/gtk4/journal-roundtrip-20261004.md`. This is additional lifecycle
+evidence, not a claim that the full acceptance gate below is closed.
+
 Known preview warnings that are not currently the Journal blocker:
 
 - UPowerGlib typelib is unavailable, so the battery extension is skipped.
