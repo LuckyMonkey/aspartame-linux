@@ -11,6 +11,9 @@ def test_gears_bundle_is_native_and_registered():
     assert "sugar-activity4 gearsactivity4.GearsActivity" in info
     assert "class GearsActivity(SimpleActivity)" in source
     assert "set_draw_func" in source and "Turn gears" in source
+    assert "Turn the gears to explore" in source
+    assert "Gears rotation status" in source
+    assert '["Reset gears"]' in source
     assert "set_content_height(420)" in source and 'Gtk.Frame(label="Gears canvas")' in source and "set_hexpand(True)" in source
     assert "def read_file" in source and "def write_file" in source
     assert "org.sugarlabs.GearsActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()

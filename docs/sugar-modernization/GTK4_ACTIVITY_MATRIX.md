@@ -199,6 +199,13 @@ not sandboxed. The boundary is intentionally described as bounded local
 execution, not a complete security sandbox. The guest probe is
 `scripts/sugar-gtk4-pippy-runtime-probe.py`.
 
+The next canvas pass aligned TurtleBlocks, Connect the Dots, and Gears with
+the same Sugar learning-surface pattern: an instructional subtitle, visible
+progress/status semantics, centered actions, and accessible action names.
+Their drawing surfaces remain expanding and aspect-safe rather than being
+replaced with fixed desktop-sized boards. See
+[`gtk4-activity-ux-pass-20261004-canvas2.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-canvas2.md).
+
 The next focused UX correction fixed Abacus's stretched rod layout in the GTK4
 development runtime. Its centered place-value card, grouped controls, and
 accessible action names passed a 1920x1080 visual sweep and a seeded Journal

@@ -11,6 +11,8 @@ def test_turtleart_bundle_is_native_and_registered():
     assert "sugar-activity4 turtleartactivity4.TurtleArtActivity" in info
     assert "class TurtleArtActivity(SimpleActivity)" in source
     assert "set_draw_func" in source and "Forward" in source
+    assert "Use Forward to draw" in source and "controls.set_halign(Gtk.Align.CENTER)" in source
+    assert "TurtleBlocks position and heading" in source
     assert 'Gtk.Frame(label="Drawing canvas")' in source
     assert 'frame.turtle-canvas' in source
     assert 'root.set_hexpand(True); root.set_vexpand(True)' in source

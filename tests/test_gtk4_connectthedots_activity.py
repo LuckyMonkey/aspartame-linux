@@ -11,6 +11,9 @@ def test_connect_the_dots_bundle_is_native_and_registered():
     assert "sugar-activity4 connectthedotsactivity4.ConnectTheDotsActivity" in info
     assert "class ConnectTheDotsActivity(SimpleActivity)" in source
     assert "Puzzle complete!" in source
+    assert "Select each numbered dot in order" in source
+    assert "controls.set_halign(Gtk.Align.CENTER)" in source
+    assert "Connect the Dots progress" in source
     assert "set_content_width(640)" in source and "set_content_height(360)" in source
     assert "Gtk.AspectFrame.new" in source and "980 / 540" in source
     assert 'Gtk.Frame(label="Dot canvas")' in source and "root.append(canvas_frame)" in source
