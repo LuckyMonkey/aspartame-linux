@@ -1,0 +1,7 @@
+diff --git a/logviewer.py b/logviewer.py
+--- a/logviewer.py
++++ b/logviewer.py
+@@ -102,1 +102,3 @@
+         self.set_end_child(scroll)
++        self.set_position(420)
++        self.set_shrink_start_child(False)

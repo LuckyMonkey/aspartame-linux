@@ -121,3 +121,9 @@ The sixth UX batch qualified Get Things Done at 1920×1080. Its task entry and
 task list now have explicit hierarchy and an expanding labeled surface; its
 two-cycle Journal probe and the full headless visual sweep remained green.
 See [`gtk4-activity-ux-pass-20261004-tasks.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-tasks.md).
+
+The seventh UX batch qualified Log at 1920×1080. Its GTK4 ListBox-based file
+browser now preserves a stable detail viewport through a pinned build patch;
+the full visual sweep stayed 50/50 and `sugar-gtk4-runtime-check.sh gtk4`
+returned `runtime-check=ok`. See
+[`gtk4-activity-ux-pass-20261004-log.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-log.md).
