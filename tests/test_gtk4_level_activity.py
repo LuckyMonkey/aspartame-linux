@@ -18,6 +18,8 @@ def test_level_is_native_gtk4_and_interactive():
     assert '"Reset"' in source
     assert "AccessibleProperty.LABEL" in source
     assert 'require_version("Gtk", "3.0")' not in source
+    assert "Drag the level or use the arrows" in source
+    assert 'Gtk.Frame(label="Spirit level")' in source
 
 
 def test_level_is_staged_and_matrix_registered():

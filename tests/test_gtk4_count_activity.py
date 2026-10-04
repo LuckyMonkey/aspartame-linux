@@ -17,6 +17,9 @@ def test_count_is_a_native_gtk4_bundle():
     assert "AccessibleProperty.LABEL" in source
     assert "AccessibleRole.GROUP" in source
     assert "Gtk.Overlay" in source
+    assert "Click or drag across cells to count objects" in source
+    assert 'Gtk.Frame(label="Counting grid")' in source
+    assert "Total objects across all layers" in source
     assert "require_version(\"Gtk\", \"3.0\")" not in source
     assert "if isinstance(layers, list):" in source
     assert "self.current_layer = max(0, self.current_layer)" in source

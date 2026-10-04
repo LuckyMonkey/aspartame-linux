@@ -13,6 +13,8 @@ def test_stopwatch_exposes_a_journal_state_boundary():
     assert 'Gtk.Frame(label="Elapsed time")' in source
     assert 'stopwatch-display' in source and 'font-size: 64px' in source
     assert "set_vexpand(True)" in source and "set_valign(Gtk.Align.CENTER)" in source
+    assert "Start the timer to measure time" in source
+    assert "Start or pause stopwatch" in source and "Reset stopwatch" in source
 
 
 def test_stopwatch_roundtrip_probe_targets_journal_resume():

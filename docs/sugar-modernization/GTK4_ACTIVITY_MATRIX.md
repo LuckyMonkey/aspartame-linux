@@ -212,6 +212,12 @@ status surfaces, the main Grid Paint board has a labeled frame, and destructive
 actions are centered and named. See
 [`gtk4-activity-ux-pass-20261004-grids.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-grids.md).
 
+The measurement pass then aligned Count, Level, and Stopwatch: each now gives
+the learner a first-action cue, names its primary work/readout surface, and
+exposes its controls with explicit accessible actions. Their Journal state and
+interaction models remain unchanged. See
+[`gtk4-activity-ux-pass-20261004-measurement.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-measurement.md).
+
 The next focused UX correction fixed Abacus's stretched rod layout in the GTK4
 development runtime. Its centered place-value card, grouped controls, and
 accessible action names passed a 1920x1080 visual sweep and a seeded Journal

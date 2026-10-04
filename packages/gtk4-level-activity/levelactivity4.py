@@ -26,6 +26,10 @@ class LevelActivity(SimpleActivity):
         title = Gtk.Label(label="Level", xalign=0)
         title.add_css_class("title-1")
         root.append(title)
+        instruction = Gtk.Label(label="Drag the level or use the arrows to explore inclination.", xalign=0)
+        instruction.add_css_class("dim-label")
+        instruction.set_wrap(True)
+        root.append(instruction)
         self.readout = Gtk.Label(xalign=0)
         self.readout.update_property([Gtk.AccessibleProperty.LABEL], ["Inclination"])
         root.append(self.readout)
@@ -40,7 +44,11 @@ class LevelActivity(SimpleActivity):
         drag = Gtk.GestureDrag()
         drag.connect("drag-update", self._drag_update)
         self._drawing_area.add_controller(drag)
-        root.append(self._drawing_area)
+        canvas_frame = Gtk.Frame(label="Spirit level")
+        canvas_frame.set_hexpand(True)
+        canvas_frame.set_vexpand(True)
+        canvas_frame.set_child(self._drawing_area)
+        root.append(canvas_frame)
 
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10,
                            halign=Gtk.Align.CENTER)
@@ -65,6 +73,7 @@ class LevelActivity(SimpleActivity):
         provider = Gtk.CssProvider()
         provider.load_from_data(b"""
             .level-readout { font-size: 24px; font-weight: bold; }
+            frame { border: 2px solid #8aa8b8; border-radius: 10px; padding: 8px; }
             button { min-height: 42px; border-radius: 20px; }
         """)
         display = Gdk.Display.get_default()
