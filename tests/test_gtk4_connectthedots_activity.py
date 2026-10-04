@@ -13,7 +13,7 @@ def test_connect_the_dots_bundle_is_native_and_registered():
     assert "Puzzle complete!" in source
     assert "set_content_width(640)" in source and "set_content_height(360)" in source
     assert "Gtk.AspectFrame.new" in source and "980 / 540" in source
-    assert "Gtk.Frame" in source and "set_vexpand(True)" in source
+    assert 'Gtk.Frame(label="Dot canvas")' in source and "root.append(canvas_frame)" in source
     assert "hit_radius" in source
     assert "def read_file(self, file_path)" in source
     assert '"connected": self._connected' in source
