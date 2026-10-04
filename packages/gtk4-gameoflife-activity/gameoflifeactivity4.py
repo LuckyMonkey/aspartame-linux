@@ -18,7 +18,7 @@ class GameOfLifeActivity(SimpleActivity):
         for row in range(12):
             for column in range(12):
                 button = Gtk.ToggleButton(); button.set_hexpand(True); button.set_vexpand(True); button.update_property([Gtk.AccessibleProperty.LABEL], [f"Row {row + 1}, column {column + 1}"]); button.connect("toggled", self._changed, row, column); self.grid.attach(button, column, row, 1, 1); self.buttons[(row, column)] = button
-        board_aspect = Gtk.AspectFrame.new(None, 0.5, 0.5, 1.0, False); board_aspect.set_hexpand(True); board_aspect.set_vexpand(True); board_aspect.set_child(self.grid)
+        board_aspect = Gtk.AspectFrame.new(0.5, 0.5, 1.0, False); board_aspect.set_hexpand(True); board_aspect.set_vexpand(True); board_aspect.set_child(self.grid)
         board_frame = Gtk.Frame(label="Life board"); board_frame.set_hexpand(True); board_frame.set_vexpand(True); board_frame.set_child(board_aspect); root.append(board_frame); self.summary = Gtk.Label(label="Generation: 0 · 0 cells", xalign=0); self.summary.update_property([Gtk.AccessibleProperty.LABEL], ["Generation summary"]); root.append(self.summary); controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8); controls.set_halign(Gtk.Align.CENTER)
         step = Gtk.Button(label="Step"); step.connect("clicked", self._step); controls.append(step)
         clear = Gtk.Button(label="Clear"); clear.connect("clicked", self._clear); controls.append(clear); root.append(controls)

@@ -14,6 +14,8 @@ the activity on smaller Sugar surfaces.
 - Removed fixed body/frame size requests from all six Activities.
 - Added GTK4 `Gtk.AspectFrame` containers so each canvas/board expands while
   preserving its intended drawing ratio.
+- Used the GTK4 four-argument constructor form, verified against the guest
+  preview runtime; the GTK3 label argument is not valid in GTK4.
 - Kept a smaller natural content size for initial allocation.
 - Made Count's cells and layer overlays homogeneous and derived drag cell
   selection from the allocated grid rather than a fixed pixel width.

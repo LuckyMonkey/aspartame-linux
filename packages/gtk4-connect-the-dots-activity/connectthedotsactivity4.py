@@ -47,7 +47,7 @@ class ConnectTheDotsActivity(SimpleActivity):
         self._drawing_area.set_draw_func(self._draw)
         click = Gtk.GestureClick(); click.connect("pressed", self._pressed)
         self._drawing_area.add_controller(click)
-        aspect = Gtk.AspectFrame.new(None, 0.5, 0.5, 980 / 540, False)
+        aspect = Gtk.AspectFrame.new(0.5, 0.5, 980 / 540, False)
         aspect.set_hexpand(True); aspect.set_vexpand(True); aspect.set_child(self._drawing_area)
         canvas_frame = Gtk.Frame(); canvas_frame.set_hexpand(True); canvas_frame.set_vexpand(True); canvas_frame.set_child(aspect); body.append(canvas_frame)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)

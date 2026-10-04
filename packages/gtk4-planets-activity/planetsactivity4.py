@@ -17,7 +17,7 @@ class PlanetsActivity(SimpleActivity):
         body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); body.set_hexpand(True); body.set_vexpand(True); root.append(body)
         title = Gtk.Label(label="Planets", xalign=0); title.add_css_class("title-1"); body.append(title)
         self._drawing_area = Gtk.DrawingArea(); self._drawing_area.set_content_width(640); self._drawing_area.set_content_height(384); self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True); self._drawing_area.set_draw_func(self._draw); self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Solar system illustration"])
-        aspect = Gtk.AspectFrame.new(None, 0.5, 0.5, 1000 / 600, False); aspect.set_hexpand(True); aspect.set_vexpand(True); aspect.set_child(self._drawing_area)
+        aspect = Gtk.AspectFrame.new(0.5, 0.5, 1000 / 600, False); aspect.set_hexpand(True); aspect.set_vexpand(True); aspect.set_child(self._drawing_area)
         canvas_frame = Gtk.Frame(); canvas_frame.set_hexpand(True); canvas_frame.set_vexpand(True); canvas_frame.set_child(aspect); body.append(canvas_frame)
         self.info = Gtk.Label(label="Earth — our home planet", xalign=0); body.append(self.info)
         buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)

@@ -23,7 +23,7 @@ class GridPaintActivity(SimpleActivity):
             for column in range(10):
                 cell = Gtk.ToggleButton(); cell.set_hexpand(True); cell.set_vexpand(True); cell.update_property([Gtk.AccessibleProperty.LABEL], [f"Row {row + 1}, column {column + 1}"]); cell.connect("toggled", self._update_summary); self.grid.attach(cell, column, row, 1, 1)
                 self.cells.append(cell)
-        board_aspect = Gtk.AspectFrame.new(None, 0.5, 0.5, 1.0, False); board_aspect.set_hexpand(True); board_aspect.set_vexpand(True); board_aspect.set_child(self.grid); root.append(board_aspect)
+        board_aspect = Gtk.AspectFrame.new(0.5, 0.5, 1.0, False); board_aspect.set_hexpand(True); board_aspect.set_vexpand(True); board_aspect.set_child(self.grid); root.append(board_aspect)
         self.summary = Gtk.Label(label="0 cells selected", xalign=0); self.summary.update_property([Gtk.AccessibleProperty.LABEL], ["Selection summary"]); root.append(self.summary)
         clear = Gtk.Button(label="Clear picture"); clear.connect("clicked", self._clear); root.append(clear)
         self.set_canvas(root)

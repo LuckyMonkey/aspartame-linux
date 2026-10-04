@@ -78,7 +78,7 @@ class CountActivity(SimpleActivity):
         grid_drag.connect("drag-end", self._grid_drag_end)
         self.grid.add_controller(grid_drag)
         self._context_grids = []
-        aspect = Gtk.AspectFrame.new(None, 0.5, 0.5,
+        aspect = Gtk.AspectFrame.new(0.5, 0.5,
                                      self.width / self.height, False)
         aspect.set_hexpand(True)
         aspect.set_vexpand(True)

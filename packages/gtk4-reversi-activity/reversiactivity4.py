@@ -24,7 +24,7 @@ class ReversiActivity(SimpleActivity):
         self.grid.set_hexpand(True); self.grid.set_vexpand(True)
         self.grid.set_halign(Gtk.Align.FILL); self.grid.set_valign(Gtk.Align.FILL)
         self.grid.set_column_homogeneous(True); self.grid.set_row_homogeneous(True)
-        board_aspect = Gtk.AspectFrame.new(None, 0.5, 0.5, 1.0, False)
+        board_aspect = Gtk.AspectFrame.new(0.5, 0.5, 1.0, False)
         board_aspect.set_hexpand(True); board_aspect.set_vexpand(True)
         board_aspect.set_child(self.grid); board.set_child(board_aspect); root.append(board)
         self.cells = []
