@@ -82,7 +82,7 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   work area and compact Clear control.
 - A new standalone ISO containing these source changes and the Classic Home
   Spaces action menu was built successfully:
-  `a2d82e781a37196bea7f6ff3e602313ac12276e980c7516c52494ab8f34c2877`.
+  `742c849ac5bf55521a9e099a8234b0d1142451987fc5d379813e6807c1965cf7`.
   Its runtime qualification is the next deliberate gate; the older receipt is
   not silently reused as evidence for this new image.
 - The next source UX pass removes two remaining “small calculator” surfaces:
