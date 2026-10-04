@@ -106,6 +106,7 @@ def test_share_roundtrip_can_qualify_successful_telepathy_mode():
 def test_share_roundtrip_can_hold_the_owner_for_peer_join():
     probe = (ROOT / "scripts/sugar-gtk4-share-roundtrip.py").read_text()
     assert 'ASPARTAME_SHARE_HOLD_SECONDS' in probe
+    assert 'env[option] = os.environ[option]' in probe
     assert 'share_mode == "shared"' in probe
 
 

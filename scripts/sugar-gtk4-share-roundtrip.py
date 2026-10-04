@@ -211,7 +211,11 @@ if os.getuid() == 0:
     env["ASPARTAME_ATSPI_BUS"] = (
         f"unix:path={atspi_runtime / 'at-spi' / 'bus_0'}"
     )
-    for option in ("ASPARTAME_SHARE_DUMP", "ASPARTAME_SHARE_MODE"):
+    for option in (
+        "ASPARTAME_SHARE_DUMP",
+        "ASPARTAME_SHARE_MODE",
+        "ASPARTAME_SHARE_HOLD_SECONDS",
+    ):
         if option in os.environ:
             env[option] = os.environ[option]
     interpreter = os.environ.get(
