@@ -342,6 +342,8 @@ class ClockActivity(SimpleActivity):
         self._refresh()
 
     def _adjust_changed(self, button):
+        if not button.get_active():
+            self.now = datetime.now()
         self.face.set_interactive(button.get_active())
         self._refresh()
 
