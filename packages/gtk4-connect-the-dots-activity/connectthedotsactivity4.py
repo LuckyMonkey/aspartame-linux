@@ -29,23 +29,30 @@ class ConnectTheDotsActivity(SimpleActivity):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         root.set_margin_top(24); root.set_margin_bottom(24)
         root.set_margin_start(30); root.set_margin_end(30)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Connect the Dots puzzle"])
+        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        body.set_size_request(980, 700); body.set_hexpand(False); body.set_vexpand(True); body.set_halign(Gtk.Align.CENTER); body.set_valign(Gtk.Align.CENTER)
+        root.append(body)
         title = Gtk.Label(label="Connect the Dots", xalign=0)
-        title.add_css_class("title-1"); root.append(title)
+        title.add_css_class("title-1"); body.append(title)
         self.status = Gtk.Label(label="Connect dot 1 to begin", xalign=0)
-        root.append(self.status)
-        self.canvas = Gtk.DrawingArea()
-        self.canvas.set_content_width(640); self.canvas.set_content_height(440)
-        self.canvas.set_hexpand(True); self.canvas.set_vexpand(True)
-        self.canvas.set_focusable(True)
-        self.canvas.update_property([Gtk.AccessibleProperty.LABEL], ["Numbered dot puzzle canvas"])
-        self.canvas.set_draw_func(self._draw)
+        body.append(self.status)
+        self._drawing_area = Gtk.DrawingArea()
+        self._drawing_area.set_size_request(980, 540)
+        self._drawing_area.set_content_width(980)
+        self._drawing_area.set_content_height(540)
+        self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True)
+        self._drawing_area.set_focusable(True)
+        self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Numbered dot puzzle canvas"])
+        self._drawing_area.set_draw_func(self._draw)
         click = Gtk.GestureClick(); click.connect("pressed", self._pressed)
-        self.canvas.add_controller(click); root.append(self.canvas)
+        self._drawing_area.add_controller(click)
+        canvas_frame = Gtk.Frame(); canvas_frame.set_size_request(980, 540); canvas_frame.set_hexpand(True); canvas_frame.set_vexpand(True); canvas_frame.set_child(self._drawing_area); body.append(canvas_frame)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         reset = Gtk.Button(label="New puzzle"); reset.connect("clicked", self._reset)
         reset.update_property([Gtk.AccessibleProperty.LABEL], ["Start a new Connect the Dots puzzle"])
-        controls.append(reset); root.append(controls)
+        controls.append(reset); body.append(controls)
         self.set_canvas(root)
         provider = Gtk.CssProvider()
         provider.load_from_data(b"button { min-height: 42px; border-radius: 19px; }")
@@ -74,15 +81,15 @@ class ConnectTheDotsActivity(SimpleActivity):
     def _pressed(self, _gesture, _n_press, x, y):
         if self._next >= len(self.POINTS):
             return
-        width = max(1, self.canvas.get_width()); height = max(1, self.canvas.get_height())
+        width = max(1, self._drawing_area.get_width()); height = max(1, self._drawing_area.get_height())
         px, py = self._point(self._next, width, height)
         if (x - px) ** 2 + (y - py) ** 2 <= 30 ** 2:
             self._connected.append(self._next); self._next += 1
             self.status.set_text("Puzzle complete!" if self._next == len(self.POINTS) else f"Connect dot {self._next + 1}")
-            self.canvas.queue_draw()
+            self._drawing_area.queue_draw()
 
     def _reset(self, _button):
-        self._next = 0; self._connected.clear(); self.status.set_text("Connect dot 1 to begin"); self.canvas.queue_draw()
+        self._next = 0; self._connected.clear(); self.status.set_text("Connect dot 1 to begin"); self._drawing_area.queue_draw()
 
     def read_file(self, file_path):
         """Restore progress from a Journal object."""
@@ -95,7 +102,7 @@ class ConnectTheDotsActivity(SimpleActivity):
                 raise ValueError("invalid connected points")
             self._connected = connected; self._next = len(connected)
             self.status.set_text("Puzzle complete!" if self._next == len(self.POINTS) else f"Connect dot {self._next + 1}")
-            self.canvas.queue_draw()
+            self._drawing_area.queue_draw()
         except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
             self._reset(None)
 

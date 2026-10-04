@@ -15,13 +15,18 @@ class GearsActivity(SimpleActivity):
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         root.set_margin_top(24); root.set_margin_bottom(24); root.set_margin_start(30); root.set_margin_end(30)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Gears canvas"])
-        title = Gtk.Label(label="Gears", xalign=0); title.add_css_class("title-1"); root.append(title)
-        self.status = Gtk.Label(xalign=0); self.status.add_css_class("dim-label"); root.append(self.status)
-        self.canvas = Gtk.DrawingArea(); self.canvas.set_content_width(640); self.canvas.set_content_height(400); self.canvas.set_vexpand(True); self.canvas.set_draw_func(self._draw); self.canvas.update_property([Gtk.AccessibleProperty.LABEL], ["Meshing gears drawing"]); root.append(self.canvas)
+        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        body.set_size_request(980, 720); body.set_hexpand(False); body.set_vexpand(True); body.set_halign(Gtk.Align.CENTER); body.set_valign(Gtk.Align.CENTER)
+        root.append(body)
+        title = Gtk.Label(label="Gears", xalign=0); title.add_css_class("title-1"); body.append(title)
+        self.status = Gtk.Label(xalign=0); self.status.add_css_class("dim-label"); body.append(self.status)
+        self._drawing_area = Gtk.DrawingArea(); self._drawing_area.set_size_request(980, 520); self._drawing_area.set_content_width(980); self._drawing_area.set_content_height(520); self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True); self._drawing_area.set_draw_func(self._draw); self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Meshing gears drawing"])
+        canvas_frame = Gtk.Frame(); canvas_frame.set_size_request(980, 520); canvas_frame.set_hexpand(True); canvas_frame.set_vexpand(True); canvas_frame.set_child(self._drawing_area); body.append(canvas_frame)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         turn = Gtk.Button(label="Turn gears"); turn.connect("clicked", self._turn); controls.append(turn)
-        reset = Gtk.Button(label="Reset"); reset.connect("clicked", self._reset); controls.append(reset); root.append(controls)
+        reset = Gtk.Button(label="Reset"); reset.connect("clicked", self._reset); controls.append(reset); body.append(controls)
         self.set_canvas(root)
         provider = Gtk.CssProvider(); provider.load_from_data(b"button { min-height: 42px; border-radius: 19px; }")
         display = Gdk.Display.get_default()
@@ -42,10 +47,10 @@ class GearsActivity(SimpleActivity):
         cr.arc(cx, cy, radius * 0.2, 0, 2 * math.pi); cr.set_source_rgb(0.96, 0.96, 0.96); cr.fill()
 
     def _turn(self, _button):
-        self._phase += 0.25; self.status.set_text(f"Rotation: {self._phase:.2f} radians"); self.canvas.queue_draw()
+        self._phase += 0.25; self.status.set_text(f"Rotation: {self._phase:.2f} radians"); self._drawing_area.queue_draw()
 
     def _reset(self, _button):
-        self._phase = 0.0; self.status.set_text("Rotation: 0.00 radians"); self.canvas.queue_draw()
+        self._phase = 0.0; self.status.set_text("Rotation: 0.00 radians"); self._drawing_area.queue_draw()
 
     def read_file(self, file_path):
         try:
@@ -53,7 +58,7 @@ class GearsActivity(SimpleActivity):
             if isinstance(payload, dict):
                 self._phase = float(payload.get("phase", 0.0))
                 self.status.set_text(f"Rotation: {self._phase:.2f} radians")
-                self.canvas.queue_draw()
+                self._drawing_area.queue_draw()
         except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
             return
 

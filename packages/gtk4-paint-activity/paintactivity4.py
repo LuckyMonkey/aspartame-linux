@@ -33,19 +33,30 @@ class PaintActivity(SimpleActivity):
         root.set_margin_bottom(24)
         root.set_margin_start(30)
         root.set_margin_end(30)
+        root.set_hexpand(True)
+        root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Paint activity"])
+
+        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        body.set_size_request(1200, 800)
+        body.set_hexpand(False)
+        body.set_vexpand(True)
+        body.set_halign(Gtk.Align.CENTER)
+        body.set_valign(Gtk.Align.CENTER)
+        root.append(body)
 
         title = Gtk.Label(label="Paint", xalign=0)
         title.add_css_class("title-1")
-        root.append(title)
+        body.append(title)
 
-        self.canvas = Gtk.DrawingArea()
-        self.canvas.set_content_width(720)
-        self.canvas.set_content_height(440)
-        self.canvas.set_hexpand(True)
-        self.canvas.set_vexpand(True)
-        self.canvas.set_draw_func(self._draw)
-        self.canvas.update_property(
+        self._drawing_area = Gtk.DrawingArea()
+        self._drawing_area.set_size_request(1200, 620)
+        self._drawing_area.set_content_width(1200)
+        self._drawing_area.set_content_height(620)
+        self._drawing_area.set_hexpand(True)
+        self._drawing_area.set_vexpand(True)
+        self._drawing_area.set_draw_func(self._draw)
+        self._drawing_area.update_property(
             [Gtk.AccessibleProperty.LABEL, Gtk.AccessibleProperty.DESCRIPTION],
             ["Drawing canvas", "Drag the pointer across the canvas to draw"],
         )
@@ -54,8 +65,13 @@ class PaintActivity(SimpleActivity):
         drag.connect("drag-begin", self._drag_begin)
         drag.connect("drag-update", self._drag_update)
         drag.connect("drag-end", self._drag_end)
-        self.canvas.add_controller(drag)
-        root.append(self.canvas)
+        self._drawing_area.add_controller(drag)
+        canvas_frame = Gtk.Frame()
+        canvas_frame.set_size_request(1200, 620)
+        canvas_frame.set_hexpand(True)
+        canvas_frame.set_vexpand(True)
+        canvas_frame.set_child(self._drawing_area)
+        body.append(canvas_frame)
 
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         controls.update_property([Gtk.AccessibleProperty.LABEL], ["Paint controls"])
@@ -68,11 +84,11 @@ class PaintActivity(SimpleActivity):
         clear.update_property([Gtk.AccessibleProperty.LABEL], ["Clear drawing"])
         clear.connect("clicked", self._clear)
         controls.append(clear)
-        root.append(controls)
+        body.append(controls)
         self.status = Gtk.Label(label="Black ink · drag to draw", xalign=0)
         self.status.add_css_class("dim-label")
         self.status.update_property([Gtk.AccessibleProperty.LABEL], ["Drawing status"])
-        root.append(self.status)
+        body.append(self.status)
         self.set_canvas(root)
 
         provider = Gtk.CssProvider()
@@ -89,14 +105,14 @@ class PaintActivity(SimpleActivity):
     def _drag_begin(self, _gesture, x, y):
         self._active_stroke = [self.color, [(x, y)]]
         self.strokes.append(self._active_stroke)
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def _drag_update(self, gesture, offset_x, offset_y):
         if self._active_stroke is None:
             return
         start_x, start_y = gesture.get_start_point()
         self._active_stroke[1].append((start_x + offset_x, start_y + offset_y))
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def _drag_end(self, _gesture, _offset_x, _offset_y):
         self._active_stroke = None
@@ -108,7 +124,7 @@ class PaintActivity(SimpleActivity):
     def _clear(self, _button):
         self.strokes.clear()
         self.status.set_text(f"{self.color} ink · drag to draw")
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def _draw(self, _area, cr, width, height):
         cr.set_source_rgb(1, 1, 1)
@@ -151,7 +167,7 @@ class PaintActivity(SimpleActivity):
         self.color = color
         self.strokes = restored
         self.status.set_text(f"{self.color} ink · drag to draw")
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def write_file(self, file_path):
         """Save color and stroke geometry as a JSON Journal object."""

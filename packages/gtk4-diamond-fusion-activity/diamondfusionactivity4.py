@@ -40,14 +40,14 @@ class DiamondFusionActivity(SimpleActivity):
         title.add_css_class("title-1"); root.append(title)
         self.status = Gtk.Label(label="Select two matching neighbouring diamonds to fuse.", xalign=0)
         self.status.update_property([Gtk.AccessibleProperty.LABEL], ["Game status"]); root.append(self.status)
-        self.canvas = Gtk.DrawingArea()
-        self.canvas.set_content_width(600); self.canvas.set_content_height(480)
-        self.canvas.set_hexpand(True); self.canvas.set_vexpand(True); self.canvas.set_focusable(True)
-        self.canvas.update_property([Gtk.AccessibleProperty.LABEL, Gtk.AccessibleProperty.DESCRIPTION],
+        self._drawing_area = Gtk.DrawingArea()
+        self._drawing_area.set_content_width(600); self._drawing_area.set_content_height(480)
+        self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True); self._drawing_area.set_focusable(True)
+        self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL, Gtk.AccessibleProperty.DESCRIPTION],
                                     ["Diamond Fusion board", "Click two equal neighbouring diamonds to merge them"])
-        self.canvas.set_draw_func(self._draw)
-        click = Gtk.GestureClick(); click.connect("pressed", self._pressed); self.canvas.add_controller(click)
-        root.append(self.canvas)
+        self._drawing_area.set_draw_func(self._draw)
+        click = Gtk.GestureClick(); click.connect("pressed", self._pressed); self._drawing_area.add_controller(click)
+        root.append(self._drawing_area)
         reset = Gtk.Button(label="New game")
         reset.update_property([Gtk.AccessibleProperty.LABEL], ["Start a new Diamond Fusion game"])
         reset.connect("clicked", self._reset); root.append(reset)
@@ -57,7 +57,7 @@ class DiamondFusionActivity(SimpleActivity):
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def _cell_at(self, x, y):
-        width = max(1, self.canvas.get_width()); height = max(1, self.canvas.get_height())
+        width = max(1, self._drawing_area.get_width()); height = max(1, self._drawing_area.get_height())
         size = min(width / self.COLUMNS, height / self.ROWS)
         left = (width - size * self.COLUMNS) / 2; top = (height - size * self.ROWS) / 2
         column = int((x - left) / size); row = int((y - top) / size)
@@ -69,7 +69,7 @@ class DiamondFusionActivity(SimpleActivity):
         index = self._cell_at(x, y)
         if index is None or not self.cells[index]: return
         if self.selected is None:
-            self.selected = index; self.status.set_text("Choose a matching neighbour."); self.canvas.queue_draw(); return
+            self.selected = index; self.status.set_text("Choose a matching neighbour."); self._drawing_area.queue_draw(); return
         first, second = self.selected, index; self.selected = None
         adjacent = abs(first // self.COLUMNS - second // self.COLUMNS) + abs(first % self.COLUMNS - second % self.COLUMNS) == 1
         if adjacent and self.cells[first] == self.cells[second]:
@@ -77,10 +77,10 @@ class DiamondFusionActivity(SimpleActivity):
             self.score += 1; self.status.set_text(f"Fused! Score: {self.score}")
         else:
             self.status.set_text("Those diamonds do not match; select another pair.")
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def _reset(self, _button):
-        self._reset_model(); self.status.set_text("Select two matching neighbouring diamonds to fuse."); self.canvas.queue_draw()
+        self._reset_model(); self.status.set_text("Select two matching neighbouring diamonds to fuse."); self._drawing_area.queue_draw()
 
     def read_file(self, file_path):
         """Restore the board and score from a Journal object."""
@@ -96,7 +96,7 @@ class DiamondFusionActivity(SimpleActivity):
             self.score = max(0, int(score))
             self.selected = None
             self.status.set_text(f"Score: {self.score} · select two matching neighbours.")
-            self.canvas.queue_draw()
+            self._drawing_area.queue_draw()
         except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
             self._reset_model()
 

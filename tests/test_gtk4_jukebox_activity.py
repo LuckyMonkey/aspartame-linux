@@ -12,6 +12,7 @@ def test_jukebox_is_native_offline_and_accessible():
     assert "sugar-activity4 jukeboxactivity4.JukeboxActivity" in info
     assert "DEMO_TRACKS" in source
     assert "Gtk.ListBox" in source and "Gtk.FileDialog" in source
+    assert "set_size_request(1000, -1)" in source and "Align.CENTER" in source
     assert 'AccessibleProperty.LABEL' in source
     assert "require_version(\"Gtk\", \"3.0\")" not in source
 

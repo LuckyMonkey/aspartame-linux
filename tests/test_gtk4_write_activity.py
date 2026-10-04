@@ -10,6 +10,7 @@ def test_write_bundle_is_native_and_registered():
     assert "sugar-activity4 writeactivity4.WriteActivity" in info
     assert "class WriteActivity(SimpleActivity)" in source
     assert "Document text" in source and "Save draft" in source
+    assert "set_size_request(1100, -1)" in source and "ScrolledWindow" in source
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source
     assert "Path(file_path).read_text(encoding=\"utf-8\")" in source

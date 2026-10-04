@@ -17,6 +17,11 @@ def test_iso_builder_requires_and_stages_standalone_preview():
     assert "sugar-gtk4-spaces-menu-probe.py" in script
     assert 'cp -a "$source/." "$target/"' in script
     assert 'find "$target" -mindepth 1 -maxdepth 1' in script
+    for activity in (
+        "Gears", "ConnectTheDots", "Moon", "Planets", "Paint", "Pippy",
+        "Write", "Jukebox", "FotoToon", "DiamondFusion", "Level",
+    ):
+        assert activity in script
     assert "sugar-gtk4-runtime-check.sh" in script
     assert "sugar-gtk4-lifecycle-probe.sh" in script
     assert "sugar-gtk3-lifecycle-probe.sh" in script
@@ -124,6 +129,65 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     assert not (staged / "Count.activity/gtk4-count-activity").exists()
     assert (staged / "Calculate.activity/calculateactivity4.py").is_file()
     assert not any(path.is_symlink() for path in staged.rglob("*"))
+
+
+def test_staged_layout_activities_replace_nested_archive_copies(tmp_path):
+    """Ensure the packaged UX fixes are authoritative over stale archive files."""
+    project = tmp_path / "project"
+    profile = project / "archiso/aspartame"
+    profile.mkdir(parents=True)
+    for directory in ("packages", "scripts", "gtk4-overlay"):
+        (project / directory).symlink_to(ROOT / directory, target_is_directory=True)
+    preview = tmp_path / "archive/gtk4-preview"
+    (preview / "venv/bin").mkdir(parents=True)
+    (preview / "venv/bin/python").symlink_to("/usr/bin/python3")
+    for package, name in (("log-activity", "Log"), ("imageviewer-activity", "ImageViewer")):
+        source = preview / "sources" / package
+        (source / "activity").mkdir(parents=True)
+        (source / "activity/activity.info").write_text(
+            f"[Activity]\nname = {name}\n"
+        )
+    activities = preview / "prefix/share/sugar/activities"
+    activities.mkdir(parents=True)
+    gears = activities / "Gears.activity"
+    gears.mkdir()
+    (gears / "gearsactivity4.py").write_text("# stale top-level copy\n")
+    (gears / "gtk4-gears-activity").mkdir()
+    (gears / "gtk4-gears-activity/gearsactivity4.py").write_text("# nested copy\n")
+    archive = tmp_path / "preview.tar.gz"
+    with tarfile.open(archive, "w:gz") as output:
+        output.add(preview, arcname="gtk4-preview")
+    tools = tmp_path / "bin"
+    tools.mkdir()
+    mkarchiso = tools / "mkarchiso"
+    mkarchiso.write_text("#!/bin/sh\nexit 0\n")
+    mkarchiso.chmod(0o755)
+    work = tmp_path / "work"
+    subprocess.run(
+        ["bash", str(ROOT / "scripts/build-iso.sh")],
+        env={
+            **os.environ,
+            "PATH": f"{tools}:{os.environ['PATH']}",
+            "PROFILE": str(profile),
+            "OUT_DIR": str(tmp_path / "out"),
+            "WORK_DIR": str(work),
+            "GTK4_PREVIEW_ARCHIVE": str(archive),
+        },
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    staged = (
+        work / "profile/airootfs/usr/lib/aspartame/gtk4-preview"
+        / "prefix/share/sugar/activities/Gears.activity"
+    )
+    assert "set_size_request(980, 520)" in (
+        ROOT / "packages/gtk4-gears-activity/gearsactivity4.py"
+    ).read_text()
+    assert (staged / "gearsactivity4.py").read_bytes() == (
+        ROOT / "packages/gtk4-gears-activity/gearsactivity4.py"
+    ).read_bytes()
+    assert not (staged / "gtk4-gears-activity").exists()
 
 
 def test_export_contains_built_runtime_without_user_state(tmp_path):

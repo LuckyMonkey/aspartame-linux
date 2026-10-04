@@ -13,18 +13,20 @@ class PlanetsActivity(SimpleActivity):
         super().__init__(activity_handle); self.set_title("Planets"); self.selected = "Earth"; self._build()
 
     def _build(self):
-        root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); root.set_margin_top(24); root.set_margin_bottom(24); root.set_margin_start(30); root.set_margin_end(30); root.update_property([Gtk.AccessibleProperty.LABEL], ["Planets orbit canvas"])
-        title = Gtk.Label(label="Planets", xalign=0); title.add_css_class("title-1"); root.append(title)
-        self.canvas = Gtk.DrawingArea(); self.canvas.set_content_width(640); self.canvas.set_content_height(380); self.canvas.set_vexpand(True); self.canvas.set_draw_func(self._draw); self.canvas.update_property([Gtk.AccessibleProperty.LABEL], ["Solar system illustration"]); root.append(self.canvas)
-        self.info = Gtk.Label(label="Earth — our home planet", xalign=0); root.append(self.info)
+        root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); root.set_margin_top(24); root.set_margin_bottom(24); root.set_margin_start(30); root.set_margin_end(30); root.set_hexpand(True); root.set_vexpand(True); root.update_property([Gtk.AccessibleProperty.LABEL], ["Planets orbit canvas"])
+        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); body.set_size_request(1000, 760); body.set_hexpand(False); body.set_vexpand(True); body.set_halign(Gtk.Align.CENTER); body.set_valign(Gtk.Align.CENTER); root.append(body)
+        title = Gtk.Label(label="Planets", xalign=0); title.add_css_class("title-1"); body.append(title)
+        self._drawing_area = Gtk.DrawingArea(); self._drawing_area.set_size_request(1000, 600); self._drawing_area.set_content_width(1000); self._drawing_area.set_content_height(600); self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True); self._drawing_area.set_draw_func(self._draw); self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Solar system illustration"])
+        canvas_frame = Gtk.Frame(); canvas_frame.set_size_request(1000, 600); canvas_frame.set_hexpand(True); canvas_frame.set_vexpand(True); canvas_frame.set_child(self._drawing_area); body.append(canvas_frame)
+        self.info = Gtk.Label(label="Earth — our home planet", xalign=0); body.append(self.info)
         buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         for name in ("Mercury", "Venus", "Earth", "Mars", "Jupiter"):
             button = Gtk.Button(label=name); button.connect("clicked", self._select, name); buttons.append(button)
-        root.append(buttons); self.set_canvas(root)
+        body.append(buttons); self.set_canvas(root)
         provider = Gtk.CssProvider(); provider.load_from_data(b"button { min-height: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-    def _select(self, _button, name): self.selected = name; self.info.set_text(f"{name} — selected planet"); self.canvas.queue_draw()
+    def _select(self, _button, name): self.selected = name; self.info.set_text(f"{name} — selected planet"); self._drawing_area.queue_draw()
 
     def read_file(self, file_path):
         """Restore the selected planet from a JSON Journal object."""

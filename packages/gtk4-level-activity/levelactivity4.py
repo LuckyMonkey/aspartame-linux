@@ -29,18 +29,18 @@ class LevelActivity(SimpleActivity):
         self.readout.update_property([Gtk.AccessibleProperty.LABEL], ["Inclination"])
         root.append(self.readout)
 
-        self.canvas = Gtk.DrawingArea()
-        self.canvas.set_content_width(700); self.canvas.set_content_height(260)
-        self.canvas.set_hexpand(True); self.canvas.set_vexpand(True)
-        self.canvas.set_draw_func(self._draw)
+        self._drawing_area = Gtk.DrawingArea()
+        self._drawing_area.set_content_width(700); self._drawing_area.set_content_height(260)
+        self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True)
+        self._drawing_area.set_draw_func(self._draw)
         # GTK4 has no IMAGE accessible role; the custom drawing surface is a
         # labelled group containing the level controls and canvas.
-        self.canvas.set_accessible_role(Gtk.AccessibleRole.GROUP)
-        self.canvas.update_property([Gtk.AccessibleProperty.LABEL], ["Spirit level"])
+        self._drawing_area.set_accessible_role(Gtk.AccessibleRole.GROUP)
+        self._drawing_area.update_property([Gtk.AccessibleProperty.LABEL], ["Spirit level"])
         drag = Gtk.GestureDrag()
         drag.connect("drag-update", self._drag_update)
-        self.canvas.add_controller(drag)
-        root.append(self.canvas)
+        self._drawing_area.add_controller(drag)
+        root.append(self._drawing_area)
 
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10,
                            halign=Gtk.Align.CENTER)
@@ -75,7 +75,7 @@ class LevelActivity(SimpleActivity):
     def _render(self):
         self.readout.set_text("%+d° inclination" % self.angle)
         self.readout.add_css_class("level-readout")
-        self.canvas.queue_draw()
+        self._drawing_area.queue_draw()
 
     def _draw(self, _area, cr, width, height):
         cx, cy = width / 2, height / 2

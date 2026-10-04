@@ -880,10 +880,25 @@ mkdir -p "$activity_dir"
 # They make Jarabe log "No bundle" errors during startup and obscure real
 # inventory failures; remove only links whose targets are already absent.
 find "$activity_dir" -xtype l -delete
-if test -e "$activity_dir/Log.activity" && test ! -L "$activity_dir/Log.activity"; then
-    echo "refusing to replace a real Log.activity directory" >&2
-    exit 2
-fi
+# A previous build may also have materialized an Activity bundle as a real
+# directory.  GNU ln -sfn does not replace such a directory; it creates a
+# nested symlink instead, leaving the stale top-level entrypoint authoritative.
+# Clear only the known modern bundle targets before recreating their links.
+activity_names=(
+    Log Help Count Calculate Clock JAMClock Mastermind Poll Mancala Reversi
+    Jumble NumberRush AcrossDown IQ AppelHaken BallAndBrick Implode PlayGo
+    BlockParty TypingTurtle Memorize Maze FotoToon Portfolio Markdown Finance
+    Words LastOneLoses GetThingsDone Gridpaint Stopwatch Gears TurtleArt
+    GameOfLife ColorMyWorld Abacus Planets Write ConnectTheDots Pippy Paint
+    DiamondFusion Level Moon GetBooks Jukebox Read ImageViewer Terminal Browse
+)
+for activity_name in "${activity_names[@]}"; do
+    target="$activity_dir/${activity_name}.activity"
+    if test -e "$target" && test ! -L "$target"; then
+        echo "replacing stale GTK4 Activity directory: $target"
+        rm -rf -- "$target"
+    fi
+done
 ln -sfn "$log_activity" "$activity_dir/Log.activity"
 help_activity="$repo/packages/gtk4-help-activity"
 test -f "$help_activity/activity/activity.info" || {

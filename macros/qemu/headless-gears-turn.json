@@ -1,0 +1,5 @@
+[
+  {"action": "click", "x": 520, "y": 906},
+  {"action": "sleep", "seconds": 0.5},
+  {"action": "screenshot", "path": "/tmp/aspartame-gears-button.png"}
+]
