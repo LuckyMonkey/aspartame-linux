@@ -20,6 +20,17 @@ Observed result:
 share-roundtrip=PASS pid=6071 activity_id=dacfa3a0a8b44025b0e0bdd87da41f0a fallback=visible-alert
 ```
 
+The same probe passed after discarding the disposable VM state and rebuilding
+from the patch series:
+
+```text
+applied GTK4 Activity sharing integration: 0180-toolkit-activity-sharing.patch
+applied preview patch: 0181-toolkit-share-button-visible.patch
+applied GTK4 radio palette accessibility: 0182-radiopalette-option-accessibility.patch
+GTK4 toolkit, Casilda, sugar-ext, Jarabe, and datastore preview build: PASS
+share-roundtrip=PASS pid=5168 activity_id=c1aed02d7d124738bbc84cbe8428f4d0 fallback=visible-alert
+```
+
 This is the private/no-presence qualification path. It proves the GTK4
 control is visible to AT-SPI, actionable, and fails safely without claiming
 that an Activity was shared. A real two-guest Telepathy join remains the next
