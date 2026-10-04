@@ -19,14 +19,7 @@ the same model and keep stopped Activities neutral.
          self._journal_entries = []
 +        self._presentation = activitypresentation.get_model()
 +        self._presentation.connect('changed', self._lifecycle_changed)
-@@ -442,8 +444,19 @@ class ActivityIcon(CanvasIcon):
-     def _update(self):
-         self.palette = None
-         if not self._resume_mode or not self._journal_entries:
-             xo_color = XoColor('%s,%s' % (style.COLOR_BUTTON_GREY.get_svg(),
-                                           style.COLOR_WHITE.get_svg()))
-         else:
-             xo_color = misc.get_icon_color(self._journal_entries[0])
+@@ -440,1 +442,11 @@ class ActivityIcon(CanvasIcon):
          self.props.xo_color = xo_color
 +        self._lifecycle_changed()
 +

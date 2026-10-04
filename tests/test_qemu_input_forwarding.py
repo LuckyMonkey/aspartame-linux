@@ -17,6 +17,8 @@ def test_qemu_forwards_keyboard_by_default_while_remaining_floating():
 def test_qemu_runner_can_add_a_private_peer_network_without_changing_ssh():
     script = (ROOT / "scripts/run-qemu.sh").read_text()
     assert 'QEMU_EXTRA_NIC=${QEMU_EXTRA_NIC:-}' in script
+    assert 'QEMU_EXTRA_NIC_MAC=${QEMU_EXTRA_NIC_MAC:-}' in script
+    assert 'mac=$QEMU_EXTRA_NIC_MAC' in script
     assert 'EXTRA_NIC_ARGS=(-nic "$QEMU_EXTRA_NIC")' in script
     assert '"${EXTRA_NIC_ARGS[@]}"' in script
     assert 'hostfwd=tcp:127.0.0.1:${SSH_FORWARD_PORT}-:22' in script

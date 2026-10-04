@@ -19,8 +19,15 @@ QEMU_QMP=${QEMU_QMP:-/tmp/aspartame-qemu-qmp}
 # headless collaboration-peer fixture.  The default remains one user-mode
 # network exactly as before.
 QEMU_EXTRA_NIC=${QEMU_EXTRA_NIC:-}
+QEMU_EXTRA_NIC_MAC=${QEMU_EXTRA_NIC_MAC:-}
 EXTRA_NIC_ARGS=()
 if test -n "$QEMU_EXTRA_NIC"; then
+    # Two guests on one socket-backed fixture need distinct layer-2
+    # identities. Keep the raw QEMU syntax available, while making the
+    # common caller path explicit and hard to misconfigure.
+    if test -n "$QEMU_EXTRA_NIC_MAC" && [[ "$QEMU_EXTRA_NIC" != *,mac=* ]]; then
+        QEMU_EXTRA_NIC="$QEMU_EXTRA_NIC,mac=$QEMU_EXTRA_NIC_MAC"
+    fi
     EXTRA_NIC_ARGS=(-nic "$QEMU_EXTRA_NIC")
 fi
 # Keep the window floating while automatically forwarding keyboard/pointer

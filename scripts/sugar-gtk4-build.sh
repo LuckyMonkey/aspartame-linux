@@ -75,6 +75,10 @@ for patch in "$patch_dir"/*.patch; do
         *0101*) target="$root/sources/sugar" ;;
         *0102*) target="$root/sources/sugar" ;;
         *0103*) target="$root/sources/sugar" ;;
+        *0172*) target="$root/sources/sugar" ;;
+        *0173*) target="$root/sources/sugar" ;;
+        *0174*) target="$root/sources/sugar" ;;
+        *0175*) target="$root/sources/sugar" ;;
         *0104*) target="$root/sources/sugar" ;;
         *0107*) target="$root/sources/sugar" ;;
         *0108*) target="$root/sources/sugar" ;;
@@ -198,7 +202,9 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing Journal fallback: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0043* ]] && grep -q "model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null; then
+    if [[ "$patch_name" == *0043* ]] &&
+        (grep -q "model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null ||
+         grep -q "journalactivity.get_journal().reveal()" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null); then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Journal stack zoom: $patch_name"
         continue
@@ -303,6 +309,12 @@ for patch in "$patch_dir"/*.patch; do
         grep -q 'from gettext import gettext as _' "$shell/src/jarabe/desktop/groupbox.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Group view gettext import: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0103* ]] &&
+        grep -q '_shell_model\._set_active_activity(None)' "$shell/src/jarabe/view/service.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing navigation modal cleanup: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0073* ]] &&
@@ -854,7 +866,7 @@ PY
         (cd "$target" && patch --fuzz=0 -p1 < "$patch")
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "applied authoritative registry selection: $patch_name"
-    elif [[ "$patch_name" == *0029* || "$patch_name" == *0171* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0047* || "$patch_name" == *0049* || "$patch_name" == *0052* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
+    elif [[ "$patch_name" == *0029* || "$patch_name" == *0060* || "$patch_name" == *0067* || "$patch_name" == *0068* || "$patch_name" == *0069* || "$patch_name" == *0073* || "$patch_name" == *0130* || "$patch_name" == *0131* || "$patch_name" == *0132* || "$patch_name" == *0168* || "$patch_name" == *0171* || "$patch_name" == *0172* || "$patch_name" == *0173* || "$patch_name" == *0174* || "$patch_name" == *0175* || "$patch_name" == *0033* || "$patch_name" == *0034* || "$patch_name" == *0035* || "$patch_name" == *0036* || "$patch_name" == *0037* || "$patch_name" == *0038* || "$patch_name" == *0042* || "$patch_name" == *0043* || "$patch_name" == *0044* || "$patch_name" == *0047* || "$patch_name" == *0049* || "$patch_name" == *0052* || "$patch_name" == *0055* || "$patch_name" == *0057* || "$patch_name" == *0079* || "$patch_name" == *0081* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf '%s\n' "$patch_digest" > "$stamp"

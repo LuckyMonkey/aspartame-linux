@@ -11,7 +11,11 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 project_root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
+default_root=/home/aspartame/Development/gtk4-preview
+if [ -f "$project_root/STANDALONE-MANIFEST" ]; then
+    default_root=$project_root
+fi
+root=${GTK4_ROOT:-$default_root}
 workspace_tool="$project_root/scripts/sugar-x11-workspace.py"
 runner="$project_root/scripts/sugar-gtk4-run.sh"
 runtime_dir="/run/user/$(id -u)"
@@ -27,11 +31,12 @@ export ASPARTAME_GTK4_PREVIEW=1
 unset DBUS_SESSION_BUS_ADDRESS
 session_pid=$(pgrep -u "$(id -u)" -x metacity | head -1 || true)
 if [ -n "$session_pid" ] && [ -r "/proc/$session_pid/environ" ]; then
-    while IFS= read -r -d '' entry; do
+    session_env=$(tr '\0' '\n' < "/proc/$session_pid/environ" 2>/dev/null || true)
+    while IFS= read -r entry; do
         case "$entry" in
             DBUS_SESSION_BUS_ADDRESS=*) export "$entry" ;;
         esac
-    done < "/proc/$session_pid/environ"
+    done <<< "$session_env"
 fi
 # Workspace switching uses EWMH and remains valid even when Metacity was
 # launched without a session bus (common in recovery/reload sessions).  Only

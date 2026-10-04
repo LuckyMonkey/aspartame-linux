@@ -1,0 +1,60 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: hide Neighborhood empty state when peer content arrives
+
+The Neighborhood empty-state label is useful while the model is empty, but it
+must not remain visible after a BuddyIcon or shared Activity is added. Keep
+the label as a stable child and update only its visibility as collaboration
+content changes.
+
+--- a/src/jarabe/desktop/meshbox.py
++++ b/src/jarabe/desktop/meshbox.py
+@@ -400,6 +400,7 @@
+ 
+         self._model.connect('activity-added', self._activity_added_cb)
+         self._model.connect('activity-removed', self._activity_removed_cb)
++        self._update_empty_state()
+ 
+         netmgr_observer = NetworkManagerObserver(self)
+         netmgr_observer.listen()
+@@ -416,6 +417,12 @@
+     def _activity_removed_cb(self, model, activity_model):
+         self._remove_activity(activity_model)
+ 
++    def _update_empty_state(self):
++        if self._empty_state is None:
++            return
++        has_content = bool(self._buddies or self._activities)
++        self._empty_state.set_visible(not has_content)
++
+     def _add_buddy(self, buddy_model):
+         buddy_model.connect('notify::current-activity',
+                             self.__buddy_notify_current_activity_cb)
+@@ -430,12 +437,14 @@
+             icon.set_filter(self._query)
+ 
+         self._buddies[buddy_model.props.key] = icon
++        self._update_empty_state()
+ 
+     def _remove_buddy(self, buddy_model):
+         logging.debug('MeshBox._remove_buddy')
+         icon = self._buddies[buddy_model.props.key]
+         self.remove(icon)
+         del self._buddies[buddy_model.props.key]
++        self._update_empty_state()
+ 
+     def __buddy_notify_current_activity_cb(self, buddy_model, pspec):
+         logging.debug('MeshBox.__buddy_notify_current_activity_cb %s',
+@@ -454,11 +463,13 @@
+             icon.set_filter(self._query)
+ 
+         self._activities[activity_model.activity_id] = icon
++        self._update_empty_state()
+ 
+     def _remove_activity(self, activity_model):
+         icon = self._activities[activity_model.activity_id]
+         self.remove(icon)
+         del self._activities[activity_model.activity_id]
++        self._update_empty_state()
+ 
+     # add AP to its corresponding network icon on the desktop,
+     # creating one if it doesn't already exist

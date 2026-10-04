@@ -1,0 +1,17 @@
+--- a/src/jarabe/desktop/favoriteslayout.py
++++ b/src/jarabe/desktop/favoriteslayout.py
+@@ -199,8 +199,14 @@
+                 x = y = None
+ 
+                 if hasattr(child, "get_positioning_data"):
+                     positioning_data = child.get_positioning_data()
++                    if positioning_data is None:
++                        # A peer can be discovered before its BuddyInfo key
++                        # arrives.  Keep layout allocation alive and give the
++                        # unkeyed child a unique, local placement token.
++                        positioning_data = '%s:%s' % (
++                            type(child).__qualname__, id(child))
+                    if isinstance(positioning_data, str):
+                        positioning_data = positioning_data.encode('utf-8')
+                    md5hash = hashlib.md5(positioning_data)
+                    digest = abs(hash(md5hash.digest()))

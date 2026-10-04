@@ -6,6 +6,11 @@ ROOT = Path(__file__).parents[1]
 
 def test_spaces_controller_uses_existing_metacity_workspaces():
     controller = (ROOT / 'scripts/sugar-gtk4-space.sh').read_text()
+    assert 'default_root=/home/aspartame/Development/gtk4-preview' in controller
+    assert 'STANDALONE-MANIFEST' in controller
+    assert 'session_env=$(tr' in controller
+    assert 'done <<< "$session_env"' in controller
+    assert 'done < "/proc/$session_pid/environ"' not in controller
     assert 'switch-to-workspace-1' in controller
     assert 'switch-to-workspace-2' in controller
     assert 'F7' in controller
