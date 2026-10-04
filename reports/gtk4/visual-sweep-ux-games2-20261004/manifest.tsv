@@ -1,0 +1,5 @@
+bundle\tresolution\tvisual_status\tlifecycle_status
+org.sugarlabs.NumRush\t1920x1080\tPASS\tPASS resume/cleanup
+org.sugarlabs.StopwatchActivity\t1920x1080\tPASS\tPASS resume/cleanup
+org.laptop.BlockPartyActivity\t1920x1080\tPASS\tPASS resume/cleanup
+org.laptop.Memorize\t1920x1080\tPASS\tPASS resume/cleanup

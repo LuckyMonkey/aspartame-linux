@@ -109,3 +109,10 @@ than presenting controls as isolated top-aligned widgets; Appel Haken also
 uses visible color semantics for its region controls. All four passed two
 Journal roundtrip cycles and the full headless sweep remained 50/50. See
 [`gtk4-activity-ux-pass-20261004-games.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games.md).
+
+The fifth UX batch qualified Number Rush, Stopwatch, BlockParty, and Memorize
+at 1920×1080. Compact interaction Activities now have labeled expanding work
+surfaces, centered controls, and a prominent Stopwatch readout instead of
+isolated top-aligned widgets. All four passed two Journal roundtrip cycles and
+the full headless sweep remained 50/50. See
+[`gtk4-activity-ux-pass-20261004-games2.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games2.md).

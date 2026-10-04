@@ -10,6 +10,9 @@ def test_stopwatch_exposes_a_journal_state_boundary():
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source
     assert 'json.dumps({"elapsed": self.elapsed}' in source
+    assert 'Gtk.Frame(label="Elapsed time")' in source
+    assert 'stopwatch-display' in source and 'font-size: 64px' in source
+    assert "set_vexpand(True)" in source and "set_valign(Gtk.Align.CENTER)" in source
 
 
 def test_stopwatch_roundtrip_probe_targets_journal_resume():

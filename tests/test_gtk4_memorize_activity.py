@@ -11,6 +11,8 @@ def test_memorize_bundle_is_native_and_registered():
     assert "sugar-activity4 memorizeactivity4.MemorizeActivity" in info
     assert "class MemorizeActivity(SimpleActivity)" in source
     assert "New game" in source
+    assert 'Gtk.Frame(label="Matching cards")' in source
+    assert "set_vexpand(True)" in source and "set_valign(Gtk.Align.CENTER)" in source
     assert "def read_file" in source and "def write_file" in source
     assert "org.laptop.Memorize" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-memorize-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()

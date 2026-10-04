@@ -11,6 +11,8 @@ def test_blockparty_bundle_is_native_and_registered():
     assert "sugar-activity4 blockpartyactivity4.BlockPartyActivity" in info
     assert "class BlockPartyActivity(SimpleActivity)" in source
     assert "Reset puzzle" in source
+    assert 'Gtk.Frame(label="Block arrangement")' in source
+    assert "set_vexpand(True)" in source and "set_valign(Gtk.Align.CENTER)" in source
     assert "def read_file" in source and "def write_file" in source
     assert "org.laptop.BlockPartyActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-blockparty-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
