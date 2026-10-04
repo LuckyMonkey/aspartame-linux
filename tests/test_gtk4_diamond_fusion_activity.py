@@ -11,6 +11,8 @@ def test_diamond_fusion_bundle_is_native_and_registered():
     assert "sugar-activity4 diamondfusionactivity4.DiamondFusionActivity" in info
     assert "class DiamondFusionActivity(SimpleActivity)" in source
     assert "Gtk.GestureClick" in source and "Fused!" in source
+    assert "board_frame = Gtk.Frame(label=\"Puzzle board\")" in source
+    assert "root.set_hexpand(True); root.set_vexpand(True)" in source
     assert "def read_file(self, file_path)" in source
     assert '"cells": self.cells' in source and '"score": self.score' in source
     assert (package / "activity/diamond-fusion.svg").is_file()
