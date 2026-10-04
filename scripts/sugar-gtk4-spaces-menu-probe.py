@@ -4,6 +4,7 @@
 import dbus
 import os
 from pathlib import Path
+import subprocess
 import time
 
 
@@ -139,6 +140,25 @@ marker.unlink(missing_ok=True)
 activate(bus, compare, "Compare Spaces side by side")
 
 wait_for("side-by-side marker", lambda: marker if marker.exists() else None)
+checker = Path(__file__).with_name("sugar-gtk4-side-by-side-probe.sh")
+last_result = None
+
+
+def check_side_by_side():
+    global last_result
+    last_result = subprocess.run(
+        [str(checker)], capture_output=True, text=True, check=False,
+    )
+    if last_result.returncode == 0:
+        return last_result.stdout.rstrip()
+    return None
+
+
+geometry = wait_for("side-by-side geometry", check_side_by_side, timeout=30)
+if geometry:
+    print(geometry, flush=True)
+if last_result and last_result.stderr:
+    print(last_result.stderr.rstrip(), flush=True)
 print(
     "spaces-menu=PASS button=Spaces compare-action=PASS "
     f"marker={marker}",

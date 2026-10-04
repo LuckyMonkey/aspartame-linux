@@ -15,6 +15,7 @@ def test_iso_builder_requires_and_stages_standalone_preview():
     assert "/usr/lib/aspartame" in script
     assert "gtk4-overlay" in script
     assert "sugar-gtk4-spaces-menu-probe.py" in script
+    assert "sugar-gtk4-side-by-side-probe.sh" in script
     assert 'cp -a "$source/." "$target/"' in script
     assert 'find "$target" -mindepth 1 -maxdepth 1' in script
     for activity in (

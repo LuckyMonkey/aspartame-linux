@@ -141,7 +141,8 @@ install -D -m 0755 "$project_root/scripts/snakepit.py" \
 for helper in sugar-gtk4-run.sh sugar-gtk4-session.sh sugar-gtk4-space.sh \
              sugar-gtk4-runtime-check.sh sugar-gtk4-lifecycle-probe.sh \
              sugar-gtk3-lifecycle-probe.sh \
-             sugar-gtk4-spaces-menu-probe.py sugar-gtk4-visual-sweep-guest.sh \
+             sugar-gtk4-spaces-menu-probe.py sugar-gtk4-side-by-side-probe.sh \
+             sugar-gtk4-visual-sweep-guest.sh \
              sugar-x11-workspace.py; do
     install -m 0755 "$project_root/scripts/$helper" \
         "$preview_root/gtk4-preview/scripts/$helper"

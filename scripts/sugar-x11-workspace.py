@@ -94,6 +94,12 @@ class Ewmh:
             c_void_p, c_ulong, c_int, c_int, c_uint, c_uint,
         ]
         x11.XMoveResizeWindow.restype = c_int
+        x11.XGetGeometry.argtypes = [
+            c_void_p, c_ulong, POINTER(c_ulong), POINTER(c_int),
+            POINTER(c_int), POINTER(c_uint), POINTER(c_uint),
+            POINTER(c_uint), POINTER(c_uint),
+        ]
+        x11.XGetGeometry.restype = c_int
 
     def atom(self, name):
         return self.x11.XInternAtom(self.display, name.encode(), False)
@@ -168,6 +174,20 @@ class Ewmh:
                 self.display, self.root, False, mask, byref(event)):
             raise RuntimeError(f"window manager rejected {message_name}")
         self.x11.XSync(self.display, False)
+
+    def window_geometry(self, window):
+        root = c_ulong()
+        x = c_int()
+        y = c_int()
+        width = c_uint()
+        height = c_uint()
+        border = c_uint()
+        depth = c_uint()
+        if not self.x11.XGetGeometry(
+                self.display, window, byref(root), byref(x), byref(y),
+                byref(width), byref(height), byref(border), byref(depth)):
+            raise RuntimeError(f"could not inspect window 0x{window:x}")
+        return x.value, y.value, width.value, height.value
 
     def switch(self, workspace):
         self._send(self.root, "_NET_CURRENT_DESKTOP", [workspace, 0])
@@ -262,6 +282,9 @@ def parser():
     geometry.add_argument("--width", type=int, required=True)
     geometry.add_argument("--height", type=int, required=True)
     geometry.add_argument("--timeout", type=float, default=10.0)
+    inspect = actions.add_parser("inspect")
+    inspect.add_argument("--pid", type=int, required=True)
+    inspect.add_argument("--timeout", type=float, default=10.0)
     return result
 
 
@@ -291,6 +314,17 @@ def main():
         ewmh.geometry(window, args.x, args.y, args.width, args.height)
         print(f"window=0x{window:x}")
         print(f"geometry={args.x},{args.y} {args.width}x{args.height}")
+        return 0
+
+    if args.action == "inspect":
+        x, y, width, height = ewmh.window_geometry(window)
+        desktops = ewmh.property_longs(window, "_NET_WM_DESKTOP")
+        workspace = desktops[0] if desktops else -1
+        active = int(ewmh.active_window() == window)
+        print(f"window=0x{window:x}")
+        print(f"workspace={workspace}")
+        print(f"active={active}")
+        print(f"geometry={x},{y} {width}x{height}")
         return 0
 
     ewmh.place(window, args.workspace, args.fullscreen)

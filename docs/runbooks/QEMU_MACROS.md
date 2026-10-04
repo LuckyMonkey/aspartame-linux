@@ -49,6 +49,18 @@ QMP framebuffer capture and absolute pointer activation are qualified. A
 macro reporting `PASS` still means only that its transport steps completed
 unless the macro has a semantic assertion or a paired guest-side probe. The
 Spaces button/AT-SPI probe and the guest controller qualify side-by-side
-comparison without host focus. Physical F7/F8 remains a separate open input
-transport check; the current QEMU key macro reaches X11 but does not complete
-the workspace transition.
+comparison without host focus. The probe also checks both managed windows with
+`sugar-x11-workspace.py inspect`: both must be on workspace 0, GTK3 must
+occupy the left half, and GTK4 must occupy the right half at full display
+height. The checked-in `spaces-side-by-side.json` macro only captures the
+already-qualified framebuffer; it does not pretend that F7/F8 transport passed.
+
+Run the complete headless qualification against a running VM with:
+
+```sh
+SSH_PORT=2223 ASPARTAME_QEMU_QMP=/tmp/aspartame-qemu-qmp-headless \
+  ./scripts/qualify-qemu-spaces-side-by-side.sh
+```
+
+Physical F7/F8 remains a separate open input transport check; the current
+QEMU key macro reaches X11 but does not complete the workspace transition.

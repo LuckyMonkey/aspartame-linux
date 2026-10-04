@@ -124,6 +124,29 @@ def test_x11_helper_uses_standard_ewmh_messages():
     assert 'ewmh.activate(window)' in helper
     assert 'XMoveResizeWindow' in helper
     assert 'actions.add_parser("geometry")' in helper
+    assert 'actions.add_parser("inspect")' in helper
+    assert 'XGetGeometry' in helper
+
+
+def test_side_by_side_probe_checks_real_window_geometry():
+    probe = (ROOT / 'scripts/sugar-gtk4-side-by-side-probe.sh').read_text()
+    assert 'aspartame-side-by-side' in probe
+    assert '"$workspace_tool" inspect' in probe
+    assert 'gtk3_workspace' in probe
+    assert 'gtk4_workspace' in probe
+    assert 'side-by-side=PASS' in probe
+    assert 'screen_height' in probe
+
+
+def test_headless_side_by_side_macro_only_captures_qualified_framebuffer():
+    import json
+
+    macro_path = ROOT / 'macros/qemu/spaces-side-by-side.json'
+    macro = json.loads(macro_path.read_text())
+    assert all(step.get('action') not in {'key', 'click'} for step in macro)
+    assert any(step.get('action') == 'screenshot' for step in macro)
+    assert 'F7' not in macro_path.read_text()
+    assert 'F8' not in macro_path.read_text()
 
 
 def test_activate_sends_pager_request_to_target_window():
