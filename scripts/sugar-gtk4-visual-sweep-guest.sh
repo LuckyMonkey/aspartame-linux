@@ -9,12 +9,15 @@ if ! grep -qx 'IMAGE_ID=aspartame' /etc/os-release; then
     exit 2
 fi
 
-root=/mnt/aspartame-dev
+root=${ASPARTAME_DEV_ROOT:-/mnt/aspartame-dev}
+gtk4_root=${GTK4_ROOT:-/usr/lib/aspartame/gtk4-preview}
+if [ ! -f "$root/scripts/sugar-gtk4-activity-matrix.sh" ]; then
+    root="$gtk4_root"
+fi
 matrix="$root/scripts/sugar-gtk4-activity-matrix.sh"
 out_dir=${1:-$root/reports/gtk4/visual-sweep-$(date +%Y%m%d)}
 settle=${VISUAL_SETTLE_SECONDS:-0.8}
 filter=${VISUAL_ACTIVITY_FILTER:-}
-gtk4_root=${GTK4_ROOT:-/usr/lib/aspartame/gtk4-preview}
 space_controller="$gtk4_root/scripts/sugar-gtk4-space.sh"
 
 # A headless boot still owns separate GTK3/GTK4 workspaces. Select the modern

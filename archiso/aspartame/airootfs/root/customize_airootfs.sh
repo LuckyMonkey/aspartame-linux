@@ -98,6 +98,12 @@ while IFS=$'\t' read -r repo bundle; do
 done < /usr/share/aspartame/activities/INSTALL-MANIFEST
 
 site_packages=$(python3 -c 'import sugar3, os; print(os.path.dirname(sugar3.__file__))')
+# Ignore malformed legacy numeric Journal metadata instead of taking down the
+# shell while the datastore enumerates history. Apply after pacman installs
+# sugar-datastore so GTK3 and GTK4 use the same safe D-Bus service.
+datastore_site_packages=$(python3 -c 'import carquinyol, os; print(os.path.dirname(carquinyol.__file__))')
+patch -d "$datastore_site_packages" -p0 < \
+    /usr/share/aspartame/0002-sugar-datastore-ignore-malformed-numeric-metadata.patch
 # Preserve the distro GTK3 handler before the generated Aspartame wrapper
 # replaces it.  The wrapper delegates to this copy in a standalone image;
 # without it the classic Space can accidentally import GTK4 shell code.

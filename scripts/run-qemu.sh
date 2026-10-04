@@ -28,6 +28,7 @@ QEMU_WINDOW_HEIGHT=${QEMU_WINDOW_HEIGHT:-900}
 SSH_FORWARD_PORT=${SSH_FORWARD_PORT:-2222}
 QEMU_HEADLESS=${QEMU_HEADLESS:-0}
 QEMU_SNAPSHOT=${QEMU_SNAPSHOT:-0}
+QEMU_DEV_SHARE_MOUNT=${QEMU_DEV_SHARE_MOUNT:-1}
 
 SNAPSHOT_ARGS=()
 if test "$QEMU_SNAPSHOT" = 1; then
@@ -42,7 +43,12 @@ fi
 
 test -f "$ISO" || { echo "missing ISO: $ISO" >&2; exit 2; }
 mkdir -p "$(dirname "$DISK")"
-mkdir -p "$DEV_SHARE"
+if test "$QEMU_DEV_SHARE_MOUNT" = 1; then
+    mkdir -p "$DEV_SHARE"
+    DEV_SHARE_ARGS=(-virtfs "local,path=$DEV_SHARE,mount_tag=aspartame-dev,security_model=none")
+else
+    DEV_SHARE_ARGS=()
+fi
 if ! test -f "$DISK"; then
     qemu-img create -f qcow2 "$DISK" 32G
 fi
@@ -73,7 +79,7 @@ qemu-system-x86_64 \
     -device usb-tablet,id=usb_tablet,display=video0 \
     -device usb-kbd,id=usb_keyboard,display=video0 \
     -device virtio-keyboard-pci,id=virtio_keyboard,display=video0 \
-    -virtfs "local,path=$DEV_SHARE,mount_tag=aspartame-dev,security_model=none" \
+    "${DEV_SHARE_ARGS[@]}" \
     -name Aspartame &
 qemu_pid=$!
 

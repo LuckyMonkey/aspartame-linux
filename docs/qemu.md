@@ -13,6 +13,10 @@ virtio disks/network/GPU, 1920×1080 GTK display, USB tablet, AC97, and a serial
 log. Override `RAM`, `CPUS`, `ISO`, `DISK`, `DATA_DISK`, `DEV_SHARE`, or
 `AUDIO_BACKEND` in the environment.
 
+Set `QEMU_DEV_SHARE_MOUNT=0` for packaged/shareless qualification. This omits
+the 9p development tree entirely; the guest must then use only the ISO's
+installed GTK4 preview and helper scripts.
+
 The equivalent command is generated directly by `scripts/run-qemu.sh`; no
 virt-manager state is involved. The key arguments are:
 
