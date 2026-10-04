@@ -21,6 +21,7 @@ class ActivityManager(SectionView):
         super().__init__()
         self._model = activity_model
         self._rows = []
+        self._processes = []
         self.set_spacing(12)
         self.set_margin_top(24)
         self.set_margin_bottom(24)
@@ -65,35 +66,55 @@ class ActivityManager(SectionView):
             info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
             info.set_hexpand(True)
             info.append(Gtk.Label(label=activity['name'], xalign=0))
+            snakepit = activity.get('runtime') == 'snakepit-python'
+            removable = activity.get('removable', False)
+            launchable = snakepit and activity.get('launchable', False)
             runtime = RUNTIME_LABELS.get(
                 activity.get('runtime', 'experimental'),
                 _('Unknown runtime'))
-            install_state = (_('System-managed') if activity['managed']
-                             else _('User-installed'))
+            if snakepit:
+                install_state = (_('Qualified launch') if launchable
+                                 else _('Not qualified'))
+            else:
+                install_state = (_('System-managed') if activity['managed']
+                                 else _('User-installed'))
             display_state = _('%s · %s') % (runtime, install_state)
             info.append(Gtk.Label(
                 label=_('%s · Version %s · %s') % (
                     runtime, activity['version'], install_state), xalign=0))
             box.append(info)
-            removable = activity.get('removable', False)
-            if removable:
+            if launchable:
+                action_label = _('Launch')
+                action_tip = _('Launch this qualified Python workflow.')
+                action_callback = self._launch_clicked
+            elif snakepit:
+                action_label = _('Not ready')
+                action_tip = activity.get(
+                    'summary', _('No qualified launch contract is available.'))
+                action_callback = None
+            elif removable:
                 action_label = (_('Request approval') if activity['managed']
                                 else _('Remove'))
                 action_tip = (
                     _('Request Sugar approval to remove this system Activity.')
                     if activity['managed'] else
                     _('Remove this Activity to a recoverable quarantine.'))
+                action_callback = None
             else:
                 action_label = _('Unavailable')
                 action_tip = _('No qualified launch or removal action is available.')
+                action_callback = None
             action = Gtk.Button(label=action_label)
-            action.set_sensitive(removable)
+            action.set_sensitive(removable or launchable)
             action.set_tooltip_text(action_tip)
             action.update_property(
                 [Gtk.AccessibleProperty.LABEL,
                  Gtk.AccessibleProperty.DESCRIPTION],
                 [action.get_label(), action.get_tooltip_text()])
-            action.connect('clicked', self._remove_clicked, activity)
+            if action_callback is not None:
+                action.connect('clicked', action_callback, activity)
+            elif removable:
+                action.connect('clicked', self._remove_clicked, activity)
             box.append(action)
             row.set_child(box)
             row.update_property([Gtk.AccessibleProperty.LABEL,
@@ -115,6 +136,17 @@ class ActivityManager(SectionView):
             _('Removed %s. A recoverable copy is at %s.') %
             (activity['name'], target))
         self.setup()
+
+    def _launch_clicked(self, _button, activity):
+        try:
+            process = self._model.launch_activity(activity)
+        except (OSError, PermissionError, ValueError) as error:
+            self._status.set_text(_('Launch not completed: %s') % error)
+            return
+        self._processes.append(process)
+        self._status.set_text(
+            _('Started %s from its qualified Python environment.') %
+            activity['name'])
 
     def undo(self):
         self.setup()

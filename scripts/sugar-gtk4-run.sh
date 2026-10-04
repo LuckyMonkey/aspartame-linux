@@ -84,6 +84,8 @@ command -v dbus-run-session >/dev/null || { echo "missing dbus-run-session" >&2;
 command -v python3 >/dev/null || { echo "missing python3" >&2; exit 2; }
 
 mkdir -p "$state_root/home" "$state_root/data" "$state_root/config" "$state_root/cache"
+snakepit_record_dir="$state_root/snakepit/records"
+mkdir -p "$snakepit_record_dir"
 # Casilda exposes one private Activity compositor per modern Space. Refuse a
 # second launcher before it can compete for the same fullscreen surface.
 # The packaged runtime tree is read-only except for its explicit state
@@ -193,6 +195,7 @@ exec env \
     DATASTORE_SERVICE="$datastore/bin/datastore-service" \
     DATASTORE_LOG="$log_root/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
     ASPARTAME_GTK4_LOG="$log" \
+    ASPARTAME_SNAKEPIT_RECORD_DIR="$snakepit_record_dir" \
     ASPARTAME_CHIRALITY_STATE_FILE="$chirality_state_root/chirality.json" \
     ASPARTAME_CHIRALITY_RESUME_SCRIPT="$project_root/scripts/sugar-gtk4-chirality-session-resume.py" \
     PYTHON_BIN="$python_bin" \

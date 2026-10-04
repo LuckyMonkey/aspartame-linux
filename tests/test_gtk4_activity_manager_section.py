@@ -20,6 +20,8 @@ def test_gtk4_activity_manager_is_native_and_registry_backed():
     assert "Snakepit Python" in view
     assert "Unknown runtime" in view
     assert "No qualified launch or removal action is available." in view
+    assert "Launch this qualified Python workflow." in view
+    assert "_launch_clicked" in view
     assert "bundleregistry.get_registry()" in model
     assert "'runtime': 'native-sugar'" in model
     assert "'installed': True" in model
@@ -29,6 +31,10 @@ def test_gtk4_activity_manager_is_native_and_registry_backed():
     assert "shutil.move(path, target)" in model
     assert "_forget_registry_bundle(registry, path)" in model
     assert "remover(path, emit_signals=True)" in model
+    assert "list_snakepit_activities" in model
+    assert "ASPARTAME_SNAKEPIT_RECORD_DIR" in model
+    assert "SNAKEPIT_SCHEMA" in model
+    assert "def launch_activity(activity)" in model
     assert "import cpsection.activities" in patch
     assert '*0112*) target="$root/sources/sugar" ;;' in build
 

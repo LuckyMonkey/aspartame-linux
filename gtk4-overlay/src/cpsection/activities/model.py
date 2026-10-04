@@ -4,7 +4,9 @@ Removal deliberately reuses Aspartame's recoverable quarantine policy for user
 bundles and the native approval/remover boundary for system bundles.
 """
 
+import json
 import os
+from pathlib import Path
 import shutil
 import subprocess
 import time
@@ -24,6 +26,73 @@ MANAGED_ROOTS = (
     '/usr/local/share/sugar/activities',
     '/usr/lib/sugar/activities',
 )
+SNAKEPIT_SCHEMA = 'aspartame.snakepit.qualification/v0'
+
+
+def _snakepit_record_root():
+    """Return the user-owned directory containing qualification records."""
+    configured = os.environ.get('ASPARTAME_SNAKEPIT_RECORD_DIR')
+    if configured:
+        return Path(configured).expanduser().resolve()
+    return Path(os.path.expanduser(
+        '~/.local/share/aspartame/snakepit/records')).resolve()
+
+
+def _qualified_launch(record):
+    """Validate the small launch contract without executing it."""
+    if record.get('schema') != SNAKEPIT_SCHEMA or record.get('status') != 'PASS':
+        return False
+    contract = record.get('launch')
+    if not isinstance(contract, dict):
+        return False
+    command = contract.get('command')
+    cwd = Path(str(contract.get('cwd', ''))).expanduser()
+    environment = Path(str(contract.get('environment', ''))).expanduser()
+    return (isinstance(command, list) and bool(command) and
+            all(isinstance(item, str) and item for item in command) and
+            cwd.is_dir() and (environment / 'bin' / 'python').is_file())
+
+
+def _snakepit_activity(record_path):
+    """Turn one qualified or failed record into a truthful manager row."""
+    try:
+        record = json.loads(record_path.read_text(encoding='utf-8'))
+    except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+        return None
+    if not isinstance(record, dict):
+        return None
+    software = record.get('software')
+    if not isinstance(software, dict):
+        return None
+    name = str(software.get('name') or record_path.stem)
+    qualified = _qualified_launch(record)
+    return {
+        'id': 'org.aspartame.snakepit.' + name.replace('_', '-').replace(' ', '-'),
+        'name': name,
+        'version': str(record.get('interpreter', {}).get('version') or 'record'),
+        'path': str(record_path),
+        'record': str(record_path),
+        'runtime': 'snakepit-python',
+        'installed': qualified,
+        'launchable': qualified,
+        'removable': False,
+        'managed': False,
+        'summary': ('Qualified launch contract' if qualified else
+                    str(record.get('error') or 'Qualification incomplete')),
+    }
+
+
+def list_snakepit_activities():
+    """List records without presenting failed or incomplete records as ready."""
+    root = _snakepit_record_root()
+    if not root.is_dir():
+        return []
+    activities = []
+    for record_path in sorted(root.glob('*.json')):
+        activity = _snakepit_activity(record_path)
+        if activity is not None:
+            activities.append(activity)
+    return activities
 
 
 def _is_managed(path):
@@ -57,7 +126,45 @@ def list_activities():
             'removable': managed or user_installed,
             'managed': managed,
         })
+    activities.extend(list_snakepit_activities())
     return sorted(activities, key=lambda item: item['name'].casefold())
+
+
+def _launch_contract(activity):
+    record_path = Path(activity.get('record', '')).expanduser().resolve()
+    root = _snakepit_record_root()
+    try:
+        record_path.relative_to(root)
+    except ValueError as error:
+        raise PermissionError(
+            'That Python record is outside the managed record folder.') from error
+    try:
+        record = json.loads(record_path.read_text(encoding='utf-8'))
+    except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError) as error:
+        raise ValueError('The Python qualification record is not readable.') from error
+    if not _qualified_launch(record):
+        raise ValueError('This Python Activity has no qualified launch contract.')
+    contract = record['launch']
+    cwd = Path(contract['cwd']).expanduser().resolve()
+    environment = Path(contract['environment']).expanduser().resolve()
+    return list(contract['command']), cwd, environment
+
+
+def launch_activity(activity):
+    """Start a qualified Snakepit workflow without making it removable."""
+    if activity.get('runtime') != 'snakepit-python':
+        raise ValueError('Only Snakepit Python Activities have a launch contract.')
+    command, cwd, environment = _launch_contract(activity)
+    child_environment = os.environ.copy()
+    child_environment.update({
+        'PATH': str(environment / 'bin') + os.pathsep + child_environment.get('PATH', ''),
+        'PYTHONNOUSERSITE': '1',
+        'PYTHONPATH': str(cwd),
+        'VIRTUAL_ENV': str(environment),
+        'ASPARTAME_SNAKEPIT_ENVIRONMENT': str(environment),
+    })
+    return subprocess.Popen(command, cwd=str(cwd), env=child_environment,
+                            stdin=subprocess.DEVNULL, start_new_session=True)
 
 
 def remove_activity(path, quarantine=QUARANTINE_ROOT):

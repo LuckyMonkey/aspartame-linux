@@ -305,6 +305,17 @@ system Python; it does not yet qualify arbitrary remote package graphs. The
 next runtime milestone is Activity Manager consuming these explicit launch
 contracts for a real user-facing Python application.
 
+The GTK4 Activity Manager now provides that bounded bridge. It reads JSON
+records from the user-owned `ASPARTAME_SNAKEPIT_RECORD_DIR` (the GTK4 session
+defaults this to its state directory), labels rows `Snakepit Python`, and
+marks only a passing record with a valid environment and launch contract as
+qualified and launchable. A qualified row offers `Launch`; failed or
+incomplete records remain visible as `Not ready` and are never removable.
+Launches inherit the recorded environment boundary (`PATH`, `VIRTUAL_ENV`,
+`PYTHONNOUSERSITE`, and `PYTHONPATH`) and start as a separate process. This is
+explicit v0 contract integration, not a universal package resolver or a
+security sandbox.
+
 The JSON record is the authority: it contains the interpreter, venv isolation
 probe, dependency declaration, exact workflow command, output, exit status,
 timestamps, and failure reason. A passing record proves this one workflow for

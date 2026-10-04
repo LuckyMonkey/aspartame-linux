@@ -141,6 +141,15 @@ selection, and a Stop action that cancels the complete child process group
 while retaining the same Journal payload. This is useful Python runtime
 progress, not a claim of a security sandbox or full upstream Pippy parity.
 
+Snakepit's next runtime boundary is now connected to the GTK4 Activity
+Manager. It discovers user-owned qualification records, labels them `Snakepit
+Python`, exposes only passing records with a valid environment and explicit
+launch contract as `Launch`, and keeps failed/incomplete records `Not ready`
+and non-removable. The launcher inherits the qualified environment rather
+than system Python. This is explicit v0 contract integration; dependency
+resolution, security sandboxing, and broad Activity Manager discovery remain
+open. See `reports/python/activity-manager-snakepit-20261004.md`.
+
 References:
 
 - https://github.com/sugarlabs/sugar-toolkit-gtk4
