@@ -103,9 +103,11 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   [`neighborhood-peer-20261004.md`](../../reports/gtk4/neighborhood-peer-20261004.md).
   Full Activity sharing/join remains open because the GTK4 toolkit still
   refuses the share action honestly rather than pretending it succeeded.
-  Complete Activity parity and clean writable-disk persistence remain the
-  other retirement gates. GTK3 Home input, three-cycle lifecycle, and
-  headless F7/F8 Space transport are qualified on the newest image.
+  Complete Activity parity remains the retirement gate. Clean writable-disk
+  reboot and Journal persistence are now qualified on disposable disks; see
+  `reports/gtk4/journal-reboot-persistence-20261004.md`. GTK3 Home input,
+  three-cycle lifecycle, and headless F7/F8 Space transport are qualified on
+  the newest image.
 
 ## Execution and ownership
 

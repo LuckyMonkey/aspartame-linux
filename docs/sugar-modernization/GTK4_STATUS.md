@@ -64,9 +64,9 @@ The ISO profile now embeds the GTK4 preview root, generated prefix, helper
 scripts, and pinned Activity trees under `/usr/lib/aspartame/gtk4-preview`.
 The 2026-09-19 shareless boot evidence is recorded in
 `reports/gtk4/standalone-image-runtime-20260919.md`; `aspartame-dev` is now an
-optional development override rather than a runtime dependency. A writable
-data-disk reboot and persistence check remain unproven because the host VM
-volume was read-only during the acceptance run.
+optional development override rather than a runtime dependency. A clean
+writable data-disk reboot and Journal resume now pass on disposable disks;
+see `reports/gtk4/journal-reboot-persistence-20261004.md`.
 
 The GTK4 toolkit repository describes itself as a GTK4 toolkit and documents
 `sugar4` APIs, while the main Sugar repository still documents GTK3 toolkit
