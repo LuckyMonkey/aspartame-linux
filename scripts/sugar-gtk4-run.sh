@@ -29,9 +29,9 @@ if test -f "$root/STANDALONE-MANIFEST"; then
     resources="$root/runtime"
     runroot="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/aspartame-gtk4"
     log_root="$state_root/logs"
-    mkdir -p "$runroot"
-    chmod 700 "$runroot"
 fi
+mkdir -p "$runroot"
+chmod 700 "$runroot"
 mkdir -p "$log_root"
 chirality_state_root=${ASPARTAME_CHIRALITY_STATE_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}/aspartame}
 mkdir -p "$chirality_state_root"
