@@ -14,6 +14,15 @@ Sugar-style work areas instead of relying on implicit child allocation:
 - Clock, JAMClock, and Read: explicit expanding root canvases.
 
 The changes preserve the existing Activity behavior and Journal payloads. They
-are source-qualified by 10 focused tests and Python compilation. Packaged
-1920x1080 visual evidence is intentionally pending the next standalone ISO
-rebuild; the prior immutable packaged image remains qualified at 50/50.
+are source-qualified by 10 focused tests and Python compilation. The rebuilt
+headless development guest then passed:
+
+- GTK4 runtime ownership check from the rebuilt preview root;
+- targeted visual sweep `8/8` at `1920x1080`;
+- Journal resume/cleanup for BallAndBrick, Implode, Last One Loses, Maze,
+  Poll, and Reversi (`6/6`).
+
+Screenshots and the manifest are retained in the development share under
+`reports/gtk4/visual-sweep-games4-dev-20261004/`. Packaged 1920x1080 evidence
+is intentionally pending the next standalone ISO rebuild; the prior
+immutable packaged image remains qualified at `50/50`.
