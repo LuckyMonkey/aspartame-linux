@@ -56,6 +56,24 @@ def test_pippy_runner_executes_source_with_captured_output():
     assert not result.timed_out
 
 
+def test_pippy_runtime_descriptor_states_the_real_execution_boundary():
+    runner = load_runner()
+    descriptor = runner.runtime_descriptor()
+    assert descriptor["implementation"]
+    assert descriptor["version"]
+    assert descriptor["interpreter"]
+    assert descriptor["isolated"] is True
+    assert descriptor["user_site"] == "disabled"
+    assert descriptor["working_directory"] == "disposable temporary directory"
+    assert descriptor["network"] == "not sandboxed"
+    assert descriptor["resource_limits"] == {
+        "cpu_seconds": 2,
+        "address_space_bytes": 1024 * 1024 * 1024,
+        "file_size_bytes": 1024 * 1024,
+        "open_files": 32,
+    }
+
+
 def test_pippy_runner_passes_program_input():
     runner = load_runner()
     result = runner.run_program(
@@ -96,3 +114,5 @@ def test_guest_pippy_runtime_probe_exercises_output_error_and_timeout():
     assert "wall-timeout=PASS" in probe
     assert "cancel_event=cancel" in probe
     assert "cancel=PASS" in probe
+    assert "runtime_descriptor" in probe
+    assert "runtime-contract=PASS" in probe

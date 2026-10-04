@@ -11,10 +11,16 @@ PACKAGE = Path("/mnt/aspartame-dev/packages/gtk4-pippy-activity")
 if PACKAGE.is_dir():
     sys.path.insert(0, str(PACKAGE))
 
-from pippy_runner import run_program
+from pippy_runner import run_program, runtime_descriptor
 
 
 def main():
+    runtime = runtime_descriptor()
+    assert runtime["isolated"]
+    assert runtime["user_site"] == "disabled"
+    assert runtime["working_directory"] == "disposable temporary directory"
+    assert runtime["network"] == "not sandboxed"
+    assert runtime["resource_limits"]["cpu_seconds"] == 2
     output = run_program("print('pippy-runtime-ok')", timeout=2)
     assert output.returncode == 0
     assert output.output.strip() == "pippy-runtime-ok"
@@ -31,7 +37,8 @@ def main():
     assert cancelled.cancelled
     print(
         "pippy-runtime=PASS output=PASS error=PASS "
-        "wall-timeout=PASS cancel=PASS isolated-runner=PASS",
+        "wall-timeout=PASS cancel=PASS isolated-runner=PASS "
+        "runtime-contract=PASS",
         flush=True,
     )
 

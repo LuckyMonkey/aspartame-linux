@@ -11,7 +11,7 @@ from pathlib import Path
 
 from gi.repository import Gdk, GLib, Gtk
 from sugar4.activity import SimpleActivity
-from pippy_runner import run_program
+from pippy_runner import run_program, runtime_descriptor
 
 
 DEFAULT_PROGRAM = '''print("Hello from Pippy!")
@@ -59,6 +59,22 @@ class PippyActivity(SimpleActivity):
         subtitle = Gtk.Label(label="Write a small Python program, then run it in a bounded local runner. Use Ctrl+Enter to run.", xalign=0)
         subtitle.add_css_class("dim-label")
         root.append(subtitle)
+        runtime = runtime_descriptor()
+        runtime_label = Gtk.Label(
+            label=(
+                f"Runtime: Python {runtime['version']} {runtime['implementation']} · "
+                "isolated child · temporary workspace · user site disabled · "
+                "network not sandboxed"
+            ),
+            xalign=0,
+        )
+        runtime_label.add_css_class("caption")
+        runtime_label.add_css_class("dim-label")
+        runtime_label.set_wrap(True)
+        runtime_label.update_property(
+            [Gtk.AccessibleProperty.LABEL], ["Pippy runtime boundary"]
+        )
+        root.append(runtime_label)
 
         self.editor = Gtk.TextView()
         self.editor.set_monospace(True)

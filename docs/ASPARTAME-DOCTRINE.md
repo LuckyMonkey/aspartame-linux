@@ -227,9 +227,11 @@ dependency constraints before venv creation and records the declarations and
 failure reason. It also qualifies two offline applications that install
 different versions of one local dependency into separate environments. This
 is evidence of safe isolation, not a universal dependency solver. Snakepit now
-records and replays an explicit launch contract for a passing qualification;
-Activity Manager integration remains the next runtime milestone, and only
-records marked launchable should become user-facing entries.
+records and replays an explicit launch contract for a passing qualification,
+and Activity Manager consumes only records marked launchable. Pippy's native
+GTK4 Activity now exposes a separate, truthful bounded-runtime descriptor;
+this is the next user-facing Python-runtime seam, not a claim that arbitrary
+Python applications are already portable.
 
 The package manager is not authoritative about whether software works. **Reality is.**
 

@@ -192,7 +192,10 @@ remains an open collaboration result, not a false parity pass. See
 Pippy's Python execution boundary now lives in `pippy_runner.py`: each Run
 uses a disposable working directory, isolated interpreter mode, conservative
 child resource limits, process-group timeout cleanup, and generation-aware UI
-result delivery. The boundary is intentionally described as bounded local
+result delivery. The Activity now exposes the same runtime descriptor that the
+guest probe validates: interpreter/version, isolation, user-site policy,
+temporary workspace, resource limits, and the explicit fact that networking is
+not sandboxed. The boundary is intentionally described as bounded local
 execution, not a complete security sandbox. The guest probe is
 `scripts/sugar-gtk4-pippy-runtime-probe.py`.
 

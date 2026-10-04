@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import os
+import platform
 from pathlib import Path
 import signal
 import subprocess
@@ -40,12 +41,35 @@ runpy.run_path("program.py", run_name="__main__")
 """
 
 
+RESOURCE_LIMITS = {
+    "cpu_seconds": 2,
+    "address_space_bytes": 1024 * 1024 * 1024,
+    "file_size_bytes": 1 * 1024 * 1024,
+    "open_files": 32,
+}
+
+
 @dataclass(frozen=True)
 class RunResult:
     output: str
     returncode: int
     timed_out: bool = False
     cancelled: bool = False
+
+
+def runtime_descriptor():
+    """Describe the child runtime contract without claiming a sandbox."""
+
+    return {
+        "implementation": platform.python_implementation(),
+        "version": platform.python_version(),
+        "interpreter": sys.executable,
+        "isolated": True,
+        "user_site": "disabled",
+        "working_directory": "disposable temporary directory",
+        "network": "not sandboxed",
+        "resource_limits": dict(RESOURCE_LIMITS),
+    }
 
 
 def _combined_output(stdout: str, stderr: str) -> str:
