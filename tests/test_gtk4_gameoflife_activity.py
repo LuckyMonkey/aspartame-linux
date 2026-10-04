@@ -10,6 +10,8 @@ def test_gameoflife_bundle_is_native_and_registered():
     assert "sugar-activity4 gameoflifeactivity4.GameOfLifeActivity" in info
     assert "class GameOfLifeActivity(SimpleActivity)" in source
     assert "neighbors" in source and 'label="Step"' in source
+    assert "Click cells to make a pattern" in source
+    assert "Advance one Game of Life generation" in source
     assert 'Gtk.Frame(label="Life board")' in source and "set_hexpand(True)" in source
     assert "Gtk.AspectFrame.new" in source
     assert "set_column_homogeneous(True)" in source and "set_row_homogeneous(True)" in source

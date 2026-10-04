@@ -206,6 +206,12 @@ Their drawing surfaces remain expanding and aspect-safe rather than being
 replaced with fixed desktop-sized boards. See
 [`gtk4-activity-ux-pass-20261004-canvas2.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-canvas2.md).
 
+The following grid pass applied the same treatment to Game of Life and Grid
+Paint: instructions now explain the learning task, summaries are explicit
+status surfaces, the main Grid Paint board has a labeled frame, and destructive
+actions are centered and named. See
+[`gtk4-activity-ux-pass-20261004-grids.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-grids.md).
+
 The next focused UX correction fixed Abacus's stretched rod layout in the GTK4
 development runtime. Its centered place-value card, grouped controls, and
 accessible action names passed a 1920x1080 visual sweep and a seeded Journal
