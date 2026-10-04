@@ -18,10 +18,11 @@ class WriteActivity(SimpleActivity):
 
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); root.set_margin_top(24); root.set_margin_bottom(24); root.set_margin_start(30); root.set_margin_end(30); root.set_hexpand(True); root.set_vexpand(True); root.update_property([Gtk.AccessibleProperty.LABEL], ["Write document"])
-        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); body.set_size_request(1100, -1); body.set_hexpand(False); body.set_halign(Gtk.Align.CENTER); body.set_valign(Gtk.Align.FILL); body.set_vexpand(True); root.append(body)
+        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10); body.set_hexpand(True); body.set_halign(Gtk.Align.FILL); body.set_valign(Gtk.Align.FILL); body.set_vexpand(True); root.append(body)
         title = Gtk.Label(label="Write", xalign=0); title.add_css_class("title-1"); body.append(title)
         self.document = Gtk.TextView(); self.document.set_wrap_mode(Gtk.WrapMode.WORD_CHAR); self.document.set_hexpand(True); self.document.set_vexpand(True); self.document.update_property([Gtk.AccessibleProperty.LABEL], ["Document text"])
-        document_scroll = Gtk.ScrolledWindow(); document_scroll.set_min_content_height(520); document_scroll.set_hexpand(True); document_scroll.set_vexpand(True); document_scroll.set_child(self.document); body.append(document_scroll)
+        document_scroll = Gtk.ScrolledWindow(); document_scroll.set_min_content_height(520); document_scroll.set_hexpand(True); document_scroll.set_vexpand(True); document_scroll.set_child(self.document)
+        document_frame = Gtk.Frame(label="Document"); document_frame.set_hexpand(True); document_frame.set_vexpand(True); document_frame.set_child(document_scroll); body.append(document_frame)
         self.status = Gtk.Label(label="Ready", xalign=0); self.status.add_css_class("dim-label"); body.append(self.status)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         save = Gtk.Button(label="Save draft"); save.connect("clicked", self._save); controls.append(save)

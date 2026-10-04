@@ -13,7 +13,8 @@ def test_pippy_bundle_is_native_and_registered():
     assert "class PippyActivity(SimpleActivity)" in source
     assert 'label="Run"' in source and "Program output" in source
     assert "subprocess.run" in source and '"-I"' in source
-    assert "set_size_request(1200, -1)" in source and "Align.CENTER" in source
+    assert "editor_frame" in source and "output_frame" in source
+    assert "Gtk.Frame(label=\"Python program\")" in source
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "org.laptop.Pippy|pippyactivity4.PippyActivity" in matrix
     for script in ("sugar-gtk4-dev-sync.sh", "sugar-gtk4-build.sh"):

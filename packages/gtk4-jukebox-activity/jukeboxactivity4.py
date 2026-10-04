@@ -39,7 +39,7 @@ class JukeboxActivity(SimpleActivity):
         root.set_accessible_role(Gtk.AccessibleRole.GROUP)
 
         body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
-        body.set_size_request(1000, -1); body.set_hexpand(False); body.set_halign(Gtk.Align.CENTER); body.set_valign(Gtk.Align.FILL); body.set_vexpand(True)
+        body.set_hexpand(True); body.set_halign(Gtk.Align.FILL); body.set_valign(Gtk.Align.FILL); body.set_vexpand(True)
         root.append(body)
 
         title = Gtk.Label(label="Jukebox", xalign=0)
@@ -56,7 +56,8 @@ class JukeboxActivity(SimpleActivity):
         self.playlist.update_property([Gtk.AccessibleProperty.LABEL], ["Playlist"])
         self.playlist.connect("row-selected", self._row_selected)
         scroll = Gtk.ScrolledWindow(); scroll.set_child(self.playlist); scroll.set_hexpand(True); scroll.set_vexpand(True)
-        body.append(scroll)
+        playlist_frame = Gtk.Frame(label="Playlist"); playlist_frame.set_hexpand(True); playlist_frame.set_vexpand(True); playlist_frame.set_child(scroll)
+        body.append(playlist_frame)
         self._refresh_playlist()
 
         self.status = Gtk.Label(label="Select a track to begin.", xalign=0)
@@ -79,7 +80,7 @@ class JukeboxActivity(SimpleActivity):
 
     def _install_css(self):
         provider = Gtk.CssProvider()
-        provider.load_from_data(b"listboxrow { padding: 12px; } .track-title { font-weight: bold; } button { min-height: 40px; border-radius: 18px; }")
+        provider.load_from_data(b"scrolledwindow { border: 1px solid #8aa8b8; border-radius: 8px; } listboxrow { padding: 12px; } .track-title { font-weight: bold; } button { min-height: 40px; border-radius: 18px; }")
         display = Gdk.Display.get_default()
         if display:
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)

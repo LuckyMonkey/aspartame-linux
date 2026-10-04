@@ -87,3 +87,10 @@ These are the first **modern-space retirement candidates**. The GTK4 registry
 may hide their GTK3 duplicate from the modern Home view, but the GTK3 bundles
 remain installed as fallback/reference. Package removal is deliberately still
 blocked on full feature parity, collaboration, and physical-input evidence.
+
+The second UX batch qualified Write, Pippy, Jukebox, and Color My World on the
+same date and resolution. Their editor, output, playlist, and color-preview
+surfaces now have clear bounds and fill the available Activity area; Pippy,
+Jukebox, and Color My World also passed two Journal roundtrip cycles, while
+Write passed three launch/activate/stop cycles. They are the next
+modern-Space retirement candidates under the same fallback-preserving boundary.

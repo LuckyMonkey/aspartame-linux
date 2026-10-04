@@ -1,0 +1,5 @@
+bundle	pattern	status	screenshot	note
+org.sugarlabs.ColorMyWorldActivity	colormyworldactivity4.ColorMyWorldActivity	PASS	/mnt/aspartame-dev/reports/gtk4/visual-sweep-ux-next-20261003/org.sugarlabs.ColorMyWorldActivity.png	packaged-iso=aspartame-2026.10.04-x86_64 resolution=1920x1080
+org.sugarlabs.Write	writeactivity4.WriteActivity	PASS	/mnt/aspartame-dev/reports/gtk4/visual-sweep-ux-next-20261003/org.sugarlabs.Write.png	packaged-iso=aspartame-2026.10.04-x86_64 resolution=1920x1080
+org.laptop.Pippy	pippyactivity4.PippyActivity	PASS	/mnt/aspartame-dev/reports/gtk4/visual-sweep-ux-next-20261003/org.laptop.Pippy.png	packaged-iso=aspartame-2026.10.04-x86_64 resolution=1920x1080
+org.laptop.sugar.Jukebox	jukeboxactivity4.JukeboxActivity	PASS	/mnt/aspartame-dev/reports/gtk4/visual-sweep-ux-next-20261003/org.laptop.sugar.Jukebox.png	packaged-iso=aspartame-2026.10.04-x86_64 resolution=1920x1080
