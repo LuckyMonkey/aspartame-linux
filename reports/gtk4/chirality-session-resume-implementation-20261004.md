@@ -30,6 +30,21 @@ pytest -q tests/test_chirality.py tests/test_chirality_activity_adapter.py tests
 62 passed in 0.48s
 ```
 
-This is source/integration evidence. The full two-shell guest restart receipt
-is still required before the GTK4 retirement gate can clear
-`shell-session-restart`.
+## Headless guest receipt
+
+The synchronized development preview was rebuilt and launched headlessly from
+the writable guest checkout. A held Left Calculate hand was seeded with the
+real Journal UID `cb98f216-656f-4e64-98e1-d3b66499d916`, alongside a held
+Right Clock hand. After stopping the modern shell and starting a new one, the
+automatic hook reported:
+
+```text
+chirality-resume=PASS restored=left:3efbe6e66b514bef9350d19a6e08ba60,right:7f8928fcbb0b4230a3dcfe4f0bced0fd skipped=none mode=single-surface history=none
+runtime-check=ok target=gtk4 pid=5799 desktop=1 window=0xe00005 stable_pid=739 gtk4_pid=5799
+```
+
+The persisted state retained the same Journal UID and the new Activity IDs.
+The modern shell remained on the GTK4 Space, and the runtime directory was
+private (`0700`). This closes the shell/session-resume qualification for the
+current Chirality milestone; unsupported object-capability refusal and full
+Activity parity remain separate retirement gates.

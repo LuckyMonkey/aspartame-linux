@@ -91,8 +91,8 @@ The reproducible guest probe is
 and Clock, assigns them to the two hands, activates Left/Right/Left through
 the modern Shell contract, and checks both Activity services are cleaned up.
 It covers the two-Activity and basic switching/stop portion of this milestone;
-session resume remains an explicit follow-up gate. Crash isolation is covered
-by the separate Chirality crash probe.
+session restart is now qualified by the dedicated headless receipt.
+Crash isolation is covered by the separate Chirality crash probe.
 
 ## Milestone 2 — object continuity
 
@@ -109,10 +109,9 @@ The remaining gates are explicit:
 
 1. define and qualify graceful refusal for unsupported object formats or
    Activity/object combinations;
-2. qualify full shell/session restart while a hand is held. The persistent
-   bundle/object state and automatic GTK4 session rehydrator are now wired;
-   Activity replacement/resume is already qualified, but the two-shell guest
-   receipt remains open;
+2. unsupported object-capability refusal remains to be defined and qualified;
+   persistent bundle/object state, automatic GTK4 session rehydration, and a
+   real two-shell guest restart receipt are now qualified;
 3. only then add user-facing “Use with…” or “Give to Other Hand” actions.
 
 The companion probe

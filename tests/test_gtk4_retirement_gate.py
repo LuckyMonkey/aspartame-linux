@@ -16,4 +16,4 @@ def test_retirement_gate_is_non_destructive_and_honest_about_open_work():
     assert "gtk4-retirement=BLOCKED" in result.stdout
     assert "blocker=full-parity" in result.stdout
     assert "blocker=collaboration-join" in result.stdout
-    assert "blocker=shell-session-restart" in result.stdout
+    assert "blocker=shell-session-restart" not in result.stdout

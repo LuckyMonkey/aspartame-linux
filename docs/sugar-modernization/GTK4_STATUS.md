@@ -99,9 +99,9 @@ therefore still evidence-gated.
 
 The held-Activity crash gate is independently qualified: terminating the
 Right GTK4 Activity leaves Left alive and activatable, then clears only the
-exited hand through the Chirality adapter. Activity replacement/resume is also
-qualified for the same Journal UID; full shell/session restart and unsupported
-object-capability refusal remain open before user-facing handoff actions.
+exited hand through the Chirality adapter. Activity replacement/resume and a
+real two-shell GTK4 restart are also qualified for a Journal UID; unsupported
+object-capability refusal remains open before user-facing handoff actions.
 
 The Activity-sharing harness now separates owner publication from peer join:
 the owner share path passes and the peer probe exercises the real
