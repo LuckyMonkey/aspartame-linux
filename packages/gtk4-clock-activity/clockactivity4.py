@@ -47,19 +47,106 @@ class ClockFace(Gtk.DrawingArea):
         super().__init__()
         self.mode = "simple"
         self.ticking = True
+        self.interactive = False
+        self.manual_time = False
         self.now = datetime.now()
+        self.on_time_changed = None
         self.set_content_width(320)
         self.set_content_height(320)
         self.set_hexpand(True)
         self.set_vexpand(True)
         self.set_draw_func(self._draw)
         self.update_property([Gtk.AccessibleProperty.LABEL], ["Clock face"])
+        drag = Gtk.GestureDrag()
+        drag.set_button(1)
+        drag.connect("drag-begin", self._drag_begin)
+        drag.connect("drag-update", self._drag_update)
+        drag.connect("drag-end", self._drag_end)
+        self.add_controller(drag)
+        self._drag = drag
+        self._hand = None
 
     def update(self, now, mode, ticking):
         self.now = now
         self.mode = mode
         self.ticking = ticking
         self.queue_draw()
+
+    def set_interactive(self, enabled):
+        self.interactive = bool(enabled)
+        self._hand = None
+        if not self.interactive:
+            self.manual_time = False
+            self.now = datetime.now()
+        self.queue_draw()
+
+    @staticmethod
+    def _angle_and_distance(x, y, cx, cy):
+        adjacent = x - cx
+        opposite = cy - y
+        return math.atan2(adjacent, opposite) % math.tau, math.hypot(adjacent, opposite)
+
+    @staticmethod
+    def _angle_distance(first, second):
+        return abs((first - second + math.pi) % math.tau - math.pi)
+
+    def _hand_angle(self, hand):
+        seconds = self.now.second if self.ticking else 0
+        if hand == "hour":
+            return (self.now.hour % 12 * 60 + self.now.minute) * math.tau / 720
+        if hand == "minute":
+            return (self.now.minute * 60 + seconds) * math.tau / 3600
+        return seconds * math.tau / 60
+
+    def _drag_begin(self, _gesture, x, y):
+        if not self.interactive or self.mode == "digital":
+            return
+        width = self.get_width()
+        height = self.get_height()
+        cx, cy = width / 2, height / 2
+        angle, distance = self._angle_and_distance(x, y, cx, cy)
+        size = min(width, height)
+        radius = size * 0.38
+        candidates = (
+            ("hour", radius * 0.52),
+            ("minute", radius * 0.76),
+            ("second", radius * 0.84),
+        )
+        eligible = [
+            (self._angle_distance(angle, self._hand_angle(hand)), hand)
+            for hand, length in candidates
+            if distance <= length + max(18, size * 0.05)
+        ]
+        if eligible:
+            self._hand = min(eligible)[1]
+
+    def _drag_update(self, gesture, offset_x, offset_y):
+        if self._hand is None:
+            return
+        _ok, start_x, start_y = gesture.get_start_point()
+        width = self.get_width()
+        height = self.get_height()
+        angle, _distance = self._angle_and_distance(
+            start_x + offset_x, start_y + offset_y, width / 2, height / 2
+        )
+        if self._hand == "minute":
+            minute = round(angle * 60 / math.tau) % 60
+            self.now = self.now.replace(minute=minute, second=0)
+        elif self._hand == "hour":
+            hour = round(angle * 12 / math.tau) % 12
+            hour = hour or 12
+            hour24 = hour % 12 + (12 if self.now.hour >= 12 else 0)
+            self.now = self.now.replace(hour=hour24, second=0)
+        else:
+            second = round(angle * 60 / math.tau) % 60
+            self.now = self.now.replace(second=second)
+        self.manual_time = True
+        if self.on_time_changed:
+            self.on_time_changed(self.now)
+        self.queue_draw()
+
+    def _drag_end(self, _gesture, _offset_x, _offset_y):
+        self._hand = None
 
     def _draw(self, _area, cr, width, height):
         size = min(width, height)
@@ -171,6 +258,23 @@ class ClockActivity(SimpleActivity):
             modes.insert(button, -1)
         root.append(modes)
 
+        option_label = Gtk.Label(label="Display options", xalign=0)
+        option_label.add_css_class("heading")
+        root.append(option_label)
+        options = Gtk.FlowBox()
+        options.set_selection_mode(Gtk.SelectionMode.NONE)
+        options.set_homogeneous(True)
+        options.set_column_spacing(8)
+        options.set_row_spacing(8)
+        options.set_max_children_per_line(4)
+        options.set_min_children_per_line(1)
+        self._show_words_button = self._option(options, "Time in words", self._words_changed)
+        self._show_date_button = self._option(options, "Weekday and date", self._date_changed)
+        self._speak_button = self._option(options, "Speak each minute", self._speak_changed)
+        self._ticking_button = self._option(options, "Ticking seconds", self._ticking_changed)
+        self._adjust_button = self._option(options, "Adjust hands", self._adjust_changed)
+        root.append(options)
+
         self.face = ClockFace()
         root.append(self.face)
 
@@ -187,23 +291,8 @@ class ClockActivity(SimpleActivity):
         self.date.update_property([Gtk.AccessibleProperty.LABEL], ["Weekday and date"])
         root.append(self.date)
 
-        option_label = Gtk.Label(label="Display options", xalign=0)
-        option_label.add_css_class("heading")
-        root.append(option_label)
-        options = Gtk.FlowBox()
-        options.set_selection_mode(Gtk.SelectionMode.NONE)
-        options.set_homogeneous(True)
-        options.set_column_spacing(8)
-        options.set_row_spacing(8)
-        options.set_max_children_per_line(4)
-        options.set_min_children_per_line(1)
-        self._show_words_button = self._option(options, "Time in words", self._words_changed)
-        self._show_date_button = self._option(options, "Weekday and date", self._date_changed)
-        self._speak_button = self._option(options, "Speak each minute", self._speak_changed)
-        self._ticking_button = self._option(options, "Ticking seconds", self._ticking_changed)
-        root.append(options)
-
         self.set_canvas(root)
+        self.face.on_time_changed = self._manual_time_changed
         self._mode_buttons["simple"].set_active(True)
         provider = Gtk.CssProvider()
         provider.load_from_data(
@@ -218,7 +307,7 @@ class ClockActivity(SimpleActivity):
 
     @staticmethod
     def _option(container, label, callback):
-        button = Gtk.CheckButton(label=label)
+        button = Gtk.ToggleButton(label=label)
         button.set_hexpand(True)
         button.set_halign(Gtk.Align.FILL)
         button.update_property([Gtk.AccessibleProperty.LABEL], [label])
@@ -230,6 +319,9 @@ class ClockActivity(SimpleActivity):
         if not button.get_active():
             return
         self.mode = mode
+        self._adjust_button.set_sensitive(mode != "digital")
+        if mode == "digital" and self._adjust_button.get_active():
+            self._adjust_button.set_active(False)
         self._refresh()
 
     def _words_changed(self, button):
@@ -249,8 +341,17 @@ class ClockActivity(SimpleActivity):
         self.ticking = button.get_active()
         self._refresh()
 
+    def _adjust_changed(self, button):
+        self.face.set_interactive(button.get_active())
+        self._refresh()
+
+    def _manual_time_changed(self, now):
+        self.now = now
+        self._refresh()
+
     def _tick(self):
-        self.now = datetime.now()
+        if not self.face.manual_time:
+            self.now = datetime.now()
         self._refresh()
         if self.speak_time and self.now.second == 0:
             self._speak_now()
@@ -302,6 +403,9 @@ class ClockActivity(SimpleActivity):
         self._show_date_button.set_active(self.show_date)
         self._speak_button.set_active(self.speak_time)
         self._ticking_button.set_active(self.ticking)
+        adjust_hands = bool(state.get("adjust_hands", False)) and self.mode != "digital"
+        self._adjust_button.set_sensitive(self.mode != "digital")
+        self._adjust_button.set_active(adjust_hands)
         self.words.set_visible(self.show_words)
         self.date.set_visible(self.show_date)
         self._refresh()
@@ -313,5 +417,6 @@ class ClockActivity(SimpleActivity):
             "show_words": self.show_words,
             "speak_time": self.speak_time,
             "ticking": self.ticking,
+            "adjust_hands": self.face.interactive,
         }
         Path(file_path).write_text(json.dumps(state, sort_keys=True) + "\n", encoding="utf-8")

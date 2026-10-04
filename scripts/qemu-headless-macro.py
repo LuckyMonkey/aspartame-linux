@@ -158,6 +158,43 @@ class Qmp:
             release["device"] = device
         self.command("input-send-event", release)
 
+    def drag(self, x1: int, y1: int, x2: int, y2: int,
+             device: str | None, steps: int = 12) -> None:
+        """Drag the absolute tablet pointer without involving the host."""
+        x1 = max(0, min(x1, SCREEN_WIDTH))
+        y1 = max(0, min(y1, SCREEN_HEIGHT))
+        x2 = max(0, min(x2, SCREEN_WIDTH))
+        y2 = max(0, min(y2, SCREEN_HEIGHT))
+
+        def point(x: int, y: int) -> tuple[dict[str, Any], dict[str, Any]]:
+            return {"type": "abs", "data": {
+                "axis": "x", "value": round(x * 32767 / SCREEN_WIDTH),
+            }}, {"type": "abs", "data": {
+                "axis": "y", "value": round(y * 32767 / SCREEN_HEIGHT),
+            }}
+
+        start = list(point(x1, y1))
+        start.append({"type": "btn", "data": {"button": "left", "down": True}})
+        arguments: dict[str, Any] = {"events": start}
+        if device:
+            arguments["device"] = device
+        self.command("input-send-event", arguments)
+        for index in range(1, steps + 1):
+            progress = index / steps
+            events = list(point(round(x1 + (x2 - x1) * progress),
+                               round(y1 + (y2 - y1) * progress)))
+            arguments = {"events": events}
+            if device:
+                arguments["device"] = device
+            self.command("input-send-event", arguments)
+            time.sleep(0.03)
+        release: dict[str, Any] = {
+            "events": [{"type": "btn", "data": {"button": "left", "down": False}}]
+        }
+        if device:
+            release["device"] = device
+        self.command("input-send-event", release)
+
     def screenshot(self, path: str) -> None:
         output = Path(path).expanduser()
         output.parent.mkdir(parents=True, exist_ok=True)
@@ -198,6 +235,14 @@ def run_step(qmp: Qmp, step: dict[str, Any], pointer_device: str | None,
         if not isinstance(x, int) or not isinstance(y, int):
             raise ValueError("click action requires integer x and y")
         qmp.click(x, y, pointer_device)
+    elif action == "drag":
+        coordinates = [step.get(name) for name in ("x1", "y1", "x2", "y2")]
+        if any(not isinstance(value, int) for value in coordinates):
+            raise ValueError("drag action requires integer x1, y1, x2, and y2")
+        steps = step.get("steps", 12)
+        if not isinstance(steps, int) or steps < 1:
+            raise ValueError("drag steps must be a positive integer")
+        qmp.drag(*coordinates, pointer_device, steps)
     elif action == "sleep":
         seconds = step.get("seconds", 0.2)
         if isinstance(seconds, bool) or not isinstance(seconds, (int, float)) or seconds < 0:

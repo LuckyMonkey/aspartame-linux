@@ -21,3 +21,10 @@ def test_headless_macro_supports_absolute_tablet_clicks_and_text():
     assert 'self.command("input-send-event", release)' in script
     assert "def text_keys" in script
     assert "32767 / SCREEN_WIDTH" in script
+
+
+def test_headless_macro_supports_guest_pointer_drags():
+    script = (ROOT / "scripts/qemu-headless-macro.py").read_text()
+    assert 'elif action == "drag"' in script
+    assert "def drag(" in script
+    assert '"down": True' in script and '"down": False' in script

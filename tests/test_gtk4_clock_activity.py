@@ -22,6 +22,8 @@ def test_native_clock_bundle_is_staged_for_modern_space():
     assert 'def write_file(self, file_path):' in source
     assert '"show_words": self.show_words' in source
     assert '"show_date": self.show_date' in source
+    assert 'Gtk.GestureDrag()' in source
+    assert '"adjust_hands": self.face.interactive' in source
     assert "root.set_hexpand(True)" in source and "root.set_vexpand(True)" in source
     assert 'clock_activity="$repo/packages/gtk4-clock-activity"' in build
     assert "Clock.activity" in run

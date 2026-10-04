@@ -15,6 +15,8 @@ Implemented from the GTK3 learning workflow:
 - Time-in-words display, including midnight, noon, and AM/PM.
 - Ticking-seconds toggle.
 - Optional speech on minute boundaries when `spd-say` or `espeak` is present.
+- Adjust-hands mode with GTK4 drag gestures for hour, minute, and second hands;
+  Digital mode disables this control.
 - JSON Journal save/resume for all display choices.
 - Malformed and wrong-shaped Journal objects reset safely to defaults.
 - Accessible labels and compact controls that wrap instead of forcing a
@@ -50,9 +52,21 @@ The QEMU input receipt was:
 qemu-headless-macro=PASS steps=5 repeats=1 qmp=/tmp/aspartame-qemu-qmp
 ```
 
+After moving the display-options row above the expandable face, all five
+actions remained visible at 1920x1080. The stateful GTK4 buttons then passed a
+headless drag qualification: QMP enabled Adjust hands and dragged an analog
+hand to the 12 position. The receipt was:
+
+```text
+qemu-headless-macro=PASS steps=4 repeats=1 qmp=/tmp/aspartame-qemu-qmp
+```
+
+The resulting 1920x1080 capture checksum was
+`b000c7ba97ce3fe86898d07ea2908ebf4ce3646856346f05776c6785dac2b0ea`.
+
 ## Boundary
 
-This remains a `FUNCTIONAL PORT`, not a `FULL PORT`. The legacy analog
-hand-dragging interaction and OLPC-specific NTP plus hardware-clock update
-path are not yet implemented. They remain explicit follow-up work rather
-than being hidden behind the GTK4 label.
+This remains a `FUNCTIONAL PORT`, not a `FULL PORT`. The OLPC-specific NTP
+plus hardware-clock update path and the original decorative clock artwork are
+not yet implemented. They remain explicit follow-up work rather than being
+hidden behind the GTK4 label.
