@@ -95,7 +95,7 @@ never promoted to FULL PORT by itself.
 | Jukebox (`org.laptop.sugar.Jukebox`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare playlist, codec, and media playback boundaries. |
 | Read (`org.laptop.sugar.ReadActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve UTF-8 resume while tracking PDF/EPUB breadth. |
 
-| Record (`org.laptop.RecordActivity`) | GUEST PENDING | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — run the GStreamer capture/Journal roundtrip and qualify the camera-less state before promoting it into the live matrix. |
+| Record (`org.laptop.RecordActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — one-cycle headless guest capture/Journal roundtrip passed; camera/viewfinder, timers, per-capture objects, and collaboration remain follow-up work. |
 
 ## Shell-wide queue (do once, not once per Activity)
 
