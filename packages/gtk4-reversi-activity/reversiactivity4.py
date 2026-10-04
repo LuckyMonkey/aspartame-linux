@@ -21,13 +21,17 @@ class ReversiActivity(SimpleActivity):
         board = Gtk.Frame(label="Reversi board")
         board.set_hexpand(True); board.set_vexpand(True)
         self.grid = Gtk.Grid(column_spacing=3, row_spacing=3)
-        self.grid.set_halign(Gtk.Align.CENTER); self.grid.set_valign(Gtk.Align.CENTER)
-        board.set_child(self.grid); root.append(board)
+        self.grid.set_hexpand(True); self.grid.set_vexpand(True)
+        self.grid.set_halign(Gtk.Align.FILL); self.grid.set_valign(Gtk.Align.FILL)
+        self.grid.set_column_homogeneous(True); self.grid.set_row_homogeneous(True)
+        board_aspect = Gtk.AspectFrame.new(None, 0.5, 0.5, 1.0, False)
+        board_aspect.set_hexpand(True); board_aspect.set_vexpand(True)
+        board_aspect.set_child(self.grid); board.set_child(board_aspect); root.append(board)
         self.cells = []
         for y in range(8):
             row = []
             for x in range(8):
-                button = Gtk.Button(label=" "); button.set_size_request(52, 52); button.connect("clicked", self._play, x, y)
+                button = Gtk.Button(label=" "); button.set_hexpand(True); button.set_vexpand(True); button.connect("clicked", self._play, x, y)
                 button.update_property([Gtk.AccessibleProperty.LABEL], ["Square %d, %d" % (x + 1, y + 1)]); self.grid.attach(button, x, y, 1, 1); row.append(button)
             self.cells.append(row)
         reset = Gtk.Button(label="New game"); reset.connect("clicked", self._new_game); root.append(reset)

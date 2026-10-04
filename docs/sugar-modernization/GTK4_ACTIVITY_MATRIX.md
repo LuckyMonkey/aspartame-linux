@@ -238,10 +238,10 @@ probes passed, and their visual captures are present in the complete packaged
 manifest; the review catalog now records all five as `testing`. See
 [`gtk4-activity-qualification-20261004-native5.md`](../../reports/gtk4/gtk4-activity-qualification-20261004-native5.md).
 
-The next source UX correction removed fixed desktop-sized canvas minimums from
-Count, Connect the Dots, and Planets. All three now use expanding
-aspect-preserving GTK4 canvas frames; Count derives drag cells from its live
-allocation and Planets scales its orbit geometry to the allocated surface.
-Focused source tests and compilation pass; packaged visual evidence is
-intentionally still pending. See
+The next source UX correction removed fixed desktop-sized canvas minimums or
+fixed board cells from Count, Connect the Dots, Planets, Reversi, Game of Life,
+and Grid Paint. All six now use expanding aspect-preserving GTK4 canvas/board
+frames; Count derives drag cells from its live allocation, and Planets scales
+its orbit geometry to the allocated surface. Focused source tests and
+compilation pass; packaged visual evidence is intentionally still pending. See
 [`gtk4-activity-ux-pass-20261004-responsive-canvas.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-responsive-canvas.md).

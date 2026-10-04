@@ -11,6 +11,8 @@ def test_gridpaint_bundle_is_native_and_registered():
     assert "sugar-activity4 gridpaintactivity4.GridPaintActivity" in info
     assert "class GridPaintActivity(SimpleActivity)" in source
     assert "Clear picture" in source
+    assert "Gtk.AspectFrame.new" in source
+    assert "set_column_homogeneous(True)" in source and "set_row_homogeneous(True)" in source
     assert "org.olpcfrance.Gridpaint" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-gridpaint-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-gridpaint-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()

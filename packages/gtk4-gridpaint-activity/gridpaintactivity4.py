@@ -14,15 +14,16 @@ class GridPaintActivity(SimpleActivity):
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         root.set_margin_top(24); root.set_margin_bottom(24); root.set_margin_start(30); root.set_margin_end(30)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Grid Paint canvas"])
         title = Gtk.Label(label="Grid Paint", xalign=0); title.add_css_class("title-1"); root.append(title)
-        self.grid = Gtk.Grid(row_spacing=2, column_spacing=2); self.grid.set_halign(Gtk.Align.CENTER); self.grid.set_valign(Gtk.Align.CENTER); self.grid.set_vexpand(True)
+        self.grid = Gtk.Grid(row_spacing=2, column_spacing=2); self.grid.set_hexpand(True); self.grid.set_vexpand(True); self.grid.set_halign(Gtk.Align.FILL); self.grid.set_valign(Gtk.Align.FILL); self.grid.set_column_homogeneous(True); self.grid.set_row_homogeneous(True)
         self.cells = []
         for row in range(10):
             for column in range(10):
-                cell = Gtk.ToggleButton(); cell.set_size_request(38, 38); cell.update_property([Gtk.AccessibleProperty.LABEL], [f"Row {row + 1}, column {column + 1}"]); cell.connect("toggled", self._update_summary); self.grid.attach(cell, column, row, 1, 1)
+                cell = Gtk.ToggleButton(); cell.set_hexpand(True); cell.set_vexpand(True); cell.update_property([Gtk.AccessibleProperty.LABEL], [f"Row {row + 1}, column {column + 1}"]); cell.connect("toggled", self._update_summary); self.grid.attach(cell, column, row, 1, 1)
                 self.cells.append(cell)
-        root.append(self.grid)
+        board_aspect = Gtk.AspectFrame.new(None, 0.5, 0.5, 1.0, False); board_aspect.set_hexpand(True); board_aspect.set_vexpand(True); board_aspect.set_child(self.grid); root.append(board_aspect)
         self.summary = Gtk.Label(label="0 cells selected", xalign=0); self.summary.update_property([Gtk.AccessibleProperty.LABEL], ["Selection summary"]); root.append(self.summary)
         clear = Gtk.Button(label="Clear picture"); clear.connect("clicked", self._clear); root.append(clear)
         self.set_canvas(root)

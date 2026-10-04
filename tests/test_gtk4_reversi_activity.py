@@ -12,6 +12,8 @@ def test_reversi_bundle_is_native_and_registered():
     assert "def _moves" in source and "def _play" in source
     assert "Game over" in source and "not self._moves(3 - self.player)" in source
     assert 'Gtk.Frame(label="Reversi board")' in source
-    assert "self.grid.set_valign(Gtk.Align.CENTER)" in source
+    assert "Gtk.AspectFrame.new" in source
+    assert "self.grid.set_column_homogeneous(True)" in source
+    assert "button.set_hexpand(True)" in source
     assert "def read_file" in source and "def write_file" in source
     assert "net.coderanger.olpc.reversi" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()

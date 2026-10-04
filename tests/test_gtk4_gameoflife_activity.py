@@ -11,6 +11,8 @@ def test_gameoflife_bundle_is_native_and_registered():
     assert "class GameOfLifeActivity(SimpleActivity)" in source
     assert "neighbors" in source and 'label="Step"' in source
     assert 'Gtk.Frame(label="Life board")' in source and "set_hexpand(True)" in source
+    assert "Gtk.AspectFrame.new" in source
+    assert "set_column_homogeneous(True)" in source and "set_row_homogeneous(True)" in source
     assert "org.sugarlabs.gameOfLife" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-gameoflife-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-gameoflife-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
