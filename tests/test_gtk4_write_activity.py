@@ -11,6 +11,7 @@ def test_write_bundle_is_native_and_registered():
     assert "class WriteActivity(SimpleActivity)" in source
     assert "Document text" in source and "Save draft" in source
     assert "document_frame" in source and "Gtk.Frame(label=\"Document\")" in source
+    assert "root.append(document_frame)" in source
     assert "ScrolledWindow" in source
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source

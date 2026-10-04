@@ -33,7 +33,7 @@ Classification used by the migration ledger:
 | Browse | FUNCTIONAL PORT | Native GTK4 URL/status surface; full WebKit browsing and collaboration/download parity is not claimed |
 | Log | FUNCTIONAL PORT | Native log list surface |
 | Read | FUNCTIONAL PORT | UTF-8 Journal text object resume, visible page restoration, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; PDF/EPUB/format breadth and upstream Read parity remain absent |
-| Write | FUNCTIONAL PORT | UTF-8 text editing, Journal save/stop/resume, and save-failure cancellation/retry verified with real GTK4 Activity processes on 2026-09-15; rich text and upstream document-format parity remain absent |
+| Write | FUNCTIONAL PORT | Responsive labeled document editor, UTF-8 text editing, visible draft-save state, Journal save/stop/resume, and save-failure cancellation/retry verified 2026-10-04; rich text and upstream document-format parity remain absent |
 | NumberRush | FUNCTIONAL PORT | Arithmetic round/check/next workflow, JSON Journal round/score resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full difficulty progression and collaboration breadth remain absent |
 | Poll | FUNCTIONAL PORT | Question/choice editing, vote/reset workflow, JSON Journal save/resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; collaboration and upstream feature breadth remain absent |
 | Mancala | FUNCTIONAL PORT | Two-row board movement, turn/store state, JSON Journal save/resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full rule/scoring and collaboration breadth remain absent |
