@@ -9,14 +9,19 @@ PATCH_DIR = ROOT / "patches/gtk4-preview"
 def test_gtk4_theme_is_staged_under_canonical_sugar_names():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    sync = (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     css = (ROOT / "assets/gtk4/sugar.css").read_text()
 
     assert "for sugar_theme in sugar-72 sugar-100" in build
     assert '"$prefix/share/themes/$sugar_theme/gtk-4.0/gtk.css"' in build
     assert '"$prefix/share/themes/sugar-72/gtk-4.0/gtk.css"' in runner
+    assert '"$share/assets/gtk4"' in sync
+    assert '"$repo/assets/gtk4/." "$share/assets/gtk4/"' in sync
     for selector in (".sugar-toolbar", ".toolbar", ".framewindow",
                      ".sugar-toolbarbox"):
         assert selector in css
+    assert "label.title-1" in css
+    assert "font-size: 28px" in css
     assert "#282828" in css
 
 

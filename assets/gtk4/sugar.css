@@ -28,6 +28,18 @@ window.background,
     color: @sugar_black;
 }
 
+/* Activity headings need to remain visually distinct from body copy. */
+label.title-1 {
+    margin-bottom: 4px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+label.heading {
+    font-size: 20px;
+    font-weight: 700;
+}
+
 dialog,
 messagedialog,
 popover > contents,

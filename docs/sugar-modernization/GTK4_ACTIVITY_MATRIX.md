@@ -192,6 +192,13 @@ the GTK3 bundle remains the fallback/reference pending the full retirement
 gates. See
 [`gtk4-activity-ux-pass-20261004-finance.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-finance.md).
 
+The shared GTK4 Sugar theme then received a typography correction: Activity
+`title-1` and `heading` classes now have explicit hierarchy, and the
+development sync copies theme assets before rebuilding the guest. A rebuilt
+Pippy visual sweep confirmed the heading treatment in the side-by-side
+workspace. See
+[`gtk4-activity-ux-pass-20261004-theme.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-theme.md).
+
 The same packaged image qualified the stale native review rows for FotoToon,
 IQ, Portfolio, TurtleBlocks, and Maze. Their bounded Journal resume/cleanup
 probes passed, and their visual captures are present in the complete packaged
