@@ -1,7 +1,7 @@
 # GTK4 status
 
-Status checked: 2026-09-19 (documentation synchronized after the README and
-design-runbook refresh).
+Status checked: 2026-10-04 (documentation synchronized after the GTK4 UX and
+Chirality milestone pass).
 
 2026-09-15 correction: process cleanup alone did not prove safe closure or
 document resume. Runtime testing found and fixed immediate shell SIGTERM
@@ -74,6 +74,17 @@ dependencies. Aspartame therefore keeps the stable GTK3 Space as a behavioral
 reference while operating a separately tested GTK4 preview Space. The preview
 is materially usable, but the full completion gate is not claimed because peer
 collaboration and complete Activity parity remain open.
+
+The 2026-10-04 development qualification passed the complete GTK4 visual
+sweep `50/50` at 1920x1080 after the shared heading-theme fix. Focused UX
+follow-ups corrected Abacus's stretched rod controls, Finance's full-width
+empty workspace, and empty-state affordances in Pippy, Color My World, and
+Words. The full host suite is green at `470 passed`.
+
+Chirality Milestone 1 now has a real GTK4-only Activity adapter and a guest
+probe that switches Calculate and Clock Left/Right/Left on one visible
+surface, then verifies Activity service cleanup. This advances the forward
+path without removing GTK3 or repurposing migration comparison keys.
 
 References:
 

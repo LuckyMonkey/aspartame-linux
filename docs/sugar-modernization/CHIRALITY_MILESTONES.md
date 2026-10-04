@@ -90,6 +90,8 @@ The reproducible guest probe is
 `scripts/sugar-gtk4-chirality-activity-roundtrip.py`; it launches Calculate
 and Clock, assigns them to the two hands, activates Left/Right/Left through
 the modern Shell contract, and checks both Activity services are cleaned up.
+It covers the two-Activity and basic switching/stop portion of this milestone;
+resume and crash-isolation qualification remain explicit follow-up gates.
 
 ## Milestone 2 — object continuity
 
