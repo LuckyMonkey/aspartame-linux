@@ -10,6 +10,8 @@ def test_colormyworld_bundle_is_native_and_registered():
     assert "sugar-activity4 colormyworldactivity4.ColorMyWorldActivity" in info
     assert "class ColorMyWorldActivity(SimpleActivity)" in source
     assert "Selected color swatch" in source and "Red" in source
+    assert "Choose a color below" in source
+    assert "colors.set_halign(Gtk.Align.CENTER)" in source
     assert "swatch_frame" in source and "Gtk.Frame(label=\"Color preview\")" in source
     assert "palette_frame" in source and "Gtk.Frame(label=\"Palette\")" in source
     assert "org.sugarlabs.ColorMyWorldActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
