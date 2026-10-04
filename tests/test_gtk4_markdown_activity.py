@@ -12,6 +12,7 @@ def test_markdown_bundle_is_native_and_registered():
     assert "class MarkdownActivity(SimpleActivity)" in source
     assert "Markdown preview" in source
     assert "editor_frame" in source and "preview_frame" in source
+    assert "Gtk.Paned" in source and "frame.editor-pane" in source
     assert "Gtk.ScrolledWindow" in source
     assert "org.sugarlabs.Markdown" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-markdown-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()

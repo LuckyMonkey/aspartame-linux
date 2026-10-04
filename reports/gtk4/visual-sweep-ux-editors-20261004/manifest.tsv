@@ -1,0 +1,3 @@
+bundle	pattern	status	screenshot	note
+org.sugarlabs.Markdown	markdownactivity4.MarkdownActivity	PASS	/mnt/aspartame-dev/reports/gtk4/visual-sweep-ux-editors-20261004/org.sugarlabs.Markdown.png	ready pid=51076 activity-id=2b42914d152d423e9d21130da73ee0e1 screenshot=/mnt/aspartame-dev/reports/gtk4/visual-sweep-ux-editors-20261004/org.sugarlabs.Markdown.png launch=(true,)
+org.laptop.Pippy	pippyactivity4.PippyActivity	PASS	/mnt/aspartame-dev/reports/gtk4/visual-sweep-ux-editors-20261004/org.laptop.Pippy.png	ready pid=51192 activity-id=d771523c9ddf41c09ae744c44555409f screenshot=/mnt/aspartame-dev/reports/gtk4/visual-sweep-ux-editors-20261004/org.laptop.Pippy.png launch=(true,)

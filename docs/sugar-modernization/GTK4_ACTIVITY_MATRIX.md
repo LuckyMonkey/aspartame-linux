@@ -135,3 +135,9 @@ Journal/D-Bus visual launch/paint/stop sweep (`3/3`) and their focused source
 tests. This improves the modern-space presentation while leaving GTK3
 fallback/reference bundles in place pending full behavior-parity gates. See
 [`gtk4-activity-ux-pass-20261004-library.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-library.md).
+
+The ninth UX batch qualified Markdown and Pippy at 1920×1080. Both now use
+explicit side-by-side editing/output workspaces with visible boundaries, and
+both passed the targeted visual sweep plus two Journal resume/stop cycles
+with seeded payloads. See
+[`gtk4-activity-ux-pass-20261004-editors.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-editors.md).
