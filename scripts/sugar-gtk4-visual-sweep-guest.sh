@@ -52,6 +52,11 @@ if [ -z "$dbus_address" ]; then
 fi
 
 mkdir -p "$out_dir"
+if [ "$(id -u)" -eq 0 ]; then
+    # The launcher is root-controlled because it must call the desktop user's
+    # D-Bus session, but ffmpeg writes screenshots as `aspartame`.
+    chown aspartame:aspartame "$out_dir" 2>/dev/null || true
+fi
 manifest="$out_dir/manifest.tsv"
 printf 'bundle\tpattern\tstatus\tscreenshot\tnote\n' > "$manifest"
 
