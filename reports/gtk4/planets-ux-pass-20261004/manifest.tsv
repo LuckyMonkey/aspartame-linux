@@ -1,0 +1,2 @@
+bundle	pattern	status	screenshot	note
+org.sugarlabs.Planets	planetsactivity4.PlanetsActivity	PASS	/tmp/planets-ux-pass-20261004/org.sugarlabs.Planets.png	ready pid=66143 activity-id=27b73e5044ed4a26807b87b30c12987a screenshot=/tmp/planets-ux-pass-20261004/org.sugarlabs.Planets.png launch=(true,)
