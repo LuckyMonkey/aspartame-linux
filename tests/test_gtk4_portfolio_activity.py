@@ -12,9 +12,8 @@ def test_portfolio_bundle_is_native_and_registered():
     assert "class PortfolioActivity(SimpleActivity)" in source
     assert "Save draft" in source
     assert "Gtk.ScrolledWindow" in source and "Project description" in source
-    assert "body.set_vexpand(True)" in source
-    assert "body.set_halign(Gtk.Align.FILL)" in source
-    assert "body.set_valign(Gtk.Align.FILL)" in source
+    assert "root.append(body_frame)" in source
+    assert 'frame.project-pane' in source
     assert "org.sugarlabs.PortfolioActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
 
 

@@ -50,7 +50,7 @@ Classification used by the migration ledger:
 | Maze | FUNCTIONAL PORT | Four-direction movement, direct cell selection, JSON Journal position resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full maze generation and collaboration breadth remain absent |
 | Memorize | FUNCTIONAL PORT | Card reveal/matching workflow, JSON Journal card/match resume, and clean stop were verified with real GTK4 Activity processes on 2026-09-15; full randomization, scoring, and collaboration breadth remain absent |
 | Words | FUNCTIONAL PORT | UTF-8 word entry, lookup result, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; translation/audio breadth remains absent |
-| Portfolio | FUNCTIONAL PORT | UTF-8 project title/body editing and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; rich media/export breadth remains absent |
+| Portfolio | FUNCTIONAL PORT | Responsive labeled project-description editor, UTF-8 title/body editing, visible draft-save state, and JSON Journal save/resume verified 2026-10-04; rich media/export breadth remains absent |
 | FotoToon | FUNCTIONAL PORT | Caption canvas interaction and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; image import/layout breadth remains absent |
 | Finance | FUNCTIONAL PORT | Income/expense tracking, balance calculation, and JSON Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; charts, import/export, and collaboration remain absent |
 | Markdown | FUNCTIONAL PORT | UTF-8 Markdown editing, live preview, and Journal save/resume verified with real GTK4 Activity processes on 2026-09-15; full parser/rendering parity remains absent |
