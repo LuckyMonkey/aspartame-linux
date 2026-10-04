@@ -57,16 +57,16 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
 
 ## Current reality (2026-10-04)
 
-- Final standalone ISO under test: `2875e28b57d49757bc3f7ffdef505cb9143d5e87f476bc4a07fc24e0a456af74`.
+- Previous shareless qualification ISO: `2875e28b57d49757bc3f7ffdef505cb9143d5e87f476bc4a07fc24e0a456af74`.
 - A persisted empty Journal `timestamp` metadata file had exposed a packaged
   GTK4 datastore crash. Patch `0170-datastore-ignore-malformed-numeric-metadata.patch`
   now filters malformed numeric metadata in both the source and installed
   prefix copies. Fresh GTK4 runtime and Journal logs are clean.
-- The final image passes GTK3/GTK4 lifecycle probes (3/3 each), the packaged
-  shareless health/runtime checks, the Spaces accessibility button/action,
-  side-by-side geometry, and one-cycle launches for all 50 registered GTK4
-  Activities. Host suite: `440 passed`; Snakepit qualification and launch:
-  `PASS`.
+- That qualified image passes GTK3/GTK4 lifecycle probes (3/3 each), the
+  packaged shareless health/runtime checks, the Spaces accessibility
+  button/action, side-by-side geometry, and one-cycle launches for all 50
+  registered GTK4 Activities. The last full host suite on that baseline was
+  `440 passed`; Snakepit qualification and launch: `PASS`.
 - The Home Spaces button exposes direct Classic and Modern full-surface
   actions as well as the explicit comparison action. The packaged
   `sugar-chirality-space.sh left|right` bridge selects one complete Space and
@@ -80,6 +80,10 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
 - Abacus is now included in that source pass: its rods render actual bead
   state after every `+`, `−`, Clear, and Journal restore action, with a framed
   work area and compact Clear control.
+- A new standalone ISO containing these source changes was built successfully:
+  `74952fbd281e22eaa15a69bb6cdedc64fac7c0dc2b7796ccc7db087c02617693`.
+  Its runtime qualification is the next deliberate gate; the older receipt is
+  not silently reused as evidence for this new image.
 - Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
   transport, and Neighborhood peer behavior with a second participant. The
   semantic button/controller and explicit Chirality bridge are the reliable
@@ -143,6 +147,6 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       routine tooling; it is not a one-time milestone)
 - [x] Durable screenshots, runtime logs, commands, architecture and runbooks
 - [x] Verified coherent commits pushed to GitHub. `origin/master` contains the
-      packaged qualification and UX checkpoints through `514c253`.
+      packaged qualification and UX checkpoints through `a92b368`.
 
 No unchecked item is an external blocker merely because it requires more work.
