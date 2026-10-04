@@ -22,5 +22,16 @@ pytest -q tests/test_gtk4_colormyworld_activity.py
 2 passed
 ```
 
-This is a host/source qualification. A packaged guest visual receipt belongs
-to the next ISO sweep; no GTK3 fallback or retirement claim is changed here.
+The rebuilt development preview also passed one real guest Journal lifecycle
+and visual capture at 1920×1080:
+
+```text
+cycle=1 ... resume=PASS service-release=PASS shell-cleanup=PASS
+colormyworld-roundtrip=PASS input-method=AT-SPI datastore-payload=seeded
+visual-sweep=COMPLETE pass=1 fail=0 resolution=1920x1080
+```
+
+![Color My World GTK4 empty state](colormyworld-ux-pass-20261004-guest.png)
+
+This is a bounded Activity qualification, not a GTK3 retirement claim; full
+artwork and collaboration parity remain open.
