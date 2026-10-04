@@ -141,3 +141,11 @@ explicit side-by-side editing/output workspaces with visible boundaries, and
 both passed the targeted visual sweep plus two Journal resume/stop cycles
 with seeded payloads. See
 [`gtk4-activity-ux-pass-20261004-editors.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-editors.md).
+
+On 2026-10-04, the packaged/shareless qualification booted the rebuilt ISO
+without `/mnt/aspartame-dev`. The complete GTK4 catalog visual sweep passed
+`50/50` at 1920×1080, Get Books and Pippy passed two Journal lifecycle cycles
+each, and the AT-SPI Spaces action passed with GTK3/GTK4 comparison geometry
+of `960+960`. The same image also passed the Sugar health check after carrying
+the malformed Journal metadata guard into the system datastore service. See
+[`packaged-shareless-qualification-20261004.md`](../../reports/gtk4/packaged-shareless-qualification-20261004.md).
