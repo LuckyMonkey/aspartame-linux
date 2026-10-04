@@ -25,12 +25,14 @@ def test_pippy_bundle_is_native_and_registered():
     assert 'label="Run"' in source and "Program output" in source
     assert 'OUTPUT_PLACEHOLDER = "Run the program to see output."' in source
     assert "from pippy_runner import run_program" in source
-    assert "run_program(program)" in source
+    assert "run_program(program, input_text=input_text)" in source
     assert "_run_generation" in source
     assert "editor_frame" in source and "output_frame" in source
     assert "Gtk.Frame(label=\"Python program\")" in source
     assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
     assert "frame.code-pane" in source
+    assert "EXAMPLES = {" in source and "Program input" in source
+    assert "_editor_key" in source and "_goto_line" in source
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "org.laptop.Pippy|pippyactivity4.PippyActivity" in matrix
     for script in ("sugar-gtk4-dev-sync.sh", "sugar-gtk4-build.sh"):
@@ -50,6 +52,17 @@ def test_pippy_runner_executes_source_with_captured_output():
     assert result.returncode == 0
     assert result.output.strip() == "runner-ok"
     assert not result.timed_out
+
+
+def test_pippy_runner_passes_program_input():
+    runner = load_runner()
+    result = runner.run_program(
+        "value = input(); print(value.upper())",
+        input_text="sugar\n",
+        timeout=2,
+    )
+    assert result.returncode == 0
+    assert result.output.strip() == "SUGAR"
 
 
 def test_pippy_runner_reports_errors_and_kills_wall_clock_timeout():

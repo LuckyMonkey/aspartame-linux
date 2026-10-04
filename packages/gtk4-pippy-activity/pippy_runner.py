@@ -52,7 +52,8 @@ def _combined_output(stdout: str, stderr: str) -> str:
     return stdout or stderr
 
 
-def run_program(program: str, *, timeout: float = 5.0) -> RunResult:
+def run_program(program: str, *, timeout: float = 5.0,
+                input_text: str = "") -> RunResult:
     """Run one source buffer in a bounded, disposable working directory."""
 
     with tempfile.TemporaryDirectory(prefix="aspartame-pippy-") as directory:
@@ -69,13 +70,14 @@ def run_program(program: str, *, timeout: float = 5.0) -> RunResult:
             [sys.executable, "-I", "-c", BOOTSTRAP],
             cwd=directory,
             env=environment,
+            stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
             start_new_session=True,
         )
         try:
-            stdout, stderr = process.communicate(timeout=timeout)
+            stdout, stderr = process.communicate(input=input_text, timeout=timeout)
         except subprocess.TimeoutExpired as error:
             os.killpg(process.pid, signal.SIGKILL)
             stdout, stderr = process.communicate()

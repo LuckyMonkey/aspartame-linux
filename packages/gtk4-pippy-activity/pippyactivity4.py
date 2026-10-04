@@ -1,5 +1,11 @@
-"""Small, offline GTK4 Python playground for Sugar."""
+"""Small, offline GTK4 Python playground for Sugar.
 
+The editor keeps useful teaching affordances—examples, program input,
+Python indentation, Ctrl+Enter execution, and traceback line navigation—
+while execution remains inside the bounded local runner.
+"""
+
+import re
 import threading
 from pathlib import Path
 
@@ -13,6 +19,22 @@ for number in range(1, 4):
     print("Python number", number)
 '''
 OUTPUT_PLACEHOLDER = "Run the program to see output."
+EXAMPLES = {
+    "Hello": DEFAULT_PROGRAM,
+    "Times table": '''number = 7
+for row in range(1, 11):
+    print(number, "x", row, "=", number * row)
+''',
+    "Fibonacci": '''a, b = 0, 1
+while a < 1000:
+    print(a)
+    a, b = b, a + b
+''',
+    "Text art": '''for size in range(1, 8):
+    print(" " * (8 - size) + "*" * (2 * size - 1))
+print(" " * 7 + "|")
+''',
+}
 
 
 class PippyActivity(SimpleActivity):
@@ -41,7 +63,7 @@ class PippyActivity(SimpleActivity):
         title = Gtk.Label(label="Pippy", xalign=0)
         title.add_css_class("title-1")
         body.append(title)
-        subtitle = Gtk.Label(label="Write a small Python program, then run it in a bounded local runner.", xalign=0)
+        subtitle = Gtk.Label(label="Write a small Python program, then run it in a bounded local runner. Use Ctrl+Enter to run.", xalign=0)
         subtitle.add_css_class("dim-label")
         body.append(subtitle)
 
@@ -51,6 +73,9 @@ class PippyActivity(SimpleActivity):
         self.editor.set_vexpand(True)
         self.editor.update_property([Gtk.AccessibleProperty.LABEL], ["Python program editor"])
         self.editor.get_buffer().set_text(DEFAULT_PROGRAM)
+        keys = Gtk.EventControllerKey()
+        keys.connect("key-pressed", self._editor_key)
+        self.editor.add_controller(keys)
         editor_scroll = Gtk.ScrolledWindow()
         editor_scroll.set_min_content_height(260)
         editor_scroll.set_hexpand(True)
@@ -68,7 +93,12 @@ class PippyActivity(SimpleActivity):
         run.update_property([Gtk.AccessibleProperty.LABEL], ["Run Python program"])
         run.connect("clicked", self._run_program)
         controls.append(run)
+        self.examples = Gtk.DropDown.new_from_strings(list(EXAMPLES))
+        self.examples.set_tooltip_text("Choose an example program")
+        self.examples.update_property([Gtk.AccessibleProperty.LABEL], ["Example programs"])
+        controls.append(self.examples)
         reset = Gtk.Button(label="Reset example")
+        reset.set_tooltip_text("Replace the program with the selected example")
         reset.update_property([Gtk.AccessibleProperty.LABEL], ["Reset Python example"])
         reset.connect("clicked", self._reset)
         controls.append(reset)
@@ -77,6 +107,11 @@ class PippyActivity(SimpleActivity):
         editor_column = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         editor_column.set_hexpand(True); editor_column.set_vexpand(True)
         editor_column.append(editor_frame); editor_column.append(controls)
+
+        self.stdin = Gtk.Entry()
+        self.stdin.set_placeholder_text("Program input (separate lines with ;)")
+        self.stdin.update_property([Gtk.AccessibleProperty.LABEL], ["Program input"])
+        editor_column.append(self.stdin)
 
         self.output = Gtk.TextView()
         self.output.set_editable(False)
@@ -124,13 +159,16 @@ class PippyActivity(SimpleActivity):
         self.status.set_text("Running…")
         threading.Thread(
             target=self._execute,
-            args=(self._program(), generation),
+            args=(self._program(), self._input_text(), generation),
             daemon=True,
         ).start()
 
-    def _execute(self, program, generation):
+    def _input_text(self):
+        return "\n".join(part.strip() for part in self.stdin.get_text().split(";")) + "\n"
+
+    def _execute(self, program, input_text, generation):
         try:
-            result = run_program(program)
+            result = run_program(program, input_text=input_text)
         except OSError as error:
             GLib.idle_add(self._show_result, generation, str(error), 1, False)
             return
@@ -148,17 +186,55 @@ class PippyActivity(SimpleActivity):
         self.output.get_buffer().set_text(text)
         if timed_out:
             self.status.set_text("Program timed out")
+        elif returncode != 0:
+            lines = re.findall(r'File "[^"]+", line (\d+)', text)
+            if lines:
+                self._goto_line(int(lines[-1]))
+                self.status.set_text("Program returned an error on line %s" % lines[-1])
+            else:
+                self.status.set_text("Program returned an error")
         else:
-            self.status.set_text("Finished" if returncode == 0 else "Program returned an error")
+            self.status.set_text("Finished")
         self.run_button.set_sensitive(True)
         return GLib.SOURCE_REMOVE
 
+    def _goto_line(self, number):
+        buffer = self.editor.get_buffer()
+        found = buffer.get_iter_at_line(max(0, number - 1))
+        where = found[1] if isinstance(found, tuple) else found
+        end = where.copy()
+        if not end.ends_line():
+            end.forward_to_line_end()
+        buffer.select_range(where, end)
+        self.editor.scroll_to_iter(where, 0.2, False, 0, 0)
+
+    def _editor_key(self, _controller, keyval, _keycode, state):
+        buffer = self.editor.get_buffer()
+        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter) and state & Gdk.ModifierType.CONTROL_MASK:
+            self._run_program(None)
+            return True
+        if keyval == Gdk.KEY_Tab and not state & Gdk.ModifierType.SHIFT_MASK:
+            buffer.insert_at_cursor("    ")
+            return True
+        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+            cursor = buffer.get_iter_at_mark(buffer.get_insert())
+            start = cursor.copy(); start.set_line_offset(0)
+            line = buffer.get_text(start, cursor, False)
+            indent = line[:len(line) - len(line.lstrip(" "))]
+            if line.rstrip().endswith(":"):
+                indent += "    "
+            buffer.insert_at_cursor("\n" + indent)
+            self.editor.scroll_mark_onscreen(buffer.get_insert())
+            return True
+        return False
+
     def _reset(self, _button):
+        name = list(EXAMPLES)[self.examples.get_selected()]
         self._run_generation += 1
         self.run_button.set_sensitive(True)
-        self.editor.get_buffer().set_text(DEFAULT_PROGRAM)
+        self.editor.get_buffer().set_text(EXAMPLES[name])
         self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
-        self.status.set_text("Ready")
+        self.status.set_text("Ready: %s example" % name)
 
     def read_file(self, file_path):
         """Restore a Python source buffer from a UTF-8 Journal object."""
