@@ -12,6 +12,9 @@ def test_iq_bundle_is_native_and_registered():
     assert "class IQActivity(SimpleActivity)" in source
     assert "Next puzzle" in source
     assert 'Gtk.Frame(label="Sequence puzzle")' in source
+    assert "Gtk.CenterBox()" in source and "set_center_widget(panel)" in source
+    assert "Look for the pattern" in source
+    assert "IQ puzzle status" in source
     assert "set_vexpand(True)" in source and "set_valign(Gtk.Align.CENTER)" in source
     assert "def read_file" in source and "def write_file" in source
     assert "mulawa.IQ" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
