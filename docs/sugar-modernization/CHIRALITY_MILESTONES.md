@@ -83,15 +83,16 @@ The remaining migration-gated work is:
 1. keep GTK3/GTK4 comparison actions available through developer tooling;
 2. route a user-facing GTK4 control to the adapter;
 3. prove two GTK4 Activity instances occupy the semantic slots;
-4. prove repeated switching, rapid switching, stop, resume, and crash
-   isolation in a headless guest.
+4. prove repeated switching, rapid switching, stop, and resume in a headless
+   guest.
 
 The reproducible guest probe is
 `scripts/sugar-gtk4-chirality-activity-roundtrip.py`; it launches Calculate
 and Clock, assigns them to the two hands, activates Left/Right/Left through
 the modern Shell contract, and checks both Activity services are cleaned up.
 It covers the two-Activity and basic switching/stop portion of this milestone;
-resume and crash-isolation qualification remain explicit follow-up gates.
+session resume remains an explicit follow-up gate. Crash isolation is covered
+by the separate Chirality crash probe.
 
 ## Milestone 2 — object continuity
 
@@ -108,8 +109,13 @@ The remaining gates are explicit:
 
 1. define and qualify graceful refusal for unsupported object formats or
    Activity/object combinations;
-2. qualify crash isolation and shell/session resume while a hand is held;
+2. qualify shell/session resume while a hand is held;
 3. only then add user-facing “Use with…” or “Give to Other Hand” actions.
+
+The companion probe
+`scripts/sugar-gtk4-chirality-crash-roundtrip.py` qualifies the crash portion
+independently: after the held Right Activity is terminated, the Left Activity
+remains alive and activatable, and the adapter removes only the exited hand.
 
 ## Evidence rule
 

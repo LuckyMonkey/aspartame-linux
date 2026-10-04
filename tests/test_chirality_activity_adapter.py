@@ -44,6 +44,7 @@ def test_iso_packages_the_activity_adapter():
     assert "sugar-chirality-activity.py" in build
     assert "sugar-gtk4-chirality-activity-roundtrip.py" in build
     assert "sugar-gtk4-chirality-object-roundtrip.py" in build
+    assert "sugar-gtk4-chirality-crash-roundtrip.py" in build
 
 
 def test_guest_roundtrip_proves_two_live_activities_switch_on_one_surface():
@@ -61,4 +62,12 @@ def test_guest_object_roundtrip_proves_one_journal_uid_across_two_activities():
     assert '"handoff-object", "left", "right"' in probe
     assert "active-sequence=left,right,left" in probe
     assert 'payload=utf8' in probe
+    assert "mode=single-surface" in probe
+
+
+def test_guest_crash_roundtrip_preserves_the_other_hand():
+    probe = (ROOT / "scripts/sugar-gtk4-chirality-crash-roundtrip.py").read_text()
+    assert "signal.SIGKILL" in probe
+    assert '"activity-exited", crashed_id' in probe
+    assert "preserved=left" in probe
     assert "mode=single-surface" in probe

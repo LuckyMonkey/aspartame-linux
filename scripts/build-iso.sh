@@ -143,6 +143,7 @@ for helper in sugar-gtk4-run.sh sugar-gtk4-session.sh sugar-gtk4-space.sh \
              sugar-chirality-activity.py \
              sugar-gtk4-chirality-activity-roundtrip.py \
              sugar-gtk4-chirality-object-roundtrip.py \
+             sugar-gtk4-chirality-crash-roundtrip.py \
              aspartame_chirality.py sugar-chirality.py \
              sugar-gtk4-runtime-check.sh sugar-gtk4-lifecycle-probe.sh \
              sugar-gtk3-lifecycle-probe.sh \

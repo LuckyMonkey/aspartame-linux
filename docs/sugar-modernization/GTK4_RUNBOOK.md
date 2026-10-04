@@ -120,3 +120,13 @@ Write and Read Activities, assigns them to the two semantic hands, exercises
 Left/Right/Left activation, and verifies payload and service cleanup. It does
 not create a split screen or a history log. Unsupported object-capability
 refusal and crash/session-resume qualification remain separate gates.
+
+Held-Activity crash isolation is qualified with:
+
+```sh
+/usr/lib/aspartame/gtk4-preview/venv/bin/python \
+  /usr/lib/aspartame/gtk4-preview/scripts/sugar-gtk4-chirality-crash-roundtrip.py
+```
+
+It terminates the held Right Activity, verifies that Left remains alive and
+activatable, and checks that `activity-exited` removes only the crashed hand.

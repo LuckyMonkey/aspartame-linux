@@ -90,8 +90,13 @@ Chirality Milestone 2 is now qualified for the bounded UTF-8 object path. The
 guest probe creates one Journal UID in Write, resumes that same object in
 Write and Read, assigns both live GTK4 Activities to semantic hands, switches
 Left/Right/Left, and verifies the final payload plus service cleanup. Broader
-object-format refusal, crash isolation, and session-resume gates remain open;
-GTK3 retirement is therefore still evidence-gated.
+object-format refusal and session-resume gates remain open; GTK3 retirement is
+therefore still evidence-gated.
+
+The held-Activity crash gate is independently qualified: terminating the
+Right GTK4 Activity leaves Left alive and activatable, then clears only the
+exited hand through the Chirality adapter. Session-resume and unsupported
+object-capability refusal remain open before user-facing handoff actions.
 
 References:
 
