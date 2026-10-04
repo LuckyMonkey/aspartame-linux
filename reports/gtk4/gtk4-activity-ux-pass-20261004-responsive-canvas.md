@@ -58,3 +58,13 @@ The manifest and six screenshots are retained beside this report:
 
 This is development-preview runtime evidence, not a packaged ISO receipt.
 The GTK3 fallback/reference bundles remain installed.
+
+The same rebuilt preview also passed the modern Space health check:
+
+```text
+runtime-check=ok target=gtk4 pid=41108 desktop=1 window=0xe00005 stable_pid=726 gtk4_pid=41108
+```
+
+The preview runtime directory was corrected to mode `0700` before collecting
+this receipt. The persistent host development share remains read-only, so the
+clean writable snapshot was used for this qualification run.
