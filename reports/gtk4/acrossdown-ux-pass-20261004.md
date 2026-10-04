@@ -21,5 +21,13 @@ pytest -q tests/test_gtk4_acrossdown_activity.py
 1 passed
 ```
 
-The guest visual receipt will be added after the next development-prefix
-rebuild; this does not change GTK3 retirement classification yet.
+The rebuilt development preview also passed the focused guest visual sweep:
+
+```text
+visual-sweep=COMPLETE pass=1 fail=0 resolution=1920x1080
+```
+
+![Across and Down centered workspace](acrossdown-ux-pass-20261004-guest.png)
+
+This improves the GTK4 forward path but does not change GTK3 retirement
+classification yet.
