@@ -177,3 +177,9 @@ The follow-up standalone image carrying the Spaces controller integration was
 also booted shareless. The packaged Chirality CLI reported Modern Space active
 with `switch_target=gtk4`, the classic-to-modern controller route returned
 `runtime-check=ok target=gtk4`, and `/mnt/aspartame-dev` was not mounted.
+
+The same packaged image qualified the stale native review rows for FotoToon,
+IQ, Portfolio, TurtleBlocks, and Maze. Their bounded Journal resume/cleanup
+probes passed, and their visual captures are present in the complete packaged
+manifest; the review catalog now records all five as `testing`. See
+[`gtk4-activity-qualification-20261004-native5.md`](../../reports/gtk4/gtk4-activity-qualification-20261004-native5.md).
