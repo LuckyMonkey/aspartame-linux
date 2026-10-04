@@ -75,7 +75,7 @@ def test_session_restart_resume_hook_is_wired_into_the_modern_session():
     assert "ASPARTAME_CHIRALITY_RESUME_SCRIPT" in session
     assert 'wait "$shell_pid"' in session
     assert "ASPARTAME_CHIRALITY_STATE_FILE" in runner
-    assert "sugar-gtk4-chirality-session-resume.py" in runner
+    assert 'ASPARTAME_CHIRALITY_RESUME_SCRIPT="$project_root/scripts/sugar-gtk4-chirality-session-resume.py"' in runner
     assert "sugar-gtk4-chirality-session-resume.py" in build
 
 

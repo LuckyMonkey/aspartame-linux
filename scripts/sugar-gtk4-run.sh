@@ -194,7 +194,7 @@ exec env \
     DATASTORE_LOG="$log_root/datastore-$(date -u +%Y%m%dT%H%M%SZ).log" \
     ASPARTAME_GTK4_LOG="$log" \
     ASPARTAME_CHIRALITY_STATE_FILE="$chirality_state_root/chirality.json" \
-    ASPARTAME_CHIRALITY_RESUME_SCRIPT="$root/scripts/sugar-gtk4-chirality-session-resume.py" \
+    ASPARTAME_CHIRALITY_RESUME_SCRIPT="$project_root/scripts/sugar-gtk4-chirality-session-resume.py" \
     PYTHON_BIN="$python_bin" \
     PATH="$venv/bin:$prefix/bin:$PATH" \
     SHELL_ENTRY="$shell/src/jarabe/main.py" \
