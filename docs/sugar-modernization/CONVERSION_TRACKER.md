@@ -159,6 +159,6 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       routine tooling; it is not a one-time milestone)
 - [x] Durable screenshots, runtime logs, commands, architecture and runbooks
 - [x] Verified coherent commits pushed to GitHub. `origin/master` contains the
-      packaged qualification and UX checkpoints through `e20a435`.
+      packaged qualification and UX checkpoints through `d1825b5`.
 
 No unchecked item is an external blocker merely because it requires more work.
