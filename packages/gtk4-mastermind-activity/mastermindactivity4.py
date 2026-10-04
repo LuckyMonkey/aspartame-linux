@@ -39,7 +39,9 @@ class MastermindActivity(SimpleActivity):
         self.progress.update_property([Gtk.AccessibleProperty.LABEL], ["Guess progress"])
         root.append(self.progress)
         self.board = Gtk.Grid(column_spacing=8, row_spacing=8)
-        self.board.set_halign(Gtk.Align.CENTER); self.board.set_valign(Gtk.Align.CENTER)
+        self.board.set_hexpand(True); self.board.set_vexpand(True)
+        self.board.set_column_homogeneous(True); self.board.set_row_homogeneous(True)
+        self.board.set_halign(Gtk.Align.FILL); self.board.set_valign(Gtk.Align.FILL)
         board_frame = Gtk.Frame(label="Code board")
         board_frame.set_hexpand(True); board_frame.set_vexpand(True)
         board_frame.set_child(self.board); root.append(board_frame)
@@ -48,7 +50,7 @@ class MastermindActivity(SimpleActivity):
             cells = []
             for col in range(4):
                 cell = Gtk.Label(label="·")
-                cell.set_size_request(64, 42); cell.add_css_class("peg")
+                cell.set_hexpand(True); cell.set_vexpand(True); cell.add_css_class("peg")
                 self.board.attach(cell, col, row, 1, 1); cells.append(cell)
             self._board_labels.append(cells)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)

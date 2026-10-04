@@ -19,5 +19,8 @@ def test_mastermind_bundle_is_native_and_registered():
     assert '"guesses": self.guesses' in source
     assert 'self.progress.set_text' in source
     assert 'Gtk.Frame(label="Code board")' in source and "root.set_vexpand(True)" in source
+    assert "self.board.set_column_homogeneous(True)" in source
+    assert "cell.set_hexpand(True); cell.set_vexpand(True)" in source
+    assert "cell.set_size_request" not in source
     assert "org.laptop.Mastermind" in matrix
     assert "Mastermind" in run and "Mastermind" in build and "gtk4-mastermind-activity" in sync

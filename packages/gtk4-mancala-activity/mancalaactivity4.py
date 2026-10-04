@@ -21,18 +21,20 @@ class MancalaActivity(SimpleActivity):
         title = Gtk.Label(label="Mancala", xalign=0); title.add_css_class("title-1"); root.append(title)
         self.status = Gtk.Label(label="Player 1: choose a pit.", xalign=0); root.append(self.status)
         board = Gtk.Grid(column_spacing=8, row_spacing=8)
-        board.set_halign(Gtk.Align.CENTER); board.set_valign(Gtk.Align.CENTER)
+        board.set_hexpand(True); board.set_vexpand(True)
+        board.set_column_homogeneous(True); board.set_row_homogeneous(True)
+        board.set_halign(Gtk.Align.FILL); board.set_valign(Gtk.Align.FILL)
         board_frame = Gtk.Frame(label="Mancala board")
         board_frame.set_hexpand(True); board_frame.set_vexpand(True)
         board_frame.set_child(board); root.append(board_frame)
         self.store_labels = []
         for store in range(2):
-            label = Gtk.Label(label="0", width_chars=4); label.add_css_class("store"); self.store_labels.append(label)
+            label = Gtk.Label(label="0", width_chars=4); label.set_hexpand(True); label.set_vexpand(True); label.add_css_class("store"); self.store_labels.append(label)
             board.attach(label, 0 if store == 0 else 7, 0, 1, 2)
         self.buttons = []
         for index in range(6):
             for row, pit in ((0, index), (1, 11 - index)):
-                button = Gtk.Button(label="4"); button.set_size_request(70, 54); button.connect("clicked", self._move, pit)
+                button = Gtk.Button(label="4"); button.set_hexpand(True); button.set_vexpand(True); button.connect("clicked", self._move, pit)
                 button.update_property([Gtk.AccessibleProperty.LABEL], ["Pit %d" % (pit + 1)]); board.attach(button, index + 1, row, 1, 1); self.buttons.append((pit, button))
         reset = Gtk.Button(label="New game"); reset.connect("clicked", self._reset); root.append(reset)
         self.set_canvas(root); self._install_css()

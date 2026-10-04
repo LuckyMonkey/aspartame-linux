@@ -20,6 +20,7 @@ class LevelActivity(SimpleActivity):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
         root.set_margin_top(32); root.set_margin_bottom(32)
         root.set_margin_start(40); root.set_margin_end(40)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Level"])
         root.set_accessible_role(Gtk.AccessibleRole.GROUP)
         title = Gtk.Label(label="Level", xalign=0)
@@ -30,7 +31,6 @@ class LevelActivity(SimpleActivity):
         root.append(self.readout)
 
         self._drawing_area = Gtk.DrawingArea()
-        self._drawing_area.set_content_width(700); self._drawing_area.set_content_height(260)
         self._drawing_area.set_hexpand(True); self._drawing_area.set_vexpand(True)
         self._drawing_area.set_draw_func(self._draw)
         # GTK4 has no IMAGE accessible role; the custom drawing surface is a

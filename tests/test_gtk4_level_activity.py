@@ -12,6 +12,9 @@ def test_level_is_native_gtk4_and_interactive():
     assert "sugar-activity4 levelactivity4.LevelActivity" in info
     assert "Gtk.DrawingArea" in source
     assert "Gtk.GestureDrag" in source
+    assert "set_content_width" not in source
+    assert "set_content_height" not in source
+    assert "root.set_hexpand(True); root.set_vexpand(True)" in source
     assert '"Reset"' in source
     assert "AccessibleProperty.LABEL" in source
     assert 'require_version("Gtk", "3.0")' not in source
