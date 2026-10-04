@@ -73,8 +73,11 @@ Promotion requires evidence appropriate to the claimed class:
 The full matrix is a coverage instrument, not a retirement gate. On
 2026-10-04, peer presence and Neighborhood rendering were qualified with two
 clean packaged headless guests; the remaining collaboration gate is shared
-Activity join/action behavior. Other highest-value work is continued
-per-Activity parity promotion and the remaining physical-input boundaries.
+Activity join/action behavior. The owner-side Telepathy share and a real
+peer-side `sugar4.presence.Activity.join()` probe are now separate checks;
+the owner currently passes while the disposable peer transport remains
+intermittent. Other highest-value work is continued per-Activity parity
+promotion and the remaining physical-input boundaries.
 
 ## UX qualification and first retirement candidates
 
@@ -177,6 +180,14 @@ The follow-up standalone image carrying the Spaces controller integration was
 also booted shareless. The packaged Chirality CLI reported Modern Space active
 with `switch_target=gtk4`, the classic-to-modern controller route returned
 `runtime-check=ok target=gtk4`, and `/mnt/aspartame-dev` was not mounted.
+
+The Activity-sharing qualification harness now keeps a successful owner alive
+for a bounded peer window (`ASPARTAME_SHARE_HOLD_SECONDS`) and includes
+`sugar-gtk4-share-join-roundtrip.py`, which calls the real GTK4 presence
+`get_activity(...).join()` contract. The owner path passed on the clean-shell
+rerun, but the peer did not discover the public Activity before timeout; this
+remains an open collaboration result, not a false parity pass. See
+`reports/gtk4/share-join-qualification-20261004.md`.
 
 The next focused UX correction fixed Abacus's stretched rod layout in the GTK4
 development runtime. Its centered place-value card, grouped controls, and

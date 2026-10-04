@@ -309,6 +309,9 @@ try:
         f"{outcome}",
         flush=True,
     )
+    hold_seconds = int(os.environ.get("ASPARTAME_SHARE_HOLD_SECONDS", "0"))
+    if hold_seconds > 0 and share_mode == "shared":
+        time.sleep(hold_seconds)
 finally:
     if activity_id is not None:
         shell.StopActivity(activity_id)

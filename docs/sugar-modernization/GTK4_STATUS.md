@@ -99,6 +99,12 @@ exited hand through the Chirality adapter. Activity replacement/resume is also
 qualified for the same Journal UID; full shell/session restart and unsupported
 object-capability refusal remain open before user-facing handoff actions.
 
+The Activity-sharing harness now separates owner publication from peer join:
+the owner share path passes and the peer probe exercises the real
+`sugar4.presence.Activity.join()` contract. The current clean-shell run still
+timed out before the second guest discovered the public Activity, so
+Neighborhood/Group Activity join remains open.
+
 References:
 
 - https://github.com/sugarlabs/sugar-toolkit-gtk4

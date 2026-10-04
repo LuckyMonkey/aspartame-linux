@@ -103,6 +103,20 @@ def test_share_roundtrip_can_qualify_successful_telepathy_mode():
     assert 'current_activity_published(activity_id)' in probe
 
 
+def test_share_roundtrip_can_hold_the_owner_for_peer_join():
+    probe = (ROOT / "scripts/sugar-gtk4-share-roundtrip.py").read_text()
+    assert 'ASPARTAME_SHARE_HOLD_SECONDS' in probe
+    assert 'share_mode == "shared"' in probe
+
+
+def test_peer_join_probe_uses_the_real_sugar4_presence_join_contract():
+    probe = (ROOT / "scripts/sugar-gtk4-share-join-roundtrip.py").read_text()
+    assert 'presenceservice.get_instance()' in probe
+    assert 'pservice.get_activity(activity_id, warn_if_none=False)' in probe
+    assert 'activity.join()' in probe
+    assert 'contract=sugar4.presence.Activity' in probe
+
+
 def test_peer_observer_uses_the_live_neighborhood_model():
     observer = (ROOT / "scripts/sugar-gtk4-share-peer-observer.py").read_text()
 

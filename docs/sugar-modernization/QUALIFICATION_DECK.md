@@ -164,10 +164,11 @@ them.
   a private link, render peer XO icons, and hide the empty-state label once
   peer content exists. Both GTK4 Neighborhood surfaces are reachable through
   the semantic action and ATSPI.
-- **Gap:** Activity sharing/join is still open; the GTK4 toolkit correctly
-  refuses the currently unimplemented share operation and returns to Private.
-- **Evidence:** `reports/gtk4/neighborhood-peer-20261004.md`
-- **STATUS: OPEN — peer presence PASS; shared Activity behavior remains**
+- **Gap:** Activity sharing owner publication now passes, but the second-guest
+  discovery/join path remains unqualified.
+- **Evidence:** `reports/gtk4/neighborhood-peer-20261004.md`,
+  `reports/gtk4/share-join-qualification-20261004.md`
+- **STATUS: OPEN — owner publication PASS; peer join remains unqualified**
 
 ## W12 — A refused session action must not destroy the session
 
