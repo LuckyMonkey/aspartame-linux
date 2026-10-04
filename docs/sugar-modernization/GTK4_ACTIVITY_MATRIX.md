@@ -178,6 +178,13 @@ also booted shareless. The packaged Chirality CLI reported Modern Space active
 with `switch_target=gtk4`, the classic-to-modern controller route returned
 `runtime-check=ok target=gtk4`, and `/mnt/aspartame-dev` was not mounted.
 
+The next focused UX correction fixed Abacus's stretched rod layout in the GTK4
+development runtime. Its centered place-value card, grouped controls, and
+accessible action names passed a 1920x1080 visual sweep and a seeded Journal
+resume/cleanup cycle. This is development-guest evidence pending the next
+packaged image rebuild; the GTK3 bundle remains the fallback/reference.
+See [`gtk4-activity-ux-pass-20261004-abacus.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-abacus.md).
+
 The same packaged image qualified the stale native review rows for FotoToon,
 IQ, Portfolio, TurtleBlocks, and Maze. Their bounded Journal resume/cleanup
 probes passed, and their visual captures are present in the complete packaged
