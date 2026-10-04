@@ -18,6 +18,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from typing import Any
 
@@ -652,6 +653,69 @@ def launch(args: argparse.Namespace) -> int:
     return 0 if result.returncode == 0 else 1
 
 
+def _record_path(args: argparse.Namespace) -> Path:
+    return Path(args.record).expanduser().resolve()
+
+
+def register(args: argparse.Namespace) -> int:
+    """Publish one passing launch contract to the GTK4 Activity Manager."""
+    record_path = _record_path(args)
+    if not record_path.is_file():
+        raise ValueError(f"qualification record not found: {record_path}")
+    try:
+        record = json.loads(record_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"invalid qualification record: {record_path}: {exc}") from exc
+    if record.get("schema") != SCHEMA:
+        raise ValueError(f"unsupported qualification record schema: {record.get('schema')!r}")
+    if record.get("status") != "PASS":
+        raise ValueError("only a passing qualification record can be registered")
+    contract = record.get("launch")
+    if not isinstance(contract, dict):
+        raise ValueError("qualification record has no explicit launch contract")
+    command = contract.get("command")
+    cwd = Path(contract.get("cwd", "")).expanduser().resolve()
+    environment = Path(contract.get("environment", "")).expanduser().resolve()
+    if not isinstance(command, list) or not command or not all(
+        isinstance(item, str) and item for item in command
+    ):
+        raise ValueError("qualification record has an invalid launch command")
+    if not cwd.is_dir():
+        raise ValueError(f"launch source directory not found: {cwd}")
+    if not (environment / "bin" / "python").is_file():
+        raise ValueError(
+            "launch environment interpreter not found: "
+            f"{environment / 'bin' / 'python'}"
+        )
+
+    software = record.get("software", {})
+    name = software.get("name", "python-activity") if isinstance(software, dict) else "python-activity"
+    slug = re.sub(r"[^A-Za-z0-9_.-]+", "-", str(name)).strip(".-") or "python-activity"
+    directory = Path(
+        args.directory
+        or os.environ.get("ASPARTAME_SNAKEPIT_RECORD_DIR")
+        or "~/.local/share/aspartame/snakepit/records"
+    ).expanduser().resolve()
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+    target = directory / f"{slug}.json"
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w", encoding="utf-8", dir=directory, prefix=".register-", suffix=".tmp",
+            delete=False
+        ) as handle:
+            temporary = Path(handle.name)
+            json.dump(record, handle, indent=2)
+            handle.write("\n")
+        os.replace(temporary, target)
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
+    print(f"registered={target}")
+    print(f"software={name}")
+    return 0
+
+
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(description=__doc__)
     commands = root.add_subparsers(dest="subcommand", required=True)
@@ -686,6 +750,12 @@ def parser() -> argparse.ArgumentParser:
     launch_parser.add_argument("--record", required=True)
     launch_parser.add_argument("--timeout", type=int, default=120)
     launch_parser.set_defaults(handler=launch)
+    register_parser = commands.add_parser(
+        "register", help="publish a passing launch contract to Activity Manager"
+    )
+    register_parser.add_argument("--record", required=True)
+    register_parser.add_argument("--directory")
+    register_parser.set_defaults(handler=register)
     return root
 
 

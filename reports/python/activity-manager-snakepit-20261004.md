@@ -31,5 +31,16 @@ The synchronized GTK4 development guest rebuilt successfully:
 GTK4 toolkit, Casilda, sugar-ext, Jarabe, and datastore preview build: PASS
 ```
 
+End-to-end host receipt using the existing passing management record:
+
+```text
+registered=/tmp/aspartame-snakepit-records/aspartame-management.json
+runtime=snakepit-python installed=True launchable=True removable=False
+management workflow: returncode=0
+```
+
+The manager-side launch ran the recorded management workflow in its isolated
+environment and exited successfully.
+
 This qualifies the record-consumption and launch boundary, not arbitrary
 package graphs, a security sandbox, or full Sugar Activity parity.

@@ -266,6 +266,21 @@ environment are intentionally not launchable. Qualification and launch remain
 separate so Activity Manager never turns an installation check into a false
 application entry.
 
+To publish a passing record to the GTK4 Activity Manager's user-owned record
+directory, use the explicit registration step:
+
+```sh
+python3 scripts/snakepit.py register \
+  --record reports/python/aspartame-management.json \
+  --directory "$ASPARTAME_SNAKEPIT_RECORD_DIR"
+```
+
+Registration validates the schema, `PASS` status, launch command, source
+directory, and environment interpreter before atomically replacing the
+record's name-derived JSON file. It does not install packages or modify
+system Python. The manager then presents the record as `Snakepit Python` with
+`Launch`; failed or incomplete records are not registered.
+
 The packaged launcher was also exercised on the standalone ISO against its
 installed source with an unavailable Python 3.13 candidate followed by the
 guest Python 3.14 candidate; the desktop-target record for the final rebuilt

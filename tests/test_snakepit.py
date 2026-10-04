@@ -118,6 +118,49 @@ def test_snakepit_launches_an_explicit_qualified_contract(tmp_path):
     assert "launch-workflow-ok" in launched.stdout
 
 
+def test_snakepit_registers_only_a_valid_launch_contract(tmp_path):
+    source = tmp_path / "registerable"
+    source.mkdir()
+    (source / "probe.py").write_text("print('register-ok')\n")
+    environment = tmp_path / "venv"
+    record = tmp_path / "qualification.json"
+    qualify = subprocess.run(
+        [
+            sys.executable, str(SNAKEPIT), "qualify",
+            "--software", "registerable-specimen",
+            "--source", str(source), "--environment", str(environment),
+            "--record", str(record), "--launchable",
+            "--command", "python", "-c", "print('register-ok')",
+        ], text=True, capture_output=True,
+    )
+    assert qualify.returncode == 0, qualify.stderr
+
+    directory = tmp_path / "records"
+    registered = subprocess.run(
+        [
+            sys.executable, str(SNAKEPIT), "register",
+            "--record", str(record), "--directory", str(directory),
+        ], text=True, capture_output=True,
+    )
+    assert registered.returncode == 0, registered.stderr
+    target = directory / "registerable-specimen.json"
+    assert target.is_file()
+    assert json.loads(target.read_text())["launch"] == json.loads(
+        record.read_text())["launch"]
+
+    failed = dict(json.loads(record.read_text()))
+    failed["status"] = "FAIL"
+    record.write_text(json.dumps(failed))
+    rejected = subprocess.run(
+        [
+            sys.executable, str(SNAKEPIT), "register",
+            "--record", str(record), "--directory", str(directory),
+        ], text=True, capture_output=True,
+    )
+    assert rejected.returncode == 2
+    assert "only a passing qualification record" in rejected.stderr
+
+
 def test_snakepit_records_candidates_and_skips_unavailable_interpreters(tmp_path):
     source = tmp_path / "specimen"
     source.mkdir()
