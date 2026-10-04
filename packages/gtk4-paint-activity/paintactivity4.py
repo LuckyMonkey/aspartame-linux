@@ -38,10 +38,9 @@ class PaintActivity(SimpleActivity):
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Paint activity"])
 
         body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        body.set_size_request(1200, 800)
-        body.set_hexpand(False)
+        body.set_hexpand(True)
         body.set_vexpand(True)
-        body.set_halign(Gtk.Align.CENTER)
+        body.set_halign(Gtk.Align.FILL)
         body.set_valign(Gtk.Align.CENTER)
         root.append(body)
 
@@ -50,9 +49,8 @@ class PaintActivity(SimpleActivity):
         body.append(title)
 
         self._drawing_area = Gtk.DrawingArea()
-        self._drawing_area.set_size_request(1200, 620)
-        self._drawing_area.set_content_width(1200)
-        self._drawing_area.set_content_height(620)
+        self._drawing_area.set_content_width(720)
+        self._drawing_area.set_content_height(480)
         self._drawing_area.set_hexpand(True)
         self._drawing_area.set_vexpand(True)
         self._drawing_area.set_draw_func(self._draw)
@@ -66,14 +64,14 @@ class PaintActivity(SimpleActivity):
         drag.connect("drag-update", self._drag_update)
         drag.connect("drag-end", self._drag_end)
         self._drawing_area.add_controller(drag)
-        canvas_frame = Gtk.Frame()
-        canvas_frame.set_size_request(1200, 620)
+        canvas_frame = Gtk.Frame(label="Drawing canvas")
         canvas_frame.set_hexpand(True)
         canvas_frame.set_vexpand(True)
         canvas_frame.set_child(self._drawing_area)
         body.append(canvas_frame)
 
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        controls.set_halign(Gtk.Align.CENTER)
         controls.update_property([Gtk.AccessibleProperty.LABEL], ["Paint controls"])
         for name in self.COLORS:
             button = Gtk.Button(label=name)

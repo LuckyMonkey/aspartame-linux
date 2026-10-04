@@ -12,12 +12,13 @@ class AbacusActivity(SimpleActivity):
         super().__init__(activity_handle); self.set_title("Abacus"); self.values = [0] * 5; self._build()
 
     def _build(self):
-        root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12); root.set_margin_top(28); root.set_margin_bottom(28); root.set_margin_start(32); root.set_margin_end(32); root.update_property([Gtk.AccessibleProperty.LABEL], ["Abacus place value"])
+        root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12); root.set_margin_top(28); root.set_margin_bottom(28); root.set_margin_start(32); root.set_margin_end(32); root.set_hexpand(True); root.set_vexpand(True); root.update_property([Gtk.AccessibleProperty.LABEL], ["Abacus place value"])
         title = Gtk.Label(label="Abacus", xalign=0); title.add_css_class("title-1"); root.append(title)
         self.value_label = Gtk.Label(label="Value: 0", xalign=0); root.append(self.value_label)
-        self.rods = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8); self.rods.set_vexpand(True); root.append(self.rods)
+        self.rods = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8); self.rods.set_hexpand(True); self.rods.set_vexpand(True)
+        rods_frame = Gtk.Frame(label="Place-value rods"); rods_frame.set_hexpand(True); rods_frame.set_vexpand(True); rods_frame.set_child(self.rods); root.append(rods_frame)
         for index in range(5):
-            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8); label = Gtk.Label(label=f"10^{4-index}", width_chars=6); row.append(label)
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8); row.set_hexpand(True); row.set_vexpand(True); label = Gtk.Label(label=f"10^{4-index}", width_chars=6); row.append(label)
             minus = Gtk.Button(label="−"); minus.connect("clicked", self._change, index, -1); row.append(minus)
             bead = Gtk.Label(label="○ ○ ○ ○ ○ ○ ○ ○ ○ ○", hexpand=True); bead.set_halign(Gtk.Align.CENTER); bead.update_property([Gtk.AccessibleProperty.LABEL], [f"Rod {index + 1} beads"]); row.append(bead)
             plus = Gtk.Button(label="+"); plus.connect("clicked", self._change, index, 1); row.append(plus); self.rods.append(row)
