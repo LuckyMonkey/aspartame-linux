@@ -16,6 +16,7 @@ import signal
 import subprocess
 import sys
 import tempfile
+import threading
 
 
 BOOTSTRAP = """
@@ -44,6 +45,7 @@ class RunResult:
     output: str
     returncode: int
     timed_out: bool = False
+    cancelled: bool = False
 
 
 def _combined_output(stdout: str, stderr: str) -> str:
@@ -53,7 +55,7 @@ def _combined_output(stdout: str, stderr: str) -> str:
 
 
 def run_program(program: str, *, timeout: float = 5.0,
-                input_text: str = "") -> RunResult:
+                input_text: str = "", cancel_event=None) -> RunResult:
     """Run one source buffer in a bounded, disposable working directory."""
 
     with tempfile.TemporaryDirectory(prefix="aspartame-pippy-") as directory:
@@ -76,6 +78,20 @@ def run_program(program: str, *, timeout: float = 5.0,
             text=True,
             start_new_session=True,
         )
+        cancel_watcher = None
+        if cancel_event is not None:
+            def watch_cancel():
+                while process.poll() is None:
+                    if cancel_event.wait(0.05):
+                        if process.poll() is None:
+                            try:
+                                os.killpg(process.pid, signal.SIGKILL)
+                            except ProcessLookupError:
+                                pass
+                        return
+
+            cancel_watcher = threading.Thread(target=watch_cancel, daemon=True)
+            cancel_watcher.start()
         try:
             stdout, stderr = process.communicate(input=input_text, timeout=timeout)
         except subprocess.TimeoutExpired as error:
@@ -85,8 +101,18 @@ def run_program(program: str, *, timeout: float = 5.0,
             detail = f"Program timed out after {timeout:g} seconds."
             if output:
                 detail = f"{output}\n{detail}"
-            return RunResult(detail, process.returncode or 1, timed_out=True)
+            return RunResult(
+                detail,
+                process.returncode if process.returncode is not None else 1,
+                timed_out=True,
+            )
+        finally:
+            if cancel_watcher is not None:
+                cancel_watcher.join(timeout=0.5)
+        output = _combined_output(stdout, stderr)
+        cancelled = cancel_event is not None and cancel_event.is_set()
         return RunResult(
-            _combined_output(stdout, stderr),
-            process.returncode,
+            output,
+            process.returncode if process.returncode is not None else 1,
+            cancelled=cancelled,
         )

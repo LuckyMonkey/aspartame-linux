@@ -10,8 +10,9 @@ Changes:
 - the child receives conservative CPU, address-space, file-size, and open-file
   limits;
 - the complete process group is killed on wall-clock timeout;
-- the Activity disables Run during execution and ignores stale results after
-  Reset or a newer Run;
+- the Activity disables Run during execution, exposes Stop, and cancels the
+  complete process group on request;
+- stale results remain suppressed after Stop, Reset, or a newer Run;
 - output, traceback/error, and timeout states remain visible in the Output
   pane.
 
@@ -26,8 +27,12 @@ SSH_PORT=2230 ./scripts/ssh-asp \
 Result:
 
 ```text
-pippy-runtime=PASS output=PASS error=PASS wall-timeout=PASS isolated-runner=PASS
+pippy-runtime=PASS output=PASS error=PASS wall-timeout=PASS cancel=PASS isolated-runner=PASS
 ```
+
+The cancellation result is produced by a real `threading.Event` watcher in
+the guest runner, not by merely hiding the output. The Stop action therefore
+returns the Activity to Ready without leaving the runaway child process alive.
 
 This is bounded local execution, not a security sandbox. The next runtime
 boundary for stronger isolation would need an explicit OS sandbox policy; no

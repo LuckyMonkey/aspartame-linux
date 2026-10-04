@@ -129,10 +129,10 @@ Pippy now has a bounded Python execution boundary rather than a bare
 `subprocess.run`: isolated working directory/interpreter mode, child resource
 limits, process-group timeout cleanup, and stale-result suppression are
 qualified by `scripts/sugar-gtk4-pippy-runtime-probe.py`. The editor now also
-offers examples, stdin, Python indentation, Ctrl+Enter, and traceback line
-selection while retaining the same Journal payload. This is useful Python
-runtime progress, not a claim of a security sandbox or full upstream Pippy
-parity.
+offers examples, stdin, Python indentation, Ctrl+Enter, traceback line
+selection, and a Stop action that cancels the complete child process group
+while retaining the same Journal payload. This is useful Python runtime
+progress, not a claim of a security sandbox or full upstream Pippy parity.
 
 References:
 

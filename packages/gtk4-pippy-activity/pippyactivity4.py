@@ -93,6 +93,11 @@ class PippyActivity(SimpleActivity):
         run.update_property([Gtk.AccessibleProperty.LABEL], ["Run Python program"])
         run.connect("clicked", self._run_program)
         controls.append(run)
+        stop = Gtk.Button(label="Stop")
+        stop.set_sensitive(False)
+        stop.update_property([Gtk.AccessibleProperty.LABEL], ["Stop Python program"])
+        stop.connect("clicked", self._stop_program)
+        controls.append(stop)
         self.examples = Gtk.DropDown.new_from_strings(list(EXAMPLES))
         self.examples.set_tooltip_text("Choose an example program")
         self.examples.update_property([Gtk.AccessibleProperty.LABEL], ["Example programs"])
@@ -138,7 +143,9 @@ class PippyActivity(SimpleActivity):
         self.status.add_css_class("dim-label")
         body.append(self.status)
         self.run_button = run
+        self.stop_button = stop
         self._run_generation = 0
+        self._cancel_event = None
         self.set_canvas(root)
         self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
 
@@ -156,21 +163,25 @@ class PippyActivity(SimpleActivity):
         self._run_generation += 1
         generation = self._run_generation
         self.run_button.set_sensitive(False)
+        self.stop_button.set_sensitive(True)
         self.status.set_text("Running…")
+        self._cancel_event = threading.Event()
         threading.Thread(
             target=self._execute,
-            args=(self._program(), self._input_text(), generation),
+            args=(self._program(), self._input_text(), generation, self._cancel_event),
             daemon=True,
         ).start()
 
     def _input_text(self):
         return "\n".join(part.strip() for part in self.stdin.get_text().split(";")) + "\n"
 
-    def _execute(self, program, input_text, generation):
+    def _execute(self, program, input_text, generation, cancel_event):
         try:
-            result = run_program(program, input_text=input_text)
+            result = run_program(
+                program, input_text=input_text, cancel_event=cancel_event
+            )
         except OSError as error:
-            GLib.idle_add(self._show_result, generation, str(error), 1, False)
+            GLib.idle_add(self._show_result, generation, str(error), 1, False, False)
             return
         GLib.idle_add(
             self._show_result,
@@ -178,13 +189,16 @@ class PippyActivity(SimpleActivity):
             result.output or "(program finished without output)",
             result.returncode,
             result.timed_out,
+            result.cancelled,
         )
 
-    def _show_result(self, generation, text, returncode, timed_out):
+    def _show_result(self, generation, text, returncode, timed_out, cancelled):
         if generation != self._run_generation:
             return GLib.SOURCE_REMOVE
         self.output.get_buffer().set_text(text)
-        if timed_out:
+        if cancelled:
+            self.status.set_text("Stopped")
+        elif timed_out:
             self.status.set_text("Program timed out")
         elif returncode != 0:
             lines = re.findall(r'File "[^"]+", line (\d+)', text)
@@ -196,7 +210,14 @@ class PippyActivity(SimpleActivity):
         else:
             self.status.set_text("Finished")
         self.run_button.set_sensitive(True)
+        self.stop_button.set_sensitive(False)
+        self._cancel_event = None
         return GLib.SOURCE_REMOVE
+
+    def _stop_program(self, _button):
+        if self._cancel_event is not None:
+            self.status.set_text("Stopping…")
+            self._cancel_event.set()
 
     def _goto_line(self, number):
         buffer = self.editor.get_buffer()
@@ -229,9 +250,13 @@ class PippyActivity(SimpleActivity):
         return False
 
     def _reset(self, _button):
+        if self._cancel_event is not None:
+            self._cancel_event.set()
         name = list(EXAMPLES)[self.examples.get_selected()]
         self._run_generation += 1
         self.run_button.set_sensitive(True)
+        self.stop_button.set_sensitive(False)
+        self._cancel_event = None
         self.editor.get_buffer().set_text(EXAMPLES[name])
         self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
         self.status.set_text("Ready: %s example" % name)
@@ -246,7 +271,11 @@ class PippyActivity(SimpleActivity):
         self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
         self.status.set_text("Ready")
         self._run_generation += 1
+        if self._cancel_event is not None:
+            self._cancel_event.set()
+        self._cancel_event = None
         self.run_button.set_sensitive(True)
+        self.stop_button.set_sensitive(False)
 
     def write_file(self, file_path):
         """Save the Python source buffer as a UTF-8 Journal object."""

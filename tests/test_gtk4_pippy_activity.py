@@ -22,11 +22,12 @@ def test_pippy_bundle_is_native_and_registered():
     assert "bundle_id = org.laptop.Pippy" in info
     assert "sugar-activity4 pippyactivity4.PippyActivity" in info
     assert "class PippyActivity(SimpleActivity)" in source
-    assert 'label="Run"' in source and "Program output" in source
+    assert 'label="Run"' in source and 'label="Stop"' in source and "Program output" in source
     assert 'OUTPUT_PLACEHOLDER = "Run the program to see output."' in source
     assert "from pippy_runner import run_program" in source
-    assert "run_program(program, input_text=input_text)" in source
+    assert "run_program(" in source and "cancel_event=cancel_event" in source
     assert "_run_generation" in source
+    assert "cancel_event" in source and "_stop_program" in source
     assert "editor_frame" in source and "output_frame" in source
     assert "Gtk.Frame(label=\"Python program\")" in source
     assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
@@ -76,8 +77,21 @@ def test_pippy_runner_reports_errors_and_kills_wall_clock_timeout():
     assert "timed out" in timeout.output
 
 
+def test_pippy_runner_cancels_the_child_process_group():
+    import threading
+
+    runner = load_runner()
+    cancel = threading.Event()
+    threading.Timer(0.1, cancel.set).start()
+    result = runner.run_program("while True: pass", timeout=2, cancel_event=cancel)
+    assert result.cancelled
+    assert not result.timed_out
+
+
 def test_guest_pippy_runtime_probe_exercises_output_error_and_timeout():
     probe = (ROOT / "scripts/sugar-gtk4-pippy-runtime-probe.py").read_text()
     assert "from pippy_runner import run_program" in probe
     assert '"pippy-runtime-ok"' in probe
     assert "wall-timeout=PASS" in probe
+    assert "cancel_event=cancel" in probe
+    assert "cancel=PASS" in probe

@@ -3,6 +3,8 @@
 
 from pathlib import Path
 import sys
+import threading
+import time
 
 
 PACKAGE = Path("/mnt/aspartame-dev/packages/gtk4-pippy-activity")
@@ -21,9 +23,15 @@ def main():
     assert "RuntimeError: bounded-error" in error.output
     timeout = run_program("while True: pass", timeout=0.2)
     assert timeout.timed_out
+    cancel = threading.Event()
+    threading.Thread(
+        target=lambda: (time.sleep(0.1), cancel.set()), daemon=True
+    ).start()
+    cancelled = run_program("while True: pass", timeout=2, cancel_event=cancel)
+    assert cancelled.cancelled
     print(
         "pippy-runtime=PASS output=PASS error=PASS "
-        "wall-timeout=PASS isolated-runner=PASS",
+        "wall-timeout=PASS cancel=PASS isolated-runner=PASS",
         flush=True,
     )
 
