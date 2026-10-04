@@ -69,14 +69,27 @@ F7/F8 routes therefore converge on the same semantic state boundary.
 
 ## Milestone 1 — GTK4-only hand adapter
 
-Next implementation boundary, after the migration gate has enough evidence:
+Status: **implemented as a headless GTK4 Activity adapter; function-key
+ownership remains a later migration decision**.
+
+`scripts/sugar-chirality-activity.py` is the executable adapter boundary. It
+assigns live GTK4 Activity IDs to Left Hand and Right Hand, activates exactly
+one selected Activity through the modern Sugar Shell D-Bus API, and exposes
+the semantic Active/Held state through the same model. It does not create a
+pane, workspace, geometry comparison, or history log.
+
+The remaining migration-gated work is:
 
 1. keep GTK3/GTK4 comparison actions available through developer tooling;
-2. let two GTK4 Activity instances occupy the semantic slots;
-3. switch visibility and focus through the model, never by laying out panes;
-4. expose the accessible Left Hand / Right Hand state;
-5. prove repeated switching, rapid switching, stop, resume, and crash
+2. route a user-facing GTK4 control to the adapter;
+3. prove two GTK4 Activity instances occupy the semantic slots;
+4. prove repeated switching, rapid switching, stop, resume, and crash
    isolation in a headless guest.
+
+The reproducible guest probe is
+`scripts/sugar-gtk4-chirality-activity-roundtrip.py`; it launches Calculate
+and Clock, assigns them to the two hands, activates Left/Right/Left through
+the modern Shell contract, and checks both Activity services are cleaned up.
 
 ## Milestone 2 — object continuity
 
