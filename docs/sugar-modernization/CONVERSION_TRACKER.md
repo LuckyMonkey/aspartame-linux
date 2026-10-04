@@ -80,8 +80,9 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
 - Abacus is now included in that source pass: its rods render actual bead
   state after every `+`, `−`, Clear, and Journal restore action, with a framed
   work area and compact Clear control.
-- A new standalone ISO containing these source changes was built successfully:
-  `74952fbd281e22eaa15a69bb6cdedc64fac7c0dc2b7796ccc7db087c02617693`.
+- A new standalone ISO containing these source changes and the Classic Home
+  Spaces action menu was built successfully:
+  `2b61d1c7b5d4ce8aeb279ca245eb7560e94ca304440bf8ebd8998294e67cc4ae`.
   Its runtime qualification is the next deliberate gate; the older receipt is
   not silently reused as evidence for this new image.
 - Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
@@ -147,6 +148,6 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       routine tooling; it is not a one-time milestone)
 - [x] Durable screenshots, runtime logs, commands, architecture and runbooks
 - [x] Verified coherent commits pushed to GitHub. `origin/master` contains the
-      packaged qualification and UX checkpoints through `a92b368`.
+      packaged qualification and UX checkpoints through `e20a435`.
 
 No unchecked item is an external blocker merely because it requires more work.
