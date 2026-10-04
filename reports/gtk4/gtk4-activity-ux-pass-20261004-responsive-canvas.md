@@ -4,16 +4,18 @@ Date: 2026-10-04
 
 ## Scope
 
-Connect the Dots and Planets still imposed 980–1000 pixel canvas minimums.
-That made the work surface depend on a large desktop allocation and could
-clip or crowd the activity on smaller Sugar surfaces.
+Count, Connect the Dots, and Planets still imposed desktop-sized canvas
+minimums. That made the work surface depend on a large desktop allocation and
+could clip or crowd the activity on smaller Sugar surfaces.
 
 ## Change
 
-- Removed fixed body/frame size requests from both Activities.
+- Removed fixed body/frame size requests from all three Activities.
 - Added GTK4 `Gtk.AspectFrame` containers so each canvas expands while
   preserving its intended drawing ratio.
 - Kept a smaller natural content size for initial allocation.
+- Made Count's cells and layer overlays homogeneous and derived drag cell
+  selection from the allocated grid rather than a fixed pixel width.
 - Scaled Planets' orbit geometry with the allocated canvas.
 - Scaled Connect the Dots markers and hit targets without reducing the
   pointer target below an accessible size.

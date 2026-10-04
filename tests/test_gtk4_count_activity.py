@@ -43,3 +43,14 @@ def test_help_documents_count_layers_and_rectangle_painting():
     assert '("Count Activity"' in help_source
     assert "translucent context" in help_source
     assert "drag across a rectangle" in help_source
+
+
+def test_count_canvas_scales_from_its_allocated_surface():
+    source = (PACKAGE / "countactivity4.py").read_text()
+    assert "Gtk.AspectFrame.new" in source
+    assert "self.width / self.height" in source
+    assert "canvas_box.set_hexpand(True)" in source
+    assert "self.grid.set_column_homogeneous(True)" in source
+    assert "self.grid.set_row_homogeneous(True)" in source
+    assert "x * self.width / grid_width" in source
+    assert "x // 85" not in source

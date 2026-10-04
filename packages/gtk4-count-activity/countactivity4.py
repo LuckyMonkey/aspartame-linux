@@ -41,8 +41,7 @@ class CountActivity(SimpleActivity):
         content.set_hexpand(True)
         content.set_vexpand(True)
         canvas_box = Gtk.Box()
-        canvas_box.set_size_request(760, 520)
-        canvas_box.set_hexpand(False)
+        canvas_box.set_hexpand(True)
         canvas_box.set_vexpand(True)
         canvas_box.set_visible(True)
         overlay = Gtk.Overlay()
@@ -54,18 +53,20 @@ class CountActivity(SimpleActivity):
         overlay.set_child(canvas_back)
         self.grid = Gtk.Grid(column_spacing=3, row_spacing=3)
         self.grid.add_css_class("count-grid")
-        self._grid_size = (self.width * 82 + (self.width - 1) * 3,
-                           self.height * 82 + (self.height - 1) * 3)
-        self.grid.set_size_request(*self._grid_size)
-        self.grid.set_halign(Gtk.Align.CENTER)
-        self.grid.set_valign(Gtk.Align.CENTER)
+        self.grid.set_hexpand(True)
+        self.grid.set_vexpand(True)
+        self.grid.set_halign(Gtk.Align.FILL)
+        self.grid.set_valign(Gtk.Align.FILL)
+        self.grid.set_column_homogeneous(True)
+        self.grid.set_row_homogeneous(True)
         overlay.add_overlay(self.grid)
         self._cells = []
         for y in range(self.height):
             row = []
             for x in range(self.width):
                 button = Gtk.Button()
-                button.set_size_request(82, 82)
+                button.set_hexpand(True)
+                button.set_vexpand(True)
                 button.connect("clicked", self._cell_clicked, x, y)
                 row.append(button)
                 self.grid.attach(button, x, y, 1, 1)
@@ -77,11 +78,15 @@ class CountActivity(SimpleActivity):
         grid_drag.connect("drag-end", self._grid_drag_end)
         self.grid.add_controller(grid_drag)
         self._context_grids = []
-        canvas_box.append(overlay)
+        aspect = Gtk.AspectFrame.new(None, 0.5, 0.5,
+                                     self.width / self.height, False)
+        aspect.set_hexpand(True)
+        aspect.set_vexpand(True)
+        aspect.set_child(overlay)
+        canvas_box.append(aspect)
         content.append(canvas_box)
 
         rail = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-        rail.set_size_request(190, -1)
         rail.set_hexpand(False)
         rail.set_valign(Gtk.Align.CENTER)
         heading = Gtk.Label(label="EDIT LAYER", xalign=0)
@@ -160,9 +165,12 @@ class CountActivity(SimpleActivity):
             if relative == 0:
                 continue
             grid = Gtk.Grid(column_spacing=3, row_spacing=3)
-            grid.set_halign(Gtk.Align.CENTER)
-            grid.set_valign(Gtk.Align.CENTER)
-            grid.set_size_request(*self._grid_size)
+            grid.set_hexpand(True)
+            grid.set_vexpand(True)
+            grid.set_halign(Gtk.Align.FILL)
+            grid.set_valign(Gtk.Align.FILL)
+            grid.set_column_homogeneous(True)
+            grid.set_row_homogeneous(True)
             # All planes share one XY origin. Back planes remain readable
             # through the selected plane; front planes are lighter so they
             # never masquerade as editable cells.
@@ -174,7 +182,8 @@ class CountActivity(SimpleActivity):
             for y, row in enumerate(layer):
                 for x, occupied in enumerate(row):
                     button = Gtk.Button()
-                    button.set_size_request(82, 82)
+                    button.set_hexpand(True)
+                    button.set_vexpand(True)
                     button.set_focusable(False)
                     button.set_can_target(False)
                     if occupied:
@@ -191,11 +200,13 @@ class CountActivity(SimpleActivity):
         self._render()
 
     def _grid_cell(self, x, y):
-        column = int(x // 85)
-        row = int(y // 85)
-        if 0 <= column < self.width and 0 <= row < self.height:
-            return column, row
-        return None
+        grid_width = self.grid.get_width()
+        grid_height = self.grid.get_height()
+        if grid_width <= 0 or grid_height <= 0 or x < 0 or y < 0:
+            return None
+        column = min(self.width - 1, int(x * self.width / grid_width))
+        row = min(self.height - 1, int(y * self.height / grid_height))
+        return column, row
 
     def _grid_drag_begin(self, _gesture, x, y):
         self._drag_origin = (x, y)
