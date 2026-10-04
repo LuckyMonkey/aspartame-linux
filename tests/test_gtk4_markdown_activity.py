@@ -11,6 +11,8 @@ def test_markdown_bundle_is_native_and_registered():
     assert "sugar-activity4 markdownactivity4.MarkdownActivity" in info
     assert "class MarkdownActivity(SimpleActivity)" in source
     assert "Markdown preview" in source
+    assert "DEFAULT_MARKDOWN" in source and "Start writing here" in source
+    assert "self.editor.get_buffer().set_text(DEFAULT_MARKDOWN)" in source
     assert "editor_frame" in source and "preview_frame" in source
     assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
     assert "frame.editor-pane" in source

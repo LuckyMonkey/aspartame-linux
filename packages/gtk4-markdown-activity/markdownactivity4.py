@@ -6,6 +6,9 @@ from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
 
 
+DEFAULT_MARKDOWN = "# Welcome to Markdown\n\nStart writing here. The preview updates as you type."
+
+
 class MarkdownActivity(SimpleActivity):
     def __init__(self, activity_handle=None):
         super().__init__(activity_handle)
@@ -27,6 +30,7 @@ class MarkdownActivity(SimpleActivity):
         editor_frame = Gtk.Frame(label="Markdown source"); editor_frame.add_css_class("editor-pane"); editor_frame.set_hexpand(True); editor_frame.set_vexpand(True); editor_frame.set_child(editor_scroll)
         self.preview = Gtk.Label(label="Start writing with Markdown.", xalign=0, wrap=True)
         self.preview.update_property([Gtk.AccessibleProperty.LABEL], ["Markdown preview"])
+        self.editor.get_buffer().set_text(DEFAULT_MARKDOWN)
         preview_scroll = Gtk.ScrolledWindow(); preview_scroll.set_min_content_height(160); preview_scroll.set_hexpand(True); preview_scroll.set_vexpand(True); preview_scroll.set_child(self.preview)
         preview_frame = Gtk.Frame(label="Preview"); preview_frame.add_css_class("editor-pane"); preview_frame.set_hexpand(True); preview_frame.set_vexpand(True); preview_frame.set_child(preview_scroll)
         panes = Gtk.Grid(column_spacing=16)
