@@ -2,10 +2,11 @@
 
 ## Result
 
-PASS for the GTK4 development runtime on the headless 1920×1080 QEMU
-display. PlayGo, Mancala, and Mastermind now present their primary game
-surface as a centered, expanding, labeled board area instead of a small
-top-aligned widget island. No host pointer or keyboard input was used.
+PASS for both the GTK4 development runtime and the newly rebuilt packaged
+runtime on the headless 1920×1080 QEMU display. PlayGo, Mancala, and
+Mastermind now present their primary game surface as a centered, expanding,
+labeled board area instead of a small top-aligned widget island. No host
+pointer or keyboard input was used.
 
 ## Evidence
 
@@ -19,6 +20,13 @@ top-aligned widget island. No host pointer or keyboard input was used.
   - [`org.laptop.PlayGo.png`](ux-games-20261004/org.laptop.PlayGo.png)
   - [`mulawa.Mancala.png`](ux-games-20261004/mulawa.Mancala.png)
   - [`org.laptop.Mastermind.png`](ux-games-20261004/org.laptop.Mastermind.png)
+- The new shareless ISO (`aspartame-2026.10.04-x86_64.iso`, SHA-256
+  `b2490b43b62ec8f5cd5edcf4cdb8d3454b4f7e86163255353fbc7ec217e128da`)
+  passed the installed-runtime visual sweep at `3/3`; Journal launched and
+  cleaned up all three Activities. Packaged captures:
+  - [`org.laptop.PlayGo.png`](ux-games-packaged-20261004/org.laptop.PlayGo.png)
+  - [`mulawa.Mancala.png`](ux-games-packaged-20261004/mulawa.Mancala.png)
+  - [`org.laptop.Mastermind.png`](ux-games-packaged-20261004/org.laptop.Mastermind.png)
 
 ## Changes
 
@@ -35,6 +43,6 @@ top-aligned widget island. No host pointer or keyboard input was used.
 
 ## Boundary
 
-This is development-share evidence, not a new packaged ISO qualification.
+The packaged evidence is a visual/lifecycle pass, not a FULL PORT claim.
 The GTK3 bundles remain installed as fallback/reference until the broader
 behavior, collaboration, and physical-input parity gates are complete.
