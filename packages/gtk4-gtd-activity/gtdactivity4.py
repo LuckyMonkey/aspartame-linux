@@ -44,8 +44,18 @@ class GTDActivity(SimpleActivity):
         check = Gtk.CheckButton(label=text); check.set_hexpand(True); check.set_halign(Gtk.Align.START); check.update_property([Gtk.AccessibleProperty.LABEL], [text]); check.connect("toggled", self._update_summary)
         self.tasks.append(Gtk.ListBoxRow(child=check)); self.entry.set_text(""); self._update_summary()
 
+    def _task_rows(self):
+        """Yield real ListBoxRow children without treating the placeholder as a task."""
+        index = 0
+        while True:
+            row = self.tasks.get_row_at_index(index)
+            if row is None:
+                return
+            yield row
+            index += 1
+
     def _update_summary(self, *_args):
-        rows = [row.get_child() for row in self.tasks]
+        rows = [row.get_child() for row in self._task_rows()]
         done = sum(button.get_active() for button in rows)
         self.summary.set_text(f"{len(rows)} tasks · {done} complete")
 
@@ -58,7 +68,7 @@ class GTDActivity(SimpleActivity):
                 raise ValueError("tasks must be a list")
         except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
             tasks = []
-        for row in list(self.tasks):
+        for row in list(self._task_rows()):
             self.tasks.remove(row)
         for task in tasks:
             if not isinstance(task, dict):
@@ -78,7 +88,7 @@ class GTDActivity(SimpleActivity):
     def write_file(self, file_path):
         """Write task text and completion state as a Journal object."""
         tasks = []
-        for row in self.tasks:
+        for row in self._task_rows():
             check = row.get_child()
             tasks.append({"text": check.get_label(), "done": check.get_active()})
         Path(file_path).write_text(

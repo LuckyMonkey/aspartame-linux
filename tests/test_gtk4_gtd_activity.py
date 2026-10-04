@@ -13,6 +13,8 @@ def test_gtd_bundle_is_native_and_registered():
     assert "New task" in source
     assert 'Gtk.Frame(label="Tasks")' in source
     assert 'No tasks yet. Add one above.' in source
+    assert "get_row_at_index(index)" in source
+    assert "def _task_rows(self)" in source
     assert "entry_row = Gtk.Box" in source and "set_vexpand(True)" in source
     assert "org.sugarlabs.GTDActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-gtd-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
