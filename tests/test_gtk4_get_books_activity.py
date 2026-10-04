@@ -11,6 +11,9 @@ def test_get_books_bundle_is_native_offline_and_registered():
     assert "sugar-activity4 getbooksactivity4.GetBooksActivity" in info
     assert "class GetBooksActivity(SimpleActivity)" in source
     assert "Gtk.SearchEntry" in source and "Read selected book" in source
+    assert "Gtk.Paned" in source and 'Gtk.Frame(label="Books")' in source
+    assert 'Gtk.Frame(label="Book details")' in source
+    assert "self.results.select_row(first)" in source
     assert "offline catalog" in source
     assert "org.laptop.sugar.GetBooksActivity|getbooksactivity4.GetBooksActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     for script in ("sugar-gtk4-dev-sync.sh", "sugar-gtk4-build.sh"):

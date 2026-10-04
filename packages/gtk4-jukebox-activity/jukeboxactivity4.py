@@ -56,8 +56,24 @@ class JukeboxActivity(SimpleActivity):
         self.playlist.update_property([Gtk.AccessibleProperty.LABEL], ["Playlist"])
         self.playlist.connect("row-selected", self._row_selected)
         scroll = Gtk.ScrolledWindow(); scroll.set_child(self.playlist); scroll.set_hexpand(True); scroll.set_vexpand(True)
-        playlist_frame = Gtk.Frame(label="Playlist"); playlist_frame.set_hexpand(True); playlist_frame.set_vexpand(True); playlist_frame.set_child(scroll)
-        body.append(playlist_frame)
+        playlist_frame = Gtk.Frame(label="Playlist"); playlist_frame.add_css_class("player-pane"); playlist_frame.set_hexpand(True); playlist_frame.set_vexpand(True); playlist_frame.set_child(scroll)
+
+        player = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        player.set_margin_top(18); player.set_margin_bottom(18); player.set_margin_start(18); player.set_margin_end(18)
+        player.set_valign(Gtk.Align.CENTER)
+        self.now_playing = Gtk.Label(label="Nothing playing", xalign=0, wrap=True)
+        self.now_playing.add_css_class("title-2")
+        self.now_playing.update_property([Gtk.AccessibleProperty.LABEL], ["Now playing"])
+        player.append(self.now_playing)
+        player_hint = Gtk.Label(label="Choose a track from the playlist, then use the controls below.", xalign=0, wrap=True)
+        player_hint.add_css_class("dim-label"); player.append(player_hint)
+        player_frame = Gtk.Frame(label="Player"); player_frame.add_css_class("player-pane"); player_frame.set_hexpand(True); player_frame.set_vexpand(True); player_frame.set_child(player)
+
+        panes = Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL)
+        panes.set_hexpand(True); panes.set_vexpand(True); panes.set_position(760)
+        panes.set_shrink_start_child(False); panes.set_shrink_end_child(False)
+        panes.set_start_child(playlist_frame); panes.set_end_child(player_frame)
+        body.append(panes)
         self._refresh_playlist()
 
         self.status = Gtk.Label(label="Select a track to begin.", xalign=0)
@@ -74,13 +90,14 @@ class JukeboxActivity(SimpleActivity):
         self.add.update_property([Gtk.AccessibleProperty.LABEL], ["Add a local audio track"])
         self.add.connect("clicked", self._add_local)
         controls.append(self.play); controls.append(self.stop); controls.append(self.add)
+        controls.set_halign(Gtk.Align.END)
         body.append(controls)
         self.set_canvas(root)
         self._install_css()
 
     def _install_css(self):
         provider = Gtk.CssProvider()
-        provider.load_from_data(b"scrolledwindow { border: 1px solid #8aa8b8; border-radius: 8px; } listboxrow { padding: 12px; } .track-title { font-weight: bold; } button { min-height: 40px; border-radius: 18px; }")
+        provider.load_from_data(b"frame.player-pane { border: 1px solid #8aa8b8; border-radius: 10px; } listboxrow { padding: 12px; } .track-title { font-weight: bold; } button { min-height: 40px; border-radius: 18px; }")
         display = Gdk.Display.get_default()
         if display:
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -104,8 +121,9 @@ class JukeboxActivity(SimpleActivity):
         if row is None:
             return
         self._selected = row.track_index
-        if not self._playing:
+        if not self._playing and hasattr(self, "status"):
             self.status.set_text("Ready: %s" % self._tracks[self._selected][0])
+        self.now_playing.set_text("Ready: %s" % self._tracks[self._selected][0])
 
     def _play_selected(self, _button):
         row = self.playlist.get_selected_row()
@@ -114,6 +132,7 @@ class JukeboxActivity(SimpleActivity):
         name = self._tracks[self._selected][0]
         self._playing = True
         self.status.set_text("Playing: %s" % name)
+        self.now_playing.set_text("Playing: %s" % name)
         self.play.set_label("Playing")
         self.play.set_sensitive(False)
         self.stop.set_sensitive(True)
@@ -121,6 +140,7 @@ class JukeboxActivity(SimpleActivity):
     def _stop(self, _button):
         self._playing = False
         self.status.set_text("Stopped: %s" % self._tracks[self._selected][0])
+        self.now_playing.set_text("Stopped: %s" % self._tracks[self._selected][0])
         self.play.set_label("Play")
         self.play.set_sensitive(True)
         self.stop.set_sensitive(False)
@@ -140,6 +160,7 @@ class JukeboxActivity(SimpleActivity):
             self._selected = len(self._tracks) - 1
             self._refresh_playlist()
             self.status.set_text("Added: %s" % name)
+            self.now_playing.set_text("Ready: %s" % name)
 
     def read_file(self, file_path):
         """Restore playlist and selection from a JSON Journal object."""
@@ -162,6 +183,7 @@ class JukeboxActivity(SimpleActivity):
         self._playing = False
         self._refresh_playlist()
         self.status.set_text("Ready: %s" % self._tracks[self._selected][0])
+        self.now_playing.set_text("Ready: %s" % self._tracks[self._selected][0])
 
     def write_file(self, file_path):
         """Save playlist and selected track as a JSON Journal object."""

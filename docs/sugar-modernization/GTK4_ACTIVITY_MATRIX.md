@@ -127,3 +127,11 @@ browser now preserves a stable detail viewport through a pinned build patch;
 the full visual sweep stayed 50/50 and `sugar-gtk4-runtime-check.sh gtk4`
 returned `runtime-check=ok`. See
 [`gtk4-activity-ux-pass-20261004-log.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-log.md).
+
+The eighth UX batch qualified Get Books, Jukebox, and Words at 1920×1080.
+Get Books and Jukebox now use explicit side-by-side content/player regions;
+Words uses a centered bounded task card. All three passed the targeted
+Journal/D-Bus visual launch/paint/stop sweep (`3/3`) and their focused source
+tests. This improves the modern-space presentation while leaving GTK3
+fallback/reference bundles in place pending full behavior-parity gates. See
+[`gtk4-activity-ux-pass-20261004-library.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-library.md).

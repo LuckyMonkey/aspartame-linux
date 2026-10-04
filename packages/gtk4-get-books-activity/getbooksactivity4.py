@@ -33,6 +33,7 @@ class GetBooksActivity(SimpleActivity):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         root.set_margin_top(24); root.set_margin_bottom(24)
         root.set_margin_start(30); root.set_margin_end(30)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Get Books catalog"])
 
         title = Gtk.Label(label="Get Books", xalign=0)
@@ -53,21 +54,36 @@ class GetBooksActivity(SimpleActivity):
         self.results.update_property([Gtk.AccessibleProperty.LABEL], ["Book results"])
         self.results.connect("row-selected", self._row_selected)
         scroll = Gtk.ScrolledWindow(); scroll.set_child(self.results); scroll.set_vexpand(True)
-        root.append(scroll)
+        books_frame = Gtk.Frame(label="Books")
+        books_frame.add_css_class("book-pane")
+        books_frame.set_hexpand(True); books_frame.set_vexpand(True); books_frame.set_child(scroll)
 
         self.details = Gtk.Label(label="Select a book to see details.", xalign=0, wrap=True)
         self.details.add_css_class("book-details")
         self.details.update_property([Gtk.AccessibleProperty.LABEL], ["Book details"])
-        root.append(self.details)
+        details_scroll = Gtk.ScrolledWindow(); details_scroll.set_child(self.details); details_scroll.set_vexpand(True)
+        details_frame = Gtk.Frame(label="Book details")
+        details_frame.add_css_class("book-pane")
+        details_frame.set_hexpand(True); details_frame.set_vexpand(True); details_frame.set_child(details_scroll)
+
+        panes = Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL)
+        panes.set_hexpand(True); panes.set_vexpand(True); panes.set_position(600)
+        panes.set_shrink_start_child(False); panes.set_shrink_end_child(False)
+        panes.set_start_child(books_frame); panes.set_end_child(details_frame)
+        root.append(panes)
+
+        actions = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        actions.set_halign(Gtk.Align.END)
         self.read = Gtk.Button(label="Read selected book")
         self.read.set_sensitive(False)
         self.read.update_property([Gtk.AccessibleProperty.LABEL], ["Read selected book"])
         self.read.connect("clicked", self._read_selected)
-        root.append(self.read)
+        actions.append(self.read)
+        root.append(actions)
         self.set_canvas(root)
 
         provider = Gtk.CssProvider()
-        provider.load_from_data(b"listboxrow { padding: 12px; } .book-title { font-weight: bold; } .book-details { padding: 10px 0; } button { min-height: 42px; border-radius: 19px; }")
+        provider.load_from_data(b"frame.book-pane { border: 1px solid #8aa8b8; border-radius: 10px; } listboxrow { padding: 12px; } .book-title { font-weight: bold; } .book-details { padding: 18px; } button { min-height: 42px; border-radius: 19px; }")
         display = Gdk.Display.get_default()
         if display:
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -86,6 +102,9 @@ class GetBooksActivity(SimpleActivity):
             self.results.append(row)
         self.details.set_text("Select a book to see details.")
         self.read.set_sensitive(False)
+        first = self.results.get_row_at_index(0)
+        if first is not None:
+            self.results.select_row(first)
 
     def _search_changed(self, entry):
         query = entry.get_text().strip().casefold()

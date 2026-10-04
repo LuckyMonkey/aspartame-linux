@@ -11,6 +11,8 @@ def test_words_bundle_is_native_and_registered():
     assert "sugar-activity4 wordsactivity4.WordsActivity" in info
     assert "class WordsActivity(SimpleActivity)" in source
     assert "Word to explore" in source
+    assert 'Gtk.Frame(label="Word explorer")' in source
+    assert "card.set_size_request(720, 240)" in source
     assert "org.laptop.Words" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-words-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-words-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
