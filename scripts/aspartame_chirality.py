@@ -232,6 +232,25 @@ class ChiralSession:
                 return side
         return None
 
+    def resume_activity(self, side: Side, activity_id: str) -> None:
+        """Attach a replacement Activity while retaining the held object."""
+
+        current = self.get(side)
+        if current is None:
+            raise EmptyHand(f"{side.label} is empty")
+        other = self.get(side.other)
+        if other is not None and other.activity_id == activity_id:
+            raise ChiralityError("an Activity may occupy only one hand")
+        self._set(
+            side,
+            Hand(
+                activity_id=activity_id,
+                object_ref=current.object_ref,
+                object_title=current.object_title,
+            ),
+        )
+        self._validate()
+
     def handoff_object(self, source: Side, target: Side) -> None:
         """Copy the current object reference to the other Activity.
 

@@ -66,6 +66,18 @@ def test_crashed_hand_does_not_destroy_the_other_hand():
     assert session.active_hand is chirality.Side.LEFT
 
 
+def test_resuming_a_hand_replaces_activity_but_preserves_object():
+    session = chirality.ChiralSession()
+    session.assign(
+        chirality.Side.LEFT,
+        chirality.Hand("old", "journal:text", "UTF-8 note"),
+    )
+    session.resume_activity(chirality.Side.LEFT, "new")
+
+    assert session.active_hand is chirality.Side.LEFT
+    assert session.left_hand == chirality.Hand("new", "journal:text", "UTF-8 note")
+
+
 def test_object_handoff_is_reference_only_and_has_no_history():
     session = chirality.ChiralSession()
     session.assign(

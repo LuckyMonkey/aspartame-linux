@@ -130,3 +130,14 @@ Held-Activity crash isolation is qualified with:
 
 It terminates the held Right Activity, verifies that Left remains alive and
 activatable, and checks that `activity-exited` removes only the crashed hand.
+
+Activity replacement/resume is qualified with:
+
+```sh
+/usr/lib/aspartame/gtk4-preview/venv/bin/python \
+  /usr/lib/aspartame/gtk4-preview/scripts/sugar-gtk4-chirality-resume-roundtrip.py
+```
+
+It preserves the persisted hand's Journal UID while replacing its old
+Activity ID with a newly launched GTK4 Write client. Full shell/session
+restart recovery remains a separate gate.

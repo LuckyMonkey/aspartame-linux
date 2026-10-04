@@ -95,7 +95,8 @@ therefore still evidence-gated.
 
 The held-Activity crash gate is independently qualified: terminating the
 Right GTK4 Activity leaves Left alive and activatable, then clears only the
-exited hand through the Chirality adapter. Session-resume and unsupported
+exited hand through the Chirality adapter. Activity replacement/resume is also
+qualified for the same Journal UID; full shell/session restart and unsupported
 object-capability refusal remain open before user-facing handoff actions.
 
 References:

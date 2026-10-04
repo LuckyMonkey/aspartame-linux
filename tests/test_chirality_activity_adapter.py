@@ -39,12 +39,30 @@ def test_activity_adapter_assigns_two_hands_without_a_history_log(tmp_path):
     assert "journal:text" in left.stdout
 
 
+def test_activity_adapter_exposes_resume_as_a_single_hand_replacement(tmp_path):
+    state = tmp_path / "chirality.json"
+    command = [sys.executable, str(ADAPTER), "--state-file", str(state)]
+    subprocess.run(
+        command + [
+            "assign", "left", "old", "--object-ref", "journal:text",
+            "--object-title", "UTF-8 note",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    source = ADAPTER.read_text()
+    assert 'commands.add_parser("resume")' in source
+    assert "session.resume_activity" in source
+
+
 def test_iso_packages_the_activity_adapter():
     build = (ROOT / "scripts/build-iso.sh").read_text()
     assert "sugar-chirality-activity.py" in build
     assert "sugar-gtk4-chirality-activity-roundtrip.py" in build
     assert "sugar-gtk4-chirality-object-roundtrip.py" in build
     assert "sugar-gtk4-chirality-crash-roundtrip.py" in build
+    assert "sugar-gtk4-chirality-resume-roundtrip.py" in build
 
 
 def test_guest_roundtrip_proves_two_live_activities_switch_on_one_surface():
@@ -70,4 +88,12 @@ def test_guest_crash_roundtrip_preserves_the_other_hand():
     assert "signal.SIGKILL" in probe
     assert '"activity-exited", crashed_id' in probe
     assert "preserved=left" in probe
+    assert "mode=single-surface" in probe
+
+
+def test_guest_resume_roundtrip_replaces_activity_without_losing_object():
+    probe = (ROOT / "scripts/sugar-gtk4-chirality-resume-roundtrip.py").read_text()
+    assert '"resume", "left", replacement[1]' in probe
+    assert '"object_ref"] == uid' in probe
+    assert "payload=utf8" in probe
     assert "mode=single-surface" in probe

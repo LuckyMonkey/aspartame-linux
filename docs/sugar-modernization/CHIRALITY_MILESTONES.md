@@ -109,7 +109,8 @@ The remaining gates are explicit:
 
 1. define and qualify graceful refusal for unsupported object formats or
    Activity/object combinations;
-2. qualify shell/session resume while a hand is held;
+2. qualify full shell/session restart while a hand is held; Activity
+   replacement/resume is now qualified;
 3. only then add user-facing “Use with…” or “Give to Other Hand” actions.
 
 The companion probe

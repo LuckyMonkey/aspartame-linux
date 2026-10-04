@@ -101,6 +101,10 @@ def parser() -> argparse.ArgumentParser:
     assign.add_argument("--object-title")
     assign.add_argument("--replace", action="store_true")
 
+    resume = commands.add_parser("resume")
+    resume.add_argument("side", type=side)
+    resume.add_argument("activity_id")
+
     activate = commands.add_parser("activate")
     activate.add_argument("side", type=side)
     release = commands.add_parser("release")
@@ -125,6 +129,9 @@ def main() -> int:
             Hand(args.activity_id, args.object_ref, args.object_title),
             replace=args.replace,
         )
+    elif args.command == "resume":
+        _activate_activity(args.activity_id)
+        session.resume_activity(args.side, args.activity_id)
     elif args.command == "activate":
         hand = session.get(args.side)
         if hand is None:
