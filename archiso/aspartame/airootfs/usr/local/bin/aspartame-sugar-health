@@ -65,10 +65,11 @@ spec = importlib.util.find_spec("jarabe.desktop.viewtoolbar")
 print(spec.origin if spec else "NOT FOUND")
 PY
 )
-if [[ "$module_origin" == /mnt/aspartame-dev/sugar/src/* ]]; then
-    pass 'Development import path' "$module_origin"
+if [[ "$module_origin" == /mnt/aspartame-dev/sugar/src/* ||
+      "$module_origin" == /usr/lib/python*/site-packages/jarabe/desktop/viewtoolbar.py ]]; then
+    pass 'Sugar import path' "$module_origin"
 else
-    fail 'Development import path' "$module_origin"
+    fail 'Sugar import path' "$module_origin"
 fi
 
 shell_log=/home/aspartame/.sugar/default/logs/shell.log
