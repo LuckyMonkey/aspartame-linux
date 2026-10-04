@@ -169,7 +169,9 @@ rm -f "$share/patches/gtk4-preview/0124-terminal-vte-compat.patch" \
       "$share/patches/gtk4-preview/0127-neighborhood-accessibility-order.patch" \
       "$share/patches/gtk4-preview/0121-frame-accessibility-final-placement.patch" \
       "$share/patches/gtk4-preview/0122-frame-accessibility-relocate-final.patch" \
-      "$share/patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch"
+      "$share/patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch" \
+      "$share/patches/gtk4-preview/0186-toolkit-accept-public-join-requests.patch" \
+      "$share/patches/gtk4-preview/0187-toolkit-invite-public-contacts.patch"
 
 printf 'GTK4 dev share synchronized: %s\n' "$share"
 printf 'patches=%s scripts=%s help_icon=%s\n' \

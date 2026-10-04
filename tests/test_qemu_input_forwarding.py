@@ -45,6 +45,12 @@ def test_gtk4_dev_sync_copies_only_runtime_inputs():
     assert 'Generated guest build trees and runtime state remain untouched' in script
 
 
+def test_gtk4_dev_sync_removes_retired_share_experiments():
+    script = (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
+    assert '0186-toolkit-accept-public-join-requests.patch' in script
+    assert '0187-toolkit-invite-public-contacts.patch' in script
+
+
 def test_qemu_key_sender_supports_reverse_focus_chord():
     script = (ROOT / "scripts/qemu-send-key.py").read_text()
     assert '"SHIFT+TAB": ("shift", "tab")' in script
