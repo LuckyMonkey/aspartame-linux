@@ -34,7 +34,7 @@ class WordsActivity(SimpleActivity):
         lookup = Gtk.Button(label="Explore"); lookup.connect("clicked", self._lookup); card.append(lookup)
         result_frame = Gtk.Frame(label="Meaning and translation")
         result_frame.set_hexpand(True); result_frame.set_vexpand(True)
-        self.result = Gtk.Label(label="", xalign=0, yalign=0, wrap=True)
+        self.result = Gtk.Label(label="Enter a word and choose Explore.", xalign=0, yalign=0, wrap=True)
         self.result.set_margin_top(16); self.result.set_margin_bottom(16)
         self.result.set_margin_start(16); self.result.set_margin_end(16)
         self.result.set_hexpand(True); self.result.set_vexpand(True)
@@ -51,7 +51,7 @@ class WordsActivity(SimpleActivity):
 
     def _lookup(self, _widget):
         value = self.word.get_text().strip()
-        self.result.set_text(("Word: " + value + "\nExplore its meaning, spelling, and translation.") if value else "Type a word first.")
+        self.result.set_text(("Word: " + value + "\nExplore its meaning, spelling, and translation.") if value else "Enter a word and choose Explore.")
 
     def read_file(self, file_path):
         """Restore the current word from a Journal object."""

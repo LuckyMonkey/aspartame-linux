@@ -11,6 +11,7 @@ def test_words_bundle_is_native_and_registered():
     assert "sugar-activity4 wordsactivity4.WordsActivity" in info
     assert "class WordsActivity(SimpleActivity)" in source
     assert "Word to explore" in source
+    assert "Enter a word and choose Explore." in source
     assert 'Gtk.Frame(label="Word explorer")' in source
     assert "card.set_hexpand(True); card.set_vexpand(True)" in source
     assert 'Gtk.Frame(label="Meaning and translation")' in source
