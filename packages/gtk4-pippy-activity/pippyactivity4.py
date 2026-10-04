@@ -53,19 +53,12 @@ class PippyActivity(SimpleActivity):
         root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Pippy Python playground"])
 
-        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-        body.set_hexpand(True)
-        body.set_halign(Gtk.Align.FILL)
-        body.set_valign(Gtk.Align.FILL)
-        body.set_vexpand(True)
-        root.append(body)
-
         title = Gtk.Label(label="Pippy", xalign=0)
         title.add_css_class("title-1")
-        body.append(title)
+        root.append(title)
         subtitle = Gtk.Label(label="Write a small Python program, then run it in a bounded local runner. Use Ctrl+Enter to run.", xalign=0)
         subtitle.add_css_class("dim-label")
-        body.append(subtitle)
+        root.append(subtitle)
 
         self.editor = Gtk.TextView()
         self.editor.set_monospace(True)
@@ -138,10 +131,10 @@ class PippyActivity(SimpleActivity):
         panes.set_column_homogeneous(True)
         panes.attach(editor_column, 0, 0, 1, 1)
         panes.attach(output_frame, 1, 0, 1, 1)
-        body.append(panes)
+        root.append(panes)
         self.status = Gtk.Label(label="Ready", xalign=0)
         self.status.add_css_class("dim-label")
-        body.append(self.status)
+        root.append(self.status)
         self.run_button = run
         self.stop_button = stop
         self._run_generation = 0

@@ -31,6 +31,7 @@ def test_pippy_bundle_is_native_and_registered():
     assert "editor_frame" in source and "output_frame" in source
     assert "Gtk.Frame(label=\"Python program\")" in source
     assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
+    assert "root.append(panes)" in source
     assert "frame.code-pane" in source
     assert "EXAMPLES = {" in source and "Program input" in source
     assert "_editor_key" in source and "_goto_line" in source
