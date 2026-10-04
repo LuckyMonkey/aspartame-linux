@@ -172,3 +172,8 @@ both passed the targeted visual sweep (`8/8`, 1920×1080), and the six Journal
 roundtrip probes passed on each runtime. The final image also passed the
 complete catalog regression sweep `50/50` at 1920×1080. See
 [`gtk4-activity-ux-pass-20261004-games4.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games4.md).
+
+The follow-up standalone image carrying the Spaces controller integration was
+also booted shareless. The packaged Chirality CLI reported Modern Space active
+with `switch_target=gtk4`, the classic-to-modern controller route returned
+`runtime-check=ok target=gtk4`, and `/mnt/aspartame-dev` was not mounted.

@@ -39,6 +39,14 @@ manifest is [`visual-sweep-packaged-games4-full-20261004/manifest.tsv`](visual-s
 with SHA-256
 `57e318ea983b079725225818fce34ebe52c7432b6e34d28119144538e8ee59d2`.
 
+The follow-up standalone rebuild carrying the Spaces controller integration
+was booted shareless and verified headlessly. Its ISO SHA-256 is
+`0ba689624f6418e0cb0c5c5d1a3b064174640dbadc13a25fbe3e06c87b602363`; the
+packaged `sugar-chirality.py spaces-select modern` and `spaces-inspect`
+commands both reported Modern Space active with `switch_target=gtk4`, and
+the controller's classic-to-modern route ended with
+`runtime-check=ok target=gtk4`. The dev share was not mounted.
+
 Separately, the Spaces semantic milestone now has a CLI path and controller
 integration: successful GTK3/GTK4 selection records only the active full
 surface (`classic` or `modern`) through `sugar-chirality.py`. Focused Chirality,
