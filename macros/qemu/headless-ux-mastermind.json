@@ -1,0 +1,4 @@
+[
+  {"action":"sleep","seconds":2},
+  {"action":"screenshot","path":"reports/gtk4/ux-games-20261004/org.laptop.Mastermind.png"}
+]

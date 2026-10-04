@@ -317,6 +317,18 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing navigation modal cleanup: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0175* ]] &&
+        awk '
+            /class ActivityIcon/ { in_icon = 1 }
+            in_icon && /self\.set_focusable\(True\)/ { accessible = 1 }
+            in_icon && /self\._presentation = activitypresentation\.get_model\(\)/ { presentation = NR }
+            in_icon && /self\._refresh\(\)/ { refresh = NR; exit }
+            END { exit !(in_icon && accessible && presentation && refresh && presentation < refresh) }
+        ' "$shell/src/jarabe/desktop/favoritesview.py"; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Favorites accessibility/init order: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0073* ]] &&
         grep -q 'set_accessible_role(Gtk.AccessibleRole.BUTTON)' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null &&
         grep -q 'Gtk.AccessibleProperty.LABEL' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null; then

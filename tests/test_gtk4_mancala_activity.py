@@ -11,5 +11,6 @@ def test_mancala_bundle_is_native_and_registered():
     assert "self.pits" in source and "New game" in source
     assert "self._pit_index(pos)" in source
     assert "18 - board_position" in source
+    assert 'Gtk.Frame(label="Mancala board")' in source and "root.set_vexpand(True)" in source
     assert "def read_file" in source and "def write_file" in source
     assert "mulawa.Mancala" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()

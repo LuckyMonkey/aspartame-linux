@@ -144,6 +144,13 @@ both passed the targeted visual sweep plus two Journal resume/stop cycles
 with seeded payloads. See
 [`gtk4-activity-ux-pass-20261004-editors.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-editors.md).
 
+The tenth UX batch qualified PlayGo, Mancala, and Mastermind in the GTK4
+development runtime at 1920×1080. Their primary boards now occupy labeled,
+expanding Activity work areas with centered game controls; each passed a
+Journal resume/cleanup roundtrip and a headless QMP screenshot macro. This is
+development-share evidence pending the next packaged ISO rebuild. See
+[`gtk4-activity-ux-pass-20261004-games3.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games3.md).
+
 On 2026-10-04, the packaged/shareless qualification booted the rebuilt ISO
 without `/mnt/aspartame-dev`. The complete GTK4 catalog visual sweep passed
 `50/50` at 1920×1080, Get Books and Pippy passed two Journal lifecycle cycles

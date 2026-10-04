@@ -27,6 +27,7 @@ class MastermindActivity(SimpleActivity):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         root.set_margin_top(24); root.set_margin_bottom(24)
         root.set_margin_start(28); root.set_margin_end(28)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Mastermind"])
         root.set_accessible_role(Gtk.AccessibleRole.GROUP)
         title = Gtk.Label(label="Mastermind", xalign=0)
@@ -39,7 +40,9 @@ class MastermindActivity(SimpleActivity):
         root.append(self.progress)
         self.board = Gtk.Grid(column_spacing=8, row_spacing=8)
         self.board.set_halign(Gtk.Align.CENTER); self.board.set_valign(Gtk.Align.CENTER)
-        root.append(self.board)
+        board_frame = Gtk.Frame(label="Code board")
+        board_frame.set_hexpand(True); board_frame.set_vexpand(True)
+        board_frame.set_child(self.board); root.append(board_frame)
         self._board_labels = []
         for row in range(6):
             cells = []

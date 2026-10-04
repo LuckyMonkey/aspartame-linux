@@ -16,10 +16,15 @@ class MancalaActivity(SimpleActivity):
         self.turn = 0
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
         root.set_margin_top(28); root.set_margin_bottom(28); root.set_margin_start(32); root.set_margin_end(32)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Mancala"]); root.set_accessible_role(Gtk.AccessibleRole.GROUP)
         title = Gtk.Label(label="Mancala", xalign=0); title.add_css_class("title-1"); root.append(title)
         self.status = Gtk.Label(label="Player 1: choose a pit.", xalign=0); root.append(self.status)
-        board = Gtk.Grid(column_spacing=8, row_spacing=8); board.set_halign(Gtk.Align.CENTER); root.append(board)
+        board = Gtk.Grid(column_spacing=8, row_spacing=8)
+        board.set_halign(Gtk.Align.CENTER); board.set_valign(Gtk.Align.CENTER)
+        board_frame = Gtk.Frame(label="Mancala board")
+        board_frame.set_hexpand(True); board_frame.set_vexpand(True)
+        board_frame.set_child(board); root.append(board_frame)
         self.store_labels = []
         for store in range(2):
             label = Gtk.Label(label="0", width_chars=4); label.add_css_class("store"); self.store_labels.append(label)
