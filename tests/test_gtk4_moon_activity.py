@@ -10,7 +10,7 @@ def test_moon_bundle_is_native_and_registered():
     assert "sugar-activity4 moonactivity4.MoonActivity" in info
     assert "class MoonActivity(SimpleActivity)" in source
     assert "PHASES" in source and "set_draw_func" in source
-    assert "set_content_height(420)" in source and 'Gtk.Frame(label="Moon phase")' in source and "set_hexpand(True)" in source
+    assert "set_content_height(360)" in source and 'Gtk.Frame(label="Moon phase")' in source and "root.append(canvas_frame)" in source
     assert (package / "activity/moon.svg").is_file()
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "com.garycmartin.Moon|moonactivity4.MoonActivity" in matrix
