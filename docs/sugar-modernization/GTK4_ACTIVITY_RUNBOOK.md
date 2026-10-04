@@ -299,6 +299,23 @@ An Activity can be marked **usable** only when all applicable checks pass:
 - [ ] screenshot/runtime evidence is retained;
 - [ ] stable GTK3 and isolation checks still pass.
 
+### Visual allocation gate
+
+The first-paint screenshot must also show the Activity's primary work surface,
+not merely its title and controls:
+
+- the root canvas expands into the available Activity surface;
+- a document, board, or drawing area has an explicit expanding parent;
+- compound views use an expanding layout whose child surfaces are both visible;
+- empty states are named and occupy the same surface that populated content
+  will use;
+- controls remain attached to their work surface and do not float in a large
+  blank region;
+- the screenshot must not show a blank pane caused by a widget allocation
+  failure. In the packaged preview, prefer an explicit homogeneous
+  `Gtk.Grid` for two-column Activity layouts; do not reintroduce the known
+  `Gtk.Paned` failure without a retained runtime receipt.
+
 If a check is not applicable, write why. Do not silently mark it passed.
 
 ## 11. Failure routing
