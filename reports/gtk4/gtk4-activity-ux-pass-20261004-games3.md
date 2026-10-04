@@ -27,6 +27,10 @@ pointer or keyboard input was used.
   - [`org.laptop.PlayGo.png`](ux-games-packaged-20261004/org.laptop.PlayGo.png)
   - [`mulawa.Mancala.png`](ux-games-packaged-20261004/mulawa.Mancala.png)
   - [`org.laptop.Mastermind.png`](ux-games-packaged-20261004/org.laptop.Mastermind.png)
+- A follow-up packaged rebuild after fixing the GTK4 ListBox placeholder
+  handling in Get Things Done passed the complete catalog sweep at `50/50`.
+  The same image passed two GTD Journal resume/cleanup cycles. See the
+  requalification record for the final image hash and regression details.
 
 ## Changes
 

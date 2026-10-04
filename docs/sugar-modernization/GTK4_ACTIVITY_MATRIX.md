@@ -151,6 +151,11 @@ Journal resume/cleanup roundtrip and a headless QMP screenshot macro. This is
 development-share evidence pending the next packaged ISO rebuild. See
 [`gtk4-activity-ux-pass-20261004-games3.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games3.md).
 
+The packaged follow-up rebuild also fixed a GTK4 ListBox placeholder cleanup
+regression in Get Things Done. Two GTD Journal cycles and the complete
+catalog visual sweep passed `50/50` shareless at 1920×1080. See
+[`packaged-shareless-qualification-20261004-rerun.md`](../../reports/gtk4/packaged-shareless-qualification-20261004-rerun.md).
+
 On 2026-10-04, the packaged/shareless qualification booted the rebuilt ISO
 without `/mnt/aspartame-dev`. The complete GTK4 catalog visual sweep passed
 `50/50` at 1920×1080, Get Books and Pippy passed two Journal lifecycle cycles
