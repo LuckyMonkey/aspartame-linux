@@ -17,9 +17,9 @@ still classified separately from launch coverage.
 | Toolkit | GTK3 and GTK4 toolkits remain separate | Mature GTK3 API | `sugar-toolkit-gtk4` `sugar4` APIs | GTK4 shell usable | Keep GTK3/GTK4 out of one GI process |
 | Artwork | Arch `sugar-artwork`, normalized icon pipeline | Working GTK3 theme | GTK4 renderer consumes activity metadata/XOColor semantics; Home and palettes share a bundle-icon resolver with a logged Sugar fallback | GTK3 and GTK4 preview | Keep artwork ownership upstream-compatible; per-Activity visual normalization remains deferred |
 | Datastore | Arch `sugar-datastore` | Working Carquinyol service | No independent GTK4 datastore requirement identified | Yes as a service | Keep D-Bus/service boundary stable |
-| Fructose activities | Arch packages plus pinned bundled set | Mixed but runnable | Fifty modern Activities are registered; the 2026-09-19 live matrix passed every bundle through Journal launch, activation, stop, and cleanup | Runtime coverage and behavioral parity are separate; see `ACTIVITY_PORT_CLASSIFICATION.md` | Do not treat registration or launch coverage as a full port |
+| Fructose activities | Arch packages plus pinned bundled set | Mixed but runnable | Fifty-one modern Activities are registered; the original 50-bundle live matrix passed Journal launch, activation, stop, and cleanup, while the newly staged Record bundle has host capture evidence and awaits its guest lifecycle pass | Runtime coverage and behavioral parity are separate; see `ACTIVITY_PORT_CLASSIFICATION.md` | Do not treat registration or launch coverage as a full port |
 | Display/session | Xorg + Metacity + `sugar-runner` assumptions | Supported | Casilda owns the private Activity surface inside the GTK4 preview | GTK4 preview on X11 host | Keep the Casilda boundary; do not claim a full Wayland session |
-| Calculate | GTK3 Activity | Native GTK4 bundle | Safe arithmetic editor registered in the modern prefix | GTK4 verified 2026-09-14 | `org.aspartame.Calculate` launches through Journal and stops cleanly |
+| Calculate | GTK3 Activity | Native GTK4 bundle | Safe arithmetic editor with functions, variables, history, angle mode, and bounded exponent/factorial evaluation | GTK4 lifecycle verified; expanded host harness verified 2026-10-04 | `org.aspartame.Calculate` launches through Journal and stops cleanly; full GTK3 feature parity remains open |
 | Image Viewer | GTK3 Activity | Pinned GTK4 source | Registered from the GTK4 port without shell changes | GTK4 verified 2026-09-14 | `org.laptop.ImageViewerActivity` launches and stops cleanly |
 | Terminal | GTK3 Activity | Native GTK4 command/output bundle under the original identity | GTK4 text output and command entry, without GTK3 Vte import | GTK4 verified 2026-09-15 | `org.laptop.Terminal` accepts a command, renders output, and stops cleanly; full emulator features remain bounded |
 | Browse | Native GTK4 URL/status surface; pinned WebKit source retained for future renderer work | Guest `webkitgtk-6.0` installed | WebKit remains an Activity-specific optional dependency | GTK4 verified 2026-09-15 | Journal launch, visible URL entry, load status, stop, and cleanup all pass in live guest |
@@ -32,6 +32,7 @@ still classified separately from launch coverage.
 | Write | GTK3 legacy Activity | Native GTK4 bundle | Document editor with draft status and clear action | GTK4 verified 2026-09-14 | `org.sugarlabs.Write` passes three direct Casilda lifecycle cycles |
 | Read | GTK3 legacy Activity | Native GTK4 bundle | UTF-8 text reader with form-feed pages and Journal resume | GTK4 verified 2026-09-15 | `org.laptop.sugar.ReadActivity` resumes seeded Journal text objects; PDF/EPUB parity is not claimed |
 | Stopwatch | GTK3 legacy Activity | Native GTK4 bundle | Elapsed-time display with JSON Journal resume | GTK4 verified 2026-09-15 | `org.sugarlabs.StopwatchActivity` resumes seeded elapsed-time objects; lap/export parity is not claimed |
+| Record | GTK3 Activity | Native GTK4 bundle | GStreamer-backed photo, video, and audio capture model with zip Journal resume and path-traversal refusal | Host capture harness verified 2026-10-04; guest lifecycle pending | Run `scripts/sugar-gtk4-record-roundtrip.py`; camera/viewfinder, timers, per-capture Journal objects, and collaboration remain open |
 
 Current verified checkpoint: GTK4 Home Favorites/List/search, Frame,
 native Journal Activity search/resume/edit/selection, Settings navigation,
@@ -75,11 +76,14 @@ reference while operating a separately tested GTK4 preview Space. The preview
 is materially usable, but the full completion gate is not claimed because peer
 collaboration and complete Activity parity remain open.
 
-The 2026-10-04 development qualification passed the complete GTK4 visual
-sweep `50/50` at 1920x1080 after the shared heading-theme fix. Focused UX
+The 2026-10-04 development qualification passed the complete 50-bundle GTK4
+visual sweep at 1920x1080 after the shared heading-theme fix. Focused UX
 follow-ups corrected Abacus's stretched rod controls, Finance's full-width
 empty workspace, and empty-state affordances in Pippy, Color My World, and
-Words. The full host suite is green at `470 passed`.
+Words. Calculate and Paint then received richer responsive workspaces, and
+Pippy gained examples, program input, indentation, Ctrl+Enter, and traceback
+line navigation on the bounded runner. The full host suite is green at
+`536 passed`.
 
 Chirality Milestone 1 now has a real GTK4-only Activity adapter and a guest
 probe that switches Calculate and Clock Left/Right/Left on one visible
@@ -108,7 +112,9 @@ Neighborhood/Group Activity join remains open.
 Pippy now has a bounded Python execution boundary rather than a bare
 `subprocess.run`: isolated working directory/interpreter mode, child resource
 limits, process-group timeout cleanup, and stale-result suppression are
-qualified by `scripts/sugar-gtk4-pippy-runtime-probe.py`. This is useful Python
+qualified by `scripts/sugar-gtk4-pippy-runtime-probe.py`. The editor now also
+offers examples, stdin, Python indentation, Ctrl+Enter, and traceback line
+selection while retaining the same Journal payload. This is useful Python
 runtime progress, not a claim of a security sandbox or full upstream Pippy
 parity.
 

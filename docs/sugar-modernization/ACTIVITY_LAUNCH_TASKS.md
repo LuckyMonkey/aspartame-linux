@@ -2,10 +2,11 @@
 
 **Status:** launch coverage is proven; parity work is explicitly queued per Activity.
 
-The 2026-09-19 live one-cycle matrix proved all 50 bundles below can be
-resolved, started through the GTK4 launcher/Casilda boundary, activated, and
+The 2026-09-19 live one-cycle matrix proved all 50 original bundles below can
+be resolved, started through the GTK4 launcher/Casilda boundary, activated, and
 stopped without leaving an orphan process. That is **runtime coverage**, not a claim
-that the Activity is a complete port. The authoritative port class remains in
+that the Activity is a complete port. Record was staged after that matrix and is
+listed separately as guest-pending. The authoritative port class remains in
 [`ACTIVITY_PORT_CLASSIFICATION.md`](ACTIVITY_PORT_CLASSIFICATION.md).
 
 This ledger is the hand-off list for the next pass. It deliberately does **not**
@@ -93,6 +94,8 @@ never promoted to FULL PORT by itself.
 | Get Books (`org.laptop.sugar.GetBooksActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve offline catalog behavior and document network/download scope. |
 | Jukebox (`org.laptop.sugar.Jukebox`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — compare playlist, codec, and media playback boundaries. |
 | Read (`org.laptop.sugar.ReadActivity`) | PASS | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — preserve UTF-8 resume while tracking PDF/EPUB breadth. |
+
+| Record (`org.laptop.RecordActivity`) | GUEST PENDING | ICON, CHROME, INPUT, STATE, PERSIST, A11Y, PORT — run the GStreamer capture/Journal roundtrip and qualify the camera-less state before promoting it into the live matrix. |
 
 ## Shell-wide queue (do once, not once per Activity)
 
