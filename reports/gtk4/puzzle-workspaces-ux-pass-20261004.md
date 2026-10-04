@@ -16,5 +16,16 @@ pytest -q tests/test_gtk4_jumble_activity.py tests/test_gtk4_iq_activity.py test
 3 passed
 ```
 
-The next development-prefix rebuild will add the guest visual receipt for
-this batch; no GTK3 retirement claim is changed by the source pass.
+The rebuilt development preview passed the combined guest visual sweep:
+
+```text
+visual-sweep=COMPLETE pass=3 fail=0 resolution=1920x1080
+```
+
+![Jumble centered workspace](puzzle-workspaces-ux-pass-20261004-jumble.png)
+
+![IQ centered workspace](puzzle-workspaces-ux-pass-20261004-iq.png)
+
+![Memorize centered workspace](puzzle-workspaces-ux-pass-20261004-memorize.png)
+
+No GTK3 retirement claim is changed by this bounded UX qualification.
