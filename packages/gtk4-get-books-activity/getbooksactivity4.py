@@ -66,10 +66,11 @@ class GetBooksActivity(SimpleActivity):
         details_frame.add_css_class("book-pane")
         details_frame.set_hexpand(True); details_frame.set_vexpand(True); details_frame.set_child(details_scroll)
 
-        panes = Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL)
-        panes.set_hexpand(True); panes.set_vexpand(True); panes.set_position(600)
-        panes.set_shrink_start_child(False); panes.set_shrink_end_child(False)
-        panes.set_start_child(books_frame); panes.set_end_child(details_frame)
+        panes = Gtk.Grid(column_spacing=16)
+        panes.set_hexpand(True); panes.set_vexpand(True)
+        panes.set_column_homogeneous(True)
+        panes.attach(books_frame, 0, 0, 1, 1)
+        panes.attach(details_frame, 1, 0, 1, 1)
         root.append(panes)
 
         actions = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)

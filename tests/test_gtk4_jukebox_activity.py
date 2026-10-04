@@ -13,7 +13,8 @@ def test_jukebox_is_native_offline_and_accessible():
     assert "DEMO_TRACKS" in source
     assert "Gtk.ListBox" in source and "Gtk.FileDialog" in source
     assert "playlist_frame" in source and "Gtk.Frame(label=\"Playlist\")" in source
-    assert "Gtk.Paned" in source and 'Gtk.Frame(label="Player")' in source
+    assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
+    assert 'Gtk.Frame(label="Player")' in source
     assert "now_playing" in source
     assert 'AccessibleProperty.LABEL' in source
     assert "require_version(\"Gtk\", \"3.0\")" not in source

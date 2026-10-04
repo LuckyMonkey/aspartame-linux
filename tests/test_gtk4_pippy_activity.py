@@ -15,7 +15,8 @@ def test_pippy_bundle_is_native_and_registered():
     assert "subprocess.run" in source and '"-I"' in source
     assert "editor_frame" in source and "output_frame" in source
     assert "Gtk.Frame(label=\"Python program\")" in source
-    assert "Gtk.Paned" in source and "frame.code-pane" in source
+    assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
+    assert "frame.code-pane" in source
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "org.laptop.Pippy|pippyactivity4.PippyActivity" in matrix
     for script in ("sugar-gtk4-dev-sync.sh", "sugar-gtk4-build.sh"):
