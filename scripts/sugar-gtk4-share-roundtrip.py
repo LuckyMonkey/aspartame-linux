@@ -121,6 +121,69 @@ def process():
     return None
 
 
+def activity_log_contains(pid, text):
+    """Return whether the live Activity has emitted a matching log line."""
+    try:
+        environ = dict(
+            item.split("=", 1)
+            for item in Path(f"/proc/{pid}/environ").read_bytes()
+            .decode()
+            .split("\0")
+            if "=" in item
+        )
+        log_path = Path(environ["SUGAR_ACTIVITY_ROOT"]) / "logs" / "activity.log"
+        return text in log_path.read_text(errors="replace")
+    except (FileNotFoundError, KeyError, OSError):
+        return False
+
+
+def current_activity_published(activity_id):
+    """Check the live BuddyInfo advertisement for this Activity."""
+    try:
+        bus = dbus.SessionBus()
+        manager = dbus.Interface(
+            bus.get_object(
+                "org.freedesktop.Telepathy.AccountManager",
+                "/org/freedesktop/Telepathy/AccountManager",
+            ),
+            "org.freedesktop.Telepathy.AccountManager",
+        )
+        accounts = manager.Get(
+            "org.freedesktop.Telepathy.AccountManager",
+            "ValidAccounts",
+            dbus_interface="org.freedesktop.DBus.Properties",
+        )
+        for account_path in accounts:
+            if "salut" not in str(account_path):
+                continue
+            account = bus.get_object(
+                "org.freedesktop.Telepathy.AccountManager", account_path
+            )
+            connection_path = account.Get(
+                "org.freedesktop.Telepathy.Account",
+                "Connection",
+                dbus_interface="org.freedesktop.DBus.Properties",
+            )
+            if str(connection_path) == "/":
+                continue
+            connection_name = str(connection_path).replace("/", ".")[1:]
+            connection = bus.get_object(connection_name, connection_path)
+            self_handle = connection.Get(
+                "org.freedesktop.Telepathy.Connection",
+                "SelfHandle",
+                dbus_interface="org.freedesktop.DBus.Properties",
+            )
+            current_id, room_handle = connection.GetCurrentActivity(
+                self_handle,
+                dbus_interface="org.laptop.Telepathy.BuddyInfo",
+            )
+            if str(current_id) == activity_id and int(room_handle) != 0:
+                return True
+    except dbus.DBusException:
+        return False
+    return False
+
+
 if "IMAGE_ID=aspartame" not in Path("/etc/os-release").read_text():
     raise SystemExit("guest-only")
 
@@ -148,8 +211,9 @@ if os.getuid() == 0:
     env["ASPARTAME_ATSPI_BUS"] = (
         f"unix:path={atspi_runtime / 'at-spi' / 'bus_0'}"
     )
-    if "ASPARTAME_SHARE_DUMP" in os.environ:
-        env["ASPARTAME_SHARE_DUMP"] = os.environ["ASPARTAME_SHARE_DUMP"]
+    for option in ("ASPARTAME_SHARE_DUMP", "ASPARTAME_SHARE_MODE"):
+        if option in os.environ:
+            env[option] = os.environ[option]
     interpreter = os.environ.get(
         "GTK4_PYTHON", "/usr/lib/aspartame/gtk4-preview/venv/bin/python"
     )
@@ -220,14 +284,29 @@ try:
         lambda: find_global_name(atsPI, "My Neighborhood"),
     )
     activate(atsPI, neighborhood, "My Neighborhood")
-    unavailable = wait_for(
-        "sharing-unavailable alert",
-        lambda: find_named(atsPI, app_root, "Sharing is unavailable"),
-    )
-    assert unavailable is not None
+    share_mode = os.environ.get("ASPARTAME_SHARE_MODE", "unavailable")
+    if share_mode == "unavailable":
+        unavailable = wait_for(
+            "sharing-unavailable alert",
+            lambda: find_named(atsPI, app_root, "Sharing is unavailable"),
+        )
+        assert unavailable is not None
+        outcome = "fallback=visible-alert"
+    elif share_mode == "shared":
+        wait_for(
+            "successful Telepathy share",
+            lambda: True
+            if activity_log_contains(
+                pid, f"Share of activity {activity_id} successful"
+            ) or current_activity_published(activity_id)
+            else None,
+        )
+        outcome = "mode=telepathy-share"
+    else:
+        raise RuntimeError(f"unknown ASPARTAME_SHARE_MODE: {share_mode}")
     print(
         f"share-roundtrip=PASS pid={pid} activity_id={activity_id} "
-        "fallback=visible-alert",
+        f"{outcome}",
         flush=True,
     )
 finally:

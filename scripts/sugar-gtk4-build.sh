@@ -115,6 +115,9 @@ for patch in "$patch_dir"/*.patch; do
         *0180*) target="$toolkit" ;;
         *0181*) target="$toolkit" ;;
         *0182*) target="$toolkit" ;;
+        *0183*) target="$root/sources/sugar" ;;
+        *0184*) target="$root/sources/sugar" ;;
+        *0185*) target="$toolkit" ;;
         *0150*) target="$toolkit" ;;
         *0151*) target="$root/sources/sugar" ;;
         *0152*) target="$root/sources/sugar" ;;
@@ -478,6 +481,30 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified Journal unique-values signature: $patch_name"
         continue
     fi
+    # 0180 extends the Activity sharing import and setup block after 0025's
+    # lifecycle patch.  The resulting source is correct, but the original
+    # 0025 context can no longer reverse-apply literally.  Verify its stable
+    # lifecycle invariants instead of reporting false patch drift.
+    if [[ "$patch_name" == *0025* ]] &&
+        grep -q 'self\._activity_service = ActivityService(self)' "$toolkit/src/sugar4/activity/activity.py" 2>/dev/null &&
+        grep -q 'self\.set_visible(False)' "$toolkit/src/sugar4/activity/activity.py" 2>/dev/null &&
+        grep -q 'application\.remove_window(self)' "$toolkit/src/sugar4/activity/activity.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified Activity lifecycle result after sharing integration: $patch_name"
+        continue
+    fi
+    # 0180 is intentionally followed by the visible Share control patches;
+    # their adjacent edits can make the original sharing hunk impossible to
+    # reverse-apply literally.  Verify the complete sharing contract instead.
+    if [[ "$patch_name" == *0180* ]] &&
+        grep -q 'from sugar4.presence import presenceservice' "$toolkit/src/sugar4/activity/activity.py" 2>/dev/null &&
+        grep -q 'self\._set_up_sharing(mesh_instance, share_scope)' "$toolkit/src/sugar4/activity/activity.py" 2>/dev/null &&
+        grep -q 'pservice\.share_activity(self, private=private)' "$toolkit/src/sugar4/activity/activity.py" 2>/dev/null &&
+        grep -q 'self\.shared_activity\.invite(' "$toolkit/src/sugar4/activity/activity.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified Activity sharing result after lifecycle integration: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0095* ]] &&
         grep -q "Prefer GTK4 bundle" "$shell/src/jarabe/model/bundleregistry.py" 2>/dev/null; then
         printf "%s\n" "$patch_digest" > "$stamp" 2>/dev/null || true
@@ -826,6 +853,12 @@ path.write_text(text.replace(old, new, 1))
 PY
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "repaired full-monitor Control Panel geometry: $patch_name"
+    elif [[ "$patch_name" == *0174* ]] &&
+        grep -q 'def _update_empty_state(self):' "$shell/src/jarabe/desktop/meshbox.py" 2>/dev/null &&
+        grep -q 'self\._empty_state\.set_visible(not has_content)' "$shell/src/jarabe/desktop/meshbox.py" 2>/dev/null &&
+        grep -q 'self\._update_empty_state()' "$shell/src/jarabe/desktop/meshbox.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "verified existing Neighborhood empty-state behavior: $patch_name"
     elif [[ "$patch_name" == *0180* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
@@ -841,6 +874,21 @@ PY
         (cd "$target" && patch --fuzz=2 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied GTK4 radio palette accessibility: $patch_name"
+    elif [[ "$patch_name" == *0183* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=2 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=2 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied GTK4 Friends tray activity guard: $patch_name"
+    elif [[ "$patch_name" == *0184* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=2 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=2 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied GTK4 Neighborhood removal race guard: $patch_name"
+    elif [[ "$patch_name" == *0185* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=2 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=2 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied GTK4 current Activity presence publication: $patch_name"
     elif [[ "$patch_name" == *0168* ]] &&
         grep -q 'self\._lifecycle_changed()' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null &&
         grep -q '^        else:$' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null; then

@@ -1,0 +1,31 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] presence: publish the current shared Activity
+
+The GTK4 presence wrapper already creates and joins the Telepathy room, but
+it did not publish the owner's current Activity through BuddyInfo.  Peers
+could therefore see the Salut contact while GetActivities() stayed empty.
+Publish the same current-activity tuple used by the GTK3 Neighborhood model.
+Failure is logged but does not turn a successful room creation into a failed
+share.
+
+--- a/src/sugar4/presence/activity.py
++++ b/src/sugar4/presence/activity.py
+@@ -464,7 +464,18 @@
+             self._publish_properties()
+             self._start_tracking_properties()
+             self._start_tracking_buddies()
+             self._start_tracking_channel()
++            self.telepathy_conn.SetCurrentActivity(
++                self._id,
++                self.room_handle,
++                reply_handler=lambda: _logger.debug(
++                    "%r: current Activity published", self
++                ),
++                error_handler=lambda error: _logger.warning(
++                    "%r: unable to publish current Activity: %s", self, error
++                ),
++                dbus_interface=CONN_INTERFACE_BUDDY_INFO,
++            )
+             share_activity_cb(self)
+         else:
+             share_activity_error_cb(self, error)

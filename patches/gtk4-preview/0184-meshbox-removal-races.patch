@@ -1,0 +1,40 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] neighborhood: tolerate duplicate removal signals
+
+Telepathy can emit a buddy or Activity removal signal after the GTK4
+Neighborhood view has already removed its icon.  Treat that ordering as an
+idempotent update instead of dereferencing a missing dictionary entry.
+
+--- a/src/jarabe/desktop/meshbox.py
++++ b/src/jarabe/desktop/meshbox.py
+@@ -433,4 +433,6 @@
+         if buddy_model.is_owner():
+             return
++        if buddy_model.props.key in self._buddies:
++            return
+         icon = BuddyIcon(buddy_model)
+         self.add(icon)
+@@ -442,6 +445,9 @@
+     def _remove_buddy(self, buddy_model):
+         logging.debug('MeshBox._remove_buddy')
+-        icon = self._buddies[buddy_model.props.key]
++        key = buddy_model.props.key
++        icon = self._buddies.pop(key, None)
++        if icon is None:
++            logging.debug('MeshBox: buddy icon already removed: %s', key)
++            return
+         self.remove(icon)
+-        del self._buddies[buddy_model.props.key]
+         self._update_empty_state()
+@@ -466,5 +472,9 @@
+     def _remove_activity(self, activity_model):
+-        icon = self._activities[activity_model.activity_id]
++        activity_id = activity_model.activity_id
++        icon = self._activities.pop(activity_id, None)
++        if icon is None:
++            logging.debug('MeshBox: Activity icon already removed: %s',
++                          activity_id)
++            return
+         self.remove(icon)
+-        del self._activities[activity_model.activity_id]
+         self._update_empty_state()

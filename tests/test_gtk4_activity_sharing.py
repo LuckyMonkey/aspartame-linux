@@ -53,3 +53,61 @@ def test_share_integration_is_routed_to_the_toolkit_with_bounded_fallback():
     assert '"$patch_name" == *0181*' in build
     assert '*0182*) target="$toolkit" ;;' in build
     assert '"$patch_name" == *0182*' in build
+
+
+def test_friends_tray_ignores_activity_announcements_without_active_app():
+    patch = (ROOT /
+             "patches/gtk4-preview/0183-friends-tray-activity-guard.patch").read_text()
+    build = BUILD.read_text()
+
+    assert "active_activity is None or shared_activity is None" in patch
+    assert '*0183*) target="$root/sources/sugar" ;;' in build
+    assert '"$patch_name" == *0183*' in build
+    assert "applied GTK4 Friends tray activity guard" in build
+
+
+def test_neighborhood_removal_signals_are_idempotent():
+    patch = (ROOT /
+             "patches/gtk4-preview/0184-meshbox-removal-races.patch").read_text()
+    build = BUILD.read_text()
+
+    assert "self._buddies.pop(key, None)" in patch
+    assert "self._activities.pop(activity_id, None)" in patch
+    assert '*0184*) target="$root/sources/sugar" ;;' in build
+    assert '"$patch_name" == *0184*' in build
+    assert "applied GTK4 Neighborhood removal race guard" in build
+
+
+def test_shared_activity_is_published_to_peer_presence():
+    patch = (ROOT /
+             "patches/gtk4-preview/0185-toolkit-publish-current-activity.patch").read_text()
+    build = BUILD.read_text()
+
+    assert "self.telepathy_conn.SetCurrentActivity(" in patch
+    assert "self._id," in patch
+    assert "self.room_handle," in patch
+    assert "CONN_INTERFACE_BUDDY_INFO" in patch
+    assert "unable to publish current Activity" in patch
+    assert '*0185*) target="$toolkit" ;;' in build
+    assert '"$patch_name" == *0185*' in build
+    assert "applied GTK4 current Activity presence publication" in build
+
+
+def test_share_roundtrip_can_qualify_successful_telepathy_mode():
+    probe = (ROOT / "scripts/sugar-gtk4-share-roundtrip.py").read_text()
+
+    assert 'ASPARTAME_SHARE_MODE' in probe
+    assert '"successful Telepathy share"' in probe
+    assert 'Share of activity {activity_id} successful' in probe
+    assert 'GetCurrentActivity(' in probe
+    assert 'current_activity_published(activity_id)' in probe
+
+
+def test_peer_observer_uses_the_live_neighborhood_model():
+    observer = (ROOT / "scripts/sugar-gtk4-share-peer-observer.py").read_text()
+
+    assert 'buddy_info.GetActivities(' in observer
+    assert 'group.GetMembers()' in observer
+    assert 'activity_properties.GetProperties(' in observer
+    assert 'name != "Calculate Activity"' in observer
+    assert 'private' in observer
