@@ -116,3 +116,8 @@ surfaces, centered controls, and a prominent Stopwatch readout instead of
 isolated top-aligned widgets. All four passed two Journal roundtrip cycles and
 the full headless sweep remained 50/50. See
 [`gtk4-activity-ux-pass-20261004-games2.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games2.md).
+
+The sixth UX batch qualified Get Things Done at 1920×1080. Its task entry and
+task list now have explicit hierarchy and an expanding labeled surface; its
+two-cycle Journal probe and the full headless visual sweep remained green.
+See [`gtk4-activity-ux-pass-20261004-tasks.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-tasks.md).
