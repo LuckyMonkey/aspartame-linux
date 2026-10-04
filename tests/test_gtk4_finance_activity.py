@@ -27,8 +27,9 @@ def test_finance_transactions_use_aligned_description_and_amount_columns():
     source = (ROOT / "packages/gtk4-finance-activity/financeactivity4.py").read_text()
     assert "Gtk.Clamp" not in source
     assert "root.set_hexpand(True); root.set_vexpand(True)" in source
-    assert "body.set_hexpand(True)" in source
-    assert "body.set_halign(Gtk.Align.FILL)" in source
+    assert "body.set_hexpand(False)" in source
+    assert "body.set_size_request(980, -1)" in source
+    assert "body.set_halign(Gtk.Align.CENTER)" in source
     assert "body.set_valign(Gtk.Align.FILL)" in source
     assert "form = Gtk.Grid(column_spacing=12, row_spacing=6)" in source
     assert "form.attach(self.description, 0, 1, 1, 1)" in source
@@ -36,6 +37,8 @@ def test_finance_transactions_use_aligned_description_and_amount_columns():
     assert 'Gtk.Frame(label="New transaction")' in source
     assert 'Gtk.Frame(label="Transactions")' in source
     assert 'self.rows.set_size_request(-1, 300)' in source
+    assert 'self.rows.set_visible(False)' in source
+    assert 'self.empty_state.set_vexpand(True)' in source
     assert 'description_heading = Gtk.Label(label="Description"' in source
     assert 'amount_heading = Gtk.Label(label="Amount"' in source
     assert 'table_row.attach(amount_label, 1, 0, 1, 1)' in source

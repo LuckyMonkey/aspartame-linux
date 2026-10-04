@@ -185,6 +185,13 @@ resume/cleanup cycle. This is development-guest evidence pending the next
 packaged image rebuild; the GTK3 bundle remains the fallback/reference.
 See [`gtk4-activity-ux-pass-20261004-abacus.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-abacus.md).
 
+The follow-up Finance correction also passed a focused 1920x1080 visual sweep
+and a seeded Journal resume/cleanup cycle. Its bounded workspace keeps the
+entry form, actions, aligned transaction columns, and empty state together;
+the GTK3 bundle remains the fallback/reference pending the full retirement
+gates. See
+[`gtk4-activity-ux-pass-20261004-finance.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-finance.md).
+
 The same packaged image qualified the stale native review rows for FotoToon,
 IQ, Portfolio, TurtleBlocks, and Maze. Their bounded Journal resume/cleanup
 probes passed, and their visual captures are present in the complete packaged
