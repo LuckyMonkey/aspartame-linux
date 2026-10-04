@@ -1,13 +1,12 @@
 [
-  {"action": "click", "x": 960, "y": 786},
+  {"action": "click", "x": 620, "y": 498},
   {"action": "sleep", "seconds": 0.2},
-  {"action": "click", "x": 754, "y": 498},
+  {"action": "click", "x": 1300, "y": 714},
   {"action": "sleep", "seconds": 0.2},
-  {"action": "click", "x": 1165, "y": 714},
+  {"action": "click", "x": 847, "y": 498},
   {"action": "sleep", "seconds": 0.2},
-  {"action": "click", "x": 891, "y": 498},
+  {"action": "click", "x": 1074, "y": 714},
   {"action": "sleep", "seconds": 0.2},
-  {"action": "click", "x": 1028, "y": 714},
-  {"action": "sleep", "seconds": 0.6},
+  {"action": "sleep", "seconds": 0.8},
   {"action": "screenshot", "path": "reports/screenshots/headless-calculate-7-plus-8.png"}
 ]

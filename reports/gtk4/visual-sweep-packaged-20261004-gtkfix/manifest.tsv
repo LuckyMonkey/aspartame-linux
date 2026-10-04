@@ -1,0 +1,3 @@
+bundle	pattern	status	screenshot	note
+org.aspartame.Calculate	calculateactivity4.CalculateActivity	PASS	/mnt/aspartame-dev/reports/gtk4/visual-sweep-packaged-20261004-gtkfix/org.aspartame.Calculate.png	ready pid=1935 activity-id=98263f4a88234664a2747766df094dc1 screenshot=/mnt/aspartame-dev/reports/gtk4/visual-sweep-packaged-20261004-gtkfix/org.aspartame.Calculate.png launch=(true,)
+org.laptop.community.Finance	financeactivity4.FinanceActivity	PASS	/mnt/aspartame-dev/reports/gtk4/visual-sweep-packaged-20261004-gtkfix/org.laptop.community.Finance.png	ready pid=2085 activity-id=4eef594742664901898280885a917a90 screenshot=/mnt/aspartame-dev/reports/gtk4/visual-sweep-packaged-20261004-gtkfix/org.laptop.community.Finance.png launch=(true,)
