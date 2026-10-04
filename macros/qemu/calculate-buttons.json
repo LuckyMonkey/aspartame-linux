@@ -1,0 +1,13 @@
+[
+  {"action": "activate"},
+  {"action": "sleep", "seconds": 1},
+  {"action": "click", "x": 635, "y": 430},
+  {"action": "sleep", "seconds": 0.15},
+  {"action": "click", "x": 745, "y": 430},
+  {"action": "sleep", "seconds": 0.15},
+  {"action": "click", "x": 855, "y": 430},
+  {"action": "sleep", "seconds": 0.15},
+  {"action": "click", "x": 855, "y": 600},
+  {"action": "sleep", "seconds": 0.5},
+  {"action": "screenshot", "path": "reports/screenshots/macro-calculate-buttons.png"}
+]

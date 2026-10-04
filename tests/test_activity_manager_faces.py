@@ -5,9 +5,16 @@ so face selection, keyboard reachability, and accessible naming are checked
 as behavior.
 """
 
+import os
 import sys
 import unittest
 from pathlib import Path
+
+# These tests construct real GTK3 widgets. On the host test session, an
+# unset backend can select a non-initialized backend and segfault before
+# pytest can report a useful failure. Preserve an explicit caller choice;
+# use the X11 display already required by the GTK3 fixture otherwise.
+os.environ.setdefault('GDK_BACKEND', 'x11')
 
 import gi
 

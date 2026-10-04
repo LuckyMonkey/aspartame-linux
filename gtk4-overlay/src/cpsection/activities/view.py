@@ -7,6 +7,15 @@ from gi.repository import Gtk
 from jarabe.controlpanel.sectionview import SectionView
 
 
+RUNTIME_LABELS = {
+    'native-sugar': _('Native Sugar'),
+    'snakepit-python': _('Snakepit Python'),
+    'sugarizer-web': _('Sugarizer web'),
+    'aspartame-native': _('Aspartame native'),
+    'experimental': _('Experimental'),
+}
+
+
 class ActivityManager(SectionView):
     def __init__(self, activity_model, alerts):
         super().__init__()
@@ -43,7 +52,9 @@ class ActivityManager(SectionView):
         while (child := self._list.get_row_at_index(0)) is not None:
             self._list.remove(child)
         self._rows = self._model.list_activities()
-        self._count.set_text(_('%d installed activities') % len(self._rows))
+        installed = [activity for activity in self._rows
+                     if activity.get('installed', False)]
+        self._count.set_text(_('%d installed activities') % len(installed))
         for activity in self._rows:
             row = Gtk.ListBoxRow()
             box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
@@ -54,19 +65,30 @@ class ActivityManager(SectionView):
             info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
             info.set_hexpand(True)
             info.append(Gtk.Label(label=activity['name'], xalign=0))
+            runtime = RUNTIME_LABELS.get(
+                activity.get('runtime', 'experimental'),
+                _('Unknown runtime'))
+            install_state = (_('System-managed') if activity['managed']
+                             else _('User-installed'))
+            display_state = _('%s · %s') % (runtime, install_state)
             info.append(Gtk.Label(
-                label=_('Version %s · %s') % (
-                    activity['version'],
-                    _('System-managed') if activity['managed']
-                    else _('User-installed')), xalign=0))
+                label=_('%s · Version %s · %s') % (
+                    runtime, activity['version'], install_state), xalign=0))
             box.append(info)
-            action = Gtk.Button(label=_('Request approval') if activity['managed']
+            removable = activity.get('removable', False)
+            if removable:
+                action_label = (_('Request approval') if activity['managed']
                                 else _('Remove'))
-            action.set_sensitive(True)
-            action.set_tooltip_text(
-                _('Request Sugar approval to remove this system Activity.')
-                if activity['managed'] else
-                _('Remove this Activity to a recoverable quarantine.'))
+                action_tip = (
+                    _('Request Sugar approval to remove this system Activity.')
+                    if activity['managed'] else
+                    _('Remove this Activity to a recoverable quarantine.'))
+            else:
+                action_label = _('Unavailable')
+                action_tip = _('No qualified launch or removal action is available.')
+            action = Gtk.Button(label=action_label)
+            action.set_sensitive(removable)
+            action.set_tooltip_text(action_tip)
             action.update_property(
                 [Gtk.AccessibleProperty.LABEL,
                  Gtk.AccessibleProperty.DESCRIPTION],
@@ -76,7 +98,7 @@ class ActivityManager(SectionView):
             row.set_child(box)
             row.update_property([Gtk.AccessibleProperty.LABEL,
                                  Gtk.AccessibleProperty.DESCRIPTION],
-                                [activity['name'], activity['id']])
+                                [activity['name'], display_state])
             row.set_accessible_role(Gtk.AccessibleRole.LIST_ITEM)
             self._list.append(row)
 

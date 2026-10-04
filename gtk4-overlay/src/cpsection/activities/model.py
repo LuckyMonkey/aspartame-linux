@@ -26,6 +26,13 @@ MANAGED_ROOTS = (
 )
 
 
+def _is_managed(path):
+    path = os.path.realpath(path)
+    return any(path == os.path.realpath(root) or
+               path.startswith(os.path.realpath(root) + os.sep)
+               for root in MANAGED_ROOTS)
+
+
 def list_activities():
     registry = bundleregistry.get_registry()
     activities = []
@@ -37,12 +44,18 @@ def list_activities():
             path = bundle.get_path()
         except Exception:
             continue
+        managed = _is_managed(path)
+        user_installed = (os.path.realpath(path) == USER_ROOT or
+                          os.path.realpath(path).startswith(USER_ROOT + os.sep))
         activities.append({
             'id': str(bundle_id),
             'name': str(name or bundle_id),
             'version': str(version),
             'path': str(path),
-            'managed': str(path).startswith(MANAGED_ROOTS),
+            'runtime': 'native-sugar',
+            'installed': True,
+            'removable': managed or user_installed,
+            'managed': managed,
         })
     return sorted(activities, key=lambda item: item['name'].casefold())
 

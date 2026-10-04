@@ -20,6 +20,8 @@ for _ in 1 2 3 4 5; do
     sleep 1
 done
 gtk4_root=${ASPARTAME_GTK4_ROOT:-/usr/lib/aspartame/gtk4-preview}
+export GTK4_ROOT="$gtk4_root"
+side_by_side_marker="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/aspartame-side-by-side"
 if test -d /mnt/aspartame-dev/sugar/src; then
     export PYTHONPATH="/usr/share/aspartame:/mnt/aspartame-dev/sugar/src${PYTHONPATH:+:$PYTHONPATH}"
 fi
@@ -43,7 +45,12 @@ fi
 # display/session state. If the packaged preview is absent (for example on a
 # GTK3-only development image), retain the classic-only behavior.
 start_classic() {
-    dbus-run-session -- /usr/local/bin/aspartame-session
+    if test -f "$side_by_side_marker"; then
+        ASPARTAME_SIDE_BY_SIDE=1 \
+            dbus-run-session -- /usr/local/bin/aspartame-session
+    else
+        dbus-run-session -- /usr/local/bin/aspartame-session
+    fi
 }
 
 start_classic >/tmp/aspartame-classic-session.log 2>&1 &

@@ -51,6 +51,17 @@ case "$target" in
     gtk4) target_pid=$(one_pid 'GTK4 Sugar' "$gtk4_pids") ;;
 esac
 
+# A standalone image deliberately keeps its immutable preview tree under
+# /usr/lib, but the live Casilda runtime must be recreated in the user's
+# private runtime directory.  Follow the runtime owned by the process when
+# the caller did not provide an explicit override; this keeps the checker
+# valid for both development and packaged sessions.
+if [ "$target" = gtk4 ] && [ -z "${GTK4_RUNTIME_ROOT:-}" ]; then
+    process_runtime=$(tr '\0' '\n' < "$proc_root/$target_pid/environ" |
+        sed -n 's/^XDG_RUNTIME_DIR=//p' | head -1)
+    [ -n "$process_runtime" ] && runtime=$process_runtime
+fi
+
 status=$("$workspace_tool" status)
 current=$(printf '%s\n' "$status" | sed -n 's/^current=//p')
 [ "$current" = "$expected_desktop" ] ||

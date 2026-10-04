@@ -63,6 +63,7 @@ for patch in "$patch_dir"/*.patch; do
         *0029*) target="$log_activity" ;;
         *0002*) target="$ext" ;;
         *0014*) target="$root/sources/sugar-datastore" ;;
+        *0170*) target="$root/sources/sugar-datastore" ;;
         *0083*) target="$root/sources/sugar" ;;
         *0087*) target="$root/sources/sugar" ;;
         *0095*) target="$root/sources/sugar" ;;
@@ -123,6 +124,7 @@ for patch in "$patch_dir"/*.patch; do
         *0163*) target="$root/sources/sugar" ;;
         *0164*) target="$root/sources/sugar" ;;
         *0168*) target="$root/sources/sugar" ;;
+        *0169*) target="$root/sources/sugar" ;;
         *0167*) target="$root/sources/sugar" ;;
         *0003*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
         *0005*|*0007*|*0008*|*0009*|*0011*|*0012*|*0019*|*0021*|*0027*|*0034*|*0036*|*0037*|*0038*|*0039*|*0042*|*0043*|*0044*|*0049*|*0052*|*0055*|*0057*|*0058*|*0062*|*0063*|*0064*|*0065*|*0067*|*0069*|*0073*|*0075*|*0076*|*0079*|*0081*) target="$root/sources/sugar" ;;
@@ -580,13 +582,24 @@ for patch in "$patch_dir"/*.patch; do
         continue
     fi
     if [[ "$patch_name" == *0153* ]] &&
-        grep -q "'F9': 'space_classic'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
-        grep -q "'F10': 'space_modern'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q "'F7': 'space_classic'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
+        grep -q "'F8': 'space_modern'" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
         grep -q "def handle_space_classic" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
         grep -q "def handle_space_modern" "$shell/src/jarabe/view/keyhandler.py" 2>/dev/null &&
         grep -q "_handler.add_window(self)" "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified existing Space key ownership from every shell window: $patch_name"
+        continue
+    fi
+    # 0169 adds the Spaces menu between the Help button and the expanding
+    # separator introduced by 0155.  That intentional same-file extension
+    # changes 0155's exact reverse context, so recognize the complete 0155
+    # result semantically on reruns instead of treating it as patch drift.
+    if [[ "$patch_name" == *0155* ]] &&
+        grep -q 'def _build_help_button' "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null &&
+        grep -q 'def _build_clock' "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing Home top-bar result: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0144* ]] &&
@@ -1121,7 +1134,7 @@ meson install -C "$ext_build"
 # broken upstream icon-distribution target (which references absent SVG files).
 (
     cd "$shell"
-    ./autogen.sh --prefix="$prefix" --disable-update-mimedb
+    bash ./autogen.sh --prefix="$prefix" --disable-update-mimedb
 )
 install -d "$prefix/share/sugar/data" "$prefix/share/sugar/extensions"
 cp -a "$shell/data/." "$prefix/share/sugar/data/"

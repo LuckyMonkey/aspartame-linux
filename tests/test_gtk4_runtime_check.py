@@ -79,6 +79,30 @@ def test_gtk4_runtime_check_accepts_warnings_and_rejects_fatal_markers(tmp_path)
         listener.close()
 
 
+def test_gtk4_runtime_check_follows_packaged_process_runtime(tmp_path):
+    env, log, listener = _runtime(tmp_path)
+    root_runtime = Path(env["GTK4_ROOT"]) / "runtime"
+    private_runtime = tmp_path / "private-runtime"
+    private_runtime.mkdir(mode=0o700)
+    private_runtime.chmod(0o700)
+    listener.close()
+    (root_runtime / "wayland-sugar").unlink()
+    private_listener = socket.socket(socket.AF_UNIX)
+    private_listener.bind(str(private_runtime / "wayland-sugar"))
+    proc_root = Path(env["ASPARTAME_PROC_ROOT"])
+    (proc_root / "202" / "environ").write_bytes(
+        f"XDG_RUNTIME_DIR={private_runtime}\0".encode()
+    )
+    try:
+        result = subprocess.run(
+            [CHECK, "gtk4"], env=env, text=True, capture_output=True
+        )
+        assert result.returncode == 0, result.stderr
+        assert "runtime-check=ok target=gtk4 pid=202 desktop=1" in result.stdout
+    finally:
+        private_listener.close()
+
+
 def test_runtime_check_is_read_only_and_shell_valid():
     source = CHECK.read_text()
     assert '"$workspace_tool" status' in source

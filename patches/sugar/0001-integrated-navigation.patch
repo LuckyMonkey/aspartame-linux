@@ -414,14 +414,39 @@
 +++ jarabe/desktop/homewindow.py
 @@ -17,0 +18 @@
 +import os
-@@ -82,0 +84,4 @@
+@@ -58,0 +60,6 @@
++        side_by_side_marker = os.path.join(
++            os.environ.get('XDG_RUNTIME_DIR', '/run/user/%s' % os.getuid()),
++            'aspartame-side-by-side')
++        self._side_by_side = (
++            os.environ.get('ASPARTAME_SIDE_BY_SIDE') == '1' or
++            os.path.exists(side_by_side_marker))
+@@ -62,2 +69,4 @@
+-        self.set_default_size(screen.get_width(),
+-                              screen.get_height())
++        screen_width = screen.get_width()
++        if self._side_by_side:
++            screen_width //= 2
++        self.set_default_size(screen_width, screen.get_height())
+@@ -71 +80,9 @@
+-        self.set_type_hint(Gdk.WindowTypeHint.DESKTOP)
++        if self._side_by_side:
++            # A desktop window is intentionally maximized by Metacity.  The
++            # comparison mode needs two independently managed panes, so keep
++            # the classic surface normal and undecorated while preserving the
++            # desktop hint for the regular Sugar Home.
++            self.set_type_hint(Gdk.WindowTypeHint.NORMAL)
++            self.set_decorated(False)
++        else:
++            self.set_type_hint(Gdk.WindowTypeHint.DESKTOP)
+@@ -82,0 +100,4 @@
 +        # Shell content still owns normal layout. The only overlay is the
 +        # passive clock, centered against this real window rather than a
 +        # changing Toolbar allocation.
 +        self._overlay = Gtk.Overlay()
-@@ -83,0 +89 @@
+@@ -83,0 +105 @@
 +        self._overlay.add(self._box)
-@@ -105 +111,9 @@
+@@ -105 +127,9 @@
 -        self.add(self._box)
 +        self._clock = self._toolbar.get_clock_widget()
 +        self._clock.set_halign(Gtk.Align.CENTER)
@@ -432,9 +457,9 @@
 +        self._clock.show()
 +
 +        self.add(self._overlay)
-@@ -106,0 +121 @@
+@@ -106,0 +137 @@
 +        self._overlay.show()
-@@ -115,0 +131,11 @@
+@@ -115,0 +147,11 @@
 +    def __toolbar_size_allocate_cb(self, toolbar, allocation):
 +        # Give the clock the toolbar's own height and let the label centre
 +        # its text inside it. Offsetting by the label's natural height
@@ -446,7 +471,10 @@
 +        self._clock.set_margin_top(0)
 +        self._clock.set_size_request(-1, allocation.height)
 +
-@@ -232,0 +259,9 @@
+@@ -145,0 +188,2 @@
++        if self._side_by_side:
++            rect.width //= 2
+@@ -232,0 +277,9 @@
 +
 +        # The historical TransitionBox resizes a managed GTK3 canvas widget.
 +        # GTK4 owns allocation and rendering differently; leaving that
@@ -659,7 +687,7 @@
 -        else:
 -            # get activity name and window id
 -            window_xid = activity.get_xid()
-@@ -185,2 +24,53 @@
+@@ -185,2 +24,48 @@
 -        if shell.get_model().has_modal():
 -            return
 +def _load_packaged_handler():
@@ -673,11 +701,6 @@
 +    # workspace-aware wrapper.  customize_airootfs preserves the pinned
 +    # distro module at this stable path before applying the generated patch.
 +    candidates.append(Path("/usr/lib/aspartame/gtk3-keyhandler-upstream.py"))
-+    candidates.extend(
-+        Path(entry) / "jarabe/view/keyhandler.py"
-+        for entry in sys.path
-+        if entry
-+    )
 +    for candidate in candidates:
 +        candidate = candidate.resolve()
 +        if not candidate.is_file() or candidate == current:
@@ -710,21 +733,21 @@
 +        globals()[_name] = _value
 +
 +# SugarExt.KeyGrabber only accepts key names known to the upstream action
-+# table.  F9/F10 are Aspartame semantic Space actions, so register them as
++# table.  F7/F8 are Aspartame semantic Space actions, so register them as
 +# sentinel entries before the workspace-aware grabber requests its key set;
 +# dispatch is handled by _key_pressed_cb below.
-+_actions_table.setdefault("F9", "aspartame_space")
-+_actions_table.setdefault("F10", "aspartame_space")
-@@ -188 +77,0 @@
++_actions_table.setdefault("F7", "aspartame_space")
++_actions_table.setdefault("F8", "aspartame_space")
+@@ -188 +72,0 @@
 -        self._frame.hide()
-@@ -190,4 +79,2 @@
+@@ -190,4 +74,2 @@
 -        panel = ControlPanel(window_xid)
 -        activity.push_shell_window(panel)
 -        panel.connect('hide', activity.pop_shell_window)
 -        panel.show()
 +class KeyHandler(_packaged.KeyHandler):
 +    """Upstream GTK3 handler with an EWMH workspace ownership gate."""
-@@ -195,2 +82,5 @@
+@@ -195,2 +77,5 @@
 -    def handle_dump_ui_tree(self, event_time):
 -        print(uitree.get_root().dump())
 +    def __init__(self, frame):
@@ -732,7 +755,7 @@
 +        self._classic_space_active = None
 +        self._space_watch_id = GLib.timeout_add(100, self._sync_space_grab)
 +        self._sync_space_grab()
-@@ -200,30 +90,8 @@
+@@ -200,30 +85,8 @@
 -        logging.debug('_key_pressed_cb: %i %i %s', keycode, state, key)
 -        if key is not None:
 -            self._key_pressed = key
@@ -763,15 +786,15 @@
 -            else:
 -                raise TypeError('Invalid action %r' % action)
 -
-+        if key in ("F9", "F10"):
-+            target = "gtk3" if key == "F9" else "gtk4"
++        if key in ("F7", "F8"):
++            target = "gtk3" if key == "F7" else "gtk4"
 +            controller = os.environ.get(
 +                "ASPARTAME_SPACE_SWITCHER",
 +                "/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh",
 +            )
 +            logging.debug("GTK3 semantic Space key: %s", key)
 +            subprocess.Popen([controller, target], close_fds=True)
-@@ -231,4 +99,18 @@
+@@ -231,4 +94,18 @@
 -        # If this is not a registered key, then cancel tabbing.
 -        if self._tabbing_handler.is_tabbing():
 -            if not grabber.is_modifier(keycode):
@@ -794,7 +817,7 @@
 +        workspace = self._active_workspace_number()
 +        classic_active = workspace is None or workspace == 0
 +        if classic_active == self._classic_space_active:
-@@ -237 +119,39 @@
+@@ -237 +114,39 @@
 -        return False
 +        if classic_active:
 +            # Recreate the grabber after modern Space releases it.  The
@@ -809,10 +832,10 @@
 +                                          self._key_released_cb)
 +            # Spaces keys are semantic shell actions, not upstream Sugar
 +            # actions.  Include them in the passive grab explicitly so the
-+            # classic Space can hand F10 back to the coordinator (and keep
-+            # F9 idempotent) while the modern Space is isolated.
++            # classic Space can hand F8 back to the coordinator (and keep
++            # F7 idempotent) while the modern Space is isolated.
 +            keys = list(_actions_table.keys())
-+            for space_key in ("F9", "F10"):
++            for space_key in ("F7", "F8"):
 +                if space_key not in keys:
 +                    keys.append(space_key)
 +            self._key_grabber.grab_keys(keys)
@@ -822,9 +845,9 @@
 +            # grabber here made the return key intermittent after GTK4 placed
 +            # its window on the modern workspace.
 +            if self._key_grabber is not None:
-+                self._key_grabber.grab_keys(["F9", "F10"])
++                self._key_grabber.grab_keys(["F7", "F8"])
 +        self._classic_space_active = classic_active
-+        # Which Space owns F1-F10 decides whether the other one sees them at
++        # Which Space owns F1-F8 decides whether the other one sees them at
 +        # all, so this transition is worth recording - but it is a normal
 +        # state change, not a warning. Raise SUGAR_LOGGER_LEVEL to see it;
 +        # reports/gtk4/f7-space-key-rootcause-20260916.md explains why it
@@ -835,7 +858,7 @@
 +            workspace,
 +        )
 +        return True
-@@ -239,7 +158,0 @@
+@@ -239,7 +153,0 @@
 -    def _key_released_cb(self, grabber, keycode, state, event_time):
 -        logging.debug('_key_released_cb: %i %i', keycode, state)
 -        if self._tabbing_handler.is_tabbing():
@@ -843,11 +866,11 @@
 -            # modifier key is raised again.
 -            if grabber.is_modifier(keycode, mask=_TABBING_MODIFIER):
 -                self._tabbing_handler.stop(event_time)
-@@ -247,2 +160 @@
+@@ -247,2 +155 @@
 -            return True
 -        return False
 +_instance = None
-@@ -253,0 +166,4 @@
+@@ -253,0 +161,4 @@
 +
 +
 +def get_instance():

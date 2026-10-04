@@ -80,7 +80,12 @@ The Activity Manager should present one Aspartame list while making runtime type
 clear in developer/detail views:
 
 - installed native Activities are launchable now;
+- the GTK4 Activity Manager labels installed native bundles `Native Sugar` and
+  carries explicit `runtime`, `installed`, and `removable` fields;
 - catalog-only web Activities are candidates, not falsely installed;
+- Snakepit-backed entries must identify themselves as `Snakepit Python` and
+  remain non-removable until an installed environment and launch contract are
+  qualified;
 - ratings and help metadata are shared;
 - removal is allowed only for an installed managed bundle;
 - a web entry is not removable through the native bundle remover.

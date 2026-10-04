@@ -60,10 +60,15 @@ The **Neighborhood** is a contextual view of nearby people, shared work, and ava
 
 It is deliberately **not** split-screen, tiling, arbitrary workspace management, or unlimited window accumulation. The model is: one hand holds steady while the other ratchets. Either hand can become active; either can hold; neither is permanently primary.
 
-During the GTK4 migration, the existing F7/F8 Spaces serve as an executable comparison oracle:
+During the GTK4 migration, the intended F7/F8 Space pair remains the behavioral comparison oracle:
 
 - **F7** — stable GTK3 Sugar, the known-good behavioral reference.
 - **F8** — modern GTK4 Sugar, the candidate implementation under test.
+
+The current QEMU/Metacity image uses the same F7/F8 mapping as the source
+tree. The headless macro and guest screenshot workflow qualify those actions
+without taking the host mouse; physical-keyboard parity remains a separate
+qualification step.
 
 The current migration machinery and the future Chirality doctrine are related, but they are not the same thing. F7/F8 remain a GTK3↔GTK4 testing mechanism until the migration gate is satisfied. Only after GTK4 parity is good enough should that proven switching behavior be repurposed as Left Hand / Right Hand.
 
@@ -73,8 +78,8 @@ The bootable image starts a real Sugar session. The development VM runs two sepa
 
 | Space | Purpose | Boundary |
 | --- | --- | --- |
-| Classic (F7) | Stable GTK3 Sugar reference | X11 + Metacity |
-| Modern (F8) | GTK4 conversion under test | GTK4 shell + Casilda private Wayland Activity surfaces |
+| Classic (F7 / semantic `gtk3`) | Stable GTK3 Sugar reference | X11 + Metacity |
+| Modern (F8 / semantic `gtk4`) | GTK4 conversion under test | GTK4 shell + Casilda private Wayland Activity surfaces |
 
 GTK3 and GTK4 are separate Python processes and never import both GI namespaces into one process. Journal/datastore and shell services provide the coordination boundary; Casilda owns the embedded Activity surface.
 
@@ -221,7 +226,8 @@ Executable checks and durable evidence live together:
 
 | Check | Command/result |
 | --- | --- |
-| GTK4 regression suite | `pytest -q tests/test_gtk4*` → **271 passed** |
+| GTK4 regression suite | `pytest -q tests/test_gtk4*` and the full suite → **PASS**; current full run: 415 passed |
+| Python runtime qualification | `make snakepit-qualify` → **PASS**; dependency-tension preflight is recorded in `reports/python/` |
 | Guest source/build | `scripts/sugar-gtk4-build.sh` → **PASS** |
 | Spaces process check | `scripts/sugar-gtk4-runtime-check.sh gtk3/gtk4` |
 | Activity lifecycle | `scripts/sugar-gtk4-activity-roundtrip.py` and `reports/gtk4/` |
@@ -323,7 +329,7 @@ The prompt authorizes the action; it does not reveal or bypass an administrator 
 
 ## 🧰 Snakepit and application resolution
 
-Aspartame is designed to become broader than a fixed bundle list without contaminating Arch's system Python. **Snakepit** is the planned Python application resolver: a reverse package chooser that can select suitable interpreters, isolated environments, ABI/platform constraints, GUI bindings, and application stacks without pretending there is only one Python version on the machine.
+Aspartame is designed to become broader than a fixed bundle list without contaminating Arch's system Python. **Snakepit** is the emerging Python application resolver: a reverse package chooser that can select suitable interpreters, isolated environments, ABI/platform constraints, GUI bindings, and application stacks without pretending there is only one Python version on the machine. Its v0 qualification slice now records repeated interpreter candidates, selects the newest compatible one, proves one isolated workflow, rejects an obvious contradictory dependency set before environment creation, qualifies two isolated local dependency versions, and can replay an explicitly marked launch contract; broader dependency resolution and Activity Manager integration remain open.
 
 Conceptually:
 

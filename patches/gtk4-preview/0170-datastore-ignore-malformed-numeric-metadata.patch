@@ -1,0 +1,25 @@
+--- a/src/carquinyol/metadatastore.py
++++ b/src/carquinyol/metadatastore.py
+@@ -1,4 +1,5 @@
+ import os
++import logging
+ import dbus
+
+ from carquinyol import layoutmanager
+@@ -79,9 +80,14 @@
+         metadata = metadatareader.retrieve(metadata_path, properties)
+
+         # convert from dbus.ByteArray to expected types
+-        for key, value in metadata.items():
++        for key, value in list(metadata.items()):
+             if key in ['filesize', 'creation_time', 'timestamp']:
+-                metadata[key] = dbus.Int32(value)
++                try:
++                    metadata[key] = dbus.Int32(value)
++                except (TypeError, ValueError, OverflowError):
++                    logging.warning('Ignoring malformed numeric metadata '
++                                    '%s for Journal object %s', key, uid)
++                    del metadata[key]
+             elif key in ['checksum']:
+                 metadata[key] = value.decode()
+             elif key != 'preview':

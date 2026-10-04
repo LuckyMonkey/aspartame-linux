@@ -1,0 +1,102 @@
+{
+  "schema": "aspartame.snakepit.qualification/v0",
+  "status": "FAIL",
+  "software": {
+    "name": "dependency-tension-specimen",
+    "source": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-tension",
+    "target": "host-development"
+  },
+  "interpreter": {
+    "requested": "/usr/bin/python3.12",
+    "version": "Python 3.12.3",
+    "candidates": [
+      {
+        "requested": "/usr/bin/python3",
+        "resolved": "/usr/bin/python3.12",
+        "version": "3.12.3",
+        "satisfied": true
+      }
+    ]
+  },
+  "compatibility": {
+    "requires_python": ">=3.8,<4",
+    "selected_version": "3.12.3",
+    "satisfied": true
+  },
+  "environment": {
+    "path": "/tmp/aspartame-snakepit-dependency-tension",
+    "python": "/tmp/aspartame-snakepit-dependency-tension/bin/python",
+    "reuse": false
+  },
+  "requirements": {
+    "files": [
+      {
+        "path": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-tension/requirements.txt",
+        "entries": [
+          "aspartame-tension-core>=2,<3"
+        ]
+      }
+    ],
+    "requires_python": ">=3.8,<4",
+    "dependencies": [
+      "aspartame-tension-core>=1,<2"
+    ],
+    "dependency_conflicts": [
+      {
+        "name": "aspartame-tension-core",
+        "reason": "numeric version intervals do not intersect",
+        "constraints": [
+          {
+            "specification": "aspartame-tension-core>=2,<3",
+            "source": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-tension/requirements.txt"
+          },
+          {
+            "specification": "aspartame-tension-core>=1,<2",
+            "source": "pyproject.toml"
+          }
+        ]
+      }
+    ]
+  },
+  "steps": [
+    {
+      "action": "check-interpreter",
+      "requires_python": ">=3.8,<4",
+      "selected_version": "3.12.3",
+      "satisfied": true,
+      "candidates": [
+        {
+          "requested": "/usr/bin/python3",
+          "resolved": "/usr/bin/python3.12",
+          "version": "3.12.3",
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "action": "check-dependencies",
+      "status": "conflict",
+      "conflicts": [
+        {
+          "name": "aspartame-tension-core",
+          "reason": "numeric version intervals do not intersect",
+          "constraints": [
+            {
+              "specification": "aspartame-tension-core>=2,<3",
+              "source": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-tension/requirements.txt"
+            },
+            {
+              "specification": "aspartame-tension-core>=1,<2",
+              "source": "pyproject.toml"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "workflow": {},
+  "error": "dependency conflict before environment creation: aspartame-tension-core: numeric version intervals do not intersect",
+  "started_at": "2026-10-02T23:31:14.640222+00:00",
+  "finished_at": "2026-10-02T23:31:14.663753+00:00",
+  "duration_seconds": 0.024
+}

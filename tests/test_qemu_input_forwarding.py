@@ -9,10 +9,21 @@ def test_qemu_forwards_keyboard_by_default_while_remaining_floating():
     assert 'QEMU_GRAB_ON_HOVER=${QEMU_GRAB_ON_HOVER:-on}' in script
     assert 'grab-on-hover=$QEMU_GRAB_ON_HOVER' in script
     assert 'zoom-to-fit=on' in script
-    assert '-device usb-kbd' in script
+    assert '-device virtio-vga,id=video0' in script
+    assert '-device usb-kbd,id=usb_keyboard,display=video0' in script
+    assert '-device virtio-keyboard-pci,id=virtio_keyboard,display=video0' in script
     assert 'QEMU_WINDOW_WIDTH=${QEMU_WINDOW_WIDTH:-1600}' in script
     assert 'QEMU_WINDOW_HEIGHT=${QEMU_WINDOW_HEIGHT:-900}' in script
     assert 'xdotool windowsize' in script
+
+
+def test_qemu_can_run_without_a_host_window_or_pointer_grab():
+    script = (ROOT / "scripts/run-qemu.sh").read_text()
+    assert 'QEMU_HEADLESS=${QEMU_HEADLESS:-0}' in script
+    assert 'QEMU_DISPLAY=${QEMU_DISPLAY:-none}' in script
+    assert 'test "$QEMU_HEADLESS" != 1' in script
+    assert 'QEMU_SNAPSHOT=${QEMU_SNAPSHOT:-0}' in script
+    assert 'SNAPSHOT_ARGS=(-snapshot)' in script
 
 
 def test_gtk4_dev_sync_copies_only_runtime_inputs():
@@ -28,3 +39,5 @@ def test_qemu_key_sender_supports_reverse_focus_chord():
     script = (ROOT / "scripts/qemu-send-key.py").read_text()
     assert '"SHIFT+TAB": ("shift", "tab")' in script
     assert 'reversed(qcodes)' in script
+    assert 'ASPARTAME_QEMU_INPUT_DEVICE' in script
+    assert '"video0"' in script

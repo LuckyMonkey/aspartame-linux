@@ -16,7 +16,15 @@ def test_gtk4_activity_manager_is_native_and_registry_backed():
     assert "_remove_clicked" in view
     assert "Removal not completed" in view
     assert "recoverable copy" in view
+    assert "RUNTIME_LABELS" in view
+    assert "Snakepit Python" in view
+    assert "Unknown runtime" in view
+    assert "No qualified launch or removal action is available." in view
     assert "bundleregistry.get_registry()" in model
+    assert "'runtime': 'native-sugar'" in model
+    assert "'installed': True" in model
+    assert "'removable': managed or user_installed" in model
+    assert "def _is_managed(path)" in model
     assert "aspartame-sudo-askpass" in model
     assert "shutil.move(path, target)" in model
     assert "_forget_registry_bundle(registry, path)" in model

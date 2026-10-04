@@ -165,6 +165,9 @@ def test_native_help_activity_is_staged_for_modern_space():
     assert '#111111' in source
     launcher = (ROOT / "packages/gtk4-help-activity/bin/sugar-activity4").read_text()
     assert "export ASPARTAME_GTK4_PREVIEW=1" in launcher
+    assert "ASPARTAME_GTK4_ROOT" in launcher
+    assert 'exec "$PYTHON_BIN" -c' in launcher
+    assert "/home/aspartame/Development/gtk4-preview/venv/bin/sugar-activity4" not in launcher
     assert "Help.activity/activity/activity.info" in run
     assert 'ln -sfn "$help_activity" "$activity_dir/Help.activity"' in build
 

@@ -1,0 +1,7 @@
+[
+  {"action": "click", "x": 900, "y": 385},
+  {"action": "sleep", "seconds": 0.5},
+  {"action": "text", "text": "2+2"},
+  {"action": "sleep", "seconds": 0.8},
+  {"action": "screenshot", "path": "reports/screenshots/headless-text-input.png"}
+]

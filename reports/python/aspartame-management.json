@@ -1,0 +1,96 @@
+{
+  "schema": "aspartame.snakepit.qualification/v0",
+  "status": "PASS",
+  "software": {
+    "name": "aspartame-management",
+    "source": "/home/freezer/Projects/aspartame/management",
+    "target": "host-development"
+  },
+  "interpreter": {
+    "requested": "/usr/bin/python3.12",
+    "version": "Python 3.12.3",
+    "candidates": [
+      {
+        "requested": "/usr/bin/python3",
+        "resolved": "/usr/bin/python3.12",
+        "version": "3.12.3",
+        "satisfied": true
+      }
+    ]
+  },
+  "compatibility": {
+    "requires_python": null,
+    "selected_version": "3.12.3",
+    "satisfied": true
+  },
+  "environment": {
+    "path": "/tmp/aspartame-snakepit-management",
+    "python": "/tmp/aspartame-snakepit-management/bin/python",
+    "reuse": true,
+    "python_version": "Python 3.12.3",
+    "isolation": {
+      "prefix": "/tmp/aspartame-snakepit-management",
+      "base_prefix": "/usr",
+      "isolated": true
+    }
+  },
+  "requirements": {
+    "files": [],
+    "requires_python": null,
+    "dependencies": [],
+    "dependency_conflicts": []
+  },
+  "steps": [
+    {
+      "action": "check-interpreter",
+      "requires_python": null,
+      "selected_version": "3.12.3",
+      "satisfied": true,
+      "candidates": [
+        {
+          "requested": "/usr/bin/python3",
+          "resolved": "/usr/bin/python3.12",
+          "version": "3.12.3",
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "action": "check-dependencies",
+      "status": "ok",
+      "conflicts": []
+    },
+    {
+      "action": "install-requirements",
+      "skipped": true
+    }
+  ],
+  "workflow": {
+    "command": [
+      "/tmp/aspartame-snakepit-management/bin/python",
+      "-m",
+      "unittest",
+      "test_server"
+    ],
+    "cwd": "/home/freezer/Projects/aspartame/management",
+    "returncode": 0,
+    "stdout": "[mdm] \"GET /health HTTP/1.1\" 200 -\n[mdm] \"POST /api/v1/enroll HTTP/1.1\" 201 -\n[mdm] \"POST /api/v1/check-in HTTP/1.1\" 200 -\n",
+    "stderr": ".\n----------------------------------------------------------------------\nRan 1 test in 0.552s\n\nOK\n",
+    "stdout_truncated": false,
+    "stderr_truncated": false
+  },
+  "launch": {
+    "command": [
+      "/tmp/aspartame-snakepit-management/bin/python",
+      "-m",
+      "unittest",
+      "test_server"
+    ],
+    "cwd": "/home/freezer/Projects/aspartame/management",
+    "environment": "/tmp/aspartame-snakepit-management"
+  },
+  "error": null,
+  "started_at": "2026-10-03T03:42:40.403363+00:00",
+  "finished_at": "2026-10-03T03:42:41.199625+00:00",
+  "duration_seconds": 0.796
+}

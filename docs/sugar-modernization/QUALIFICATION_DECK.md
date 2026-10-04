@@ -97,6 +97,10 @@ them.
 - **GTK4 result:** the semantic controller switches correctly over repeated
   round trips, with `runtime-check=ok` for gtk3 on desktop 0 and gtk4 on
   desktop 1. Physical key delivery remains a separate QEMU transport check.
+- The installed `side-by-side` action is an additional passing comparison
+  path: on the 2026-10-02 fresh ISO it placed clickable GTK3 and GTK4 Spaces
+  at 960x1080 beside each other, so behavioral comparison no longer depends
+  on transporting a function key through QEMU.
 - **Gap:** was the shared key grab — see W7; one cause, both workflows.
 - **Minimum fix:** `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`,
   shipped by `packages/sugar-toolkit-gtk3/PKGBUILD`
@@ -234,12 +238,12 @@ a bounded fix. See `reports/gtk4/five-fix-pass-20260915.md`.
 ## Next
 
 W11 remains open and is blocked on a second live participant rather than on
-code. W6's semantic controller handoff is currently passing: the live guest
-round trip is recorded in `reports/gtk4/spaces-semantic-roundtrip-20260919.md`.
-Physical F7/F8 delivery still needs a QEMU process with a live QMP socket;
-the current stale socket is not treated as evidence of key behavior. Every
-other workflow in the deck passes with runtime evidence or has an explicit
-owner/boundary recorded above.
+code. W6's semantic controller handoff and click-driven side-by-side path are
+passing; the fresh-image evidence is recorded in
+`reports/gtk4/side-by-side-runtime-20261002.md`. Physical F7/F8 delivery is
+still a separate QEMU transport check, but it is no longer required to compare
+the Spaces or continue GTK4 UX work. Every other workflow in the deck passes
+with runtime evidence or has an explicit owner/boundary recorded above.
 
 The key grabber fix now ships as a rebuilt package
 (`packages/sugar-toolkit-gtk3/PKGBUILD`, installed from the profile's

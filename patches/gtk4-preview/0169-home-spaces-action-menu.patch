@@ -1,0 +1,88 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: expose semantic Spaces actions from an accessible button
+Function-key delivery through the QEMU/Metacity path remains environment
+sensitive, while the semantic controller already provides reliable GTK3,
+GTK4, and side-by-side actions. Put those same actions behind a visible
+Sugar-style menu button on the GTK4 Home toolbar so comparison and return do
+not depend on a physical function key.
+The button is deliberately a menu rather than three permanent toolbar
+controls: the normal Sugar toolbar stays compact, the action names are
+visible when requested, and every item remains keyboard-activatable and
+accessible. The controller is passed as an argv list, preserving the same
+environment boundary as the shell's F7/F8 actions.
+--- a/src/jarabe/desktop/viewtoolbar.py
++++ b/src/jarabe/desktop/viewtoolbar.py
+@@ -24,5 +24,6 @@
+ import locale
+ import logging
+ import os
++import subprocess
+
+ from gi.repository import Gio
+@@ -93,3 +93,4 @@
+         self._build_help_button()
++        self._build_spaces_button()
+
+         self._add_separator(expand=True)
+@@ -174,3 +174,61 @@
+         self.append(self._help_button)
++    def _build_spaces_button(self):
++        """Expose semantic Space actions without requiring F-key delivery."""
++        self._spaces_button = Gtk.Button()
++        image = Gtk.Image.new_from_icon_name('view-grid-symbolic')
++        self._spaces_button.set_child(image)
++        self._spaces_button.set_has_frame(False)
++        self._spaces_button.set_valign(Gtk.Align.CENTER)
++        self._spaces_button.set_tooltip_text(_('Spaces'))
++        self._spaces_button.update_property(
++            [Gtk.AccessibleProperty.LABEL], [_('Spaces')])
++
++        popover = Gtk.Popover()
++        actions = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
++        actions.set_margin_top(8)
++        actions.set_margin_bottom(8)
++        actions.set_margin_start(8)
++        actions.set_margin_end(8)
++        for target, label in (
++                ('gtk3', _('Classic Space (GTK3)')),
++                ('gtk4', _('Modern Space (GTK4)')),
++                ('side-by-side', _('Compare Spaces side by side'))):
++            action = Gtk.Button(label=label)
++            action.set_halign(Gtk.Align.FILL)
++            action.set_hexpand(True)
++            action.update_property(
++                [Gtk.AccessibleProperty.LABEL], [label])
++            action.connect('clicked', self.__space_action_cb,
++                           target, popover)
++            actions.append(action)
++        popover.set_child(actions)
++        popover.set_parent(self._spaces_button)
++        popover.set_has_arrow(True)
++        popover.set_position(Gtk.PositionType.BOTTOM)
++        self._spaces_popover = popover
++        self._spaces_button.connect(
++            'clicked', self.__spaces_button_clicked_cb, popover)
++        self.append(self._spaces_button)
++
++    def __spaces_button_clicked_cb(self, button, popover):
++        if popover.is_visible():
++            popover.popdown()
++        else:
++            popover.popup()
++
++    def __space_action_cb(self, button, target, popover):
++        popover.popdown()
++        controller = os.environ.get(
++            'ASPARTAME_SPACE_SWITCHER',
++            '/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh')
++        if not os.access(controller, os.X_OK):
++            logging.warning('Spaces controller is not executable: %s',
++                            controller)
++            return
++        try:
++            subprocess.Popen([controller, target], close_fds=True)
++        except OSError as error:
++            logging.warning('Could not start Spaces action %s: %s',
++                            target, error)
+
+     def __help_clicked_cb(self, button):

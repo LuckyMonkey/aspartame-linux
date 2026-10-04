@@ -14,6 +14,8 @@ project_root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 root=${GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
 workspace_tool="$project_root/scripts/sugar-x11-workspace.py"
 runner="$project_root/scripts/sugar-gtk4-run.sh"
+runtime_dir="/run/user/$(id -u)"
+side_by_side_marker="$runtime_dir/aspartame-side-by-side"
 action=${1:-toggle}
 
 export DISPLAY=${DISPLAY:-:0}
@@ -44,15 +46,15 @@ if [ "$have_gsettings_bus" -eq 1 ]; then
     fi
 fi
 
-# F1-F8 retain Sugar navigation. F9 and F10 select the two test spaces.
+# F1-F6 retain Sugar navigation. F7 and F8 select the two test spaces.
 if [ "$have_gsettings_bus" -eq 1 ]; then
     gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 \
-        "['F9', '<Super>Home']"
+        "['F7', '<Super>Home']"
     gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 \
-        "['F10']"
+        "['F8']"
     key_one=$(gsettings get org.gnome.desktop.wm.keybindings switch-to-workspace-1)
     key_two=$(gsettings get org.gnome.desktop.wm.keybindings switch-to-workspace-2)
-    if [[ "$key_one" != *F9* || "$key_two" != *F10* ]]; then
+    if [[ "$key_one" != *F7* || "$key_two" != *F8* ]]; then
         echo 'Metacity keybindings unavailable; semantic Space switching remains enabled.' >&2
     fi
 else
@@ -117,6 +119,52 @@ gtk3_pid() {
     done
 }
 
+restart_gtk3() {
+    local old_pid new_pid
+    old_pid=$(gtk3_pid || true)
+    [ -n "$old_pid" ] || {
+        echo 'Cannot locate the GTK3 Sugar desktop.' >&2
+        exit 1
+    }
+    kill "$old_pid" 2>/dev/null || true
+    for _attempt in $(seq 1 300); do
+        new_pid=$(gtk3_pid || true)
+        if [ -n "$new_pid" ] && [ "$new_pid" != "$old_pid" ]; then
+            GTK3_PID=$new_pid
+            return 0
+        fi
+        sleep 0.1
+    done
+    echo 'GTK3 Sugar did not restart after Space layout change' >&2
+    exit 1
+}
+
+all_gtk4_pids() {
+    local pid env_data
+    for pid in $(pgrep -u "$(id -u)" -f 'python3 -m jarabe\.main|jarabe/main.py'); do
+        [ -r "/proc/$pid/environ" ] || continue
+        env_data=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null) || continue
+        printf '%s\n' "$env_data" | grep -qx 'ASPARTAME_GTK4_PREVIEW=1' || continue
+        echo "$pid"
+    done
+}
+
+stop_gtk4() {
+    local pid
+    for pid in $(all_gtk4_pids); do
+        echo "Stopping GTK4 shell PID $pid for windowed comparison" >&2
+        kill "$pid" 2>/dev/null || true
+    done
+    for _attempt in $(seq 1 100); do
+        if [ -z "$(all_gtk4_pids)" ]; then
+            return 0
+        fi
+        sleep 0.1
+    done
+    echo 'GTK4 shell did not stop before side-by-side restart' >&2
+    return 1
+}
+
 require_gtk3() {
     local pid
     pid=$(gtk3_pid || true)
@@ -124,7 +172,8 @@ require_gtk3() {
         echo 'Cannot locate the GTK3 Sugar desktop.' >&2
         exit 1
     }
-    "$workspace_tool" place --pid "$pid" --workspace 0 >/dev/null
+    "$workspace_tool" place --pid "$pid" --workspace 0 \
+        --timeout 30 >/dev/null
     GTK3_PID=$pid
 }
 
@@ -151,35 +200,144 @@ start_gtk4() {
         echo 'GTK4 Sugar did not start; see /tmp/aspartame-gtk4-current.log' >&2
         exit 1
     }
-    "$workspace_tool" place --pid "$pid" --workspace 1 --fullscreen >/dev/null
+    "$workspace_tool" place --pid "$pid" --workspace 1 --fullscreen \
+        --timeout 30 >/dev/null
     GTK4_PID=$pid
 }
 
+start_gtk4_windowed() {
+    local pid
+    for pid in $(all_gtk4_pids); do
+        local env_data
+        env_data=$(tr '\0' '\n' <"/proc/$pid/environ" 2>/dev/null || true)
+        if printf '%s\n' "$env_data" | grep -qx 'SUGAR_WINDOWED=1'; then
+            GTK4_PID=$pid
+            return 0
+        fi
+    done
+    stop_gtk4
+    setsid env GTK4_ROOT="$root" SUGAR_WINDOWED=1 \
+        bash "$runner" > /tmp/aspartame-gtk4-side-by-side.log 2>&1 </dev/null &
+    for _attempt in $(seq 1 300); do
+        pid=$(gtk4_pid || true)
+        [ -n "$pid" ] && break
+        sleep 0.1
+    done
+    [ -n "${pid:-}" ] || {
+        echo 'GTK4 windowed shell did not start; see /tmp/aspartame-gtk4-side-by-side.log' >&2
+        exit 1
+    }
+    GTK4_PID=$pid
+}
+
+screen_size() {
+    local mode
+    mode=$(xrandr --current 2>/dev/null |
+        awk '/ connected / { for (i = 1; i <= NF; i++) {
+            if ($i ~ /^[0-9]+x[0-9]+\+/) { sub(/\+.*/, "", $i); print $i; exit }
+        }}' || true)
+    if [[ "$mode" =~ ^[0-9]+x[0-9]+$ ]]; then
+        printf '%s\n' "$mode"
+    else
+        printf '1920x1080\n'
+    fi
+}
+
+settle_workspace() {
+    local expected=$1 current
+    for _attempt in $(seq 1 40); do
+        current=$("$workspace_tool" status |
+            sed -n 's/^current=//p')
+        if [ "$current" = "$expected" ]; then
+            # Metacity publishes the desktop before the target surface is
+            # focusable. Let that mapping complete before activation.
+            sleep 0.25
+            return 0
+        fi
+        sleep 0.05
+    done
+    echo "workspace $expected did not become current" >&2
+    exit 1
+}
+
+select_side_by_side() {
+    local dimensions screen_width screen_height half_width
+    require_gtk3
+    touch "$side_by_side_marker"
+    restart_gtk3
+    start_gtk4_windowed
+    dimensions=$(screen_size)
+    screen_width=${dimensions%x*}
+    screen_height=${dimensions#*x}
+    half_width=$((screen_width / 2))
+    "$workspace_tool" place --pid "$GTK3_PID" --workspace 0 \
+        --timeout 30 >/dev/null
+    "$workspace_tool" place --pid "$GTK4_PID" --workspace 0 \
+        --timeout 30 >/dev/null
+    "$workspace_tool" geometry --pid "$GTK3_PID" --x 0 --y 0 \
+        --width "$half_width" --height "$screen_height" --timeout 30 >/dev/null
+    "$workspace_tool" geometry --pid "$GTK4_PID" --x "$half_width" --y 0 \
+        --width "$((screen_width - half_width))" --height "$screen_height" \
+        --timeout 30 >/dev/null
+    # GTK4 may apply its windowed default size just after the first map.  A
+    # second pass after that map keeps the semantic side-by-side action from
+    # ending with a centred 1024x768 surface.
+    sleep 0.5
+    "$workspace_tool" geometry --pid "$GTK3_PID" --x 0 --y 0 \
+        --width "$half_width" --height "$screen_height" --timeout 30 >/dev/null
+    "$workspace_tool" geometry --pid "$GTK4_PID" --x "$half_width" --y 0 \
+        --width "$((screen_width - half_width))" --height "$screen_height" \
+        --timeout 30 >/dev/null
+    "$workspace_tool" switch 0
+    settle_workspace 0
+    "$workspace_tool" activate --pid "$GTK4_PID" --timeout 30 >/dev/null
+    printf 'Sugar Spaces side by side: GTK3=%sx%s GTK4=%sx%s\n' \
+        "$half_width" "$screen_height" "$((screen_width - half_width))" "$screen_height"
+}
+
 select_gtk3() {
+    if [ -f "$side_by_side_marker" ]; then
+        rm -f "$side_by_side_marker"
+        restart_gtk3
+    fi
     require_gtk3
     "$workspace_tool" switch 0
-    "$workspace_tool" activate --pid "$GTK3_PID" >/dev/null
+    settle_workspace 0
+    "$workspace_tool" activate --pid "$GTK3_PID" --timeout 30 >/dev/null
 }
 
 select_gtk4() {
+    if [ -f "$side_by_side_marker" ]; then
+        rm -f "$side_by_side_marker"
+        restart_gtk3
+    fi
     start_gtk4
     "$workspace_tool" switch 1
-    "$workspace_tool" activate --pid "$GTK4_PID" >/dev/null
+    settle_workspace 1
+    "$workspace_tool" activate --pid "$GTK4_PID" --timeout 30 >/dev/null
 }
 
 case "$action" in
     setup)
+        if [ -f "$side_by_side_marker" ]; then
+            rm -f "$side_by_side_marker"
+            restart_gtk3
+        fi
         require_gtk3
         start_gtk4
         "$workspace_tool" switch 0
-        "$workspace_tool" activate --pid "$GTK3_PID" >/dev/null
-        echo 'Sugar Spaces ready: F9 = GTK3, F10 = GTK4'
+        settle_workspace 0
+        "$workspace_tool" activate --pid "$GTK3_PID" --timeout 30 >/dev/null
+        echo 'Sugar Spaces ready: F7 = GTK3, F8 = GTK4'
         ;;
     gtk3)
         select_gtk3
         ;;
     gtk4)
         select_gtk4
+        ;;
+    side-by-side)
+        select_side_by_side
         ;;
     toggle)
         current=$("$workspace_tool" status | sed -n 's/^current=//p')
@@ -195,10 +353,10 @@ case "$action" in
         printf 'gtk3_pid=%s\n' "${pid:-stopped}"
         pid=$(gtk4_pid || true)
         printf 'gtk4_pid=%s\n' "${pid:-stopped}"
-        printf 'keys=F9:GTK3,F10:GTK4\n'
+        printf 'keys=F7:GTK3,F8:GTK4\n'
         ;;
     *)
-        echo 'usage: sugar-gtk4-space.sh {setup|gtk3|gtk4|toggle|status}' >&2
+        echo 'usage: sugar-gtk4-space.sh {setup|gtk3|gtk4|side-by-side|toggle|status}' >&2
         exit 2
         ;;
 esac

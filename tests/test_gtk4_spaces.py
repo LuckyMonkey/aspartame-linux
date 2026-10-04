@@ -8,8 +8,9 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     controller = (ROOT / 'scripts/sugar-gtk4-space.sh').read_text()
     assert 'switch-to-workspace-1' in controller
     assert 'switch-to-workspace-2' in controller
-    assert 'F9' in controller
-    assert 'F10' in controller
+    assert 'F7' in controller
+    assert 'F8' in controller
+
     assert 'sugar-gtk4-run.sh' in controller
     assert 'SUGAR_WINDOWED=0' in controller
     assert 'place --pid' in controller
@@ -30,11 +31,50 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     assert 'GTK4_PID' in controller
     assert 'select_gtk3' in controller
     assert 'select_gtk4' in controller
+    assert 'side-by-side)' in controller
+    assert 'SUGAR_WINDOWED=1' in controller
+    assert 'geometry --pid' in controller
+    assert 'settle_workspace()' in controller
+    assert 'Metacity publishes the desktop' in controller
+    assert 'place --pid "$GTK4_PID" --workspace 0' in controller
+    assert 'switch 0' in controller
+    assert 'restart_gtk3' in controller
+    assert 'aspartame-side-by-side' in controller
+    assert 'rm -f "$side_by_side_marker"' in controller
+    assert 'Sugar Spaces side by side' in controller
     assert 'pgrep -u' in controller
     assert 'DBUS_SESSION_BUS_ADDRESS=*) export' in controller
     assert 'keybindings unavailable' in controller
+    assert controller.count('--timeout 30') >= 10
     assert 'wmctrl' not in controller
     assert 'xdotool' not in controller
+
+
+def test_home_exposes_semantic_space_actions_from_accessible_button():
+    patch = (ROOT / 'patches/gtk4-preview/0169-home-spaces-action-menu.patch').read_text()
+    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
+    assert 'self._spaces_button = Gtk.Button()' in patch
+    assert 'popover.set_parent(self._spaces_button)' in patch
+    assert 'def __spaces_button_clicked_cb' in patch
+    assert 'popover.popup()' in patch
+    assert 'Compare Spaces side by side' in patch
+    assert 'Gtk.AccessibleProperty.LABEL' in patch
+    assert 'ASPARTAME_SPACE_SWITCHER' in patch
+    assert 'subprocess.Popen([controller, target]' in patch
+    assert '*0169*) target="$root/sources/sugar"' in build
+
+
+def test_side_by_side_reapplies_geometry_after_gtk4_window_map():
+    controller = (ROOT / 'scripts/sugar-gtk4-space.sh').read_text()
+    assert 'GTK4 may apply its windowed default size' in controller
+    assert controller.count('geometry --pid "$GTK4_PID"') >= 2
+
+
+def test_classic_home_uses_normal_undecorated_window_in_side_by_side_mode():
+    home = (ROOT / 'sugar-overlay/src/jarabe/desktop/homewindow.py').read_text()
+    assert 'Gdk.WindowTypeHint.NORMAL' in home
+    assert 'self.set_decorated(False)' in home
+    assert 'Gdk.WindowTypeHint.DESKTOP' in home
 
 
 def test_standalone_session_exports_the_resolved_space_switcher():
@@ -43,6 +83,8 @@ def test_standalone_session_exports_the_resolved_space_switcher():
     assert 'gtk4_root=${ASPARTAME_GTK4_ROOT:-/usr/lib/aspartame/gtk4-preview}' in session
     assert 'gtk4_space="$gtk4_root/scripts/sugar-gtk4-space.sh"' in session
     assert 'export ASPARTAME_SPACE_SWITCHER="$gtk4_space"' in session
+    assert 'export GTK4_ROOT="$gtk4_root"' in session
+    assert 'ASPARTAME_SIDE_BY_SIDE=1' in session
 
 
 def test_direct_modern_runner_exports_its_space_switcher():
@@ -50,18 +92,18 @@ def test_direct_modern_runner_exports_its_space_switcher():
     assert 'ASPARTAME_SPACE_SWITCHER="${ASPARTAME_SPACE_SWITCHER:-$project_root/scripts/sugar-gtk4-space.sh}"' in runner
 
 
-def test_classic_keyhandler_keeps_f9_return_grab_for_modern_space():
+def test_classic_keyhandler_keeps_f7_return_grab_for_modern_space():
     handler = (ROOT / 'sugar-overlay/src/jarabe/view/keyhandler.py').read_text()
     assert 'SugarExt.KeyGrabber' in handler
     assert 'get_active_workspace' in handler
     assert 'self._key_grabber.grab_keys(keys)' in handler
     assert 'workspace == 0' in handler
     assert 'Spaces key ownership' in handler
-    assert 'self._key_grabber.grab_keys(["F9", "F10"])' in handler
+    assert 'self._key_grabber.grab_keys(["F7", "F8"])' in handler
     assert 'SugarExt.KeyGrabber()' in handler
-    assert 'for space_key in ("F9", "F10")' in handler
-    assert '_actions_table.setdefault("F9"' in handler
-    assert '_actions_table.setdefault("F10"' in handler
+    assert 'for space_key in ("F7", "F8")' in handler
+    assert '_actions_table.setdefault("F7"' in handler
+    assert '_actions_table.setdefault("F8"' in handler
     assert 'site-packages' in handler
     assert 'loader recurses' in handler
 
@@ -72,10 +114,16 @@ def test_x11_helper_uses_standard_ewmh_messages():
     assert '_NET_WM_DESKTOP' in helper
     assert '_NET_ACTIVE_WINDOW' in helper
     assert '_NET_WM_STATE_FULLSCREEN' in helper
+    assert '_NET_WM_STATE_MAXIMIZED_HORZ' in helper
+    assert '_NET_WM_STATE_MAXIMIZED_VERT' in helper
+    assert 'self.atom("_NET_WM_STATE_MAXIMIZED_HORZ"),' in helper
+    assert 'self.atom("_NET_WM_STATE_MAXIMIZED_VERT"), 2]' in helper
     assert 'SUBSTRUCTURE_REDIRECT_MASK' in helper
     assert 'XSendEvent' in helper
     assert 'actions.add_parser("activate")' in helper
     assert 'ewmh.activate(window)' in helper
+    assert 'XMoveResizeWindow' in helper
+    assert 'actions.add_parser("geometry")' in helper
 
 
 def test_activate_sends_pager_request_to_target_window():
@@ -112,9 +160,9 @@ def test_gtk4_main_window_routes_sugar_function_keys():
 
 def test_gtk4_main_window_falls_back_to_semantic_space_actions():
     patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
-    assert "space_keys = (Gdk.KEY_F9, Gdk.KEY_F10)" in patch
+    assert "space_keys = (Gdk.KEY_F7, Gdk.KEY_F8)" in patch
     assert "semantic_keys._key_pressed_cb" in patch
-    assert "Gdk.KEY_F9, Gdk.KEY_F10" in patch
+    assert "Gdk.KEY_F7, Gdk.KEY_F8" in patch
 
 
 def test_gtk4_space_keys_are_owned_by_the_shell_key_handler():
@@ -127,8 +175,8 @@ def test_gtk4_space_keys_are_owned_by_the_shell_key_handler():
             "0157-main-shell-window-consolidated.patch").read_text()
     assert "ASPARTAME_SPACE_SWITCHER" in keys
     assert "subprocess.Popen" in keys
-    assert "'F9': 'space_classic'," in keys
-    assert "'F10': 'space_modern'," in keys
+    assert "'F7': 'space_classic'," in keys
+    assert "'F8': 'space_modern'," in keys
     assert "semantic_keys._key_pressed_cb" in main
 
 

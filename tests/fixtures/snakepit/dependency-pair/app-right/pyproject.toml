@@ -1,0 +1,5 @@
+[project]
+name = "dependency-pair-right"
+version = "0.0.0"
+requires-python = ">=3.8,<4"
+dependencies = ["snakepit-tension-core==2.0.0"]

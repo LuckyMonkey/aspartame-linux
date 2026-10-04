@@ -82,6 +82,7 @@ EOF
 # Keeping overrides out of the initial airootfs avoids file collisions with
 # files owned by the current Arch sugar package.
 chmod 0755 /usr/local/bin/aspartame-x-session
+chmod 0755 /usr/local/bin/aspartame-snakepit
 install -d /usr/share/sugar/extensions/cpsection
 chmod 0755 /usr/local/libexec/aspartame-remove-activity
 chmod 0755 /usr/local/libexec/aspartame-sudo-askpass
@@ -112,6 +113,14 @@ if test -d /usr/lib/aspartame/gtk4-preview/scripts; then
 fi
 if test -f /usr/lib/aspartame/gtk4-preview/venv/bin/sugar-activity4; then
     chmod 0755 /usr/lib/aspartame/gtk4-preview/venv/bin/sugar-activity4
+fi
+# mkarchiso also normalizes files inside copied Activity bundles. Restore the
+# executable bit on each bundle-local launcher, not just the venv launcher:
+# the GTK4 toolkit deliberately executes the bundle-local path.
+if test -d /usr/lib/aspartame/gtk4-preview/prefix/share/sugar/activities; then
+    find /usr/lib/aspartame/gtk4-preview/prefix/share/sugar/activities \
+        -type f -path '*/bin/sugar-activity4' -exec chmod 0755 {} + \
+        2>/dev/null || true
 fi
 if id aspartame >/dev/null 2>&1 && test -d /usr/lib/aspartame/gtk4-preview; then
     install -d -o aspartame -g aspartame /usr/lib/aspartame/gtk4-preview/logs

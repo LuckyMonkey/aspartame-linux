@@ -35,3 +35,13 @@ def test_insert_text_position_is_not_none():
     for call in _insert_text_calls():
         position = call.args[1]
         assert not (isinstance(position, ast.Constant) and position.value is None)
+
+
+def test_calculate_layout_centers_a_responsive_keypad():
+    source = SOURCE.read_text()
+    assert "Gtk.Clamp" not in source
+    assert "content.set_size_request(900, -1)" in source
+    assert "content.set_halign(Gtk.Align.CENTER)" in source
+    assert "content.set_valign(Gtk.Align.CENTER)" in source
+    assert "grid.set_column_homogeneous(True)" in source
+    assert "button.set_hexpand(True)" in source

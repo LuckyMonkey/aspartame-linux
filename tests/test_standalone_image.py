@@ -14,6 +14,12 @@ def test_iso_builder_requires_and_stages_standalone_preview():
     assert "STANDALONE-MANIFEST" in script
     assert "/usr/lib/aspartame" in script
     assert "gtk4-overlay" in script
+    assert "sugar-gtk4-spaces-menu-probe.py" in script
+    assert 'cp -a "$source/." "$target/"' in script
+    assert 'find "$target" -mindepth 1 -maxdepth 1' in script
+    assert "sugar-gtk4-runtime-check.sh" in script
+    assert "sugar-gtk4-lifecycle-probe.sh" in script
+    assert "sugar-gtk3-lifecycle-probe.sh" in script
 
 
 def test_live_session_prefers_packaged_preview_without_dev_share():

@@ -1,0 +1,41 @@
+{
+  "schema": "aspartame.snakepit.qualification/v0",
+  "status": "FAIL",
+  "software": {
+    "name": "future-python-specimen",
+    "source": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/future-python",
+    "target": "host-development"
+  },
+  "interpreter": {
+    "requested": "/usr/bin/python3.12",
+    "version": "Python 3.12.3"
+  },
+  "compatibility": {
+    "requires_python": ">=99",
+    "selected_version": "3.12.3",
+    "satisfied": false
+  },
+  "environment": {
+    "path": "/tmp/aspartame-snakepit-future-python-20261002",
+    "python": "/tmp/aspartame-snakepit-future-python-20261002/bin/python",
+    "reuse": false
+  },
+  "requirements": {
+    "files": [],
+    "requires_python": ">=99",
+    "dependencies": []
+  },
+  "steps": [
+    {
+      "action": "check-interpreter",
+      "requires_python": ">=99",
+      "selected_version": "3.12.3",
+      "satisfied": false
+    }
+  ],
+  "workflow": {},
+  "error": "selected interpreter does not satisfy requires-python '>=99': Python 3.12.3",
+  "started_at": "2026-10-02T17:13:48.880895+00:00",
+  "finished_at": "2026-10-02T17:13:48.886170+00:00",
+  "duration_seconds": 0.005
+}

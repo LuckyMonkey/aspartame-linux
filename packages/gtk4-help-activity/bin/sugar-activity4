@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
-toolkit=/home/aspartame/Development/gtk4-preview/sources/sugar-toolkit-gtk4/src
-venv=/home/aspartame/Development/gtk4-preview/venv/bin/sugar-activity4
+root=${ASPARTAME_GTK4_ROOT:-/home/aspartame/Development/gtk4-preview}
+toolkit="$root/sources/sugar-toolkit-gtk4/src"
 export PYTHONPATH="$toolkit${PYTHONPATH:+:$PYTHONPATH}"
-export PYTHON_BIN=/home/aspartame/Development/gtk4-preview/venv/bin/python
+export PYTHON_BIN="${PYTHON_BIN:-$root/venv/bin/python}"
 export ASPARTAME_GTK4_PREVIEW=1
-exec "$venv" "$@"
+exec "$PYTHON_BIN" -c \
+    'from sugar4.activity.activityinstance import main; main()' "$@"

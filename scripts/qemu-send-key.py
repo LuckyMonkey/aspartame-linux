@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inject a key through QEMU's QMP USB keyboard for guest-input tests."""
+"""Inject a key through QEMU's QMP guest display input route."""
 
 import json
 import os
@@ -25,6 +25,7 @@ CHORDS.update({f"ALT+{name}": ("alt", qcode)
 CHORDS.update({f"ALT+SHIFT+{name}": ("alt", "shift", qcode)
                for name, qcode in KEYCODES.items()})
 SOCKET = os.environ.get("ASPARTAME_QEMU_QMP", "/tmp/aspartame-qemu-qmp")
+INPUT_DEVICE = os.environ.get("ASPARTAME_QEMU_INPUT_DEVICE", "video0")
 
 
 def _reply(sock):
@@ -36,9 +37,12 @@ def _reply(sock):
 
 
 def _command(sock, events):
+    arguments = {"events": events}
+    if INPUT_DEVICE:
+        arguments["device"] = INPUT_DEVICE
     sock.sendall((json.dumps({
         "execute": "input-send-event",
-        "arguments": {"events": events},
+        "arguments": arguments,
     }) + "\n").encode())
     reply = _reply(sock)
     if "error" in reply:

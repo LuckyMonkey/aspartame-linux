@@ -51,5 +51,30 @@ GTK4_ROOT="$MODERNIZATION_ROOT" \
 For a real shell test, use `scripts/sugar-gtk4-space.sh gtk4` inside the
 development guest, then `scripts/sugar-gtk4-runtime-check.sh gtk4`. Never point
 the stable launcher at the GTK4 checkout or overwrite the GTK3 runtime. The
-remaining physical F-key and peer-collaboration limits are recorded in the
-runtime matrix rather than hidden by this check.
+remaining peer-collaboration limits are recorded in the runtime matrix rather
+than hidden by this check.
+
+## Compare the Spaces side by side
+
+When visual parity or interaction behavior needs direct comparison, use the
+windowed comparison mode inside the guest:
+
+```sh
+GTK4_ROOT=/usr/lib/aspartame/gtk4-preview \
+  /usr/lib/aspartame/gtk4-preview/scripts/sugar-gtk4-space.sh side-by-side
+```
+
+This restarts the stable GTK3 shell with a half-width layout, starts GTK4
+windowed, and tiles both Spaces on the same desktop. Click either pane to
+interact with it; no function-key delivery through QEMU is required. On GTK4
+Home, the four-square Spaces button beside Help opens the same actions; choose
+“Compare Spaces side by side” to run this workflow without a function key.
+The guest-side accessibility probe exercises that exact button action:
+
+```sh
+/usr/lib/aspartame/gtk4-preview/scripts/sugar-gtk4-spaces-menu-probe.py
+```
+
+It must report `spaces-menu=PASS` and create the comparison marker. Running
+`gtk3`, `gtk4`, or `setup` removes the comparison marker and returns to the
+normal workspace/fullscreen arrangement.

@@ -16,6 +16,7 @@ from ctypes import (
     c_long,
     c_ubyte,
     c_ulong,
+    c_uint,
     c_void_p,
 )
 
@@ -66,6 +67,7 @@ class Ewmh:
 
     def _declare_functions(self):
         x11 = self.x11
+        self._x_error_handler_type = ctypes.CFUNCTYPE(c_int, c_void_p, c_void_p)
         x11.XOpenDisplay.argtypes = [c_char_p]
         x11.XOpenDisplay.restype = c_void_p
         x11.XDefaultRootWindow.argtypes = [c_void_p]
@@ -83,7 +85,15 @@ class Ewmh:
         ]
         x11.XSendEvent.restype = c_int
         x11.XSync.argtypes = [c_void_p, c_int]
+        x11.XSetInputFocus.argtypes = [c_void_p, c_ulong, c_int, c_ulong]
+        x11.XSetInputFocus.restype = c_int
+        x11.XSetErrorHandler.argtypes = [self._x_error_handler_type]
+        x11.XSetErrorHandler.restype = self._x_error_handler_type
         x11.XFree.argtypes = [c_void_p]
+        x11.XMoveResizeWindow.argtypes = [
+            c_void_p, c_ulong, c_int, c_int, c_uint, c_uint,
+        ]
+        x11.XMoveResizeWindow.restype = c_int
 
     def atom(self, name):
         return self.x11.XInternAtom(self.display, name.encode(), False)
@@ -124,6 +134,10 @@ class Ewmh:
             raise RuntimeError("window manager does not publish a workspace")
         return values[0]
 
+    def active_window(self):
+        values = self.property_longs(self.root, "_NET_ACTIVE_WINDOW")
+        return values[0] if values else 0
+
     def workspace_count(self):
         values = self.property_longs(self.root, "_NET_NUMBER_OF_DESKTOPS")
         return values[0] if values else 0
@@ -160,6 +174,58 @@ class Ewmh:
 
     def activate(self, window):
         self._send(window, "_NET_ACTIVE_WINDOW", [2, 0, 0])
+        # Metacity can keep Sugar's desktop surface as the active X11 window
+        # even after accepting the EWMH pager request. Give the WM a moment to
+        # map the target first; this avoids XSetInputFocus BadMatch during a
+        # workspace transition, while still repairing the stale-focus case.
+        if not hasattr(self, "x11"):
+            return
+        deadline = time.monotonic() + 0.75
+        while time.monotonic() < deadline:
+            if self.active_window() == window:
+                return
+            time.sleep(0.05)
+
+        # X11 reports BadMatch asynchronously when a target is not viewable.
+        # Ignore only this narrow fallback request so a transient WM race does
+        # not terminate the controller; the EWMH request above remains valid.
+        @self._x_error_handler_type
+        def ignore_focus_error(_display, _event):
+            return 0
+
+        previous_handler = self.x11.XSetErrorHandler(ignore_focus_error)
+        try:
+            self.x11.XSetInputFocus(self.display, window, 2, 0)
+            self.x11.XSync(self.display, False)
+        finally:
+            self.x11.XSetErrorHandler(previous_handler)
+
+    def geometry(self, window, x, y, width, height):
+        # Windowed comparison is intentionally independent of the WM's
+        # decoration policy. Remove every maximized/fullscreen state first,
+        # then set the client rectangle directly so GTK3 and GTK4 can occupy
+        # one display. Sugar's freshly restarted GTK3 window commonly keeps
+        # the two maximized atoms even after fullscreen has been removed;
+        # leaving either atom in place makes Metacity undo the half-width
+        # geometry immediately.
+        # Metacity treats the two maximized atoms as a pair.  Remove them in
+        # one EWMH message; two separate remove messages can cause it to
+        # restore the first atom while processing the second.
+        self._send(
+            window,
+            "_NET_WM_STATE",
+            [0, self.atom("_NET_WM_STATE_MAXIMIZED_HORZ"),
+             self.atom("_NET_WM_STATE_MAXIMIZED_VERT"), 2],
+        )
+        self._send(
+            window,
+            "_NET_WM_STATE",
+            [0, self.atom("_NET_WM_STATE_FULLSCREEN"), 0, 2],
+        )
+        if not self.x11.XMoveResizeWindow(
+                self.display, window, x, y, width, height):
+            raise RuntimeError(f"could not resize window 0x{window:x}")
+        self.x11.XSync(self.display, False)
 
     def place(self, window, workspace, fullscreen=False):
         self._send(window, "_NET_WM_DESKTOP", [workspace, 2])
@@ -189,6 +255,13 @@ def parser():
     place.add_argument("--workspace", type=int, required=True)
     place.add_argument("--fullscreen", action="store_true")
     place.add_argument("--timeout", type=float, default=10.0)
+    geometry = actions.add_parser("geometry")
+    geometry.add_argument("--pid", type=int, required=True)
+    geometry.add_argument("--x", type=int, required=True)
+    geometry.add_argument("--y", type=int, required=True)
+    geometry.add_argument("--width", type=int, required=True)
+    geometry.add_argument("--height", type=int, required=True)
+    geometry.add_argument("--timeout", type=float, default=10.0)
     return result
 
 
@@ -210,6 +283,14 @@ def main():
     if args.action == "activate":
         ewmh.activate(window)
         print(f"active=0x{window:x}")
+        return 0
+
+    if args.action == "geometry":
+        if min(args.width, args.height) <= 0:
+            raise RuntimeError("window width and height must be positive")
+        ewmh.geometry(window, args.x, args.y, args.width, args.height)
+        print(f"window=0x{window:x}")
+        print(f"geometry={args.x},{args.y} {args.width}x{args.height}")
         return 0
 
     ewmh.place(window, args.workspace, args.fullscreen)

@@ -1,6 +1,7 @@
 # 🐍 Snakepit qualification runbook
 
-**Status: planned; implementation has not begun.**
+**Status: v0 qualification loop implemented; interpreter capability preflight is
+live and the qualification corpus is still small.**
 
 This runbook records the intended boundary before code exists so future autonomous work does not turn `reverse package manager` into six projects wearing a trench coat.
 
@@ -210,7 +211,118 @@ Start with one real Python application and one bounded principal workflow:
 
 The first milestone is not `many packages`. It is **one complete explainable loop**.
 
-The second specimen exists to prove the first design did not merely hard-code one happy path.
+The second specimen now exercises a bounded dependency-tension failure. The
+fixture declares `aspartame-tension-core>=1,<2` in `pyproject.toml` while its
+requirements file asks for `aspartame-tension-core>=2,<3`. Snakepit detects the
+empty intersection before creating a venv or contacting a package index and
+preserves both declarations in the qualification record. This is evidence of
+safe failure and explainability, not yet a claim that Snakepit can solve every
+dependency graph.
+
+### Aspartame v0 command
+
+The v0 implementation is `scripts/snakepit.py`. It qualifies the existing
+standard-library management service without touching system Python and can
+select among repeated `--python` candidates:
+
+```sh
+make snakepit-qualify
+```
+
+For a real interpreter matrix, repeat the option. Snakepit records every
+candidate and selects the newest one whose declared `requires-python` is
+compatible:
+
+```sh
+python3 scripts/snakepit.py qualify \
+  --software example \
+  --source ./example \
+  --environment /tmp/example-snakepit \
+  --launchable \
+  --python /usr/bin/python3.14 \
+  --python /usr/bin/python3.12 \
+  --command python -m example_probe
+```
+
+The command creates an isolated environment, records the source and declared
+requirements, runs `management/test_server.py` through that environment, and
+writes `reports/python/aspartame-management.json`. The default environment is
+under `/tmp`; set `SNAKEPIT_ENVIRONMENT` and `SNAKEPIT_RECORD` to choose other
+paths. A non-empty requirements file is installed only when
+`--install-requirements` is supplied, making network/package changes explicit.
+
+Use `--launchable` only when the qualified workflow is also the application
+entry point you intend to hand to Activity Manager. A passing record then
+contains an explicit `launch` contract. Re-run that exact contract without
+reinstalling or mutating the environment with:
+
+```sh
+python3 scripts/snakepit.py launch \
+  --record reports/python/aspartame-management.json
+```
+
+Records without `--launchable`, failed records, and records with no surviving
+environment are intentionally not launchable. Qualification and launch remain
+separate so Activity Manager never turns an installation check into a false
+application entry.
+
+The packaged launcher was also exercised on the standalone ISO against its
+installed source with an unavailable Python 3.13 candidate followed by the
+guest Python 3.14 candidate; the desktop-target record for the final rebuilt
+image is `reports/python/packaged-snakepit-20261002-v5.json`.
+
+The negative capability path is preserved in
+`reports/python/future-python-capability-gap-20261002.json`: the fixture
+requires Python `>=99`, so the current Python 3.12 interpreter is rejected
+before an environment is created. This is an intentional qualification
+failure, not a broken test.
+
+The dependency-tension specimen is reproduced with:
+
+```sh
+make snakepit-dependency-tension
+```
+
+It intentionally exits with qualification status `FAIL`, writes
+`reports/python/dependency-tension-20261002.json`, and must leave
+`/tmp/aspartame-snakepit-dependency-tension` absent. The direct-constraint
+preflight is deliberately conservative; unsupported packaging syntax remains
+for the package resolver rather than being guessed at.
+
+The passing pair is now also available as an offline qualification fixture:
+
+```sh
+make snakepit-dependency-pair
+```
+
+The left and right applications install local `snakepit-tension-core` 1.0.0
+and 2.0.0 wheels into separate environments, then import and report the
+selected provider. Their records are
+`reports/python/dependency-pair-left-20261002.json` and
+`reports/python/dependency-pair-right-20261002.json`. This proves that
+different compatible dependency environments can coexist without contaminating
+system Python; it does not yet qualify arbitrary remote package graphs. The
+next runtime milestone is Activity Manager consuming these explicit launch
+contracts for a real user-facing Python application.
+
+The JSON record is the authority: it contains the interpreter, venv isolation
+probe, dependency declaration, exact workflow command, output, exit status,
+timestamps, and failure reason. A passing record proves this one workflow for
+the named target; it does not qualify arbitrary Python software or the Sugar
+desktop runtime.
+
+The preflight also reads `project.requires-python` when present. A compatible
+specifier is recorded as a satisfied interpreter capability; an incompatible
+specifier fails before venv creation or dependency installation and preserves
+the reason in the JSON record. Unsupported specifier syntax remains an
+explicit unknown rather than being silently treated as compatible. The
+future-interpreter fixture can therefore be qualified as a real capability gap
+instead of being mistaken for a package installation failure. The passing
+dependency pair above is the second-specimen isolation proof.
+
+The CLI calls the specimen `--software` rather than `--name` because GTK's
+startup argument parser consumes the generic `--name` option while Sugar's
+image `sitecustomize` is loading.
 
 ## 🧰 Minimal / server / desktop targets
 

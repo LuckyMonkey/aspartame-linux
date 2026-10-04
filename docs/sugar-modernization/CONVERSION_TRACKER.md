@@ -55,6 +55,22 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   the fix to root-cause the open Tab/Shift+Tab/Space gate item down to a
   missing Casilda keyboard-focus handoff (GTK4-024); see `BLOCKERS.md`.
 
+## Current reality (2026-10-03)
+
+- Final standalone ISO under test: `0f76f2d7b0882039cf8c5eb6fa90db561c9ee929d3d836f43a240b2dbf7e7726`.
+- A persisted empty Journal `timestamp` metadata file had exposed a packaged
+  GTK4 datastore crash. Patch `0170-datastore-ignore-malformed-numeric-metadata.patch`
+  now filters malformed numeric metadata in both the source and installed
+  prefix copies. Fresh GTK4 runtime and Journal logs are clean.
+- The final image passes GTK3/GTK4 lifecycle probes (3/3 each), the Spaces
+  accessibility button/action, side-by-side geometry, and one-cycle launches
+  for all 50 registered GTK4 Activities. Host suite: `420 passed`; Snakepit
+  qualification and launch: `PASS`.
+- Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
+  transport, Neighborhood peer behavior with a second participant, and a
+  coherent commit/push. The semantic Spaces button/controller is the reliable
+  action path while F7/F8 transport remains open.
+
 ## Execution and ownership
 
 1. Root: build/deploy reproducibility, launcher, Casilda surface lifecycle,
@@ -70,7 +86,12 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 
 ## Completion gate (all require runtime proof)
 
-- [ ] GTK3 Home, Activity launch/input/stop and regression invariants
+- [ ] GTK3 Home, Activity launch/input/stop and regression invariants. Fresh
+      GTK3 launch/stop evidence is now recorded in
+      `reports/gtk4/gtk3-lifecycle-20261002.md`; the rebuilt
+      `2026.10.03` image now passes the packaged GTK3 and GTK4 lifecycle
+      probes, and the host regression suite passes. Physical input and F7/F8
+      transport remain.
 - [x] GTK4 startup/reload and GTK namespace isolation
 - [x] Home Favorites/List/search/clear/XO and real running state
 - [x] Real GTK4 Activity launch/input/active/stop repeated three times (99-cycle
@@ -79,15 +100,17 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 - [x] Home/Activity switching and semantic classic/modern Spaces
 - [x] Frame, palettes, notifications, clipboard and DnD at the supported level
 - [x] Journal entries/search/resume/details/chooser and datastore persistence
-- [x] Physical function keys in the modern Space. Closed 2026-09-15: F1/F3/F5
-      reach Neighborhood/Home/Journal, F6 reveals the Frame and Escape
-      dismisses it, and physical F7/F8 switch Spaces across two round trips.
-      Root cause was `SugarKeyGrabber` never releasing its X11 passive grabs,
-      fixed in `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch`;
-      see `reports/gtk4/fkey-grab-resolved-20260915.md`. It ships as a rebuilt
-      package, `packages/sugar-toolkit-gtk3/PKGBUILD`, installed from the
-      profile's `[aspartame]` repository; one ISO build remains to exercise
-      that path.
+- [x] Physical function keys F1-F6 in the modern Space. F1/F3/F5 reach
+      Neighborhood/Home/Journal, F6 reveals the Frame and Escape dismisses it.
+      The shared `SugarKeyGrabber` passive-grab defect is fixed in
+      `patches/system/0001-sugar-toolkit-gtk3-keygrabber-release.patch` and
+      ships through `packages/sugar-toolkit-gtk3/PKGBUILD`.
+- [ ] Physical GTK3/GTK4 Space selection through F7/F8. The QEMU/Metacity
+      transport still consumes or drops those keys before Sugar. Semantic
+      controller actions (`gtk3`, `gtk4`, `side-by-side`) and the fresh-image
+      comparison workflow pass without relying on that transport; see
+      `reports/gtk4/side-by-side-runtime-20261002.md` and
+      `reports/gtk4/space-key-transport-20261002.md`.
 - [ ] Neighborhood/Group peer actions (empty state is verified; peer requires a
       second collaboration participant)
 - [x] Settings, Activity Manager, approval and contextual Help
@@ -105,6 +128,7 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 - [x] Regression invariants and lifecycle stability run (repeat this pass as
       routine tooling; it is not a one-time milestone)
 - [x] Durable screenshots, runtime logs, commands, architecture and runbooks
-- [x] Verified coherent commits pushed to GitHub
+- [ ] Verified coherent commits pushed to GitHub. The current migration and
+      Snakepit changes remain local and uncommitted pending an explicit push.
 
 No unchecked item is an external blocker merely because it requires more work.

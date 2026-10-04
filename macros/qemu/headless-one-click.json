@@ -1,0 +1,5 @@
+[
+  {"action": "click", "x": 754, "y": 498},
+  {"action": "sleep", "seconds": 0.8},
+  {"action": "screenshot", "path": "reports/screenshots/headless-one-click.png"}
+]

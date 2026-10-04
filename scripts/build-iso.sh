@@ -49,20 +49,29 @@ done < <(find "$preview_root/gtk4-preview/sources" -type f -name '*.py' -print0)
 # from this checkout even when an older preview left a real bundle directory:
 # ln -sfn into that directory only created an unused nested link.
 activities="$preview_root/gtk4-preview/prefix/share/sugar/activities"
-for activity in Log ImageViewer Help Count; do
+for activity in Log ImageViewer Help Count Calculate Finance; do
     target="$activities/$activity.activity"
     case "$activity" in
         Log) source="$preview_root/gtk4-preview/sources/log-activity" ;;
         ImageViewer) source="$preview_root/gtk4-preview/sources/imageviewer-activity" ;;
         Help) source="$project_root/packages/gtk4-help-activity" ;;
         Count) source="$project_root/packages/gtk4-count-activity" ;;
+        Calculate) source="$project_root/packages/gtk4-calculate-activity" ;;
+        Finance) source="$project_root/packages/gtk4-finance-activity" ;;
     esac
     test -f "$source/activity/activity.info" || {
         echo "missing standalone GTK4 $activity source: $source" >&2
         exit 2
     }
+    # The standalone archive may contain an Activity directory with an old
+    # top-level entrypoint plus a development symlink. Clear its contents and
+    # copy the checked-in package into the Activity root; copying the source
+    # directory itself into an existing target would leave the stale entrypoint
+    # in place and create an unused nested package directory.
     rm -rf -- "$target"
-    cp -a "$source" "$target"
+    mkdir -p -- "$target"
+    find "$target" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
+    cp -a "$source/." "$target/"
 done
 # Resolve the remaining development-only Activity links by package basename.
 # This covers the catalog without hard-coding every bundle name.
@@ -78,7 +87,12 @@ install -d "$preview_root/gtk4-preview/gtk4-overlay/src" \
           "$preview_root/gtk4-preview/scripts"
 cp -a "$project_root/gtk4-overlay/." \
       "$preview_root/gtk4-preview/gtk4-overlay/"
+install -D -m 0755 "$project_root/scripts/snakepit.py" \
+    "$profile_stage/airootfs/usr/share/aspartame/snakepit.py"
 for helper in sugar-gtk4-run.sh sugar-gtk4-session.sh sugar-gtk4-space.sh \
+             sugar-gtk4-runtime-check.sh sugar-gtk4-lifecycle-probe.sh \
+             sugar-gtk3-lifecycle-probe.sh \
+             sugar-gtk4-spaces-menu-probe.py sugar-gtk4-visual-sweep-guest.sh \
              sugar-x11-workspace.py; do
     install -m 0755 "$project_root/scripts/$helper" \
         "$preview_root/gtk4-preview/scripts/$helper"

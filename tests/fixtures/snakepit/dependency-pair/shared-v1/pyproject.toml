@@ -1,0 +1,8 @@
+[build-system]
+requires = []
+build-backend = "backend"
+backend-path = ["."]
+
+[project]
+name = "snakepit-tension-core"
+version = "1.0.0"

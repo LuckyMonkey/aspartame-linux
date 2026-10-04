@@ -189,7 +189,10 @@ Django is deliberately useful as a demonstrative load: not “Django is good,”
 
 ## Snakepit: reverse package management as a compatibility laboratory
 
-**Snakepit has not been implemented.** The idea is intentionally constrained in documentation before code begins.
+**Snakepit v0 is implemented as a qualification slice.** `scripts/snakepit.py`
+records interpreter candidates, selects the newest compatible one, creates an
+isolated environment, runs one real workflow, and preserves machine-readable
+evidence. It is not yet a universal resolver or Activity Manager integration.
 
 Calling it a `reverse package manager` is deliberately loaded. A conventional package manager begins with a chosen package and asks what it requires. Snakepit begins with desired Python software or capability and asks:
 
@@ -217,7 +220,16 @@ remediate once if bounded
 retest and preserve evidence
 ```
 
-Then repeat with a second application that creates a real interpreter or dependency tension.
+The current evidence includes the management-service workflow, an explicit
+future-interpreter capability-gap specimen, and a bounded dependency-tension
+specimen. Snakepit now detects an empty intersection between direct numeric
+dependency constraints before venv creation and records the declarations and
+failure reason. It also qualifies two offline applications that install
+different versions of one local dependency into separate environments. This
+is evidence of safe isolation, not a universal dependency solver. Snakepit now
+records and replays an explicit launch contract for a passing qualification;
+Activity Manager integration remains the next runtime milestone, and only
+records marked launchable should become user-facing entries.
 
 The package manager is not authoritative about whether software works. **Reality is.**
 

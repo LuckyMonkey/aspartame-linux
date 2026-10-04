@@ -1,0 +1,7 @@
+[
+  {"action": "click", "x": 754, "y": 498},
+  {"action": "sleep", "seconds": 0.3},
+  {"action": "key", "keys": "SPACE"},
+  {"action": "sleep", "seconds": 0.5},
+  {"action": "screenshot", "path": "reports/screenshots/headless-button-activate.png"}
+]

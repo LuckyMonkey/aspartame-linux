@@ -16,7 +16,7 @@ The images are reference snapshots from the QEMU development VM. See the screens
 ## Runbooks
 
 - [Autonomous contribution](AUTONOMOUS_CONTRIBUTION_RUNBOOK.md) — bounded agent/human contribution doctrine: progress over saturation, qualification-deck discipline, real-defect selection, receipts, and the `fix -> prove -> document -> get out` rule
-- [Snakepit](SNAKEPIT_RUNBOOK.md) — **planned, not implemented**; reverse package-management/compatibility qualification, environment selection, runtime minimization, and the resolve → run → observe → remediate → retest loop
+- [Snakepit](SNAKEPIT_RUNBOOK.md) — **v0 implemented, not complete**; reverse package-management/compatibility qualification, candidate interpreter selection, environment isolation, runtime minimization, and the resolve → run → observe → remediate → retest loop
 - [Count Activity](COUNT_ACTIVITY_RUNBOOK.md) — behavior and data model
 - [Universal Help](UNIVERSAL_HELP_RUNBOOK.md) — contextual help system
 - [Scale Activity](SCALE_ACTIVITY_RUNBOOK.md) — future activity direction

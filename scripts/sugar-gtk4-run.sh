@@ -181,6 +181,7 @@ exec env \
     SUGAR_GROUP_LABELS="$resources/group-labels.json" \
     SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
     SUGAR_PROFILE_NAME=AspartameGTK4 \
+    ASPARTAME_GTK4_ROOT="$root" \
     SUGAR_ACTIVITIES_PATH="$modern_activities" \
     SUGAR_WINDOWED="${SUGAR_WINDOWED:-0}" \
     PYTHONPATH="$preview_pythonpath" \

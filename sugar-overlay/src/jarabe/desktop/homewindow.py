@@ -57,11 +57,19 @@ class HomeWindow(Gtk.Window):
 
         self._active = False
         self._fully_obscured = True
+        side_by_side_marker = os.path.join(
+            os.environ.get('XDG_RUNTIME_DIR', '/run/user/%s' % os.getuid()),
+            'aspartame-side-by-side')
+        self._side_by_side = (
+            os.environ.get('ASPARTAME_SIDE_BY_SIDE') == '1' or
+            os.path.exists(side_by_side_marker))
 
         screen = self.get_screen()
         screen.connect('size-changed', self.__screen_size_changed_cb)
-        self.set_default_size(screen.get_width(),
-                              screen.get_height())
+        screen_width = screen.get_width()
+        if self._side_by_side:
+            screen_width //= 2
+        self.set_default_size(screen_width, screen.get_height())
 
         self.__screen_size_changed_cb(None)
 
@@ -69,7 +77,15 @@ class HomeWindow(Gtk.Window):
         self._busy_count = 0
         self.busy()
 
-        self.set_type_hint(Gdk.WindowTypeHint.DESKTOP)
+        if self._side_by_side:
+            # A desktop window is intentionally maximized by Metacity.  The
+            # comparison mode needs two independently managed panes, so keep
+            # the classic surface normal and undecorated while preserving the
+            # desktop hint for the regular Sugar Home.
+            self.set_type_hint(Gdk.WindowTypeHint.NORMAL)
+            self.set_decorated(False)
+        else:
+            self.set_type_hint(Gdk.WindowTypeHint.DESKTOP)
         self.modify_bg(Gtk.StateType.NORMAL,
                        style.COLOR_WHITE.get_gdk_color())
 
@@ -169,6 +185,8 @@ class HomeWindow(Gtk.Window):
         screen = Gdk.Screen.get_default()
         n = screen.get_number()
         rect = screen.get_monitor_geometry(n)
+        if self._side_by_side:
+            rect.width //= 2
         geometry = Gdk.Geometry()
         geometry.max_width = geometry.base_width = geometry.min_width = \
             rect.width

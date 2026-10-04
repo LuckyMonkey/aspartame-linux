@@ -1,0 +1,9 @@
+[
+  {"action": "activate"},
+  {"action": "key", "keys": "F8"},
+  {"action": "sleep", "seconds": 1},
+  {"action": "screenshot", "path": "reports/screenshots/macro-spaces-gtk4.png"},
+  {"action": "key", "keys": "F7"},
+  {"action": "sleep", "seconds": 1},
+  {"action": "screenshot", "path": "reports/screenshots/macro-spaces-gtk3.png"}
+]

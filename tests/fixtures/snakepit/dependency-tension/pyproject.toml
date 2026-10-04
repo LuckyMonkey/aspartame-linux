@@ -1,0 +1,5 @@
+[project]
+name = "dependency-tension-specimen"
+version = "0.0.0"
+requires-python = ">=3.8,<4"
+dependencies = ["aspartame-tension-core>=1,<2"]

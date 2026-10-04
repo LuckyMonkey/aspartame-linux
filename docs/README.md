@@ -91,7 +91,7 @@ capability contract works.
 
 ### Design-desk planning:
 
-[Snakepit (planned)](runbooks/SNAKEPIT_RUNBOOK.md) ·
+[Snakepit](runbooks/SNAKEPIT_RUNBOOK.md) ·
 [Count](runbooks/COUNT_ACTIVITY_RUNBOOK.md) · [Universal Help](runbooks/UNIVERSAL_HELP_RUNBOOK.md) ·
 [Scale](runbooks/SCALE_ACTIVITY_RUNBOOK.md) · [Pets (future only)](planned/ASPARTAME_PETS_RUNBOOK.md)
 

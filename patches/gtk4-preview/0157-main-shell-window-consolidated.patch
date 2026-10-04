@@ -72,7 +72,7 @@ from those patches, which keep their other files.
      shell_instance.stack.set_visible_child_name("home")
  
      os.environ["WAYLAND_DISPLAY"] = "wayland-sugar"
-@@ -274,13 +289,76 @@
+@@ -274,13 +289,95 @@
  def _setup_main_window(shell_instance):
      if not shell_instance._main_window:
          shell_instance._main_window = Gtk.ApplicationWindow(application=shell_instance)
@@ -91,10 +91,10 @@ from those patches, which keep their other files.
 +            Gdk.KEY_F3: shell_instance.ZOOM_HOME,
 +            Gdk.KEY_F4: shell_instance.ZOOM_ACTIVITY,
 +        }
-+        space_keys = (Gdk.KEY_F9, Gdk.KEY_F10)
++        space_keys = (Gdk.KEY_F7, Gdk.KEY_F8)
 +        zoom_controller = Gtk.EventControllerKey()
 +        zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-+        # F9/F10 belong to the shell's key handler, which follows every
++        # F7/F8 belong to the shell's key handler, which follows every
 +        # window it is attached to. Handling them here as well bound them
 +        # to this window alone.
 +
@@ -137,8 +137,8 @@ from those patches, which keep their other files.
 +        shortcut_controller.add_shortcut(Gtk.Shortcut.new(
 +            Gtk.KeyvalTrigger.new(Gdk.KEY_Escape, 0),
 +            Gtk.CallbackAction.new(_escape_shell)))
-+        for _space_key, _space_target in ((Gdk.KEY_F9, "gtk3"),
-+                                           (Gdk.KEY_F10, "gtk4")):
++        for _space_key, _space_target in ((Gdk.KEY_F7, "gtk3"),
++                                           (Gdk.KEY_F8, "gtk4")):
 +            _trigger = Gtk.KeyvalTrigger.new(_space_key, 0)
 +            _action = Gtk.CallbackAction.new(
 +                lambda _widget, _args, target=_space_target:

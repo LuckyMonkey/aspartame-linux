@@ -26,6 +26,19 @@ QEMU_GRAB_ON_HOVER=${QEMU_GRAB_ON_HOVER:-on}
 QEMU_WINDOW_WIDTH=${QEMU_WINDOW_WIDTH:-1600}
 QEMU_WINDOW_HEIGHT=${QEMU_WINDOW_HEIGHT:-900}
 SSH_FORWARD_PORT=${SSH_FORWARD_PORT:-2222}
+QEMU_HEADLESS=${QEMU_HEADLESS:-0}
+QEMU_SNAPSHOT=${QEMU_SNAPSHOT:-0}
+
+SNAPSHOT_ARGS=()
+if test "$QEMU_SNAPSHOT" = 1; then
+    SNAPSHOT_ARGS=(-snapshot)
+fi
+
+if test "$QEMU_HEADLESS" = 1; then
+    QEMU_DISPLAY=${QEMU_DISPLAY:-none}
+else
+    QEMU_DISPLAY=${QEMU_DISPLAY:-gtk,gl=off,zoom-to-fit=on,grab-on-hover=$QEMU_GRAB_ON_HOVER}
+fi
 
 test -f "$ISO" || { echo "missing ISO: $ISO" >&2; exit 2; }
 mkdir -p "$(dirname "$DISK")"
@@ -42,25 +55,31 @@ if test -r /dev/kvm && test -w /dev/kvm; then
     ACCEL=(-enable-kvm -cpu host)
 fi
 
+# Give the display and keyboard devices stable QOM IDs so QMP input tests
+# can target the same guest console on every boot.
 qemu-system-x86_64 \
     "${ACCEL[@]}" -machine q35 -m "$RAM" -smp "$CPUS" \
+    "${SNAPSHOT_ARGS[@]}" \
     -drive "file=$DISK,if=virtio,format=qcow2" \
     -drive "file=$DATA_DISK,if=virtio,format=qcow2" \
     -cdrom "$ISO" -boot menu=on \
-    -device virtio-vga,xres=1920,yres=1080 -display "gtk,gl=off,zoom-to-fit=on,grab-on-hover=$QEMU_GRAB_ON_HOVER" \
+    -device virtio-vga,id=video0,xres=1920,yres=1080 -display "$QEMU_DISPLAY" \
     -monitor "unix:$QEMU_MONITOR,server,nowait" \
     -qmp "unix:$QEMU_QMP,server=on,wait=off" \
     -serial "file:$SERIAL_LOG" \
     -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:${SSH_FORWARD_PORT}-:22 \
     -audiodev "driver=$AUDIO_BACKEND,id=a0" -device AC97,audiodev=a0 \
-    -device qemu-xhci -device usb-tablet -device usb-kbd -device virtio-keyboard-pci \
+    -device qemu-xhci,id=usb_controller \
+    -device usb-tablet,id=usb_tablet,display=video0 \
+    -device usb-kbd,id=usb_keyboard,display=video0 \
+    -device virtio-keyboard-pci,id=virtio_keyboard,display=video0 \
     -virtfs "local,path=$DEV_SHARE,mount_tag=aspartame-dev,security_model=none" \
     -name Aspartame &
 qemu_pid=$!
 
 # Resize only the named QEMU window; this is deliberately best-effort so the
 # launcher remains usable on SSH/headless hosts and under other window managers.
-if test "$QEMU_WINDOW_WIDTH" -gt 0 && test "$QEMU_WINDOW_HEIGHT" -gt 0 \
+if test "$QEMU_HEADLESS" != 1 && test "$QEMU_WINDOW_WIDTH" -gt 0 && test "$QEMU_WINDOW_HEIGHT" -gt 0 \
         && command -v xdotool >/dev/null 2>&1; then
     for _attempt in $(seq 1 50); do
         qemu_window=$(xdotool search --name '^QEMU \(Aspartame\)$' 2>/dev/null | head -n1 || true)

@@ -1,0 +1,101 @@
+{
+  "schema": "aspartame.snakepit.qualification/v0",
+  "status": "PASS",
+  "software": {
+    "name": "dependency-pair-left",
+    "source": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/app-left",
+    "target": "host-development"
+  },
+  "interpreter": {
+    "requested": "/usr/bin/python3.12",
+    "version": "Python 3.12.3",
+    "candidates": [
+      {
+        "requested": "/usr/bin/python3",
+        "resolved": "/usr/bin/python3.12",
+        "version": "3.12.3",
+        "satisfied": true
+      }
+    ]
+  },
+  "compatibility": {
+    "requires_python": ">=3.8,<4",
+    "selected_version": "3.12.3",
+    "satisfied": true
+  },
+  "environment": {
+    "path": "/tmp/aspartame-snakepit-pair.jwKZJt/left",
+    "python": "/tmp/aspartame-snakepit-pair.jwKZJt/left/bin/python",
+    "reuse": false,
+    "python_version": "Python 3.12.3",
+    "isolation": {
+      "prefix": "/tmp/aspartame-snakepit-pair.jwKZJt/left",
+      "base_prefix": "/usr",
+      "isolated": true
+    }
+  },
+  "requirements": {
+    "files": [
+      {
+        "path": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/app-left/requirements.txt",
+        "entries": [
+          "../shared-v1"
+        ]
+      }
+    ],
+    "requires_python": ">=3.8,<4",
+    "dependencies": [
+      "snakepit-tension-core==1.0.0"
+    ],
+    "dependency_conflicts": []
+  },
+  "steps": [
+    {
+      "action": "check-interpreter",
+      "requires_python": ">=3.8,<4",
+      "selected_version": "3.12.3",
+      "satisfied": true,
+      "candidates": [
+        {
+          "requested": "/usr/bin/python3",
+          "resolved": "/usr/bin/python3.12",
+          "version": "3.12.3",
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "action": "check-dependencies",
+      "status": "ok",
+      "conflicts": []
+    },
+    {
+      "action": "create-venv",
+      "returncode": 0
+    },
+    {
+      "action": "install-requirements",
+      "path": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/app-left/requirements.txt",
+      "returncode": 0,
+      "stdout": "Processing /home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/shared-v1\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: snakepit-tension-core\n  Building wheel for snakepit-tension-core (pyproject.toml): started\n  Building wheel for snakepit-tension-core (pyproject.toml): finished with status 'done'\n  Created wheel for snakepit-tension-core: filename=snakepit_tension_core-1.0.0-py3-none-any.whl size=1074 sha256=eadfec59c899fe342f7392d0c752ce2719bfeb2086569163e62234373dc237a6\n  Stored in directory: /home/freezer/.cache/pip/wheels/72/0c/3f/c67683c7c5696b81dc68f8723ca7659f269d2e73b5f865df85\nSuccessfully built snakepit-tension-core\nInstalling collected packages: snakepit-tension-core\nSuccessfully installed snakepit-tension-core-1.0.0\n",
+      "stderr": ""
+    }
+  ],
+  "workflow": {
+    "command": [
+      "/tmp/aspartame-snakepit-pair.jwKZJt/left/bin/python",
+      "-m",
+      "probe"
+    ],
+    "cwd": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/app-left",
+    "returncode": 0,
+    "stdout": "tension-core=1.0.0\n",
+    "stderr": "",
+    "stdout_truncated": false,
+    "stderr_truncated": false
+  },
+  "error": null,
+  "started_at": "2026-10-02T23:37:32.069309+00:00",
+  "finished_at": "2026-10-02T23:37:36.284542+00:00",
+  "duration_seconds": 4.215
+}

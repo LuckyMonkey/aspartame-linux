@@ -1,0 +1,9 @@
+[
+  {"action": "activate"},
+  {"action": "sleep", "seconds": 1},
+  {"action": "click", "x": 800, "y": 340},
+  {"action": "text", "text": "2+2"},
+  {"action": "key", "keys": "ENTER"},
+  {"action": "sleep", "seconds": 0.5},
+  {"action": "screenshot", "path": "reports/screenshots/macro-calculate-roundtrip.png"}
+]

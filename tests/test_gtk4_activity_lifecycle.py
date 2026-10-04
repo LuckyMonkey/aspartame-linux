@@ -12,6 +12,14 @@ def test_repeated_lifecycle_probe_uses_authoritative_shell_stop():
     assert "cleanup=PASS" in probe
 
 
+def test_classic_lifecycle_probe_uses_classic_activity_contract():
+    probe = (ROOT / "scripts/sugar-gtk3-lifecycle-probe.sh").read_text()
+    assert "SUGAR_LIFECYCLE_SHELL_PATTERN" in probe
+    assert "SUGAR_LIFECYCLE_ACTIVITY_ID_PATTERN" in probe
+    assert "SUGAR_LIFECYCLE_STOP_MODE=signal" in probe
+    assert "helpactivity.HelpActivity" in probe
+
+
 def _patch(name):
     return (PATCH_DIR / name).read_text()
 
@@ -60,6 +68,10 @@ def test_activity_entrypoint_and_window_cleanup_are_wired():
 def test_build_routes_and_runtime_requires_the_lifecycle_surface():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     run = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    customize = (
+        ROOT
+        / "archiso/aspartame/airootfs/root/customize_airootfs.sh"
+    ).read_text()
 
     for patch_name in (
         "*0022*",
@@ -80,6 +92,8 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
 
     assert 'test -x "$venv/bin/sugar-activity4"' in build
     assert 'test -x "$venv/bin/sugar-activity4"' in run
+    assert "find /usr/lib/aspartame/gtk4-preview/prefix/share/sugar/activities" in customize
+    assert "-path '*/bin/sugar-activity4'" in customize
     assert 'SUGAR_ACTIVITIES_PATH="$modern_activities"' in run
     assert 'test -f "$prefix/share/sugar/activities/Log.activity/activity/activity.info"' in run
     assert 'test -f "$help_activity/activity/activity-help.svg"' in build
@@ -155,3 +169,13 @@ def test_lifecycle_probe_accepts_an_alternate_gtk4_bundle():
     assert 'process_pattern=${3:-helpactivity4.HelpActivity}' in probe
     assert '"$bundle_id"' in probe
     assert 'pgrep -u aspartame -f "$process_pattern"' in probe
+
+
+def test_lifecycle_probe_can_select_the_classic_shell_owner():
+    probe = (ROOT / "scripts/sugar-gtk4-lifecycle-probe.sh").read_text()
+    classic = (ROOT / "scripts/sugar-gtk3-lifecycle-probe.sh").read_text()
+    assert 'shell_pattern=${SUGAR_LIFECYCLE_SHELL_PATTERN:' in probe
+    assert 'target_label=${SUGAR_LIFECYCLE_LABEL:-GTK4}' in probe
+    assert 'SUGAR_LIFECYCLE_LABEL=GTK3' in classic
+    assert "^python3 -m jarabe\\.main$" in classic
+    assert 'helpactivity.HelpActivity' in classic
