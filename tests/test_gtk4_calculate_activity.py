@@ -10,6 +10,8 @@ def test_calculate_bundle_is_native_gtk4_and_staged():
     assert "bundle_id = org.aspartame.Calculate" in info
     assert "exec = sugar-activity4 calculateactivity4.CalculateActivity" in info
     assert "Gtk.Grid" in source and "SimpleActivity" in source
+    assert 'Gtk.Frame(label="Calculator")' in source
+    assert 'Gtk.Frame(label="Keypad")' in source
     assert "ast.parse(text, mode=\"eval\")" in source
     assert 'ln -sfn "$calculate_activity" "$activity_dir/Calculate.activity"' in build
 

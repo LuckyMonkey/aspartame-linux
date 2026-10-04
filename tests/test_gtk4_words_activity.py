@@ -12,7 +12,9 @@ def test_words_bundle_is_native_and_registered():
     assert "class WordsActivity(SimpleActivity)" in source
     assert "Word to explore" in source
     assert 'Gtk.Frame(label="Word explorer")' in source
-    assert "card.set_size_request(720, 240)" in source
+    assert "card.set_hexpand(True); card.set_vexpand(True)" in source
+    assert 'Gtk.Frame(label="Meaning and translation")' in source
+    assert "card_frame.set_hexpand(True); card_frame.set_vexpand(True)" in source
     assert "org.laptop.Words" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-words-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-words-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()

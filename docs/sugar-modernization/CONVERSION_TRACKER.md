@@ -85,6 +85,10 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   `2b61d1c7b5d4ce8aeb279ca245eb7560e94ca304440bf8ebd8998294e67cc4ae`.
   Its runtime qualification is the next deliberate gate; the older receipt is
   not silently reused as evidence for this new image.
+- The next source UX pass removes two remaining “small calculator” surfaces:
+  Words now owns an expanding Word explorer and Meaning/translation surface,
+  while Calculate has explicit Calculator and Keypad work surfaces that fill
+  the activity allocation. These are source checkpoints for the next image.
 - Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
   transport, and Neighborhood peer behavior with a second participant. The
   semantic button/controller and explicit Chirality bridge are the reliable
