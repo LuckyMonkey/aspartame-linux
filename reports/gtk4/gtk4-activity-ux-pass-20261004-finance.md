@@ -4,11 +4,11 @@ Date: 2026-10-04
 
 ## Result
 
-Finance now uses a centered, bounded workspace at 1920x1080. The new
-transaction form and its actions stay together, while the Transactions card
-keeps its Description and Amount columns aligned. With no saved rows, the
-empty-state message is centered inside the card; when rows exist, the list
-becomes the expanding content surface.
+Finance now uses an expanding responsive workspace. The new transaction form
+and its actions stay together, while the Transactions card keeps its
+Description and Amount columns aligned without a fixed body or table minimum.
+With no saved rows, the empty-state message is centered inside the card; when
+rows exist, the list becomes the expanding content surface.
 
 The focused headless development-guest visual sweep passed:
 
@@ -29,8 +29,10 @@ finance-roundtrip=PASS input-method=AT-SPI datastore-payload=seeded
 
 ## Changes
 
-- Centered the main Finance workspace at a usable width instead of stretching
-  entry controls across the entire monitor.
+- Removed the desktop-sized body and table minimum so the workspace can shrink
+  with the available Sugar surface.
+- Kept a readable natural width for the amount field while allowing it to
+  expand and contract with the form.
 - Made the empty state a first-class centered state inside the Transactions
   card.
 - Kept the existing JSON Journal payload and aligned transaction row columns.
