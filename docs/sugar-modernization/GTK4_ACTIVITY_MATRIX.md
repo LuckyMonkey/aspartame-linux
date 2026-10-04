@@ -167,8 +167,8 @@ the malformed Journal metadata guard into the system datastore service. See
 The next source UX batch qualified BallAndBrick, Implode, Last One Loses, Maze,
 Poll, Reversi, Clock, JAMClock, and Read for explicit expanding work surfaces
 and centered compact controls. Focused source tests and compilation pass; the
-rebuilt headless development guest also passed the targeted visual sweep
-(`8/8`, 1920×1080) and six Journal roundtrip probes. The next standalone image
-must re-run the packaged visual sweep before this batch is promoted beyond
-development-share evidence. See
+rebuilt headless development guest and the final shareless standalone image
+both passed the targeted visual sweep (`8/8`, 1920×1080), and the six Journal
+roundtrip probes passed on each runtime. The final image also passed the
+complete catalog regression sweep `50/50` at 1920×1080. See
 [`gtk4-activity-ux-pass-20261004-games4.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games4.md).

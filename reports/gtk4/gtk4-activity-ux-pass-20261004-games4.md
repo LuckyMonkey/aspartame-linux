@@ -23,6 +23,18 @@ headless development guest then passed:
   Poll, and Reversi (`6/6`).
 
 Screenshots and the manifest are retained in the development share under
-`reports/gtk4/visual-sweep-games4-dev-20261004/`. Packaged 1920x1080 evidence
-is intentionally pending the next standalone ISO rebuild; the prior
-immutable packaged image remains qualified at `50/50`.
+`reports/gtk4/visual-sweep-games4-dev-20261004/` and from the final shareless
+image under
+[`visual-sweep-games4-packaged-20261004/`](visual-sweep-games4-packaged-20261004/).
+
+The rebuilt standalone ISO used preview archive SHA-256
+`5e196b1ef3908fb17054e279f3a6b4cdbf39c4958133977aa1bbf28a990f4978` and ISO
+SHA-256 `f7537f7e02fbb813a72c1d852545c1d322c2adf1f466a556582c820870f15428`.
+The packaged sweep passed `8/8` at `1920x1080`; its manifest SHA-256 is
+`e30ba7cf282d2d2a00c1f418f4add576946888473789c60cb7c00bec90554fc8`.
+
+The complete packaged GTK4 catalog regression sweep then passed `50/50` at
+`1920x1080`, followed by another GTK4 runtime ownership check. Its durable
+manifest is [`visual-sweep-packaged-games4-full-20261004/manifest.tsv`](visual-sweep-packaged-games4-full-20261004/manifest.tsv)
+with SHA-256
+`57e318ea983b079725225818fce34ebe52c7432b6e34d28119144538e8ee59d2`.
