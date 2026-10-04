@@ -49,6 +49,20 @@ The packaged image now carries `aspartame_chirality.py` and
 for the separate object/Activity milestone without pretending that a shell
 switch is an object handoff.
 
+## Milestone 0.75 — Spaces primitive
+
+Status: **implemented as a single-surface semantic selector**.
+
+`aspartame_chirality.py` now exposes immutable `Space` descriptors and a
+bounded `Spaces` selector. It records one active full-surface Space and its
+controller token, without storing windows, geometry, panes, Activities,
+Objects, or previous-space history. The current migration catalog is
+`classic` → GTK3 and `modern` → GTK4; the later GTK4-only adapter can replace
+those targets without changing the primitive.
+
+This is intentionally separate from `ChiralSession`: Spaces select a visible
+surface, while Chirality hands hold Activities and their object references.
+
 ## Milestone 1 — GTK4-only hand adapter
 
 Next implementation boundary, after the migration gate has enough evidence:

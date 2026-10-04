@@ -93,6 +93,9 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   instead of presenting an unexplained blank panel.
 - That follow-up UX batch is now packaged in the standalone ISO above; runtime
   qualification remains intentionally separate from the build receipt.
+- Chirality now has an explicit packaged-ready `Space`/`Spaces` primitive:
+  one active full-surface selection with controller tokens, independent of
+  hand Activity/object state and without split-screen or history state.
 - Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
   transport, and Neighborhood peer behavior with a second participant. The
   semantic button/controller and explicit Chirality bridge are the reliable

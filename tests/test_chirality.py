@@ -89,3 +89,26 @@ def test_accessible_state_is_color_independent_and_explicit():
     assert state["hands"][0]["state"] == "active"
     assert state["hands"][1]["label"] == "Right Hand"
     assert state["hands"][1]["activity_id"] is None
+
+
+def test_spaces_are_single_surface_selection_separate_from_hands():
+    spaces = chirality.Spaces()
+    assert spaces.current().space_id == "classic"
+    selected = spaces.select("modern")
+    assert selected.switch_target == "gtk4"
+    assert spaces.accessible_state()["active_space"] == "modern"
+    assert spaces.to_dict() == {"active_space": "modern"}
+
+
+def test_spaces_do_not_store_activity_object_or_history_state():
+    spaces = chirality.Spaces()
+    spaces.select("modern")
+    encoded = json.dumps(spaces.to_dict())
+    assert "activity" not in encoded
+    assert "object" not in encoded
+    assert "history" not in encoded
+
+
+def test_spaces_reject_unknown_selection():
+    with pytest.raises(chirality.ChiralityError):
+        chirality.Spaces().select("side-by-side")

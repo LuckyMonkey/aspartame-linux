@@ -29,6 +29,84 @@ class EmptyHand(ChiralityError):
     """An operation targeted a hand without an Activity."""
 
 
+@dataclass(frozen=True)
+class Space:
+    """One selectable full-surface context.
+
+    A Space is a semantic surface target, not a window, pane, Activity, or
+    object container.  ``switch_target`` is the controller token consumed by
+    the migration bridge; it is deliberately not geometry.
+    """
+
+    space_id: str
+    label: str
+    switch_target: str
+
+    def __post_init__(self) -> None:
+        if not self.space_id.strip() or not self.label.strip():
+            raise ChiralityError("Space id and label must not be empty")
+        if not self.switch_target.strip():
+            raise ChiralityError("Space switch target must not be empty")
+
+
+DEFAULT_SPACES = (
+    Space("classic", "Classic Space", "gtk3"),
+    Space("modern", "Modern Space", "gtk4"),
+)
+
+
+@dataclass
+class Spaces:
+    """Bounded single-surface Space selection, independent of Chirality hands.
+
+    The selector stores only the current Space.  It has no split-screen
+    geometry, Activity/object state, or previous-space history.
+    """
+
+    catalog: tuple[Space, ...] = DEFAULT_SPACES
+    active_space: str = "classic"
+
+    def __post_init__(self) -> None:
+        ids = [space.space_id for space in self.catalog]
+        if not ids or len(ids) != len(set(ids)):
+            raise ChiralityError("Space catalog must contain unique entries")
+        if self.active_space not in ids:
+            raise ChiralityError("active Space is not in the catalog")
+
+    def current(self) -> Space:
+        for space in self.catalog:
+            if space.space_id == self.active_space:
+                return space
+        raise ChiralityError("active Space is not in the catalog")
+
+    def select(self, space_id: str) -> Space:
+        """Select one complete Space and return its descriptor."""
+
+        for space in self.catalog:
+            if space.space_id == space_id:
+                self.active_space = space_id
+                return space
+        raise ChiralityError(f"unknown Space: {space_id}")
+
+    def accessible_state(self) -> dict[str, Any]:
+        return {
+            "active_space": self.active_space,
+            "spaces": [
+                {
+                    "id": space.space_id,
+                    "label": space.label,
+                    "state": "active" if space.space_id == self.active_space else "available",
+                }
+                for space in self.catalog
+            ],
+        }
+
+    def to_dict(self) -> dict[str, str]:
+        """Serialize current selection only; never a previous-space log."""
+
+        return {"active_space": self.active_space}
+
+
 class Side(str, Enum):
     LEFT = "left"
     RIGHT = "right"
