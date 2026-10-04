@@ -13,7 +13,11 @@ fi
 project_root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 controller="$project_root/scripts/sugar-gtk4-space.sh"
 workspace_tool="$project_root/scripts/sugar-x11-workspace.py"
-runtime_dir=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+# SSH/sudo callers can carry the root runtime directory into the desktop-user
+# process. The controller owns the desktop user's runtime state, so derive
+# this path from the effective UID rather than trusting inherited env.
+runtime_dir="/run/user/$(id -u)"
+export XDG_RUNTIME_DIR="$runtime_dir"
 marker="$runtime_dir/aspartame-side-by-side"
 
 [ -f "$marker" ] || {

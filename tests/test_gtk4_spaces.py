@@ -150,6 +150,8 @@ def test_x11_helper_uses_standard_ewmh_messages():
 def test_side_by_side_probe_checks_real_window_geometry():
     probe = (ROOT / 'scripts/sugar-gtk4-side-by-side-probe.sh').read_text()
     assert 'aspartame-side-by-side' in probe
+    assert 'runtime_dir="/run/user/$(id -u)"' in probe
+    assert 'export XDG_RUNTIME_DIR="$runtime_dir"' in probe
     assert '"$workspace_tool" inspect' in probe
     assert 'gtk3_workspace' in probe
     assert 'gtk4_workspace' in probe
