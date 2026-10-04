@@ -11,6 +11,10 @@ def test_colormyworld_bundle_is_native_and_registered():
     assert "class ColorMyWorldActivity(SimpleActivity)" in source
     assert "Selected color swatch" in source and "Red" in source
     assert "Choose a color below" in source
+    assert "Choose a color to fill the world" in source
+    assert "Gtk.ToggleButton" in source
+    assert "AccessibleProperty.DESCRIPTION" in source
+    assert "togglebutton:checked" in source
     assert "colors.set_halign(Gtk.Align.CENTER)" in source
     assert "swatch_frame" in source and "Gtk.Frame(label=\"Color preview\")" in source
     assert "palette_frame" in source and "Gtk.Frame(label=\"Palette\")" in source

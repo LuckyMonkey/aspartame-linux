@@ -87,7 +87,9 @@ The 2026-10-04 development qualification passed the complete 50-bundle GTK4
 visual sweep at 1920x1080 after the shared heading-theme fix. Focused UX
 follow-ups corrected Abacus's stretched rod controls, Finance's full-width
 empty workspace, and empty-state affordances in Pippy, Color My World, and
-Words. Calculate and Paint then received richer responsive workspaces, and
+Words. Color My World now also exposes an instruction-led palette with
+visible selected state and accessible color actions. Calculate and Paint then
+received richer responsive workspaces, and
 Pippy gained examples, program input, indentation, Ctrl+Enter, and traceback
 line navigation on the bounded runner. The full host suite is green at
 `536 passed`.
