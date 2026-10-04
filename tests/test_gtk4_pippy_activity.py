@@ -12,6 +12,7 @@ def test_pippy_bundle_is_native_and_registered():
     assert "sugar-activity4 pippyactivity4.PippyActivity" in info
     assert "class PippyActivity(SimpleActivity)" in source
     assert 'label="Run"' in source and "Program output" in source
+    assert 'OUTPUT_PLACEHOLDER = "Run the program to see output."' in source
     assert "subprocess.run" in source and '"-I"' in source
     assert "editor_frame" in source and "output_frame" in source
     assert "Gtk.Frame(label=\"Python program\")" in source

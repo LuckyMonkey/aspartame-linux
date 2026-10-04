@@ -13,6 +13,7 @@ DEFAULT_PROGRAM = '''print("Hello from Pippy!")
 for number in range(1, 4):
     print("Python number", number)
 '''
+OUTPUT_PLACEHOLDER = "Run the program to see output."
 
 
 class PippyActivity(SimpleActivity):
@@ -101,6 +102,7 @@ class PippyActivity(SimpleActivity):
         self.status.add_css_class("dim-label")
         body.append(self.status)
         self.set_canvas(root)
+        self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
 
         provider = Gtk.CssProvider()
         provider.load_from_data(b"frame.code-pane { border: 1px solid #8aa8b8; border-radius: 10px; } textview { padding: 10px; } button { min-height: 42px; border-radius: 19px; }")
@@ -134,7 +136,7 @@ class PippyActivity(SimpleActivity):
 
     def _reset(self, _button):
         self.editor.get_buffer().set_text(DEFAULT_PROGRAM)
-        self.output.get_buffer().set_text("")
+        self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
         self.status.set_text("Ready")
 
     def read_file(self, file_path):
@@ -144,7 +146,7 @@ class PippyActivity(SimpleActivity):
         except (OSError, UnicodeError):
             program = DEFAULT_PROGRAM
         self.editor.get_buffer().set_text(program)
-        self.output.get_buffer().set_text("")
+        self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
         self.status.set_text("Ready")
 
     def write_file(self, file_path):

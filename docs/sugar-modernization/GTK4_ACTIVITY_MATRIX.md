@@ -199,6 +199,11 @@ Pippy visual sweep confirmed the heading treatment in the side-by-side
 workspace. See
 [`gtk4-activity-ux-pass-20261004-theme.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-theme.md).
 
+Pippy then received a small affordance correction: its empty output surface
+now explains how to begin, including after Reset and Journal restore. The
+focused development-guest visual sweep remained green. See
+[`gtk4-activity-ux-pass-20261004-pippy.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-pippy.md).
+
 The same packaged image qualified the stale native review rows for FotoToon,
 IQ, Portfolio, TurtleBlocks, and Maze. Their bounded Journal resume/cleanup
 probes passed, and their visual captures are present in the complete packaged
