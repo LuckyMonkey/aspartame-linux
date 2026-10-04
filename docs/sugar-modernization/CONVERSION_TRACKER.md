@@ -55,21 +55,27 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   the fix to root-cause the open Tab/Shift+Tab/Space gate item down to a
   missing Casilda keyboard-focus handoff (GTK4-024); see `BLOCKERS.md`.
 
-## Current reality (2026-10-03)
+## Current reality (2026-10-04)
 
-- Final standalone ISO under test: `0f76f2d7b0882039cf8c5eb6fa90db561c9ee929d3d836f43a240b2dbf7e7726`.
+- Final standalone ISO under test: `2875e28b57d49757bc3f7ffdef505cb9143d5e87f476bc4a07fc24e0a456af74`.
 - A persisted empty Journal `timestamp` metadata file had exposed a packaged
   GTK4 datastore crash. Patch `0170-datastore-ignore-malformed-numeric-metadata.patch`
   now filters malformed numeric metadata in both the source and installed
   prefix copies. Fresh GTK4 runtime and Journal logs are clean.
-- The final image passes GTK3/GTK4 lifecycle probes (3/3 each), the Spaces
-  accessibility button/action, side-by-side geometry, and one-cycle launches
-  for all 50 registered GTK4 Activities. Host suite: `420 passed`; Snakepit
-  qualification and launch: `PASS`.
+- The final image passes GTK3/GTK4 lifecycle probes (3/3 each), the packaged
+  shareless health/runtime checks, the Spaces accessibility button/action,
+  side-by-side geometry, and one-cycle launches for all 50 registered GTK4
+  Activities. Host suite: `440 passed`; Snakepit qualification and launch:
+  `PASS`.
+- The Home Spaces button exposes direct Classic and Modern full-surface
+  actions as well as the explicit comparison action. The packaged
+  `sugar-chirality-space.sh left|right` bridge selects one complete Space and
+  has no pane, geometry, or history operation. Object/activity state remains
+  in the separate packaged Chirality model and CLI.
 - Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
-  transport, Neighborhood peer behavior with a second participant, and a
-  coherent commit/push. The semantic Spaces button/controller is the reliable
-  action path while F7/F8 transport remains open.
+  transport, and Neighborhood peer behavior with a second participant. The
+  semantic button/controller and explicit Chirality bridge are the reliable
+  action paths while F7/F8 transport remains open.
 
 ## Execution and ownership
 
@@ -128,7 +134,8 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
 - [x] Regression invariants and lifecycle stability run (repeat this pass as
       routine tooling; it is not a one-time milestone)
 - [x] Durable screenshots, runtime logs, commands, architecture and runbooks
-- [ ] Verified coherent commits pushed to GitHub. The current migration and
-      Snakepit changes remain local and uncommitted pending an explicit push.
+- [x] Verified coherent commits pushed to GitHub. `origin/master` contains the
+      packaged qualification and Chirality bridge checkpoints through
+      `7a4c920`.
 
 No unchecked item is an external blocker merely because it requires more work.

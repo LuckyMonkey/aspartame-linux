@@ -78,3 +78,16 @@ The guest-side accessibility probe exercises that exact button action:
 It must report `spaces-menu=PASS` and create the comparison marker. Running
 `gtk3`, `gtk4`, or `setup` removes the comparison marker and returns to the
 normal workspace/fullscreen arrangement.
+
+For the non-comparison two-context path, use the packaged Chirality bridge:
+
+```sh
+/usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-space.sh left
+/usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-space.sh right
+```
+
+Each command selects one complete Space and activates its full surface. It
+does not create a split screen and it does not retain a previous-frame or
+recent-context history. In the current GTK migration it maps Left to the
+Classic Space and Right to the Modern Space; the later GTK4-only Activity
+adapter changes that mapping without changing the Chirality object model.
