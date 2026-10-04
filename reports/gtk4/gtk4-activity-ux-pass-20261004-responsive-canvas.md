@@ -35,6 +35,26 @@ pytest -q tests/test_gtk4_count_activity.py tests/test_gtk4_connectthedots_activ
 14 passed in 0.08s
 ```
 
-This is source and focused-test evidence. A packaged headless visual receipt
-for these two activities remains to be collected in the next visual sweep.
+## Development-guest visual receipt
+
+The rebuilt headless GTK4 development preview was launched from a clean
+writable build-input snapshot because the host's persistent 9p source share
+was read-only. The targeted visual sweep ran at 1920×1080 through the real
+Journal launch, Activity activation, screenshot, and clean-stop path:
+
+```text
+visual-sweep=COMPLETE pass=6 fail=0 resolution=1920x1080
+```
+
+The manifest and six screenshots are retained beside this report:
+
+- `visual-sweep-responsive-20261004/manifest.tsv`
+- `org.aspartame.Count.png`
+- `org.sugarlabs.ConnectTheDots.png`
+- `org.sugarlabs.Planets.png`
+- `net.coderanger.olpc.reversi.png`
+- `org.sugarlabs.gameOfLife.png`
+- `org.olpcfrance.Gridpaint.png`
+
+This is development-preview runtime evidence, not a packaged ISO receipt.
 The GTK3 fallback/reference bundles remain installed.

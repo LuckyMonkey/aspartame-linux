@@ -242,6 +242,7 @@ The next source UX correction removed fixed desktop-sized canvas minimums or
 fixed board cells from Count, Connect the Dots, Planets, Reversi, Game of Life,
 and Grid Paint. All six now use expanding aspect-preserving GTK4 canvas/board
 frames; Count derives drag cells from its live allocation, and Planets scales
-its orbit geometry to the allocated surface. Focused source tests and
-compilation pass; packaged visual evidence is intentionally still pending. See
+its orbit geometry to the allocated surface. Focused source tests, compilation,
+and a targeted development-guest visual sweep pass `6/6` at 1920×1080;
+packaged ISO evidence remains a separate qualification step. See
 [`gtk4-activity-ux-pass-20261004-responsive-canvas.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-responsive-canvas.md).
