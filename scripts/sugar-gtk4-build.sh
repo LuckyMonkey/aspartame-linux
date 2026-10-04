@@ -112,6 +112,7 @@ for patch in "$patch_dir"/*.patch; do
         *0147*) target="$toolkit" ;;
         *0148*) target="$toolkit" ;;
         *0149*) target="$toolkit" ;;
+        *0180*) target="$toolkit" ;;
         *0150*) target="$toolkit" ;;
         *0151*) target="$root/sources/sugar" ;;
         *0152*) target="$root/sources/sugar" ;;
@@ -823,6 +824,11 @@ path.write_text(text.replace(old, new, 1))
 PY
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "repaired full-monitor Control Panel geometry: $patch_name"
+    elif [[ "$patch_name" == *0180* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied GTK4 Activity sharing integration: $patch_name"
     elif [[ "$patch_name" == *0168* ]] &&
         grep -q 'self\._lifecycle_changed()' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null &&
         grep -q '^        else:$' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null; then

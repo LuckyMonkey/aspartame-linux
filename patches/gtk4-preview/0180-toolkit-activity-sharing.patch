@@ -1,0 +1,149 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] Wire GTK4 Activity sharing to the presence service
+
+The GTK4 toolkit already ships the Telepathy presence implementation, but
+Activity.share() and Activity._set_up_sharing() were still stubs.  Port the
+small GTK3 Activity contract to that backend so the Share palette can perform
+a real share and invited/resumed Activities can rejoin an existing activity.
+
+If the presence service is unavailable, keep the Activity usable in private
+mode and let the Share palette's existing refusal path report the failure.
+
+--- a/src/sugar4/activity/activity.py
++++ b/src/sugar4/activity/activity.py
+@@ -195,7 +195,8 @@
+ from sugar4.graphics.icon import Icon
+ from sugar4.graphics.window import Window
+ from sugar4.profile import get_color, get_save_as
+ from sugar4.activity.activityservice import ActivityService
++from sugar4.presence import presenceservice
+ 
+ 
+ def _(msg):
+@@ -438,9 +439,24 @@
+         # Sharing setup
+         # TODO
+         if handle and handle.invited:
+-            # For GTK4/Flatpak, we'll implement sharing differently
+-            logging.warning("Activity sharing not yet implemented in GTK4 port")
+-            self._set_up_sharing(None, share_scope)
++            try:
++                mesh_instance = presenceservice.get_instance().get_activity(
++                    self._activity_id, warn_if_none=False
++                )
++            except Exception as error:
++                logging.warning(
++                    "Unable to resolve invited shared Activity %s: %s",
++                    self._activity_id,
++                    error,
++                )
++                mesh_instance = None
++            self._set_up_sharing(mesh_instance, share_scope)
+         else:
+-            # No presence service in GTK4 port yet
+-            self._set_up_sharing(None, share_scope)
++            try:
++                mesh_instance = presenceservice.get_instance().get_activity(
++                    self._activity_id, warn_if_none=False
++                )
++            except Exception as error:
++                logging.debug("Presence service unavailable: %s", error)
++                mesh_instance = None
++            self._set_up_sharing(mesh_instance, share_scope)
+@@ -585,18 +585,40 @@
+     def _set_up_sharing(self, mesh_instance, share_scope):
+         """
+         Set up activity sharing.
+-
+-        Note: Simplified for GTK4 port - full sharing implementation
+-        will use modern collaboration APIs.
+         """
+         # handle activity share/join
+         logging.debug(
+             "*** Act %s, mesh instance %r, scope %s"
+             % (self._activity_id, mesh_instance, share_scope)
+         )
+ 
+-        # For now, sharing is not implemented in GTK4 port
+         if mesh_instance is not None:
+-            logging.warning("Activity sharing not yet implemented in GTK4 port")
+-        elif share_scope != SCOPE_PRIVATE:
+-            logging.warning("Activity sharing not yet implemented in GTK4 port")
++            # There is already an instance on the mesh; join it.
++            logging.debug(
++                "*** Act %s joining existing mesh instance %r",
++                self._activity_id,
++                mesh_instance,
++            )
++            self.shared_activity = mesh_instance
++            self.shared_activity.connect(
++                "notify::private", self.__privacy_changed_cb
++            )
++            self._join_id = self.shared_activity.connect(
++                "joined", self.__joined_cb
++            )
++            if not self.shared_activity.props.joined:
++                self.shared_activity.join()
++            else:
++                self.__joined_cb(self.shared_activity, True, None)
++        elif share_scope == SCOPE_INVITE_ONLY:
++            logging.debug(
++                "*** Act %s restarting private share", self._activity_id
++            )
++            self.share(private=True)
++        elif share_scope == SCOPE_NEIGHBORHOOD:
++            logging.debug(
++                "*** Act %s restarting public share", self._activity_id
++            )
++            self.share(private=False)
++        elif share_scope != SCOPE_PRIVATE:
++            logging.debug("Unknown share scope %r", share_scope)
+@@ -1152,6 +1178,16 @@
+     def _send_invites(self):
+         """Send pending invites."""
+         while self._invites_queue:
+             account_path, contact_id = self._invites_queue.pop()
+-            # Presence service handling simplified for GTK4
+-            logging.warning("Invite functionality not yet implemented in GTK4 port")
++            pservice = presenceservice.get_instance()
++            buddy = pservice.get_buddy(account_path, contact_id)
++            if buddy:
++                self.shared_activity.invite(
++                    buddy, "", self._invite_response_cb
++                )
++            else:
++                logging.error(
++                    "Cannot invite %s %s, no such buddy",
++                    account_path,
++                    contact_id,
++                )
+@@ -1186,8 +1219,25 @@
+         Once the activity is shared, its privacy can be changed by
+         setting the :attr:`private` property of the
+         :attr:`sugar4.presence.activity.Activity` class.
+         """
+-        raise NotImplementedError(
+-            "Activity sharing not yet implemented in GTK4 port. "
+-            "Use Flatpak and modern collaboration APIs for sharing."
+-        )
++        if self.shared_activity and self.shared_activity.props.joined:
++            raise RuntimeError("Activity %s already shared." % self._activity_id)
++
++        verb = "private" if private else "public"
++        logging.debug(
++            "Requesting %s share of activity %s.", verb, self._activity_id
++        )
++        pservice = presenceservice.get_instance()
++        try:
++            if pservice.get_preferred_connection() is None:
++                raise NotImplementedError(
++                    "No active presence connection is available"
++                )
++            pservice.connect("activity-shared", self.__share_cb)
++            pservice.share_activity(self, private=private)
++        except NotImplementedError:
++            raise
++        except Exception as error:
++            raise NotImplementedError(
++                "Activity sharing is unavailable: %s" % error
++            ) from error
