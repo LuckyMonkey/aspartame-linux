@@ -1,12 +1,11 @@
 """Small, offline GTK4 Python playground for Sugar."""
 
-import subprocess
-import sys
 import threading
 from pathlib import Path
 
 from gi.repository import Gdk, GLib, Gtk
 from sugar4.activity import SimpleActivity
+from pippy_runner import run_program
 
 
 DEFAULT_PROGRAM = '''print("Hello from Pippy!")
@@ -42,7 +41,7 @@ class PippyActivity(SimpleActivity):
         title = Gtk.Label(label="Pippy", xalign=0)
         title.add_css_class("title-1")
         body.append(title)
-        subtitle = Gtk.Label(label="Write a small Python program, then run it safely offline.", xalign=0)
+        subtitle = Gtk.Label(label="Write a small Python program, then run it in a bounded local runner.", xalign=0)
         subtitle.add_css_class("dim-label")
         body.append(subtitle)
 
@@ -66,9 +65,11 @@ class PippyActivity(SimpleActivity):
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         run = Gtk.Button(label="Run")
         run.add_css_class("suggested-action")
+        run.update_property([Gtk.AccessibleProperty.LABEL], ["Run Python program"])
         run.connect("clicked", self._run_program)
         controls.append(run)
         reset = Gtk.Button(label="Reset example")
+        reset.update_property([Gtk.AccessibleProperty.LABEL], ["Reset Python example"])
         reset.connect("clicked", self._reset)
         controls.append(reset)
         controls.set_halign(Gtk.Align.END)
@@ -101,6 +102,8 @@ class PippyActivity(SimpleActivity):
         self.status = Gtk.Label(label="Ready", xalign=0)
         self.status.add_css_class("dim-label")
         body.append(self.status)
+        self.run_button = run
+        self._run_generation = 0
         self.set_canvas(root)
         self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
 
@@ -115,26 +118,44 @@ class PippyActivity(SimpleActivity):
         return self.editor.get_buffer().get_text(start, end, False)
 
     def _run_program(self, _button):
+        self._run_generation += 1
+        generation = self._run_generation
+        self.run_button.set_sensitive(False)
         self.status.set_text("Running…")
-        threading.Thread(target=self._execute, args=(self._program(),), daemon=True).start()
+        threading.Thread(
+            target=self._execute,
+            args=(self._program(), generation),
+            daemon=True,
+        ).start()
 
-    def _execute(self, program):
+    def _execute(self, program, generation):
         try:
-            result = subprocess.run([sys.executable, "-I", "-c", program], capture_output=True,
-                                    text=True, timeout=5, check=False)
-            text = result.stdout
-            if result.stderr:
-                text += ("\n" if text else "") + result.stderr
-            GLib.idle_add(self._show_result, text or "(program finished without output)", result.returncode)
-        except (subprocess.TimeoutExpired, OSError) as error:
-            GLib.idle_add(self._show_result, str(error), 1)
+            result = run_program(program)
+        except OSError as error:
+            GLib.idle_add(self._show_result, generation, str(error), 1, False)
+            return
+        GLib.idle_add(
+            self._show_result,
+            generation,
+            result.output or "(program finished without output)",
+            result.returncode,
+            result.timed_out,
+        )
 
-    def _show_result(self, text, returncode):
+    def _show_result(self, generation, text, returncode, timed_out):
+        if generation != self._run_generation:
+            return GLib.SOURCE_REMOVE
         self.output.get_buffer().set_text(text)
-        self.status.set_text("Finished" if returncode == 0 else "Program returned an error")
+        if timed_out:
+            self.status.set_text("Program timed out")
+        else:
+            self.status.set_text("Finished" if returncode == 0 else "Program returned an error")
+        self.run_button.set_sensitive(True)
         return GLib.SOURCE_REMOVE
 
     def _reset(self, _button):
+        self._run_generation += 1
+        self.run_button.set_sensitive(True)
         self.editor.get_buffer().set_text(DEFAULT_PROGRAM)
         self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
         self.status.set_text("Ready")
@@ -148,6 +169,8 @@ class PippyActivity(SimpleActivity):
         self.editor.get_buffer().set_text(program)
         self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
         self.status.set_text("Ready")
+        self._run_generation += 1
+        self.run_button.set_sensitive(True)
 
     def write_file(self, file_path):
         """Save the Python source buffer as a UTF-8 Journal object."""

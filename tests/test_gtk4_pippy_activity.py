@@ -1,7 +1,18 @@
+import importlib.util
 from pathlib import Path
+import sys
 
 
 ROOT = Path(__file__).parents[1]
+RUNNER = ROOT / "packages/gtk4-pippy-activity/pippy_runner.py"
+
+
+def load_runner():
+    spec = importlib.util.spec_from_file_location("pippy_runner_test", RUNNER)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 def test_pippy_bundle_is_native_and_registered():
@@ -13,7 +24,9 @@ def test_pippy_bundle_is_native_and_registered():
     assert "class PippyActivity(SimpleActivity)" in source
     assert 'label="Run"' in source and "Program output" in source
     assert 'OUTPUT_PLACEHOLDER = "Run the program to see output."' in source
-    assert "subprocess.run" in source and '"-I"' in source
+    assert "from pippy_runner import run_program" in source
+    assert "run_program(program)" in source
+    assert "_run_generation" in source
     assert "editor_frame" in source and "output_frame" in source
     assert "Gtk.Frame(label=\"Python program\")" in source
     assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
@@ -29,3 +42,29 @@ def test_pippy_journal_roundtrip_is_utf8():
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source
     assert 'encoding="utf-8"' in source
+
+
+def test_pippy_runner_executes_source_with_captured_output():
+    runner = load_runner()
+    result = runner.run_program("print('runner-ok')", timeout=2)
+    assert result.returncode == 0
+    assert result.output.strip() == "runner-ok"
+    assert not result.timed_out
+
+
+def test_pippy_runner_reports_errors_and_kills_wall_clock_timeout():
+    runner = load_runner()
+    error = runner.run_program("raise ValueError('expected')", timeout=2)
+    assert error.returncode != 0
+    assert "ValueError: expected" in error.output
+
+    timeout = runner.run_program("import time; time.sleep(10)", timeout=0.1)
+    assert timeout.timed_out
+    assert "timed out" in timeout.output
+
+
+def test_guest_pippy_runtime_probe_exercises_output_error_and_timeout():
+    probe = (ROOT / "scripts/sugar-gtk4-pippy-runtime-probe.py").read_text()
+    assert "from pippy_runner import run_program" in probe
+    assert '"pippy-runtime-ok"' in probe
+    assert "wall-timeout=PASS" in probe

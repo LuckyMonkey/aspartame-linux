@@ -105,6 +105,13 @@ the owner share path passes and the peer probe exercises the real
 timed out before the second guest discovered the public Activity, so
 Neighborhood/Group Activity join remains open.
 
+Pippy now has a bounded Python execution boundary rather than a bare
+`subprocess.run`: isolated working directory/interpreter mode, child resource
+limits, process-group timeout cleanup, and stale-result suppression are
+qualified by `scripts/sugar-gtk4-pippy-runtime-probe.py`. This is useful Python
+runtime progress, not a claim of a security sandbox or full upstream Pippy
+parity.
+
 References:
 
 - https://github.com/sugarlabs/sugar-toolkit-gtk4

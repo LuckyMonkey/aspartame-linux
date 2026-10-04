@@ -20,7 +20,7 @@ without an orphan process. It does not by itself prove a complete port.
 | Jukebox | 2-cycle launch plus seeded JSON playlist resume and visible track restoration | FUNCTIONAL PORT |
 | Grid Paint | 2-cycle launch plus seeded JSON cell-selection resume and visible summary restoration | FUNCTIONAL PORT |
 | Abacus | 2-cycle launch plus seeded JSON rod-value resume and visible value restoration | FUNCTIONAL PORT |
-| Pippy | 2-cycle launch plus seeded UTF-8 source resume and visible editor restoration | FUNCTIONAL PORT |
+| Pippy | 2-cycle launch plus seeded UTF-8 source resume, visible editor restoration, and bounded runner probe | FUNCTIONAL PORT |
 | Typing Turtle | 2-cycle launch plus seeded JSON exercise-index resume and visible prompt restoration | FUNCTIONAL PORT |
 | Moon | 2-cycle launch plus seeded JSON phase resume and visible phase restoration | FUNCTIONAL PORT |
 | Planets | 2-cycle launch plus seeded JSON selected-planet resume and visible selection restoration | FUNCTIONAL PORT |
@@ -188,6 +188,13 @@ for a bounded peer window (`ASPARTAME_SHARE_HOLD_SECONDS`) and includes
 rerun, but the peer did not discover the public Activity before timeout; this
 remains an open collaboration result, not a false parity pass. See
 `reports/gtk4/share-join-qualification-20261004.md`.
+
+Pippy's Python execution boundary now lives in `pippy_runner.py`: each Run
+uses a disposable working directory, isolated interpreter mode, conservative
+child resource limits, process-group timeout cleanup, and generation-aware UI
+result delivery. The boundary is intentionally described as bounded local
+execution, not a complete security sandbox. The guest probe is
+`scripts/sugar-gtk4-pippy-runtime-probe.py`.
 
 The next focused UX correction fixed Abacus's stretched rod layout in the GTK4
 development runtime. Its centered place-value card, grouped controls, and
