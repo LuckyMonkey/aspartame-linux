@@ -25,6 +25,23 @@ def test_gtk4_activity_share_and_invite_follow_the_sugar_contract():
     assert "No active presence connection is available" in patch
 
 
+def test_share_control_has_a_visible_icon_and_accessible_name():
+    patch = (ROOT /
+             "patches/gtk4-preview/0181-toolkit-share-button-visible.patch").read_text()
+
+    assert 'kwargs.setdefault("icon_name", "zoom-neighborhood")' in patch
+    assert 'kwargs.setdefault("tooltip", _("Share"))' in patch
+    assert 'self.set_tooltip(_("Share"))' in patch
+
+
+def test_share_palette_options_have_actionable_accessible_names():
+    patch = (ROOT /
+             "patches/gtk4-preview/0182-radiopalette-option-accessibility.patch").read_text()
+
+    assert "Gtk.AccessibleProperty.LABEL" in patch
+    assert "[label]" in patch
+
+
 def test_share_integration_is_routed_to_the_toolkit_with_bounded_fallback():
     build = BUILD.read_text()
 
@@ -32,3 +49,7 @@ def test_share_integration_is_routed_to_the_toolkit_with_bounded_fallback():
     assert '"$patch_name" == *0180*' in build
     assert 'applied GTK4 Activity sharing integration' in build
     assert 'patch --dry-run --fuzz=5 -p1' in build
+    assert '*0181*) target="$toolkit" ;;' in build
+    assert '"$patch_name" == *0181*' in build
+    assert '*0182*) target="$toolkit" ;;' in build
+    assert '"$patch_name" == *0182*' in build

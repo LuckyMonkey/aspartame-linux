@@ -113,6 +113,8 @@ for patch in "$patch_dir"/*.patch; do
         *0148*) target="$toolkit" ;;
         *0149*) target="$toolkit" ;;
         *0180*) target="$toolkit" ;;
+        *0181*) target="$toolkit" ;;
+        *0182*) target="$toolkit" ;;
         *0150*) target="$toolkit" ;;
         *0151*) target="$root/sources/sugar" ;;
         *0152*) target="$root/sources/sugar" ;;
@@ -829,6 +831,16 @@ PY
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied GTK4 Activity sharing integration: $patch_name"
+    elif [[ "$patch_name" == *0181* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=2 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=2 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied GTK4 Share control presentation: $patch_name"
+    elif [[ "$patch_name" == *0182* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=2 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=2 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied GTK4 radio palette accessibility: $patch_name"
     elif [[ "$patch_name" == *0168* ]] &&
         grep -q 'self\._lifecycle_changed()' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null &&
         grep -q '^        else:$' "$shell/src/jarabe/desktop/favoritesview.py" 2>/dev/null; then

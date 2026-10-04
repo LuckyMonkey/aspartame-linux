@@ -1,0 +1,15 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] radio palette: name each sharing option
+
+GTK4 radio palette options are icon-only ToolButtons.  Their human labels
+were stored only as palette metadata, so AT-SPI exposed anonymous buttons and
+the sharing choices could not be activated reliably from keyboard or
+automation.  Preserve the compact Sugar palette while giving each option its
+stable accessible label.
+
+--- a/src/sugar4/graphics/radiopalette.py
++++ b/src/sugar4/graphics/radiopalette.py
+@@ -171,1 +171,2 @@
+-        button.palette_label = label
++        button.palette_label = label
++        button.update_property([Gtk.AccessibleProperty.LABEL], [label])

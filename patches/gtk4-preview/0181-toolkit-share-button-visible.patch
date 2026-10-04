@@ -1,0 +1,19 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] Make the GTK4 Activity Share control visible and named
+
+GTK4 ShareButton inherited RadioMenuButton without an icon or tooltip.  The
+button consequently had an empty accessible name and could collapse to zero
+width in ActivityToolbar, leaving the working share action undiscoverable.
+Use the existing neighborhood icon and expose the stable Sugar label while
+keeping the radio palette and sharing behavior unchanged.
+
+--- a/src/sugar4/activity/widgets.py
++++ b/src/sugar4/activity/widgets.py
+@@ -183,1 +183,6 @@
+-        RadioMenuButton.__init__(self, **kwargs)
++        kwargs.setdefault("icon_name", "zoom-neighborhood")
++        kwargs.setdefault("tooltip", _("Share"))
++        RadioMenuButton.__init__(self, **kwargs)
++        # RadioMenuButton consumes the tooltip for its palette, while the
++        # ToolButton label is also needed by GTK4 accessibility.
++        self.set_tooltip(_("Share"))
