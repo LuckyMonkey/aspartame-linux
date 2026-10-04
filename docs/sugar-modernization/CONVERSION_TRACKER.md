@@ -77,6 +77,9 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   Portfolio keeps its editor canvas expanded; Finance has structured
   transaction surfaces and a real empty-state area. These changes are source
   checkpoints pending the next packaged ISO rebuild.
+- Abacus is now included in that source pass: its rods render actual bead
+  state after every `+`, `−`, Clear, and Journal restore action, with a framed
+  work area and compact Clear control.
 - Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
   transport, and Neighborhood peer behavior with a second participant. The
   semantic button/controller and explicit Chirality bridge are the reliable
@@ -140,6 +143,6 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       routine tooling; it is not a one-time milestone)
 - [x] Durable screenshots, runtime logs, commands, architecture and runbooks
 - [x] Verified coherent commits pushed to GitHub. `origin/master` contains the
-      packaged qualification and UX checkpoints through `246e192`.
+      packaged qualification and UX checkpoints through `514c253`.
 
 No unchecked item is an external blocker merely because it requires more work.
