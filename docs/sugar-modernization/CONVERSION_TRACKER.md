@@ -82,7 +82,7 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   work area and compact Clear control.
 - A new standalone ISO containing these source changes and the Classic Home
   Spaces action menu was built successfully:
-  `2b61d1c7b5d4ce8aeb279ca245eb7560e94ca304440bf8ebd8998294e67cc4ae`.
+  `a2d82e781a37196bea7f6ff3e602313ac12276e980c7516c52494ab8f34c2877`.
   Its runtime qualification is the next deliberate gate; the older receipt is
   not silently reused as evidence for this new image.
 - The next source UX pass removes two remaining “small calculator” surfaces:
@@ -91,6 +91,8 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
   the activity allocation. These are source checkpoints for the next image.
 - GTD now gives its empty task list an explicit “No tasks yet” action cue
   instead of presenting an unexplained blank panel.
+- That follow-up UX batch is now packaged in the standalone ISO above; runtime
+  qualification remains intentionally separate from the build receipt.
 - Remaining retirement gates are physical GTK3 input, QEMU/Metacity F7/F8
   transport, and Neighborhood peer behavior with a second participant. The
   semantic button/controller and explicit Chirality bridge are the reliable
