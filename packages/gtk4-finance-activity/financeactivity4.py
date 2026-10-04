@@ -18,13 +18,13 @@ class FinanceActivity(SimpleActivity):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         root.set_margin_top(24); root.set_margin_bottom(24)
         root.set_margin_start(30); root.set_margin_end(30)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Finance tracker"])
         body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        body.set_size_request(1100, -1)
-        body.set_hexpand(False)
+        body.set_hexpand(True)
         body.set_vexpand(True)
-        body.set_halign(Gtk.Align.CENTER)
-        body.set_valign(Gtk.Align.CENTER)
+        body.set_halign(Gtk.Align.FILL)
+        body.set_valign(Gtk.Align.FILL)
         root.append(body)
         title = Gtk.Label(label="Finance", xalign=0); title.add_css_class("title-1"); body.append(title)
         self.amount = Gtk.Entry(); self.amount.set_placeholder_text("Amount"); self.amount.set_input_purpose(Gtk.InputPurpose.NUMBER)
@@ -57,6 +57,10 @@ class FinanceActivity(SimpleActivity):
         header.attach(description_heading, 0, 0, 1, 1)
         header.attach(amount_heading, 1, 0, 1, 1)
         body.append(header)
+        self.empty_state = Gtk.Label(label="No transactions yet. Add income or an expense to begin.", xalign=0, wrap=True)
+        self.empty_state.add_css_class("dim-label")
+        self.empty_state.update_property([Gtk.AccessibleProperty.LABEL], ["No transactions yet"])
+        body.append(self.empty_state)
         self.rows = Gtk.ListBox(); self.rows.set_vexpand(True); self.rows.set_hexpand(True); self.rows.update_property([Gtk.AccessibleProperty.LABEL], ["Transactions"]); body.append(self.rows)
         self.balance = Gtk.Label(label="Balance: 0.00", xalign=0); self.balance.add_css_class("heading"); body.append(self.balance)
         self.set_canvas(root)
@@ -84,6 +88,7 @@ class FinanceActivity(SimpleActivity):
         table_row.attach(amount_label, 1, 0, 1, 1)
         row.set_child(table_row)
         self.rows.append(row)
+        self.empty_state.set_visible(False)
         self.balance.set_text(f"Balance: {sum(v for v, _ in self._rows):.2f}")
 
     def read_file(self, file_path):
@@ -107,6 +112,7 @@ class FinanceActivity(SimpleActivity):
             except (KeyError, TypeError, ValueError):
                 continue
             self._append_row(value, description)
+        self.empty_state.set_visible(not self._rows)
         self.balance.set_text(f"Balance: {sum(v for v, _ in self._rows):.2f}")
 
     def write_file(self, file_path):

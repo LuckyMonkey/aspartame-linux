@@ -73,3 +73,17 @@ Promotion requires evidence appropriate to the claimed class:
 The full matrix is a coverage instrument, not a retirement gate. The remaining
 highest-value parity work is peer-backed Neighborhood behavior, physical input
 delivery below the QEMU transport, and continued per-Activity parity promotion.
+
+## UX qualification and first retirement candidates
+
+On 2026-10-03, a headless 1920×1080 QEMU visual pass qualified Portfolio,
+Markdown, and Finance after correcting collapsed editor surfaces and the
+centered narrow Finance layout. Each passed the visual sweep and two Journal
+launch/resume/stop cycles with the GTK4 process, Activity service, accessible
+surface, and datastore payload intact. See
+[`gtk4-activity-ux-pass-20261003.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261003.md).
+
+These are the first **modern-space retirement candidates**. The GTK4 registry
+may hide their GTK3 duplicate from the modern Home view, but the GTK3 bundles
+remain installed as fallback/reference. Package removal is deliberately still
+blocked on full feature parity, collaboration, and physical-input evidence.

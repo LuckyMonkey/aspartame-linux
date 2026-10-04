@@ -15,7 +15,7 @@ def main():
     if os.getuid()==0:
         shells=subprocess.check_output(["pgrep","-u","aspartame","-f","/sources/sugar/src/jarabe/main.py"],text=True).splitlines()
         if len(shells)!=1:raise SystemExit("Expected one modern shell")
-        env=dict(x.split("=",1) for x in Path(f"/proc/{shells[0]}/environ").read_bytes().decode().split("\0") if "=" in x);py="/home/aspartame/Development/gtk4-preview/venv/bin/python";os.setgroups([]);os.setgid(1000);os.setuid(1000);os.execve(py,[py,__file__,*sys.argv[1:]],env)
+        env=dict(x.split("=",1) for x in Path(f"/proc/{shells[0]}/environ").read_bytes().decode().split("\0") if "=" in x);py=os.environ.get("GTK4_PYTHON") or next((candidate for candidate in ("/usr/lib/aspartame/gtk4-preview/venv/bin/python", "/home/aspartame/Development/gtk4-preview/venv/bin/python") if Path(candidate).exists()), sys.executable);os.setgroups([]);os.setgid(1000);os.setuid(1000);os.execve(py,[py,__file__,*sys.argv[1:]],env)
     import dbus,gi
     gi.require_version("Atspi","2.0");from gi.repository import Atspi
     bus=dbus.SessionBus();journal=dbus.Interface(bus.get_object("org.laptop.Journal","/org/laptop/Journal"),"org.laptop.Journal");shell=dbus.Interface(bus.get_object("org.laptop.Shell","/org/laptop/Shell"),"org.laptop.Shell");store=dbus.Interface(bus.get_object("org.laptop.sugar.DataStore","/org/laptop/sugar/DataStore"),"org.laptop.sugar.DataStore")
