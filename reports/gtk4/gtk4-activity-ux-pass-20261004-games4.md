@@ -38,3 +38,9 @@ The complete packaged GTK4 catalog regression sweep then passed `50/50` at
 manifest is [`visual-sweep-packaged-games4-full-20261004/manifest.tsv`](visual-sweep-packaged-games4-full-20261004/manifest.tsv)
 with SHA-256
 `57e318ea983b079725225818fce34ebe52c7432b6e34d28119144538e8ee59d2`.
+
+Separately, the Spaces semantic milestone now has a CLI path and controller
+integration: successful GTK3/GTK4 selection records only the active full
+surface (`classic` or `modern`) through `sugar-chirality.py`. Focused Chirality,
+Spaces, syntax, and bridge tests pass (`39` tests); Activity/Object hand state
+remains a separate model and no history or split-screen state was added.

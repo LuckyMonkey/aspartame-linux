@@ -50,6 +50,10 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
     assert 'pgrep -u' in controller
     assert 'DBUS_SESSION_BUS_ADDRESS=*) export' in controller
     assert 'keybindings unavailable' in controller
+    assert 'record_space()' in controller
+    assert 'spaces-select' in controller
+    assert 'record_space classic' in controller
+    assert 'record_space modern' in controller
     assert controller.count('--timeout 30') >= 10
     assert 'wmctrl' not in controller
     assert 'xdotool' not in controller

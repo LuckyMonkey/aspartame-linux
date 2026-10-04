@@ -95,6 +95,7 @@ class Spaces:
                 {
                     "id": space.space_id,
                     "label": space.label,
+                    "switch_target": space.switch_target,
                     "state": "active" if space.space_id == self.active_space else "available",
                 }
                 for space in self.catalog

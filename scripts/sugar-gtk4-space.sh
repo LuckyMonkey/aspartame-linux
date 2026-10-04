@@ -44,6 +44,15 @@ fi
 have_gsettings_bus=0
 [ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] && have_gsettings_bus=1
 
+record_space() {
+    local space_id=$1
+    local chirality_cli="$project_root/scripts/sugar-chirality.py"
+    local state_file=${ASPARTAME_SPACES_STATE_FILE:-${XDG_RUNTIME_DIR}/aspartame/spaces.json}
+    [ -f "$chirality_cli" ] || return 0
+    python3 "$chirality_cli" --spaces-state-file "$state_file" \
+        spaces-select "$space_id" >/dev/null
+}
+
 if [ "$have_gsettings_bus" -eq 1 ]; then
     workspace_count=$(gsettings get org.gnome.desktop.wm.preferences num-workspaces)
     if [ "$workspace_count" -lt 2 ]; then
@@ -309,6 +318,7 @@ select_gtk3() {
     "$workspace_tool" switch 0
     settle_workspace 0
     "$workspace_tool" activate --pid "$GTK3_PID" --timeout 30 >/dev/null
+    record_space classic
 }
 
 select_gtk4() {
@@ -320,6 +330,7 @@ select_gtk4() {
     "$workspace_tool" switch 1
     settle_workspace 1
     "$workspace_tool" activate --pid "$GTK4_PID" --timeout 30 >/dev/null
+    record_space modern
 }
 
 case "$action" in
@@ -333,6 +344,7 @@ case "$action" in
         "$workspace_tool" switch 0
         settle_workspace 0
         "$workspace_tool" activate --pid "$GTK3_PID" --timeout 30 >/dev/null
+        record_space classic
         echo 'Sugar Spaces ready: F7 = GTK3, F8 = GTK4'
         ;;
     gtk3)

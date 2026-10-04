@@ -1,4 +1,5 @@
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -112,3 +113,18 @@ def test_spaces_do_not_store_activity_object_or_history_state():
 def test_spaces_reject_unknown_selection():
     with pytest.raises(chirality.ChiralityError):
         chirality.Spaces().select("side-by-side")
+
+
+def test_spaces_cli_records_only_current_full_surface(tmp_path):
+    cli = ROOT / "scripts/sugar-chirality.py"
+    state = tmp_path / "spaces.json"
+    result = subprocess.run(
+        [sys.executable, str(cli), "--spaces-state-file", str(state),
+         "spaces-select", "modern"],
+        check=True, capture_output=True, text=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload["active_space"] == "modern"
+    assert payload["spaces"][1]["switch_target"] == "gtk4"
+    assert json.loads(state.read_text())["active_space"] == "modern"
+    assert "history" not in state.read_text()

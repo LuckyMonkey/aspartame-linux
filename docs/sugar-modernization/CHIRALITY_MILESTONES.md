@@ -62,6 +62,10 @@ those targets without changing the primitive.
 
 This is intentionally separate from `ChiralSession`: Spaces select a visible
 surface, while Chirality hands hold Activities and their object references.
+The GTK3/GTK4 Space controller now records its successful `classic` or
+`modern` selection through `sugar-chirality.py`; the state contains only the
+current Space and controller token, never a previous-space log. Button and
+F7/F8 routes therefore converge on the same semantic state boundary.
 
 ## Milestone 1 — GTK4-only hand adapter
 

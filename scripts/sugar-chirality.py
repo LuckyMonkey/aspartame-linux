@@ -13,12 +13,17 @@ import os
 import tempfile
 from pathlib import Path
 
-from aspartame_chirality import ChiralSession, Hand, Side
+from aspartame_chirality import ChiralSession, Hand, Side, Spaces
 
 
 def default_state_path() -> Path:
     runtime = os.environ.get("XDG_RUNTIME_DIR", "/tmp")
     return Path(runtime) / "aspartame" / "chirality.json"
+
+
+def default_spaces_state_path() -> Path:
+    runtime = os.environ.get("XDG_RUNTIME_DIR", "/tmp")
+    return Path(runtime) / "aspartame" / "spaces.json"
 
 
 def load(path: Path) -> ChiralSession:
@@ -40,6 +45,25 @@ def save(path: Path, session: ChiralSession) -> None:
             os.unlink(temporary)
 
 
+def load_spaces(path: Path) -> Spaces:
+    if not path.exists():
+        return Spaces()
+    return Spaces(**json.loads(path.read_text()))
+
+
+def save_spaces(path: Path, spaces: Spaces) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix="spaces-", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w") as stream:
+            json.dump(spaces.to_dict(), stream, indent=2, sort_keys=True)
+            stream.write("\n")
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
 def side(value: str) -> Side:
     try:
         return Side(value.lower())
@@ -50,6 +74,8 @@ def side(value: str) -> Side:
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(description=__doc__)
     root.add_argument("--state-file", type=Path, default=default_state_path())
+    root.add_argument("--spaces-state-file", type=Path,
+                      default=default_spaces_state_path())
     commands = root.add_subparsers(dest="command", required=True)
 
     commands.add_parser("inspect")
@@ -73,11 +99,25 @@ def parser() -> argparse.ArgumentParser:
     handoff = commands.add_parser("handoff-object")
     handoff.add_argument("source", type=side)
     handoff.add_argument("target", type=side)
+
+    commands.add_parser("spaces-inspect")
+    select_space = commands.add_parser("spaces-select")
+    select_space.add_argument("space_id", choices=("classic", "modern"))
     return root
 
 
 def main() -> int:
     args = parser().parse_args()
+    if args.command == "spaces-inspect":
+        print(json.dumps(load_spaces(args.spaces_state_file).accessible_state(),
+                         indent=2, sort_keys=True))
+        return 0
+    if args.command == "spaces-select":
+        spaces = load_spaces(args.spaces_state_file)
+        spaces.select(args.space_id)
+        save_spaces(args.spaces_state_file, spaces)
+        print(json.dumps(spaces.accessible_state(), indent=2, sort_keys=True))
+        return 0
     session = load(args.state_file)
     if args.command == "inspect":
         print(json.dumps(session.accessible_state(), indent=2, sort_keys=True))

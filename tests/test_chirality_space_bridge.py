@@ -41,6 +41,9 @@ def test_left_and_right_select_one_full_surface_each(tmp_path):
     assert right.returncode == 0, right.stderr
     assert "mode=single-surface" in left.stdout
     assert "mode=single-surface" in right.stdout
+    controller = (ROOT / "scripts/sugar-gtk4-space.sh").read_text()
+    assert "record_space()" in controller
+    assert "spaces-select" in controller
     assert log.read_text().splitlines() == ["gtk3", "gtk4"]
 
 
