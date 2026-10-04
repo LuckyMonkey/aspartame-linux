@@ -160,10 +160,14 @@ them.
 ## W11 — Neighborhood / Group collaboration with a peer
 
 - **GTK3 reference:** peers appear; shared Activities can be joined.
-- **GTK4 result:** honest empty state only.
-- **Gap:** requires a second live participant.
-- **Evidence:** `reports/gtk4/neighborhood-runtime-20260915.md`
-- **STATUS: OPEN — blocked on a second participant, not on code**
+- **GTK4 result:** two clean packaged headless guests discover each other over
+  a private link, render peer XO icons, and hide the empty-state label once
+  peer content exists. Both GTK4 Neighborhood surfaces are reachable through
+  the semantic action and ATSPI.
+- **Gap:** Activity sharing/join is still open; the GTK4 toolkit correctly
+  refuses the currently unimplemented share operation and returns to Private.
+- **Evidence:** `reports/gtk4/neighborhood-peer-20261004.md`
+- **STATUS: OPEN — peer presence PASS; shared Activity behavior remains**
 
 ## W12 — A refused session action must not destroy the session
 
@@ -236,8 +240,12 @@ a bounded fix. See `reports/gtk4/five-fix-pass-20260915.md`.
 
 ## Next
 
-W11 remains open and is blocked on a second live participant rather than on
-code. W6's semantic controller handoff and click-driven side-by-side path are
+W11's peer-presence portion now passes with two clean packaged headless
+guests: the GTK4 Neighborhood surface renders distinct peer XO icons and the
+content-aware empty state clears. Shared Activity join remains open because
+the GTK4 toolkit still refuses the unimplemented share operation honestly.
+Evidence is recorded in `reports/gtk4/neighborhood-peer-20261004.md`.
+W6's semantic controller handoff and click-driven side-by-side path are
 passing; the fresh-image evidence is recorded in
 `reports/gtk4/side-by-side-runtime-20261002.md`. Physical F7/F8 delivery is
 still a separate QEMU transport check, but it is no longer required to compare

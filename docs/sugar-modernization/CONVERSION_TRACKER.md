@@ -96,10 +96,16 @@ PORT, COVERAGE IMPLEMENTATION, and PLACEHOLDER.
 - Chirality now has an explicit packaged-ready `Space`/`Spaces` primitive:
   one active full-surface selection with controller tokens, independent of
   hand Activity/object state and without split-screen or history state.
-- Remaining retirement gates are Neighborhood peer behavior with a second
-  participant, complete Activity parity, and clean writable-disk persistence.
-  GTK3 Home input, three-cycle lifecycle, and headless F7/F8 Space transport
-  are now qualified on the newest image.
+- Neighborhood peer presence and the visible GTK4 Neighborhood surface are now
+  qualified with two clean packaged headless guests: lossless private-NIC
+  transport, Avahi/Salut discovery, peer XO rendering, and the content-aware
+  empty state all pass. See
+  [`neighborhood-peer-20261004.md`](../../reports/gtk4/neighborhood-peer-20261004.md).
+  Full Activity sharing/join remains open because the GTK4 toolkit still
+  refuses the share action honestly rather than pretending it succeeded.
+  Complete Activity parity and clean writable-disk persistence remain the
+  other retirement gates. GTK3 Home input, three-cycle lifecycle, and
+  headless F7/F8 Space transport are qualified on the newest image.
 
 ## Execution and ownership
 
@@ -137,8 +143,8 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       selects Classic/workspace 0 and F8 selects Modern/workspace 1 on the
       newest standalone image; both shell PIDs remain alive. See
       `reports/gtk4/space-key-transport-20261004.md`.
-- [ ] Neighborhood/Group peer actions (empty state is verified; peer behavior
-      still requires a second collaboration participant)
+- [ ] Neighborhood/Group peer actions (peer presence and rendering are
+      qualified with two guests; Activity sharing/join is still open)
 - [x] Settings, Activity Manager, approval and contextual Help
 - [x] Physical-event Tab/Shift+Tab/Space. Closed 2026-09-15: physical typing,
       Tab, Shift+Tab, Enter and Space all reach a real GTK4 Activity launched
@@ -155,6 +161,6 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       routine tooling; it is not a one-time milestone)
 - [x] Durable screenshots, runtime logs, commands, architecture and runbooks
 - [x] Verified coherent commits pushed to GitHub. `origin/master` contains the
-      packaged qualification and UX checkpoints through `d1825b5`.
+      packaged qualification and UX checkpoints through `359711b`.
 
 No unchecked item is an external blocker merely because it requires more work.

@@ -21,4 +21,11 @@ NetworkManager and the kernel own connectivity. Neighborhood consumes a
 contextual peer model and must report an honest empty state when no peers are
 available. A connected network is not, by itself, proof of collaboration.
 
+The repeatable headless QEMU peer fixture uses a second socket-backed NIC with
+explicit static addresses and distinct MACs for each guest. The 2026-10-04
+qualification used `10.77.0.1/24` and `10.77.0.2/24`, started the existing
+Avahi daemon, and verified `_presence._tcp` records before claiming peer
+presence. `scripts/run-qemu.sh` accepts `QEMU_EXTRA_NIC_MAC` to prevent cloned
+fixtures from silently sharing a layer-2 identity.
+
 ![Neighborhood reference surface](../reports/screenshots/sugar-20260915-151748-v0.0.31.png)

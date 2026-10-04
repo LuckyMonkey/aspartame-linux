@@ -70,9 +70,11 @@ Promotion requires evidence appropriate to the claimed class:
 - Journal relaunch/resume when the Activity owns persistent state;
 - comparison with the stable GTK3 behavior before claiming parity.
 
-The full matrix is a coverage instrument, not a retirement gate. The remaining
-highest-value parity work is peer-backed Neighborhood behavior, physical input
-delivery below the QEMU transport, and continued per-Activity parity promotion.
+The full matrix is a coverage instrument, not a retirement gate. On
+2026-10-04, peer presence and Neighborhood rendering were qualified with two
+clean packaged headless guests; the remaining collaboration gate is shared
+Activity join/action behavior. Other highest-value work is continued
+per-Activity parity promotion and the remaining physical-input boundaries.
 
 ## UX qualification and first retirement candidates
 

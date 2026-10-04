@@ -16,10 +16,11 @@ cleanup, Journal search/resume/edit/selection, clipboard transfer, Count cell
 and layer editing, AT-SPI names/roles, and clean GTK3↔GTK4 Space round-trips.
 The stable GTK3 Space remains installed and healthy as the behavioral reference.
 
-The remaining parity gate is explicit rather than hidden: physical F1–F6
-delivery is below the current QEMU/evdev transport, peer-backed Neighborhood
-actions need an actual collaboration peer, and the broader Activity catalog
-still contains GTK3-only ports such as Browse.
+The remaining parity gate is explicit rather than hidden: peer presence and
+Neighborhood rendering are now qualified with two headless guests, while
+shared Activity actions still need implementation and qualification. Physical
+F1–F6 delivery remains a QEMU/evdev transport concern, and the broader
+Activity catalog still contains GTK3-only ports such as Browse.
 
 ## 2026-09-05 GTK4 Spaces and Sugar interaction checkpoint
 
