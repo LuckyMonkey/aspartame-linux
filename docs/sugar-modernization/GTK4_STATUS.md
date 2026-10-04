@@ -24,7 +24,7 @@ still classified separately from launch coverage.
 | Terminal | GTK3 Activity | Native GTK4 command/output bundle under the original identity | GTK4 text output and command entry, without GTK3 Vte import | GTK4 verified 2026-09-15 | `org.laptop.Terminal` accepts a command, renders output, and stops cleanly; full emulator features remain bounded |
 | Browse | Native GTK4 URL/status surface; pinned WebKit source retained for future renderer work | Guest `webkitgtk-6.0` installed | WebKit remains an Activity-specific optional dependency | GTK4 verified 2026-09-15 | Journal launch, visible URL entry, load status, stop, and cleanup all pass in live guest |
 | Clock | GTK3 Activity | Native GTK4 bundle | Responsive GTK4 learning clock with simple/nice/digital faces, date/words/ticking/speech controls, hand adjustment, and Journal state | GTK4 lifecycle plus focused control/resume harness verified 2026-10-04 | `tv.alterna.Clock` launches and stops cleanly through Casilda; NTP time setting and the full upstream visual breadth remain open |
-| JAMClock | GTK3/Pygame Activity | Native GTK4 bundle | GTK4 time/date replacement under the original bundle ID | GTK4 verified 2026-09-14 | `org.laptop.JAMClock` launches and stops cleanly through Casilda |
+| JAMClock | GTK3/Pygame Activity | Native GTK4 bundle | Responsive GTK4 analog clock, calendar, configurable alarm, and Journal state under the original bundle ID | GTK4 lifecycle plus focused control/resume and headless visual qualification verified 2026-10-04 | `org.laptop.JAMClock` launches and stops cleanly through Casilda; legacy Pygame artwork/audio breadth remains open |
 | Mastermind, Poll, Mancala, Reversi, Jumble, NumberRush, Across and Down, IQ, Appel Haken, BallAndBrick, Implode, PlayGo, BlockParty, Typing Turtle, Memorize, Maze, FotoToon, Portfolio, Markdown, Finance, Words, Last One Loses, Grid Paint, Gears, TurtleBlocks, Game Of Life, Color My World, Abacus, Planets, Connect the Dots, Pippy, Paint, Diamond Fusion, Level, Moon | GTK3 legacy Activities | Native GTK4 bundles | Self-contained logic, survey, board, word, arithmetic, crossword, sequence, colour, brick-breaker, matching-block, Go-board, block-arrangement, typing, card-matching, maze, caption-canvas, document-canvas, Markdown editor, budget-tracking, language, take-away game, grid-drawing, custom gear-rendering, Logo-style turtle drawing, cellular-automaton, color-palette, place-value, orbit-canvas, numbered-dot puzzle, Python playground, drawing-canvas, matching/fusion puzzle, inclination-control, and moon-phase interactions | GTK4 verified 2026-09-14 | Planets, Connect the Dots, Pippy, Paint, Diamond Fusion, Level, and Moon are included in direct lifecycle probes |
 | Get Things Done | GTK3 legacy Activity | Native GTK4 bundle | Task list with add/complete controls and JSON Journal persistence | GTK4 verified 2026-09-15 | Two real launch/stop/resume cycles pass; collaboration and full upstream feature breadth remain unclaimed |
 | Level | GTK3 legacy Activity | Native GTK4 bundle | Offline spirit-level controls with drag/keyboard adjustment and JSON Journal persistence | GTK4 verified 2026-09-15 | Two real launch/stop/resume cycles pass; hardware orientation sensors remain unclaimed |
@@ -110,6 +110,14 @@ dragging, malformed Journal input handling, and stable Journal resume are now
 covered by the focused harness. This is still a FUNCTIONAL PORT: the
 platform-specific NTP/hardware-clock action is deliberately not claimed. See
 `reports/gtk4/clock-parity-pass-20261004.md`.
+
+The 2026-10-04 JAMClock parity pass replaced its former two-label surface
+with a responsive analog face, GTK4 Calendar, alarm hour/minute controls,
+alarm enable/status feedback, accessible labels, and stable JSON Journal
+state. The headless guest receipt is in
+`reports/gtk4/jamclock-parity-pass-20261004.md`; this remains a FUNCTIONAL
+PORT because the original Pygame artwork and bundled alarm/ticking audio are
+not reproduced.
 
 The Activity-sharing harness now separates owner publication from peer join:
 the owner share path passes and the peer probe exercises the real

@@ -25,7 +25,7 @@ Classification used by the migration ledger:
 | Count | FUNCTIONAL PORT | Native voxel/grid interaction; advanced layer behavior remains separate |
 | Calculate | FUNCTIONAL PORT | Safe arithmetic editor; not a claim of full upstream feature parity. Update 2026-10-02 (host-verified, guest pending): functions, pi/e, `ans`, variables, `^`, degrees/radians, clickable history, specific error messages; fixed an unbounded power that could stall the Activity and an uncaught float overflow. Plotting and number bases remain absent |
 | Clock | FUNCTIONAL PORT | Responsive simple/nice/digital clock faces, date/words/ticking controls, optional speech, GTK4 hand dragging, and stable Journal state verified 2026-10-04; NTP/hardware-clock actions remain absent |
-| JAMClock | FUNCTIONAL PORT | Native time/date replacement under the original identity |
+| JAMClock | FUNCTIONAL PORT | Responsive analog clock, GTK4 calendar, configurable alarm, and stable Journal state verified 2026-10-04; legacy Pygame artwork/audio breadth remains absent |
 | Image Viewer | FUNCTIONAL PORT | Native image surface through the pinned bundle path |
 | Terminal | FUNCTIONAL PORT | Native GTK4 command/output surface, command input, and clean lifecycle verified 2026-09-15; full terminal-emulator features remain outside this claim |
 | Browse | FUNCTIONAL PORT | Native GTK4 URL/status surface; full WebKit browsing and collaboration/download parity is not claimed |
