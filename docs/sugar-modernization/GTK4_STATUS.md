@@ -86,6 +86,13 @@ probe that switches Calculate and Clock Left/Right/Left on one visible
 surface, then verifies Activity service cleanup. This advances the forward
 path without removing GTK3 or repurposing migration comparison keys.
 
+Chirality Milestone 2 is now qualified for the bounded UTF-8 object path. The
+guest probe creates one Journal UID in Write, resumes that same object in
+Write and Read, assigns both live GTK4 Activities to semantic hands, switches
+Left/Right/Left, and verifies the final payload plus service cleanup. Broader
+object-format refusal, crash isolation, and session-resume gates remain open;
+GTK3 retirement is therefore still evidence-gated.
+
 References:
 
 - https://github.com/sugarlabs/sugar-toolkit-gtk4

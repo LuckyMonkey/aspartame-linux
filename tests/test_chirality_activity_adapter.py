@@ -43,6 +43,7 @@ def test_iso_packages_the_activity_adapter():
     build = (ROOT / "scripts/build-iso.sh").read_text()
     assert "sugar-chirality-activity.py" in build
     assert "sugar-gtk4-chirality-activity-roundtrip.py" in build
+    assert "sugar-gtk4-chirality-object-roundtrip.py" in build
 
 
 def test_guest_roundtrip_proves_two_live_activities_switch_on_one_surface():
@@ -51,3 +52,13 @@ def test_guest_roundtrip_proves_two_live_activities_switch_on_one_surface():
     assert '"left", "right", "left"' in probe
     assert "mode=single-surface" in probe
     assert "StopActivity" in probe
+
+
+def test_guest_object_roundtrip_proves_one_journal_uid_across_two_activities():
+    probe = (ROOT / "scripts/sugar-gtk4-chirality-object-roundtrip.py").read_text()
+    assert 'WRITE_BUNDLE = "org.sugarlabs.Write"' in probe
+    assert 'READ_BUNDLE = "org.laptop.sugar.ReadActivity"' in probe
+    assert '"handoff-object", "left", "right"' in probe
+    assert "active-sequence=left,right,left" in probe
+    assert 'payload=utf8' in probe
+    assert "mode=single-surface" in probe

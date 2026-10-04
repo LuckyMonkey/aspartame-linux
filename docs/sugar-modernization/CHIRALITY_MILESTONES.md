@@ -95,10 +95,21 @@ resume and crash-isolation qualification remain explicit follow-up gates.
 
 ## Milestone 2 — object continuity
 
-Use one real Journal object across two Activities. The first target should be a
-boring, deterministic object such as UTF-8 text. Prove the correct object,
-Activity, hand, persistence, resume, and graceful refusal for unsupported
-objects before adding user-facing “Use with…” or “Give to Other Hand” actions.
+Status: **qualified for one UTF-8 Journal object across two GTK4 Activities;
+broader object capability policy remains gated**.
+
+`scripts/sugar-gtk4-chirality-object-roundtrip.py` creates one real UTF-8
+Journal object in Write, resumes that same UID in Write and Read, assigns the
+two live Activities to Left and Right, activates Left/Right/Left through the
+GTK4-only adapter, and verifies the payload and service cleanup. The probe
+uses one visible surface and no history or split-screen state.
+
+The remaining gates are explicit:
+
+1. define and qualify graceful refusal for unsupported object formats or
+   Activity/object combinations;
+2. qualify crash isolation and shell/session resume while a hand is held;
+3. only then add user-facing “Use with…” or “Give to Other Hand” actions.
 
 ## Evidence rule
 

@@ -107,4 +107,16 @@ python3 /usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-activity.py \
 
 `activate` calls the modern GTK4 Shell's single-surface Activity activation
 contract and then records Active/Held state. It does not switch GTK3/GTK4
-Spaces; object continuity remains the separate Milestone 2 boundary.
+Spaces. Milestone 2's real-object qualification can be run in the development
+guest with:
+
+```sh
+/usr/lib/aspartame/gtk4-preview/venv/bin/python \
+  /usr/lib/aspartame/gtk4-preview/scripts/sugar-gtk4-chirality-object-roundtrip.py
+```
+
+The probe creates one UTF-8 Journal object, opens that UID in native GTK4
+Write and Read Activities, assigns them to the two semantic hands, exercises
+Left/Right/Left activation, and verifies payload and service cleanup. It does
+not create a split screen or a history log. Unsupported object-capability
+refusal and crash/session-resume qualification remain separate gates.
