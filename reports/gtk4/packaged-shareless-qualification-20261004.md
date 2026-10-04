@@ -6,7 +6,7 @@ The guest used only the installed ISO runtime and its packaged helper scripts.
 ## Artifact
 
 - ISO: `aspartame-2026.10.04-x86_64.iso`
-- SHA-256: `d3f7d56eab9f2732deaece66d7c0480185f27d3715f3899607e2c6c3f62c1655`
+- SHA-256: `2875e28b57d49757bc3f7ffdef505cb9143d5e87f476bc4a07fc24e0a456af74`
 - QEMU: `QEMU_HEADLESS=1 QEMU_DISPLAY=none QEMU_SNAPSHOT=1 QEMU_DEV_SHARE_MOUNT=0`
 - Guest display: 1920×1080
 - Development mount: absent; only the persistent `/dev/vdb` home disk was mounted
@@ -18,6 +18,9 @@ The guest used only the installed ISO runtime and its packaged helper scripts.
 - GTK4 runtime check: `runtime-check=ok` after selecting GTK4 Space.
 - Full visual sweep: `pass=50 fail=0` at 1920×1080. Evidence is in
   [`visual-sweep-packaged-20261004-shareless-final/`](visual-sweep-packaged-20261004-shareless-final/).
+- The packaged helper's default output path also passed `Pippy` at `1/1`,
+  proving the screenshot directory is writable by the desktop user in
+  shareless mode.
 - Get Books and Pippy: two Journal launch/activate/stop/cleanup cycles each,
   all PASS.
 - Spaces menu: `button=Spaces compare-action=PASS`; geometry is GTK3
