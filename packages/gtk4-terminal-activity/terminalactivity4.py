@@ -26,6 +26,13 @@ class TerminalActivity(SimpleActivity):
         title = Gtk.Label(label="Terminal", xalign=0)
         title.add_css_class("title-1")
         root.append(title)
+        subtitle = Gtk.Label(
+            label="Run short local commands and review their captured output.",
+            xalign=0,
+        )
+        subtitle.add_css_class("dim-label")
+        subtitle.set_wrap(True)
+        root.append(subtitle)
 
         self.output = Gtk.TextView(editable=False, monospace=True, wrap_mode=Gtk.WrapMode.WORD_CHAR)
         self.output.update_property([Gtk.AccessibleProperty.LABEL], ["Terminal output"])
@@ -37,7 +44,10 @@ class TerminalActivity(SimpleActivity):
         scroll = Gtk.ScrolledWindow()
         scroll.set_child(self.output)
         scroll.set_vexpand(True)
-        root.append(scroll)
+        output_frame = Gtk.Frame(label="Command output")
+        output_frame.set_child(scroll)
+        output_frame.set_vexpand(True)
+        root.append(output_frame)
 
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self.command = Gtk.Entry(placeholder_text="Enter a command")
@@ -49,14 +59,16 @@ class TerminalActivity(SimpleActivity):
         clear.update_property([Gtk.AccessibleProperty.LABEL], ["Clear terminal output"])
         clear.connect("clicked", self._clear)
         controls.append(clear)
-        root.append(controls)
+        command_frame = Gtk.Frame(label="Command")
+        command_frame.set_child(controls)
+        root.append(command_frame)
         self.set_canvas(root)
         self._install_css()
         self.command.grab_focus()
 
     def _install_css(self):
         provider = Gtk.CssProvider()
-        provider.load_from_data(b".terminal-root { background: #111; color: #f5f5f5; } .terminal-root label { color: #f5f5f5; } textview { background: #050505; color: #f5f5f5; padding: 12px; } entry { min-height: 38px; } button { min-height: 38px; border-radius: 18px; }")
+        provider.load_from_data(b".terminal-root { background: #111; color: #f5f5f5; } .terminal-root label { color: #f5f5f5; } frame { border: 1px solid #52636d; border-radius: 8px; padding: 8px; } textview { background: #050505; color: #f5f5f5; padding: 12px; } entry { min-height: 38px; } button { min-height: 38px; border-radius: 18px; }")
         display = Gdk.Display.get_default()
         if display:
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -83,4 +95,3 @@ class TerminalActivity(SimpleActivity):
 
     def _clear(self, _button):
         self.output.get_buffer().set_text("Aspartame GTK4 Terminal\n$ ")
-

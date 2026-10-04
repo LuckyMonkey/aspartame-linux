@@ -13,4 +13,6 @@ def test_build_stages_native_gtk4_terminal_activity():
     assert "class TerminalActivity(SimpleActivity)" in source
     assert "subprocess.run" in source
     assert "Gtk.TextView" in source
+    assert 'label="Command output"' in source
+    assert 'label="Command"' in source
     assert "terminal-activity|https://github.com/Inuth0603/terminal-activity" in init

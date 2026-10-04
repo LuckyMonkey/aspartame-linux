@@ -13,6 +13,9 @@ def test_build_stages_native_gtk4_browse_activity():
     assert "class BrowseActivity(SimpleActivity)" in source
     assert "urllib.request.urlopen" in source
     assert "Gtk.TextView" in source
+    assert 'label="Address"' in source
+    assert 'label="Page preview"' in source
+    assert "Browse status" in source
     assert "browse-activity|https://github.com/Inuth0603/browse-activity" in init
     packages = (ROOT / "archiso/aspartame/packages.x86_64").read_text()
     assert "webkitgtk-6.0" in packages

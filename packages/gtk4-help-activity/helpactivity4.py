@@ -18,6 +18,13 @@ class HelpActivity(SimpleActivity):
         title.add_css_class("title-1")
         title.set_halign(Gtk.Align.START)
         root.append(title)
+        subtitle = Gtk.Label(
+            label="Find a topic, then expand it for a short explanation.",
+            xalign=0,
+        )
+        subtitle.add_css_class("dim-label")
+        subtitle.set_wrap(True)
+        root.append(subtitle)
         search = Gtk.Entry()
         search.set_placeholder_text("Search help")
         search.set_hexpand(True)

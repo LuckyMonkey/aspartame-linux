@@ -20,6 +20,7 @@ def test_help_is_english_dark_and_structured():
     assert ".help-root" in source
     assert "#111111" in source
     assert "Search help" in source
+    assert "Find a topic, then expand it" in source
     # The modern Help implementation must not regress to the old translated page.
     assert "Bienvenido" not in source
     assert "Contenidos" not in source
