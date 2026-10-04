@@ -6,11 +6,11 @@ PASS. The newest standalone ISO accepts QMP keyboard events without mapping a
 host QEMU window or grabbing the host mouse.
 
 - ISO: `aspartame-2026.10.04-x86_64.iso`
-- SHA-256: `742c849ac5bf55521a9e099a8234b0d1142451987fc5d379813e6807c1965cf7`
+- SHA-256: `0ba689624f6418e0cb0c5c5d1a3b064174640dbadc13a25fbe3e06c87b602363`
 - QEMU: `QEMU_HEADLESS=1`, `QEMU_DISPLAY=none`, QMP socket
-  `/tmp/aspartame-qemu-qmp-headless`, SSH port `2223`
-- GTK3 shell PID: `762`
-- GTK4 shell PID: `1174`
+  `/tmp/aspartame-qemu-qmp-chirality-packaged`, SSH port `2228`
+- GTK3 shell PID: `834`
+- GTK4 shell PID: `1291`
 
 ## Probe
 
@@ -41,14 +41,19 @@ gtk4_pid=1174
 keys=F7:GTK3,F8:GTK4
 ```
 
-The full macro also captured both states:
+The full macro also captured both states and repeated the round trip three
+times:
 
 - [F7 Classic Space](qemu-f7-space.png)
 - [F8 Modern Space](qemu-f8-space.png)
 
 The two screenshots show complete single-surface Homes, not a split layout.
-The packaged headless macro is `macros/qemu/headless-space-keys.json`.
+The packaged headless macro is `macros/qemu/headless-space-keys.json`; the
+qualification run also used the checked-in runner with an equivalent four-step
+F7/sleep/F8/sleep sequence and `--repeat 3`.
 
 This closes the physical GTK3/GTK4 Space-selection transport gate for the
 supported headless QEMU path. The semantic Spaces primitive remains the
 underlying action boundary; no history or split-screen behavior was added.
+The remaining QEMU input frontier is F1–F6 navigation/Activity semantics,
+which is tracked separately from Space selection.

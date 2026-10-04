@@ -53,7 +53,10 @@ comparison without host focus. The probe also checks both managed windows with
 `sugar-x11-workspace.py inspect`: both must be on workspace 0, GTK3 must
 occupy the left half, and GTK4 must occupy the right half at full display
 height. The checked-in `spaces-side-by-side.json` macro only captures the
-already-qualified framebuffer; it does not pretend that F7/F8 transport passed.
+already-qualified framebuffer. Headless QMP F7/F8 transport is separately
+qualified on a fresh standalone boot: after selecting Modern Space once, F7
+and F8 produce workspace 1→0 and 0→1 transitions while both shell processes
+remain alive.
 
 Run the complete headless qualification against a running VM with:
 
@@ -62,5 +65,6 @@ SSH_PORT=2223 ASPARTAME_QEMU_QMP=/tmp/aspartame-qemu-qmp-headless \
   ./scripts/qualify-qemu-spaces-side-by-side.sh
 ```
 
-Physical F7/F8 remains a separate open input transport check; the current
-QEMU key macro reaches X11 but does not complete the workspace transition.
+The remaining input qualification boundary is F1–F6 Activity/navigation
+semantics. F7/F8 Space selection is closed for the supported headless QEMU
+path; host-window pointer/grab behavior remains a separate convenience check.

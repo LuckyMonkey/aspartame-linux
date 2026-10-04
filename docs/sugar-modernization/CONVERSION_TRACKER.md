@@ -152,9 +152,10 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       overlay owned window focus (0140), nothing then claimed it (0136), the
       shell's duplicate-dispatch guard swallowed unhandled keys (0139), and
       Casilda applied modifiers one keystroke late (0138), on top of
-      keyboard focus at map time (0137). Physical F7/F8 remains open and is
-      tracked as a separate X11/Metacity transport frontier, not a Sugar gap;
-      see `reports/gtk4/keyboard-delivery-20260915.md`.
+      keyboard focus at map time (0137). Physical F7/F8 is now closed on the
+      supported headless QEMU path; the remaining F1–F6 navigation/Activity
+      transport frontier is tracked separately from the Sugar implementation
+      gap. See `reports/gtk4/space-key-transport-20261004.md`.
 - [x] Accessible names, roles and states on important controls
 - [x] GTK CSS/build validation, no fatal GTK4 tracebacks or orphaned Activities
 - [x] Regression invariants and lifecycle stability run (repeat this pass as
