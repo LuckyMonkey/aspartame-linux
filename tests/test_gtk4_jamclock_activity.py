@@ -15,6 +15,7 @@ def test_jamclock_modern_bundle_replaces_gtk3_entrypoint():
     assert icon.is_file() and "#2f88bd" in icon.read_text()
     assert "sugar-activity4 jamclockactivity4.JAMClockActivity" in info
     assert "gi.require_version(\"Gtk\", \"4.0\")" in source
+    assert "root.set_hexpand(True); root.set_vexpand(True)" in source
     assert 'jamclock_activity="$repo/packages/gtk4-jamclock-activity"' in build
     assert "JAMClock.activity" in run
     assert "org.laptop.JAMClock|jamclockactivity4.JAMClockActivity" in matrix

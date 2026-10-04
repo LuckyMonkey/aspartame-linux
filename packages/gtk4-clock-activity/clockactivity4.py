@@ -16,6 +16,7 @@ class ClockActivity(SimpleActivity):
         self.set_title("Clock")
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18,
                        halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Clock"])
         root.set_accessible_role(Gtk.AccessibleRole.GROUP)
         self.clock = Gtk.Label()

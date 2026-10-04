@@ -10,6 +10,8 @@ def test_ballandbrick_bundle_is_native_and_registered():
     assert "bundle_id = org.sugarlabs.BallAndBrick" in info
     assert "sugar-activity4 ballandbrickactivity4.BallAndBrickActivity" in info
     assert "class BallAndBrickActivity(SimpleActivity)" in source
+    assert 'Gtk.Frame(label="Game board")' in source
+    assert "self.area.set_hexpand(True)" in source and "self.area.set_vexpand(True)" in source
     assert "Reset game" in source
     assert "def read_file" in source and "def write_file" in source
     assert "org.sugarlabs.BallAndBrick" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()

@@ -10,6 +10,8 @@ def test_implode_bundle_is_native_and_registered():
     assert "bundle_id = com.jotaro.ImplodeActivity" in info
     assert "sugar-activity4 implodeactivity4.ImplodeActivity" in info
     assert "class ImplodeActivity(SimpleActivity)" in source
+    assert 'Gtk.Frame(label="Block board")' in source
+    assert "self.grid.set_valign(Gtk.Align.CENTER)" in source
     assert "Reset puzzle" in source
     assert "def read_file" in source and "def write_file" in source
     assert "com.jotaro.ImplodeActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()

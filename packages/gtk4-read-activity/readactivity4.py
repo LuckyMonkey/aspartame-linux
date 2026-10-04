@@ -30,6 +30,7 @@ class ReadActivity(SimpleActivity):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         root.set_margin_top(24); root.set_margin_bottom(24)
         root.set_margin_start(34); root.set_margin_end(34)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Read document viewer"])
 
         heading = Gtk.Label(label=DOCUMENT["title"], xalign=0)

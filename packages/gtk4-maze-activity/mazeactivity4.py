@@ -16,11 +16,16 @@ class MazeActivity(SimpleActivity):
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         root.set_margin_top(28); root.set_margin_bottom(28); root.set_margin_start(32); root.set_margin_end(32)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Maze game"])
         title = Gtk.Label(label="Maze", xalign=0); title.add_css_class("title-1"); root.append(title)
         root.append(Gtk.Label(label="Use the arrows to reach the golden goal.", xalign=0))
-        self.grid = Gtk.Grid(row_spacing=3, column_spacing=3); self.grid.set_halign(Gtk.Align.CENTER); root.append(self.grid)
-        controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        board = Gtk.Frame(label="Maze board")
+        board.set_hexpand(True); board.set_vexpand(True)
+        self.grid = Gtk.Grid(row_spacing=3, column_spacing=3)
+        self.grid.set_halign(Gtk.Align.CENTER); self.grid.set_valign(Gtk.Align.CENTER)
+        board.set_child(self.grid); root.append(board)
+        controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6, halign=Gtk.Align.CENTER)
         for name in self.MOVES:
             button = Gtk.Button(label=name); button.update_property([Gtk.AccessibleProperty.LABEL], ["Move %s" % name]); button.connect("clicked", self._move, name); controls.append(button)
         root.append(controls)

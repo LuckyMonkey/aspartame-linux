@@ -14,10 +14,15 @@ class ReversiActivity(SimpleActivity):
         super().__init__(activity_handle); self.set_title("Reversi"); self._reset_board()
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         root.set_margin_top(24); root.set_margin_bottom(24); root.set_margin_start(28); root.set_margin_end(28)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Reversi"]); root.set_accessible_role(Gtk.AccessibleRole.GROUP)
         title = Gtk.Label(label="Reversi", xalign=0); title.add_css_class("title-1"); root.append(title)
         self.status = Gtk.Label(xalign=0); root.append(self.status)
-        self.grid = Gtk.Grid(column_spacing=3, row_spacing=3); self.grid.set_halign(Gtk.Align.CENTER); root.append(self.grid)
+        board = Gtk.Frame(label="Reversi board")
+        board.set_hexpand(True); board.set_vexpand(True)
+        self.grid = Gtk.Grid(column_spacing=3, row_spacing=3)
+        self.grid.set_halign(Gtk.Align.CENTER); self.grid.set_valign(Gtk.Align.CENTER)
+        board.set_child(self.grid); root.append(board)
         self.cells = []
         for y in range(8):
             row = []

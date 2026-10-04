@@ -17,11 +17,16 @@ class LastOneLosesActivity(SimpleActivity):
     def _build(self):
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
         root.set_margin_top(30); root.set_margin_bottom(30); root.set_margin_start(32); root.set_margin_end(32)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["Last One Loses game"])
         title = Gtk.Label(label="Last One Loses", xalign=0); title.add_css_class("title-1"); root.append(title)
         self.status = Gtk.Label(label=f"{self.pile} tokens remain. Take 1–3; whoever takes the last loses.", xalign=0, wrap=True); root.append(self.status)
-        self.pile_label = Gtk.Label(label="● " * self.pile, wrap=True); self.pile_label.add_css_class("title-2"); root.append(self.pile_label)
-        controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        pile = Gtk.Frame(label="Token pile")
+        pile.set_hexpand(True); pile.set_vexpand(True)
+        self.pile_label = Gtk.Label(label="● " * self.pile, wrap=True)
+        self.pile_label.set_halign(Gtk.Align.CENTER); self.pile_label.set_valign(Gtk.Align.CENTER)
+        self.pile_label.add_css_class("title-2"); pile.set_child(self.pile_label); root.append(pile)
+        controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8, halign=Gtk.Align.CENTER)
         for amount in (1, 2, 3):
             button = Gtk.Button(label=f"Take {amount}"); button.connect("clicked", self._take, amount); controls.append(button)
         root.append(controls)

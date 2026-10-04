@@ -15,6 +15,7 @@ def test_native_clock_bundle_is_staged_for_modern_space():
     assert icon.is_file() and "#2f88bd" in icon.read_text()
     assert "sugar-activity4 clockactivity4.ClockActivity" in info
     assert "GLib.timeout_add_seconds(1, self._tick)" in source
+    assert "root.set_hexpand(True); root.set_vexpand(True)" in source
     assert 'clock_activity="$repo/packages/gtk4-clock-activity"' in build
     assert "Clock.activity" in run
     assert "tv.alterna.Clock|clockactivity4.ClockActivity" in matrix

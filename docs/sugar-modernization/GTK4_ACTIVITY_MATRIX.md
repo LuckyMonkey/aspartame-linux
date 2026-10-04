@@ -163,3 +163,10 @@ each, and the AT-SPI Spaces action passed with GTK3/GTK4 comparison geometry
 of `960+960`. The same image also passed the Sugar health check after carrying
 the malformed Journal metadata guard into the system datastore service. See
 [`packaged-shareless-qualification-20261004.md`](../../reports/gtk4/packaged-shareless-qualification-20261004.md).
+
+The next source UX batch qualified BallAndBrick, Implode, Last One Loses, Maze,
+Poll, Reversi, Clock, JAMClock, and Read for explicit expanding work surfaces
+and centered compact controls. Focused source tests and compilation pass; the
+next standalone image must re-run the packaged visual sweep before this batch
+is promoted to runtime evidence. See
+[`gtk4-activity-ux-pass-20261004-games4.md`](../../reports/gtk4/gtk4-activity-ux-pass-20261004-games4.md).

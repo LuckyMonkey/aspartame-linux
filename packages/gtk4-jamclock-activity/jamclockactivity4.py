@@ -16,6 +16,7 @@ class JAMClockActivity(SimpleActivity):
         self.set_title("JAMClock")
         root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18,
                        halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER)
+        root.set_hexpand(True); root.set_vexpand(True)
         root.update_property([Gtk.AccessibleProperty.LABEL], ["JAMClock"])
         root.set_accessible_role(Gtk.AccessibleRole.GROUP)
         self.time = Gtk.Label()

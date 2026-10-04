@@ -11,6 +11,8 @@ def test_maze_bundle_is_native_and_registered():
     assert "sugar-activity4 mazeactivity4.MazeActivity" in info
     assert "class MazeActivity(SimpleActivity)" in source
     assert "New maze" in source
+    assert 'Gtk.Frame(label="Maze board")' in source
+    assert "self.grid.set_valign(Gtk.Align.CENTER)" in source
     assert "def read_file" in source and "def write_file" in source
     assert "vu.lux.olpc.Maze" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-maze-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()

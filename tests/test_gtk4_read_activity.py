@@ -11,6 +11,7 @@ def test_read_bundle_is_native_offline_and_registered():
     assert "sugar-activity4 readactivity4.ReadActivity" in info
     assert "class ReadActivity(SimpleActivity)" in source
     assert "DOCUMENT" in source and "Gtk.SearchEntry" in source
+    assert "root.set_hexpand(True); root.set_vexpand(True)" in source
     assert "Previous page" in source and "Next page" in source
     assert "def read_file" in source
     assert "def write_file" in source
