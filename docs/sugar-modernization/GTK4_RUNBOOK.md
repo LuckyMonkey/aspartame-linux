@@ -91,3 +91,20 @@ does not create a split screen and it does not retain a previous-frame or
 recent-context history. In the current GTK migration it maps Left to the
 Classic Space and Right to the Modern Space; the later GTK4-only Activity
 adapter changes that mapping without changing the Chirality object model.
+
+The GTK4-only Activity adapter is now available for headless qualification:
+
+```sh
+python3 /usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-activity.py \
+  --state-file "$XDG_RUNTIME_DIR/aspartame/chirality.json" \
+  assign left ACTIVITY_A
+python3 /usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-activity.py \
+  --state-file "$XDG_RUNTIME_DIR/aspartame/chirality.json" \
+  assign right ACTIVITY_B
+python3 /usr/lib/aspartame/gtk4-preview/scripts/sugar-chirality-activity.py \
+  --state-file "$XDG_RUNTIME_DIR/aspartame/chirality.json" activate left
+```
+
+`activate` calls the modern GTK4 Shell's single-surface Activity activation
+contract and then records Active/Held state. It does not switch GTK3/GTK4
+Spaces; object continuity remains the separate Milestone 2 boundary.
