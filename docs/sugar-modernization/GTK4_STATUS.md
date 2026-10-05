@@ -156,6 +156,12 @@ selection, and a Stop action that cancels the complete child process group
 while retaining the same Journal payload. This is useful Python runtime
 progress, not a claim of a security sandbox or full upstream Pippy parity.
 
+The 2026-10-05 Pippy integration receipt now drives the visible GTK4 Run
+button through that boundary, verifies captured `Aspartame` output and the
+Finished status through AT-SPI, and captures the completed output workspace.
+This closes the UI-to-runner handoff for the bounded path; sandboxing and full
+upstream Pippy breadth remain open.
+
 Snakepit's next runtime boundary is now connected to the GTK4 Activity
 Manager. It discovers user-owned qualification records, labels them `Snakepit
 Python`, exposes only passing records with a valid environment and explicit

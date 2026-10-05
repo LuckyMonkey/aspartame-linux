@@ -142,3 +142,10 @@ def test_guest_pippy_runtime_probe_exercises_output_error_and_timeout():
     assert "cancel=PASS" in probe
     assert "runtime_descriptor" in probe
     assert "runtime-contract=PASS" in probe
+
+
+def test_guest_pippy_roundtrip_exercises_visible_run_action_and_output():
+    probe = (ROOT / "scripts/sugar-gtk4-pippy-roundtrip.py").read_text()
+    assert 'find_named(Atspi.get_desktop(0),rpid,"Run")' in probe
+    assert 'find(Atspi.get_desktop(0),rpid,"Finished")' in probe
+    assert 'find_named(Atspi.get_desktop(0),rpid,"Program output")' in probe
