@@ -72,6 +72,12 @@ the default screenshot is
 `reports/gtk4/spaces-side-by-side-headless-<UTC>.png`. The fixed macro
 capture under `reports/screenshots/` is only the intermediate QMP output.
 
-The remaining input qualification boundary is F1–F6 Activity/navigation
+The remaining input qualification boundary is F1-F6 Activity/navigation
 semantics. F7/F8 Space selection is closed for the supported headless QEMU
 path; host-window pointer/grab behavior remains a separate convenience check.
+
+GTK4 Home now also exposes a visible `Navigate (F1-F6)` accessible action
+menu. Its Neighborhood, Group, Home, Activity, Journal, and Frame buttons
+invoke the same semantic shell actions without depending on physical
+function-key delivery. This closes the user-facing action path while the
+physical F1-F6 transport remains a separate QEMU/host qualification item.

@@ -73,6 +73,22 @@ def test_home_exposes_semantic_space_actions_from_accessible_button():
     assert '*0169*) target="$root/sources/sugar"' in build
 
 
+def test_home_exposes_semantic_navigation_actions_from_accessible_button():
+    patch = (ROOT / 'patches/gtk4-preview/0202-home-navigation-action-menu.patch').read_text()
+    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
+    assert 'def _build_navigation_button' in patch
+    assert "self._navigation_button.set_tooltip_text(_('Navigate (F1-F6)'))" in patch
+    for label in ('Neighborhood (F1)', 'Group (F2)', 'Home (F3)',
+                  'Activity (F4)', 'Journal (F5)', 'Frame (F6)'):
+        assert label in patch
+    assert 'shell.get_model().set_zoom_level' not in patch
+    assert 'model.set_zoom_level(levels[target])' in patch
+    assert 'journalactivity.get_journal().show_journal()' in patch
+    assert 'frame.get_view().notify_key_press()' in patch
+    assert 'Gtk.AccessibleProperty.LABEL' in patch
+    assert '*0202*) target="$root/sources/sugar" ;;' in build
+
+
 def test_classic_home_exposes_return_to_modern_space_button():
     toolbar = (ROOT / 'sugar-overlay/src/jarabe/desktop/viewtoolbar.py').read_text()
     assert 'def _build_spaces_button' in toolbar

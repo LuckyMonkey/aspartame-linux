@@ -1,0 +1,99 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] home: expose semantic navigation actions without function keys
+The GTK4 Home toolbar already provides a visible Spaces action menu. Add the
+remaining F1-F6 navigation actions there as well, so Activity and Journal
+navigation remains usable when physical function-key delivery is unavailable
+or a host window owns the keyboard focus.
+
+The actions call the same ShellModel, Journal, and Frame APIs as the normal
+Sugar controls. This is a semantic fallback, not a second key-grabbing
+implementation.
+--- a/src/jarabe/desktop/viewtoolbar.py
++++ b/src/jarabe/desktop/viewtoolbar.py
+@@ -33,6 +33,7 @@
+ from jarabe.desktop import favoritesview
+ from jarabe.model import desktop
++from jarabe.model import shell
+ 
+ _AUTOSEARCH_TIMEOUT = 1000
+@@ -93,6 +94,7 @@
+         self._build_help_button()
++        self._build_navigation_button()
+         self._build_spaces_button()
+ 
+         self._add_separator(expand=True)
+@@ -174,6 +176,65 @@
+         self.append(self._help_button)
++
++    def _build_navigation_button(self):
++        """Expose F1-F6 navigation as semantic, clickable actions."""
++        self._navigation_button = Gtk.Button()
++        image = Gtk.Image.new_from_icon_name('view-list-symbolic')
++        self._navigation_button.set_child(image)
++        self._navigation_button.set_has_frame(False)
++        self._navigation_button.set_valign(Gtk.Align.CENTER)
++        self._navigation_button.set_tooltip_text(_('Navigate (F1-F6)'))
++        self._navigation_button.update_property(
++            [Gtk.AccessibleProperty.LABEL], [_('Navigate (F1-F6)')])
++
++        popover = Gtk.Popover()
++        actions = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
++        actions.set_margin_top(8)
++        actions.set_margin_bottom(8)
++        actions.set_margin_start(8)
++        actions.set_margin_end(8)
++        for target, label in (
++                ('mesh', _('Neighborhood (F1)')),
++                ('group', _('Group (F2)')),
++                ('home', _('Home (F3)')),
++                ('activity', _('Activity (F4)')),
++                ('journal', _('Journal (F5)')),
++                ('frame', _('Frame (F6)'))):
++            action = Gtk.Button(label=label)
++            action.set_halign(Gtk.Align.FILL)
++            action.set_hexpand(True)
++            action.update_property(
++                [Gtk.AccessibleProperty.LABEL], [label])
++            action.connect('clicked', self.__navigation_action_cb,
++                           target, popover)
++            actions.append(action)
++        popover.set_child(actions)
++        popover.set_parent(self._navigation_button)
++        popover.set_has_arrow(True)
++        popover.set_position(Gtk.PositionType.BOTTOM)
++        self._navigation_popover = popover
++        self._navigation_button.connect(
++            'clicked', self.__navigation_button_clicked_cb, popover)
++        self.append(self._navigation_button)
++
++    def __navigation_button_clicked_cb(self, button, popover):
++        if popover.is_visible():
++            popover.popdown()
++        else:
++            popover.popup()
++
++    def __navigation_action_cb(self, button, target, popover):
++        popover.popdown()
++        if target == 'journal':
++            from jarabe.journal import journalactivity
++            journalactivity.get_journal().show_journal()
++            return
++        if target == 'frame':
++            from jarabe import frame
++            frame.get_view().notify_key_press()
++            return
++
++        model = shell.get_model()
++        levels = {
++            'mesh': shell.ShellModel.ZOOM_MESH,
++            'group': shell.ShellModel.ZOOM_GROUP,
++            'home': shell.ShellModel.ZOOM_HOME,
++            'activity': shell.ShellModel.ZOOM_ACTIVITY,
++        }
++        if target == 'activity' and model.get_active_activity() is None:
++            from jarabe.journal import journalactivity
++            journalactivity.get_journal().show_journal()
++            return
++        model.set_zoom_level(levels[target])
+ 
+     def _build_spaces_button(self):
