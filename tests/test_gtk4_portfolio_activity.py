@@ -11,6 +11,7 @@ def test_portfolio_bundle_is_native_and_registered():
     assert "sugar-activity4 portfolioactivity4.PortfolioActivity" in info
     assert "class PortfolioActivity(SimpleActivity)" in source
     assert "Save draft" in source
+    assert "self.save()" in source
     assert "Gtk.ScrolledWindow" in source and "Project description" in source
     assert "Gtk.Overlay" in source and "Describe the project" in source
     assert "controls.set_halign(Gtk.Align.END)" in source

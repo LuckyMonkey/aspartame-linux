@@ -40,7 +40,9 @@ class PortfolioActivity(SimpleActivity):
         self.empty_state.set_visible(not self.body.get_buffer().get_text(start, end, False).strip())
 
     def _save(self, _button):
-        title = self.name.get_text().strip() or "Untitled project"; self.status.set_text("Draft saved: %s" % title)
+        title = self.name.get_text().strip() or "Untitled project"
+        self.save()
+        self.status.set_text("Draft saved: %s" % title)
 
     def _clear(self, _button):
         self.name.set_text(""); self.body.get_buffer().set_text(""); self.status.set_text("Write about your project.")
