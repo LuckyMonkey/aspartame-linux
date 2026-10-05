@@ -9,9 +9,11 @@ root as a side-by-side workspace. The selected track and playback hint remain
 visible at normal Sugar dimensions, with status and controls aligned beneath
 the panes.
 
-The offline demo-track model, local-track entry point, and Journal payload are
-unchanged. This is a layout and interaction qualification pass, not a codec
-implementation.
+The offline demo-track model and Journal payload remain compatible. Local
+tracks now retain their URI and use an optional native GStreamer `playbin`
+backend when the guest provides one; demo tracks continue to exercise the
+deterministic UI without requiring audio files. This is a backend path, not a
+claim that every codec or audio device is qualified.
 
 ## Verification
 

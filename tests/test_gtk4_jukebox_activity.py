@@ -20,6 +20,9 @@ def test_jukebox_is_native_offline_and_accessible():
     assert "footer.append(self.status)" in source
     assert "listboxrow:selected" in source
     assert 'AccessibleProperty.LABEL' in source
+    assert 'Gst.ElementFactory.make("playbin"' in source
+    assert 'file_obj.get_uri()' in source
+    assert "Local file · ready to play" in source
     assert "require_version(\"Gtk\", \"3.0\")" not in source
 
 

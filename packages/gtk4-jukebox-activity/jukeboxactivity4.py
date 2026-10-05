@@ -1,14 +1,21 @@
 """Small offline GTK4 Jukebox for the modern Sugar Space.
 
-The original Jukebox can play arbitrary media.  This port keeps the useful
+The original Jukebox can play arbitrary media. This port keeps the useful
 playlist interaction self-contained for the shell: bundled demo tracks can be
 selected and their play/stop state is visible without requiring a codec,
-network, or media file in the test image.  Local files may also be added to
-the playlist for a future media backend.
+network, or media file in the test image. Local files use an optional native
+GStreamer playbin when the guest provides an audio backend.
 """
 
 import json
 from pathlib import Path
+
+import gi
+try:
+    gi.require_version("Gst", "1.0")
+    from gi.repository import Gst
+except (ImportError, ValueError):
+    Gst = None
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
@@ -28,6 +35,9 @@ class JukeboxActivity(SimpleActivity):
         self._tracks = list(DEMO_TRACKS)
         self._selected = 0
         self._playing = False
+        self._pipeline = None
+        if Gst is not None:
+            Gst.init(None)
         self._build()
 
     def _build(self):
@@ -108,7 +118,8 @@ class JukeboxActivity(SimpleActivity):
     def _refresh_playlist(self):
         while (row := self.playlist.get_row_at_index(0)) is not None:
             self.playlist.remove(row)
-        for index, (name, detail) in enumerate(self._tracks):
+        for index, track in enumerate(self._tracks):
+            name, detail = track[:2]
             row = Gtk.ListBoxRow()
             row.track_index = index
             box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
@@ -120,19 +131,61 @@ class JukeboxActivity(SimpleActivity):
         if row is not None:
             self.playlist.select_row(row)
 
+    def _selected_track(self):
+        track = self._tracks[self._selected]
+        return track[0], track[1], track[2] if len(track) > 2 else None
+
     def _row_selected(self, _list, row):
         if row is None:
             return
         self._selected = row.track_index
+        name, _detail, _uri = self._selected_track()
         if not self._playing and hasattr(self, "status"):
-            self.status.set_text("Ready: %s" % self._tracks[self._selected][0])
-        self.now_playing.set_text("Ready: %s" % self._tracks[self._selected][0])
+            self.status.set_text("Ready: %s" % name)
+        self.now_playing.set_text("Ready: %s" % name)
+
+    def _release_pipeline(self):
+        if self._pipeline is None:
+            return
+        self._pipeline.get_bus().remove_signal_watch()
+        self._pipeline.set_state(Gst.State.NULL)
+        self._pipeline = None
+
+    def _finish_playback(self, status):
+        self._release_pipeline()
+        self._playing = False
+        self.status.set_text(status)
+        self.now_playing.set_text(status)
+        self.play.set_label("Play")
+        self.play.set_sensitive(True)
+        self.stop.set_sensitive(False)
+
+    def _gst_message(self, _bus, message):
+        if message.type == Gst.MessageType.EOS:
+            self._finish_playback("Finished: %s" % self._selected_track()[0])
+        elif message.type == Gst.MessageType.ERROR:
+            error, _debug = message.parse_error()
+            self._finish_playback("Playback error: %s" % error.message)
 
     def _play_selected(self, _button):
         row = self.playlist.get_selected_row()
         if row is not None:
             self._selected = row.track_index
-        name = self._tracks[self._selected][0]
+        name, _detail, uri = self._selected_track()
+        self._release_pipeline()
+        if uri:
+            if Gst is None:
+                self.status.set_text("Audio backend unavailable: %s" % name)
+                return
+            self._pipeline = Gst.ElementFactory.make("playbin", "jukebox-playbin")
+            if self._pipeline is None:
+                self.status.set_text("Audio backend unavailable: %s" % name)
+                return
+            self._pipeline.set_property("uri", uri)
+            bus = self._pipeline.get_bus()
+            bus.add_signal_watch()
+            bus.connect("message", self._gst_message)
+            self._pipeline.set_state(Gst.State.PLAYING)
         self._playing = True
         self.status.set_text("Playing: %s" % name)
         self.now_playing.set_text("Playing: %s" % name)
@@ -141,12 +194,7 @@ class JukeboxActivity(SimpleActivity):
         self.stop.set_sensitive(True)
 
     def _stop(self, _button):
-        self._playing = False
-        self.status.set_text("Stopped: %s" % self._tracks[self._selected][0])
-        self.now_playing.set_text("Stopped: %s" % self._tracks[self._selected][0])
-        self.play.set_label("Play")
-        self.play.set_sensitive(True)
-        self.stop.set_sensitive(False)
+        self._finish_playback("Stopped: %s" % self._selected_track()[0])
 
     def _add_local(self, _button):
         dialog = Gtk.FileDialog(title="Choose an audio file")
@@ -159,7 +207,7 @@ class JukeboxActivity(SimpleActivity):
             return
         if file_obj is not None:
             name = file_obj.get_basename() or "Local track"
-            self._tracks.append((name, "Local file · playback backend pending"))
+            self._tracks.append((name, "Local file · ready to play", file_obj.get_uri()))
             self._selected = len(self._tracks) - 1
             self._refresh_playlist()
             self.status.set_text("Added: %s" % name)
@@ -178,16 +226,19 @@ class JukeboxActivity(SimpleActivity):
             return
         restored = []
         for track in tracks:
-            if isinstance(track, list) and len(track) == 2:
-                restored.append((str(track[0]), str(track[1])))
+            if isinstance(track, list) and len(track) >= 2:
+                values = (str(track[0]), str(track[1]))
+                if len(track) > 2 and track[2]:
+                    values += (str(track[2]),)
+                restored.append(values)
         if restored:
             self._tracks = restored
         self._selected = max(0, min(int(payload.get("selected", 0)), len(self._tracks) - 1))
         self._playing = False
         self._refresh_playlist()
-        self.status.set_text("Ready: %s" % self._tracks[self._selected][0])
-        self.now_playing.set_text("Ready: %s" % self._tracks[self._selected][0])
+        self.status.set_text("Ready: %s" % self._selected_track()[0])
+        self.now_playing.set_text("Ready: %s" % self._selected_track()[0])
 
     def write_file(self, file_path):
         """Save playlist and selected track as a JSON Journal object."""
-        Path(file_path).write_text(json.dumps({"tracks": self._tracks, "selected": self._selected}, sort_keys=True) + "\n", encoding="utf-8")
+        Path(file_path).write_text(json.dumps({"tracks": [list(track) for track in self._tracks], "selected": self._selected}, sort_keys=True) + "\n", encoding="utf-8")
