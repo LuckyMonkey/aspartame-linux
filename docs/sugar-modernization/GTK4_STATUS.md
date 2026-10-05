@@ -101,6 +101,12 @@ capture confirms the seeded `12,345` value and centered layout; the guest
 Journal resume/lifecycle receipt passes independently. This remains a
 FUNCTIONAL PORT because advanced bead manipulation is not yet reproduced.
 
+The 2026-10-05 Markdown UX pass now makes the source/preview relationship
+explicit with framed equal panes, a readable monospace source editor, a guided
+empty-source state, top-aligned preview content, and a concise character-count
+footer. A fresh headless 1920x1080 capture and Journal resume/lifecycle receipt
+pass; full Markdown parser/rendering parity remains open.
+
 Chirality Milestone 1 now has a real GTK4-only Activity adapter and a guest
 probe that switches Calculate and Clock Left/Right/Left on one visible
 surface, then verifies Activity service cleanup. This advances the forward

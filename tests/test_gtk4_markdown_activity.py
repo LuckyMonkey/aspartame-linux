@@ -14,6 +14,10 @@ def test_markdown_bundle_is_native_and_registered():
     assert "DEFAULT_MARKDOWN" in source and "Start writing here" in source
     assert "self.editor.get_buffer().set_text(DEFAULT_MARKDOWN)" in source
     assert "editor_frame" in source and "preview_frame" in source
+    assert "editor_empty" in source and "Empty Markdown editor" in source
+    assert "Markdown source" in source and "Ready · 0 characters" in source
+    assert "self.preview.set_yalign(0.0)" in source
+    assert "label.markdown-title" in source
     assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
     assert "frame.editor-pane" in source
     assert "Gtk.ScrolledWindow" in source
