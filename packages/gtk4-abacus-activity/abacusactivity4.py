@@ -21,7 +21,7 @@ class AbacusActivity(SimpleActivity):
         title.add_css_class("abacus-title")
         root.append(title)
         subtitle = Gtk.Label(
-            label="Set each place from 0 to 9, then read the number below.",
+            label="Click a bead or use +/− to set each place from 0 to 9, then read the number below.",
             xalign=0, wrap=True)
         subtitle.add_css_class("dim-label")
         root.append(subtitle)
@@ -62,11 +62,27 @@ class AbacusActivity(SimpleActivity):
             minus.update_property([Gtk.AccessibleProperty.LABEL], [f"Decrease {place_names[index]}"])
             minus.connect("clicked", self._change, index, -1)
             row.append(minus)
-            bead = Gtk.Label(xalign=0.5)
-            bead.set_size_request(300, 44); bead.set_hexpand(False)
-            bead.add_css_class("abacus-beads")
-            bead.update_property([Gtk.AccessibleProperty.LABEL], [f"Rod {index + 1} beads"])
-            row.append(bead); self._beads.append(bead)
+            bead_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=2)
+            bead_box.set_size_request(340, 44)
+            bead_box.set_halign(Gtk.Align.CENTER)
+            bead_buttons = []
+            for bead_index in range(10):
+                bead = Gtk.Button(label="○")
+                bead.set_size_request(30, 42)
+                bead.add_css_class("abacus-bead")
+                bead.set_tooltip_text(f"Set {place_names[index]} to {bead_index + 1}")
+                bead.update_property(
+                    [Gtk.AccessibleProperty.LABEL, Gtk.AccessibleProperty.DESCRIPTION],
+                    [
+                        f"Set {place_names[index]} to {bead_index + 1}",
+                        f"Move the {bead_index + 1}th bead on the {place_names[index]} rod",
+                    ],
+                )
+                bead.connect("clicked", self._set_digit, index, bead_index + 1)
+                bead_box.append(bead)
+                bead_buttons.append(bead)
+            row.append(bead_box)
+            self._beads.append(bead_buttons)
             plus = Gtk.Button(label="+")
             plus.set_size_request(48, 44)
             plus.set_tooltip_text(f"Increase {place_names[index]}")
@@ -81,16 +97,26 @@ class AbacusActivity(SimpleActivity):
         clear.connect("clicked", self._clear)
         root.append(clear)
         self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"frame.abacus-card { border: 2px solid #8aa8b8; border-radius: 10px; padding: 14px 18px; } box.abacus-row { padding: 7px 4px; } label.abacus-title { font-size: 26px; font-weight: bold; } label.abacus-value { font-size: 22px; font-weight: bold; color: #2f88bd; } label.abacus-beads { font-size: 28px; letter-spacing: 2px; } button { min-height: 42px; min-width: 42px; border-radius: 19px; }"); display = Gdk.Display.get_default()
+        provider = Gtk.CssProvider(); provider.load_from_data(b"frame.abacus-card { border: 2px solid #8aa8b8; border-radius: 10px; padding: 14px 18px; } box.abacus-row { padding: 7px 4px; } label.abacus-title { font-size: 26px; font-weight: bold; } label.abacus-value { font-size: 22px; font-weight: bold; color: #2f88bd; } button { min-height: 42px; min-width: 42px; border-radius: 19px; } button.abacus-bead { min-width: 28px; padding: 0; font-size: 20px; } button.abacus-bead.filled { color: #2f88bd; font-weight: bold; }"); display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self._render_beads()
 
     def _render_beads(self):
-        for index, bead in enumerate(self._beads):
+        for index, beads in enumerate(self._beads):
             value = self.values[index]
-            bead.set_text("● " * value + "○ " * (10 - value))
-            bead.update_property([Gtk.AccessibleProperty.LABEL], [
-                f"Rod {index + 1}, value {value} of 9"])
+            for bead_index, bead in enumerate(beads):
+                filled = bead_index < value
+                bead.set_label("●" if filled else "○")
+                bead.remove_css_class("filled")
+                if filled:
+                    bead.add_css_class("filled")
+                bead.update_property([Gtk.AccessibleProperty.LABEL], [
+                    f"Set rod {index + 1} to {bead_index + 1}; current value {value}"])
+
+    def _set_digit(self, _button, index, value):
+        self.values[index] = value
+        self._update_value()
+        self._render_beads()
 
     def _change(self, _button, index, delta):
         self.values[index] = max(0, min(9, self.values[index] + delta)); self._update_value(); self._render_beads()

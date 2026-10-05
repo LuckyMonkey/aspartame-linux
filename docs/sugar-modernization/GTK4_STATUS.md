@@ -96,9 +96,11 @@ line navigation on the bounded runner. The full host suite is green at
 
 The 2026-10-05 Abacus UX pass replaced the stretched edge-to-edge rod grid with
 a centered, width-constrained work card, readable place labels, a prominent
-current-value card, and stable increase/decrease controls. A headless 1920x1080
-capture confirms the seeded `12,345` value and centered layout; the guest
-Journal resume/lifecycle receipt passes independently. This remains a
+current-value card, and stable increase/decrease controls. Each rod now also
+offers direct clickable bead positions while retaining the +/- controls for
+keyboard and assistive-technology users. A headless 1920x1080 capture confirms
+the seeded `12,345` value and centered layout; the guest Journal resume/lifecycle
+receipt passes independently. This remains a
 FUNCTIONAL PORT because advanced bead manipulation is not yet reproduced.
 
 The 2026-10-05 Markdown UX pass now makes the source/preview relationship

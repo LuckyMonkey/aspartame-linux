@@ -38,6 +38,19 @@ def main():
                 got=find(c,pid,text,depth+1)
                 if got is not None:return got
         return None
+    def find_button(node,pid,name,depth=0):
+        if depth>12:return None
+        if node.get_process_id()==pid and node.get_role_name()=="button":
+            label=node.get_name() or ""
+            try: label += " " + (node.get_description() or "")
+            except Exception: pass
+            if name in label:return node
+        for i in range(node.get_child_count()):
+            child=node.get_child_at_index(i)
+            if child is not None:
+                got=find_button(child,pid,name,depth+1)
+                if got is not None:return got
+        return None
     def launch(uid="",expected="Value: 0"):
         assert journal.LaunchBundle(BUNDLE_ID,uid);pid,aid=wait_for("Abacus process",lambda:next(iter(procs()),None));wait_for("service",lambda:bus.name_has_owner("org.laptop.Activity"+aid));wait_for("shell",lambda:shell.ActivateActivity(aid));return pid,aid,wait_for("visible Abacus",lambda:find(Atspi.get_desktop(0),pid,expected))
     def stop(pid,aid):
@@ -47,9 +60,10 @@ def main():
     for cycle in range(1,cycles+1):
         pid,aid,node=launch();stop(pid,aid);rows,_=store.find(dbus.Dictionary({"activity_id":aid},signature="sv"),dbus.Array(["uid"],signature="s"));assert len(rows)==1
         uid=str(rows[0]["uid"]);fn=Path(str(store.get_filename(uid)));fn.write_text('{"values":[1,2,3,4,5]}\n',encoding="utf-8");rpid,raid,rnode=launch(uid,"Value: 12,345");assert "Value: 12,345" in Atspi.Text.get_text(rnode,0,-1)
+        bead=wait_for("direct bead action",lambda:find_button(Atspi.get_desktop(0),rpid,"Move the 7th bead on the Ones rod"));assert bead and bead.get_n_actions();assert bead.get_action().do_action(0);wait_for("direct bead value",lambda:find(Atspi.get_desktop(0),rpid,"Value: 12,347"))
         if len(sys.argv) > 2 and cycle == cycles:
             subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "x11grab", "-video_size", "1920x1080", "-i", ":0", "-frames:v", "1", "-y", sys.argv[2]], check=True)
         stop(rpid,raid);assert "12345" not in fn.read_text(encoding="utf-8") or "values" in fn.read_text(encoding="utf-8")
         print(f"cycle={cycle} pid={pid} resumed_pid={rpid} object={uid} resume=PASS service-release=PASS shell-cleanup=PASS",flush=True)
-    print("abacus-roundtrip=PASS input-method=AT-SPI datastore-payload=seeded",flush=True)
+    print("abacus-roundtrip=PASS direct-bead-action=PASS input-method=AT-SPI datastore-payload=seeded",flush=True)
 if __name__=="__main__":main()
