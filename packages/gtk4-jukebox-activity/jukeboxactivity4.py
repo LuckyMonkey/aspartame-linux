@@ -80,11 +80,13 @@ class JukeboxActivity(SimpleActivity):
         player_hint.add_css_class("dim-label"); player.append(player_hint)
         player_frame = Gtk.Frame(label="Player"); player_frame.add_css_class("player-pane"); player_frame.set_hexpand(True); player_frame.set_vexpand(True); player_frame.set_child(player)
 
-        panes = Gtk.Grid(column_spacing=16)
+        panes = Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL)
         panes.set_hexpand(True); panes.set_vexpand(True)
-        panes.set_column_homogeneous(True)
-        panes.attach(playlist_frame, 0, 0, 1, 1)
-        panes.attach(player_frame, 1, 0, 1, 1)
+        panes.set_wide_handle(True)
+        panes.set_resize_start_child(True); panes.set_resize_end_child(True)
+        panes.set_shrink_start_child(False); panes.set_shrink_end_child(False)
+        panes.set_start_child(playlist_frame); panes.set_end_child(player_frame)
+        panes.set_position(-1)
         root.append(panes)
         self._refresh_playlist()
 

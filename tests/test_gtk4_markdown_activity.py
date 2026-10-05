@@ -21,7 +21,8 @@ def test_markdown_bundle_is_native_and_registered():
     assert "Markdown source" in source and "Ready · 0 characters" in source
     assert "self.preview.set_yalign(0.0)" in source
     assert "label.markdown-title" in source
-    assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
+    assert "Gtk.Paned" in source and "set_start_child(editor_frame)" in source
+    assert "set_end_child(preview_frame)" in source
     assert "frame.editor-pane" in source
     assert "Gtk.ScrolledWindow" in source
     assert "from markdown_renderer import render_markdown" in source
