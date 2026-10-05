@@ -51,3 +51,10 @@ The first visual-sweep cleanup pass is in `Write`, `Portfolio`, and `Finance`:
 This is forward UX progress, not a retirement-gate claim. The next pass should
 apply the same visual rule to the remaining sparse/table-heavy Activities and
 then collect real workflow evidence for each candidate.
+
+The follow-up pass also clarified Calculate history, Pippy output, and Jukebox
+playback state. Calculate now labels and explains an empty history pane, Pippy
+shows output as a deliberate run/result surface, and Jukebox keeps playback
+status beside its actions while visually marking the selected track. Pippy's
+bounded runner remains the forward path for the upcoming Python-runtime work;
+it is not yet a claim of full upstream Pippy parity.

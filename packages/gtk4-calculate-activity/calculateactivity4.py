@@ -203,7 +203,6 @@ class CalculateActivity(SimpleActivity):
                                                       ("x²", "^2", "Square"),
                                                       ("⌫", None, "Delete last character"))):
             grid.attach(self._key(label, text, name), column, 4, 1, 1)
-        main.append(grid)
         functions = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         for name in ("sin", "cos", "tan", "log", "ln", "factorial"):
             functions.append(self._key(name, name + "(", name))
@@ -236,13 +235,23 @@ class CalculateActivity(SimpleActivity):
         self.history_list.set_activate_on_single_click(True)
         self.history_list.update_property([Gtk.AccessibleProperty.LABEL], ["Calculation history"])
         self.history_list.connect("row-activated", self._history_activated)
+        history_placeholder = Gtk.Label(label="No calculations yet.\nRun an expression to build history.", wrap=True)
+        history_placeholder.add_css_class("history-empty")
+        history_placeholder.set_margin_top(24); history_placeholder.set_margin_bottom(24)
+        history_placeholder.set_margin_start(16); history_placeholder.set_margin_end(16)
+        self.history_list.set_placeholder(history_placeholder)
         scroll = Gtk.ScrolledWindow(); scroll.set_child(self.history_list)
         scroll.set_vexpand(True); scroll.set_hexpand(True); scroll.set_size_request(260, -1)
         side.append(scroll)
         clear_history = Gtk.Button(label="Clear history")
         clear_history.connect("clicked", lambda *_: self._set_history([]))
+        clear_history.set_halign(Gtk.Align.END)
         side.append(clear_history)
-        root.append(side)
+        history_frame = Gtk.Frame(label="History")
+        history_frame.add_css_class("history-pane")
+        history_frame.set_vexpand(True)
+        history_frame.set_child(side)
+        root.append(history_frame)
         surface = Gtk.Frame(label="Calculator")
         surface.set_hexpand(True)
         surface.set_vexpand(True)
@@ -261,7 +270,7 @@ class CalculateActivity(SimpleActivity):
 
     def _install_css(self):
         provider = Gtk.CssProvider()
-        provider.load_from_data(b".calculate-result { font-size: 28px; font-weight: bold; color: #2f88bd; } .calculate-error { color: #c0392b; font-size: 18px; } button { min-height: 38px; border-radius: 18px; }")
+        provider.load_from_data(b".calculate-result { font-size: 28px; font-weight: bold; color: #2f88bd; } .calculate-error { color: #c0392b; font-size: 18px; } frame.history-pane { border: 1px solid #8aa8b8; border-radius: 10px; padding: 10px; } label.history-empty { background: #f1f5f7; border-radius: 12px; padding: 18px; color: #52636b; } button { min-height: 38px; border-radius: 18px; }")
         display = Gdk.Display.get_default()
         if display:
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)

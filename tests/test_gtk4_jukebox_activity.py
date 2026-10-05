@@ -17,6 +17,8 @@ def test_jukebox_is_native_offline_and_accessible():
     assert "root.append(panes)" in source
     assert 'Gtk.Frame(label="Player")' in source
     assert "now_playing" in source
+    assert "footer.append(self.status)" in source
+    assert "listboxrow:selected" in source
     assert 'AccessibleProperty.LABEL' in source
     assert "require_version(\"Gtk\", \"3.0\")" not in source
 

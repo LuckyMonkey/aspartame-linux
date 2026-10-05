@@ -78,7 +78,7 @@ class JukeboxActivity(SimpleActivity):
         root.append(panes)
         self._refresh_playlist()
 
-        root.append(self.status)
+        self.status.set_hexpand(True)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         self.play = Gtk.Button(label="Play")
         self.play.update_property([Gtk.AccessibleProperty.LABEL], ["Play selected track"])
@@ -91,13 +91,16 @@ class JukeboxActivity(SimpleActivity):
         self.add.connect("clicked", self._add_local)
         controls.append(self.play); controls.append(self.stop); controls.append(self.add)
         controls.set_halign(Gtk.Align.END)
-        root.append(controls)
+        footer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        footer.append(self.status)
+        footer.append(controls)
+        root.append(footer)
         self.set_canvas(root)
         self._install_css()
 
     def _install_css(self):
         provider = Gtk.CssProvider()
-        provider.load_from_data(b"frame.player-pane { border: 1px solid #8aa8b8; border-radius: 10px; } listboxrow { padding: 12px; } .track-title { font-weight: bold; } button { min-height: 40px; border-radius: 18px; }")
+        provider.load_from_data(b"frame.player-pane { border: 1px solid #8aa8b8; border-radius: 10px; padding: 8px; } listboxrow { padding: 12px; } listboxrow:selected { background: #dbeef7; } .track-title { font-weight: bold; } button { min-height: 40px; border-radius: 18px; }")
         display = Gdk.Display.get_default()
         if display:
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)

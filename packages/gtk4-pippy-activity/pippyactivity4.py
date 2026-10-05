@@ -135,12 +135,24 @@ class PippyActivity(SimpleActivity):
         output_scroll = Gtk.ScrolledWindow()
         output_scroll.set_min_content_height(130)
         output_scroll.set_hexpand(True)
+        output_scroll.set_vexpand(True)
         output_scroll.set_child(self.output)
+        output_surface = Gtk.Overlay()
+        output_surface.set_hexpand(True)
+        output_surface.set_vexpand(True)
+        output_surface.set_child(output_scroll)
+        self.output_empty = Gtk.Label(label=OUTPUT_PLACEHOLDER, wrap=True)
+        self.output_empty.add_css_class("code-empty-state")
+        self.output_empty.set_halign(Gtk.Align.CENTER)
+        self.output_empty.set_valign(Gtk.Align.CENTER)
+        self.output_empty.set_can_target(False)
+        self.output_empty.set_max_width_chars(40)
+        output_surface.add_overlay(self.output_empty)
         output_frame = Gtk.Frame(label="Output")
         output_frame.add_css_class("code-pane")
         output_frame.set_hexpand(True)
         output_frame.set_vexpand(True)
-        output_frame.set_child(output_scroll)
+        output_frame.set_child(output_surface)
 
         panes = Gtk.Grid(column_spacing=16)
         panes.set_hexpand(True); panes.set_vexpand(True)
@@ -156,10 +168,10 @@ class PippyActivity(SimpleActivity):
         self._run_generation = 0
         self._cancel_event = None
         self.set_canvas(root)
-        self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
+        self.output.get_buffer().set_text("")
 
         provider = Gtk.CssProvider()
-        provider.load_from_data(b"frame.code-pane { border: 1px solid #8aa8b8; border-radius: 10px; } textview { padding: 10px; } button { min-height: 42px; border-radius: 19px; }")
+        provider.load_from_data(b"frame.code-pane { border: 1px solid #8aa8b8; border-radius: 10px; padding: 8px; } textview { padding: 10px; } label.code-empty-state { background: #f1f5f7; border-radius: 12px; padding: 18px 24px; color: #52636b; } button { min-height: 42px; border-radius: 19px; }")
         display = Gdk.Display.get_default()
         if display:
             Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -174,6 +186,8 @@ class PippyActivity(SimpleActivity):
         self.run_button.set_sensitive(False)
         self.stop_button.set_sensitive(True)
         self.status.set_text("Running…")
+        self.output_empty.set_visible(False)
+        self.output.get_buffer().set_text("Running…")
         self._cancel_event = threading.Event()
         threading.Thread(
             target=self._execute,
@@ -267,7 +281,8 @@ class PippyActivity(SimpleActivity):
         self.stop_button.set_sensitive(False)
         self._cancel_event = None
         self.editor.get_buffer().set_text(EXAMPLES[name])
-        self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
+        self.output.get_buffer().set_text("")
+        self.output_empty.set_visible(True)
         self.status.set_text("Ready: %s example" % name)
 
     def read_file(self, file_path):
@@ -277,7 +292,8 @@ class PippyActivity(SimpleActivity):
         except (OSError, UnicodeError):
             program = DEFAULT_PROGRAM
         self.editor.get_buffer().set_text(program)
-        self.output.get_buffer().set_text(OUTPUT_PLACEHOLDER)
+        self.output.get_buffer().set_text("")
+        self.output_empty.set_visible(True)
         self.status.set_text("Ready")
         self._run_generation += 1
         if self._cancel_event is not None:

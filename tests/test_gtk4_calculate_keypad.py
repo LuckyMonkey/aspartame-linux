@@ -42,6 +42,10 @@ def test_calculate_layout_centers_a_responsive_keypad():
     assert "Gtk.Clamp" not in source
     assert 'Gtk.Frame(label="Calculator")' in source
     assert 'Gtk.Frame(label="Keypad")' in source
+    assert 'Gtk.Frame(label="History")' in source
+    assert 'self.history_list.set_placeholder(history_placeholder)' in source
+    assert 'label.history-empty' in source
+    assert 'main.append(grid)' not in source
     assert "main.set_hexpand(True)" in source
     assert "main.set_vexpand(True)" in source
     assert "surface.set_hexpand(True)" in source

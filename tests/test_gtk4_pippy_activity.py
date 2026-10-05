@@ -33,6 +33,9 @@ def test_pippy_bundle_is_native_and_registered():
     assert "Gtk.Grid" in source and "set_column_homogeneous(True)" in source
     assert "root.append(panes)" in source
     assert "frame.code-pane" in source
+    assert "self.output_empty" in source and "Gtk.Overlay" in source
+    assert "label.code-empty-state" in source
+    assert "output_empty.set_visible(False)" in source
     assert "EXAMPLES = {" in source and "Program input" in source
     assert "_editor_key" in source and "_goto_line" in source
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
