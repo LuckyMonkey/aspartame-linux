@@ -172,6 +172,7 @@ rm -f "$share/patches/gtk4-preview/0124-terminal-vte-compat.patch" \
       "$share/patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch" \
       "$share/patches/gtk4-preview/0186-toolkit-accept-public-join-requests.patch" \
       "$share/patches/gtk4-preview/0187-toolkit-invite-public-contacts.patch" \
+      "$share/patches/gtk4-preview/0189-toolkit-accept-public-remote-pending.patch" \
       "$share/patches/gtk4-preview/0190-toolkit-remote-pending-self-handle.patch" \
       "$share/patches/gtk4-preview/0191-toolkit-join-self-remote-pending.patch" \
       "$share/patches/gtk4-preview/0192-toolkit-join-remote-pending-signal.patch" \
