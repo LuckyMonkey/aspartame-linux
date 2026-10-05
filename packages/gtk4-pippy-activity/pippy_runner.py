@@ -48,6 +48,12 @@ RESOURCE_LIMITS = {
     "open_files": 32,
 }
 
+IO_LIMITS = {
+    "source_bytes": 256 * 1024,
+    "input_bytes": 64 * 1024,
+    "output_bytes": 64 * 1024,
+}
+
 
 @dataclass(frozen=True)
 class RunResult:
@@ -55,6 +61,7 @@ class RunResult:
     returncode: int
     timed_out: bool = False
     cancelled: bool = False
+    output_truncated: bool = False
 
 
 def runtime_descriptor():
@@ -69,7 +76,16 @@ def runtime_descriptor():
         "working_directory": "disposable temporary directory",
         "network": "not sandboxed",
         "resource_limits": dict(RESOURCE_LIMITS),
+        "io_limits": dict(IO_LIMITS),
     }
+
+
+def _read_bounded(path: Path) -> tuple[str, bool]:
+    data = path.read_bytes()
+    truncated = len(data) > IO_LIMITS["output_bytes"]
+    if truncated:
+        data = data[:IO_LIMITS["output_bytes"]]
+    return data.decode("utf-8", errors="replace"), truncated
 
 
 def _combined_output(stdout: str, stderr: str) -> str:
@@ -82,8 +98,19 @@ def run_program(program: str, *, timeout: float = 5.0,
                 input_text: str = "", cancel_event=None) -> RunResult:
     """Run one source buffer in a bounded, disposable working directory."""
 
+    source_bytes = program.encode("utf-8")
+    input_bytes = input_text.encode("utf-8")
+    if len(source_bytes) > IO_LIMITS["source_bytes"]:
+        return RunResult("Program is too large to run in Pippy.", 1)
+    if len(input_bytes) > IO_LIMITS["input_bytes"]:
+        return RunResult("Program input is too large to run in Pippy.", 1)
+
     with tempfile.TemporaryDirectory(prefix="aspartame-pippy-") as directory:
         Path(directory, "program.py").write_text(program, encoding="utf-8")
+        stdout_path = Path(directory, "stdout.txt")
+        stderr_path = Path(directory, "stderr.txt")
+        stdout_file = stdout_path.open("wb")
+        stderr_file = stderr_path.open("wb")
         environment = {
             "HOME": directory,
             "PATH": os.defpath,
@@ -97,8 +124,8 @@ def run_program(program: str, *, timeout: float = 5.0,
             cwd=directory,
             env=environment,
             stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stdout=stdout_file,
+            stderr=stderr_file,
             text=True,
             start_new_session=True,
         )
@@ -121,22 +148,36 @@ def run_program(program: str, *, timeout: float = 5.0,
         except subprocess.TimeoutExpired as error:
             os.killpg(process.pid, signal.SIGKILL)
             stdout, stderr = process.communicate()
+            stdout_file.close(); stderr_file.close()
+            stdout, stdout_truncated = _read_bounded(stdout_path)
+            stderr, stderr_truncated = _read_bounded(stderr_path)
             output = _combined_output(stdout, stderr)
+            output_truncated = stdout_truncated or stderr_truncated
             detail = f"Program timed out after {timeout:g} seconds."
             if output:
                 detail = f"{output}\n{detail}"
+            if output_truncated:
+                detail = f"{detail}\nOutput was truncated at {IO_LIMITS['output_bytes']} bytes."
             return RunResult(
                 detail,
                 process.returncode if process.returncode is not None else 1,
                 timed_out=True,
+                output_truncated=output_truncated,
             )
         finally:
             if cancel_watcher is not None:
                 cancel_watcher.join(timeout=0.5)
+        stdout_file.close(); stderr_file.close()
+        stdout, stdout_truncated = _read_bounded(stdout_path)
+        stderr, stderr_truncated = _read_bounded(stderr_path)
         output = _combined_output(stdout, stderr)
+        output_truncated = stdout_truncated or stderr_truncated
+        if output_truncated:
+            output = f"{output}\nOutput was truncated at {IO_LIMITS['output_bytes']} bytes."
         cancelled = cancel_event is not None and cancel_event.is_set()
         return RunResult(
             output,
             process.returncode if process.returncode is not None else 1,
             cancelled=cancelled,
+            output_truncated=output_truncated,
         )

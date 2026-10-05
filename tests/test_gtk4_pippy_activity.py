@@ -75,6 +75,11 @@ def test_pippy_runtime_descriptor_states_the_real_execution_boundary():
         "file_size_bytes": 1024 * 1024,
         "open_files": 32,
     }
+    assert descriptor["io_limits"] == {
+        "source_bytes": 256 * 1024,
+        "input_bytes": 64 * 1024,
+        "output_bytes": 64 * 1024,
+    }
 
 
 def test_pippy_runner_passes_program_input():
@@ -86,6 +91,24 @@ def test_pippy_runner_passes_program_input():
     )
     assert result.returncode == 0
     assert result.output.strip() == "SUGAR"
+
+
+def test_pippy_runner_bounds_source_input_and_output():
+    runner = load_runner()
+    too_large_source = runner.run_program("x" * (runner.IO_LIMITS["source_bytes"] + 1))
+    assert too_large_source.returncode != 0
+    assert "too large" in too_large_source.output
+
+    too_large_input = runner.run_program(
+        "print(input())", input_text="x" * (runner.IO_LIMITS["input_bytes"] + 1)
+    )
+    assert too_large_input.returncode != 0
+    assert "input is too large" in too_large_input.output
+
+    noisy = runner.run_program("print('x' * 200000)", timeout=2)
+    assert noisy.returncode == 0
+    assert noisy.output_truncated
+    assert "Output was truncated" in noisy.output
 
 
 def test_pippy_runner_reports_errors_and_kills_wall_clock_timeout():

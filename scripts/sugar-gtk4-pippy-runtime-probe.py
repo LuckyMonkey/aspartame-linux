@@ -21,6 +21,7 @@ def main():
     assert runtime["working_directory"] == "disposable temporary directory"
     assert runtime["network"] == "not sandboxed"
     assert runtime["resource_limits"]["cpu_seconds"] == 2
+    assert runtime["io_limits"]["output_bytes"] == 64 * 1024
     output = run_program("print('pippy-runtime-ok')", timeout=2)
     assert output.returncode == 0
     assert output.output.strip() == "pippy-runtime-ok"
@@ -35,6 +36,8 @@ def main():
     ).start()
     cancelled = run_program("while True: pass", timeout=2, cancel_event=cancel)
     assert cancelled.cancelled
+    noisy = run_program("print('x' * 200000)", timeout=2)
+    assert noisy.output_truncated
     print(
         "pippy-runtime=PASS output=PASS error=PASS "
         "wall-timeout=PASS cancel=PASS isolated-runner=PASS "

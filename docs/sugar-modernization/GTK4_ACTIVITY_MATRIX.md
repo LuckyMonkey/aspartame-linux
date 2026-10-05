@@ -199,6 +199,13 @@ not sandboxed. The boundary is intentionally described as bounded local
 execution, not a complete security sandbox. The guest probe is
 `scripts/sugar-gtk4-pippy-runtime-probe.py`.
 
+The runtime boundary now also caps source, stdin, and captured output sizes.
+Child output is written to disposable files rather than accumulated in the
+parent pipe, then read back with a 64 KiB presentation cap and an explicit
+truncation marker. No network isolation is claimed; this change keeps noisy
+teaching programs responsive without pretending that Pippy is a security
+sandbox.
+
 The next canvas pass aligned TurtleBlocks, Connect the Dots, and Gears with
 the same Sugar learning-surface pattern: an instructional subtitle, visible
 progress/status semantics, centered actions, and accessible action names.
