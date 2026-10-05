@@ -5,6 +5,7 @@ from pathlib import Path
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
+from portfolio_export import write_html
 
 
 class PortfolioActivity(SimpleActivity):
@@ -28,6 +29,11 @@ class PortfolioActivity(SimpleActivity):
         footer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8); footer.append(self.status)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         controls.set_halign(Gtk.Align.END)
+        export = Gtk.Button(label="Export HTML")
+        export.set_tooltip_text("Export this project as a portable HTML document")
+        export.update_property([Gtk.AccessibleProperty.LABEL], ["Export project as HTML"])
+        export.connect("clicked", self._export_html)
+        controls.append(export)
         save = Gtk.Button(label="Save draft"); save.connect("clicked", self._save); controls.append(save)
         clear = Gtk.Button(label="Clear"); clear.connect("clicked", self._clear); controls.append(clear); footer.append(controls); root.append(footer)
         self.set_canvas(root)
@@ -46,6 +52,23 @@ class PortfolioActivity(SimpleActivity):
 
     def _clear(self, _button):
         self.name.set_text(""); self.body.get_buffer().set_text(""); self.status.set_text("Write about your project.")
+
+    def _export_html(self, _button):
+        Gtk.FileDialog(title="Export Portfolio HTML").save(self, None, self._export_html_chosen)
+
+    def _export_html_chosen(self, dialog, result):
+        try:
+            file_obj = dialog.save_finish(result)
+            path = file_obj.get_path() if file_obj is not None else None
+            if not path:
+                return
+            buffer = self.body.get_buffer()
+            start, end = buffer.get_bounds()
+            write_html(path, self.name.get_text(), buffer.get_text(start, end, False))
+        except Exception as error:
+            self.status.set_text("Export failed: %s" % error)
+            return
+        self.status.set_text("Exported HTML: %s" % (self.name.get_text().strip() or "Untitled project"))
 
     def read_file(self, file_path):
         """Restore project title and description from a Journal object."""

@@ -16,7 +16,7 @@ without an orphan process. It does not by itself prove a complete port.
 | Markdown | 2-cycle launch plus seeded UTF-8 Journal source resume and visible editor restoration | FUNCTIONAL PORT |
 | Finance | 2-cycle launch plus seeded JSON transaction resume, visible balance restoration, and live income/expense chart summary | FUNCTIONAL PORT |
 | Words | 2-cycle launch plus seeded JSON word resume and visible lookup restoration | FUNCTIONAL PORT |
-| Portfolio | 2-cycle launch plus seeded JSON title/body resume and visible title restoration | FUNCTIONAL PORT |
+| Portfolio | 2-cycle launch plus seeded JSON title/body resume, visible title restoration, and tested escaped HTML export boundary | FUNCTIONAL PORT |
 | Jukebox | 2-cycle launch plus seeded JSON playlist resume and visible track restoration | FUNCTIONAL PORT |
 | Grid Paint | 2-cycle launch plus seeded JSON cell-selection resume and visible summary restoration | FUNCTIONAL PORT |
 | Abacus | 2-cycle launch plus seeded JSON rod-value resume and visible value restoration | FUNCTIONAL PORT |

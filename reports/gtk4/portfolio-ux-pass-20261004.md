@@ -35,7 +35,13 @@ activated `Save draft`. The follow-up capture showed `Draft saved: portfolio`;
 its SHA-256 was
 `fd833d4a8c750cdb29291f8b9bbab810a4fdf0228a0a75bbecd7f6c59d72df42`.
 
+The 2026-10-05 follow-up adds an accessible `Export HTML` action. The export
+is dependency-free, escapes title/body content, preserves paragraphs and line
+breaks, and does not change the JSON Journal payload. The pure export boundary
+is covered by the focused host test; a visual FileDialog receipt remains open.
+
 ## Boundary
 
-Portfolio remains a `FUNCTIONAL PORT`, not a `FULL PORT`. Rich media and export
-features remain open. No GTK3 package was removed.
+Portfolio remains a `FUNCTIONAL PORT`, not a `FULL PORT`. Rich media, project
+navigation, collaboration, and the visual FileDialog path remain open. No GTK3
+package was removed.
