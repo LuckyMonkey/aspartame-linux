@@ -46,7 +46,10 @@ def main():
     cycles=int(sys.argv[1]) if len(sys.argv)>1 else 2
     for cycle in range(1,cycles+1):
         pid,aid,node=launch();stop(pid,aid);rows,_=store.find(dbus.Dictionary({"activity_id":aid},signature="sv"),dbus.Array(["uid"],signature="s"));assert len(rows)==1
-        uid=str(rows[0]["uid"]);fn=Path(str(store.get_filename(uid)));fn.write_text('{"values":[1,2,3,4,5]}\n',encoding="utf-8");rpid,raid,rnode=launch(uid,"Value: 12345");assert "Value: 12345" in Atspi.Text.get_text(rnode,0,-1);stop(rpid,raid);assert "12345" not in fn.read_text(encoding="utf-8") or "values" in fn.read_text(encoding="utf-8")
+        uid=str(rows[0]["uid"]);fn=Path(str(store.get_filename(uid)));fn.write_text('{"values":[1,2,3,4,5]}\n',encoding="utf-8");rpid,raid,rnode=launch(uid,"Value: 12,345");assert "Value: 12,345" in Atspi.Text.get_text(rnode,0,-1)
+        if len(sys.argv) > 2 and cycle == cycles:
+            subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "x11grab", "-video_size", "1920x1080", "-i", ":0", "-frames:v", "1", "-y", sys.argv[2]], check=True)
+        stop(rpid,raid);assert "12345" not in fn.read_text(encoding="utf-8") or "values" in fn.read_text(encoding="utf-8")
         print(f"cycle={cycle} pid={pid} resumed_pid={rpid} object={uid} resume=PASS service-release=PASS shell-cleanup=PASS",flush=True)
     print("abacus-roundtrip=PASS input-method=AT-SPI datastore-payload=seeded",flush=True)
 if __name__=="__main__":main()

@@ -94,6 +94,13 @@ Pippy gained examples, program input, indentation, Ctrl+Enter, and traceback
 line navigation on the bounded runner. The full host suite is green at
 `536 passed`.
 
+The 2026-10-05 Abacus UX pass replaced the stretched edge-to-edge rod grid with
+a centered, width-constrained work card, readable place labels, a prominent
+current-value card, and stable increase/decrease controls. A headless 1920x1080
+capture confirms the seeded `12,345` value and centered layout; the guest
+Journal resume/lifecycle receipt passes independently. This remains a
+FUNCTIONAL PORT because advanced bead manipulation is not yet reproduced.
+
 Chirality Milestone 1 now has a real GTK4-only Activity adapter and a guest
 probe that switches Calculate and Clock Left/Right/Left on one visible
 surface, then verifies Activity service cleanup. This advances the forward
