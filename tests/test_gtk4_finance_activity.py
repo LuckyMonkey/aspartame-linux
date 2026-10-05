@@ -11,6 +11,8 @@ def test_finance_bundle_is_native_and_registered():
     assert "sugar-activity4 financeactivity4.FinanceActivity" in info
     assert "class FinanceActivity(SimpleActivity)" in source
     assert "Add income" in source and "Add expense" in source and 'label=f"Remove {description}"' in source
+    assert "Import CSV" in source and "Export CSV" in source
+    assert "from finance_csv import read_csv, write_csv" in source
     assert "org.laptop.community.Finance" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-finance-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-finance-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
@@ -21,6 +23,16 @@ def test_finance_journal_roundtrip_is_json():
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source
     assert '"transactions"' in source
+
+
+def test_finance_csv_interchange_preserves_transaction_direction(tmp_path):
+    import sys
+    sys.path.insert(0, str(ROOT / "packages/gtk4-finance-activity"))
+    from finance_csv import read_csv, write_csv
+
+    path = tmp_path / "transactions.csv"
+    write_csv(path, [(125.5, "Grant"), (-20.0, "Supplies")])
+    assert read_csv(path) == [(125.5, "Grant"), (-20.0, "Supplies")]
 
 
 def test_finance_transactions_use_aligned_description_and_amount_columns():

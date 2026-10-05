@@ -24,5 +24,8 @@ cycle=1 ... resume=PASS service-release=PASS shell-cleanup=PASS
 finance-roundtrip=PASS input-method=AT-SPI datastore-payload=seeded
 ```
 
-This closes the bounded table/removal workflow, not the original Activity's
-charts, import/export, or collaboration breadth.
+Finance now also exposes accessible CSV Import/Export actions. The pure CSV
+boundary roundtrips income/expense direction and descriptions without changing
+the JSON Journal payload. Chart views and collaboration remain outside the
+bounded port; the CSV file-dialog path is implemented but still needs a visual
+guest interaction receipt.
