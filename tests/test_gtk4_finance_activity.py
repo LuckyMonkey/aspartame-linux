@@ -41,6 +41,8 @@ def test_finance_transactions_use_aligned_description_and_amount_columns():
     assert 'self.amount.set_max_width_chars(16)' in source
     assert 'self.rows.set_visible(False)' in source
     assert 'self.empty_state.set_vexpand(True)' in source
+    assert 'self.amount.set_hexpand(False)' in source
+    assert 'self.empty_state.add_css_class("empty-state")' in source
     assert 'description_heading = Gtk.Label(label="Description"' in source
     assert 'amount_heading = Gtk.Label(label="Amount"' in source
     assert 'table_row.attach(amount_label, 1, 0, 1, 1)' in source

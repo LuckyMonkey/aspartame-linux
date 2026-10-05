@@ -13,6 +13,9 @@ def test_write_bundle_is_native_and_registered():
     assert "document_frame" in source and "Gtk.Frame(label=\"Document\")" in source
     assert "root.append(document_frame)" in source
     assert "ScrolledWindow" in source
+    assert "Gtk.Overlay" in source and "Start writing your document" in source
+    assert "controls.set_halign(Gtk.Align.END)" in source
+    assert "self.document.get_buffer().connect(\"changed\", self._document_changed)" in source
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source
     assert "Path(file_path).read_text(encoding=\"utf-8\")" in source

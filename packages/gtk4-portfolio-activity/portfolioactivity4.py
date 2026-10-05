@@ -20,15 +20,24 @@ class PortfolioActivity(SimpleActivity):
         self.name = Gtk.Entry(); self.name.set_placeholder_text("Project title"); self.name.update_property([Gtk.AccessibleProperty.LABEL], ["Project title"]); root.append(self.name)
         self.body = Gtk.TextView(); self.body.set_wrap_mode(Gtk.WrapMode.WORD_CHAR); self.body.set_hexpand(True); self.body.set_vexpand(True); self.body.update_property([Gtk.AccessibleProperty.LABEL], ["Project description"])
         body_scroll = Gtk.ScrolledWindow(); body_scroll.set_min_content_height(320); body_scroll.set_hexpand(True); body_scroll.set_vexpand(True); body_scroll.set_child(self.body)
-        body_frame = Gtk.Frame(label="Project description"); body_frame.add_css_class("project-pane"); body_frame.set_hexpand(True); body_frame.set_vexpand(True); body_frame.set_child(body_scroll); root.append(body_frame)
-        self.status = Gtk.Label(label="Write about your project.", xalign=0); self.status.add_css_class("dim-label"); root.append(self.status)
+        body_surface = Gtk.Overlay(); body_surface.set_hexpand(True); body_surface.set_vexpand(True); body_surface.set_child(body_scroll)
+        self.empty_state = Gtk.Label(label="Describe the project, what you made, and what you learned.", wrap=True); self.empty_state.add_css_class("editor-empty-state"); self.empty_state.set_halign(Gtk.Align.CENTER); self.empty_state.set_valign(Gtk.Align.CENTER); self.empty_state.set_can_target(False); self.empty_state.set_max_width_chars(48); body_surface.add_overlay(self.empty_state)
+        self.body.get_buffer().connect("changed", self._body_changed)
+        body_frame = Gtk.Frame(label="Project description"); body_frame.add_css_class("project-pane"); body_frame.set_hexpand(True); body_frame.set_vexpand(True); body_frame.set_child(body_surface); root.append(body_frame)
+        self.status = Gtk.Label(label="Write about your project.", xalign=0); self.status.add_css_class("dim-label"); self.status.set_hexpand(True)
+        footer = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8); footer.append(self.status)
         controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        controls.set_halign(Gtk.Align.END)
         save = Gtk.Button(label="Save draft"); save.connect("clicked", self._save); controls.append(save)
-        clear = Gtk.Button(label="Clear"); clear.connect("clicked", self._clear); controls.append(clear); root.append(controls)
+        clear = Gtk.Button(label="Clear"); clear.connect("clicked", self._clear); controls.append(clear); footer.append(controls); root.append(footer)
         self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"entry { min-height: 42px; } frame.project-pane { border: 2px solid #8aa8b8; border-radius: 10px; padding: 8px; } scrolledwindow { border: 1px solid #8aa8b8; border-radius: 8px; } textview { padding: 14px; } button { min-height: 42px; border-radius: 19px; }")
+        provider = Gtk.CssProvider(); provider.load_from_data(b"entry { min-height: 42px; } frame.project-pane { border: 2px solid #8aa8b8; border-radius: 10px; padding: 8px; } scrolledwindow { border: 1px solid #8aa8b8; border-radius: 8px; } textview { padding: 14px; } label.editor-empty-state { background: #f1f5f7; border-radius: 12px; padding: 18px 24px; color: #52636b; } button { min-height: 42px; border-radius: 19px; }")
         display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+    def _body_changed(self, _buffer):
+        start, end = self.body.get_buffer().get_bounds()
+        self.empty_state.set_visible(not self.body.get_buffer().get_text(start, end, False).strip())
 
     def _save(self, _button):
         title = self.name.get_text().strip() or "Untitled project"; self.status.set_text("Draft saved: %s" % title)

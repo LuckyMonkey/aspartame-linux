@@ -36,3 +36,18 @@ GTK3 package is removed by this check.
 The first modern-space candidates remain Portfolio, Markdown, Finance, Write,
 Pippy, Jukebox, Color My World, and Abacus. Their GTK4 surfaces and bounded
 workflows are qualified, but candidate status is not package-removal approval.
+
+## UX milestone — 2026-10-05
+
+The first visual-sweep cleanup pass is in `Write`, `Portfolio`, and `Finance`:
+
+- Write and Portfolio now present an intentional empty editor state inside the
+  framed work surface, hide it as text is entered, and keep Save/Clear actions
+  aligned at the footer edge.
+- Finance keeps the description column flexible while constraining the amount
+  column, and presents an intentional empty-ledger state instead of a blank
+  table.
+
+This is forward UX progress, not a retirement-gate claim. The next pass should
+apply the same visual rule to the remaining sparse/table-heavy Activities and
+then collect real workflow evidence for each candidate.
