@@ -127,6 +127,11 @@ Left/Right/Left, and verifies the final payload plus service cleanup. Broader
 object-format refusal and session-resume gates remain open; GTK3 retirement is
 therefore still evidence-gated.
 
+The Chirality model now keeps object handoff and Activity identity separate:
+handoff copies only the source object's reference/title while preserving the
+target hand's Activity and bundle identity. The invariant is covered by the
+focused semantic suite; no split-screen or history state was introduced.
+
 The held-Activity crash gate is independently qualified: terminating the
 Right GTK4 Activity leaves Left alive and activatable, then clears only the
 exited hand through the Chirality adapter. Activity replacement/resume and a

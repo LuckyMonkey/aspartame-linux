@@ -106,6 +106,25 @@ def test_object_handoff_is_reference_only_and_has_no_history():
     assert "history" not in json.dumps(session.to_dict())
 
 
+def test_object_handoff_preserves_target_activity_identity():
+    session = chirality.ChiralSession()
+    session.assign(
+        chirality.Side.LEFT,
+        chirality.Hand("reader", "journal:paper", "paper.pdf", "org.sugarlabs.Read"),
+    )
+    session.assign(
+        chirality.Side.RIGHT,
+        chirality.Hand("writer", "journal:notes", "notes", "org.sugarlabs.Write"),
+    )
+
+    session.handoff_object(chirality.Side.LEFT, chirality.Side.RIGHT)
+
+    assert session.right_hand.activity_id == "writer"
+    assert session.right_hand.bundle_id == "org.sugarlabs.Write"
+    assert session.right_hand.object_ref == "journal:paper"
+    assert session.right_hand.object_title == "paper.pdf"
+
+
 def test_accessible_state_is_color_independent_and_explicit():
     session = chirality.ChiralSession()
     session.assign(chirality.Side.LEFT, chirality.Hand("reader"))

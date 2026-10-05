@@ -279,6 +279,7 @@ class ChiralSession:
                 activity_id=target_hand.activity_id,
                 object_ref=source_hand.object_ref,
                 object_title=source_hand.object_title,
+                bundle_id=target_hand.bundle_id,
             ),
         )
         self._validate()
