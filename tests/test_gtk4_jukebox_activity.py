@@ -39,3 +39,10 @@ def test_jukebox_journal_roundtrip_is_json():
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source
     assert '"tracks"' in source
+
+
+def test_jukebox_roundtrip_can_capture_the_resumed_player_surface():
+    probe = (ROOT / "scripts/sugar-gtk4-jukebox-roundtrip.py").read_text()
+    assert '"ffmpeg"' in probe
+    assert '"Field Recording"' in probe
+    assert "x11grab" in probe
