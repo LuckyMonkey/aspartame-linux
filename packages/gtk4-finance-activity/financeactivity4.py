@@ -65,6 +65,22 @@ class FinanceActivity(SimpleActivity):
         buttons.append(export_button)
         body.append(buttons)
 
+        summary = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        self.chart_summary = Gtk.Label(label="Income: 0.00 · Expenses: 0.00", xalign=0)
+        self.chart_summary.add_css_class("dim-label")
+        summary.append(self.chart_summary)
+        self.chart = Gtk.DrawingArea()
+        self.chart.set_content_height(130)
+        self.chart.set_hexpand(True)
+        self.chart.set_draw_func(self._draw_chart)
+        self.chart.update_property([Gtk.AccessibleProperty.LABEL], ["Income and expense chart"])
+        summary.append(self.chart)
+        summary_frame = Gtk.Frame(label="Summary")
+        summary_frame.add_css_class("finance-pane")
+        summary_frame.set_hexpand(True)
+        summary_frame.set_child(summary)
+        body.append(summary_frame)
+
         transaction_content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         transaction_content.set_vexpand(True)
         header = Gtk.Grid(column_spacing=12)
@@ -103,7 +119,7 @@ class FinanceActivity(SimpleActivity):
         self.balance = Gtk.Label(label="Balance: 0.00", xalign=1); self.balance.set_halign(Gtk.Align.END); self.balance.add_css_class("heading"); footer.append(self.balance)
         body.append(footer)
         self.set_canvas(root)
-        provider = Gtk.CssProvider(); provider.load_from_data(b"entry { min-height: 42px; } button { min-height: 42px; border-radius: 19px; } frame.finance-pane { border: 1px solid #8aa8b8; border-radius: 10px; padding: 10px; } label.empty-state { background: #f1f5f7; border-radius: 12px; padding: 28px 24px; color: #52636b; } list { margin-top: 8px; } listboxrow { padding: 10px 12px; }")
+        provider = Gtk.CssProvider(); provider.load_from_data(b"entry { min-height: 42px; } button { min-height: 42px; border-radius: 19px; } frame.finance-pane { border: 1px solid #8aa8b8; border-radius: 10px; padding: 10px; } drawingarea.finance-chart { background: #f7fafb; border-radius: 8px; } label.empty-state { background: #f1f5f7; border-radius: 12px; padding: 28px 24px; color: #52636b; } list { margin-top: 8px; } listboxrow { padding: 10px 12px; }")
         display = Gdk.Display.get_default()
         if display: Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
@@ -118,6 +134,36 @@ class FinanceActivity(SimpleActivity):
     def _append_row(self, value, description):
         self._rows.append((value, description))
         self._refresh_rows()
+
+    def _draw_chart(self, _area, cr, width, height):
+        cr.set_source_rgb(0.97, 0.98, 0.985)
+        cr.paint()
+        income = sum(value for value, _description in self._rows if value > 0)
+        expenses = -sum(value for value, _description in self._rows if value < 0)
+        maximum = max(income, expenses, 1.0)
+        left = 36
+        baseline = max(30, height - 28)
+        available = max(40, height - 52)
+        bar_width = max(36, (width - 3 * left) / 2)
+        for index, (label, value, color) in enumerate(
+            (("Income", income, (0.20, 0.56, 0.38)), ("Expenses", expenses, (0.78, 0.36, 0.27)))
+        ):
+            x = left + index * (bar_width + left)
+            bar_height = available * value / maximum
+            cr.set_source_rgb(*color)
+            cr.rectangle(x, baseline - bar_height, bar_width, bar_height)
+            cr.fill()
+            cr.set_source_rgb(0.20, 0.25, 0.27)
+            cr.select_font_face("Sans", 0, 0)
+            cr.set_font_size(13)
+            cr.move_to(x, baseline + 19)
+            cr.show_text(f"{label} {value:.2f}")
+        if not self._rows:
+            cr.set_source_rgb(0.32, 0.39, 0.42)
+            cr.select_font_face("Sans", 0, 0)
+            cr.set_font_size(15)
+            cr.move_to(left, baseline - available / 2)
+            cr.show_text("Add transactions to see the summary")
 
     def _refresh_rows(self):
         while (row := self.rows.get_row_at_index(0)) is not None:
@@ -142,7 +188,11 @@ class FinanceActivity(SimpleActivity):
             self.rows.append(row)
         self.empty_state.set_visible(not self._rows)
         self.rows.set_visible(bool(self._rows))
-        self.balance.set_text(f"Balance: {sum(v for v, _ in self._rows):.2f}")
+        income = sum(value for value, _description in self._rows if value > 0)
+        expenses = -sum(value for value, _description in self._rows if value < 0)
+        self.chart_summary.set_text(f"Income: {income:.2f} · Expenses: {expenses:.2f}")
+        self.chart.queue_draw()
+        self.balance.set_text(f"Balance: {income - expenses:.2f}")
 
     def _remove_row(self, _button, index):
         if 0 <= index < len(self._rows):

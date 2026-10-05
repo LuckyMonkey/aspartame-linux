@@ -117,7 +117,8 @@ fresh-row rebuilding, and removal persistence. The headless receipt removes a
 seeded expense, verifies the resulting `125.50` balance and one-row Journal
 payload, and captures the aligned table. Finance now also has accessible CSV
 Import/Export actions backed by a tested description/amount/type interchange
-module; chart views and collaboration remain outside the bounded port.
+module, plus a live income/expense chart summary driven by the same model;
+historical charting and collaboration remain outside the bounded port.
 
 Chirality Milestone 1 now has a real GTK4-only Activity adapter and a guest
 probe that switches Calculate and Clock Left/Right/Left on one visible

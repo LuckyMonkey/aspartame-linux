@@ -13,6 +13,9 @@ def test_finance_bundle_is_native_and_registered():
     assert "Add income" in source and "Add expense" in source and 'label=f"Remove {description}"' in source
     assert "Import CSV" in source and "Export CSV" in source
     assert "from finance_csv import read_csv, write_csv" in source
+    assert "Gtk.DrawingArea" in source and "_draw_chart" in source
+    assert 'Gtk.Frame(label="Summary")' in source
+    assert "Income and expense chart" in source
     assert "org.laptop.community.Finance" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-finance-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-finance-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
@@ -64,6 +67,7 @@ def test_finance_transactions_use_aligned_description_and_amount_columns():
     assert "def _remove_row" in source
     assert "Remove transaction" in source
     assert 'header.attach(actions_heading, 2, 0, 1, 1)' in source
+    assert "self.chart_summary.set_text" in source and "self.chart.queue_draw()" in source
 
 
 def test_finance_roundtrip_exercises_transaction_removal():
