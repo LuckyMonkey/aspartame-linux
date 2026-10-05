@@ -28,6 +28,12 @@ Run the non-destructive gate check from the repository root:
 bash scripts/sugar-gtk4-retirement-gate.sh
 ```
 
+The check evaluates the eight current modern-space candidates individually,
+then reads the durable share/join and Chirality session-resume receipts. It
+does not infer readiness from a launch matrix or from a sentence in a status
+document; a missing receipt or one unqualified candidate keeps the result
+blocked.
+
 Current result remains deliberately `BLOCKED`: all registered Activities are
 still classified FUNCTIONAL PORT rather than FULL PORT and peer Activity join
 is not qualified. The shell/session restart requirement is now qualified; no

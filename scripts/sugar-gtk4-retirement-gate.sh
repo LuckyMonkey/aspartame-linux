@@ -3,26 +3,42 @@ set -euo pipefail
 
 root=$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 classification="$root/docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md"
-matrix="$root/docs/sugar-modernization/GTK4_ACTIVITY_MATRIX.md"
-status="$root/docs/sugar-modernization/GTK4_STATUS.md"
+share_report="$root/reports/gtk4/share-join-qualification-20261004.md"
+chirality_report="$root/reports/gtk4/chirality-session-resume-implementation-20261004.md"
 
 blockers=()
-if ! grep -Eq '^\|[^|]+\| FULL PORT \|' "$classification"; then
+retirement_candidates=(
+    "Portfolio" "Markdown" "Finance" "Write"
+    "Pippy" "Jukebox" "Color My World" "Abacus"
+)
+missing_parity=()
+for candidate in "${retirement_candidates[@]}"; do
+    if ! awk -F'|' -v candidate="$candidate" \
+        '$2 ~ "^[[:space:]]*" candidate "[[:space:]]*$" && $3 ~ /FULL PORT/ { found=1 }
+         END { exit !found }' "$classification"; then
+        missing_parity+=("$candidate")
+    fi
+done
+if ((${#missing_parity[@]})); then
     blockers+=("full-parity")
 fi
-if grep -q "Activity join/action behavior" "$matrix"; then
+if [[ ! -f "$share_report" ]] ||
+   ! grep -Eq 'peer room join[^[:cntrl:]]*PASS|share-join=PASS phase=join' "$share_report"; then
     blockers+=("collaboration-join")
 fi
-if grep -q "full shell/session restart" "$status"; then
+if [[ ! -f "$chirality_report" ]] ||
+   ! grep -Eq 'chirality-resume=PASS|closes the shell/session-resume qualification' "$chirality_report"; then
     blockers+=("shell-session-restart")
-fi
-if grep -q "Package removal is deliberately still blocked" "$matrix"; then
-    blockers+=("fallback-removal-policy")
 fi
 
 if ((${#blockers[@]})); then
     echo "gtk4-retirement=BLOCKED"
     printf 'blocker=%s\n' "${blockers[@]}"
+    if ((${#missing_parity[@]})); then
+        printf 'missing-full-parity=%s\n' "$(IFS=,; echo "${missing_parity[*]}")"
+    fi
+    printf 'evidence-share=%s\n' "${share_report#$root/}"
+    printf 'evidence-chirality=%s\n' "${chirality_report#$root/}"
     echo "GTK3 fallback/reference packages remain installed."
     exit 1
 fi

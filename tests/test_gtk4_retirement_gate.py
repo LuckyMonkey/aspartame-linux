@@ -17,3 +17,6 @@ def test_retirement_gate_is_non_destructive_and_honest_about_open_work():
     assert "blocker=full-parity" in result.stdout
     assert "blocker=collaboration-join" in result.stdout
     assert "blocker=shell-session-restart" not in result.stdout
+    assert "missing-full-parity=Portfolio,Markdown,Finance,Write,Pippy,Jukebox,Color My World,Abacus" in result.stdout
+    assert "evidence-share=reports/gtk4/share-join-qualification-20261004.md" in result.stdout
+    assert "evidence-chirality=reports/gtk4/chirality-session-resume-implementation-20261004.md" in result.stdout
