@@ -65,6 +65,13 @@ SSH_PORT=2223 ASPARTAME_QEMU_QMP=/tmp/aspartame-qemu-qmp-headless \
   ./scripts/qualify-qemu-spaces-side-by-side.sh
 ```
 
+The qualifier records the SSH/QMP inputs and retains a per-run framebuffer
+capture beside its report. Override `ASPARTAME_SPACES_REPORT` or
+`ASPARTAME_SPACES_SCREENSHOT` when a CI/job artifact directory is preferred;
+the default screenshot is
+`reports/gtk4/spaces-side-by-side-headless-<UTC>.png`. The fixed macro
+capture under `reports/screenshots/` is only the intermediate QMP output.
+
 The remaining input qualification boundary is F1–F6 Activity/navigation
 semantics. F7/F8 Space selection is closed for the supported headless QEMU
 path; host-window pointer/grab behavior remains a separate convenience check.

@@ -170,6 +170,17 @@ def test_headless_side_by_side_macro_only_captures_qualified_framebuffer():
     assert 'F8' not in macro_path.read_text()
 
 
+def test_headless_side_by_side_qualification_keeps_per_run_screenshot():
+    script = (ROOT / 'scripts/qualify-qemu-spaces-side-by-side.sh').read_text()
+    assert 'ASPARTAME_SPACES_SCREENSHOT' in script
+    assert 'report_dir=$(CDPATH= cd --' in script
+    assert ':-$report_dir/spaces-side-by-side.png' in script
+    assert 'framebuffer="$project_root/reports/screenshots/spaces-side-by-side.png"' in script
+    assert 'cp "$framebuffer" "$screenshot"' in script
+    assert 'test -s "$screenshot"' in script
+    assert 'spaces-qualification=PASS report=$report screenshot=$screenshot' in script
+
+
 def test_activate_sends_pager_request_to_target_window():
     import importlib.util
 
