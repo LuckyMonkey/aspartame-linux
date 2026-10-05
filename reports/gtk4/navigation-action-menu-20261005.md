@@ -9,5 +9,15 @@ This is the forward UX path for environments where physical F1-F6 delivery
 is unreliable. The QEMU/host physical transport qualification remains open
 and is documented separately in `docs/runbooks/QEMU_MACROS.md`.
 
-The change is source/build-qualified by the focused repository test; a fresh
-guest visual capture will follow the next GTK4 development-share rebuild.
+Qualification:
+
+- focused repository checks: 72 passed;
+- guest `sugar-gtk4-build.sh`: PASS, including 137 active patch inputs and
+  `0202-home-navigation-action-menu.patch`;
+- guest source checks: 0185 and 0202 both pass `git apply --check`.
+
+A fresh guest screenshot/AT-SPI action capture is still pending: the
+development guest restarted the GTK4 process, but its current Casilda/X11
+surface is not published as a managed X11 window, so the side-by-side probe
+cannot safely capture it. This does not change the full-parity retirement
+gate.
