@@ -12,7 +12,7 @@ and is documented separately in `docs/runbooks/QEMU_MACROS.md`.
 Qualification:
 
 - focused repository checks: 72 passed;
-- guest `sugar-gtk4-build.sh`: PASS, including 137 active patch inputs and
+- guest `sugar-gtk4-build.sh`: PASS, including 136 active patch inputs and
   `0202-home-navigation-action-menu.patch`;
 - guest source checks: 0185 and 0202 both pass `git apply --check`.
 
