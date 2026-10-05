@@ -4,6 +4,7 @@ from pathlib import Path
 
 from gi.repository import Gdk, Gtk
 from sugar4.activity import SimpleActivity
+from markdown_renderer import render_markdown
 
 
 DEFAULT_MARKDOWN = "# Welcome to Markdown\n\nStart writing here. The preview updates as you type."
@@ -91,7 +92,7 @@ class MarkdownActivity(SimpleActivity):
         start, end = buffer.get_bounds()
         raw = buffer.get_text(start, end, False)
         text = raw.strip()
-        self.preview.set_text(text or "Start writing with Markdown.")
+        self.preview.set_markup(render_markdown(text))
         self.editor_empty.set_visible(not text)
         self.status.set_text("Ready · %d characters" % len(raw))
 

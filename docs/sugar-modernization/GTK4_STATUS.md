@@ -104,8 +104,10 @@ FUNCTIONAL PORT because advanced bead manipulation is not yet reproduced.
 The 2026-10-05 Markdown UX pass now makes the source/preview relationship
 explicit with framed equal panes, a readable monospace source editor, a guided
 empty-source state, top-aligned preview content, and a concise character-count
-footer. A fresh headless 1920x1080 capture and Journal resume/lifecycle receipt
-pass; full Markdown parser/rendering parity remains open.
+footer. The preview now renders a sanitized common Markdown subset (headings,
+emphasis, code, links, lists, quotes, and rules) as GTK-native Pango markup;
+raw source HTML cannot become widget markup. The guest Journal resume/lifecycle
+receipt still passes; full CommonMark/PageDown parser parity remains open.
 
 The 2026-10-05 Finance pass adds object-specific transaction Remove actions,
 fresh-row rebuilding, and removal persistence. The headless receipt removes a
