@@ -10,19 +10,19 @@ Sugar controls. This is a semantic fallback, not a second key-grabbing
 implementation.
 --- a/src/jarabe/desktop/viewtoolbar.py
 +++ b/src/jarabe/desktop/viewtoolbar.py
-@@ -33,6 +33,7 @@
+@@ -33,4 +33,5 @@
  from jarabe.desktop import favoritesview
  from jarabe.model import desktop
 +from jarabe.model import shell
  
  _AUTOSEARCH_TIMEOUT = 1000
-@@ -93,6 +94,7 @@
+@@ -93,4 +94,5 @@
          self._build_help_button()
 +        self._build_navigation_button()
          self._build_spaces_button()
  
          self._add_separator(expand=True)
-@@ -174,6 +176,65 @@
+@@ -174,2 +176,73 @@
          self.append(self._help_button)
 +
 +    def _build_navigation_button(self):
@@ -95,5 +95,4 @@ implementation.
 +            journalactivity.get_journal().show_journal()
 +            return
 +        model.set_zoom_level(levels[target])
- 
      def _build_spaces_button(self):
