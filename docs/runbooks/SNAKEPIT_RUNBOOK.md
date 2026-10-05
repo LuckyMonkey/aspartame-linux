@@ -337,6 +337,13 @@ timestamps, and failure reason. A passing record proves this one workflow for
 the named target; it does not qualify arbitrary Python software or the Sugar
 desktop runtime.
 
+Qualification and launch now own each workflow as a process group. If a
+workflow times out, Snakepit sends termination to the group and escalates to a
+bounded kill before returning the failure, so helper processes cannot survive
+behind the Activity Manager or a qualification shell. This is lifecycle
+containment, not a security sandbox; the runtime contract still records that
+network access is not automatically isolated.
+
 The preflight also reads `project.requires-python` when present. A compatible
 specifier is recorded as a satisfied interpreter capability; an incompatible
 specifier fails before venv creation or dependency installation and preserves

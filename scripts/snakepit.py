@@ -15,6 +15,7 @@ import json
 import os
 from pathlib import Path
 import re
+import signal
 import shutil
 import subprocess
 import sys
@@ -298,8 +299,48 @@ def declared_requirements(source: Path, explicit: str | None) -> dict[str, Any]:
     return result
 
 
-def run_checked(command: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(command, check=False, text=True, capture_output=True, **kwargs)
+def _terminate_process_group(process: subprocess.Popen[str]) -> None:
+    """Stop a timed-out workflow and all children it spawned."""
+    try:
+        os.killpg(process.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        return
+    try:
+        process.communicate(timeout=1)
+        return
+    except subprocess.TimeoutExpired:
+        pass
+    try:
+        os.killpg(process.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        return
+    process.communicate()
+
+
+def run_checked(
+    command: list[str], *, process_group: bool = False, **kwargs: Any
+) -> subprocess.CompletedProcess[str]:
+    """Run a command, optionally owning and cleaning up its process group."""
+    kwargs.setdefault("check", False)
+    kwargs.setdefault("text", True)
+    kwargs.setdefault("capture_output", True)
+    if not process_group:
+        return subprocess.run(command, **kwargs)
+
+    timeout = kwargs.pop("timeout", None)
+    kwargs.pop("check", None)
+    if kwargs.pop("capture_output", False):
+        kwargs.setdefault("stdout", subprocess.PIPE)
+        kwargs.setdefault("stderr", subprocess.PIPE)
+    process = subprocess.Popen(command, start_new_session=True, **kwargs)
+    try:
+        stdout, stderr = process.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired as error:
+        _terminate_process_group(process)
+        raise subprocess.TimeoutExpired(
+            command, error.timeout, output=error.output, stderr=error.stderr
+        ) from error
+    return subprocess.CompletedProcess(command, process.returncode, stdout, stderr)
 
 
 def python_version(python: Path) -> str:
@@ -502,6 +543,7 @@ def qualify(args: argparse.Namespace) -> int:
                 ],
                 cwd=Path(requirements_path).parent,
                 timeout=args.install_timeout,
+                process_group=True,
             )
             steps.append(
                 {
@@ -520,7 +562,13 @@ def qualify(args: argparse.Namespace) -> int:
         isolation = isolation_probe(environment_python)
         command = normalized_command(args.command, environment_python)
         child_env = child_environment(source, environment)
-        result = run_checked(command, cwd=source, env=child_env, timeout=args.timeout)
+        result = run_checked(
+            command,
+            cwd=source,
+            env=child_env,
+            timeout=args.timeout,
+            process_group=True,
+        )
         stdout, stdout_truncated = trim_output(result.stdout)
         stderr, stderr_truncated = trim_output(result.stderr)
         workflow = {
@@ -632,6 +680,7 @@ def launch(args: argparse.Namespace) -> int:
             cwd=cwd,
             env=child_environment(cwd, environment),
             timeout=args.timeout,
+            process_group=True,
         )
     except subprocess.TimeoutExpired as exc:
         print(f"launch=FAIL software={record['software']['name']}")

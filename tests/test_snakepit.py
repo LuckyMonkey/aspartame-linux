@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import time
 
 
 ROOT = Path(__file__).parents[1]
@@ -280,6 +281,39 @@ def test_snakepit_records_an_interpreter_capability_gap(tmp_path):
     assert data["compatibility"]["satisfied"] is False
     assert data["workflow"] == {}
     assert not environment.exists()
+
+
+def test_snakepit_timeout_terminates_workflow_descendants(tmp_path):
+    source = tmp_path / "timeout-specimen"
+    source.mkdir()
+    marker = tmp_path / "escaped-child"
+    child_code = (
+        "import time\n"
+        "time.sleep(2)\n"
+        f"open({str(marker)!r}, 'w').write('escaped')\n"
+    )
+    (source / "probe.py").write_text(
+        "import subprocess, sys, time\n"
+        f"subprocess.Popen([sys.executable, '-c', {child_code!r}])\n"
+        "time.sleep(30)\n"
+    )
+    environment = tmp_path / "venv"
+    record = tmp_path / "timeout.json"
+
+    result = subprocess.run(
+        [
+            sys.executable, str(SNAKEPIT), "qualify",
+            "--software", "timeout-specimen",
+            "--source", str(source), "--environment", str(environment),
+            "--record", str(record), "--timeout", "1",
+            "--command", "python", "-m", "probe",
+        ], text=True, capture_output=True,
+    )
+
+    assert result.returncode == 1
+    assert "timed out after 1 seconds" in result.stderr
+    time.sleep(2.5)
+    assert not marker.exists()
 
 
 def test_snakepit_rejects_dependency_tension_before_environment_creation(tmp_path):
