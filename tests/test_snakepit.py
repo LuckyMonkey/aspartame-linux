@@ -57,6 +57,8 @@ def test_snakepit_qualifies_an_isolated_python_workflow(tmp_path):
     assert data["status"] == "PASS"
     assert data["requirements"]["files"][0]["entries"] == []
     assert data["compatibility"]["satisfied"] is True
+    assert data["source_fingerprint"]["algorithm"] == "sha256"
+    assert data["source_fingerprint"]["files"] >= 3
     assert data["steps"][0]["action"] == "check-interpreter"
     assert data["environment"]["isolation"]["isolated"] is True
     assert data["workflow"]["command"][0] == str(environment / "bin" / "python")
@@ -117,6 +119,15 @@ def test_snakepit_launches_an_explicit_qualified_contract(tmp_path):
     assert launched.returncode == 0, launched.stderr
     assert "launch=PASS software=launchable-specimen" in launched.stdout
     assert "launch-workflow-ok" in launched.stdout
+
+    (source / "probe.py").write_text("print('changed-after-qualification')\n")
+    stale = subprocess.run(
+        [sys.executable, str(SNAKEPIT), "launch", "--record", str(record)],
+        text=True,
+        capture_output=True,
+    )
+    assert stale.returncode == 2
+    assert "source changed since qualification" in stale.stderr
 
 
 def test_snakepit_registers_only_a_valid_launch_contract(tmp_path):

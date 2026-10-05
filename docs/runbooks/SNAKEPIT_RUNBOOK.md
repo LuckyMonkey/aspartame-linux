@@ -337,6 +337,13 @@ timestamps, and failure reason. A passing record proves this one workflow for
 the named target; it does not qualify arbitrary Python software or the Sugar
 desktop runtime.
 
+Qualification records also contain a SHA-256 source-tree receipt. Launching a
+record whose source tree has drifted since qualification is refused with an
+instruction to qualify it again. Generated caches, nested virtual
+environments, and symlinks are excluded from this control-path receipt. This
+keeps the explicit launch contract honest without adding source history or
+changing the Activity Manager's user-facing model.
+
 Qualification and launch now own each workflow as a process group. If a
 workflow times out, Snakepit sends termination to the group and escalates to a
 bounded kill before returning the failure, so helper processes cannot survive

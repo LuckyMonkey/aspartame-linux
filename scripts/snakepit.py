@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -26,6 +27,7 @@ from typing import Any
 
 SCHEMA = "aspartame.snakepit.qualification/v0"
 MAX_OUTPUT = 20_000
+FINGERPRINT_IGNORED_DIRECTORIES = {".git", ".venv", "venv", "__pycache__"}
 DEPENDENCY_NAME = re.compile(
     r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)(?:\[[^\]]+\])?\s*(.*)$"
 )
@@ -42,6 +44,32 @@ def trim_output(value: str) -> tuple[str, bool]:
     if len(value) <= MAX_OUTPUT:
         return value, False
     return value[:MAX_OUTPUT] + "\n[output truncated]", True
+
+
+def source_fingerprint(source: Path) -> dict[str, Any]:
+    """Return a compact receipt for the source used by a qualification.
+
+    The fingerprint is deliberately built on the control path.  It protects
+    the launch contract from silently running a different source tree while
+    ignoring generated caches and nested virtual environments.
+    """
+    digest = hashlib.sha256()
+    files = 0
+    for path in sorted(source.rglob("*")):
+        relative = path.relative_to(source)
+        if (
+            path.is_symlink()
+            or not path.is_file()
+            or any(part in FINGERPRINT_IGNORED_DIRECTORIES for part in relative.parts[:-1])
+        ):
+            continue
+        digest.update(relative.as_posix().encode("utf-8"))
+        digest.update(b"\0")
+        with path.open("rb") as handle:
+            for block in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(block)
+        files += 1
+    return {"algorithm": "sha256", "files": files, "digest": digest.hexdigest()}
 
 
 def resolve_executable(value: str) -> str:
@@ -410,6 +438,7 @@ def qualify(args: argparse.Namespace) -> int:
     )
     started = utc_now()
     started_clock = time.monotonic()
+    source_receipt = source_fingerprint(source)
     requirements = declared_requirements(source, args.requirements_file)
     requirements["dependency_conflicts"] = dependency_conflicts(requirements)
     steps: list[dict[str, Any]] = []
@@ -607,6 +636,7 @@ def qualify(args: argparse.Namespace) -> int:
         "schema": SCHEMA,
         "status": status,
         "software": {"name": args.software, "source": str(source), "target": args.target},
+        "source_fingerprint": source_receipt,
         "interpreter": {
             "requested": requested_python,
             "version": f"Python {requested_version}" if requested_version else None,
@@ -668,6 +698,13 @@ def launch(args: argparse.Namespace) -> int:
         raise ValueError("qualification record has an invalid launch command")
     if not cwd.is_dir():
         raise ValueError(f"launch source directory not found: {cwd}")
+    expected_fingerprint = record.get("source_fingerprint")
+    if isinstance(expected_fingerprint, dict) and expected_fingerprint.get("digest"):
+        actual_fingerprint = source_fingerprint(cwd)
+        if actual_fingerprint["digest"] != expected_fingerprint["digest"]:
+            raise ValueError(
+                "launch source changed since qualification; qualify it again"
+            )
     if not (environment / "bin" / "python").is_file():
         raise ValueError(
             "launch environment interpreter not found: "
