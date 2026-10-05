@@ -10,7 +10,7 @@ def test_finance_bundle_is_native_and_registered():
     assert "bundle_id = org.laptop.community.Finance" in info
     assert "sugar-activity4 financeactivity4.FinanceActivity" in info
     assert "class FinanceActivity(SimpleActivity)" in source
-    assert "Add income" in source and "Add expense" in source
+    assert "Add income" in source and "Add expense" in source and 'label=f"Remove {description}"' in source
     assert "org.laptop.community.Finance" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-finance-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-finance-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
@@ -47,4 +47,15 @@ def test_finance_transactions_use_aligned_description_and_amount_columns():
     assert 'amount_heading = Gtk.Label(label="Amount"' in source
     assert 'table_row.attach(amount_label, 1, 0, 1, 1)' in source
     assert 'No transactions yet. Add income or an expense to begin.' in source
-    assert 'self.empty_state.set_visible(False)' in source
+    assert 'self.empty_state.set_visible(not self._rows)' in source
+    assert "def _refresh_rows" in source
+    assert "def _remove_row" in source
+    assert "Remove transaction" in source
+    assert 'header.attach(actions_heading, 2, 0, 1, 1)' in source
+
+
+def test_finance_roundtrip_exercises_transaction_removal():
+    probe = (ROOT / "scripts/sugar-gtk4-finance-roundtrip.py").read_text()
+    assert 'find_named(Atspi.get_desktop(0),rpid,"Remove Supplies")' in probe
+    assert 'Balance: 125.50' in probe
+    assert "saved transaction removal" in probe and 'get_role_name() == "button"' in probe

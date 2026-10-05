@@ -63,8 +63,11 @@ class FinanceActivity(SimpleActivity):
         amount_heading = Gtk.Label(label="Amount", xalign=1)
         amount_heading.set_halign(Gtk.Align.END)
         amount_heading.set_width_chars(10)
+        actions_heading = Gtk.Label(label="Actions", xalign=0.5)
+        actions_heading.set_width_chars(10)
         header.attach(description_heading, 0, 0, 1, 1)
         header.attach(amount_heading, 1, 0, 1, 1)
+        header.attach(actions_heading, 2, 0, 1, 1)
         transaction_content.append(header)
         self.empty_state = Gtk.Label(label="No transactions yet. Add income or an expense to begin.", wrap=True)
         self.empty_state.add_css_class("dim-label")
@@ -98,20 +101,37 @@ class FinanceActivity(SimpleActivity):
 
     def _append_row(self, value, description):
         self._rows.append((value, description))
-        row = Gtk.ListBoxRow()
-        table_row = Gtk.Grid(column_spacing=12)
-        table_row.set_hexpand(True)
-        description_label = Gtk.Label(label=description, xalign=0)
-        description_label.set_hexpand(True)
-        amount_label = Gtk.Label(label=f"{value:+.2f}", xalign=1)
-        amount_label.set_halign(Gtk.Align.END)
-        table_row.attach(description_label, 0, 0, 1, 1)
-        table_row.attach(amount_label, 1, 0, 1, 1)
-        row.set_child(table_row)
-        self.rows.append(row)
-        self.empty_state.set_visible(False)
-        self.rows.set_visible(True)
+        self._refresh_rows()
+
+    def _refresh_rows(self):
+        while (row := self.rows.get_row_at_index(0)) is not None:
+            self.rows.remove(row)
+        for index, (value, description) in enumerate(self._rows):
+            row = Gtk.ListBoxRow()
+            table_row = Gtk.Grid(column_spacing=12)
+            table_row.set_hexpand(True)
+            description_label = Gtk.Label(label=description, xalign=0)
+            description_label.set_hexpand(True)
+            amount_label = Gtk.Label(label=f"{value:+.2f}", xalign=1)
+            amount_label.set_halign(Gtk.Align.END)
+            amount_label.set_width_chars(10)
+            remove = Gtk.Button(label=f"Remove {description}")
+            remove.set_tooltip_text(f"Remove transaction: {description}")
+            remove.update_property([Gtk.AccessibleProperty.LABEL], [f"Remove transaction: {description}"])
+            remove.connect("clicked", self._remove_row, index)
+            table_row.attach(description_label, 0, 0, 1, 1)
+            table_row.attach(amount_label, 1, 0, 1, 1)
+            table_row.attach(remove, 2, 0, 1, 1)
+            row.set_child(table_row)
+            self.rows.append(row)
+        self.empty_state.set_visible(not self._rows)
+        self.rows.set_visible(bool(self._rows))
         self.balance.set_text(f"Balance: {sum(v for v, _ in self._rows):.2f}")
+
+    def _remove_row(self, _button, index):
+        if 0 <= index < len(self._rows):
+            self._rows.pop(index)
+            self._refresh_rows()
 
     def read_file(self, file_path):
         """Restore transactions from a JSON Journal object."""
@@ -125,8 +145,6 @@ class FinanceActivity(SimpleActivity):
         except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
             transactions = []
         self._rows.clear()
-        while (row := self.rows.get_row_at_index(0)) is not None:
-            self.rows.remove(row)
         for transaction in transactions:
             if not isinstance(transaction, dict):
                 continue
@@ -135,10 +153,8 @@ class FinanceActivity(SimpleActivity):
                 description = str(transaction.get("description", "Transaction")).strip() or "Transaction"
             except (KeyError, TypeError, ValueError):
                 continue
-            self._append_row(value, description)
-        self.empty_state.set_visible(not self._rows)
-        self.rows.set_visible(bool(self._rows))
-        self.balance.set_text(f"Balance: {sum(v for v, _ in self._rows):.2f}")
+            self._rows.append((value, description))
+        self._refresh_rows()
 
     def write_file(self, file_path):
         """Save transactions as a JSON Journal object."""

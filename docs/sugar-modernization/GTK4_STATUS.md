@@ -107,6 +107,12 @@ empty-source state, top-aligned preview content, and a concise character-count
 footer. A fresh headless 1920x1080 capture and Journal resume/lifecycle receipt
 pass; full Markdown parser/rendering parity remains open.
 
+The 2026-10-05 Finance pass adds object-specific transaction Remove actions,
+fresh-row rebuilding, and removal persistence. The headless receipt removes a
+seeded expense, verifies the resulting `125.50` balance and one-row Journal
+payload, and captures the aligned table; charts, import/export, and
+collaboration remain outside the bounded port.
+
 Chirality Milestone 1 now has a real GTK4-only Activity adapter and a guest
 probe that switches Calculate and Clock Left/Right/Left on one visible
 surface, then verifies Activity service cleanup. This advances the forward
