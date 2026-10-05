@@ -11,6 +11,10 @@ def test_gtd_bundle_is_native_and_registered():
     assert "sugar-activity4 gtdactivity4.GTDActivity" in info
     assert "class GTDActivity(SimpleActivity)" in source
     assert "New task" in source
+    assert "Remove task" in source
+    assert "Move task up" in source and "Move task down" in source
+    assert "def _move_row(self, _button, row, delta)" in source
+    assert "def _replace_rows(self, rows)" in source
     assert 'Gtk.Frame(label="Tasks")' in source
     assert 'No tasks yet. Add one above.' in source
     assert "get_row_at_index(index)" in source
@@ -27,3 +31,11 @@ def test_gtd_activity_has_journal_task_roundtrip():
     assert "def write_file(self, file_path)" in source
     assert '"tasks"' in source
     assert '"done"' in source
+    assert "row.task_check" in source
+
+
+def test_gtd_roundtrip_exercises_remove_and_reorder_actions():
+    probe = (ROOT / "scripts/sugar-gtk4-gtd-roundtrip.py").read_text()
+    assert '"Move down"' in probe
+    assert '"Remove task"' in probe
+    assert '"Call the team", "done": False' in probe

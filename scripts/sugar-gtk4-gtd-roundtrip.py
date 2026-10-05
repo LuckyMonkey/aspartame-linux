@@ -69,6 +69,18 @@ def main():
                 if found is not None: return found
         return None
 
+    def find_named(node, pid, expected, depth=0):
+        if depth > 12:
+            return []
+        matches = []
+        if node.get_process_id() == pid and node.get_name() == expected:
+            matches.append(node)
+        for i in range(node.get_child_count()):
+            child = node.get_child_at_index(i)
+            if child is not None:
+                matches.extend(find_named(child, pid, expected, depth + 1))
+        return matches
+
     def launch(object_id="", expected="0 tasks"):
         assert journal.LaunchBundle(BUNDLE_ID, object_id)
         pid, activity_id = wait_for("GTD process", lambda: next(iter(processes()), None))
@@ -91,12 +103,45 @@ def main():
         stop(pid, activity_id)
         rows, _ = store.find(dbus.Dictionary({"activity_id": activity_id}, signature="sv"), dbus.Array(["uid"], signature="s"))
         assert len(rows) == 1, "expected one saved GTD Journal object"
-        uid = str(rows[0]["uid"]); filename = Path(str(store.get_filename(uid)))
-        filename.write_text(json.dumps({"tasks": [{"text": "Call the team", "done": False}, {"text": "Ship GTK4", "done": True}]}) + "\n", encoding="utf-8")
-        resumed_pid, resumed_id, resumed = launch(uid, "2 tasks")
-        assert Atspi.Text.get_text(resumed, 0, -1) == "2 tasks · 1 complete"
+        uid = str(rows[0]["uid"])
+        filename = Path(str(store.get_filename(uid)))
+        filename.write_text(json.dumps({"tasks": [
+            {"text": "Call the team", "done": False},
+            {"text": "Ship GTK4", "done": True},
+            {"text": "Read docs", "done": True},
+        ]}) + "\n", encoding="utf-8")
+        resumed_pid, resumed_id, resumed = launch(uid, "3 tasks")
+        assert Atspi.Text.get_text(resumed, 0, -1) == "3 tasks · 2 complete"
+        move_down = wait_for(
+            "move task action",
+            lambda: find_named(Atspi.get_desktop(0), resumed_pid, "Move down"),
+        )
+        assert move_down and move_down[0].get_n_actions()
+        assert move_down[0].get_action().do_action(0)
+        time.sleep(0.5)
+        remove = wait_for(
+            "remove task action",
+            lambda: find_named(Atspi.get_desktop(0), resumed_pid, "Remove task"),
+        )
+        assert remove and remove[0].get_n_actions()
+        assert remove[0].get_action().do_action(0)
+        wait_for(
+            "task action result",
+            lambda: find_text(Atspi.get_desktop(0), resumed_pid, "2 tasks · 1 complete")
+            or find_named(Atspi.get_desktop(0), resumed_pid, "2 tasks · 1 complete"),
+        )
         stop(resumed_pid, resumed_id)
-        assert json.loads(filename.read_text(encoding="utf-8"))["tasks"][1]["done"] is True
+        def saved_tasks():
+            try:
+                payload = json.loads(Path(str(store.get_filename(uid))).read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
+                return None
+            tasks = payload.get("tasks") if isinstance(payload, dict) else None
+            return tasks if isinstance(tasks, list) and len(tasks) == 2 else None
+
+        saved = wait_for("saved GTD task payload", saved_tasks)
+        assert [task["text"] for task in saved] == ["Call the team", "Read docs"]
+        assert saved[1]["done"] is True
         print(f"cycle={cycle} pid={pid} resumed_pid={resumed_pid} object={uid} resume=PASS service-release=PASS shell-cleanup=PASS", flush=True)
     print("gtd-roundtrip=PASS input-method=AT-SPI datastore-payload=seeded", flush=True)
 
