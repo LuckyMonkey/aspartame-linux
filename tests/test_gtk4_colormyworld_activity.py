@@ -9,15 +9,17 @@ def test_colormyworld_bundle_is_native_and_registered():
     assert "bundle_id = org.sugarlabs.ColorMyWorldActivity" in info
     assert "sugar-activity4 colormyworldactivity4.ColorMyWorldActivity" in info
     assert "class ColorMyWorldActivity(SimpleActivity)" in source
-    assert "Selected color swatch" in source and "Red" in source
-    assert "Choose a color below" in source
-    assert "Choose a color to fill the world" in source
+    assert "World map coloring canvas" in source and "Red" in source
+    assert "Choose a color, then click a region" in source
+    assert "Choose a color, then click a world region" in source
     assert "Gtk.ToggleButton" in source
     assert "AccessibleProperty.DESCRIPTION" in source
     assert "togglebutton:checked" in source
     assert "colors.set_halign(Gtk.Align.CENTER)" in source
-    assert "swatch_frame" in source and "Gtk.Frame(label=\"Color preview\")" in source
+    assert "swatch_frame" in source and "Gtk.Frame(label=\"World map\")" in source
     assert "palette_frame" in source and "Gtk.Frame(label=\"Palette\")" in source
+    assert "Gtk.GestureClick" in source and "_map_pressed" in source
+    assert 'label="Clear map"' in source and '"regions"' in source
     assert "org.sugarlabs.ColorMyWorldActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-colormyworld-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-colormyworld-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
