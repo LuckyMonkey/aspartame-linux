@@ -8,7 +8,7 @@ without an orphan process. It does not by itself prove a complete port.
 | Activities | Runtime coverage | Parity classification |
 |---|---|---|
 | Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log | 3-cycle Casilda launch/activate/stop evidence | FUNCTIONAL PORT (bounded workflows) |
-| Write | 3-cycle launch plus UTF-8 Journal save/resume and save-failure cancellation/retry | FUNCTIONAL PORT |
+| Write | 3-cycle launch plus UTF-8 Journal save/resume, save-failure cancellation/retry, and 2026-10-05 formatted-object/Read interoperability receipt | FUNCTIONAL PORT |
 | Read | 2-cycle launch plus seeded UTF-8 Journal object resume and visible page restoration | FUNCTIONAL PORT |
 | Stopwatch | 2-cycle launch plus seeded JSON Journal object resume and visible elapsed-time restoration | FUNCTIONAL PORT |
 | Calculate | 2-cycle launch plus seeded Journal expression resume and visible result restoration | FUNCTIONAL PORT |

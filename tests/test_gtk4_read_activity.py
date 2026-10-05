@@ -18,6 +18,7 @@ def test_read_bundle_is_native_offline_and_registered():
     assert "def write_file" in source
     assert 'encoding="utf-8"' in source
     assert 'text.split("\\f")' in source
+    assert 'aspartame-write-v1' in source and 'payload.get("text")' in source
     assert (package / "activity/read.svg").is_file()
     matrix = (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "org.laptop.sugar.ReadActivity|readactivity4.ReadActivity" in matrix

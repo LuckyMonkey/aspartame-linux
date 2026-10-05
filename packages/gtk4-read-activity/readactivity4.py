@@ -1,5 +1,6 @@
 """Native GTK4 Read activity with Journal-backed document reading."""
 
+import json
 from pathlib import Path
 
 from gi.repository import Gdk, Gtk
@@ -100,9 +101,16 @@ class ReadActivity(SimpleActivity):
     def read_file(self, file_path):
         """Load a Journal text object, retaining the sample for empty objects."""
         try:
-            text = Path(file_path).read_text(encoding="utf-8")
+            raw = Path(file_path).read_text(encoding="utf-8")
         except (OSError, UnicodeError):
             return
+        text = raw
+        try:
+            payload = json.loads(raw) if raw.lstrip().startswith("{") else None
+            if isinstance(payload, dict) and payload.get("format") == "aspartame-write-v1" and isinstance(payload.get("text"), str):
+                text = payload["text"]
+        except (TypeError, ValueError, json.JSONDecodeError):
+            pass
         if text.strip():
             self.pages = text.split("\f")
             self.page = 0

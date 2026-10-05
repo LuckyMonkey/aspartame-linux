@@ -15,7 +15,11 @@ def test_write_bundle_is_native_and_registered():
     assert "ScrolledWindow" in source
     assert "Gtk.Overlay" in source and "Start writing your document" in source
     assert "controls.set_halign(Gtk.Align.END)" in source
-    assert "self.document.get_buffer().connect(\"changed\", self._document_changed)" in source
+    assert "buffer.connect(\"changed\", self._document_changed)" in source
+    assert "Gtk.EventControllerKey" in source and "_format_key" in source
+    assert 'button = Gtk.Button(label=label)' in source
+    assert '"aspartame-write-v1"' in source and '"spans"' in source
+    assert "_format_spans" in source and "_set_document" in source
     assert "def read_file(self, file_path)" in source
     assert "def write_file(self, file_path)" in source
     assert "Path(file_path).read_text(encoding=\"utf-8\")" in source
@@ -24,3 +28,10 @@ def test_write_bundle_is_native_and_registered():
     assert "org.sugarlabs.Write" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-write-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-write-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
+
+
+def test_write_format_probe_qualifies_persistent_rich_text():
+    probe = (ROOT / "scripts/sugar-gtk4-write-format-roundtrip.py").read_text()
+    assert "Select all action" in probe
+    assert "aspartame-write-v1" in probe
+    assert "read-interoperability=PASS" in probe
