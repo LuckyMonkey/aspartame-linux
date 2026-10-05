@@ -28,4 +28,14 @@ Avahi daemon, and verified `_presence._tcp` records before claiming peer
 presence. `scripts/run-qemu.sh` accepts `QEMU_EXTRA_NIC_MAC` to prevent cloned
 fixtures from silently sharing a layer-2 identity.
 
+Before starting the GTK4 shell in each cloned guest, run
+`scripts/sugar-gtk4-peer-prepare.sh a` or `... b` as root. It assigns the
+private NIC, gives Avahi/Salut a distinct hostname, and creates a fresh
+profile environment under `/run/aspartame-peer-{a,b}.env`. Source that file as
+the `aspartame` user before launching `scripts/sugar-gtk4-run.sh`; the runner
+accepts `ASPARTAME_SUGAR_HOME`, `ASPARTAME_SUGAR_PROFILE`, and
+`ASPARTAME_SUGAR_PROFILE_NAME` without changing the normal single-guest
+profile. This prevents cloned owner keys and stale presence records from being
+mistaken for a GTK4 join failure.
+
 ![Neighborhood reference surface](../reports/screenshots/sugar-20260915-151748-v0.0.31.png)

@@ -171,7 +171,19 @@ rm -f "$share/patches/gtk4-preview/0124-terminal-vte-compat.patch" \
       "$share/patches/gtk4-preview/0122-frame-accessibility-relocate-final.patch" \
       "$share/patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch" \
       "$share/patches/gtk4-preview/0186-toolkit-accept-public-join-requests.patch" \
-      "$share/patches/gtk4-preview/0187-toolkit-invite-public-contacts.patch"
+      "$share/patches/gtk4-preview/0187-toolkit-invite-public-contacts.patch" \
+      "$share/patches/gtk4-preview/0190-toolkit-remote-pending-self-handle.patch" \
+      "$share/patches/gtk4-preview/0191-toolkit-join-self-remote-pending.patch" \
+      "$share/patches/gtk4-preview/0192-toolkit-join-remote-pending-signal.patch" \
+      "$share/patches/gtk4-preview/0193-toolkit-poll-remote-pending-join.patch" \
+      "$share/patches/gtk4-preview/0194-toolkit-reconcile-public-contacts.patch" \
+      "$share/patches/gtk4-preview/0195-toolkit-public-contact-reconciliation-method.patch" \
+      "$share/patches/gtk4-preview/0196-toolkit-fix-join-poll-state.patch" \
+      "$share/patches/gtk4-preview/0197-toolkit-repair-peer-join-poll-state.patch" \
+      "$share/patches/gtk4-preview/0198-toolkit-remove-misplaced-join-state.patch" \
+      "$share/patches/gtk4-preview/0199-toolkit-public-reconcile-diagnostics.patch" \
+      "$share/patches/gtk4-preview/0200-toolkit-start-public-reconcile-on-share.patch" \
+      "$share/patches/gtk4-preview/0201-toolkit-start-public-reconcile-call.patch"
 
 printf 'GTK4 dev share synchronized: %s\n' "$share"
 printf 'patches=%s scripts=%s help_icon=%s\n' \

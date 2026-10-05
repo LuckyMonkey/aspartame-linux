@@ -83,7 +83,10 @@ test -n "$metadata_reader" || { echo "missing GTK4 datastore metadata reader" >&
 command -v dbus-run-session >/dev/null || { echo "missing dbus-run-session" >&2; exit 2; }
 command -v python3 >/dev/null || { echo "missing python3" >&2; exit 2; }
 
-mkdir -p "$state_root/home" "$state_root/data" "$state_root/config" "$state_root/cache"
+sugar_home=${ASPARTAME_SUGAR_HOME:-$state_root/home}
+sugar_profile=${ASPARTAME_SUGAR_PROFILE:-default}
+sugar_profile_name=${ASPARTAME_SUGAR_PROFILE_NAME:-AspartameGTK4}
+mkdir -p "$sugar_home" "$state_root/data" "$state_root/config" "$state_root/cache"
 snakepit_record_dir="$state_root/snakepit/records"
 mkdir -p "$snakepit_record_dir"
 # Casilda exposes one private Activity compositor per modern Space. Refuse a
@@ -100,7 +103,7 @@ flock -n 9 || {
 # `aspartame` user.  Keep datastore/Xapian state user-owned so its lockfile can
 # be opened on every restart (a previous root-owned index made Journal crash).
 if [ "$(id -u)" -eq 0 ]; then
-    chown -R aspartame:aspartame "$state_root/home" "$state_root/data" \
+    chown -R aspartame:aspartame "$sugar_home" "$state_root/data" \
         "$state_root/config" "$state_root/cache"
 fi
 modern_activities="$runroot/activities"
@@ -175,8 +178,8 @@ exec env \
     DISPLAY="$display" \
     GDK_BACKEND=x11 \
     CASILDA_FORCE_SOFTWARE="${CASILDA_FORCE_SOFTWARE:-1}" \
-    SUGAR_HOME="$state_root/home" \
-    SUGAR_PROFILE=default \
+    SUGAR_HOME="$sugar_home" \
+    SUGAR_PROFILE="$sugar_profile" \
     XDG_RUNTIME_DIR="$runroot" \
     XDG_DATA_HOME="$state_root/data" \
     XDG_CONFIG_HOME="$state_root/config" \
@@ -184,7 +187,7 @@ exec env \
     GSETTINGS_SCHEMA_DIR="$resources/schemas" \
     SUGAR_GROUP_LABELS="$resources/group-labels.json" \
     SUGAR_MIME_DEFAULTS="$shell/data/mime.defaults" \
-    SUGAR_PROFILE_NAME=AspartameGTK4 \
+    SUGAR_PROFILE_NAME="$sugar_profile_name" \
     ASPARTAME_GTK4_ROOT="$root" \
     SUGAR_ACTIVITIES_PATH="$modern_activities" \
     SUGAR_WINDOWED="${SUGAR_WINDOWED:-0}" \

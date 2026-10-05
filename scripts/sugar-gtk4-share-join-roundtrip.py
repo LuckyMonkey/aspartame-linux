@@ -186,6 +186,30 @@ GLib.timeout_add_seconds(int(os.environ.get("ASPARTAME_PEER_TIMEOUT", "20")), lo
 loop.run()
 
 if joined["success"] is not True:
+    if debug:
+        command = getattr(activity, "_join_command", None)
+        print(
+            "peer-debug join-command "
+            f"self={getattr(command, 'channel_self_handle', None)!r} "
+            f"global={getattr(command, '_global_self_handle', None)!r} "
+            f"flags={getattr(command, 'text_channel_group_flags', None)!r}",
+            flush=True,
+        )
+        channel = getattr(command, "text_channel", None)
+        if channel and GROUP_IFACE in channel:
+            try:
+                members, local_pending, remote_pending = channel[
+                    GROUP_IFACE
+                ].GetAllMembers()
+                print(
+                    "peer-debug join-members "
+                    f"members={list(members)!r} "
+                    f"local_pending={list(local_pending)!r} "
+                    f"remote_pending={list(remote_pending)!r}",
+                    flush=True,
+                )
+            except dbus.DBusException as error:
+                print(f"peer-debug join-members-error={error}", flush=True)
     raise SystemExit(
         "share-join=BLOCKED phase=join "
         f"activity_id={activity_id} "

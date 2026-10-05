@@ -1,5 +1,20 @@
 # GTK4 blockers
 
+## GTK4-022 — Salut public Activity join remains RemotePending
+
+- Category: `COLLABORATION` / Telepathy-Salut room admission
+- Reproduction: use the isolated headless peer fixture and the real GTK4
+  `sugar4.presence.Activity.join()` probe.
+- Evidence: owner publication passes and peer discovery passes, but the peer
+  remains `members=[] local_pending=[] remote_pending=[1]`; the owner sees the
+  peer contact but the room has no member. The stable receipt is recorded in
+  `reports/gtk4/share-join-qualification-20261004.md`.
+- Scope: GTK4 UI publication and owner share are qualified separately; this
+  blocker prevents claiming two-guest Activity collaboration or retiring the
+  GTK3 reference path.
+- Status: open; keep the retirement gate blocked until a rebuilt two-guest
+  join receipt exists.
+
 ## GTK4-021 — duplicate shared Activity removal raised in the shell model
 
 - Category: `UPSTREAM-SHELL` / collaboration lifecycle

@@ -74,3 +74,27 @@ patch was retained because it did not fix the join and increased crash risk.
 Qualification remains: owner publication and peer discovery PASS; peer room
 join BLOCKED on the Salut transport/session failure.  This is now a concrete
 daemon-level blocker, not an unobserved GTK4 Activity callback.
+
+## 2026-10-05 controlled headless rerun
+
+The isolated-profile two-guest fixture now produces a stable, repeatable
+three-phase result:
+
+```text
+owner: share-roundtrip=PASS mode=telepathy-share
+peer:  public Calculate Activity discovered
+peer:  share-join=BLOCKED phase=join
+peer:  members=[] local_pending=[] remote_pending=[dbus.UInt32(1)]
+```
+
+The peer's `sugar4.presence.Activity.join()` command receives self handle 1,
+but Salut keeps that handle in `RemotePendingMembers`. The owner sees the peer
+as a known contact (current fixture handle 2) and the public room remains
+without a member. This is the precise remaining collaboration blocker; the
+GTK4 UI and owner publication path are no longer the ambiguous part of the
+test.
+
+The repository keeps the profile-isolation and join-state diagnostics. An
+experimental remote-pending acceptance patch was not retained because the
+live two-guest run did not qualify a join and must not be mistaken for a
+solution.

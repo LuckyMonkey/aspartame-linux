@@ -133,6 +133,8 @@ def test_peer_join_probe_reports_discovery_state_and_failure_phase():
     assert 'ASPARTAME_PEER_DEBUG' in probe
     assert 'peer-debug members=' in probe
     assert 'peer-debug candidate activity_id=' in probe
+    assert 'peer-debug join-command' in probe
+    assert 'peer-debug join-members' in probe
     assert 'phase=discovery' in probe
     assert 'phase=activity-object' in probe
     assert 'phase=join' in probe

@@ -51,6 +51,20 @@ def test_gtk4_dev_sync_removes_retired_share_experiments():
     assert '0187-toolkit-invite-public-contacts.patch' in script
 
 
+def test_peer_fixture_isolated_from_the_normal_sugar_profile():
+    runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
+    fixture = (ROOT / "scripts/sugar-gtk4-peer-prepare.sh").read_text()
+
+    assert 'sugar_home=${ASPARTAME_SUGAR_HOME:-$state_root/home}' in runner
+    assert 'SUGAR_HOME="$sugar_home"' in runner
+    assert 'SUGAR_PROFILE="$sugar_profile"' in runner
+    assert 'SUGAR_PROFILE_NAME="$sugar_profile_name"' in runner
+    assert 'ip -4 addr flush dev "$interface"' in fixture
+    assert 'SetStaticHostname' in fixture
+    assert 'ASPARTAME_SUGAR_HOME' in fixture
+    assert 'systemctl restart avahi-daemon' in fixture
+
+
 def test_qemu_key_sender_supports_reverse_focus_chord():
     script = (ROOT / "scripts/qemu-send-key.py").read_text()
     assert '"SHIFT+TAB": ("shift", "tab")' in script
