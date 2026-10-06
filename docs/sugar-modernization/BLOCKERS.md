@@ -14,6 +14,9 @@
   `remote_pending` experiments remain retired. This corrects the admission
   side of the protocol, but does not close the blocker without a real
   two-guest join receipt.
+- Preview patch `0205` separately stops failed join callbacks before they
+  dereference an uninitialized channel command; this is failure-path hygiene,
+  not a join qualification.
 - Scope: GTK4 UI publication and owner share are qualified separately; this
   blocker prevents claiming two-guest Activity collaboration or retiring the
   GTK3 reference path.

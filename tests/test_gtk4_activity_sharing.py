@@ -150,7 +150,20 @@ def test_public_activity_accepts_owner_local_pending_requests_only():
     source_hunk = patch.split("--- a/src/sugar4/presence/activity.py", 1)[1]
     assert "remote_pending" not in source_hunk
     assert '*0204*) target="$toolkit" ;;' in build
-    assert "verified canonical go_home action" in build
+    assert "verified public Activity local-pending admission" in build
+
+
+def test_join_failure_does_not_continue_with_uninitialized_channels():
+    patch = (ROOT /
+             "patches/gtk4-preview/0205-toolkit-return-after-join-error.patch").read_text()
+    build = BUILD.read_text()
+    series = (ROOT / "scripts/sugar-gtk4-series-check.sh").read_text()
+    assert 'self.emit("joined", error is None, str(error))' in patch
+    assert "            return" in patch
+    assert '*0205*) target="$toolkit" ;;' in build
+    assert '*0205*' in series
+    assert "public Activity join robustness patch" in build
+    assert "verified Activity join error guard" in build
 
 
 def test_peer_observer_uses_the_live_neighborhood_model():

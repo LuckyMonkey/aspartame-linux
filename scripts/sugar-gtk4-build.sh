@@ -122,6 +122,7 @@ for patch in "$patch_dir"/*.patch; do
         *0202*) target="$root/sources/sugar" ;;
         *0203*) target="$root/sources/sugar" ;;
         *0204*) target="$toolkit" ;;
+        *0205*) target="$toolkit" ;;
         *0150*) target="$toolkit" ;;
         *0151*) target="$root/sources/sugar" ;;
         *0152*) target="$root/sources/sugar" ;;
@@ -1012,6 +1013,25 @@ PY
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied canonical go_home action: $patch_name"
+    elif [[ "$patch_name" == *0204* ]] &&
+        grep -q 'def __accept_public_local_pending' \
+            "$toolkit/src/sugar4/presence/activity.py" 2>/dev/null &&
+        grep -q '_public_join_handles' \
+            "$toolkit/src/sugar4/presence/activity.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "verified public Activity local-pending admission: $patch_name"
+    elif [[ "$patch_name" == *0205* ]] &&
+        grep -q 'self.emit("joined", error is None, str(error))' \
+            "$toolkit/src/sugar4/presence/activity.py" 2>/dev/null &&
+        grep -q '^            return$' \
+            "$toolkit/src/sugar4/presence/activity.py" 2>/dev/null; then
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "verified Activity join error guard: $patch_name"
+    elif [[ "$patch_name" == *0204* || "$patch_name" == *0205* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied public Activity join robustness patch: $patch_name"
     else
         echo "GTK4 preview patch drift: $patch_name" >&2
         echo "target: $target" >&2

@@ -114,3 +114,13 @@ isolated profile has no usable Salut account (`server` is empty), so it
 returned the existing visible sharing-unavailable fallback. This run does not
 claim a join result; the packaged two-guest fixture remains the authoritative
 qualification path for closing GTK4-022.
+
+## Join failure safety follow-up
+
+Preview patch `0205` now returns immediately after emitting a failed
+`Activity.join()` result. Previously, a failed join could continue through a
+partially initialized command and raise a secondary channel-state traceback.
+The patch applies cleanly to the pinned toolkit source; it improves failure
+handling but does not claim that Salut membership is fixed. The authoritative
+join receipt remains `phase=join` blocked until a rebuilt two-guest run reports
+`share-join=PASS`.

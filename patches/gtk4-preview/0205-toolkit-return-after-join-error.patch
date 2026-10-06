@@ -1,0 +1,17 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] presence: stop after a failed Activity join
+
+Do not continue through partially initialized channel state after reporting a
+join failure. The failed command has no usable text channel and must remain a
+clean negative result for callers.
+
+--- a/src/sugar4/presence/activity.py
++++ b/src/sugar4/presence/activity.py
+@@ -305,6 +305,7 @@
+         _logger.debug("%r: Join finished %r" % (self, error))
+         if error is not None:
+             self.emit("joined", error is None, str(error))
++            return
+         self.telepathy_text_chan = join_command.text_channel
+         self.telepathy_tubes_chan = join_command.tubes_channel
+         self._channel_self_handle = join_command.channel_self_handle
