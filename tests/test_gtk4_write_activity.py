@@ -17,6 +17,7 @@ def test_write_bundle_is_native_and_registered():
     assert "controls.set_halign(Gtk.Align.END)" in source
     assert "buffer.connect(\"changed\", self._document_changed)" in source
     assert "Gtk.EventControllerKey" in source and "_format_key" in source
+    assert "GTK4 returns an empty tuple" in source
     assert 'button = Gtk.Button(label=label)' in source
     assert '"aspartame-write-v1"' in source and '"spans"' in source
     assert "_format_spans" in source and "_set_document" in source

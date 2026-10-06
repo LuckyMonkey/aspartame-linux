@@ -70,8 +70,13 @@ class WriteActivity(SimpleActivity):
         if len(bounds) == 3:
             selected, start, end = bounds
         else:
-            start, end = bounds
-            selected = start.get_offset() != end.get_offset()
+            # GTK4 returns an empty tuple when no selection exists, while
+            # some bindings return the two iterators directly.
+            if len(bounds) == 2:
+                start, end = bounds
+                selected = start.get_offset() != end.get_offset()
+            else:
+                selected = False
         if selected:
             self._format_selection = (start.get_offset(), end.get_offset())
             return start, end

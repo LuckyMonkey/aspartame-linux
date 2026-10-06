@@ -16,5 +16,10 @@ Real guest qualification:
 write-format-roundtrip=PASS bold-persist=PASS read-interoperability=PASS cleanup=PASS
 ```
 
+The follow-up host sweep also found and fixed a GTK4 callback crash when
+`Clear formatting` was activated with no selection: GTK4 can return an empty
+selection tuple, which is now handled as a normal whole-document fallback.
+The GTK4 host suite passes `470` tests after the fix.
+
 This is bounded rich-text progress, not a FULL PORT claim. ODT/AbiWord
 document-format breadth, media embedding, and collaboration remain open.
