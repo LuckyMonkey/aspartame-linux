@@ -106,6 +106,14 @@ def test_side_by_side_reapplies_geometry_after_gtk4_window_map():
     assert controller.count('geometry --pid "$GTK4_PID"') >= 2
 
 
+def test_visual_sweep_preserves_guest_x11_session_credentials():
+    sweep = (ROOT / 'scripts/sugar-gtk4-visual-sweep-guest.sh').read_text()
+    assert 'xauthority=${XAUTHORITY:-/home/aspartame/.Xauthority}' in sweep
+    assert 'xdg_runtime_dir=${XDG_RUNTIME_DIR:-/run/user/1000}' in sweep
+    assert 'DISPLAY=:0 XAUTHORITY="$xauthority"' in sweep
+    assert 'XDG_RUNTIME_DIR="$xdg_runtime_dir"' in sweep
+
+
 def test_classic_home_uses_normal_undecorated_window_in_side_by_side_mode():
     home = (ROOT / 'sugar-overlay/src/jarabe/desktop/homewindow.py').read_text()
     assert 'Gdk.WindowTypeHint.NORMAL' in home

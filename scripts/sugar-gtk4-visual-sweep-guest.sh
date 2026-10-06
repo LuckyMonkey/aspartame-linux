@@ -19,16 +19,20 @@ out_dir=${1:-$root/reports/gtk4/visual-sweep-$(date +%Y%m%d)}
 settle=${VISUAL_SETTLE_SECONDS:-0.8}
 filter=${VISUAL_ACTIVITY_FILTER:-}
 space_controller="$gtk4_root/scripts/sugar-gtk4-space.sh"
+xauthority=${XAUTHORITY:-/home/aspartame/.Xauthority}
+xdg_runtime_dir=${XDG_RUNTIME_DIR:-/run/user/1000}
 
 # A headless boot still owns separate GTK3/GTK4 workspaces. Select the modern
 # Space before resolving its D-Bus address; the controller may start or
 # re-present the GTK4 shell during initial session setup.
 if [ -x "$space_controller" ]; then
-    runuser -u aspartame -- env DISPLAY=:0 GTK4_ROOT="$gtk4_root" \
+    runuser -u aspartame -- env DISPLAY=:0 XAUTHORITY="$xauthority" \
+        XDG_RUNTIME_DIR="$xdg_runtime_dir" GTK4_ROOT="$gtk4_root" \
         bash "$space_controller" gtk4 >/dev/null 2>&1 || true
 fi
 
-resolution=$(runuser -u aspartame -- env DISPLAY=:0 xrandr --current |
+resolution=$(runuser -u aspartame -- env DISPLAY=:0 XAUTHORITY="$xauthority" \
+    xrandr --current |
     awk '/ connected / {
         for (field = 1; field <= NF; field++) {
             if ($field ~ /^[0-9]+x[0-9]+[+]/) {
@@ -129,7 +133,8 @@ capture_one() {
         return 1
     fi
     screenshot="$out_dir/$slug.png"
-    if ! runuser -u aspartame -- env DISPLAY=:0 ffmpeg -hide_banner -loglevel error \
+    if ! runuser -u aspartame -- env DISPLAY=:0 XAUTHORITY="$xauthority" \
+        ffmpeg -hide_banner -loglevel error \
         -f x11grab -draw_mouse 0 -video_size "$resolution" -i :0 -frames:v 1 -y "$screenshot"; then
         stop_activity "$activity_id" "$pattern" || true
         echo 'screenshot-failed'
