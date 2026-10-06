@@ -98,3 +98,19 @@ The repository keeps the profile-isolation and join-state diagnostics. An
 experimental remote-pending acceptance patch was not retained because the
 live two-guest run did not qualify a join and must not be mistaken for a
 solution.
+
+## 2026-10-06 owner-admission correction
+
+Protocol review confirmed that Telepathy exposes a join request as
+`LocalPending` on the Activity owner's Group channel; `RemotePending` is the
+peer's waiting view. Preview patch `0204` now accepts only the owner's local
+pending handles, deduplicates concurrent callbacks, and leaves the peer-side
+join state unchanged until Salut emits membership.
+
+The rebuilt GTK4 preview applies `0204`, imports `sugar4`, and completes the
+Casilda, sugar-ext, Jarabe, and datastore build qualification. A live owner
+share probe was also attempted against the development runtime, but that
+isolated profile has no usable Salut account (`server` is empty), so it
+returned the existing visible sharing-unavailable fallback. This run does not
+claim a join result; the packaged two-guest fixture remains the authoritative
+qualification path for closing GTK4-022.

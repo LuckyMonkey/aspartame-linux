@@ -34,4 +34,6 @@ def test_go_home_patch_is_applied_to_the_gtk4_source_tree():
     iso = (ROOT / "scripts/build-iso.sh").read_text()
     assert '*0203*) target="$root/sources/sugar" ;;' in build
     assert 'patch --dry-run --fuzz=5 -p1 < "$patch"' in build
+    assert "verified consolidated shell window result" in build
+    assert "verified semantic navigation action menu" in build
     assert "sugar-gtk4-action.py" in iso

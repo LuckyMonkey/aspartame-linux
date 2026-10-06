@@ -1,0 +1,73 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] presence: accept public Activity join requests
+
+Telepathy Group channels expose a peer requesting entry as LocalPending on
+the Activity owner's channel. RemotePending is the peer's view while it waits
+for that approval. Accept only the owner's local pending requests for public
+Activities, and deduplicate callbacks while Salut processes the request.
+
+--- a/src/sugar4/presence/activity.py
++++ b/src/sugar4/presence/activity.py
+@@ -131,6 +131,7 @@
+         self._joined_buddies = {}
+ 
+         self._get_properties_call = None
++        self._public_join_handles = set()
+         if self.room_handle is not None:
+             self._start_tracking_properties()
+ 
+@@ -329,6 +330,34 @@
+             "MembersChanged", self.__text_channel_members_changed_cb
+         )
+ 
++    def __accept_public_local_pending(self, group, local_pending):
++        if self._private or not local_pending:
++            return
++
++        handles = [
++            int(handle)
++            for handle in local_pending
++            if int(handle) != int(self._channel_self_handle)
++            and int(handle) not in self._public_join_handles
++        ]
++        if not handles:
++            return
++
++        self._public_join_handles.update(handles)
++        _logger.debug("Accepting public Activity join requests: %r", handles)
++        group.AddMembers(
++            handles,
++            "",
++            reply_handler=partial(self.__public_join_cb, handles),
++            error_handler=partial(self.__public_join_cb, handles),
++        )
++
++    def __public_join_cb(self, handles, error=None):
++        for handle in handles:
++            self._public_join_handles.discard(handle)
++        if error is not None:
++            _logger.warning("Unable to accept public Activity join: %s", error)
++
+     def _start_tracking_channel(self):
+         channel = self.telepathy_text_chan[CHANNEL]
+         channel.connect_to_signal("Closed", self.__text_channel_closed_cb)
+@@ -340,6 +369,9 @@
+         if self._channel_self_handle in members:
+             members.remove(self._channel_self_handle)
+ 
++        self.__accept_public_local_pending(
++            self.telepathy_text_chan[CHANNEL_INTERFACE_GROUP], local_pending
++        )
+         if not members:
+             return
+ 
+@@ -391,6 +423,9 @@
+                 reason,
+             ]
+         )
++        self.__accept_public_local_pending(
++            self.telepathy_text_chan[CHANNEL_INTERFACE_GROUP], local_pending
++        )
+         if self._channel_self_handle in added:
+             added.remove(self._channel_self_handle)
+         if added:

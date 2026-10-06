@@ -121,6 +121,7 @@ for patch in "$patch_dir"/*.patch; do
         *0188*) target="$root/sources/sugar" ;;
         *0202*) target="$root/sources/sugar" ;;
         *0203*) target="$root/sources/sugar" ;;
+        *0204*) target="$toolkit" ;;
         *0150*) target="$toolkit" ;;
         *0151*) target="$root/sources/sugar" ;;
         *0152*) target="$root/sources/sugar" ;;
@@ -648,6 +649,27 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing Space key ownership from every shell window: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0157* ]] &&
+        grep -q 'def _capture_zoom_key' "$shell/src/jarabe/main.py" 2>/dev/null &&
+        grep -q 'set_focusable(True)' "$shell/src/jarabe/main.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified consolidated shell window result: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0158* ]] &&
+        grep -q 'self\._windowed' "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null &&
+        grep -q 'def _ensure_group_box' "$shell/src/jarabe/desktop/homewindow.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified consolidated Home window result: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0159* ]] &&
+        grep -q 'sugar-activity-compositor' "$shell/src/jarabe/model/shell.py" 2>/dev/null &&
+        grep -q 'background-color: #000000' "$shell/src/jarabe/model/shell.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified opaque Activity surface result: $patch_name"
+        continue
+    fi
     if [[ "$patch_name" == *0169* ]] &&
         grep -q 'def _build_spaces_button' "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null &&
         grep -q 'ASPARTAME_SPACE_SWITCHER' "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null &&
@@ -975,6 +997,16 @@ PY
             "$shell/src/jarabe/model/shell.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "verified existing shared Activity removal guard: $patch_name"
+    elif [[ "$patch_name" == *0202* ]] &&
+        grep -q 'def _build_navigation_button' "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null &&
+        grep -q 'Navigate (F1-F6)' "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp"
+        echo "verified semantic navigation action menu: $patch_name"
+    elif [[ "$patch_name" == *0203* ]] &&
+        grep -q 'def go_home' "$shell/src/jarabe/view/actions.py" 2>/dev/null &&
+        grep -q 'actions.go_home()' "$shell/src/jarabe/main.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp"
+        echo "verified canonical go_home action: $patch_name"
     elif [[ "$patch_name" == *0203* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)

@@ -140,6 +140,19 @@ def test_peer_join_probe_reports_discovery_state_and_failure_phase():
     assert 'phase=join' in probe
 
 
+def test_public_activity_accepts_owner_local_pending_requests_only():
+    patch = (ROOT /
+             "patches/gtk4-preview/0204-toolkit-accept-public-local-pending.patch").read_text()
+    build = BUILD.read_text()
+    assert "__accept_public_local_pending" in patch
+    assert "local_pending" in patch
+    assert "_public_join_handles" in patch
+    source_hunk = patch.split("--- a/src/sugar4/presence/activity.py", 1)[1]
+    assert "remote_pending" not in source_hunk
+    assert '*0204*) target="$toolkit" ;;' in build
+    assert "verified canonical go_home action" in build
+
+
 def test_peer_observer_uses_the_live_neighborhood_model():
     observer = (ROOT / "scripts/sugar-gtk4-share-peer-observer.py").read_text()
 
