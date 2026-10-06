@@ -39,10 +39,11 @@ class AbacusActivity(SimpleActivity):
         root.append(value_frame)
 
         self.rods = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        self.rods.set_vexpand(True)
         rods_frame = Gtk.Frame(label="Place-value rods")
         rods_frame.add_css_class("abacus-card")
         rods_frame.set_halign(Gtk.Align.CENTER)
-        rods_frame.set_hexpand(False); rods_frame.set_vexpand(False)
+        rods_frame.set_hexpand(False); rods_frame.set_vexpand(True)
         rods_frame.set_size_request(760, -1)
         rods_frame.set_child(self.rods)
         root.append(rods_frame)
@@ -50,7 +51,7 @@ class AbacusActivity(SimpleActivity):
         place_names = ("Ten-thousands", "Thousands", "Hundreds", "Tens", "Ones")
         for index in range(5):
             row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-            row.set_halign(Gtk.Align.CENTER); row.set_hexpand(False)
+            row.set_halign(Gtk.Align.CENTER); row.set_hexpand(False); row.set_vexpand(True)
             row.set_size_request(700, 58); row.add_css_class("abacus-row")
             label = Gtk.Label(label=f"{place_names[index]}\n10^{4-index}", xalign=0)
             label.set_size_request(170, -1)
@@ -65,6 +66,7 @@ class AbacusActivity(SimpleActivity):
             bead_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=2)
             bead_box.set_size_request(340, 44)
             bead_box.set_halign(Gtk.Align.CENTER)
+            bead_box.set_valign(Gtk.Align.CENTER)
             bead_buttons = []
             for bead_index in range(10):
                 bead = Gtk.Button(label="○")

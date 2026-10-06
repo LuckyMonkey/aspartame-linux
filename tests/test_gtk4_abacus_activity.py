@@ -18,6 +18,9 @@ def test_abacus_bundle_is_native_and_registered():
     assert "def _render_beads" in source
     assert 'button.abacus-bead' in source and 'font-size: 20px' in source
     assert 'rods_frame.set_size_request(760, -1)' in source
+    assert 'self.rods.set_vexpand(True)' in source
+    assert 'rods_frame.set_hexpand(False); rods_frame.set_vexpand(True)' in source
+    assert 'row.set_halign(Gtk.Align.CENTER); row.set_hexpand(False); row.set_vexpand(True)' in source
     assert 'value_frame.set_size_request(420, -1)' in source
     assert 'label.abacus-title' in source
     assert 'clear.set_halign(Gtk.Align.CENTER)' in source
