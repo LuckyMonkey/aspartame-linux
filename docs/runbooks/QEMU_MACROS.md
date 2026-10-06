@@ -81,3 +81,17 @@ menu. Its Neighborhood, Group, Home, Activity, Journal, and Frame buttons
 invoke the same semantic shell actions without depending on physical
 function-key delivery. This closes the user-facing action path while the
 physical F1-F6 transport remains a separate QEMU/host qualification item.
+
+Home is now a canonical semantic action. `jarabe.view.actions.go_home()` is
+the implementation used by the GTK4 F3 shortcut, the Home action-menu button,
+and the shell D-Bus `ShowHome` method. Headless automation can use either the
+future-agent helper or the QMP transport:
+
+```bash
+./scripts/sugar-gtk4-action.py home
+ASPARTAME_QEMU_QMP=/tmp/aspartame-qemu-qmp-gtk4-share-clean-a \
+  ./scripts/qemu-headless-macro.py macros/qemu/headless-go-home.json
+```
+
+The helper proves the semantic action; QMP proves that F3 reaches the guest.
+Neither path adds frame history or rewind behavior.
