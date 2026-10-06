@@ -36,6 +36,15 @@ headless GTK4 shell. The 1920x1080 capture showed the starter source mirrored
 in Preview; its SHA-256 was
 `4bfecd6cae137edba7bf29d2e8c9429522317f3255523d0b40888330302173ac`.
 
+## Follow-up layout correction — 2026-10-05
+
+The source audit found that the initial `Gtk.Paned` position had regressed to
+`-1`, collapsing the source side on GTK4 despite the surrounding widgets being
+correctly expandable. The initialization now uses a 640-pixel starting split,
+and the activity test rejects the collapsed configuration. This is committed
+as `2459629` and pushed to GitHub. A fresh guest screenshot remains pending;
+the correction is covered by the focused host suite.
+
 ## Boundary
 
 Markdown remains a `FUNCTIONAL PORT`, not a `FULL PORT`. Full Markdown parser

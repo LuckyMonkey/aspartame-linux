@@ -40,6 +40,14 @@ A headless QEMU click on `Play` changed the player and status to
 checksum was
 `35c43c3acf979ccf959d611aa3d71a4553709703791e0d8489ef73884403c2d9`.
 
+## Follow-up layout correction — 2026-10-05
+
+The source audit found the Playlist/Player `Gtk.Paned` was initialized at
+`-1`, which can collapse the leading playlist or player surface on GTK4. It
+now opens with a 640-pixel split and the layout qualification rejects the
+collapsed pattern. This is committed as `18b3055` and pushed to GitHub. A
+fresh guest screenshot remains pending; the source and focused tests pass.
+
 ## Boundary
 
 Jukebox remains a `FUNCTIONAL PORT`, not a `FULL PORT`. Codec-backed media

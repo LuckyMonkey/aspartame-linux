@@ -31,3 +31,14 @@ def test_compound_activity_surfaces_use_expanding_columns():
         else:
             assert "Gtk.Grid" in source
             assert "set_column_homogeneous(True)" in source
+
+
+def test_side_by_side_panes_are_explicitly_initialized():
+    for package in ("gtk4-jukebox-activity", "gtk4-markdown-activity"):
+        source = "\n".join(
+            path.read_text() for path in (PACKAGE_ROOT / package).glob("*.py")
+        )
+        assert "Gtk.Paned" in source
+        assert "set_start_child(" in source
+        assert "set_end_child(" in source
+        assert "set_position(640)" in source
