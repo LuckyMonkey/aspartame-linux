@@ -6,6 +6,11 @@
     "source": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/app-right",
     "target": "host-development"
   },
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "files": 3,
+    "digest": "42433a2469606b35e012a84c70b9c9239e83faa6bc83d6dae9cfb6926c10e95f"
+  },
   "interpreter": {
     "requested": "/usr/bin/python3.12",
     "version": "Python 3.12.3",
@@ -24,12 +29,12 @@
     "satisfied": true
   },
   "environment": {
-    "path": "/tmp/aspartame-snakepit-pair.jwKZJt/right",
-    "python": "/tmp/aspartame-snakepit-pair.jwKZJt/right/bin/python",
+    "path": "/tmp/aspartame-snakepit-pair.O2tYg7/right",
+    "python": "/tmp/aspartame-snakepit-pair.O2tYg7/right/bin/python",
     "reuse": false,
     "python_version": "Python 3.12.3",
     "isolation": {
-      "prefix": "/tmp/aspartame-snakepit-pair.jwKZJt/right",
+      "prefix": "/tmp/aspartame-snakepit-pair.O2tYg7/right",
       "base_prefix": "/usr",
       "isolated": true
     }
@@ -77,13 +82,13 @@
       "action": "install-requirements",
       "path": "/home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/app-right/requirements.txt",
       "returncode": 0,
-      "stdout": "Processing /home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/shared-v2\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: snakepit-tension-core\n  Building wheel for snakepit-tension-core (pyproject.toml): started\n  Building wheel for snakepit-tension-core (pyproject.toml): finished with status 'done'\n  Created wheel for snakepit-tension-core: filename=snakepit_tension_core-2.0.0-py3-none-any.whl size=1074 sha256=329d7edae4270ee2736acc1f06eb1900616cd3eddad9522a2cb3cc9b6cc30b2e\n  Stored in directory: /home/freezer/.cache/pip/wheels/e4/47/63/9be40f445d88612dbf1ce981bdc31b47df0dd0e69331c27056\nSuccessfully built snakepit-tension-core\nInstalling collected packages: snakepit-tension-core\nSuccessfully installed snakepit-tension-core-2.0.0\n",
+      "stdout": "Processing /home/freezer/Projects/aspartame/tests/fixtures/snakepit/dependency-pair/shared-v2\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: snakepit-tension-core\n  Building wheel for snakepit-tension-core (pyproject.toml): started\n  Building wheel for snakepit-tension-core (pyproject.toml): finished with status 'done'\n  Created wheel for snakepit-tension-core: filename=snakepit_tension_core-2.0.0-py3-none-any.whl size=1074 sha256=6671c22295bc09b14e834da48ee40af79c7b071912baeb7be9c19522eef6c09e\n  Stored in directory: /home/freezer/.cache/pip/wheels/e4/47/63/9be40f445d88612dbf1ce981bdc31b47df0dd0e69331c27056\nSuccessfully built snakepit-tension-core\nInstalling collected packages: snakepit-tension-core\nSuccessfully installed snakepit-tension-core-2.0.0\n",
       "stderr": ""
     }
   ],
   "workflow": {
     "command": [
-      "/tmp/aspartame-snakepit-pair.jwKZJt/right/bin/python",
+      "/tmp/aspartame-snakepit-pair.O2tYg7/right/bin/python",
       "-m",
       "probe"
     ],
@@ -94,8 +99,9 @@
     "stdout_truncated": false,
     "stderr_truncated": false
   },
+  "launch": null,
   "error": null,
-  "started_at": "2026-10-02T23:37:36.374989+00:00",
-  "finished_at": "2026-10-02T23:37:40.568467+00:00",
-  "duration_seconds": 4.193
+  "started_at": "2026-10-06T03:37:22.897055+00:00",
+  "finished_at": "2026-10-06T03:37:27.312139+00:00",
+  "duration_seconds": 4.415
 }
