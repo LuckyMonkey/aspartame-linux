@@ -9,6 +9,11 @@
   remains `members=[] local_pending=[] remote_pending=[1]`; the owner sees the
   peer contact but the room has no member. The stable receipt is recorded in
   `reports/gtk4/share-join-qualification-20261004.md`.
+- Follow-up: preview patch `0204` now accepts the owner's public
+  `local_pending` handles through `Group.AddMembers`; the rejected
+  `remote_pending` experiments remain retired. This corrects the admission
+  side of the protocol, but does not close the blocker without a real
+  two-guest join receipt.
 - Scope: GTK4 UI publication and owner share are qualified separately; this
   blocker prevents claiming two-guest Activity collaboration or retiring the
   GTK3 reference path.

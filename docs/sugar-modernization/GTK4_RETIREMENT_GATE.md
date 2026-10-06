@@ -64,3 +64,21 @@ shows output as a deliberate run/result surface, and Jukebox keeps playback
 status beside its actions while visually marking the selected track. Pippy's
 bounded runner remains the forward path for the upcoming Python-runtime work;
 it is not yet a claim of full upstream Pippy parity.
+
+## Regression and pane follow-up — 2026-10-05
+
+The next pass closed concrete regressions without weakening the retirement
+boundary:
+
+- Markdown and Jukebox now initialize their GTK4 side-by-side panes at a
+  visible 640-pixel split; the old `-1` initialization collapsed a workspace
+  surface on first launch.
+- Write now treats GTK4's empty no-selection tuple as a normal formatting
+  fallback instead of raising a callback traceback from `Clear formatting`.
+- The clean-series checker now routes the 0204 toolkit patch to the same
+  target as the build script.
+
+The complete GTK4 host suite passes `470` tests after these changes. Commits
+`2459629`, `18b3055`, `ab33bc4`, and `8135c38` are pushed to `origin/master`.
+The two-guest Activity join and FULL PORT classifications remain open, so GTK3
+fallback/reference packages stay installed.
