@@ -10,11 +10,7 @@ share.
 
 --- a/src/sugar4/presence/activity.py
 +++ b/src/sugar4/presence/activity.py
-@@ -464,8 +464,19 @@
-             self._publish_properties()
-             self._start_tracking_properties()
-             self._start_tracking_buddies()
-             self._start_public_join_reconciliation()
+@@ -468,1 +468,12 @@
              self._start_tracking_channel()
 +            self.telepathy_conn.SetCurrentActivity(
 +                self._id,

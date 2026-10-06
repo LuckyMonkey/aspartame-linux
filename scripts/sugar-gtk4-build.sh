@@ -953,10 +953,20 @@ PY
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "applied compatibility preview patch: $patch_name"
     elif [[ "$patch_name" == *0188* ]] &&
+        (cd "$target" && patch --dry-run -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied shared Activity removal guard: $patch_name"
+    elif [[ "$patch_name" == *0188* ]] &&
         grep -q 'self\._shared_activities\.pop(activity_id, None)' \
             "$shell/src/jarabe/model/shell.py" 2>/dev/null; then
         printf '%s\n' "$patch_digest" > "$stamp"
         echo "verified existing shared Activity removal guard: $patch_name"
+    elif [[ "$patch_name" == *0203* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied canonical go_home action: $patch_name"
     else
         echo "GTK4 preview patch drift: $patch_name" >&2
         echo "target: $target" >&2
