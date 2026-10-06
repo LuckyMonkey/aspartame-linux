@@ -20,6 +20,7 @@ def test_colormyworld_bundle_is_native_and_registered():
     assert "palette_frame" in source and "Gtk.Frame(label=\"Palette\")" in source
     assert "Gtk.GestureClick" in source and "_map_pressed" in source
     assert 'label="Clear map"' in source and '"regions"' in source
+    assert "REGION_LABELS" in source and "cr.show_text(label)" in source
     assert "org.sugarlabs.ColorMyWorldActivity" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-colormyworld-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-colormyworld-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()

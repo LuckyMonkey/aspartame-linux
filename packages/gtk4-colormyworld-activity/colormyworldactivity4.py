@@ -29,6 +29,9 @@ class ColorMyWorldActivity(SimpleActivity):
         ("Southeast Asia", 0.67, 0.39, 0.15, 0.18),
         ("Australia", 0.77, 0.63, 0.15, 0.14),
     )
+    REGION_LABELS = {
+        "Southeast Asia": "SE Asia",
+    }
 
     def __init__(self, activity_handle=None):
         super().__init__(activity_handle)
@@ -90,6 +93,15 @@ class ColorMyWorldActivity(SimpleActivity):
             cr.rectangle(left, top, region_width * width, region_height * height)
             cr.set_source_rgba(rgba.red, rgba.green, rgba.blue, 1); cr.fill_preserve()
             cr.set_source_rgb(0.32, 0.40, 0.43); cr.set_line_width(2); cr.stroke()
+            label = self.REGION_LABELS.get(name, name)
+            cr.set_source_rgb(0.22, 0.28, 0.30)
+            cr.select_font_face("Sans", 0, 0)
+            cr.set_font_size(max(10, min(16, width / 120)))
+            extents = cr.text_extents(label)
+            label_x = left + max(5, (region_width * width - extents.width) / 2)
+            label_y = top + max(extents.height + 4, region_height * height / 2)
+            cr.move_to(label_x, label_y)
+            cr.show_text(label)
             if name == self._selected_region:
                 cr.rectangle(left + 2, top + 2, region_width * width - 4, region_height * height - 4)
                 cr.set_source_rgb(0.12, 0.35, 0.48); cr.set_line_width(4); cr.stroke()

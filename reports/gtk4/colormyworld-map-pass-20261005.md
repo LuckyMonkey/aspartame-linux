@@ -1,10 +1,10 @@
 # Color My World GTK4 map pass — 2026-10-05
 
 The next UX slice turns the large preview into a bounded offline world-region
-map. Learners choose a palette color, click a named region, see the selected
-region outlined, and can clear the map with one explicit action. The existing
-`{"name": "Violet"}` Journal payload remains valid; new saves add an optional
-`regions` color map.
+map. Learners see named region boundaries before making a choice, choose a
+palette color, click a named region, see the selected region outlined, and can
+clear the map with one explicit action. The existing `{"name": "Violet"}`
+Journal payload remains valid; new saves add an optional `regions` color map.
 
 Focused checks:
 
