@@ -72,7 +72,9 @@ class MarkdownActivity(SimpleActivity):
         panes.set_resize_start_child(True); panes.set_resize_end_child(True)
         panes.set_shrink_start_child(False); panes.set_shrink_end_child(False)
         panes.set_start_child(editor_frame); panes.set_end_child(preview_frame)
-        panes.set_position(-1)
+        # Keep both projections visible on first launch.  A negative position
+        # collapses the source pane on GTK4, making the editor look missing.
+        panes.set_position(640)
         root.append(panes)
         self.status = Gtk.Label(label="Ready · 0 characters", xalign=0)
         self.status.add_css_class("dim-label"); self.status.set_hexpand(True)

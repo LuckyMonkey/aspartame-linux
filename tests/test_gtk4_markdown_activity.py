@@ -23,6 +23,8 @@ def test_markdown_bundle_is_native_and_registered():
     assert "label.markdown-title" in source
     assert "Gtk.Paned" in source and "set_start_child(editor_frame)" in source
     assert "set_end_child(preview_frame)" in source
+    assert "panes.set_position(640)" in source
+    assert "panes.set_position(-1)" not in source
     assert "frame.editor-pane" in source
     assert "Gtk.ScrolledWindow" in source
     assert "from markdown_renderer import render_markdown" in source
