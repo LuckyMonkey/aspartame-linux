@@ -71,6 +71,7 @@ def test_home_exposes_semantic_space_actions_from_accessible_button():
     assert 'ASPARTAME_SPACE_SWITCHER' in patch
     assert 'subprocess.Popen([controller, target]' in patch
     assert '*0169*) target="$root/sources/sugar"' in build
+    assert 'patch --dry-run --fuzz=5 -p1 < "$patch"' in build
 
 
 def test_home_exposes_semantic_navigation_actions_from_accessible_button():

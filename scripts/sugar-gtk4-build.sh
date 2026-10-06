@@ -648,6 +648,14 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified existing Space key ownership from every shell window: $patch_name"
         continue
     fi
+    if [[ "$patch_name" == *0169* ]] &&
+        grep -q 'def _build_spaces_button' "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null &&
+        grep -q 'ASPARTAME_SPACE_SWITCHER' "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null &&
+        grep -q "Compare Spaces side by side" "$shell/src/jarabe/desktop/viewtoolbar.py" 2>/dev/null; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified existing semantic Spaces action menu: $patch_name"
+        continue
+    fi
     # 0169 adds the Spaces menu between the Help button and the expanding
     # separator introduced by 0155.  That intentional same-file extension
     # changes 0155's exact reverse context, so recognize the complete 0155
@@ -734,6 +742,11 @@ for patch in "$patch_dir"/*.patch; do
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
         printf "%s\n" "$patch_digest" > "$stamp"
         echo "applied deferred Journal canvas attach: $patch_name"
+    elif [[ "$patch_name" == *0169* ]] &&
+        (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
+        (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
+        printf "%s\n" "$patch_digest" > "$stamp"
+        echo "applied semantic Spaces action menu: $patch_name"
     elif [[ "$patch_name" == *0107* ]] &&
         (cd "$target" && patch --dry-run --fuzz=5 -p1 < "$patch" >/dev/null 2>&1); then
         (cd "$target" && patch --fuzz=5 -p1 < "$patch" >/dev/null)
