@@ -15,3 +15,14 @@ The earlier packaged screenshot was captured before the activity surface had
 settled and is not used as current UX evidence. The next targeted headless
 visual sweep should use the corrected X11-auth driver and a longer compositor
 settle, matching the Color My World qualification path.
+
+That targeted capture is now complete:
+
+```text
+visual-sweep=COMPLETE pass=1 fail=0 resolution=1920x1080
+```
+
+The reviewed frame shows the expanded five-rod workspace with centered bead
+controls, readable place labels, current value card, and Clear action. The
+Abacus activity remains a functional port pending broader upstream feature and
+collaboration parity; its GTK4 presentation is no longer the blocker.
