@@ -6,15 +6,13 @@ GTK4 navigation menu, the shell D-Bus API, and future automation all converge
 on the same `jarabe.view.actions.go_home()` implementation.
 --- /dev/null
 +++ b/src/jarabe/view/actions.py
-@@ -0,0 +1,13 @@
+@@ -0,0 +1,11 @@
 +"""Canonical semantic actions exposed by the GTK4 Sugar shell."""
-+
-+from jarabe import frame
-+from jarabe.model import shell
-+
 +
 +def go_home():
 +    """Return to Home and clear the active Activity surface."""
++    from jarabe import frame
++    from jarabe.model import shell
 +    frame.get_view().hide()
 +    model = shell.get_model()
 +    model._set_active_activity(None)

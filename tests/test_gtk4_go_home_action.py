@@ -12,6 +12,15 @@ def test_go_home_is_the_shared_gtk4_navigation_action():
     assert "if keyval == Gdk.KEY_F3:" in patch
 
 
+def test_go_home_keeps_shell_imports_lazy_to_avoid_startup_cycles():
+    patch = (ROOT / "patches/gtk4-preview/0203-canonical-go-home-action.patch").read_text()
+    action = patch.split("--- a/src/jarabe/view/service.py", 1)[0]
+    assert "+    from jarabe import frame" in action
+    assert "+    from jarabe.model import shell" in action
+    assert "+from jarabe import frame" not in action
+    assert "+from jarabe.model import shell" not in action
+
+
 def test_automation_surfaces_route_to_the_same_home_action():
     helper = (ROOT / "scripts/sugar-gtk4-action.py").read_text()
     macro = (ROOT / "macros/qemu/headless-go-home.json").read_text()
