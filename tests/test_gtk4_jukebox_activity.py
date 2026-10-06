@@ -15,6 +15,8 @@ def test_jukebox_is_native_offline_and_accessible():
     assert "playlist_frame" in source and "Gtk.Frame(label=\"Playlist\")" in source
     assert "Gtk.Paned" in source and "set_start_child(playlist_frame)" in source
     assert "set_end_child(player_frame)" in source
+    assert "panes.set_position(640)" in source
+    assert "panes.set_position(-1)" not in source
     assert "root.append(panes)" in source
     assert 'Gtk.Frame(label="Player")' in source
     assert "now_playing" in source

@@ -86,7 +86,10 @@ class JukeboxActivity(SimpleActivity):
         panes.set_resize_start_child(True); panes.set_resize_end_child(True)
         panes.set_shrink_start_child(False); panes.set_shrink_end_child(False)
         panes.set_start_child(playlist_frame); panes.set_end_child(player_frame)
-        panes.set_position(-1)
+        # Give the playlist and player real space on first launch.  GTK4 does
+        # not treat a negative position as an automatic split; it collapses
+        # the leading child instead.
+        panes.set_position(640)
         root.append(panes)
         self._refresh_playlist()
 
