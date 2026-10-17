@@ -229,6 +229,23 @@ select among repeated `--python` candidates:
 make snakepit-qualify
 ```
 
+The read-only inspection and explanation commands now cover the first two
+parts of the external-runner contract without creating a virtual environment
+or launching project code:
+
+```sh
+python3 scripts/snakepit.py inspect ./project
+python3 scripts/snakepit.py inspect ./project --json
+python3 scripts/snakepit.py explain \
+  --record reports/python/aspartame-management.json
+```
+
+`inspect` reports the source fingerprint, declared requirements, obvious
+direct conflicts, and candidate interpreter compatibility. `explain` derives
+the verified level, workflow result, isolation path, and launchability from a
+qualification record. Both commands are evidence/reporting operations; they
+do not install dependencies or run the requested application.
+
 For a real interpreter matrix, repeat the option. Snakepit records every
 candidate and selects the newest one whose declared `requires-python` is
 compatible:

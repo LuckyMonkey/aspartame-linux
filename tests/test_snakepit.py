@@ -65,6 +65,95 @@ def test_snakepit_qualifies_an_isolated_python_workflow(tmp_path):
     assert "workflow-ok" in data["workflow"]["stdout"]
 
 
+def test_snakepit_inspect_is_read_only_and_reports_constraints(tmp_path):
+    source = tmp_path / "inspectable"
+    source.mkdir()
+    (source / "requirements.txt").write_text("example-core>=2,<3\n")
+    (source / "pyproject.toml").write_text(
+        "[project]\n"
+        "name = 'inspectable-specimen'\n"
+        "requires-python = '>=3.8,<4'\n"
+        "dependencies = ['example-core>=1,<2']\n"
+    )
+    (source / "dist").mkdir()
+    (source / "dist" / "generated.iso").write_bytes(b"generated artifact")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SNAKEPIT),
+            "inspect",
+            str(source),
+            "--json",
+        ],
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 1
+    report = json.loads(result.stdout)
+    assert report["schema"] == "aspartame.snakepit.inspection/v0"
+    assert report["status"] == "FAIL"
+    assert report["requirements"]["project_name"] == "inspectable-specimen"
+    assert report["reasons"] == ["dependency-conflict"]
+    assert report["source_fingerprint"]["files"] == 2
+    assert not (tmp_path / "venv").exists()
+
+
+def test_snakepit_explains_a_qualification_record_without_launching(tmp_path):
+    source = tmp_path / "explainable"
+    source.mkdir()
+    (source / "pyproject.toml").write_text(
+        "[project]\nname = 'explainable-specimen'\n"
+    )
+    environment = tmp_path / "venv"
+    record = tmp_path / "qualification.json"
+    qualify = subprocess.run(
+        [
+            sys.executable,
+            str(SNAKEPIT),
+            "qualify",
+            "--software",
+            "explainable-specimen",
+            "--source",
+            str(source),
+            "--environment",
+            str(environment),
+            "--record",
+            str(record),
+            "--launchable",
+            "--command",
+            "python",
+            "-c",
+            "print('explain-ok')",
+        ],
+        text=True,
+        capture_output=True,
+    )
+    assert qualify.returncode == 0, qualify.stderr
+
+    explained = subprocess.run(
+        [
+            sys.executable,
+            str(SNAKEPIT),
+            "explain",
+            "--record",
+            str(record),
+            "--json",
+        ],
+        text=True,
+        capture_output=True,
+    )
+
+    assert explained.returncode == 0, explained.stderr
+    summary = json.loads(explained.stdout)
+    assert summary["schema"] == "aspartame.snakepit.explanation/v0"
+    assert summary["verification"] == "workflow-pass-isolated"
+    assert summary["launchable"] is True
+    assert summary["workflow"]["returncode"] == 0
+    assert [step["action"] for step in summary["steps"]][-1] == "run-workflow"
+
+
 def test_snakepit_launches_an_explicit_qualified_contract(tmp_path):
     source = tmp_path / "launchable"
     source.mkdir()

@@ -26,8 +26,23 @@ from typing import Any
 
 
 SCHEMA = "aspartame.snakepit.qualification/v0"
+INSPECTION_SCHEMA = "aspartame.snakepit.inspection/v0"
+EXPLANATION_SCHEMA = "aspartame.snakepit.explanation/v0"
 MAX_OUTPUT = 20_000
-FINGERPRINT_IGNORED_DIRECTORIES = {".git", ".venv", "venv", "__pycache__"}
+FINGERPRINT_IGNORED_DIRECTORIES = {
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".cache",
+    "build",
+    "dist",
+    "out",
+    "reports",
+    "work",
+}
 DEPENDENCY_NAME = re.compile(
     r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)(?:\[[^\]]+\])?\s*(.*)$"
 )
@@ -297,7 +312,12 @@ def dependency_conflicts(requirements: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def declared_requirements(source: Path, explicit: str | None) -> dict[str, Any]:
-    result: dict[str, Any] = {"files": [], "requires_python": None, "dependencies": []}
+    result: dict[str, Any] = {
+        "project_name": source.name,
+        "files": [],
+        "requires_python": None,
+        "dependencies": [],
+    }
     requirements_path = Path(explicit).expanduser().resolve() if explicit else None
     if requirements_path is None:
         candidate = source / "requirements.txt"
@@ -320,11 +340,200 @@ def declared_requirements(source: Path, explicit: str | None) -> dict[str, Any]:
 
             data = tomllib.loads(pyproject.read_text())
             project = data.get("project", {})
+            result["project_name"] = project.get("name") or result["project_name"]
             result["requires_python"] = project.get("requires-python")
             result["dependencies"] = list(project.get("dependencies", []))
         except (OSError, tomllib.TOMLDecodeError) as exc:
             raise ValueError(f"could not inspect {pyproject}: {exc}") from exc
     return result
+
+
+def inspect_candidates(
+    candidate_values: list[str], requires_python: str | None
+) -> list[dict[str, Any]]:
+    """Inspect interpreters without creating an environment or installing anything."""
+    records: list[dict[str, Any]] = []
+    for candidate in candidate_values:
+        detail: dict[str, Any] = {"requested": candidate}
+        try:
+            resolved = resolve_executable(candidate)
+            selected = python_version_tuple(Path(resolved))
+            detail.update(
+                {
+                    "resolved": resolved,
+                    "version": ".".join(map(str, selected)),
+                    "satisfied": requires_python_satisfied(
+                        requires_python, selected
+                    ),
+                }
+            )
+        except (OSError, RuntimeError, ValueError) as exc:
+            detail["error"] = str(exc)
+        records.append(detail)
+    return records
+
+
+def inspection_report(
+    source: Path, explicit: str | None, candidate_values: list[str]
+) -> dict[str, Any]:
+    """Build a read-only project inspection report."""
+    requirements = declared_requirements(source, explicit)
+    conflicts = dependency_conflicts(requirements)
+    requirements["dependency_conflicts"] = conflicts
+    candidates = inspect_candidates(
+        candidate_values, requirements["requires_python"]
+    )
+    usable = [
+        candidate
+        for candidate in candidates
+        if "error" not in candidate and candidate.get("satisfied") is not False
+    ]
+    reasons = []
+    if conflicts:
+        reasons.append("dependency-conflict")
+    if not usable:
+        reasons.append("no-compatible-interpreter")
+    return {
+        "schema": INSPECTION_SCHEMA,
+        "status": "PASS" if not reasons else "FAIL",
+        "source": str(source),
+        "source_fingerprint": source_fingerprint(source),
+        "requirements": requirements,
+        "interpreters": candidates,
+        "reasons": reasons,
+    }
+
+
+def inspect_project(args: argparse.Namespace) -> int:
+    source = Path(args.source).expanduser().resolve()
+    if not source.is_dir():
+        raise ValueError(f"source directory not found: {source}")
+    report = inspection_report(
+        source,
+        args.requirements_file,
+        args.python or [sys.executable],
+    )
+    if args.json:
+        print(json.dumps(report, indent=2))
+    else:
+        requirements = report["requirements"]
+        print(
+            f"inspection={report['status']} "
+            f"project={requirements['project_name']} source={source}"
+        )
+        print(f"files={report['source_fingerprint']['files']}")
+        print(
+            "requires-python="
+            f"{requirements['requires_python'] or 'unspecified'}"
+        )
+        print(f"dependencies={len(requirements['dependencies'])}")
+        print(f"dependency-conflicts={len(requirements['dependency_conflicts'])}")
+        for candidate in report["interpreters"]:
+            if "error" in candidate:
+                print(
+                    f"interpreter={candidate['requested']} "
+                    f"status=unavailable reason={candidate['error']}"
+                )
+            else:
+                print(
+                    f"interpreter={candidate['resolved']} "
+                    f"version={candidate['version']} "
+                    f"compatible={candidate['satisfied']}"
+                )
+        for reason in report["reasons"]:
+            print(f"reason={reason}", file=sys.stderr)
+    return 0 if report["status"] == "PASS" else 1
+
+
+def _load_record(record_path: Path) -> dict[str, Any]:
+    if not record_path.is_file():
+        raise ValueError(f"qualification record not found: {record_path}")
+    try:
+        record = json.loads(record_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"invalid qualification record: {record_path}: {exc}") from exc
+    if record.get("schema") != SCHEMA:
+        raise ValueError(
+            f"unsupported qualification record schema: {record.get('schema')!r}"
+        )
+    return record
+
+
+def explanation_summary(record: dict[str, Any], record_path: Path) -> dict[str, Any]:
+    requirements = record.get("requirements", {})
+    compatibility = record.get("compatibility", {})
+    environment = record.get("environment", {})
+    workflow = record.get("workflow", {})
+    if (
+        record.get("status") == "PASS"
+        and workflow.get("returncode") == 0
+        and environment.get("isolation", {}).get("isolated")
+    ):
+        verification = "workflow-pass-isolated"
+    elif compatibility.get("satisfied") is False:
+        verification = "interpreter-capability-gap"
+    elif requirements.get("dependency_conflicts"):
+        verification = "dependency-conflict"
+    elif workflow.get("returncode") not in (None, 0):
+        verification = "workflow-failure"
+    else:
+        verification = "qualification-failure"
+    steps = []
+    for step in record.get("steps", []):
+        if isinstance(step, dict):
+            steps.append(
+                {
+                    key: step[key]
+                    for key in ("action", "status", "returncode")
+                    if key in step
+                }
+            )
+    return {
+        "schema": EXPLANATION_SCHEMA,
+        "record": str(record_path),
+        "status": record.get("status"),
+        "verification": verification,
+        "software": record.get("software"),
+        "source_fingerprint": record.get("source_fingerprint"),
+        "interpreter": record.get("interpreter"),
+        "environment": environment,
+        "requirements": requirements,
+        "steps": steps,
+        "workflow": {
+            key: workflow[key]
+            for key in ("command", "cwd", "returncode")
+            if key in workflow
+        },
+        "launchable": isinstance(record.get("launch"), dict),
+        "error": record.get("error"),
+    }
+
+
+def explain(args: argparse.Namespace) -> int:
+    record_path = _record_path(args)
+    summary = explanation_summary(_load_record(record_path), record_path)
+    if args.json:
+        print(json.dumps(summary, indent=2))
+        return 0
+    software = summary.get("software") or {}
+    print(
+        f"explain={summary['status']} "
+        f"software={software.get('name', 'unknown')} "
+        f"target={software.get('target', 'unknown')}"
+    )
+    print(f"verification={summary['verification']}")
+    interpreter = summary.get("interpreter") or {}
+    print(f"interpreter={interpreter.get('version') or 'not selected'}")
+    environment = summary.get("environment") or {}
+    print(f"environment={environment.get('path', 'not created')}")
+    print(f"steps={','.join(step['action'] for step in summary['steps'])}")
+    print(f"launchable={'yes' if summary['launchable'] else 'no'}")
+    workflow = summary.get("workflow") or {}
+    if "returncode" in workflow:
+        print(f"workflow-exit={workflow['returncode']}")
+    if summary.get("error"):
+        print(f"reason={summary['error']}", file=sys.stderr)
+    return 0
 
 
 def _terminate_process_group(process: subprocess.Popen[str]) -> None:
@@ -609,6 +818,14 @@ def qualify(args: argparse.Namespace) -> int:
             "stdout_truncated": stdout_truncated,
             "stderr_truncated": stderr_truncated,
         }
+        steps.append(
+            {
+                "action": "run-workflow",
+                "returncode": result.returncode,
+                "stdout": stdout,
+                "stderr": stderr,
+            }
+        )
         if result.returncode == 0 and isolation["isolated"]:
             status = "PASS"
             if args.launchable:
@@ -805,6 +1022,20 @@ def register(args: argparse.Namespace) -> int:
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(description=__doc__)
     commands = root.add_subparsers(dest="subcommand", required=True)
+    inspect_parser = commands.add_parser(
+        "inspect", help="inspect project metadata without creating an environment"
+    )
+    inspect_parser.add_argument("source")
+    inspect_parser.add_argument(
+        "--python",
+        action="append",
+        help="candidate interpreter; repeat to inspect a runtime matrix",
+    )
+    inspect_parser.add_argument("--requirements-file")
+    inspect_parser.add_argument(
+        "--json", action="store_true", help="emit the machine-readable report"
+    )
+    inspect_parser.set_defaults(handler=inspect_project)
     qualify_parser = commands.add_parser("qualify", help="run one isolated workflow")
     # GTK consumes the generic --name option during Sugar's sitecustomize
     # import before this parser runs. Keep the runtime CLI unambiguous.
@@ -836,6 +1067,14 @@ def parser() -> argparse.ArgumentParser:
     launch_parser.add_argument("--record", required=True)
     launch_parser.add_argument("--timeout", type=int, default=120)
     launch_parser.set_defaults(handler=launch)
+    explain_parser = commands.add_parser(
+        "explain", help="explain a qualification record without launching it"
+    )
+    explain_parser.add_argument("--record", required=True)
+    explain_parser.add_argument(
+        "--json", action="store_true", help="emit the machine-readable explanation"
+    )
+    explain_parser.set_defaults(handler=explain)
     register_parser = commands.add_parser(
         "register", help="publish a passing launch contract to Activity Manager"
     )

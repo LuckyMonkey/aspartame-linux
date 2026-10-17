@@ -13,6 +13,7 @@ index is the map for engineers, testers, and curious learners.
 | Understand Aspartame itself | [Aspartame doctrine](ASPARTAME-DOCTRINE.md), [Aspartame HIG](ASPARTAME-HIG.md) |
 | Understand Sugar design language | [Sugar design guardrails](SUGAR-DESIGN-GUARDRAILS.md), [Chirality](sugar-modernization/ASPARTAME_CHIRALITY.md) |
 | Understand future Python qualification | [Snakepit runbook](runbooks/SNAKEPIT_RUNBOOK.md) |
+| Track the current delivery gates | [Five milestones](MILESTONES.md) |
 | Build or boot the image | [Building](building.md), [Boot](boot.md), [QEMU](qemu.md) |
 | Work on the Sugar shell | [Sugar development](SUGAR-DEVELOPMENT.md), [Sugar styling](SUGAR-STYLING.md) |
 | Port an Activity | [Activity contract](ASPARTAME-ACTIVITY-CONTRACT.md), [Activity runbook](sugar-modernization/GTK4_ACTIVITY_RUNBOOK.md), [classification](sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md) |
