@@ -26,10 +26,9 @@ milestone so future sessions can resume without relying on chat history.
   unanswered state, the `rating-changed` value, out-of-range clamping, the
   selection style class, keyboard reachability, accessible names, and
   missing face artwork.
-- [ ] Add UI tests for activity-icon fallback and row layout. Both live in
-  `view.py`, which cannot be imported headless (it needs `sugar3` and
-  `jarabe.controlpanel`); they need a guest-side harness or a seam that
-  separates row construction from the Sugar section base class.
+- [x] Add UI tests for activity-icon fallback and row layout. The new
+  `cpsection.activities.presentation` seam keeps metadata and filesystem icon
+  resolution testable without importing GTK4 or a guest display.
 
 ## Next milestone: About This Computer
 

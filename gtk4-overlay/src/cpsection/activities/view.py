@@ -2,9 +2,17 @@
 
 from gettext import gettext as _
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 
 from jarabe.controlpanel.sectionview import SectionView
+from sugar4.graphics import style
+from sugar4.graphics.icon import Icon
+
+from cpsection.activities.presentation import (
+    DEFAULT_ACTIVITY_ICON,
+    activity_icon_file,
+    activity_row_data,
+)
 
 
 RUNTIME_LABELS = {
@@ -14,6 +22,15 @@ RUNTIME_LABELS = {
     'aspartame-native': _('Aspartame native'),
     'experimental': _('Experimental'),
 }
+
+
+def _set_activity_icon(icon, activity):
+    icon_file = activity_icon_file(activity)
+    if icon_file is not None:
+        icon.props.file = icon_file
+        return
+    icon.props.file = None
+    icon.props.icon_name = DEFAULT_ACTIVITY_ICON
 
 
 class ActivityManager(SectionView):
@@ -57,31 +74,41 @@ class ActivityManager(SectionView):
                      if activity.get('installed', False)]
         self._count.set_text(_('%d installed activities') % len(installed))
         for activity in self._rows:
+            row_data = activity_row_data(activity)
             row = Gtk.ListBoxRow()
             box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
             box.set_margin_top(8)
             box.set_margin_bottom(8)
             box.set_margin_start(12)
             box.set_margin_end(12)
+            activity_icon = Icon(pixel_size=style.STANDARD_ICON_SIZE)
+            _set_activity_icon(activity_icon, activity)
+            box.append(activity_icon)
             info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
             info.set_hexpand(True)
-            info.append(Gtk.Label(label=activity['name'], xalign=0))
-            snakepit = activity.get('runtime') == 'snakepit-python'
-            removable = activity.get('removable', False)
-            launchable = snakepit and activity.get('launchable', False)
+            info.append(Gtk.Label(label=row_data['name'], xalign=0))
+            summary = Gtk.Label(
+                label=row_data['summary'] or _('No description available.'),
+                xalign=0)
+            summary.set_ellipsize(Pango.EllipsizeMode.END)
+            summary.add_css_class('dim-label')
+            info.append(summary)
+            snakepit = row_data['runtime'] == 'snakepit-python'
+            removable = row_data['removable']
+            launchable = snakepit and row_data['launchable']
             runtime = RUNTIME_LABELS.get(
-                activity.get('runtime', 'experimental'),
+                row_data['runtime'],
                 _('Unknown runtime'))
             if snakepit:
                 install_state = (_('Qualified launch') if launchable
                                  else _('Not qualified'))
             else:
-                install_state = (_('System-managed') if activity['managed']
+                install_state = (_('System-managed') if row_data['managed']
                                  else _('User-installed'))
             display_state = _('%s · %s') % (runtime, install_state)
             info.append(Gtk.Label(
                 label=_('%s · Version %s · %s') % (
-                    runtime, activity['version'], install_state), xalign=0))
+                    runtime, row_data['version'], install_state), xalign=0))
             box.append(info)
             if launchable:
                 action_label = _('Launch')
@@ -105,7 +132,7 @@ class ActivityManager(SectionView):
                 action_tip = _('No qualified launch or removal action is available.')
                 action_callback = None
             action = Gtk.Button(label=action_label)
-            action.set_sensitive(removable or launchable)
+            action.set_sensitive(row_data['action_enabled'])
             action.set_tooltip_text(action_tip)
             action.update_property(
                 [Gtk.AccessibleProperty.LABEL,
@@ -119,7 +146,7 @@ class ActivityManager(SectionView):
             row.set_child(box)
             row.update_property([Gtk.AccessibleProperty.LABEL,
                                  Gtk.AccessibleProperty.DESCRIPTION],
-                                [activity['name'], display_state])
+                                [row_data['name'], display_state])
             row.set_accessible_role(Gtk.AccessibleRole.LIST_ITEM)
             self._list.append(row)
 
