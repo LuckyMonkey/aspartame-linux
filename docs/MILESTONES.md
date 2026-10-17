@@ -16,7 +16,7 @@ Evidence:
 
 - `make test`
 - Sugar patch sync check
-- 572 passing host tests
+- 578 passing host tests
 
 ## M2 — Snakepit inspection and explanation
 
@@ -72,7 +72,7 @@ Latest artifact:
 
 ```text
 aspartame-2026.10.17-x86_64.iso
-sha256 efce45173371191ce5091a1e5d17a548b8bcd994ac3f3959f42a8a410e8fcc70
+sha256 ebff439e18fb7709dadd6965c7bd74b1a2e5e059d8a81f990b43637fa8509302
 ```
 
 Build command: `make iso`.

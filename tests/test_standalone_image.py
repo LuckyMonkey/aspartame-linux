@@ -65,13 +65,16 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     project = tmp_path / "project"
     profile = project / "archiso/aspartame"
     profile.mkdir(parents=True)
-    for directory in ("packages", "scripts", "gtk4-overlay"):
+    for directory in ("packages", "scripts", "gtk4-overlay", "patches"):
         (project / directory).symlink_to(ROOT / directory, target_is_directory=True)
     preview = tmp_path / "archive/gtk4-preview"
     (preview / "venv/bin").mkdir(parents=True)
     (preview / "venv/bin/python").symlink_to("/usr/bin/python3")
     activities = preview / "prefix/share/sugar/activities"
     activities.mkdir(parents=True)
+    controlpanel = preview / "sources/sugar/src/jarabe/controlpanel"
+    controlpanel.mkdir(parents=True)
+    (controlpanel / "gui.py").write_text("def _get_options():\n    return options\n")
     for name, package, entrypoint in (
         ("Log", "log-activity", "logviewer.LogActivity"),
         ("ImageViewer", "imageviewer-activity", "imageviewer.ImageViewerActivity"),
@@ -103,7 +106,7 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     mkarchiso.write_text("#!/bin/sh\nexit 0\n")
     mkarchiso.chmod(0o755)
     work = tmp_path / "work"
-    subprocess.run(
+    build_result = subprocess.run(
         ["bash", str(ROOT / "scripts/build-iso.sh")],
         env={
             **os.environ,
@@ -130,6 +133,12 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     assert not (staged / "Count.activity/gtk4-count-activity").exists()
     assert (staged / "Calculate.activity/calculateactivity4.py").is_file()
     assert not any(path.is_symlink() for path in staged.rglob("*"))
+    staged_gui = (
+        work / "profile/airootfs/usr/lib/aspartame/gtk4-preview"
+        / "sources/sugar/src/jarabe/controlpanel/gui.py"
+    )
+    assert "import cpsection.aboutcomputer" in staged_gui.read_text()
+    assert "staged GTK4 About my Computer registration patch" in build_result.stdout
 
 
 def test_staged_layout_activities_replace_nested_archive_copies(tmp_path):

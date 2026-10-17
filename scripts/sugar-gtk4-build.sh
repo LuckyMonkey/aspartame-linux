@@ -575,11 +575,18 @@ for patch in "$patch_dir"/*.patch; do
         echo "verified Journal detail Escape keyhandler route: $patch_name"
         continue
     fi
-    if [[ "$patch_name" == *0112* ]] &&
+    if [[ "$patch_name" == 0112-controlpanel-activity-manager-section.patch ]] &&
         sed -n '/def _get_options/,/return options/p' "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null |
             grep -q "import cpsection.activities"; then
         printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
         echo "verified GTK4 Activity Manager section registration: $patch_name"
+        continue
+    fi
+    if [[ "$patch_name" == *0112z* ]] &&
+        sed -n '/def _get_options/,/return options/p' "$shell/src/jarabe/controlpanel/gui.py" 2>/dev/null |
+            grep -q "import cpsection.aboutcomputer"; then
+        printf '%s\n' "$patch_digest" > "$stamp" 2>/dev/null || true
+        echo "verified GTK4 About my Computer section registration: $patch_name"
         continue
     fi
     if [[ "$patch_name" == *0113* ]] &&

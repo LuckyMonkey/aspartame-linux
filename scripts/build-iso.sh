@@ -44,6 +44,19 @@ while IFS= read -r -d '' source_file; do
     sed -i 's#/home/aspartame/Development/gtk4-preview#/usr/lib/aspartame/gtk4-preview#g' \
         "$source_file"
 done < <(find "$preview_root/gtk4-preview/sources" -type f -name '*.py' -print0)
+# The exported preview archive is intentionally kept out of Git and may be
+# older than the repository overlay. Apply packaging-only source patches to
+# the staged checkout so a fresh ISO cannot silently omit a newly registered
+# native control-panel section. The guest build still applies the same patch
+# during a normal preview rebuild.
+aboutcomputer_patch="$project_root/patches/gtk4-preview/0112z-controlpanel-aboutcomputer-section.patch"
+aboutcomputer_source="$preview_root/gtk4-preview/sources/sugar/src/jarabe/controlpanel/gui.py"
+if test -f "$aboutcomputer_patch" && test -f "$aboutcomputer_source" &&
+        ! grep -q 'import cpsection.aboutcomputer' "$aboutcomputer_source"; then
+    (cd "$preview_root/gtk4-preview/sources/sugar" &&
+        patch --batch --fuzz=5 -p1 < "$aboutcomputer_patch" >/dev/null)
+    echo 'staged GTK4 About my Computer registration patch'
+fi
 # Stage the built GTK4 upstream Activities from the archive, not their GTK3
 # reference copies in packages/upstream-activities. Refresh checked-in native
 # bundles even when an older preview left a real bundle directory: ln -sfn

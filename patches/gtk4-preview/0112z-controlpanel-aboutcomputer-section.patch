@@ -1,0 +1,24 @@
+From: Aspartame GTK4 migration
+Subject: [PATCH] gtk4: expose native About my Computer section
+
+The stable extension tree contains the GTK3 About view. Register the GTK4
+overlay explicitly after the Activity Manager registration so the preview
+cannot construct a GTK3 widget in its GTK4 control panel.
+
+--- a/src/jarabe/controlpanel/gui.py
++++ b/src/jarabe/controlpanel/gui.py
+@@ -474,1 +474,14 @@
++        try:
++            import cpsection.aboutcomputer
++            options['aboutcomputer'] = {
++                'alerts': [],
++                'view': 'AboutComputer',
++                'icon': cpsection.aboutcomputer.ICON,
++                'title': cpsection.aboutcomputer.TITLE,
++                'color': None,
++                'keywords': list(cpsection.aboutcomputer.KEYWORDS),
++            }
++        except Exception:
++            logging.exception('Exception while loading GTK4 About my Computer:')
++
+         return options

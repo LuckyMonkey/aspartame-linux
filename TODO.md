@@ -32,19 +32,21 @@ milestone so future sessions can resume without relying on chat history.
 
 ## Next milestone: About This Computer
 
-- [ ] Inspect the current About section and its floating-window/session owner.
-- [ ] Replace stale distribution text such as Debian with Aspartame/Arch data.
-- [ ] Show kernel, desktop, graphics, memory, storage, and build information.
-- [ ] Use fastfetch/neofetch-style data only as an input, not as a raw UI dump.
-- [ ] Keep the information readable, Sugar-styled, and offline-capable.
-- [ ] Build a small read-only system inventory provider for About Computer:
+- [x] Inspect the current About section and its floating-window/session owner.
+- [x] Replace stale distribution text such as Debian with Aspartame/Arch data.
+- [x] Show kernel, desktop, graphics, memory, storage, and build information.
+- [x] Use fastfetch/neofetch-style data only as an input, not as a raw UI dump.
+- [x] Keep the information readable, Sugar-styled, and offline-capable.
+- [x] Build a small read-only system inventory provider for About Computer:
   distro/os-release, kernel, CPU, memory, storage, graphics, display,
   desktop/session, Sugar/Aspartame versions, and capability notes.
-- [ ] Capture fetch-style output at runtime and map it into labeled About
+- [x] Capture fetch-style output at runtime and map it into labeled About
   sections; never shell out to an untrusted command or dump terminal output
   directly into the UI.
-- [ ] Verify the inventory refreshes after hardware/display changes and remains
-  usable when optional fetch tools are not installed.
+- [x] Verify the inventory refreshes after hardware/display changes and remains
+  usable when optional fetch tools are not installed. Host tests cover the
+  refresh wiring and missing-source fallback; guest visual verification remains
+  a separate runtime check.
 
 ## Next milestone: Settings architecture
 
