@@ -76,22 +76,24 @@
 @@ -22,0 +23,2 @@
 +from datetime import datetime
 +import locale
-@@ -23,0 +26 @@
+@@ -23,0 +26,3 @@
++import os
++import subprocess
 +import sys
-@@ -25,0 +29,2 @@
+@@ -25,0 +31,2 @@
 +from gi.repository import Gdk
 +from gi.repository import Gio
-@@ -27,0 +33 @@
+@@ -27,0 +35 @@
 +from gi.repository import GdkPixbuf
-@@ -35,0 +42,4 @@
+@@ -35,0 +44,4 @@
 +sys.path.insert(0, '/usr/share/aspartame')
 +import aspartame_help
 +import aspartame_visual
 +
-@@ -50,0 +61,2 @@
+@@ -50,0 +63,2 @@
 +        aspartame_help.set_active(False)
 +        self.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
-@@ -81 +93,43 @@
+@@ -81 +95,43 @@
 -        self._add_separator(expand=True)
 +        # Preserve dynamic separation between the search/help and view areas.
 +        self._toolbar_spacer = Gtk.SeparatorToolItem()
@@ -136,7 +138,7 @@
 +                                     self.__clock_format_changed_cb)
 +        self.__update_clock_cb()
 +        GLib.timeout_add_seconds(30, self.__update_clock_cb)
-@@ -101,0 +156,70 @@
+@@ -101,0 +158,72 @@
 +        help_css = Gtk.CssProvider()
 +        help_css.load_from_data(('''
 +            .aspartame-help-button,
@@ -205,9 +207,45 @@
 +        help_toolitem.show_all()
 +        GLib.idle_add(self._install_help_key_handler)
 +
++        self._build_spaces_button()
++
 +        aspartame_help.guard(self._list_button, 'org.aspartame.shell.list')
 +
-@@ -103,0 +228,37 @@
+@@ -103,0 +232,71 @@
++    def _build_spaces_button(self):
++        """Expose the same semantic Space actions from classic Home."""
++        image = Gtk.Image.new_from_icon_name(
++            'view-grid-symbolic', Gtk.IconSize.LARGE_TOOLBAR)
++        self._spaces_button = Gtk.MenuToolButton.new(image, _('Spaces'))
++        self._spaces_button.set_tooltip_text(_('Spaces'))
++        menu = Gtk.Menu()
++        for target, label in (
++                ('gtk4', _('Modern Space (GTK4)')),
++                ('side-by-side', _('Compare Spaces side by side'))):
++            item = Gtk.MenuItem(label=label)
++            item.connect('activate', self.__space_action_cb, target)
++            menu.append(item)
++        menu.show_all()
++        self._spaces_button.set_menu(menu)
++        toolitem = Gtk.ToolItem()
++        toolitem.add(self._spaces_button)
++        self.insert(toolitem, -1)
++        toolitem.show_all()
++
++    def __space_action_cb(self, _item, target):
++        controller = os.environ.get(
++            'ASPARTAME_SPACE_SWITCHER',
++            '/usr/lib/aspartame/gtk4-preview/scripts/sugar-gtk4-space.sh')
++        if not os.access(controller, os.X_OK):
++            logging.warning('Spaces controller is not executable: %s',
++                            controller)
++            return
++        try:
++            subprocess.Popen([controller, target], close_fds=True)
++        except OSError as error:
++            logging.warning('Could not start Spaces action %s: %s',
++                            target, error)
++
 +    def __help_clicked_cb(self, _button, _event):
 +        active = aspartame_help.toggle()
 +        self._set_help_button_active(active)
@@ -245,7 +283,7 @@
 +        """Return the passive clock for HomeWindow's centered overlay."""
 +        return self._clock_render_label
 +
-@@ -124,0 +286,32 @@
+@@ -124,0 +324,32 @@
 +    def __find_clock_label(self, widget):
 +        if isinstance(widget, Gtk.Label):
 +            return widget
@@ -278,7 +316,7 @@
 +        return True
 +
 +
-@@ -214,0 +408,9 @@
+@@ -214,0 +446,9 @@
 +        view_help_ids = {
 +            'zoom-neighborhood': 'org.aspartame.shell.neighborhood',
 +            'zoom-groups': 'org.aspartame.shell.group',
