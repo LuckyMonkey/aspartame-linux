@@ -53,3 +53,15 @@ handoff, and preserve original objects on unsupported/failed loads.
 Also proposed transactional Record restore and success-driven Journal row
 updates. No new tests/builds/runtime checks. User requested immediate commit
 and sync at 10%; continue from these documents instead of rediscovering.
+
+## Checkpoint — document preservation, second pass
+Extended `docs/DOCUMENT-PRESERVATION-PROPOSALS.md` with a 14-Activity audit.
+Markdown, Pippy, Portfolio, GTD, Finance, Fototoon, GridPaint, ColorMyWorld,
+Words, Get Books, TurtleArt, Poll, Jukebox and Calculate all turn a failed
+load into a default state that is saved on close. TurtleArt and Poll also
+partially assign state. Jukebox can raise out of `read_file()`. GTD,
+Finance and GridPaint resave lossily. Proposed one shared load-outcome guard
+in the activity contract. The toolkit save contract is still unconfirmed:
+its source exists only in the guest tree (/home/aspartame/Development/gtk4-preview).
+Still source-only, with no checks. Suggested next step, when the user allows
+code changes and checks: implement the guard in Markdown/Pippy/Portfolio first.

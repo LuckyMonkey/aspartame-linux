@@ -72,3 +72,56 @@ handler blocked on failure. Handle rapid successive edits with an operation
 revision so old callbacks cannot overwrite newer user intent. The existing
 project assignment callback in the same file provides a useful local pattern:
 it updates metadata inside its applied callback.
+
+## Priority 1: The failed-load pattern repeats across the Activity set
+
+Second source-only pass, 2026-10-22: 14 more `read_file()`/`write_file()`
+pairs checked. No checks run. Each Activity below
+turns an unreadable or unparseable Journal payload into a valid default state.
+Its unconditional `write_file()` then serializes that default:
+
+| Activity | Failed read becomes | Severity |
+| --- | --- | --- |
+| Markdown | empty source (`""`), incl. invalid UTF-8 | high: user prose |
+| Pippy | `DEFAULT_PROGRAM` replaces the user's program | high: user code |
+| Portfolio | empty title and body | high: user prose |
+| GTD | empty task list | medium |
+| Finance | empty transactions | medium |
+| Fototoon, GridPaint, ColorMyWorld | blank canvas/selection | medium |
+| Words, Get Books | empty query/selection | low |
+| TurtleArt, Poll | early `return` keeps defaults **after partial assignment** | medium |
+| Jukebox | early `return` keeps the default playlist | low |
+| Calculate | invalid UTF-8 becomes empty; unknown JSON `version` becomes the expression text | low |
+
+Additional defects found in the same code:
+- **Partial application.** TurtleArt assigns `x`/`y`/`heading` before parsing
+  `lines`. Poll sets the question and choices before `int()` on `votes` can
+  fail. A failed parse leaves a mixed old/new state that is later saved.
+- **Uncaught exception.** Jukebox calls `int(payload.get("selected", 0))`
+  outside its `try`. A non-numeric `selected` raises out of `read_file()`.
+- **Silent lossy round-trip.** GTD drops non-dict and blank tasks. Finance
+  drops entries with a missing or invalid `value`. GridPaint drops
+  out-of-range cells. All three discard unknown top-level keys, so a newer
+  payload loses its fields when an older build resaves it.
+- **Calculate forward-compat.** A `version` other than 2 is treated as a
+  plain expression. A future-format object is shown, and then saved back,
+  as raw JSON text in the entry.
+
+Proposal: this is a shared contract problem, not 14 separate bugs. Add one
+small helper to the Aspartame activity contract (see
+`docs/ASPARTAME-ACTIVITY-CONTRACT.md`):
+1. `read_file()` parses into a local value and assigns widget state only
+   after the whole payload validates (no partial assignment).
+2. Any failure sets `self._load_failed = True`, shows an explicit
+   "couldn't open this entry" state and keeps the original bytes.
+3. `write_file()` checks the flag first. When the load failed and the user
+   has not deliberately started a new copy, it either rewrites the original
+   bytes or raises `NotImplementedError` (whichever the toolkit save
+   contract treats as "do not replace"). The toolkit source is only in the
+   guest build tree, so this still needs confirming there.
+4. Preserve unknown top-level keys when resaving JSON payloads; reject (do
+   not reinterpret) unknown `version` values.
+Suggested order: Markdown, Pippy, Portfolio (user-authored text), then the
+JSON state Activities. Later acceptance: for each Activity, feed it an
+invalid-UTF-8 payload and a malformed-JSON payload, close it, and compare the
+datastore bytes with the originals.
