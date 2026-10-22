@@ -13,6 +13,9 @@ Conflict decisions taken during the rebase:
   our props shim); keep our aspect-preserving SVG scaling.
 - style.py: take upstream's scoped apply_css_to_widget (drops folded 0026).
 - profile.py: keep our key-blob-only public key parsing (presence identity).
+Downstream addition: when read_file() raises, the Activity marks the load as
+failed, shows an alert, and save() updates metadata only, so the original
+Journal payload is never replaced (docs/DOCUMENT-PRESERVATION-PROPOSALS.md).
 Regenerate with scripts/sugar-gtk4-rebase.sh; never hand-edit hunks.
 diff --git a/pyproject.toml b/pyproject.toml
 index eec44ae..e3814c7 100644
@@ -27,7 +30,7 @@ index eec44ae..e3814c7 100644
  [tool.setuptools.package-data]
  sugar = ["*.css", "*.ui", "*.glade", "*.svg", "*.png", "graphics/icons/*.svg"]
 diff --git a/src/sugar4/activity/activity.py b/src/sugar4/activity/activity.py
-index ed7aa5d..2e445fa 100644
+index ed7aa5d..d8a4873 100644
 --- a/src/sugar4/activity/activity.py
 +++ b/src/sugar4/activity/activity.py
 @@ -196,6 +196,8 @@ from sugar4.graphics.alert import Alert
@@ -39,7 +42,15 @@ index ed7aa5d..2e445fa 100644
  
  
  def _(msg):
-@@ -368,6 +370,7 @@ class Activity(Window):
+@@ -340,6 +342,7 @@ class Activity(Window):
+         self._jobject_old = None
+         self._is_resumed = False
+         self._read_file_called = False
++        self._load_failed = False
+         self._owns_file = False
+         self._bus = None
+ 
+@@ -368,6 +371,7 @@ class Activity(Window):
              )
  
          Window.__init__(self, application=application)
@@ -47,7 +58,7 @@ index ed7aa5d..2e445fa 100644
  
          if "SUGAR_ACTIVITY_ROOT" in os.environ:
              # If this activity runs inside Sugar, we want it to take all the
-@@ -434,12 +437,27 @@ class Activity(Window):
+@@ -434,12 +438,27 @@ class Activity(Window):
          # Sharing setup
          # TODO
          if handle and handle.invited:
@@ -80,7 +91,7 @@ index ed7aa5d..2e445fa 100644
  
          if self.shared_activity is not None:
              self._jobject.metadata["title"] = self.shared_activity.props.name
-@@ -579,9 +597,6 @@ class Activity(Window):
+@@ -579,9 +598,6 @@ class Activity(Window):
      def _set_up_sharing(self, mesh_instance, share_scope):
          """
          Set up activity sharing.
@@ -90,7 +101,7 @@ index ed7aa5d..2e445fa 100644
          """
          # handle activity share/join
          logging.debug(
-@@ -589,11 +604,36 @@ class Activity(Window):
+@@ -589,11 +605,36 @@ class Activity(Window):
              % (self._activity_id, mesh_instance, share_scope)
          )
  
@@ -130,7 +141,84 @@ index ed7aa5d..2e445fa 100644
  
      def get_active(self):
          """
-@@ -1146,8 +1186,18 @@ class Activity(Window):
+@@ -758,7 +799,15 @@ class Activity(Window):
+         """Handle canvas map signal."""
+         logging.debug("Activity.__canvas_map_cb")
+         if self._jobject and self._jobject.file_path and not self._read_file_called:
+-            self.read_file(self._jobject.file_path)
++            try:
++                self.read_file(self._jobject.file_path)
++            except Exception:
++                # A payload this activity cannot open must survive the
++                # session: save() keeps it and only updates metadata.
++                logging.exception("Activity.read_file failed; keeping the "
++                                  "Journal object unchanged")
++                self._load_failed = True
++                self._show_load_failed_alert()
+             self._read_file_called = True
+         canvas.disconnect_by_func(self.__canvas_map_cb)
+ 
+@@ -777,6 +826,27 @@ class Activity(Window):
+         """
+         return get_activity_root()
+ 
++    def load_failed(self):
++        """Return True when read_file() raised for the resumed object.
++
++        The toolkit then keeps the object's original payload on save and
++        updates only its metadata. Activities should raise from read_file()
++        rather than substitute default content for a payload they cannot
++        open.
++        """
++        return self._load_failed
++
++    def _show_load_failed_alert(self):
++        try:
++            from sugar4.graphics.alert import NotifyAlert
++            alert = NotifyAlert(10)
++            alert.props.title = _("This entry could not be opened")
++            alert.props.msg = _("It will be kept unchanged in the Journal.")
++            alert.connect("response", lambda alert, response: self.remove_alert(alert))
++            self.add_alert(alert)
++        except Exception:
++            logging.exception("Could not show the load failure alert")
++
+     def read_file(self, file_path):
+         """
+         Subclasses implement this method if they support resuming objects from
+@@ -1024,15 +1094,23 @@ class Activity(Window):
+         if not self.metadata.get("activity_id", ""):
+             self.metadata["activity_id"] = self.get_id()
+ 
+-        file_path = os.path.join(get_activity_root(), "instance", "%i" % time.time())
+-        try:
+-            self.write_file(file_path)
+-        except NotImplementedError:
+-            logging.debug("Activity.write_file is not implemented.")
++        if self._load_failed:
++            # Never replace a payload that read_file() could not open with
++            # whatever default state the activity fell back to. An empty
++            # file path makes the datastore update metadata only.
++            logging.warning("Activity.save: keeping the unopened payload")
++            self._jobject.file_path = ""
+         else:
+-            if os.path.exists(file_path):
+-                self._owns_file = True
+-                self._jobject.file_path = file_path
++            file_path = os.path.join(get_activity_root(), "instance",
++                                     "%i" % time.time())
++            try:
++                self.write_file(file_path)
++            except NotImplementedError:
++                logging.debug("Activity.write_file is not implemented.")
++            else:
++                if os.path.exists(file_path):
++                    self._owns_file = True
++                    self._jobject.file_path = file_path
+ 
+         # Cannot call datastore.write async for creates:
+         # https://dev.laptop.org/ticket/3071
+@@ -1146,8 +1224,18 @@ class Activity(Window):
          """Send pending invites."""
          while self._invites_queue:
              account_path, contact_id = self._invites_queue.pop()
@@ -151,7 +239,7 @@ index ed7aa5d..2e445fa 100644
  
      def invite(self, account_path, contact_id):
          """
-@@ -1180,10 +1230,27 @@ class Activity(Window):
+@@ -1180,10 +1268,27 @@ class Activity(Window):
          setting the :attr:`private` property of the
          :attr:`sugar4.presence.activity.Activity` class.
          """
@@ -182,7 +270,7 @@ index ed7aa5d..2e445fa 100644
  
      def _show_keep_failed_dialog(self):
          """
-@@ -1339,7 +1406,7 @@ class Activity(Window):
+@@ -1339,7 +1444,7 @@ class Activity(Window):
  
      def _complete_close(self):
          """Complete the close process."""
@@ -191,7 +279,7 @@ index ed7aa5d..2e445fa 100644
  
          if self.shared_activity:
              self.shared_activity.leave()
-@@ -1347,11 +1414,19 @@ class Activity(Window):
+@@ -1347,11 +1452,19 @@ class Activity(Window):
          self._cleanup_jobject()
  
          # D-Bus service cleanup

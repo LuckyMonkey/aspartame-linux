@@ -99,11 +99,14 @@ class ReadActivity(SimpleActivity):
             self.page_label.set_text(f"Page {self.page + 1} of {len(self.pages)} · match found")
 
     def read_file(self, file_path):
-        """Load a Journal text object, retaining the sample for empty objects."""
-        try:
-            raw = Path(file_path).read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            return
+        """Load a Journal text object, retaining the sample for empty objects.
+
+        Unreadable or non-UTF-8 payloads raise, so the toolkit keeps the
+        Journal object unchanged instead of saving the sample over it.
+        """
+        source = Path(file_path).read_bytes()
+        raw = source.decode("utf-8")
+        self._source = source
         text = raw
         try:
             payload = json.loads(raw) if raw.lstrip().startswith("{") else None
@@ -117,5 +120,13 @@ class ReadActivity(SimpleActivity):
             self._update_page()
 
     def write_file(self, file_path):
-        """Persist document pages as UTF-8 text separated by form feeds."""
-        Path(file_path).write_text("\f".join(self.pages), encoding="utf-8")
+        """Keep an opened object byte-for-byte; Read has no editing UI.
+
+        Re-serializing would strip Write formatting spans from the source.
+        Only a fresh sample document is written as form-feed separated text.
+        """
+        source = getattr(self, "_source", None)
+        if source is not None:
+            Path(file_path).write_bytes(source)
+        else:
+            Path(file_path).write_text("\f".join(self.pages), encoding="utf-8")

@@ -55,11 +55,10 @@ class WordsActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore the current word from a Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            value = str(payload.get("word", "")) if isinstance(payload, dict) else ""
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            value = ""
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        value = str(payload.get("word", ""))
         self.word.set_text(value)
         self._lookup(self.word)
 

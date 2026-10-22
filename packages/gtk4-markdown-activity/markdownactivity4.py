@@ -105,10 +105,7 @@ class MarkdownActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore UTF-8 Markdown source from a Journal object."""
-        try:
-            text = Path(file_path).read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            text = ""
+        text = Path(file_path).read_text(encoding="utf-8")
         self.editor.get_buffer().set_text(text)
 
     def write_file(self, file_path):

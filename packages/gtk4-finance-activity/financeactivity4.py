@@ -234,15 +234,12 @@ class FinanceActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore transactions from a JSON Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            if not isinstance(payload, dict):
-                raise ValueError("payload must be an object")
-            transactions = payload.get("transactions", [])
-            if not isinstance(transactions, list):
-                raise ValueError("transactions must be a list")
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            transactions = []
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        transactions = payload.get("transactions", [])
+        if not isinstance(transactions, list):
+            raise ValueError("transactions must be a list")
         self._rows.clear()
         for transaction in transactions:
             if not isinstance(transaction, dict):

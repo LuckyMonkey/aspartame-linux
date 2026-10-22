@@ -1,5 +1,14 @@
 # Document preservation proposals — code review, 2026-10-22
 
+**Status (later 2026-10-22): implemented.** The toolkit load-failure guard
+(0301), refusing loads in all audited Activities, Read byte preservation,
+Write/Calculate unknown-format refusal, TurtleArt/Poll validate-then-assign,
+the Jukebox `int()` fix and Record's transactional restore have all landed
+in source. Host tests: `tests/test_gtk4_document_preservation.py` and the
+updated Activity harness. Still open: Journal row edit persistence
+(Priority 2), unknown-key preservation for JSON payloads, and a guest-side
+datastore byte comparison on a rebuilt image.
+
 Source observations only; no new checks were run. Prioritize these before
 expanding cross-Activity object handoff. Actual datastore replacement on close
 must be confirmed later against the toolkit save contract.

@@ -9,8 +9,10 @@ Runs in its own process (GTK3 and GTK4 cannot share a GI namespace) with the
 2. every sensitive button can be clicked without a callback traceback;
 3. after that interaction, ``write_file`` -> fresh instance ``read_file`` ->
    ``write_file`` reproduces the same bytes (Journal resume is lossless);
-4. ``read_file`` tolerates empty, malformed, and wrong-shaped objects and the
-   Activity can still save afterwards.
+4. ``read_file`` either accepts empty, malformed, and wrong-shaped objects
+   and can still save afterwards, or refuses them with a data error. A
+   refusal is the preferred contract: the toolkit then keeps the Journal
+   object unchanged instead of saving default content over it.
 """
 
 import configparser
@@ -19,6 +21,7 @@ import json
 import sys
 import tempfile
 import traceback
+import zipfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -28,6 +31,9 @@ import gi  # noqa: E402
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import GLib, Gtk  # noqa: E402
+
+# Errors that mean "this payload is not mine"; anything else is a bug.
+DATA_ERRORS = (ValueError, TypeError, KeyError, OSError, zipfile.BadZipFile)
 
 MALFORMED = (b"", b"not json", b"[]", b"null", b"42", b'{"unexpected": true}',
              b'{"state": {"nested": [1, 2, 3]}}', b"\xff\xfe\x00garbage")
@@ -107,7 +113,10 @@ def main(package):
                 bad.write_bytes(payload)
                 try:
                     victim = cls(None)
-                    victim.read_file(str(bad))
+                    try:
+                        victim.read_file(str(bad))
+                    except DATA_ERRORS:
+                        continue  # Refused: the toolkit preserves the object.
                     victim.write_file(str(Path(tmp, "after-bad")))
                 except Exception as exc:  # report every failing shape
                     tolerated = False

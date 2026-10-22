@@ -126,12 +126,11 @@ class GetBooksActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore catalog query and selected book from a JSON Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            query = str(payload.get("query", "")) if isinstance(payload, dict) else ""
-            selected = str(payload.get("selected", "")) if isinstance(payload, dict) else ""
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            query, selected = "", ""
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        query = str(payload.get("query", ""))
+        selected = str(payload.get("selected", ""))
         self.search.set_text(query)
         row = next((self.results.get_row_at_index(i) for i in range(len(BOOKS)) if self.results.get_row_at_index(i) is not None and getattr(self.results.get_row_at_index(i), "book", {}).get("title") == selected), None)
         if row is not None:

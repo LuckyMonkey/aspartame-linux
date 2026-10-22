@@ -364,16 +364,16 @@ class CalculateActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore the expression and calculate it from a Journal object."""
-        try:
-            text = Path(file_path).read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            text = ""
+        text = Path(file_path).read_text(encoding="utf-8")
         state = None
         if text.lstrip().startswith("{"):
             try:
                 state = json.loads(text)
             except ValueError:
                 state = None
+        if isinstance(state, dict) and "version" in state and state.get("version") != 2:
+            # A newer saved calculator must not be resaved as raw JSON text.
+            raise ValueError("unsupported Calculate state version: %r" % state.get("version"))
         if isinstance(state, dict) and state.get("version") == 2:
             expression = str(state.get("expression") or "")
             self.variables = {str(k): v for k, v in (state.get("variables") or {}).items()

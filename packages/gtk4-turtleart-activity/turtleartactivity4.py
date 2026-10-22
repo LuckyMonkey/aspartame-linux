@@ -57,13 +57,15 @@ class TurtleArtActivity(SimpleActivity):
         cr.stroke(); tx, ty = ox + self.x, oy + self.y; cr.arc(tx, ty, 10, 0, 2 * math.pi); cr.set_source_rgb(0.85, 0.25, 0.18); cr.fill()
 
     def read_file(self, file_path):
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            if isinstance(payload, dict):
-                self.x = float(payload.get("x", 0)); self.y = float(payload.get("y", 0)); self.heading = float(payload.get("heading", 0)); self.lines = [tuple((tuple(a), tuple(b))) for a, b in payload.get("lines", [])]
-                self.status.set_text(f"Position: ({self.x:.0f}, {self.y:.0f}) · heading {math.degrees(self.heading) % 360:.0f}°"); self._drawing_area.queue_draw()
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            return
+        # Parse everything before assigning: a malformed payload raises and the
+        # toolkit keeps the original object instead of a half-restored turtle.
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        x = float(payload.get("x", 0)); y = float(payload.get("y", 0)); heading = float(payload.get("heading", 0))
+        lines = [tuple((tuple(a), tuple(b))) for a, b in payload.get("lines", [])]
+        self.x, self.y, self.heading, self.lines = x, y, heading, lines
+        self.status.set_text(f"Position: ({self.x:.0f}, {self.y:.0f}) · heading {math.degrees(self.heading) % 360:.0f}°"); self._drawing_area.queue_draw()
 
     def write_file(self, file_path):
         Path(file_path).write_text(json.dumps({"x": self.x, "y": self.y, "heading": self.heading, "lines": self.lines}, sort_keys=True) + "\n", encoding="utf-8")

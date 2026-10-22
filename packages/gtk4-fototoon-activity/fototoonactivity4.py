@@ -42,12 +42,11 @@ class FotoToonActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore caption-canvas state from a JSON Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            payload = {}
-        self.caption = str(payload.get("caption", "")) if isinstance(payload, dict) else ""
-        self.panel_placed = bool(payload.get("panel_placed", False)) if isinstance(payload, dict) else False
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        self.caption = str(payload.get("caption", ""))
+        self.panel_placed = bool(payload.get("panel_placed", False))
         self.entry.set_text(self.caption)
         self.status.set_text("Panel placed — edit the caption below." if self.panel_placed else "Click the canvas to place a panel.")
         self._drawing_area.queue_draw()

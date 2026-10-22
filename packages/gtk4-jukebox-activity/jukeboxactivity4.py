@@ -220,15 +220,13 @@ class JukeboxActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore playlist and selection from a JSON Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            if not isinstance(payload, dict):
-                raise ValueError("payload must be an object")
-            tracks = payload.get("tracks", [])
-            if not isinstance(tracks, list):
-                raise ValueError("tracks must be a list")
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            return
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        tracks = payload.get("tracks", [])
+        if not isinstance(tracks, list):
+            raise ValueError("tracks must be a list")
+        selected = int(payload.get("selected", 0))
         restored = []
         for track in tracks:
             if isinstance(track, list) and len(track) >= 2:
@@ -238,7 +236,7 @@ class JukeboxActivity(SimpleActivity):
                 restored.append(values)
         if restored:
             self._tracks = restored
-        self._selected = max(0, min(int(payload.get("selected", 0)), len(self._tracks) - 1))
+        self._selected = max(0, min(selected, len(self._tracks) - 1))
         self._playing = False
         self._refresh_playlist()
         self.status.set_text("Ready: %s" % self._selected_track()[0])

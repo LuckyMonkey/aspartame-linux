@@ -38,6 +38,9 @@ except (ValueError, ImportError):  # GStreamer introspection is not installed
 MANIFEST = "manifest.json"
 MEDIA_DIR = "media/"
 FORMAT_VERSION = 1
+# Restore budgets: a manifest is a few KB; a session is bounded by disk.
+MAX_MANIFEST_BYTES = 1024 * 1024
+MAX_SESSION_BYTES = 2 * 1024 * 1024 * 1024
 MAX_SECONDS = 600
 # Fixed archive timestamps keep an unchanged session byte-identical on save.
 ZIP_DATE = (1980, 1, 1, 0, 0, 0)
@@ -123,27 +126,43 @@ class ClipStore:
                 archive.writestr(info, self.path(clip).read_bytes())
 
     def load(self, file_path):
-        """Replace the clips with a saved session; ignore anything malformed."""
+        """Replace the clips with a saved session, or change nothing at all.
+
+        Media is extracted into a staging directory and moved into the store
+        only after the whole archive validated, so a failure part-way through
+        can neither overwrite nor orphan the current captures. Malformed clip
+        entries are skipped; an unreadable archive returns False.
+        """
+        staging = Path(tempfile.mkdtemp(prefix=".restore-", dir=self.directory))
         restored = []
         try:
             with zipfile.ZipFile(file_path) as archive:
+                if archive.getinfo(MANIFEST).file_size > MAX_MANIFEST_BYTES:
+                    raise ValueError("manifest is too large")
                 manifest = json.loads(archive.read(MANIFEST).decode("utf-8"))
                 if not isinstance(manifest, dict) or not isinstance(manifest.get("clips"), list):
                     raise ValueError("manifest has no clip list")
                 names = set(archive.namelist())
+                total = 0
                 for clip in manifest["clips"]:
                     clip = self._valid_clip(clip, names)
                     if clip is None or any(kept["file"] == clip["file"] for kept in restored):
                         continue
-                    data = archive.read(MEDIA_DIR + clip["file"])
-                    (self.directory / clip["file"]).write_bytes(data)
+                    member = archive.getinfo(MEDIA_DIR + clip["file"])
+                    total += member.file_size
+                    if total > MAX_SESSION_BYTES:
+                        raise ValueError("session media exceeds the restore budget")
+                    with archive.open(member) as source, open(staging / clip["file"], "wb") as target:
+                        shutil.copyfileobj(source, target)
                     restored.append(clip)
         except (OSError, ValueError, KeyError, zipfile.BadZipFile):
+            shutil.rmtree(staging, ignore_errors=True)
             return False
-        kept = {clip["file"] for clip in restored}
         for clip in self.clips:
-            if clip["file"] not in kept:
-                self.path(clip).unlink(missing_ok=True)
+            self.path(clip).unlink(missing_ok=True)
+        for clip in restored:
+            os.replace(staging / clip["file"], self.directory / clip["file"])
+        shutil.rmtree(staging, ignore_errors=True)
         self.clips = restored
         return True
 
@@ -455,8 +474,10 @@ class RecordActivity(SimpleActivity):
         """Restore every capture from the Activity's Journal object."""
         self._show(None)
         if not self.store.load(file_path):
+            # The toolkit keeps the original object when read_file raises.
             self.status.set_text("This Journal entry has no recordings that can be opened.")
-        elif self.store.clips:
+            raise ValueError("unreadable Record session")
+        if self.store.clips:
             self.status.set_text("Restored %d recording%s." % (
                 len(self.store.clips), "" if len(self.store.clips) == 1 else "s"))
         self._refresh_gallery(select=0 if self.store.clips else None)

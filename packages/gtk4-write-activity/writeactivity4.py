@@ -169,20 +169,20 @@ class WriteActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore the document body from a Journal object."""
-        try:
-            raw = Path(file_path).read_text(encoding="utf-8")
-        except (OSError, UnicodeError) as error:
-            self.status.set_text(f"Unable to open draft: {error}")
-            return
+        # Unreadable, non-UTF-8, or structured-but-unrecognised payloads raise
+        # so the toolkit keeps the original object instead of saving over it.
+        raw = Path(file_path).read_text(encoding="utf-8")
         text = raw
         spans = ()
         try:
             payload = json.loads(raw) if raw.lstrip().startswith("{") else None
-            if isinstance(payload, dict) and payload.get("format") == self.FORMAT and isinstance(payload.get("text"), str):
-                text = payload["text"]
-                spans = payload.get("spans", ()) if isinstance(payload.get("spans", ()), list) else ()
-        except (TypeError, ValueError, json.JSONDecodeError):
-            pass
+        except ValueError:
+            payload = None  # Plain text that happens to start with "{".
+        if isinstance(payload, dict) and "format" in payload:
+            if payload.get("format") != self.FORMAT or not isinstance(payload.get("text"), str):
+                raise ValueError("unsupported Write document format: %r" % payload.get("format"))
+            text = payload["text"]
+            spans = payload.get("spans", ()) if isinstance(payload.get("spans", ()), list) else ()
         self._format_selection = None
         self._set_document(text, spans)
         self.status.set_text(f"Draft restored ({len(text)} characters)")

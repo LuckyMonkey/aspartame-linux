@@ -334,31 +334,28 @@ class PaintActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore tool, colour, and marks from a JSON Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            if not isinstance(payload, dict):
-                raise ValueError("payload must be an object")
-            color = payload.get("color", "Black")
-            strokes = payload.get("strokes", [])
-            if not self._valid_color(color) or not isinstance(strokes, list):
-                raise ValueError("invalid drawing")
-            restored = []
-            for stroke in strokes:
-                if not isinstance(stroke, dict) or not self._valid_color(stroke.get("color")):
-                    continue
-                tool = stroke.get("tool", "pencil")
-                tool = tool if tool in TOOLS else "pencil"
-                line_width = stroke.get("width", DEFAULT_WIDTH)
-                line_width = line_width if isinstance(line_width, (int, float)) and 0 < line_width <= 100 else DEFAULT_WIDTH
-                points = [tuple(point) for point in stroke.get("points", [])
-                          if isinstance(point, list) and len(point) == 2
-                          and all(isinstance(v, (int, float)) for v in point)]
-                if points:
-                    restored.append([stroke["color"], points, tool, line_width])
-            tool = payload.get("tool", "pencil")
-            width = payload.get("width", DEFAULT_WIDTH)
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            color, restored, tool, width = "Black", [], "pencil", DEFAULT_WIDTH
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        color = payload.get("color", "Black")
+        strokes = payload.get("strokes", [])
+        if not self._valid_color(color) or not isinstance(strokes, list):
+            raise ValueError("invalid drawing")
+        restored = []
+        for stroke in strokes:
+            if not isinstance(stroke, dict) or not self._valid_color(stroke.get("color")):
+                continue
+            tool = stroke.get("tool", "pencil")
+            tool = tool if tool in TOOLS else "pencil"
+            line_width = stroke.get("width", DEFAULT_WIDTH)
+            line_width = line_width if isinstance(line_width, (int, float)) and 0 < line_width <= 100 else DEFAULT_WIDTH
+            points = [tuple(point) for point in stroke.get("points", [])
+                      if isinstance(point, list) and len(point) == 2
+                      and all(isinstance(v, (int, float)) for v in point)]
+            if points:
+                restored.append([stroke["color"], points, tool, line_width])
+        tool = payload.get("tool", "pencil")
+        width = payload.get("width", DEFAULT_WIDTH)
         self.color = color
         self.strokes = restored
         self._undo.clear(); self._redo.clear()

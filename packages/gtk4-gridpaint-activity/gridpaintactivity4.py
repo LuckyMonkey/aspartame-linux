@@ -45,13 +45,12 @@ class GridPaintActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore selected cells from a JSON Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            selected = payload.get("selected", []) if isinstance(payload, dict) else []
-            if not isinstance(selected, list):
-                raise ValueError("selected must be a list")
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            selected = []
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        selected = payload.get("selected", [])
+        if not isinstance(selected, list):
+            raise ValueError("selected must be a list")
         selected = {int(index) for index in selected if isinstance(index, int) and 0 <= index < len(self.cells)}
         for index, cell in enumerate(self.cells):
             cell.set_active(index in selected)

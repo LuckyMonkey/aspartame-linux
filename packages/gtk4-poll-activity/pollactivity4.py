@@ -54,16 +54,18 @@ class PollActivity(SimpleActivity):
         self.status.set_text("Votes reset.")
 
     def read_file(self, file_path):
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            if isinstance(payload, dict):
-                self.question.set_text(str(payload.get("question", self.question.get_text())))
-                choices = payload.get("choices", [])
-                for (entry, _count), text in zip(self.options, choices): entry.set_text(str(text))
-                self.votes = [max(0, int(v)) for v in payload.get("votes", self.votes)][:3]
-                self.votes += [0] * (3 - len(self.votes)); self._render_counts()
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            return
+        # Validate the whole payload before touching any widget, so a bad vote
+        # count cannot leave a new question paired with old choices.
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        question = str(payload.get("question", self.question.get_text()))
+        choices = [str(text) for text in payload.get("choices", [])]
+        votes = [max(0, int(v)) for v in payload.get("votes", self.votes)][:3]
+        votes += [0] * (3 - len(votes))
+        self.question.set_text(question)
+        for (entry, _count), text in zip(self.options, choices): entry.set_text(text)
+        self.votes = votes; self._render_counts()
 
     def write_file(self, file_path):
         Path(file_path).write_text(json.dumps({"question": self.question.get_text(), "choices": [e.get_text() for e, _ in self.options], "votes": self.votes}) + "\n", encoding="utf-8")

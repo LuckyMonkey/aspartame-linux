@@ -287,10 +287,7 @@ class PippyActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore a Python source buffer from a UTF-8 Journal object."""
-        try:
-            program = Path(file_path).read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            program = DEFAULT_PROGRAM
+        program = Path(file_path).read_text(encoding="utf-8")
         self.editor.get_buffer().set_text(program)
         self.output.get_buffer().set_text("")
         self.output_empty.set_visible(True)

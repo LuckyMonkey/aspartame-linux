@@ -72,12 +72,11 @@ class PortfolioActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore project title and description from a Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            payload = {}
-        title = str(payload.get("title", "")) if isinstance(payload, dict) else ""
-        body = str(payload.get("body", "")) if isinstance(payload, dict) else ""
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        title = str(payload.get("title", ""))
+        body = str(payload.get("body", ""))
         self.name.set_text(title)
         self.body.get_buffer().set_text(body)
         self.status.set_text("Draft restored: %s" % (title or "Untitled project"))

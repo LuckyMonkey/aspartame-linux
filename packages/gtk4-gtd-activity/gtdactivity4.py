@@ -116,13 +116,12 @@ class GTDActivity(SimpleActivity):
 
     def read_file(self, file_path):
         """Restore task text and completion state from a Journal object."""
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            tasks = payload.get("tasks", []) if isinstance(payload, dict) else []
-            if not isinstance(tasks, list):
-                raise ValueError("tasks must be a list")
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            tasks = []
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        tasks = payload.get("tasks", [])
+        if not isinstance(tasks, list):
+            raise ValueError("tasks must be a list")
         for row in list(self._task_rows()):
             self.tasks.remove(row)
         for task in tasks:

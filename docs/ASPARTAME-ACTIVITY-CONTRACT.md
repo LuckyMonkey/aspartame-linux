@@ -92,3 +92,20 @@ clear in developer/detail views:
 
 This keeps Aspartame coherent while allowing useful borrowed work to enter
 deliberately.
+
+## Journal payload preservation
+
+- `read_file()` parses into local values and assigns Activity state only
+  after the whole payload has validated, so there is no partial restore.
+- A payload the Activity cannot open (unreadable, not UTF-8, malformed, or
+  an unknown format/version) makes `read_file()` **raise**. It must never
+  substitute a blank, sample or default document.
+- The toolkit (0301) catches that exception and shows a "could not be
+  opened" alert. Its `save()` then updates metadata only, so the original
+  bytes stay in the Journal. `Activity.load_failed()` reports this state.
+- Viewers that cannot edit (Read) write the opened bytes back unchanged.
+- Restores that unpack several files (Record) stage the files first and
+  swap them in only after the whole archive validates.
+- `tests/gtk4_harness/roundtrip.py` accepts either a clean refusal or a
+  tolerated load. `tests/test_gtk4_document_preservation.py` covers the
+  guarantees above.

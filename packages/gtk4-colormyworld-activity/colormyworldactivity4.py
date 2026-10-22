@@ -131,19 +131,18 @@ class ColorMyWorldActivity(SimpleActivity):
     def read_file(self, file_path):
         """Restore the selected palette color from a JSON Journal object."""
         colors = dict(self.PALETTE)
-        try:
-            payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
-            name = payload.get("name", "") if isinstance(payload, dict) else ""
-            if name not in colors:
-                name = ""
-            saved_regions = payload.get("regions", {}) if isinstance(payload, dict) else {}
-            region_names = {region[0] for region in self.REGIONS}
-            self._region_colors = {
-                region: value for region, value in saved_regions.items()
-                if region in region_names and value in colors.values()
-            } if isinstance(saved_regions, dict) else {}
-        except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
-            name = ""; self._region_colors = {}
+        payload = json.loads(Path(file_path).read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be an object")
+        name = payload.get("name", "")
+        if name not in colors:
+            name = ""
+        saved_regions = payload.get("regions", {})
+        region_names = {region[0] for region in self.REGIONS}
+        self._region_colors = {
+            region: value for region, value in saved_regions.items()
+            if region in region_names and value in colors.values()
+        } if isinstance(saved_regions, dict) else {}
         self._selected_region = ""
         if name:
             self._palette_buttons[name].set_active(True)
