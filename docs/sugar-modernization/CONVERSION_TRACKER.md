@@ -145,8 +145,14 @@ visible VM; isolated widget probes use separate displays/profiles/buses.
       selects Classic/workspace 0 and F8 selects Modern/workspace 1 on the
       newest standalone image; both shell PIDs remain alive. See
       `reports/gtk4/space-key-transport-20261004.md`.
-- [ ] Neighborhood/Group peer actions (peer presence and rendering are
-      qualified with two guests; Activity sharing/join is still open)
+- [x] Neighborhood/Group peer actions. Peer presence and rendering were
+      qualified with two guests on 2026-10-04. On 2026-10-22, on the
+      re-pinned toolkit, a second guest joined the owner's shared
+      Activity through `sugar4.presence.Activity.join()`
+      (`share-join=PASS`); see
+      `reports/gtk4/share-join-qualification-20261004.md`. Joining from
+      the Neighborhood UI and exchanging content between peers are
+      separate checks.
 - [x] Settings, Activity Manager, approval and contextual Help
 - [x] Physical-event Tab/Shift+Tab/Space. Closed 2026-09-15: physical typing,
       Tab, Shift+Tab, Enter and Space all reach a real GTK4 Activity launched

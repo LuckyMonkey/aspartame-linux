@@ -152,3 +152,10 @@ def test_toggle_palettes_open_once_and_stay_open():
     assert "self._toggled_open = True" in patch
     assert 'if getattr(self, "_toggled_open", False):' in patch
     assert "a menu, not a hover tooltip, so it must stay open" in patch
+
+
+def test_join_completes_when_only_self_is_visible():
+    """A Salut room shows the owner only after MembersChanged; the peer's
+    join must still complete (it previously timed out in phase=join)."""
+    patch = (PATCH_DIR / "0301-toolkit-downstream-on-9d86a31.patch").read_text()
+    assert "+            if not self._joined:\n+                self._add_initial_buddies([])" in patch

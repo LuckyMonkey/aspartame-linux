@@ -34,9 +34,10 @@ does not infer readiness from a launch matrix or from a sentence in a status
 document; a missing receipt or one unqualified candidate keeps the result
 blocked.
 
-Current result remains deliberately `BLOCKED`: all registered Activities are
-still classified FUNCTIONAL PORT rather than FULL PORT and peer Activity join
-is not qualified. The shell/session restart requirement is now qualified; no
+Current result remains deliberately `BLOCKED`, now on one blocker: all
+registered Activities are still classified FUNCTIONAL PORT rather than FULL
+PORT. Peer Activity join was qualified on 2026-10-22 (`share-join=PASS`), so
+the gate no longer reports `collaboration-join`. The shell/session restart requirement is now qualified; no
 GTK3 package is removed by this check.
 
 The first modern-space candidates remain Portfolio, Markdown, Finance, Write,

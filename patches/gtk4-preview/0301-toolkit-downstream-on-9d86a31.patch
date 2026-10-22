@@ -1527,7 +1527,7 @@ index f8a0b58..df232cb 100644
          self._is_fullscreen = False
          self._unfullscreen_button = None
 diff --git a/src/sugar4/presence/activity.py b/src/sugar4/presence/activity.py
-index 15740cf..7e29d95 100644
+index 15740cf..af86a3c 100644
 --- a/src/sugar4/presence/activity.py
 +++ b/src/sugar4/presence/activity.py
 @@ -131,6 +131,7 @@ class Activity(GObject.GObject):
@@ -1581,7 +1581,7 @@ index 15740cf..7e29d95 100644
      def _start_tracking_channel(self):
          channel = self.telepathy_text_chan[CHANNEL]
          channel.connect_to_signal("Closed", self.__text_channel_closed_cb)
-@@ -340,6 +370,9 @@ class Activity(GObject.GObject):
+@@ -340,7 +370,16 @@ class Activity(GObject.GObject):
          if self._channel_self_handle in members:
              members.remove(self._channel_self_handle)
  
@@ -1589,9 +1589,16 @@ index 15740cf..7e29d95 100644
 +            self.telepathy_text_chan[CHANNEL_INTERFACE_GROUP], local_pending
 +        )
          if not members:
++            # We are in the room but no other member is visible yet (a Salut
++            # room announces the owner later through MembersChanged). The
++            # join itself succeeded; finishing it with no initial buddies
++            # avoids waiting forever for a "joined" that never comes.
++            if not self._joined:
++                self._add_initial_buddies([])
              return
  
-@@ -391,6 +424,9 @@ class Activity(GObject.GObject):
+         self._resolve_handles(members, reply_cb=self._add_initial_buddies)
+@@ -391,6 +430,9 @@ class Activity(GObject.GObject):
                  reason,
              ]
          )
@@ -1601,7 +1608,7 @@ index 15740cf..7e29d95 100644
          if self._channel_self_handle in added:
              added.remove(self._channel_self_handle)
          if added:
-@@ -466,6 +502,28 @@ class Activity(GObject.GObject):
+@@ -466,6 +508,28 @@ class Activity(GObject.GObject):
              self._publish_properties()
              self._start_tracking_properties()
              self._start_tracking_buddies()

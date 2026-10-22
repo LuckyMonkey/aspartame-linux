@@ -124,3 +124,34 @@ The patch applies cleanly to the pinned toolkit source; it improves failure
 handling but does not claim that Salut membership is fixed. The authoritative
 join receipt remains `phase=join` blocked until a rebuilt two-guest run reports
 `share-join=PASS`.
+
+## 2026-10-22 rerun on the re-pinned toolkit: peer room join PASS
+
+Setup: two snapshot dev guests on the private multicast NIC (`10.77.0.1`
+and `10.77.0.2`), each running the GTK4 preview built from 0300/0301 at
+sugar `beaae56` and toolkit `9d86a31`, with isolated profiles from
+`sugar-gtk4-peer-prepare.sh`.
+
+Two re-pin regressions and one fixture bug were fixed first:
+- **Share menu.** Upstream's palette rewrite opened and then closed the
+  Share palette within one click.
+- **X cookie.** `peer-prepare` renamed the host, which orphaned the X
+  cookie.
+- **Join completion (the actual blocker).** `Activity.__get_all_members_cb`
+  returned without emitting `joined` when the peer saw only itself in the
+  room. That is the normal first view of a Salut room, because the owner
+  arrives later through MembersChanged. The join now completes with no
+  initial buddies.
+
+Results:
+
+```text
+owner: share-roundtrip=PASS pid=23994 activity_id=edc87fd8ebd14b90b16944ddcc4f2276 mode=telepathy-share
+peer:  share-join=PASS activity_id=edc87fd8ebd14b90b16944ddcc4f2276 room_handle=1 joined=True contract=sugar4.presence.Activity
+```
+
+peer room join: PASS (real `sugar4.presence.Activity.join()`, two guests).
+
+Boundary: this qualifies the presence join contract. It does not cover
+joining from the Neighborhood UI or exchanging Activity content between
+the peers; those remain separate user-facing checks.
