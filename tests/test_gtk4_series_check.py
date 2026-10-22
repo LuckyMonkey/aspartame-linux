@@ -45,7 +45,7 @@ def _build_routing():
 def _build_target(path):
     for patterns, target in _build_routing():
         if any(fnmatch.fnmatch(path.name, pattern) for pattern in patterns):
-            return TARGET_NAMES.get(target, target)
+            return TARGET_NAMES.get(target.strip(), target.strip())
     return "UNROUTED"
 
 
