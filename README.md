@@ -11,8 +11,10 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux/graphs/commit-activity)
 [![Repository size](https://img.shields.io/github/repo-size/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux)
 
-[![GTK4 tests](https://img.shields.io/badge/GTK4%20tests-271%20passed-2ea44f)](tests/)
+[![Host tests](https://img.shields.io/badge/host%20tests-584%20passed-2ea44f)](tests/)
 [![GTK4 build](https://img.shields.io/badge/guest%20build-PASS-2ea44f)](docs/sugar-modernization/GTK4_RUNBOOK.md)
+[![ISO](https://img.shields.io/badge/ISO%202026.10.22-qualified-2ea44f)](reports/gtk4/repin-qualification-20261022.md)
+[![Upstream](https://img.shields.io/badge/upstream-sugar%20PR%201106%20%C2%B7%20toolkit%20main-blue)](docs/sugar-modernization/UPSTREAM_SYNC.md)
 [![GTK3 reference](https://img.shields.io/badge/GTK3-reference%20preserved-2ea44f)](docs/sugar-modernization/GTK4_STATUS.md)
 
 Aspartame is an Arch-derived Linux distribution and a Sugar modernization laboratory. It keeps Sugar's learning-centred model—Home, Activities, Frame, Journal, Neighborhood, Group, palettes, XO identity, and visible context—at the centre of the operating system while retaining practical Linux tools underneath: systemd, pacman, ordinary files, networking, audio, CUPS, SSH, and a real terminal.
@@ -115,8 +117,8 @@ Progress bars describe verified repository work, not a claim that the full retir
 | Activity lifecycle | <span style="color:#2ea44f"><strong>█████████░ 90%</strong></span> | 🚀 Casilda launch and stop<br>🔁 Repeated normal/abnormal cleanup<br>💡 Running-state reconciliation |
 | Activity catalog parity | <span style="color:#2ea44f"><strong>██████░░░░ 60%</strong></span> | ✅ Broad live GTK4 coverage<br>⚠️ Many Activities are FUNCTIONAL PORTs<br>🧩 FULL PORT remains evidence-gated |
 | GTK3 ↔ GTK4 Spaces | <span style="color:#2ea44f"><strong>████████░░ 80%</strong></span> | 🧬 Separate processes<br>↔️ Semantic switching<br>⚠️ Physical input transport remains environment-sensitive |
-| Collaboration peers | <span style="color:#2ea44f"><strong>███░░░░░░░ 30%</strong></span> | 🌐 Honest empty state<br>👥 Peer-backed actions need a second participant |
-| GTK4 retirement gate | <span style="color:#2ea44f"><strong>███████░░░ 70%</strong></span> | 🧾 Evidence ledger<br>🚧 Human parity, physical input, and peer gates remain |
+| Collaboration peers | <span style="color:#2ea44f"><strong>██████░░░░ 60%</strong></span> | 🌐 Honest empty state<br>👥 Two-guest share and join PASS<br>⚠️ Joining from the Neighborhood view and exchanging content remain |
+| GTK4 retirement gate | <span style="color:#2ea44f"><strong>████████░░ 80%</strong></span> | 🧾 Evidence ledger<br>✅ Tracker gates closed, including share/join<br>🚧 One blocker left: no Activity is FULL PORT yet |
 
 The authoritative checklist is [CONVERSION_TRACKER.md](docs/sugar-modernization/CONVERSION_TRACKER.md), not a screenshot or a passing unit test alone.
 
@@ -159,7 +161,7 @@ GTK, GLib, GObject, Casilda, the compositor, kernel, drivers, codecs, and other 
 
 ## 🧩 Activity status
 
-The current native GTK4 inventory includes functional implementations for Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Read, Write, NumberRush, Poll, Mancala, Reversi, Jumble, Mastermind, BlockParty, PlayGo, Implode, BallAndBrick, Appel Haken, IQ, Across and Down, Maze, Memorize, Words, Portfolio, FotoToon, Finance, Markdown, Stopwatch, TurtleBlocks, Gears, Last One Loses, Grid Paint, Get Things Done, Abacus, Planets, Color My World, Game Of Life, Diamond Fusion, Connect the Dots, Pippy, Typing Turtle, Moon, Paint, Level, Jukebox, Get Books, and Record (host-qualified; guest lifecycle pending).
+The current native GTK4 inventory includes functional implementations for Help, Count, Calculate, Clock, JAMClock, Image Viewer, Terminal, Browse, Log, Read, Write, NumberRush, Poll, Mancala, Reversi, Jumble, Mastermind, BlockParty, PlayGo, Implode, BallAndBrick, Appel Haken, IQ, Across and Down, Maze, Memorize, Words, Portfolio, FotoToon, Finance, Markdown, Stopwatch, TurtleBlocks, Gears, Last One Loses, Grid Paint, Get Things Done, Abacus, Planets, Color My World, Game Of Life, Diamond Fusion, Connect the Dots, Pippy, Typing Turtle, Moon, Paint, Level, Jukebox, Get Books, and Record.
 
 That list is runtime coverage, not a promise of complete upstream feature breadth. Read the classification table for each Activity's workflow and boundary. Sugarizer web catalog entries remain catalog-only until an actual runtime implementation exists.
 
@@ -185,6 +187,10 @@ This keeps the stable GTK3 implementation as the executable specification while 
 
 The important retirement metric is **behavioral parity**, not launch count.
 
+## 🔄 Following upstream Sugar
+
+The GTK4 work tracks Sugar Labs directly: `sugar` follows PR #1106 and `sugar-toolkit-gtk4` follows `main`, pinned to exact commits in `scripts/sugar-gtk4-init.sh`. Aspartame's changes are one rebased patch per repository (`0300` for Sugar, `0301` for the toolkit) plus a few small patches for the datastore, Log, and Casilda. The build applies them only when they match exactly and stops on any drift. The older patch history is kept in `patches/gtk4-preview/folded/`. [UPSTREAM_SYNC.md](docs/sugar-modernization/UPSTREAM_SYNC.md) describes the re-pin procedure.
+
 ## 🛠️ Build and run
 
 Large archiso caches and VM disks live on the host's SteamLibrary volume so the root filesystem is not filled by image builds.
@@ -197,7 +203,9 @@ make iso                  # bootable Arch image
 make run                  # QEMU reference VM
 ```
 
-The generated image is written under `dist/` with a date-stamped filename. The development GTK4 source overlay and pinned checkouts are mounted from the `aspartame-dev` share during preview work; the current ISO documentation does not claim those development sources are embedded.
+`make iso` asks for sudo once and builds inside an Arch chroot. The image is written to `aspartame-build/artifacts/out/aspartame-YYYY.MM.DD-x86_64.iso` on the build volume.
+
+The ISO embeds the GTK4 runtime at `/usr/lib/aspartame/gtk4-preview`, built from the archive staged as `aspartame-build/artifacts/gtk4-preview-standalone.tar.gz`. Its `STANDALONE-MANIFEST` records that archive's SHA-256. The build refuses a stale archive that does not contain the current `0300`/`0301` patches. Export a fresh one from the dev guest with `scripts/sugar-gtk4-export.sh`. During development, the pinned checkouts are mounted from the `aspartame-dev` share instead.
 
 Useful overrides:
 
@@ -226,7 +234,9 @@ Executable checks and durable evidence live together:
 
 | Check | Command/result |
 | --- | --- |
-| GTK4 regression suite | `pytest -q tests/test_gtk4*` and the full suite → **PASS**; current full run: 415 passed |
+| Host regression suite | `make test` → **PASS**; current full run: 584 passed |
+| Patch series (in guest) | `make sugar-gtk4-series-check` → the series reconstructs the preview exactly (no fuzz) |
+| Packaged ISO | 2026.10.22 receipts (runtime, Settings, GTK3/GTK4 lifecycle, 50-Activity matrix, Chirality) → **PASS**, see `reports/gtk4/` |
 | Python runtime qualification | `make snakepit-qualify` → **PASS**; dependency-tension preflight is recorded in `reports/python/` |
 | Guest source/build | `scripts/sugar-gtk4-build.sh` → **PASS** |
 | Spaces process check | `scripts/sugar-gtk4-runtime-check.sh gtk3/gtk4` |
@@ -409,9 +419,9 @@ The project is intentionally still in conversion. The highest-value remaining it
 
 1. **Human GTK3↔GTK4 parity qualification** — use F7/F8 as the executable oracle and exercise real workflows, not only lifecycle probes.
 2. **Physical input proof** — continue proving keyboard delivery through the actual QEMU/evdev path while keeping semantic shell actions separate from transport.
-3. **Peer-backed collaboration** — exercise Neighborhood/Group behavior with a second real participant.
-4. **Activity promotion** — move Activities from COVERAGE IMPLEMENTATION → FUNCTIONAL PORT → FULL PORT only when GTK3 behavior, persistence, input, accessibility, and user-visible state justify it.
-5. **Self-contained packaging** — embed the modernized sources and pinned Activity set into a release image when the development overlay is ready to graduate.
+3. **Peer-backed collaboration** — two-guest share and join now pass. Joining from the Neighborhood view itself and exchanging content between peers remain.
+4. **Activity promotion (the last retirement blocker)** — move Activities from COVERAGE IMPLEMENTATION → FUNCTIONAL PORT → FULL PORT only when GTK3 behavior, persistence, input, accessibility, and user-visible state justify it.
+5. **Stay in stream with Sugar Labs** — re-pin as upstream moves and report the bugs found here upstream (issue #1).
 6. **Migration cleanup** — once parity is strong enough, delete dead compatibility scaffolding instead of carrying the migration forever.
 
 These are tracked gaps, not silent fallbacks. GTK3 remains the healthy behavioral and visual reference until the gate is genuinely satisfied.
