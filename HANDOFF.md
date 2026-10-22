@@ -32,3 +32,14 @@ archive/overlay drift, tile accessibility, and incomplete GTK4 manager parity.
 These are proposals, not implementation or new runtime acceptance claims.
 A snapshot guest was started before the no-checks instruction; shutdown was
 requested immediately afterward. No new runtime probe was run.
+
+## Runtime state research checkpoint
+See `docs/RUNTIME-STATE-FIX-PROPOSALS.md` for code-backed proposals covering:
+- CLI/GUI Snakepit source-freshness mismatch and malformed record handling.
+- Missing GUI workflow completion/exit reporting.
+- Chirality lost-update risks across independent state writers.
+- Partial resume/retry and cross-session process matching.
+- Model-only handoff versus actual target object delivery.
+- Validation occurring after visible activation.
+The snapshot guest shutdown completed successfully. Current mode remains
+code research and documentation only; no new checks were run.

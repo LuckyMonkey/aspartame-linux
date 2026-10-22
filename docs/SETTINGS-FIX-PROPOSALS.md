@@ -8,8 +8,7 @@ Prior guest observations remain in `reports/gtk4/settings-lifecycle-20261022.md`
 
 Evidence: upstream-derived `jarabe/controlpanel/gui.py`,
 `ControlPanel.__key_press_event_cb`, together with
-`patches/gtk4-preview/0164-controlpanel-escape-capture.patch` (look up the
-0164 filename in the patch directory; the number identifies the change).
+`patches/gtk4-preview/0164-controlpanel-key-dismissal.patch`.
 The handler ends by grabbing the main toolbar search entry whenever it does
 not have focus. Patch 0164 moves this entire handler to CAPTURE phase.
 That means ordinary keys are intercepted before the focused section widget
