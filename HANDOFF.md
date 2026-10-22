@@ -21,3 +21,14 @@
 - /tmp/aspartame-askpass was recreated from the development image's configured login for local testing.
 
 User requested stopping checks, committing and syncing, and leaving this handoff so another agent can continue.
+
+## Continued code-research checkpoint
+User resumed work, then explicitly requested **no checks**: research code and
+make proposals instead. Do not restart tests, ISO builds, or runtime probing
+without a later change of instruction. See `docs/SETTINGS-FIX-PROPOSALS.md`
+for prioritized fixes and code evidence: capture-phase Settings focus theft,
+inconsistent navigation cleanup, synchronous/repeated About inventory,
+archive/overlay drift, tile accessibility, and incomplete GTK4 manager parity.
+These are proposals, not implementation or new runtime acceptance claims.
+A snapshot guest was started before the no-checks instruction; shutdown was
+requested immediately afterward. No new runtime probe was run.
