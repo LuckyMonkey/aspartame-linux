@@ -133,3 +133,11 @@ def test_overlay_and_activities_have_no_shadowed_methods():
         offenders += [f"{path.name}:{name}" for name in
                       _class_duplicates(path.read_text(encoding="utf-8-sig"))]
     assert offenders == [], offenders
+
+
+def test_shell_finds_the_gtk4_theme_in_the_runtime_prefix():
+    """Upstream's setup_theme looks only in /usr/share; Aspartame installs the
+    GTK4 theme under its prefix. Missing it left palettes white on white."""
+    patch = (PATCH_DIR / "0300-sugar-downstream-on-beaae56.patch").read_text()
+    assert "GLib.get_system_data_dirs()" in patch
+    assert "+    gtk_settings.set_property('gtk-theme-name', sugar_theme)" in patch

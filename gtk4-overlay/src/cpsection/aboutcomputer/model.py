@@ -5,7 +5,8 @@ from gettext import gettext as _
 
 from jarabe import config
 
-from cpsection.aboutcomputer.inventory import NOT_AVAILABLE, collect_inventory
+from cpsection.aboutcomputer.inventory import (NOT_AVAILABLE, build_identity,
+                                               collect_inventory)
 
 
 def get_aboutcomputer():
@@ -35,7 +36,7 @@ def print_serial_number():
 
 
 def get_build_number():
-    return collect_inventory()['build']
+    return build_identity()
 
 
 def print_build_number():

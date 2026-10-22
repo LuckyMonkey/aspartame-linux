@@ -33,11 +33,16 @@ def read_os_release(path='/etc/os-release'):
     return values
 
 
+# Optional probes must never stall Settings; a slow tool reads as unavailable.
+COMMAND_TIMEOUT = 2
+
+
 def command_output(command):
     try:
         return subprocess.check_output(
-            command, text=True, stderr=subprocess.DEVNULL).strip()
-    except (OSError, subprocess.CalledProcessError):
+            command, text=True, stderr=subprocess.DEVNULL,
+            timeout=COMMAND_TIMEOUT).strip()
+    except (OSError, subprocess.SubprocessError):
         return ''
 
 
@@ -86,6 +91,11 @@ def _build(os_release):
     if identity and image:
         return '%s %s' % (identity, image)
     return identity or NOT_AVAILABLE
+
+
+def build_identity(os_release_path='/etc/os-release'):
+    """The build string alone, without running the full inventory."""
+    return _build(read_os_release(os_release_path))
 
 
 def collect_inventory(os_release_path='/etc/os-release',

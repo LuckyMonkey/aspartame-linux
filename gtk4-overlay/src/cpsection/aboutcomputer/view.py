@@ -2,7 +2,9 @@
 
 from gettext import gettext as _
 
-from gi.repository import Gtk
+import threading
+
+from gi.repository import GLib, Gtk
 
 from sugar4.graphics import style
 
@@ -83,15 +85,12 @@ class AboutComputer(SectionView):
         self._system_box.set_margin_start(style.DEFAULT_SPACING * 2)
         self._system_box.set_margin_end(style.DEFAULT_SPACING * 2)
         self._vbox.append(self._system_box)
-        self._refresh_system()
-
-    def _refresh_system(self):
-        while (child := self._system_box.get_first_child()) is not None:
-            self._system_box.remove(child)
-        self._system_box.append(self.create_information_box(
-            _('Status:'), _('Read-only local inventory')))
-        for label, value in self._model.get_system_information():
-            self._system_box.append(self.create_information_box(label, value))
+        self._status = Gtk.Label(xalign=0)
+        self._system_box.append(self._status)
+        self._rows = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,
+                             spacing=style.DEFAULT_SPACING)
+        self._system_box.append(self._rows)
+        # The button outlives every refresh so keyboard focus stays on it.
         refresh = Gtk.Button(label=_('Refresh inventory'))
         refresh.set_halign(Gtk.Align.START)
         refresh.set_tooltip_text(_('Read the local system sources again.'))
@@ -101,6 +100,37 @@ class AboutComputer(SectionView):
             [refresh.get_label(), refresh.get_tooltip_text()])
         refresh.connect('clicked', self._refresh_clicked)
         self._system_box.append(refresh)
+        self._generation = 0
+        self._refresh_system()
+
+    def _refresh_system(self):
+        """Collect one inventory snapshot off the GTK main loop."""
+        self._generation += 1
+        generation = self._generation
+        self._status.set_text(_('Reading the local inventory…'))
+
+        def collect():
+            try:
+                values = tuple(self._model.get_system_information())
+            except Exception:
+                values = None
+            GLib.idle_add(self._show_inventory, generation, values)
+
+        threading.Thread(target=collect, daemon=True).start()
+
+    def _show_inventory(self, generation, values):
+        # A newer refresh, or a closed view, makes this snapshot stale.
+        if generation != self._generation or self.get_root() is None:
+            return False
+        while (child := self._rows.get_first_child()) is not None:
+            self._rows.remove(child)
+        if values is None:
+            self._status.set_text(_('The local inventory could not be read.'))
+            return False
+        self._status.set_text(_('Read-only local inventory'))
+        for label, value in values:
+            self._rows.append(self.create_information_box(label, value))
+        return False
 
     def _refresh_clicked(self, _button):
         self._refresh_system()
@@ -162,7 +192,9 @@ class AboutComputer(SectionView):
             expander.set_child(None)
 
     def setup(self):
-        self._refresh_system()
+        # Construction already started a refresh; only re-read when shown again.
+        if self._generation == 0:
+            self._refresh_system()
 
     def apply(self):
         return None

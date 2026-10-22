@@ -79,3 +79,26 @@ The plan is in `~/.claude/plans/glittery-napping-peacock.md`.
 - Not yet done: guest `make sugar-gtk4-init sugar-gtk4-build`, re-export,
   `make iso`, then the qualification probes. Palettes, menus and icons
   took upstream's rewrite, so re-check them visually.
+
+## 2026-10-22 — re-pin qualified in the guest, Settings/About/documents fixed
+Receipt: `reports/gtk4/repin-qualification-20261022.md`. The guest build
+on the new pins passes the runtime check, the GTK3 and GTK4 lifecycle
+probes (3/3 each), the full Settings + About probe (HANDOFF item 3 is
+closed) and the 50-Activity matrix. Host suite: 575 passed.
+Also landed: Journal payload preservation (toolkit guard plus all audited
+Activities), the single Settings dismissal contract, bounded and
+asynchronous About inventory, Settings tiles as real buttons, and
+GTK4 theme lookup on the XDG data dirs.
+
+Next phase (needs the owner):
+1. In the guest: `GTK4_ROOT=/home/aspartame/Development/gtk4-preview
+   bash /mnt/aspartame-dev/scripts/sugar-gtk4-export.sh
+   /mnt/aspartame-dev/artifacts/gtk4-preview-standalone.tar.gz`
+   (the VM is in snapshot mode, so export before shutdown).
+2. Host, with sudo:
+   `GTK4_PREVIEW_ARCHIVE=<that tarball> make iso`. The ISO build refuses
+   the stale October 4 archive.
+3. Boot the new ISO and rerun the receipt checks against the packaged
+   runtime.
+Still open: the two-guest share/join run (the last tracker gate), Journal
+row persistence (P2), and the runtime-state P1 proposals.

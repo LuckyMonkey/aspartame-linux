@@ -88,3 +88,21 @@ def test_about_computer_is_native_refreshable_and_registered():
     assert 'collect_inventory' in model
     assert "options['aboutcomputer']" in patch
     assert 'import cpsection.aboutcomputer' in patch
+
+
+def test_inventory_commands_are_bounded_and_build_number_is_cheap():
+    inventory = (ROOT / "gtk4-overlay/src/cpsection/aboutcomputer/inventory.py").read_text()
+    model = (ROOT / "gtk4-overlay/src/cpsection/aboutcomputer/model.py").read_text()
+    assert "timeout=COMMAND_TIMEOUT" in inventory
+    assert "subprocess.SubprocessError" in inventory
+    assert "return build_identity()" in model
+
+
+def test_inventory_refresh_is_asynchronous_and_keeps_its_button():
+    view = (ROOT / "gtk4-overlay/src/cpsection/aboutcomputer/view.py").read_text()
+    assert "threading.Thread(target=collect, daemon=True)" in view
+    assert "GLib.idle_add(self._show_inventory, generation, values)" in view
+    assert "generation != self._generation or self.get_root() is None" in view
+    # The Refresh button is built once, outside the rows each refresh replaces.
+    assert view.count("Gtk.Button(label=_('Refresh inventory'))") == 1
+    assert "self._rows.remove(child)" in view

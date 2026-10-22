@@ -57,7 +57,7 @@ index e9b9f01..2bfea86 100644
  
          for language, country, code in self._available_locales:
 diff --git a/src/jarabe/controlpanel/gui.py b/src/jarabe/controlpanel/gui.py
-index 752dc4a..e80d93a 100644
+index 752dc4a..73bf81d 100644
 --- a/src/jarabe/controlpanel/gui.py
 +++ b/src/jarabe/controlpanel/gui.py
 @@ -86,8 +86,18 @@ class ControlPanel(Gtk.Window):
@@ -90,16 +90,58 @@ index 752dc4a..e80d93a 100644
          self.set_size_request(width, height)
          self.set_default_size(width, height)
          if hasattr(self, '_table') and self._table is not None:
-@@ -338,7 +348,7 @@ class ControlPanel(Gtk.Window):
+@@ -333,13 +343,18 @@ class ControlPanel(Gtk.Window):
+         self.grab_focus()
+ 
+     def __key_press_event_cb(self, controller, keyval, keycode, state):
+-        if keyval == Gdk.KEY_Return:
++        # This controller runs in CAPTURE phase, ahead of the focused widget,
++        # so it handles only navigation keys and main-page type-ahead. Any
++        # other key belongs to the focused tile or section widget.
++        on_main_page = self._toolbar == self._main_toolbar
++        if keyval == Gdk.KEY_Return and on_main_page:
+             if len(self._selected) == 1:
                  self.show_section_view(self._selected[0])
                  return True
++            return False
  
 -        if keyval == Gdk.KEY_Escape:
+-            if self._toolbar == self._main_toolbar:
 +        if keyval in (Gdk.KEY_Escape, Gdk.KEY_F3, Gdk.KEY_F4):
-             if self._toolbar == self._main_toolbar:
++            if on_main_page:
                  self.__stop_clicked_cb(None)
                  self.close()
-@@ -456,6 +466,32 @@ class ControlPanel(Gtk.Window):
+             else:
+@@ -350,11 +365,25 @@ class ControlPanel(Gtk.Window):
+         if not self.is_active():
+             self.present()
+ 
+-        entry = self._main_toolbar.get_entry()
+-        if not entry.has_focus():
+-            entry.grab_focus()
++        modifiers = Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.ALT_MASK
++        char = chr(Gdk.keyval_to_unicode(keyval) or 0)
++        if on_main_page and not state & modifiers and char.isprintable() \
++                and not char.isspace():
++            entry = self._main_toolbar.get_entry()
++            if not entry.has_focus():
++                entry.grab_focus()
+         return False
+ 
++    def dismiss(self):
++        """Leave Settings as Escape would: undo an open section, then close.
++
++        Shell navigation uses this so every route away from Settings has the
++        same modal cleanup and section cancel semantics.
++        """
++        if self._toolbar != self._main_toolbar:
++            self.__cancel_clicked_cb(None)
++        self.__stop_clicked_cb(None)
++
+     def __clear_icon_pressed_cb(self, entry, icon_pos, event=None):
+         self.grab_focus()
+ 
+@@ -456,6 +485,32 @@ class ControlPanel(Gtk.Window):
                  except Exception:
                      logging.exception('Exception while loading extension:')
  
@@ -132,31 +174,51 @@ index 752dc4a..e80d93a 100644
          return options
  
      def __cancel_clicked_cb(self, widget):
-@@ -627,6 +663,12 @@ class _SectionIcon(Gtk.Box):
-         self.set_valign(Gtk.Align.CENTER)
+@@ -628,28 +683,36 @@ class _SectionIcon(Gtk.Box):
          self.set_hexpand(True)
          self.set_vexpand(True)
-+        self.set_focusable(True)
-+        self.set_accessible_role(Gtk.AccessibleRole.BUTTON)
-+        self.update_property([Gtk.AccessibleProperty.LABEL], [self._title])
-+        key = Gtk.EventControllerKey()
-+        key.connect('key-pressed', self._key_pressed)
-+        self.add_controller(key)
  
++        # A real (flat) button owns activation: it gives pointer, Enter/Space
++        # and the AT-SPI "click" action one path. A Box with the BUTTON role
++        # exposed no action, so assistive tools could find but not open it.
++        content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,
++                          spacing=style.DEFAULT_SPACING)
          self._icon = Icon(icon_name=self._icon_name,
                            pixel_size=self._pixel_size,
-@@ -647,6 +689,12 @@ class _SectionIcon(Gtk.Box):
+                           xo_color=self._xo_color)
+-        self.append(self._icon)
++        content.append(self._icon)
+ 
+         self._label = Gtk.Label(label=self._title)
+         self._label.add_css_class('sectionicon-label')
++        content.append(self._label)
+ 
+-        self.append(self._label)
+-
+-        self.set_spacing(style.DEFAULT_SPACING)
+-        
+-        click = Gtk.GestureClick()
+-        click.connect('pressed', self._on_clicked)
+-        self.add_controller(click)
++        self._button = Gtk.Button(child=content)
++        self._button.add_css_class('flat')
++        self._button.update_property([Gtk.AccessibleProperty.LABEL],
++                                     [self._title])
++        self._button.connect('clicked', self._on_clicked)
++        self.append(self._button)
+ 
          self._label.set_visible(True)
          self._icon.set_visible(True)
  
-+    def _key_pressed(self, controller, keyval, keycode, state):
-+        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter, Gdk.KEY_space):
-+            self.emit('option-clicked')
-+            return True
-+        return False
-+
-     def _on_clicked(self, gesture, n_press, x, y):
+-    def _on_clicked(self, gesture, n_press, x, y):
++    def _on_clicked(self, button):
          self.emit('option-clicked')
+ 
++    def grab_focus(self):
++        return self._button.grab_focus()
++
+     def get_icon(self):
+         return self._icon
  
 diff --git a/src/jarabe/desktop/activitieslist.py b/src/jarabe/desktop/activitieslist.py
 index dcb50c4..038da5b 100644
@@ -1870,10 +1932,10 @@ index 7461342..e74af28 100644
  
  
 diff --git a/src/jarabe/main.py b/src/jarabe/main.py
-index f72ac44..1ad1033 100755
+index f72ac44..d0bd82c 100755
 --- a/src/jarabe/main.py
 +++ b/src/jarabe/main.py
-@@ -1,417 +1,518 @@
+@@ -1,417 +1,527 @@
 -# Copyright (C) 2006, Red Hat, Inc.
 -# Copyright (C) 2009, One Laptop Per Child Association Inc
 -#
@@ -2588,7 +2650,16 @@ index f72ac44..1ad1033 100755
 +    # Solution: write Sugar CSS import to ~/.config/gtk-4.0/gtk.css which GTK4
 +    # loads automatically at PRIORITY_USER (800) on EVERY display — including
 +    # after Wayland reconnects. Nothing can override PRIORITY_USER.
-+    css_path = '/usr/share/themes/%s/gtk-4.0/gtk.css' % sugar_theme
++    # Aspartame installs the GTK4 theme under its runtime prefix, which is on
++    # XDG_DATA_DIRS; upstream only looked in /usr/share. Setting the theme
++    # name as well keeps X11 sessions themed before any display switch.
++    gtk_settings.set_property('gtk-theme-name', sugar_theme)
++    css_path = next(
++        (path for path in (
++            os.path.join(directory, 'themes', sugar_theme, 'gtk-4.0', 'gtk.css')
++            for directory in GLib.get_system_data_dirs())
++         if os.path.exists(path)),
++        '/usr/share/themes/%s/gtk-4.0/gtk.css' % sugar_theme)
 +    if os.path.exists(css_path):
 +        user_css_dir = os.path.expanduser('~/.config/gtk-4.0')
 +        os.makedirs(user_css_dir, exist_ok=True)
@@ -3218,23 +3289,41 @@ index 902c43a..a0334dc 100644
          activity_info = registry.get_bundle(service_name)
 diff --git a/src/jarabe/view/actions.py b/src/jarabe/view/actions.py
 new file mode 100644
-index 0000000..475fc36
+index 0000000..f9e3a45
 --- /dev/null
 +++ b/src/jarabe/view/actions.py
-@@ -0,0 +1,11 @@
+@@ -0,0 +1,29 @@
 +"""Canonical semantic actions exposed by the GTK4 Sugar shell."""
++
++
++def dismiss_settings():
++    """Close every open Settings window; return whether one was open.
++
++    The single dismissal contract for shell navigation: whichever route
++    leaves Settings (D-Bus, F-keys, toolbar menu) undoes an open section and
++    releases the shell modal exactly as Escape does.
++    """
++    from gi.repository import Gtk
++    from jarabe.controlpanel.gui import ControlPanel
++    panels = [window for window in Gtk.Window.list_toplevels()
++              if isinstance(window, ControlPanel) and window.get_visible()]
++    for panel in panels:
++        panel.dismiss()
++    return bool(panels)
++
 +
 +def go_home():
 +    """Return to Home and clear the active Activity surface."""
 +    from jarabe import frame
 +    from jarabe.model import shell
++    dismiss_settings()
 +    frame.get_view().hide()
 +    model = shell.get_model()
 +    model._set_active_activity(None)
 +    model.set_zoom_level(model.ZOOM_HOME)
 +    return True
 diff --git a/src/jarabe/view/keyhandler.py b/src/jarabe/view/keyhandler.py
-index 39e04fa..81ad4f5 100644
+index 39e04fa..5f1d943 100644
 --- a/src/jarabe/view/keyhandler.py
 +++ b/src/jarabe/view/keyhandler.py
 @@ -17,6 +17,7 @@
@@ -3245,7 +3334,15 @@ index 39e04fa..81ad4f5 100644
  import types
  
  from gi.repository import GLib
-@@ -66,7 +67,12 @@ _actions_table = {
+@@ -37,6 +38,7 @@ from jarabe.model.shell import ShellModel
+ from jarabe import config
+ from jarabe.journal import journalactivity
+ from jarabe.controlpanel.gui import ControlPanel
++from jarabe.view import actions
+ 
+ _VOLUME_STEP = sound.VOLUME_STEP
+ _VOLUME_MAX = 100
+@@ -66,7 +68,12 @@ _actions_table = {
      '<alt><shift>m': 'open_controlpanel',
      '<alt><shift>o': 'open_search',
      '<alt><shift>q': 'logout',
@@ -3259,7 +3356,7 @@ index 39e04fa..81ad4f5 100644
  }
  
  # These keys will not be trigger a action if a modal dialog is opened
-@@ -82,6 +88,8 @@ class KeyHandler(object):
+@@ -82,6 +89,8 @@ class KeyHandler(object):
          self._key_pressed = None
          self._keycode_pressed = 0
          self._keystate_pressed = 0
@@ -3268,7 +3365,7 @@ index 39e04fa..81ad4f5 100644
          self._handled_windows = set()
  
          self._tabbing_handler = TabbingHandler(self._frame, _TABBING_MODIFIER)
-@@ -142,6 +150,9 @@ class KeyHandler(object):
+@@ -142,20 +151,27 @@ class KeyHandler(object):
      def handle_close_window(self, event_time):
          active_activity = shell.get_model().get_active_activity()
          if active_activity is None or active_activity.is_journal():
@@ -3278,7 +3375,29 @@ index 39e04fa..81ad4f5 100644
              return
  
          active_activity.stop()
-@@ -196,6 +207,20 @@ class KeyHandler(object):
+ 
+     def handle_zoom_mesh(self, event_time):
++        actions.dismiss_settings()
+         shell.get_model().set_zoom_level(ShellModel.ZOOM_MESH, event_time)
+ 
+     def handle_zoom_group(self, event_time):
++        actions.dismiss_settings()
+         shell.get_model().set_zoom_level(ShellModel.ZOOM_GROUP, event_time)
+ 
+     def handle_zoom_home(self, event_time):
++        actions.dismiss_settings()
+         shell.get_model().set_zoom_level(ShellModel.ZOOM_HOME, event_time)
+ 
+     def handle_zoom_activity(self, event_time):
++        actions.dismiss_settings()
+         model = shell.get_model()
+         if model.get_active_activity() is None:
+             # No activity open: show Journal instead of the empty compositor.
+@@ -193,9 +209,24 @@ class KeyHandler(object):
+             GLib.timeout_add_seconds(3, session_manager.shutdown_completed)
+ 
+     def handle_open_search(self, event_time):
++        actions.dismiss_settings()
          try:
              journal = journalactivity.get_journal()
              journal.show_journal()
@@ -3299,7 +3418,7 @@ index 39e04fa..81ad4f5 100644
          except Exception as e:
              logging.exception('Error in handle_open_search')
  
-@@ -220,8 +245,23 @@ class KeyHandler(object):
+@@ -220,8 +251,23 @@ class KeyHandler(object):
          if activity is not None:
              activity.push_shell_window(panel)
              panel.connect('close-request', lambda w: activity.pop_shell_window(w) or False)
@@ -3323,7 +3442,7 @@ index 39e04fa..81ad4f5 100644
      def handle_dump_ui_tree(self, event_time):
          if uitree:
              print(uitree.get_root().dump())
-@@ -229,7 +269,25 @@ class KeyHandler(object):
+@@ -229,7 +275,25 @@ class KeyHandler(object):
              logging.warning("uitree module not available.")
  
      def _key_pressed_cb(self, controller, keyval, keycode, state):
@@ -3349,7 +3468,7 @@ index 39e04fa..81ad4f5 100644
          if not key:
              return False
  
-@@ -248,9 +306,12 @@ class KeyHandler(object):
+@@ -248,9 +312,12 @@ class KeyHandler(object):
                  key = '<alt>Escape'
              elif key in ['F11', 'F12']:
                  key = '<alt>' + key
@@ -3380,7 +3499,7 @@ index 3c81095..a61e3ce 100644
 +            model.stack.set_visible_child_name("home")
  
 diff --git a/src/jarabe/view/service.py b/src/jarabe/view/service.py
-index c9e6d27..b4704bb 100644
+index c9e6d27..dd19390 100644
 --- a/src/jarabe/view/service.py
 +++ b/src/jarabe/view/service.py
 @@ -17,10 +17,12 @@
@@ -3396,7 +3515,7 @@ index c9e6d27..b4704bb 100644
  
  _DBUS_SERVICE = 'org.laptop.Shell'
  _DBUS_SHELL_IFACE = 'org.laptop.Shell'
-@@ -85,3 +87,94 @@ class UIService(service.Object):
+@@ -85,3 +87,90 @@ class UIService(service.Object):
                           in_signature='s', out_signature='')
      def NotifyLaunchFailure(self, activity_id):
          shell.get_model().notify_launch_failed(activity_id)
@@ -3411,6 +3530,7 @@ index c9e6d27..b4704bb 100644
 +    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
 +    def ShowJournal(self):
 +        """Reveal the GTK4 Journal through a semantic shell action."""
++        self._close_control_panel()
 +        from jarabe.journal import journalactivity
 +        journal = journalactivity.get_journal()
 +        journal.show_journal()
@@ -3431,14 +3551,9 @@ index c9e6d27..b4704bb 100644
 +        return True
 +
 +    def _close_control_panel(self):
-+        """Dismiss modal Settings before showing another shell surface."""
-+        panel = getattr(self, '_control_panel', None)
-+        if panel is not None:
-+            panel.destroy()
-+            self._control_panel = None
-+            if getattr(panel, '_has_modal', False):
-+                panel._has_modal = False
-+                self._shell_model.pop_modal()
++        """Dismiss Settings, however it was opened, before navigating."""
++        actions.dismiss_settings()
++        self._control_panel = None
 +
 +    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
 +    def ShowFrame(self):
