@@ -11,7 +11,7 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux/graphs/commit-activity)
 [![Repository size](https://img.shields.io/github/repo-size/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux)
 
-[![Host tests](https://img.shields.io/badge/host%20tests-579%20passed-2ea44f)](tests/)
+[![Host tests](https://img.shields.io/badge/host%20tests-584%20passed-2ea44f)](tests/)
 [![GTK4 build](https://img.shields.io/badge/guest%20build-PASS-2ea44f)](docs/sugar-modernization/GTK4_RUNBOOK.md)
 [![ISO](https://img.shields.io/badge/ISO%202026.10.22-qualified-2ea44f)](reports/gtk4/repin-qualification-20261022.md)
 [![Upstream](https://img.shields.io/badge/upstream-sugar%20PR%201106%20%C2%B7%20toolkit%20main-blue)](docs/sugar-modernization/UPSTREAM_SYNC.md)
@@ -118,7 +118,7 @@ Progress bars describe verified repository work, not a claim that the full retir
 | Activity catalog parity | <span style="color:#2ea44f"><strong>██████░░░░ 60%</strong></span> | ✅ Broad live GTK4 coverage<br>⚠️ Many Activities are FUNCTIONAL PORTs<br>🧩 FULL PORT remains evidence-gated |
 | GTK3 ↔ GTK4 Spaces | <span style="color:#2ea44f"><strong>████████░░ 80%</strong></span> | 🧬 Separate processes<br>↔️ Semantic switching<br>⚠️ Physical input transport remains environment-sensitive |
 | Collaboration peers | <span style="color:#2ea44f"><strong>██████░░░░ 60%</strong></span> | 🌐 Honest empty state<br>👥 Two-guest share and join PASS<br>⚠️ Joining from the Neighborhood view and exchanging content remain |
-| GTK4 retirement gate | <span style="color:#2ea44f"><strong>████████░░ 80%</strong></span> | 🧾 Evidence ledger<br>✅ Tracker gates closed, including share/join<br>🚧 One blocker left: no Activity is FULL PORT yet |
+| GTK4 retirement gate | <span style="color:#2ea44f"><strong>████████░░ 80%</strong></span> | 🧾 Evidence ledger<br>✅ Tracker gates closed, including share/join<br>✅ GTK4 is the default Space; GTK3 is the F7 recovery Space<br>✅ Markdown and Pippy are FULL PORT (real-keystroke receipts)<br>🚧 Six candidates still lack core GTK3 workflows |
 
 The authoritative checklist is [CONVERSION_TRACKER.md](docs/sugar-modernization/CONVERSION_TRACKER.md), not a screenshot or a passing unit test alone.
 
@@ -234,7 +234,7 @@ Executable checks and durable evidence live together:
 
 | Check | Command/result |
 | --- | --- |
-| Host regression suite | `make test` → **PASS**; current full run: 579 passed |
+| Host regression suite | `make test` → **PASS**; current full run: 584 passed |
 | Patch series (in guest) | `make sugar-gtk4-series-check` → the series reconstructs the preview exactly (no fuzz) |
 | Packaged ISO | 2026.10.22 receipts (runtime, Settings, GTK3/GTK4 lifecycle, 50-Activity matrix, Chirality) → **PASS**, see `reports/gtk4/` |
 | Python runtime qualification | `make snakepit-qualify` → **PASS**; dependency-tension preflight is recorded in `reports/python/` |
@@ -420,7 +420,7 @@ The project is intentionally still in conversion. The highest-value remaining it
 1. **Human GTK3↔GTK4 parity qualification** — use F7/F8 as the executable oracle and exercise real workflows, not only lifecycle probes.
 2. **Physical input proof** — continue proving keyboard delivery through the actual QEMU/evdev path while keeping semantic shell actions separate from transport.
 3. **Peer-backed collaboration** — two-guest share and join now pass. Joining from the Neighborhood view itself and exchanging content between peers remain.
-4. **Activity promotion (the last retirement blocker)** — move Activities from COVERAGE IMPLEMENTATION → FUNCTIONAL PORT → FULL PORT only when GTK3 behavior, persistence, input, accessibility, and user-visible state justify it.
+4. **Activity promotion (the last retirement blocker)** — GTK4 is already the default Space. Six of the eight candidates still lack core GTK3 workflows: Abacus types, Write formatting and export, Portfolio slideshows, Finance budgets, Jukebox Journal media and video, and a GTK3 reference for Color My World. Move Activities from COVERAGE IMPLEMENTATION → FUNCTIONAL PORT → FULL PORT only when GTK3 behavior, persistence, input, accessibility, and user-visible state justify it.
 5. **Stay in stream with Sugar Labs** — re-pin as upstream moves and report the bugs found here upstream (issue #1).
 6. **Migration cleanup** — once parity is strong enough, delete dead compatibility scaffolding instead of carrying the migration forever.
 

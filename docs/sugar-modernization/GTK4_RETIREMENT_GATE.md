@@ -40,6 +40,29 @@ PORT. Peer Activity join was qualified on 2026-10-22 (`share-join=PASS`), so
 the gate no longer reports `collaboration-join`. The shell/session restart requirement is now qualified; no
 GTK3 package is removed by this check.
 
+## Stage reached 2026-10-22: GTK4 is the default Space
+
+The session now boots into GTK4. GTK3 keeps running as the F7 recovery
+Space. Setting `ASPARTAME_DEFAULT_SPACE=gtk3` restores the old default.
+Nothing has been removed.
+
+FULL PORT now means core-workflow parity; the standard is in
+`ACTIVITY_PORT_CLASSIFICATION.md`. Under it, Markdown and Pippy passed
+real-keystroke receipts (`reports/gtk4/fullport-receipts-20261022.md`).
+The other six fail the GTK3 comparison:
+
+| Candidate | Missing core workflow |
+| --- | --- |
+| Abacus | Abacus types |
+| Write | Formatting and export |
+| Portfolio | Slideshow; GTK4 is a different Activity |
+| Finance | Budgets |
+| Jukebox | Journal media and video |
+| Color My World | No GTK3 reference |
+
+The gate therefore still reports `full-parity`, and package removal stays
+blocked.
+
 The first modern-space candidates remain Portfolio, Markdown, Finance, Write,
 Pippy, Jukebox, Color My World, and Abacus. Their GTK4 surfaces and bounded
 workflows are qualified, but candidate status is not package-removal approval.

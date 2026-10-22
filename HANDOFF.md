@@ -13,13 +13,19 @@ history.
   - Procedure: `docs/sugar-modernization/UPSTREAM_SYNC.md`.
 - **ISO:**
   - `aspartame-build/artifacts/out/aspartame-2026.10.22-x86_64.iso`
-    (sha256 `f2efc04e…`) carries the runtime export `eae0e392…`.
+    (sha256 `8d18f445…`) carries the runtime export `ccce1187…`
+    (`runtime/aspartame-dev/artifacts/gtk4-preview-standalone-20261022b.tar.gz`).
   - Every receipt check passes on the packaged runtime without the dev
     share: `reports/gtk4/repin-qualification-20261022.md`.
 - **Conversion tracker:** every gate is closed, including two-guest share
   and join.
-- **Retirement gate:** blocked only on `full-parity`. No Activity is
-  FULL PORT yet.
+- **Default Space:** GTK4. GTK3 keeps running as the F7 recovery Space
+  (`ASPARTAME_DEFAULT_SPACE=gtk3` restores the old default).
+- **Retirement gate:** still BLOCKED, but only on `full-parity`.
+  - Markdown and Pippy are FULL PORT under the core-workflow standard:
+    `reports/gtk4/fullport-receipts-20261022.md`.
+  - The other six candidates lack core GTK3 workflows. See the verdict
+    table in `docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md`.
 - **Host suite:** `make test`.
 
 ## Building the ISO
@@ -33,9 +39,17 @@ history.
    at build time.
 
 ## Next
-1. **Owner decision:** the FULL PORT standard for Portfolio, Markdown,
-   Finance, Write, Pippy, Jukebox, Color My World and Abacus. This is the
-   only retirement blocker.
+1. **Port the missing core workflows.** Then run
+   `scripts/sugar-gtk4-fullport-receipt.py` (add a spec for each
+   candidate). In rough order of size:
+   - Abacus types;
+   - Finance budgets;
+   - Jukebox Journal media and video;
+   - Write formatting and export;
+   - the Portfolio slideshow, which is effectively a rewrite.
+
+   Color My World needs a GTK3 reference, or it should leave the
+   candidate list.
 2. **Open proposals:** see `docs/OPEN-PROPOSALS.md`.
    - Unknown-key preservation for JSON payloads.
    - Snakepit GUI workflow observability.

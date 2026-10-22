@@ -17,6 +17,7 @@ def test_retirement_gate_is_non_destructive_and_honest_about_open_work():
     assert "blocker=full-parity" in result.stdout
     assert "blocker=collaboration-join" not in result.stdout  # qualified 2026-10-22
     assert "blocker=shell-session-restart" not in result.stdout
-    assert "missing-full-parity=Portfolio,Markdown,Finance,Write,Pippy,Jukebox,Color My World,Abacus" in result.stdout
+    # Markdown and Pippy passed core-workflow receipts on 2026-10-22.
+    assert "missing-full-parity=Portfolio,Finance,Write,Jukebox,Color My World,Abacus" in result.stdout
     assert "evidence-share=reports/gtk4/share-join-qualification-20261004.md" in result.stdout
     assert "evidence-chirality=reports/gtk4/chirality-session-resume-implementation-20261004.md" in result.stdout
