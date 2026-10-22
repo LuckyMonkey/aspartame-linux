@@ -1047,6 +1047,8 @@ PY
 done
 PYTHONPATH="$toolkit/src${PYTHONPATH:+:$PYTHONPATH}" "$venv/bin/python" -c 'import sugar4; print("sugar4: PASS", sugar4.__file__)'
 
+python3 "$repo/scripts/repair-gtk4-controlpanel-action.py" \
+    "$shell/src/jarabe/view/service.py"
 install -m 0755 "$repo/scripts/sugar-activity4" "$venv/bin/sugar-activity4"
 test -x "$venv/bin/sugar-activity4"
 

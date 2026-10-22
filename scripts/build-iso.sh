@@ -57,6 +57,9 @@ if test -f "$aboutcomputer_patch" && test -f "$aboutcomputer_source" &&
         patch --batch --fuzz=5 -p1 < "$aboutcomputer_patch" >/dev/null)
     echo 'staged GTK4 About my Computer registration patch'
 fi
+# Older archives may contain the truncated 0058 Settings action.
+python3 "$project_root/scripts/repair-gtk4-controlpanel-action.py" \
+    "$preview_root/gtk4-preview/sources/sugar/src/jarabe/view/service.py"
 # Stage the built GTK4 upstream Activities from the archive, not their GTK3
 # reference copies in packages/upstream-activities. Refresh checked-in native
 # bundles even when an older preview left a real bundle directory: ln -sfn

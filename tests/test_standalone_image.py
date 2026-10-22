@@ -68,6 +68,12 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     for directory in ("packages", "scripts", "gtk4-overlay", "patches"):
         (project / directory).symlink_to(ROOT / directory, target_is_directory=True)
     preview = tmp_path / "archive/gtk4-preview"
+    service = preview / "sources/sugar/src/jarabe/view/service.py"
+    service.parent.mkdir(parents=True)
+    service.write_text(
+        "class UIService:\n    def ShowControlPanel(self):\n"
+        "        panel.set_visible(True)\n"
+    )
     (preview / "venv/bin").mkdir(parents=True)
     (preview / "venv/bin/python").symlink_to("/usr/bin/python3")
     activities = preview / "prefix/share/sugar/activities"
@@ -139,6 +145,9 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     )
     assert "import cpsection.aboutcomputer" in staged_gui.read_text()
     assert "staged GTK4 About my Computer registration patch" in build_result.stdout
+    staged_service = staged_gui.parent.parent / "view/service.py"
+    assert "self._control_panel = panel" in staged_service.read_text()
+    assert "return True" in staged_service.read_text()
 
 
 def test_staged_layout_activities_replace_nested_archive_copies(tmp_path):
@@ -149,6 +158,12 @@ def test_staged_layout_activities_replace_nested_archive_copies(tmp_path):
     for directory in ("packages", "scripts", "gtk4-overlay"):
         (project / directory).symlink_to(ROOT / directory, target_is_directory=True)
     preview = tmp_path / "archive/gtk4-preview"
+    service = preview / "sources/sugar/src/jarabe/view/service.py"
+    service.parent.mkdir(parents=True)
+    service.write_text(
+        "class UIService:\n    def ShowControlPanel(self):\n"
+        "        panel.set_visible(True)\n"
+    )
     (preview / "venv/bin").mkdir(parents=True)
     (preview / "venv/bin/python").symlink_to("/usr/bin/python3")
     for package, name in (("log-activity", "Log"), ("imageviewer-activity", "ImageViewer")):

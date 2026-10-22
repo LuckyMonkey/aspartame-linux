@@ -50,8 +50,11 @@ milestone so future sessions can resume without relying on chat history.
 
 ## Next milestone: Settings architecture
 
-- [ ] Determine whether the floating Settings window is intentional Sugar
-  control-panel behavior or an Aspartame integration problem.
+- [x] Determine whether the floating Settings window is intentional Sugar
+  control-panel behavior or an Aspartame integration problem. The upstream
+  GTK4 panel is a separate modal transient window; see
+  `docs/SETTINGS-ARCHITECTURE.md`. Repaired a truncated patch that dropped
+  window ownership and blocked semantic close/reopen handling.
 - [ ] Preserve Sugar control-panel navigation and lifecycle while improving
   sizing, ownership, placement, and visual consistency.
 - [ ] Keep Activity Manager ratings/removal state persistent and recoverable.
