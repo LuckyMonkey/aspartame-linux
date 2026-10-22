@@ -43,3 +43,13 @@ See `docs/RUNTIME-STATE-FIX-PROPOSALS.md` for code-backed proposals covering:
 - Validation occurring after visible activation.
 The snapshot guest shutdown completed successfully. Current mode remains
 code research and documentation only; no new checks were run.
+
+## 10% checkpoint — document preservation
+New source-only findings are in `docs/DOCUMENT-PRESERVATION-PROPOSALS.md`.
+Highest priority: Read drops Write formatting on serialization and retains its
+sample after empty/failed loads; Paint substitutes blank content after parse
+failure. Review the toolkit save contract before exposing cross-Activity
+handoff, and preserve original objects on unsupported/failed loads.
+Also proposed transactional Record restore and success-driven Journal row
+updates. No new tests/builds/runtime checks. User requested immediate commit
+and sync at 10%; continue from these documents instead of rediscovering.
