@@ -177,7 +177,7 @@ for helper in sugar-gtk4-run.sh sugar-gtk4-session.sh sugar-gtk4-space.sh \
              sugar-gtk4-chirality-resume-roundtrip.py \
              sugar-gtk4-share-join-roundtrip.py \
              sugar-gtk4-pippy-runtime-probe.py \
-             aspartame_chirality.py sugar-chirality.py \
+             aspartame_chirality.py chirality_state.py sugar-chirality.py \
              sugar-gtk4-runtime-check.sh sugar-gtk4-lifecycle-probe.sh \
              sugar-gtk3-lifecycle-probe.sh \
              sugar-gtk4-spaces-menu-probe.py sugar-gtk4-side-by-side-probe.sh \

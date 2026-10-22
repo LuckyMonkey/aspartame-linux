@@ -70,7 +70,7 @@ def test_session_restart_resume_hook_is_wired_into_the_modern_session():
     build = (ROOT / "scripts/build-iso.sh").read_text()
     assert "journal.LaunchBundle" in resume
     assert "SUGAR_BUNDLE_ID" in resume
-    assert "session.resume_activity" in resume
+    assert "current.resume_activity" in resume
     assert "history=none" in resume
     assert "ASPARTAME_CHIRALITY_RESUME_SCRIPT" in session
     assert 'wait "$shell_pid"' in session

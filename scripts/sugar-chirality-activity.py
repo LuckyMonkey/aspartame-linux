@@ -14,10 +14,10 @@ import argparse
 import json
 import os
 import subprocess
-import tempfile
 from pathlib import Path
 
 from aspartame_chirality import ChiralSession, Hand, Side
+from chirality_state import load, update
 
 
 def default_state_path() -> Path:
@@ -28,25 +28,6 @@ def default_state_path() -> Path:
         "XDG_STATE_HOME", str(Path.home() / ".local" / "state")
     )
     return Path(state_home) / "aspartame" / "chirality.json"
-
-
-def load(path: Path) -> ChiralSession:
-    if not path.exists():
-        return ChiralSession()
-    return ChiralSession.from_dict(json.loads(path.read_text()))
-
-
-def save(path: Path, session: ChiralSession) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, temporary = tempfile.mkstemp(prefix="chirality-", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w") as stream:
-            json.dump(session.to_dict(), stream, indent=2, sort_keys=True)
-            stream.write("\n")
-        os.replace(temporary, path)
-    finally:
-        if os.path.exists(temporary):
-            os.unlink(temporary)
 
 
 def side(value: str) -> Side:
@@ -126,37 +107,39 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
-    session = load(args.state_file)
     if args.command == "inspect":
+        session = load(args.state_file)
         print(json.dumps(session.accessible_state(), indent=2, sort_keys=True))
         return 0
+    # Shell calls happen before the locked read-modify-write; each mutation
+    # then applies to the current state, not to a snapshot taken earlier.
     if args.command == "assign":
-        session.assign(
-            args.side,
-            Hand(
-                args.activity_id,
-                args.object_ref,
-                args.object_title,
-                args.bundle_id,
-            ),
-            replace=args.replace,
-        )
+        hand = Hand(args.activity_id, args.object_ref, args.object_title,
+                    args.bundle_id)
+        mutate = lambda session: session.assign(args.side, hand, replace=args.replace)
     elif args.command == "resume":
         _activate_activity(args.activity_id)
-        session.resume_activity(args.side, args.activity_id, args.bundle_id)
+        mutate = lambda session: session.resume_activity(
+            args.side, args.activity_id, args.bundle_id)
     elif args.command == "activate":
-        hand = session.get(args.side)
+        hand = load(args.state_file).get(args.side)
         if hand is None:
             raise RuntimeError(f"{args.side.label} is empty")
         _activate_activity(hand.activity_id)
-        session.activate(args.side)
+
+        def mutate(session: ChiralSession) -> None:
+            current = session.get(args.side)
+            if current is None or current.activity_id != hand.activity_id:
+                raise RuntimeError(
+                    f"{args.side.label} changed while it was being activated")
+            session.activate(args.side)
     elif args.command == "release":
-        session.release(args.side)
+        mutate = lambda session: session.release(args.side)
     elif args.command == "activity-exited":
-        session.activity_exited(args.activity_id)
+        mutate = lambda session: session.activity_exited(args.activity_id)
     elif args.command == "handoff-object":
-        session.handoff_object(args.source, args.target)
-    save(args.state_file, session)
+        mutate = lambda session: session.handoff_object(args.source, args.target)
+    session, _result = update(args.state_file, mutate)
     print(json.dumps(session.accessible_state(), indent=2, sort_keys=True))
     return 0
 

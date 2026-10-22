@@ -59,5 +59,5 @@ def test_bridge_rejects_unknown_action_without_touching_spaces(tmp_path):
 
 def test_iso_packages_the_semantic_model_and_cli_with_the_space_bridge():
     build = (ROOT / "scripts/build-iso.sh").read_text()
-    assert "aspartame_chirality.py sugar-chirality.py" in build
+    assert "aspartame_chirality.py chirality_state.py sugar-chirality.py" in build
     assert "sugar-chirality-space.sh" in build

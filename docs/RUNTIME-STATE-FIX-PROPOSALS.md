@@ -10,8 +10,13 @@ thread, and malformed records become "Not ready" rows with a reason.
 Tests: `tests/test_gtk4_snakepit_activity_manager.py` and
 `tests/test_snakepit.py`. Records without a source fingerprint now need
 requalification.
-Still open: GUI workflow observability (P2), Chirality state
-coordination, partial session resume, and the later P2 items.
+Chirality: every read-modify-write now goes through
+`scripts/chirality_state.py`, which takes a flock and writes through
+unique temporary files. Shell calls happen before the locked update.
+Session resume reports each hand as PASS, PARTIAL or FAIL, re-activates
+the active hand when it was restored, recognizes hands that are already
+live, and matches processes only on its own bus.
+Still open: GUI workflow observability (P2) and the later P2 items.
 
 ## Priority 1: Use the same qualification policy in CLI and Activity Manager
 

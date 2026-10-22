@@ -22,6 +22,7 @@ if sys_path not in sys.path:
     sys.path.insert(0, sys_path)
 
 from aspartame_chirality import ChiralSession, Side  # noqa: E402
+from chirality_state import load, update  # noqa: E402
 
 
 def default_state_path() -> Path:
@@ -42,19 +43,6 @@ def wait_for(description, callback, timeout=30):
             return value
         time.sleep(0.1)
     raise RuntimeError(f"timed out waiting for {description}")
-
-
-def load(path: Path) -> ChiralSession:
-    return ChiralSession.from_dict(json.loads(path.read_text()))
-
-
-def save(path: Path, session: ChiralSession) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(f".{path.name}.resume-tmp")
-    temporary.write_text(
-        json.dumps(session.to_dict(), indent=2, sort_keys=True) + "\n"
-    )
-    os.replace(temporary, path)
 
 
 def process_environment(pid: int) -> dict[str, str]:
@@ -78,6 +66,10 @@ def activity_processes(bundle_id: str, object_ref: str | None, ignored: set[int]
         if environment.get("SUGAR_BUNDLE_ID") != bundle_id:
             continue
         if object_ref and environment.get("SUGAR_OBJECT_ID") != object_ref:
+            continue
+        # Only Activities on this modern session's bus belong to this resume.
+        bus_address = os.environ.get("DBUS_SESSION_BUS_ADDRESS")
+        if bus_address and environment.get("DBUS_SESSION_BUS_ADDRESS") != bus_address:
             continue
         activity_id = environment.get("SUGAR_ACTIVITY_ID")
         if activity_id:
@@ -114,8 +106,34 @@ def main() -> int:
         "org.laptop.Shell",
     )
     session = load(args.state_file)
-    restored = []
+    restored = {}
     skipped = []
+    failed = []
+
+    def restore(side, hand):
+        """Launch (or recognise) one hand; return its live Activity ID."""
+        if hand.activity_id and bus.name_has_owner(
+                f"org.laptop.Activity{hand.activity_id}"):
+            return hand.activity_id  # Already restored by an earlier attempt.
+        before = {
+            int(path.parent.name)
+            for path in Path("/proc").glob("[0-9]*/cmdline")
+            if path.parent.name.isdigit()
+        }
+        if not journal.LaunchBundle(hand.bundle_id, hand.object_ref or ""):
+            raise RuntimeError(f"Journal refused {hand.bundle_id}")
+        _pid, activity_id = wait_for(
+            f"{side.value} {hand.bundle_id} Activity",
+            lambda: next(
+                iter(activity_processes(hand.bundle_id, hand.object_ref, before)),
+                None,
+            ),
+        )
+        wait_for(
+            f"{side.value} Activity service",
+            lambda: bus.name_has_owner(f"org.laptop.Activity{activity_id}"),
+        )
+        return activity_id
 
     for side in (Side.LEFT, Side.RIGHT):
         hand = session.get(side)
@@ -124,49 +142,41 @@ def main() -> int:
         if not hand.bundle_id:
             skipped.append(f"{side.value}:missing-bundle")
             continue
-        before = {
-            int(path.parent.name)
-            for path in Path("/proc").glob("[0-9]*/cmdline")
-            if path.parent.name.isdigit()
-        }
-        object_id = hand.object_ref or ""
-        if not journal.LaunchBundle(hand.bundle_id, object_id):
-            raise RuntimeError(
-                f"Journal refused {side.value} hand: {hand.bundle_id}"
-            )
-        process = wait_for(
-            f"{side.value} {hand.bundle_id} Activity",
-            lambda: next(
-                iter(activity_processes(hand.bundle_id, hand.object_ref, before)),
-                None,
-            ),
-        )
-        _pid, activity_id = process
-        wait_for(
-            f"{side.value} Activity service",
-            lambda: bus.name_has_owner(f"org.laptop.Activity{activity_id}"),
-        )
-        session.resume_activity(side, activity_id, hand.bundle_id)
-        save(args.state_file, session)
-        restored.append(f"{side.value}:{activity_id}")
+        # One hand failing must not abandon the other or the active hand.
+        try:
+            activity_id = restore(side, hand)
+        except (RuntimeError, dbus.DBusException) as error:
+            failed.append(f"{side.value}:{error}")
+            continue
+
+        def attach(current, side=side, hand=hand, activity_id=activity_id):
+            latest = current.get(side)
+            if (latest is None or latest.bundle_id != hand.bundle_id
+                    or latest.object_ref != hand.object_ref):
+                raise RuntimeError("hand changed during resume")
+            current.resume_activity(side, activity_id, hand.bundle_id)
+
+        try:
+            session, _ = update(args.state_file, attach)
+        except RuntimeError as error:
+            skipped.append(f"{side.value}:{error}")
+            continue
+        restored[side] = activity_id
 
     active = session.active_hand
-    if active is not None:
-        hand = session.get(active)
-        if hand is not None and hand.activity_id in {
-            value.split(":", 1)[1] for value in restored
-        }:
-            if not shell.ActivateActivity(hand.activity_id):
-                raise RuntimeError(f"Shell refused active hand: {active.value}")
+    if active in restored and not shell.ActivateActivity(restored[active]):
+        failed.append(f"{active.value}:shell refused activation")
 
+    status = "PASS" if not failed else ("PARTIAL" if restored else "FAIL")
     print(
-        "chirality-resume=PASS "
-        f"restored={','.join(restored) or 'none'} "
+        f"chirality-resume={status} "
+        f"restored={','.join(f'{s.value}:{a}' for s, a in restored.items()) or 'none'} "
         f"skipped={','.join(skipped) or 'none'} "
+        f"failed={';'.join(failed) or 'none'} "
         "mode=single-surface history=none",
         flush=True,
     )
-    return 0
+    return 0 if not failed else 1
 
 
 if __name__ == "__main__":
