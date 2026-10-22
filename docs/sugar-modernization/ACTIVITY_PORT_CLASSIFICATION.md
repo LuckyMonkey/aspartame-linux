@@ -87,11 +87,45 @@ Catalog membership alone does not establish any of the four port classes.
 Several IDs also have native GTK4 coverage implementations in the table above.
 Classify each runtime implementation using its actual behavior and evidence.
 
-No Activity is currently classified **FULL PORT**. The absence of FULL PORT
-entries is intentional: the GTK4 retirement gate must not be inferred from the
-runtime matrix. A future port may move upward only when
-its GTK3 behavior, object/persistence semantics, input, accessibility, and
-normal user workflow are evidenced independently.
+## FULL PORT standard: core-workflow parity (adopted 2026-10-22)
+
+An Activity is FULL PORT when both of the following hold:
+
+1. **GTK3 comparison.** Every *core* workflow of the GTK3 reference is
+   present in GTK4.
+   - Core means what the reference Activity exists to do: its summary and
+     its main toolbar actions, read from the reference source.
+   - Breadth gaps are allowed, such as extra formats, presets, tabs or
+     collaboration. Each one must be listed by name.
+   - A GTK4 Activity that does something different under the same name is
+     not a port, however polished it is.
+2. **A guest receipt** from `scripts/sugar-gtk4-fullport-receipt.py` on the
+   packaged ISO, with every line PASS:
+   - `input`: the core workflow is driven by real keystrokes through QEMU,
+     Xorg, the shell and Casilda. Focus moves with Tab and Ctrl+Tab, never
+     by direct AT-SPI text writes.
+   - `persist`: stopping saves to the Journal, and resuming the same object
+     restores the work.
+   - `guard`: a corrupt payload is refused, and its bytes are unchanged
+     after the Activity closes.
+   - `a11y`: every visible interactive control has an accessible name, and
+     there are no keyboard focus traps.
+
+### Retirement candidate verdicts (2026-10-22)
+
+| Candidate | GTK3 core (reference) | GTK4 | Verdict |
+| --- | --- | --- | --- |
+| Markdown | Write Markdown with a live preview; save (web PageDown editor) | Source + live preview, Journal save/resume | Eligible; gaps: formatting toolbar, full CommonMark |
+| Pippy | Edit Python, pick examples, run, see output | Editor, examples, run, output, program input | Eligible; gaps: tabs, save-as-Activity bundle, GtkSourceView editing |
+| Abacus | Arithmetic on an abacus; 10 types (suanpan, soroban, schety, binary, hexadecimal, fractions, Caacupé, Cuisenaire, Nepohualtzintzin, decimal) | Five-rod decimal only | Not yet: abacus types are the Activity's main choice |
+| Write | Rich-text documents: fonts, sizes, colors, lists, images, tables, export (ODT/RTF/HTML/PDF) | Bold, italic, heading | Not yet: formatting, images and export are core |
+| Portfolio | Slideshow of starred Journal entries, with narration, autoplay and PDF export | Title/body text editor | Not a port: a different Activity |
+| Finance | Transaction register, **budgets**, category charts | Register, totals chart, CSV | Not yet: budgets are in the Activity's summary |
+| Jukebox | Play Journal audio and video, playlists | Local audio picked from files | Not yet: Journal media and video are core |
+| Color My World | No GTK3 version (Sugarizer web catalog only) | Palette and region colouring | No comparison possible: not a candidate |
+
+Only Activities marked Eligible can be promoted, and only once a passing
+receipt is stored under `reports/gtk4/`.
 
 The runtime matrix remains useful and continues to report lifecycle coverage;
 this ledger is the authoritative qualification boundary for Activity parity.

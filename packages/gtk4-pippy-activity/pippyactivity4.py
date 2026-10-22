@@ -257,7 +257,10 @@ class PippyActivity(SimpleActivity):
         if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter) and state & Gdk.ModifierType.CONTROL_MASK:
             self._run_program(None)
             return True
-        if keyval == Gdk.KEY_Tab and not state & Gdk.ModifierType.SHIFT_MASK:
+        # Plain Tab indents; Ctrl+Tab must still move focus out of the
+        # editor, or keyboard users are trapped in it.
+        if (keyval == Gdk.KEY_Tab and
+                not state & (Gdk.ModifierType.SHIFT_MASK | Gdk.ModifierType.CONTROL_MASK)):
             buffer.insert_at_cursor("    ")
             return True
         if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):

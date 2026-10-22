@@ -40,11 +40,21 @@ KEYCODES.update({
     "SPACE": "spc", "BACKSPACE": "backspace", "DELETE": "delete",
     "PERIOD": "dot", ".": "dot", "MINUS": "minus", "-": "minus",
     "EQUAL": "equal", "=": "equal",
+    "COMMA": "comma", "SLASH": "slash", "SEMICOLON": "semicolon",
+    "APOSTROPHE": "apostrophe",
 })
+# Characters typed with Shift on a US layout, and plain punctuation keys.
+SHIFTED = {"#": "3", "!": "1", "(": "9", ")": "0", "*": "8", "_": "MINUS",
+           ":": "SEMICOLON", '"': "APOSTROPHE", "?": "SLASH"}
+PLAIN = {",": "COMMA", "/": "SLASH", ";": "SEMICOLON", "'": "APOSTROPHE",
+         "\n": "ENTER"}
 
 
 def qcode_for(key: str) -> str:
     normalized = key.strip().upper()
+    # text_keys() already yields QEMU qcodes such as "spc"; accept them too.
+    if normalized not in KEYCODES and key.strip().lower() in KEYCODES.values():
+        return key.strip().lower()
     if normalized not in KEYCODES:
         raise ValueError(f"unsupported QEMU key: {key!r}")
     return KEYCODES[normalized]
@@ -80,6 +90,10 @@ def text_keys(value: str) -> list[str]:
             result.append(qcode_for(character))
         elif character == " ":
             result.append("spc")
+        elif character in SHIFTED:
+            result.append(f"shift-{qcode_for(SHIFTED[character])}")
+        elif character in PLAIN:
+            result.append(qcode_for(PLAIN[character]))
         else:
             raise ValueError(f"unsupported text character: {character!r}")
     return result

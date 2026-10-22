@@ -340,3 +340,11 @@ def test_space_controller_handles_racing_process_exit():
     # pgrep can observe a helper that exits before /proc is read. The guard
     # keeps set -e from aborting a valid Space switch in that race.
     assert controller.count('[ -r "/proc/$pid/environ" ] || continue') >= 3
+
+
+def test_gtk4_is_the_default_space_with_gtk3_recovery():
+    controller = (ROOT / 'scripts/sugar-gtk4-space.sh').read_text()
+    setup = controller[controller.index('    setup)'):controller.index('    gtk3)')]
+    assert '${ASPARTAME_DEFAULT_SPACE:-gtk4}' in setup
+    assert 'select_gtk4' in setup
+    assert 'F7 = GTK3 recovery' in setup

@@ -341,11 +341,17 @@ case "$action" in
         fi
         require_gtk3
         start_gtk4
-        "$workspace_tool" switch 0
-        settle_workspace 0
-        "$workspace_tool" activate --pid "$GTK3_PID" --timeout 30 >/dev/null
-        record_space classic
-        echo 'Sugar Spaces ready: F7 = GTK3, F8 = GTK4'
+        # GTK4 is the default Space. GTK3 keeps running as the recovery
+        # Space on F7; ASPARTAME_DEFAULT_SPACE=gtk3 restores the old default.
+        if [ "${ASPARTAME_DEFAULT_SPACE:-gtk4}" = gtk3 ]; then
+            "$workspace_tool" switch 0
+            settle_workspace 0
+            "$workspace_tool" activate --pid "$GTK3_PID" --timeout 30 >/dev/null
+            record_space classic
+        else
+            select_gtk4
+        fi
+        echo 'Sugar Spaces ready: F8 = GTK4 (default), F7 = GTK3 recovery'
         ;;
     gtk3)
         select_gtk3

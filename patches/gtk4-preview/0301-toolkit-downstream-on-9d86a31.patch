@@ -16,6 +16,8 @@ Conflict decisions taken during the rebase:
 Downstream addition: when read_file() raises, the Activity marks the load as
 failed, shows an alert, and save() updates metadata only, so the original
 Journal payload is never replaced (docs/ASPARTAME-ACTIVITY-CONTRACT.md).
+Downstream addition: ActivityToolbarButton exposes the Activity title as its
+accessible name (it is icon-only and has no tooltip palette).
 Regenerate with scripts/sugar-gtk4-rebase.sh; never hand-edit hunks.
 diff --git a/pyproject.toml b/pyproject.toml
 index eec44ae..e3814c7 100644
@@ -864,7 +866,7 @@ index 0000000..18d360f
 +        self._bus_name = None
 +        self._bus = None
 diff --git a/src/sugar4/activity/widgets.py b/src/sugar4/activity/widgets.py
-index 02640dc..51edf68 100644
+index 02640dc..a643ba0 100644
 --- a/src/sugar4/activity/widgets.py
 +++ b/src/sugar4/activity/widgets.py
 @@ -20,7 +20,9 @@
@@ -922,7 +924,7 @@ index 02640dc..51edf68 100644
  
  
  class ActivityButton(ToolButton):
-@@ -88,14 +93,13 @@ class ActivityToolbarButton(ToolbarButton):
+@@ -88,34 +93,32 @@ class ActivityToolbarButton(ToolbarButton):
      """Toolbar button that contains an activity toolbar."""
  
      def __init__(self, activity, **kwargs):
@@ -939,7 +941,18 @@ index 02640dc..51edf68 100644
          self.set_icon_widget(icon)
          icon.show()
  
-@@ -104,18 +108,7 @@ class StopButton(ToolButton):
++        # The button is icon-only and has no tooltip palette (its page is the
++        # toolbar), so give assistive technology the Activity's title.
++        self._set_accessible_title(activity.metadata)
++        if hasattr(activity.metadata, "connect"):
++            activity.metadata.connect("updated", self._set_accessible_title)
++
++    def _set_accessible_title(self, metadata):
++        self.update_property([Gtk.AccessibleProperty.LABEL],
++                             [metadata.get("title", "Activity")])
++
+ 
+ class StopButton(ToolButton):
      """Button to stop/close an activity."""
  
      def __init__(self, activity, icon_name="activity-stop", **kwargs):
@@ -959,7 +972,7 @@ index 02640dc..51edf68 100644
          self.props.tooltip = _("Stop")
          self.props.accelerator = "<Ctrl>Q"
          self.connect("clicked", self.__stop_button_clicked_cb, activity)
-@@ -184,15 +177,51 @@ class ShareButton(RadioMenuButton):
+@@ -184,15 +187,51 @@ class ShareButton(RadioMenuButton):
              activity.connect("shared", self.__update_share_cb)
              activity.connect("joined", self.__update_share_cb)
  
