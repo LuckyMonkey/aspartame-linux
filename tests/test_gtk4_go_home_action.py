@@ -5,7 +5,7 @@ ROOT = Path(__file__).parents[1]
 
 
 def test_go_home_is_the_shared_gtk4_navigation_action():
-    patch = (ROOT / "patches/gtk4-preview/0203-canonical-go-home-action.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0203-canonical-go-home-action.patch").read_text()
     assert "def go_home():" in patch
     assert "return actions.go_home()" in patch
     assert "actions.go_home()" in patch
@@ -13,7 +13,7 @@ def test_go_home_is_the_shared_gtk4_navigation_action():
 
 
 def test_go_home_keeps_shell_imports_lazy_to_avoid_startup_cycles():
-    patch = (ROOT / "patches/gtk4-preview/0203-canonical-go-home-action.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0203-canonical-go-home-action.patch").read_text()
     action = patch.split("--- a/src/jarabe/view/service.py", 1)[0]
     assert "+    from jarabe import frame" in action
     assert "+    from jarabe.model import shell" in action
@@ -32,8 +32,4 @@ def test_automation_surfaces_route_to_the_same_home_action():
 def test_go_home_patch_is_applied_to_the_gtk4_source_tree():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     iso = (ROOT / "scripts/build-iso.sh").read_text()
-    assert '*0203*) target="$root/sources/sugar" ;;' in build
-    assert 'patch --dry-run --fuzz=5 -p1 < "$patch"' in build
-    assert "verified consolidated shell window result" in build
-    assert "verified semantic navigation action menu" in build
     assert "sugar-gtk4-action.py" in iso

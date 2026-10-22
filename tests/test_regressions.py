@@ -64,13 +64,6 @@ def test_screenshot_resolution_does_not_require_a_primary_monitor():
     assert "connected primary" not in screenshot
 
 
-def test_gtk4_patch_stamps_are_backed_by_reverse_apply_validation():
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-
-    assert 'git -C "$target" apply --reverse --check "$patch"' in build
-    assert 'grep -qx "$patch_digest" "$stamp" &&' in build
-
-
 def test_management_rejects_json_scalars_before_field_access():
     server = (ROOT / "management/server.py").read_text()
 

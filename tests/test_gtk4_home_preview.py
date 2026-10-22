@@ -67,7 +67,9 @@ def test_gtk4_session_fails_when_datastore_never_registers():
 
 
 def test_gtk4_home_preview_patches_are_ordered_and_targeted():
-    patches = sorted((ROOT / "patches/gtk4-preview").glob("00*.patch"))
+    patches = sorted([*(ROOT / "patches/gtk4-preview/folded").glob("00*.patch"),
+                      *(ROOT / "patches/gtk4-preview").glob("00*.patch")],
+                     key=lambda path: path.name)
     names = [patch.name for patch in patches]
     expected = [
         "0005-home-cell-renderer-api.patch",
@@ -90,12 +92,12 @@ def test_gtk4_home_preview_patches_are_ordered_and_targeted():
     positions = [names.index(name) for name in expected]
     assert positions == sorted(positions)
     text = "\n".join(
-        (ROOT / "patches/gtk4-preview" / name).read_text()
+        next(path for path in patches if path.name == name).read_text()
         for name in expected
     )
     assert "CellRendererFavorite" in text
     assert "supported_prefixes" in text
-    home = (ROOT / "patches/gtk4-preview/"
+    home = (ROOT / "patches/gtk4-preview/folded/"
             "0158-home-window-consolidated.patch").read_text()
     assert "_ensure_group_box" in text or "_ensure_group_box" in home
     assert "Neighborhood unavailable for FriendsTray" in text

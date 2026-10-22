@@ -1,0 +1,1525 @@
+Aspartame downstream delta for sugar-toolkit-gtk4, rebased onto main at
+9d86a31862f6d676840ed755f109d4cd5bc7c2c6 (2026-10-22; PR #35 is merged).
+
+Conflict decisions taken during the rebase:
+- activity.py: keep set_visible(False) in _complete_close; upstream's
+  self.close() re-enters Activity.close() and its save path.
+- activityfactory.py: keep the Casilda-bound launch surface the shell uses.
+  Converging with upstream's full factory port is open follow-up work.
+- palettewindow.py: take upstream's rewrite whole, adding only the
+  sugar-palette CSS hook. palettemenu.py: take upstream's item-activated
+  mapping, keeping our CSS classes and margins.
+- icon.py: take upstream's CellRendererIcon GObject properties (they replace
+  our props shim); keep our aspect-preserving SVG scaling.
+- style.py: take upstream's scoped apply_css_to_widget (drops folded 0026).
+- profile.py: keep our key-blob-only public key parsing (presence identity).
+Regenerate with scripts/sugar-gtk4-rebase.sh; never hand-edit hunks.
+
+diff --git a/pyproject.toml b/pyproject.toml
+index eec44ae..e3814c7 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -51,6 +51,7 @@ Issues = "https://github.com/sugarlabs/sugar-toolkit-gtk4/issues"
+ 
+ [project.scripts]
+ sugar-test = "sugar4.__main__:main"
++sugar-activity4 = "sugar4.activity.activityinstance:main"
+ 
+ [tool.setuptools.package-data]
+ sugar = ["*.css", "*.ui", "*.glade", "*.svg", "*.png", "graphics/icons/*.svg"]
+diff --git a/src/sugar4/activity/activity.py b/src/sugar4/activity/activity.py
+index ed7aa5d..2e445fa 100644
+--- a/src/sugar4/activity/activity.py
++++ b/src/sugar4/activity/activity.py
+@@ -196,6 +196,8 @@ from sugar4.graphics.alert import Alert
+ from sugar4.graphics.icon import Icon
+ from sugar4.graphics.window import Window
+ from sugar4.profile import get_color, get_save_as
++from sugar4.activity.activityservice import ActivityService
++from sugar4.presence import presenceservice
+ 
+ 
+ def _(msg):
+@@ -368,6 +370,7 @@ class Activity(Window):
+             )
+ 
+         Window.__init__(self, application=application)
++        self._activity_service = ActivityService(self)
+ 
+         if "SUGAR_ACTIVITY_ROOT" in os.environ:
+             # If this activity runs inside Sugar, we want it to take all the
+@@ -434,12 +437,27 @@ class Activity(Window):
+         # Sharing setup
+         # TODO
+         if handle and handle.invited:
+-            # For GTK4/Flatpak, we'll implement sharing differently
+-            logging.warning("Activity sharing not yet implemented in GTK4 port")
+-            self._set_up_sharing(None, share_scope)
++            try:
++                mesh_instance = presenceservice.get_instance().get_activity(
++                    self._activity_id, warn_if_none=False
++                )
++            except Exception as error:
++                logging.warning(
++                    "Unable to resolve invited shared Activity %s: %s",
++                    self._activity_id,
++                    error,
++                )
++                mesh_instance = None
++            self._set_up_sharing(mesh_instance, share_scope)
+         else:
+-            # No presence service in GTK4 port yet
+-            self._set_up_sharing(None, share_scope)
++            try:
++                mesh_instance = presenceservice.get_instance().get_activity(
++                    self._activity_id, warn_if_none=False
++                )
++            except Exception as error:
++                logging.debug("Presence service unavailable: %s", error)
++                mesh_instance = None
++            self._set_up_sharing(mesh_instance, share_scope)
+ 
+         if self.shared_activity is not None:
+             self._jobject.metadata["title"] = self.shared_activity.props.name
+@@ -579,9 +597,6 @@ class Activity(Window):
+     def _set_up_sharing(self, mesh_instance, share_scope):
+         """
+         Set up activity sharing.
+-
+-        Note: Simplified for GTK4 port - full sharing implementation
+-        will use modern collaboration APIs.
+         """
+         # handle activity share/join
+         logging.debug(
+@@ -589,11 +604,36 @@ class Activity(Window):
+             % (self._activity_id, mesh_instance, share_scope)
+         )
+ 
+-        # For now, sharing is not implemented in GTK4 port
+         if mesh_instance is not None:
+-            logging.warning("Activity sharing not yet implemented in GTK4 port")
++            # There is already an instance on the mesh; join it.
++            logging.debug(
++                "*** Act %s joining existing mesh instance %r",
++                self._activity_id,
++                mesh_instance,
++            )
++            self.shared_activity = mesh_instance
++            self.shared_activity.connect(
++                "notify::private", self.__privacy_changed_cb
++            )
++            self._join_id = self.shared_activity.connect(
++                "joined", self.__joined_cb
++            )
++            if not self.shared_activity.props.joined:
++                self.shared_activity.join()
++            else:
++                self.__joined_cb(self.shared_activity, True, None)
++        elif share_scope == SCOPE_INVITE_ONLY:
++            logging.debug(
++                "*** Act %s restarting private share", self._activity_id
++            )
++            self.share(private=True)
++        elif share_scope == SCOPE_NEIGHBORHOOD:
++            logging.debug(
++                "*** Act %s restarting public share", self._activity_id
++            )
++            self.share(private=False)
+         elif share_scope != SCOPE_PRIVATE:
+-            logging.warning("Activity sharing not yet implemented in GTK4 port")
++            logging.debug("Unknown share scope %r", share_scope)
+ 
+     def get_active(self):
+         """
+@@ -1146,8 +1186,18 @@ class Activity(Window):
+         """Send pending invites."""
+         while self._invites_queue:
+             account_path, contact_id = self._invites_queue.pop()
+-            # Presence service handling simplified for GTK4
+-            logging.warning("Invite functionality not yet implemented in GTK4 port")
++            pservice = presenceservice.get_instance()
++            buddy = pservice.get_buddy(account_path, contact_id)
++            if buddy:
++                self.shared_activity.invite(
++                    buddy, "", self._invite_response_cb
++                )
++            else:
++                logging.error(
++                    "Cannot invite %s %s, no such buddy",
++                    account_path,
++                    contact_id,
++                )
+ 
+     def invite(self, account_path, contact_id):
+         """
+@@ -1180,10 +1230,27 @@ class Activity(Window):
+         setting the :attr:`private` property of the
+         :attr:`sugar4.presence.activity.Activity` class.
+         """
+-        raise NotImplementedError(
+-            "Activity sharing not yet implemented in GTK4 port. "
+-            "Use Flatpak and modern collaboration APIs for sharing."
++        if self.shared_activity and self.shared_activity.props.joined:
++            raise RuntimeError("Activity %s already shared." % self._activity_id)
++
++        verb = "private" if private else "public"
++        logging.debug(
++            "Requesting %s share of activity %s.", verb, self._activity_id
+         )
++        pservice = presenceservice.get_instance()
++        try:
++            if pservice.get_preferred_connection() is None:
++                raise NotImplementedError(
++                    "No active presence connection is available"
++                )
++            pservice.connect("activity-shared", self.__share_cb)
++            pservice.share_activity(self, private=private)
++        except NotImplementedError:
++            raise
++        except Exception as error:
++            raise NotImplementedError(
++                "Activity sharing is unavailable: %s" % error
++            ) from error
+ 
+     def _show_keep_failed_dialog(self):
+         """
+@@ -1339,7 +1406,7 @@ class Activity(Window):
+ 
+     def _complete_close(self):
+         """Complete the close process."""
+-        self.close()
++        self.set_visible(False)
+ 
+         if self.shared_activity:
+             self.shared_activity.leave()
+@@ -1347,11 +1414,19 @@ class Activity(Window):
+         self._cleanup_jobject()
+ 
+         # D-Bus service cleanup
+-        if self._bus:
+-            logging.debug("Cleaning up D-Bus service")
++        if self._activity_service:
++            logging.debug("Cleaning up Activity D-Bus service")
++            self._activity_service.close()
++            self._activity_service = None
+ 
+         self._session.unregister(self)
+ 
++        application = self.get_application()
++        if application:
++            application.remove_window(self)
++            if not application.get_windows():
++                application.quit()
++
+         # Power management for GTK4
+         # power.get_power_manager().shutdown()
+ 
+diff --git a/src/sugar4/activity/activityfactory.py b/src/sugar4/activity/activityfactory.py
+index 414a784..f4edc95 100644
+--- a/src/sugar4/activity/activityfactory.py
++++ b/src/sugar4/activity/activityfactory.py
+@@ -1,372 +1,153 @@
+-# Copyright (C) 2006-2007 Red Hat, Inc.
+-# Copyright (C) 2010 Collabora Ltd. <http://www.collabora.co.uk/>
+-#
+-# This library is free software; you can redistribute it and/or
+-# modify it under the terms of the GNU Lesser General Public
+-# License as published by the Free Software Foundation; either
+-# version 2 of the License, or (at your option) any later version.
+-#
+-# This library is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-# Lesser General Public License for more details.
+-#
+-# You should have received a copy of the GNU Lesser General Public
+-# License along with this library; if not, write to the
+-# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+-# Boston, MA 02111-1307, USA.
++"""Compatibility activity-launch surface for the GTK4 shell preview.
+ 
+-"""Shell side object which manages request to start activity
+-
+-UNSTABLE. Activities are currently not allowed to run other activities so at
+-the moment there is no reason to stabilize this API.
++The current GTK4 toolkit branch moved activity launching into the GTK4
++application model but the shell migration still imports this module for
++activity IDs and compositor setup. Keep this small compatibility surface
++until the corresponding upstream shell/toolkit launch work lands.
+ """
+ 
++import uuid
+ import logging
+-import dbus
+-from gi.repository import GObject
+-from gi.repository import GLib
+-
+-from sugar4.activity.activityhandle import ActivityHandle
+-from sugar4 import util
+-from sugar4 import env
+-from sugar4.datastore import datastore
+-
+-from errno import EEXIST, ENOSPC
+-
+ import os
++import shlex
+ import subprocess
+ 
+-_SHELL_SERVICE = 'org.laptop.Shell'
+-_SHELL_PATH = '/org/laptop/Shell'
+-_SHELL_IFACE = 'org.laptop.Shell'
+-
+-_ACTIVITY_FACTORY_INTERFACE = 'org.laptop.ActivityFactory'
++from gi.repository import GLib
+ 
+-# helper method to close all filedescriptors
+-# borrowed from subprocess.py
+-try:
+-    MAXFD = os.sysconf('SC_OPEN_MAX')
+-except ValueError:
+-    MAXFD = 256
++from sugar4.activity import activityhandle
+ 
+ _compositor_fd_getter = None
+ 
+ 
+-def set_compositor_fd_getter(getter):
+-    global _compositor_fd_getter
+-    _compositor_fd_getter = getter
+-
+-
+-def _close_fds():
+-    for i in range(3, MAXFD):
+-        try:
+-            os.close(i)
+-        # pylint: disable=W0704
+-        except Exception:
+-            pass
+-
+-
+ def create_activity_id():
+-    """Generate a new, unique ID for this activity"""
+-    return util.unique_id()
+-
+-
+-def _mkdir(path):
+-    try:
+-        os.mkdir(path)
+-    except OSError as e:
+-        if e.errno != EEXIST:
+-            raise e
+-
+-
+-def get_environment(activity):
+-    environ = os.environ.copy()
+-
+-    bin_path = os.path.join(activity.get_path(), 'bin')
+-
+-    activity_root = env.get_profile_path(activity.get_bundle_id())
+-    _mkdir(activity_root)
+-
+-    instance_dir = os.path.join(activity_root, 'instance')
+-    _mkdir(instance_dir)
+-
+-    data_dir = os.path.join(activity_root, 'data')
+-    _mkdir(data_dir)
+-
+-    tmp_dir = os.path.join(activity_root, 'tmp')
+-    _mkdir(tmp_dir)
+-
+-    environ['SUGAR_BUNDLE_PATH'] = activity.get_path()
+-    environ['SUGAR_BUNDLE_ID'] = activity.get_bundle_id()
+-    environ['SUGAR_ACTIVITY_ROOT'] = activity_root
+-    environ['PATH'] = bin_path + ':' + environ['PATH']
+-
+-    if activity.get_path().startswith(env.get_user_activities_path()):
+-        environ['SUGAR_LOCALEDIR'] = os.path.join(activity.get_path(),
+-                                                  'locale')
+-
+-    return environ
+-
+-
+-def get_command(activity, activity_id=None, object_id=None, uri=None,
+-                activity_invite=False):
+-    if not activity_id:
+-        activity_id = create_activity_id()
+-
+-    command = activity.get_command().split(' ')
+-    command.extend(['-b', activity.get_bundle_id()])
+-    command.extend(['-a', activity_id])
+-
+-    if object_id is not None:
+-        command.extend(['-o', object_id])
+-    if uri is not None:
+-        command.extend(['-u', uri])
+-    if activity_invite:
+-        command.append('-i')
+-
+-    # if the command is in $BUNDLE_ROOT/bin, execute the absolute path so there
+-    # is no need to mangle with the shell's PATH
+-    if '/' not in command[0]:
+-        bin_path = os.path.join(activity.get_path(), 'bin')
+-        absolute_path = os.path.join(bin_path, command[0])
+-        if os.path.exists(absolute_path):
+-            command[0] = absolute_path
+-
+-    logging.debug('launching: %r' % command)
+-
+-    return command
+-
+-
+-def open_log_file(activity):
+-    i = 1
+-    while True:
+-        path = env.get_logs_path('%s-%s.log' % (activity.get_bundle_id(), i))
+-        try:
+-            fd = os.open(path, os.O_EXCL | os.O_CREAT | os.O_WRONLY, 0o644)
+-            f = os.fdopen(fd, 'w')
+-            return (path, f)
+-        except OSError as e:
+-            if e.errno == EEXIST:
+-                i += 1
+-            elif e.errno == ENOSPC:
+-                # not the end of the world; let's try to keep going.
+-                return (os.devnull, open(os.devnull, 'w'))
+-            else:
+-                raise e
+-
+-
+-class ActivityCreationHandler(GObject.GObject):
+-    """Sugar-side activity creation interface
+-
+-    This object uses a dbus method on the ActivityFactory
+-    service to create the new activity.  It generates
+-    GObject events in response to the success/failure of
+-    activity startup using callbacks to the service's
+-    create call.
+-    """
+-
+-    def __init__(self, bundle, handle):
+-        """Initialise the handler
+-
+-        bundle -- the ActivityBundle to launch
+-        activity_handle -- stores the values which are to
+-            be passed to the service to uniquely identify
+-            the activity to be created and the sharing
+-            service that may or may not be connected with it
+-
+-            sugar4.activity.activityhandle.ActivityHandle instance
+-
+-        calls the "create" method on the service for this
+-        particular activity type and registers the
+-        _reply_handler and _error_handler methods on that
+-        call's results.
+-
+-        The specific service which creates new instances of this
+-        particular type of activity is created during the activity
+-        registration process in shell bundle registry which creates
+-        service definition files for each registered bundle type.
+-
+-        If the file '/etc/olpc-security' exists, then activity launching
+-        will be delegated to the prototype 'Rainbow' security service.
+-        """
+-        super().__init__()
+-
+-        self._bundle = bundle
+-        self._service_name = bundle.get_bundle_id()
+-        self._handle = handle
+-
+-        bus = dbus.SessionBus()
+-        bus_object = bus.get_object(_SHELL_SERVICE, _SHELL_PATH)
+-        self._shell = dbus.Interface(bus_object, _SHELL_IFACE)
+-
+-        if handle.activity_id is not None and handle.object_id is None:
+-            datastore.find({'activity_id': self._handle.activity_id},
+-                           reply_handler=self._find_object_reply_handler,
+-                           error_handler=self._find_object_error_handler)
+-        else:
+-            self._launch_activity()
++    """Return a Sugar-compatible unique activity instance ID."""
++    return uuid.uuid4().hex
+ 
+-    def _launch_activity(self):
+-        if self._handle.activity_id is not None:
+-            self._shell.ActivateActivity(
+-                self._handle.activity_id,
+-                reply_handler=self._activate_reply_handler,
+-                error_handler=self._activate_error_handler)
+-        else:
+-            self._create_activity()
+ 
+-    def _create_activity(self):
+-        if self._handle.activity_id is None:
+-            self._handle.activity_id = create_activity_id()
+-
+-        self._shell.NotifyLaunch(
+-            self._service_name, self._handle.activity_id,
+-            reply_handler=self._no_reply_handler,
+-            error_handler=self._notify_launch_error_handler)
+-
+-        environ = get_environment(self._bundle)
+-        (log_path, log_file) = open_log_file(self._bundle)
+-        command = get_command(self._bundle, self._handle.activity_id,
+-                              self._handle.object_id, self._handle.uri,
+-                              self._handle.invited)
++def set_compositor_fd_getter(getter):
++    """Store the shell compositor hook for future GTK4 activity launch."""
++    global _compositor_fd_getter
++    _compositor_fd_getter = getter
+ 
+-        pass_fds = ()
+-        fd = -1
+-        if _compositor_fd_getter is not None:
+-            fd = _compositor_fd_getter()
+-            if fd >= 0:
+-                environ['WAYLAND_SOCKET'] = str(fd)
+-                environ['WAYLAND_DISPLAY'] = os.environ.get('WAYLAND_DISPLAY', 'wayland-0')
+-                pass_fds = (fd,)
+ 
+-        kwargs = {
+-            'env': environ,
+-            'cwd': str(self._bundle.get_path()),
+-            'stdout': log_file.fileno(),
+-            'stderr': log_file.fileno()
++def get_environment(bundle, handle):
++    """Build the per-instance environment expected by a Sugar Activity."""
++    environment = os.environ.copy()
++    bundle_path = bundle.get_path()
++    bundle_id = bundle.get_bundle_id()
++    profile_home = environment.get("SUGAR_HOME", os.path.expanduser("~/.sugar"))
++    profile_id = environment.get("SUGAR_PROFILE", "default")
++    activity_root = os.path.join(
++        profile_home, profile_id, bundle_id, handle.activity_id
++    )
++    for name in ("instance", "data", "tmp", "logs"):
++        os.makedirs(os.path.join(activity_root, name), exist_ok=True)
++    environment.update(
++        {
++            "SUGAR_BUNDLE_PATH": bundle_path,
++            "SUGAR_BUNDLE_ID": bundle_id,
++            "SUGAR_BUNDLE_NAME": bundle.get_name(),
++            "SUGAR_BUNDLE_VERSION": str(bundle.get_activity_version()),
++            "SUGAR_ACTIVITY_ID": handle.activity_id,
++            "SUGAR_ACTIVITY_ROOT": activity_root,
++            "ASPARTAME_GTK4_PREVIEW": "1",
+         }
++    )
++    if handle.object_id:
++        environment["SUGAR_OBJECT_ID"] = handle.object_id
++    if handle.uri:
++        environment["SUGAR_URI"] = handle.uri
++    return environment
+ 
+-        if pass_fds:
+-            kwargs['pass_fds'] = pass_fds
+-
+-        with open(os.devnull, 'r') as dev_null:
+-            kwargs['stdin'] = dev_null.fileno()
+-            child = subprocess.Popen([str(s) for s in command], **kwargs)
+-
+-        if fd >= 0:
+-            os.close(fd)
+-
+-        GLib.child_watch_add(GLib.PRIORITY_DEFAULT, child.pid,
+-                             _child_watch_cb,
+-                             (log_file, self._handle.activity_id))
+-
+-    def _no_reply_handler(self, *args):
+-        pass
+-
+-    def _notify_launch_failure_error_handler(self, err):
+-        logging.error('Notify launch failure failed %s' % err)
+ 
+-    def _notify_launch_error_handler(self, err):
+-        logging.debug('Notify launch failed %s' % err)
+-
+-    def _activate_reply_handler(self, activated):
+-        if not activated:
+-            self._create_activity()
+-
+-    def _activate_error_handler(self, err):
+-        logging.error('Activity activation request failed %s' % err)
+-
+-    def _create_reply_handler(self):
+-        logging.debug('Activity created %s (%s).' %
+-                      (self._handle.activity_id, self._service_name))
+-
+-    def _create_error_handler(self, err):
+-        logging.error("Couldn't create activity %s (%s): %s" %
+-                      (self._handle.activity_id, self._service_name, err))
+-        self._shell.NotifyLaunchFailure(
+-            self._handle.activity_id, reply_handler=self._no_reply_handler,
+-            error_handler=self._notify_launch_failure_error_handler)
+-
+-    def _find_object_reply_handler(self, jobjects, count):
+-        if count > 0:
+-            if count > 1:
+-                logging.debug('Multiple objects has the same activity_id.')
+-            self._handle.object_id = jobjects[0]['uid']
+-        self._launch_activity()
+-
+-    def _find_object_error_handler(self, err):
+-        logging.error('Datastore find failed %s' % err)
+-        self._launch_activity()
+-
+-
+-def create(bundle, activity_handle=None):
+-    """Create a new activity from its name."""
+-    if not activity_handle:
+-        activity_handle = ActivityHandle()
+-    return ActivityCreationHandler(bundle, activity_handle)
++def get_command(bundle):
++    """Resolve a bundle command to the isolated GTK4 launcher.
+ 
++    A GTK3 entry point must never be silently rewritten into a GTK4 process:
++    the two GI namespaces are separate runtime worlds.  Generic Sugar
++    launchers are intentionally redirected to the GTK4 wrapper, while an
++    explicit GTK3 launcher is rejected with an actionable error.
++    """
++    command = shlex.split(bundle.get_command())
++    if not command:
++        raise ValueError("Activity bundle has no launch command")
++    launcher_name = os.path.basename(command[0])
++    if launcher_name == "sugar-activity3":
++        raise RuntimeError(
++            "GTK3 bundle cannot run inside isolated GTK4 Activity compositor"
++        )
++    if launcher_name in ("sugar-activity", "sugar-activity4"):
++        # Prefer a bundle-local launcher so Activities carry their runtime
++        # boundary without relying on the shell's PATH.
++        local_launcher = os.path.join(bundle.get_path(), "bin", "sugar-activity4")
++        command[0] = (local_launcher if os.path.isfile(local_launcher)
++                      else os.environ.get("SUGAR_ACTIVITY4", "sugar-activity4"))
++    return command
+ 
+-def create_with_uri(bundle, uri):
+-    """Create a new activity and pass the uri as handle."""
+-    activity_handle = ActivityHandle(uri=uri)
+-    return ActivityCreationHandler(bundle, activity_handle)
+ 
++def _notify_launch_failed(activity_id):
++    try:
++        from jarabe.model import shell
++        shell.get_model().notify_launch_failed(activity_id)
++    except Exception:
++        logging.exception("Could not notify Sugar shell of failed Activity %s", activity_id)
+ 
+-def create_with_object_id(bundle, object_id):
+-    """Create a new activity and pass the object id as handle."""
+-    activity_handle = ActivityHandle(object_id=object_id)
+-    return ActivityCreationHandler(bundle, activity_handle)
+ 
++def _child_exited(pid, status, activity_id):
++    if status:
++        logging.error("GTK4 Activity %s exited with status %s", activity_id, status)
++        _notify_launch_failed(activity_id)
++    else:
++        logging.debug("GTK4 Activity %s exited normally", activity_id)
++    return GLib.SOURCE_REMOVE
+ 
+-def _child_watch_cb(pid, condition, user_data):
+-    log_file, activity_id = user_data
+ 
+-    if os.WIFEXITED(condition):
+-        status = os.WEXITSTATUS(condition)
+-        signum = None
+-        if status == 0:
+-            message = 'Normal successful completion'
+-        else:
+-            message = 'Exited with status %s' % status
+-    elif os.WIFSIGNALED(condition):
+-        status = None
+-        signum = os.WTERMSIG(condition)
+-        message = 'Terminated by signal %s' % signum
+-    else:
+-        status = None
+-        signum = os.WTERMSIG(condition)
+-        message = 'Undefined status with signal %s' % signum
++def create(bundle, handle):
++    """Launch one Activity client through the shell's Casilda compositor."""
++    if not isinstance(handle, activityhandle.ActivityHandle):
++        raise TypeError("handle must be an ActivityHandle")
++    if _compositor_fd_getter is None:
++        raise RuntimeError("GTK4 Activity compositor socket is not configured")
+ 
++    client_fd = _compositor_fd_getter()
+     try:
+-        log_file.write(
+-            '%s, pid %s activity_id %s\n' % (message, pid, activity_id))
++        command = get_command(bundle)
++    except (RuntimeError, ValueError) as error:
++        logging.error("GTK4 Activity %s cannot launch: %s",
++                      handle.activity_id, error)
++        _notify_launch_failed(handle.activity_id)
++        return None
++    command = [command[0], bundle.get_path(), *command[1:]]
++    command.extend(["--activity-id", handle.activity_id])
++    if handle.object_id:
++        command.extend(["--object-id", handle.object_id])
++    if handle.uri:
++        command.extend(["--uri", handle.uri])
++    environment = get_environment(bundle, handle)
++    environment.pop("DISPLAY", None)
++    environment.pop("WAYLAND_DISPLAY", None)
++    environment["GDK_BACKEND"] = "wayland"
++    environment["WAYLAND_SOCKET"] = str(client_fd)
++    log_path = os.path.join(environment["SUGAR_ACTIVITY_ROOT"], "logs", "activity.log")
++    log_file = open(log_path, "ab", buffering=0)
++    try:
++        process = subprocess.Popen(
++            command,
++            cwd=bundle.get_path(),
++            env=environment,
++            pass_fds=(client_fd,),
++            stdout=log_file,
++            stderr=subprocess.STDOUT,
++            close_fds=True,
++        )
++    except Exception:
++        _notify_launch_failed(handle.activity_id)
++        raise
+     finally:
++        os.close(client_fd)
+         log_file.close()
+-
+-    # try to reap zombies in case SIGCHLD has not been set to SIG_IGN
+-    try:
+-        os.waitpid(pid, 0)
+-    except OSError:
+-        # SIGCHLD = SIG_IGN, no zombies
+-        pass
+-
+-    if status or signum:
+-        # XXX have to recreate dbus object since we can't reuse
+-        # ActivityCreationHandler's one, see
+-        # https://bugs.freedesktop.org/show_bug.cgi?id=23507
+-        bus = dbus.SessionBus()
+-        bus_object = bus.get_object(_SHELL_SERVICE, _SHELL_PATH)
+-        shell = dbus.Interface(bus_object, _SHELL_IFACE)
+-
+-        def reply_handler_cb(*args):
+-            pass
+-
+-        def error_handler_cb(error):
+-            logging.error('Cannot send NotifyLaunchFailure to the shell')
+-
+-        # TODO send launching failure but activity could already show
+-        # main window, see http://bugs.sugarlabs.org/ticket/1447#comment:19
+-        shell.NotifyLaunchFailure(activity_id,
+-                                  reply_handler=reply_handler_cb,
+-                                  error_handler=error_handler_cb)
++    GLib.child_watch_add(
++        GLib.PRIORITY_DEFAULT, process.pid, _child_exited, handle.activity_id
++    )
++    logging.info("launched GTK4 Activity %s as PID %s", handle.activity_id, process.pid)
++    return process
+diff --git a/src/sugar4/activity/activityinstance.py b/src/sugar4/activity/activityinstance.py
+index 29b4c50..a67ff06 100644
+--- a/src/sugar4/activity/activityinstance.py
++++ b/src/sugar4/activity/activityinstance.py
+@@ -206,7 +206,13 @@ def main():
+ 
+     def on_activate(app):
+         """Create and show the activity when the application is activated."""
++        existing = getattr(app, "_sugar_activity_instance", None)
++        if existing is not None:
++            logging.debug("re-presenting existing Activity %s", options.activity_id)
++            existing.present()
++            return
+         activity = activity_constructor(activity_handle)
++        app._sugar_activity_instance = activity
+         app.add_window(activity)
+         activity.show()  # This calls present() internally
+ 
+diff --git a/src/sugar4/activity/activityservice.py b/src/sugar4/activity/activityservice.py
+new file mode 100644
+index 0000000..18d360f
+--- /dev/null
++++ b/src/sugar4/activity/activityservice.py
+@@ -0,0 +1,39 @@
++"""Small GTK4 Activity D-Bus lifecycle service.
++
++This keeps the established Sugar shell contract while GTK4 activities use
++Gtk.Application rather than legacy X windows.
++"""
++
++import dbus
++import dbus.service
++
++
++class ActivityService(dbus.service.Object):
++    """Advertise one Activity instance to Jarabe and accept lifecycle calls."""
++
++    def __init__(self, activity):
++        self._activity = activity
++        self._bus = dbus.SessionBus()
++        activity_id = activity.get_id()
++        self._bus_name = dbus.service.BusName(
++            "org.laptop.Activity" + activity_id, bus=self._bus
++        )
++        object_id = activity_id.replace("-", "_")
++        super().__init__(
++            self._bus_name, "/org/laptop/Activity/" + object_id
++        )
++
++    @dbus.service.method("org.laptop.Activity", in_signature="b")
++    def SetActive(self, active):
++        self._activity.set_active(bool(active))
++
++    @dbus.service.method("org.laptop.Activity")
++    def Close(self):
++        self._activity.close()
++
++    def close(self):
++        """Release the well-known instance name during normal shutdown."""
++        self.remove_from_connection()
++        self._activity = None
++        self._bus_name = None
++        self._bus = None
+diff --git a/src/sugar4/activity/widgets.py b/src/sugar4/activity/widgets.py
+index 02640dc..7d8e26f 100644
+--- a/src/sugar4/activity/widgets.py
++++ b/src/sugar4/activity/widgets.py
+@@ -20,7 +20,9 @@
+ from gi.repository import Gdk
+ from gi.repository import Gtk
+ from gi.repository import GObject
++from gi.repository import GLib
+ import gettext
++import logging
+ 
+ from sugar4.debug import debug_print
+ 
+@@ -30,6 +32,7 @@ from sugar4.graphics.radiopalette import RadioPalette, RadioMenuButton
+ from sugar4.graphics.radiotoolbutton import RadioToolButton
+ from sugar4.graphics.xocolor import XoColor
+ from sugar4.graphics.icon import Icon
++from sugar4.bundle.activitybundle import get_bundle_instance
+ from sugar4.graphics import style
+ from sugar4.graphics.palettemenu import PaletteMenuBox
+ from sugar4 import profile
+@@ -42,7 +45,7 @@ def _(msg):
+ 
+ 
+ def _create_activity_icon(metadata, icon_name=None):
+-    """Create an activity icon with appropriate color."""
++    """Create the running bundle icon with the activity journal color."""
+     import os
+ 
+     if metadata is not None and metadata.get("icon-color"):
+@@ -51,16 +54,18 @@ def _create_activity_icon(metadata, icon_name=None):
+         color = profile.get_color()
+ 
+     if icon_name is None:
+-        icon_name = "activity-journal"  # Default fallback icon
++        try:
++            from sugar4.activity.activity import get_bundle_path
+ 
+-    # If icon_name is an absolute SVG path, use file_name
+-    if icon_name and os.path.isabs(icon_name) and icon_name.endswith(".svg"):
+-        print(f"[_create_activity_icon] Using SVG file: {icon_name}")
+-        icon = Icon(file_name=icon_name, xo_color=color)
+-    else:
+-        print(f"[_create_activity_icon] Using theme icon: {icon_name}")
+-        icon = Icon(icon_name=icon_name, xo_color=color)
+-    return icon
++            bundle = get_bundle_instance(get_bundle_path())
++            icon_name = bundle.get_icon()
++        except Exception as error:
++            print(f"[_create_activity_icon] Could not load bundle icon: {error}")
++            icon_name = "activity-journal"
++
++    if os.path.isabs(icon_name):
++        return Icon(file_name=icon_name, xo_color=color)
++    return Icon(icon_name=icon_name, xo_color=color)
+ 
+ 
+ class ActivityButton(ToolButton):
+@@ -88,14 +93,13 @@ class ActivityToolbarButton(ToolbarButton):
+     """Toolbar button that contains an activity toolbar."""
+ 
+     def __init__(self, activity, **kwargs):
+-        print(f"[ActivityToolbarButton] kwargs: {kwargs}")
++        icon_name = kwargs.pop("icon_name", None)
+         toolbar = ActivityToolbar(activity, orientation_left=True)
+         toolbar.connect("enter-key-press", lambda widget: self.emit("clicked"))
+ 
+         ToolbarButton.__init__(self, page=toolbar, **kwargs)
+ 
+-        icon = _create_activity_icon(activity.metadata, kwargs.get("icon_name"))
+-        print(f"[ActivityToolbarButton] icon: {icon}")
++        icon = _create_activity_icon(activity.metadata, icon_name)
+         self.set_icon_widget(icon)
+         icon.show()
+ 
+@@ -104,18 +108,7 @@ class StopButton(ToolButton):
+     """Button to stop/close an activity."""
+ 
+     def __init__(self, activity, icon_name="activity-stop", **kwargs):
+-        print(f"[StopButton] icon_name: {icon_name}")
+-        ToolButton.__init__(self, **kwargs)
+-        # Use custom Icon for stop
+-        icon = _create_activity_icon(activity.metadata, icon_name=icon_name)
+-        icon.set_pixel_size(48)
+-        self.set_icon_widget(icon)
+-        icon.show()
+-        print(f"[StopButton] icon_widget type: {type(icon)}")
+-        if hasattr(icon, "get_icon_name"):
+-            print(f"[StopButton] icon name: {icon.get_icon_name()}")
+-        if hasattr(icon, "get_file_name"):
+-            print(f"[StopButton] file name: {icon.get_file_name()}")
++        ToolButton.__init__(self, icon_name=icon_name, **kwargs)
+         self.props.tooltip = _("Stop")
+         self.props.accelerator = "<Ctrl>Q"
+         self.connect("clicked", self.__stop_button_clicked_cb, activity)
+@@ -184,15 +177,61 @@ class ShareButton(RadioMenuButton):
+             activity.connect("shared", self.__update_share_cb)
+             activity.connect("joined", self.__update_share_cb)
+ 
++        kwargs.setdefault("icon_name", "zoom-neighborhood")
++        kwargs.setdefault("tooltip", _("Share"))
++        kwargs.setdefault("icon_name", "zoom-neighborhood")
++        kwargs.setdefault("tooltip", _("Share"))
++        kwargs.setdefault("icon_name", "zoom-neighborhood")
++        kwargs.setdefault("tooltip", _("Share"))
+         RadioMenuButton.__init__(self, **kwargs)
++        # RadioMenuButton consumes the tooltip for its palette, while the
++        # ToolButton label is also needed by GTK4 accessibility.
++        self.set_tooltip(_("Share"))
++        # RadioMenuButton consumes the tooltip for its palette, while the
++        # ToolButton label is also needed by GTK4 accessibility.
++        self.set_tooltip(_("Share"))
++        # RadioMenuButton consumes the tooltip for its palette, while the
++        # ToolButton label is also needed by GTK4 accessibility.
++        self.set_tooltip(_("Share"))
+         self.props.palette = palette
+ 
+         if hasattr(activity, "max_participants") and activity.max_participants == 1:
+             self.props.sensitive = False
+ 
+     def __neighborhood_clicked_cb(self, button, activity):
+-        if hasattr(activity, "share"):
++        if not hasattr(activity, "share"):
++            return
++        try:
+             activity.share()
++        except NotImplementedError as error:
++            # Sharing is not wired up in the GTK4 port. Leaving the radio
++            # on "My Neighborhood" would report the activity as shared
++            # when nothing was shared, so put it back and say why.
++            GLib.idle_add(self._revert_to_private)
++            self._report_share_failure(activity, error)
++
++    def _revert_to_private(self):
++        # RadioPalette's own clicked handler runs after this one and
++        # re-activates whatever was clicked, so the undo has to wait until
++        # the emission is over. Clicking "Private" is the same path the
++        # user takes, so the menu button's icon and label follow too.
++        self.private.emit("clicked")
++        return GLib.SOURCE_REMOVE
++
++    def _report_share_failure(self, activity, error):
++        from sugar4.graphics.alert import NotifyAlert
++
++        logging.warning("Activity sharing is unavailable: %s", error)
++        if not hasattr(activity, "add_alert"):
++            return
++        alert = NotifyAlert()
++        alert.props.title = _("Sharing is unavailable")
++        alert.props.msg = _("This activity could not be shared with your "
++                            "neighborhood.")
++        alert.connect("response",
++                      lambda alert_, response: activity.remove_alert(alert_))
++        activity.add_alert(alert)
++        alert.show()
+ 
+     def __update_share_cb(self, activity):
+         self.neighborhood.handler_block(self._neighborhood_handle)
+diff --git a/src/sugar4/graphics/icon.py b/src/sugar4/graphics/icon.py
+index 05fa2bb..60c1f5e 100644
+--- a/src/sugar4/graphics/icon.py
++++ b/src/sugar4/graphics/icon.py
+@@ -264,7 +264,7 @@ class _IconBuffer:
+                 self.width,
+                 1,
+                 Gtk.TextDirection.NONE,
+-                Gtk.IconLookupFlags.NONE,
++                0,
+             )
+ 
+             if icon_paintable:
+@@ -315,7 +315,7 @@ class _IconBuffer:
+             size,
+             1,
+             Gtk.TextDirection.NONE,
+-            Gtk.IconLookupFlags.NONE,
++            0,
+         )
+ 
+         if not badge_paintable:
+@@ -520,10 +520,26 @@ class _IconBuffer:
+             )
+             ctx.paint()
+ 
+-        ctx.scale(
+-            float(width) / (icon_width + padding * 2),
+-            float(height) / (icon_height + padding * 2),
++        # Keep SVG rendering consistent with the pixbuf path: fit the icon
++        # without distorting it, apply the requested animation scale and keep
++        # the result centred inside the allocated surface.
++        content_width = icon_width + padding * 2
++        content_height = icon_height + padding * 2
++        render_scale = min(
++            float(width) / content_width,
++            float(height) / content_height,
++        ) * max(0.0, self.scale)
++
++        if render_scale <= 0:
++            return surface
++
++        rendered_width = content_width * render_scale
++        rendered_height = content_height * render_scale
++        ctx.translate(
++            (width - rendered_width) / 2,
++            (height - rendered_height) / 2,
+         )
++        ctx.scale(render_scale, render_scale)
+         ctx.save()
+ 
+         ctx.translate(padding, padding)
+@@ -741,6 +757,7 @@ class Icon(Gtk.Widget):
+     file_name = GObject.Property(
+         type=str, default=None, getter=get_file_name, setter=set_file_name
+     )
++    # Legacy Sugar callers use ``props.file`` for an icon path.
+     file = GObject.Property(
+         type=str, default=None, getter=get_file_name, setter=set_file_name
+     )
+@@ -834,11 +851,32 @@ class EventIcon(Icon):
+         self._palette_invoker.attach(self)
+ 
+     def _setup_gestures(self):
++        """Set up gesture controllers for event handling."""
++        # Activation belongs exclusively to the primary button.  Palette
++        # invokers install their own controller for secondary-click and
++        # long-press handling.
+         click_gesture = Gtk.GestureClick()
++        click_gesture.set_button(1)
+         click_gesture.connect("pressed", self._on_pressed)
+         click_gesture.connect("released", self._on_released)
+         self.add_controller(click_gesture)
+ 
++        # A focusable icon that reports AccessibleRole.BUTTON has to be
++        # operable from the keyboard too. Only the click gesture emitted
++        # "activate", so Home's Activity icons could be reached with Tab and
++        # then not launched with Enter.
++        key_controller = Gtk.EventControllerKey()
++        key_controller.connect("key-pressed", self._on_key_pressed)
++        self.add_controller(key_controller)
++
++    def _on_key_pressed(self, controller, keyval, keycode, state):
++        """Activate on Enter or Space, as a button does."""
++        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter, Gdk.KEY_space):
++            self.emit("clicked")
++            self.emit("activate")
++            return True
++        return False
++
+     def _on_pressed(self, gesture: Gtk.GestureClick, n_press: int, x: float, y: float):
+         self.emit("pressed", x, y)
+ 
+@@ -923,6 +961,7 @@ class CanvasIcon(EventIcon):
+         super().__init__(**kwargs)
+         self._button_down = False
+         self._palette_up = False
++        self.add_css_class("canvas-icon")
+ 
+         self._setup_state_controllers()
+ 
+@@ -946,11 +985,13 @@ class CanvasIcon(EventIcon):
+                 Gtk.StateFlags.PRELIGHT | Gtk.StateFlags.ACTIVE)
+ 
+     def _on_pressed(self, gesture, n_press, x, y):
++        """Handle canvas press."""
+         self._button_down = True
+         self.set_state_flags(Gtk.StateFlags.ACTIVE, False)
+         super()._on_pressed(gesture, n_press, x, y)
+ 
+     def _on_released(self, gesture, n_press, x, y):
++        """Handle canvas release."""
+         self.unset_state_flags(Gtk.StateFlags.ACTIVE)
+         self._button_down = False
+         super()._on_released(gesture, n_press, x, y)
+@@ -1157,7 +1198,7 @@ def get_icon_file_name(icon_name: str) -> Optional[str]:
+         STANDARD_ICON_SIZE,
+         1,
+         Gtk.TextDirection.NONE,
+-        Gtk.IconLookupFlags.NONE,
++        0,
+     )
+ 
+     if icon_paintable:
+diff --git a/src/sugar4/graphics/iconentry.py b/src/sugar4/graphics/iconentry.py
+index defd2ca..5380e6f 100644
+--- a/src/sugar4/graphics/iconentry.py
++++ b/src/sugar4/graphics/iconentry.py
+@@ -97,7 +97,7 @@ class IconEntry(Gtk.Entry):
+             _ICON_SIZE,
+             1,
+             Gtk.TextDirection.NONE,
+-            Gtk.IconLookupFlags.NONE,
++            0,
+         )
+ 
+         if not icon_paintable:
+diff --git a/src/sugar4/graphics/menuitem.py b/src/sugar4/graphics/menuitem.py
+index 9c9e9fc..00cfa3d 100644
+--- a/src/sugar4/graphics/menuitem.py
++++ b/src/sugar4/graphics/menuitem.py
+@@ -100,6 +100,7 @@ class MenuItem(Gtk.Button):
+         else:
+             self._label = None
+ 
++        self._content_box = content_box
+         self.set_child(content_box)
+ 
+         # Style the button to look like a menu item
+@@ -285,6 +286,15 @@ class MenuItem(Gtk.Button):
+         blurb="Keyboard accelerator for this menu item",
+     )
+ 
++    def set_image(self, image):
++        """Prepend a Sugar icon using the GTK4 box composition API."""
++        if image is None:
++            return
++        parent = image.get_parent()
++        if parent is not None:
++            parent.remove(image)
++        self._content_box.prepend(image)
++
+ 
+ class MenuSeparator(Gtk.Separator):
+     """
+diff --git a/src/sugar4/graphics/palette.py b/src/sugar4/graphics/palette.py
+index a0d5c14..9c31d51 100644
+--- a/src/sugar4/graphics/palette.py
++++ b/src/sugar4/graphics/palette.py
+@@ -152,9 +152,11 @@ class Palette(PaletteWindow):
+ 
+         # header container
+         self._primary_event_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
++        self._primary_event_box.add_css_class("sugar-palette-header")
+         self._primary_event_box.set_spacing(style.DEFAULT_SPACING)
+ 
+         click_gesture = Gtk.GestureClick()
++        click_gesture.set_button(1)
+         click_gesture.connect("released", self.__button_release_event_cb)
+         self._primary_event_box.add_controller(click_gesture)
+ 
+@@ -177,6 +179,7 @@ class Palette(PaletteWindow):
+         self._primary_row.set_spacing(style.DEFAULT_SPACING * 2)
+ 
+         self._label = Gtk.Label()
++        self._label.add_css_class("sugar-palette-primary")
+         self._label.set_halign(Gtk.Align.START)
+         self._label.set_valign(Gtk.Align.CENTER)
+         self._label.set_hexpand(True)
+@@ -195,12 +198,14 @@ class Palette(PaletteWindow):
+ 
+         # Secondary label
+         self._secondary_label = Gtk.Label()
++        self._secondary_label.add_css_class("sugar-palette-secondary")
+         self._secondary_label.set_halign(Gtk.Align.START)
+         self._secondary_label.set_valign(Gtk.Align.CENTER)
+         labels_box.append(self._secondary_label)
+ 
+         # secondary content container
+         self._secondary_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
++        self._secondary_box.add_css_class("sugar-palette-secondary-box")
+ 
+         self._separator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+         self._secondary_box.append(self._separator)
+@@ -268,6 +273,7 @@ class Palette(PaletteWindow):
+ 
+     def _add_content(self):
+         self._content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
++        self._content.add_css_class("sugar-palette-content")
+         self._secondary_box.append(self._content)
+ 
+     def _update_accel_widget(self):
+@@ -369,6 +375,7 @@ class Palette(PaletteWindow):
+ 
+             event_box = Gtk.Box()
+             click_gesture = Gtk.GestureClick()
++            click_gesture.set_button(1)
+             click_gesture.connect("released", self.__icon_button_release_event_cb)
+             event_box.add_controller(click_gesture)
+ 
+@@ -413,6 +420,7 @@ class Palette(PaletteWindow):
+             # Guard against double-parenting: unparent first if already parented
+             if self._primary_event_box.get_parent() is not None:
+                 self._primary_event_box.unparent()
++            self._palette_box.add_css_class("sugar-palette-box")
+             self._palette_box.append(self._primary_event_box)
+             self._palette_box.append(self._secondary_box)
+ 
+diff --git a/src/sugar4/graphics/palettemenu.py b/src/sugar4/graphics/palettemenu.py
+index 548f1a9..eba1a29 100644
+--- a/src/sugar4/graphics/palettemenu.py
++++ b/src/sugar4/graphics/palettemenu.py
+@@ -89,8 +89,7 @@ import gi
+ 
+ gi.require_version("Gtk", "4.0")
+ 
+-from gi.repository import GObject, Gtk, Gdk
+-import logging
++from gi.repository import GObject, Gtk
+ 
+ from sugar4.graphics.icon import Icon
+ from sugar4.graphics import style
+@@ -110,6 +109,7 @@ class PaletteMenuBox(Gtk.Box):
+         super().__init__(orientation=Gtk.Orientation.VERTICAL)
+         self.set_spacing(2)  # Small default spacing
+         self.add_css_class('palette-content-box')
++        self.add_css_class("palette-menu-box")
+ 
+     def append_item(
+         self, item_or_widget, horizontal_padding=None, vertical_padding=None
+@@ -242,6 +242,11 @@ class PaletteMenuItem(Gtk.Button):
+ 
+         # main horizontal box
+         self._hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
++        self._hbox.add_css_class("palette-menu-item-content")
++        self._hbox.set_margin_start(style.DEFAULT_PADDING)
++        self._hbox.set_margin_end(style.DEFAULT_PADDING)
++        self._hbox.set_margin_top(style.DEFAULT_PADDING // 2)
++        self._hbox.set_margin_bottom(style.DEFAULT_PADDING // 2)
+ 
+         # icon if specified
+         if icon_name is not None:
+@@ -386,6 +391,10 @@ class PaletteMenuItem(Gtk.Button):
+             # Insert icon at the beginning
+             self._hbox.prepend(icon)
+ 
++    def set_icon_widget(self, icon):
++        """Compatibility name for Sugar GTK4 callers still being ported."""
++        self.set_image(icon)
++
+     def set_accelerator(self, text):
+         """
+         Set the accelerator text for the menu item.
+diff --git a/src/sugar4/graphics/palettewindow.py b/src/sugar4/graphics/palettewindow.py
+index d0df0e6..d958151 100644
+--- a/src/sugar4/graphics/palettewindow.py
++++ b/src/sugar4/graphics/palettewindow.py
+@@ -123,6 +123,7 @@ class _PaletteMenuWidget(Gtk.Popover):
+         
+         self.add_css_class("palette")
+         self.add_css_class("palette-popover")
++        self.add_css_class("sugar-palette")
+         self.set_has_arrow(True)
+         self.set_autohide(False)
+ 
+@@ -354,6 +355,7 @@ class _PaletteWindowWidget(Gtk.Popover):
+ 
+         self.add_css_class("palette")
+         self.add_css_class("palette-popover")
++        self.add_css_class("sugar-palette")
+         self.set_has_arrow(True)
+         self.set_autohide(False)
+ 
+diff --git a/src/sugar4/graphics/radiopalette.py b/src/sugar4/graphics/radiopalette.py
+index e7758fb..14490e6 100644
+--- a/src/sugar4/graphics/radiopalette.py
++++ b/src/sugar4/graphics/radiopalette.py
+@@ -169,6 +169,9 @@ class RadioPalette(Palette):
+             raise RuntimeError("Radio palette buttons should not have sub-palettes")
+ 
+         button.palette_label = label
++        button.update_property([Gtk.AccessibleProperty.LABEL], [label])
++        button.update_property([Gtk.AccessibleProperty.LABEL], [label])
++        button.update_property([Gtk.AccessibleProperty.LABEL], [label])
+ 
+         button.connect("clicked", self._on_button_clicked)
+ 
+diff --git a/src/sugar4/graphics/toolbutton.py b/src/sugar4/graphics/toolbutton.py
+index 26ee771..0f17ba0 100644
+--- a/src/sugar4/graphics/toolbutton.py
++++ b/src/sugar4/graphics/toolbutton.py
+@@ -50,14 +50,13 @@ Example:
+ STABLE.
+ """
+ 
+-import logging
+ import os
+ from typing import Optional
+ 
+ import gi
+ 
+ gi.require_version("Gtk", "4.0")
+-from gi.repository import Gdk, Gio, GObject, Graphene, Gsk, Gtk, Pango
++from gi.repository import Gio, GObject, Gtk, Pango
+ 
+ from sugar4.debug import debug_print
+ from sugar4.graphics import style
+@@ -78,6 +77,12 @@ def _add_accelerator(tool_button):
+ 
+     app = root.get_application() if hasattr(root, "get_application") else None
+     if app and hasattr(app, "set_accels_for_action"):
++        # Replace anything installed on an earlier attempt.
++        previous = getattr(tool_button, "_accel_action_name", None)
++        if previous:
++            app.remove_action(previous)
++
++        # Create a unique action name for this button
+         action_name = f"toolbutton.{id(tool_button)}"
+ 
+         # Add the action to trigger the button click
+@@ -89,11 +94,13 @@ def _add_accelerator(tool_button):
+             app.set_accels_for_action(
+                 f"app.{action_name}", [tool_button.props.accelerator]
+             )
++            tool_button._accel_action_name = action_name
+         elif hasattr(root, "add_action"):
+             root.add_action(action)
+             app.set_accels_for_action(
+                 f"win.{action_name}", [tool_button.props.accelerator]
+             )
++            tool_button._accel_action_name = action_name
+ 
+ 
+ def _hierarchy_changed_cb(tool_button):
+@@ -106,6 +113,12 @@ def setup_accelerator(tool_button):
+         tool_button.connect(
+             "notify::root", lambda *args: _hierarchy_changed_cb(tool_button)
+         )
++        # activityinstance builds the toolbar, then hands the window to the
++        # Gtk.Application, so notify::root fires while get_application() is
++        # still None and the action is never installed. ToggleToolButton
++        # already retries on map; ToolButton did not, which left every
++        # Sugar tool button accelerator dead.
++        tool_button.connect("map", lambda *args: _add_accelerator(tool_button))
+ 
+ 
+ class ToolButton(Gtk.Button):
+@@ -179,6 +192,11 @@ class ToolButton(Gtk.Button):
+         Args:
+             tooltip (string): tooltip to be set.
+         """
++        # Sugar palettes are the tooltip implementation.  Explicitly clear
++        # GTK native tooltip text so a second, desktop-themed popup is never
++        # created alongside the palette.
++        self.set_tooltip_text(None)
++
+         if tooltip is None:
+             self._tooltip = None
+             if hasattr(self, "_palette_invoker") and self._palette_invoker:
+@@ -187,6 +205,12 @@ class ToolButton(Gtk.Button):
+ 
+         self._tooltip = tooltip
+ 
++        # The palette replaces the GTK tooltip visually, but assistive
++        # technology still needs the name. Without this an icon-only Sugar
++        # tool button reports an empty accessible name, so Home's view
++        # switchers announced nothing at all.
++        self.update_property([Gtk.AccessibleProperty.LABEL], [tooltip])
++
+         if not self.get_palette():
+             palette = Palette(tooltip)
+             self.set_palette(palette)
+@@ -366,8 +390,6 @@ class ToolButton(Gtk.Button):
+         blurb="Invoker for the palette",
+     )
+ 
+-
+-
+     def set_active(self, active: bool):
+         if active:
+             self.add_css_class("active")
+@@ -378,43 +400,3 @@ class ToolButton(Gtk.Button):
+         """Get the active state of the button."""
+         return self.has_css_class("active")
+ 
+-
+-def _apply_module_css():
+-    """Apply module-level CSS styling."""
+-    css = """
+-    /* Additional toolbar button styles */
+-    .toolbar-button icon {
+-        min-width: 24px;
+-        min-height: 24px;
+-    }
+-
+-    .toolbar-button label {
+-        font-size: 0.9em;
+-    }
+-
+-    /* Ensure proper spacing in horizontal toolbars */
+-    toolbar .toolbar-button {
+-        margin: 1px;
+-    }
+-
+-    /* Active palette indicator */
+-    .toolbar-button.active {
+-        box-shadow: inset 0 0 0 2px rgb(53, 132, 228);
+-    }
+-    """
+-
+-    try:
+-        css_provider = Gtk.CssProvider()
+-        css_provider.load_from_string(css)
+-
+-        display = Gdk.Display.get_default()
+-        if display:
+-            Gtk.StyleContext.add_provider_for_display(display, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+-    except Exception as e:
+-        logging.warning(f"Could not apply module CSS: {e}")
+-
+-
+-try:
+-    _apply_module_css()
+-except Exception:
+-    pass
+diff --git a/src/sugar4/graphics/window.py b/src/sugar4/graphics/window.py
+index f8a0b58..df232cb 100644
+--- a/src/sugar4/graphics/window.py
++++ b/src/sugar4/graphics/window.py
+@@ -141,6 +141,13 @@ class Window(Gtk.ApplicationWindow):
+     def __init__(self, **kwargs):
+         super().__init__(**kwargs)
+ 
++        provider = Gtk.CssProvider()
++        provider.load_from_data(b"button:focus, entry:focus, textview:focus { outline-style: solid; outline-width: 3px; outline-color: #2f88bd; outline-offset: 2px; }")
++        display = Gdk.Display.get_default()
++        if display:
++            Gtk.StyleContext.add_provider_for_display(
++                display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++
+         self._enable_fullscreen_mode = True
+         self._is_fullscreen = False
+         self._unfullscreen_button = None
+diff --git a/src/sugar4/presence/activity.py b/src/sugar4/presence/activity.py
+index 15740cf..7e29d95 100644
+--- a/src/sugar4/presence/activity.py
++++ b/src/sugar4/presence/activity.py
+@@ -131,6 +131,7 @@ class Activity(GObject.GObject):
+         self._joined_buddies = {}
+ 
+         self._get_properties_call = None
++        self._public_join_handles = set()
+         if self.room_handle is not None:
+             self._start_tracking_properties()
+ 
+@@ -310,6 +311,7 @@ class Activity(GObject.GObject):
+         _logger.debug("%r: Join finished %r" % (self, error))
+         if error is not None:
+             self.emit("joined", error is None, str(error))
++            return
+         self.telepathy_text_chan = join_command.text_channel
+         self.telepathy_tubes_chan = join_command.tubes_channel
+         self._channel_self_handle = join_command.channel_self_handle
+@@ -329,6 +331,34 @@ class Activity(GObject.GObject):
+             "MembersChanged", self.__text_channel_members_changed_cb
+         )
+ 
++    def __accept_public_local_pending(self, group, local_pending):
++        if self._private or not local_pending:
++            return
++
++        handles = [
++            int(handle)
++            for handle in local_pending
++            if int(handle) != int(self._channel_self_handle)
++            and int(handle) not in self._public_join_handles
++        ]
++        if not handles:
++            return
++
++        self._public_join_handles.update(handles)
++        _logger.debug("Accepting public Activity join requests: %r", handles)
++        group.AddMembers(
++            handles,
++            "",
++            reply_handler=partial(self.__public_join_cb, handles),
++            error_handler=partial(self.__public_join_cb, handles),
++        )
++
++    def __public_join_cb(self, handles, error=None):
++        for handle in handles:
++            self._public_join_handles.discard(handle)
++        if error is not None:
++            _logger.warning("Unable to accept public Activity join: %s", error)
++
+     def _start_tracking_channel(self):
+         channel = self.telepathy_text_chan[CHANNEL]
+         channel.connect_to_signal("Closed", self.__text_channel_closed_cb)
+@@ -340,6 +370,9 @@ class Activity(GObject.GObject):
+         if self._channel_self_handle in members:
+             members.remove(self._channel_self_handle)
+ 
++        self.__accept_public_local_pending(
++            self.telepathy_text_chan[CHANNEL_INTERFACE_GROUP], local_pending
++        )
+         if not members:
+             return
+ 
+@@ -391,6 +424,9 @@ class Activity(GObject.GObject):
+                 reason,
+             ]
+         )
++        self.__accept_public_local_pending(
++            self.telepathy_text_chan[CHANNEL_INTERFACE_GROUP], local_pending
++        )
+         if self._channel_self_handle in added:
+             added.remove(self._channel_self_handle)
+         if added:
+@@ -466,6 +502,28 @@ class Activity(GObject.GObject):
+             self._publish_properties()
+             self._start_tracking_properties()
+             self._start_tracking_buddies()
++            self.telepathy_conn.SetCurrentActivity(
++                self._id,
++                self.room_handle,
++                reply_handler=lambda: _logger.debug(
++                    "%r: current Activity published", self
++                ),
++                error_handler=lambda error: _logger.warning(
++                    "%r: unable to publish current Activity: %s", self, error
++                ),
++                dbus_interface=CONN_INTERFACE_BUDDY_INFO,
++            )
++            self.telepathy_conn.SetCurrentActivity(
++                self._id,
++                self.room_handle,
++                reply_handler=lambda: _logger.debug(
++                    "%r: current Activity published", self
++                ),
++                error_handler=lambda error: _logger.warning(
++                    "%r: unable to publish current Activity: %s", self, error
++                ),
++                dbus_interface=CONN_INTERFACE_BUDDY_INFO,
++            )
+             self._start_tracking_channel()
+             share_activity_cb(self)
+         else:
+diff --git a/src/sugar4/profile.py b/src/sugar4/profile.py
+index 9216f19..34f4809 100644
+--- a/src/sugar4/profile.py
++++ b/src/sugar4/profile.py
+@@ -88,12 +88,12 @@ class Profile(object):
+             logging.exception("Error reading public key")
+             return None
+ 
+-        magics = ("ssh-dss ", "ssh-rsa ", "ssh-ed25519 ")
++        supported_prefixes = ("ssh-dss ", "ssh-rsa ", "ecdsa-", "ssh-ed25519 ")
+         for line in lines:
+             line = line.strip()
+-            for magic in magics:
+-                if line.startswith(magic):
+-                    return line[len(magic) :]
++            if not line.startswith(supported_prefixes):
++                continue
++            return line.split(None, 2)[1]
+         else:
+             logging.error("Error parsing public key.")
+             return None

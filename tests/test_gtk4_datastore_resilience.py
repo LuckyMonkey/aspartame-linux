@@ -15,7 +15,3 @@ def test_datastore_patch_skips_only_malformed_numeric_metadata():
     assert "Ignoring malformed numeric metadata" in source
 
 
-def test_datastore_patch_is_routed_to_the_gtk4_datastore_checkout():
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-
-    assert '*0170*) target="$root/sources/sugar-datastore"' in build

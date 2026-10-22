@@ -1,8 +1,38 @@
 # Upstream sync
 
-The shell and toolkit preview pins use the official Sugar Labs pull-request
-refs directly: Sugar PR #1106 and sugar-toolkit-gtk4 PR #35. The resolved SHAs
-are still recorded so a preview is reproducible even if a PR branch advances.
+The shell pin uses the official Sugar Labs pull-request ref (Sugar PR #1106,
+`beaae56`). sugar-toolkit-gtk4 PR #35 merged, so the toolkit now follows
+`main` (`9d86a31`). The resolved SHAs are still recorded so a preview is
+reproducible even if a branch advances.
+
+## Rebased series (re-pinned 2026-10-22)
+
+Sugar and the toolkit each carry one rebased downstream delta:
+`0300-sugar-downstream-on-beaae56.patch` and
+`0301-toolkit-downstream-on-9d86a31.patch`. They were generated from the
+qualified guest checkout (October 5 build plus 0058, 0112z and 0203), then
+rebased with `git rebase --onto`. Conflict decisions are recorded in each
+patch header. The 132 individual patches they replace stay under
+`patches/gtk4-preview/folded/` for provenance.
+`tests/test_gtk4_rebased_series.py` fails if a rebase drops a folded
+patch's work wholesale.
+
+To move to a newer upstream head:
+
+1. In a scratch clone, rebase the delta onto the new head
+   (`git rebase --onto NEW OLD`) and resolve conflicts. Record the decisions
+   in the patch header.
+2. Update the pins in `scripts/sugar-gtk4-init.sh`.
+3. In the guest, run `make sugar-gtk4-init`, which saves a dirty checkout
+   to `build/pre-repin-*.diff`. Then run `make sugar-gtk4-build`.
+4. Run `scripts/sugar-gtk4-rebase.sh` to regenerate 0300/0301 from the
+   checkout.
+5. `make sugar-gtk4-series-check` must report exact application, with no
+   fuzz.
+
+Upstream note: Sugar commits `9103057`/`beaae56` converted
+`src/jarabe/main.py` and `src/jarabe/frame/framewindow.py` to CRLF. 0300
+converts them back to LF.
 Activity migration heads remain explicitly provisional until their upstream
 ownership is confirmed.
 

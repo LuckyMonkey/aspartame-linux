@@ -8,7 +8,7 @@ a lowercase list, never fired, and every Alt+Shift global key was dead.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PATCH = ROOT / ('patches/gtk4-preview/'
+PATCH = ROOT / ('patches/gtk4-preview/folded/'
                 '0152-keyhandler-alt-shift-letters-are-uppercase.patch')
 
 
@@ -48,6 +48,3 @@ def test_patch_still_gates_on_shift():
     assert ' ' + 'if state & Gdk.ModifierType.SHIFT_MASK:' in PATCH.read_text()
 
 
-def test_build_routes_the_patch_to_the_shell_checkout():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0152*) target="$root/sources/sugar" ;;' in build

@@ -10,7 +10,7 @@ so nothing listened for F7 while Settings was open.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PATCH = ROOT / ('patches/gtk4-preview/'
+PATCH = ROOT / ('patches/gtk4-preview/folded/'
                 '0153-shell-space-keys-work-from-every-window.patch')
 
 
@@ -40,7 +40,7 @@ def test_the_switcher_stays_overridable():
 def test_main_window_no_longer_owns_the_space_keys():
     # 0153 keeps action ownership in the semantic handler; the consolidated
     # main.py patch only delegates a top-level delivery fallback to it.
-    main = (ROOT / 'patches/gtk4-preview/'
+    main = (ROOT / 'patches/gtk4-preview/folded/'
             '0157-main-shell-window-consolidated.patch').read_text()
     assert 'space_keys = {Gdk.KEY_F7: "gtk3", Gdk.KEY_F8: "gtk4"}' not in main
     assert '_capture_space_key' not in main
@@ -71,12 +71,3 @@ def test_subprocess_is_imported_where_it_is_now_used():
     assert 'import subprocess' in _added()
 
 
-def test_build_routes_the_patch_to_the_shell_checkout():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0153*) target="$root/sources/sugar" ;;' in build
-
-
-def test_build_verifies_semantic_result_after_patch_drift():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert 'verified existing Space key ownership from every shell window' in build
-    assert 'grep -q "def handle_space_classic"' in build

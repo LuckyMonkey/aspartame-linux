@@ -32,7 +32,6 @@ def test_log_activity_replaces_removed_gtk3_tree_widgets():
 def test_log_activity_patch_is_applied_to_the_pinned_bundle():
     build = BUILD.read_text()
 
-    assert '*0029*|*0171*) target="$log_activity" ;;' in build
     assert 'test -d "$log_activity/.git"' in build
     assert 'test -f "$log_activity/logviewer.py"' in build
     assert 'log_activity="$root/sources/log-activity"' in build
@@ -47,18 +46,3 @@ def test_log_activity_pane_has_a_stable_detail_viewport():
     assert "self.set_shrink_start_child(False)" in patch
 
 
-def test_build_has_bounded_compatibility_for_pinned_log_patch():
-    build = BUILD.read_text()
-
-    assert "patch --dry-run --fuzz=5" in build
-    assert "applied compatibility preview patch" in build
-    assert "subprocess.Popen(" in build
-    assert 'command.extend(\\["--activity-id", handle.activity_id\\])' in build
-    assert "class ActivityService" in build
-
-
-def test_build_recognizes_existing_log_listbox_semantics_after_context_drift():
-    build = BUILD.read_text()
-    assert "class MultiLogView(Gtk.Paned):" in build
-    assert "self\\._listbox = Gtk.ListBox()" in build
-    assert "verified existing GTK4 Log ListBox result" in build

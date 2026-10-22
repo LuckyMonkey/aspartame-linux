@@ -60,7 +60,7 @@ def test_spaces_controller_uses_existing_metacity_workspaces():
 
 
 def test_home_exposes_semantic_space_actions_from_accessible_button():
-    patch = (ROOT / 'patches/gtk4-preview/0169-home-spaces-action-menu.patch').read_text()
+    patch = (ROOT / 'patches/gtk4-preview/folded/0169-home-spaces-action-menu.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert 'self._spaces_button = Gtk.Button()' in patch
     assert 'popover.set_parent(self._spaces_button)' in patch
@@ -70,12 +70,10 @@ def test_home_exposes_semantic_space_actions_from_accessible_button():
     assert 'Gtk.AccessibleProperty.LABEL' in patch
     assert 'ASPARTAME_SPACE_SWITCHER' in patch
     assert 'subprocess.Popen([controller, target]' in patch
-    assert '*0169*) target="$root/sources/sugar"' in build
-    assert 'patch --dry-run --fuzz=5 -p1 < "$patch"' in build
 
 
 def test_home_exposes_semantic_navigation_actions_from_accessible_button():
-    patch = (ROOT / 'patches/gtk4-preview/0202-home-navigation-action-menu.patch').read_text()
+    patch = (ROOT / 'patches/gtk4-preview/folded/0202-home-navigation-action-menu.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert 'def _build_navigation_button' in patch
     assert "self._navigation_button.set_tooltip_text(_('Navigate (F1-F6)'))" in patch
@@ -87,7 +85,6 @@ def test_home_exposes_semantic_navigation_actions_from_accessible_button():
     assert 'journalactivity.get_journal().show_journal()' in patch
     assert 'frame.get_view().notify_key_press()' in patch
     assert 'Gtk.AccessibleProperty.LABEL' in patch
-    assert '*0202*) target="$root/sources/sugar" ;;' in build
 
 
 def test_classic_home_exposes_return_to_modern_space_button():
@@ -229,7 +226,7 @@ def test_gtk4_main_window_routes_sugar_function_keys():
     # The zoom capture now arrives through the consolidated main.py patch.
     # Assert the end state rather than the patch that first introduced it:
     # 0090 corrected the setter to go through ShellModel.
-    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0157-main-shell-window-consolidated.patch").read_text()
     assert "Gtk.EventControllerKey()" in patch
     assert "Gtk.PropagationPhase.CAPTURE" in patch
     for key in ("Gdk.KEY_F1", "Gdk.KEY_F2", "Gdk.KEY_F3", "Gdk.KEY_F4"):
@@ -239,7 +236,7 @@ def test_gtk4_main_window_routes_sugar_function_keys():
 
 
 def test_gtk4_main_window_falls_back_to_semantic_space_actions():
-    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0157-main-shell-window-consolidated.patch").read_text()
     assert "space_keys = (Gdk.KEY_F7, Gdk.KEY_F8)" in patch
     assert "semantic_keys._key_pressed_cb" in patch
     assert "Gdk.KEY_F7, Gdk.KEY_F8" in patch
@@ -249,9 +246,9 @@ def test_gtk4_space_keys_are_owned_by_the_shell_key_handler():
     # 0153 moved the action ownership into the shell key handler. The
     # consolidated main window has only a delivery fallback for startup/focus
     # races and delegates back to that same handler.
-    keys = (ROOT / "patches/gtk4-preview/"
+    keys = (ROOT / "patches/gtk4-preview/folded/"
             "0153-shell-space-keys-work-from-every-window.patch").read_text()
-    main = (ROOT / "patches/gtk4-preview/"
+    main = (ROOT / "patches/gtk4-preview/folded/"
             "0157-main-shell-window-consolidated.patch").read_text()
     assert "ASPARTAME_SPACE_SWITCHER" in keys
     assert "subprocess.Popen" in keys
@@ -280,41 +277,34 @@ def test_no_preview_patch_reintroduces_the_sugarext_global_grabber():
 
 
 def test_mesh_empty_state_and_drift_guards_are_present():
-    patch = (ROOT / 'patches/gtk4-preview/0097-mesh-empty-state.patch').read_text()
+    patch = (ROOT / 'patches/gtk4-preview/folded/0097-mesh-empty-state.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert 'No people or shared Activities are nearby yet.' in patch
     assert '_empty_state' in patch
-    assert 'existing idempotent Activity removal' in build
-    assert 'existing Group view gettext import' in build
 
 
 def test_neighborhood_accessibility_patch_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0114-neighborhood-accessibility.patch').read_text()
+    patch = (ROOT / 'patches/gtk4-preview/folded/0114-neighborhood-accessibility.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert "AccessibleProperty.LABEL" in patch
     assert "AccessibleRole.GROUP" in patch
-    assert '*0114*) target="$root/sources/sugar" ;;' in build
-    assert '*0115*) target="$root/sources/sugar" ;;' in build
 
 
 def test_neighborhood_accessibility_order_patch_is_retired_after_fold():
     assert not (ROOT / 'patches/gtk4-preview/0127-neighborhood-accessibility-order.patch').exists()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0127*) target="$root/sources/sugar" ;;' not in build
 
 
 def test_zoom_service_dedupe_patch_is_retired_after_navigation_fold():
     assert not (ROOT / 'patches/gtk4-preview/0128-service-dedupe-zoom-actions.patch').exists()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0128*) target="$root/sources/sugar" ;;' not in build
 
 
 def test_journal_rooted_unparented_attach_patch_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0129-journal-rooted-unparented-attach.patch').read_text()
+    patch = (ROOT / 'patches/gtk4-preview/folded/0129-journal-rooted-unparented-attach.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert 'blank page' in patch
     assert 'get_parent() is not None and widget.get_root() is not None' in patch
-    assert '*0129*) target="$root/sources/sugar" ;;' in build
 
 
 def test_journal_show_action_stack_visibility_patches_are_routed():
@@ -323,29 +313,23 @@ def test_journal_show_action_stack_visibility_patches_are_routed():
             ('0130', 'model.stack.set_visible_child_name("journal")'),
             ('0131', 'journal.set_hexpand(True)'),
             ('0132', 'journal._canvas_area.set_visible(True)')):
-        patch = next((ROOT / 'patches/gtk4-preview').glob(f'{number}-*.patch')).read_text()
+        patch = next((ROOT / 'patches/gtk4-preview/folded').glob(f'{number}-*.patch')).read_text()
         assert marker in patch
-        assert f'*{number}*) target="$root/sources/sugar" ;;' in build
 
 
 def test_group_accessibility_patch_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0116-group-accessibility.patch').read_text()
+    patch = (ROOT / 'patches/gtk4-preview/folded/0116-group-accessibility.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert "AccessibleProperty.LABEL" in patch
     assert "AccessibleRole.GROUP" in patch
     assert "[_('Group')]" in patch
-    assert '*0116*) target="$root/sources/sugar" ;;' in build
-    assert '*0117*) target="$root/sources/sugar" ;;' in build
 
 
 def test_frame_accessibility_patch_is_routed():
-    patch = (ROOT / 'patches/gtk4-preview/0118-frame-accessibility.patch').read_text()
+    patch = (ROOT / 'patches/gtk4-preview/folded/0118-frame-accessibility.patch').read_text()
     build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
     assert "[_('Frame')]" in patch
     assert "AccessibleRole.GROUP" in patch
-    assert '*0118*) target="$root/sources/sugar" ;;' in build
-    assert '*0119*) target="$root/sources/sugar" ;;' in build
-    assert '*0120*) target="$root/sources/sugar" ;;' in build
     assert not (ROOT / 'patches/gtk4-preview/0121-frame-accessibility-final-placement.patch').exists()
     assert not (ROOT / 'patches/gtk4-preview/0122-frame-accessibility-relocate-final.patch').exists()
     assert not (ROOT / 'patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch').exists()

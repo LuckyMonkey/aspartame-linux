@@ -2,7 +2,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PATCH = ROOT / "patches/gtk4-preview/0180-toolkit-activity-sharing.patch"
+PATCH = ROOT / "patches/gtk4-preview/folded/0180-toolkit-activity-sharing.patch"
 BUILD = ROOT / "scripts/sugar-gtk4-build.sh"
 
 
@@ -27,7 +27,7 @@ def test_gtk4_activity_share_and_invite_follow_the_sugar_contract():
 
 def test_share_control_has_a_visible_icon_and_accessible_name():
     patch = (ROOT /
-             "patches/gtk4-preview/0181-toolkit-share-button-visible.patch").read_text()
+             "patches/gtk4-preview/folded/0181-toolkit-share-button-visible.patch").read_text()
 
     assert 'kwargs.setdefault("icon_name", "zoom-neighborhood")' in patch
     assert 'kwargs.setdefault("tooltip", _("Share"))' in patch
@@ -36,60 +36,40 @@ def test_share_control_has_a_visible_icon_and_accessible_name():
 
 def test_share_palette_options_have_actionable_accessible_names():
     patch = (ROOT /
-             "patches/gtk4-preview/0182-radiopalette-option-accessibility.patch").read_text()
+             "patches/gtk4-preview/folded/0182-radiopalette-option-accessibility.patch").read_text()
 
     assert "Gtk.AccessibleProperty.LABEL" in patch
     assert "[label]" in patch
 
 
-def test_share_integration_is_routed_to_the_toolkit_with_bounded_fallback():
-    build = BUILD.read_text()
-
-    assert '*0180*) target="$toolkit" ;;' in build
-    assert '"$patch_name" == *0180*' in build
-    assert 'applied GTK4 Activity sharing integration' in build
-    assert 'patch --dry-run --fuzz=5 -p1' in build
-    assert '*0181*) target="$toolkit" ;;' in build
-    assert '"$patch_name" == *0181*' in build
-    assert '*0182*) target="$toolkit" ;;' in build
-    assert '"$patch_name" == *0182*' in build
-
-
 def test_friends_tray_ignores_activity_announcements_without_active_app():
     patch = (ROOT /
-             "patches/gtk4-preview/0183-friends-tray-activity-guard.patch").read_text()
+             "patches/gtk4-preview/folded/0183-friends-tray-activity-guard.patch").read_text()
     build = BUILD.read_text()
 
     assert "active_activity is None or shared_activity is None" in patch
-    assert '*0183*) target="$root/sources/sugar" ;;' in build
-    assert '"$patch_name" == *0183*' in build
-    assert "applied GTK4 Friends tray activity guard" in build
 
 
 def test_neighborhood_removal_signals_are_idempotent():
     patch = (ROOT /
-             "patches/gtk4-preview/0184-meshbox-removal-races.patch").read_text()
+             "patches/gtk4-preview/folded/0184-meshbox-removal-races.patch").read_text()
     build = BUILD.read_text()
 
     assert "self._buddies.pop(key, None)" in patch
     assert "self._activities.pop(activity_id, None)" in patch
-    assert '*0184*) target="$root/sources/sugar" ;;' in build
-    assert '"$patch_name" == *0184*' in build
-    assert "applied GTK4 Neighborhood removal race guard" in build
 
 
 def test_shell_shared_activity_removal_is_idempotent():
     patch = (ROOT /
-             "patches/gtk4-preview/0188-shell-shared-activity-removal-idempotent.patch").read_text()
+             "patches/gtk4-preview/folded/0188-shell-shared-activity-removal-idempotent.patch").read_text()
     build = BUILD.read_text()
 
     assert "self._shared_activities.pop(activity_id, None)" in patch
-    assert '*0188*) target="$root/sources/sugar" ;;' in build
 
 
 def test_shared_activity_is_published_to_peer_presence():
     patch = (ROOT /
-             "patches/gtk4-preview/0185-toolkit-publish-current-activity.patch").read_text()
+             "patches/gtk4-preview/folded/0185-toolkit-publish-current-activity.patch").read_text()
     build = BUILD.read_text()
 
     assert "self.telepathy_conn.SetCurrentActivity(" in patch
@@ -97,9 +77,6 @@ def test_shared_activity_is_published_to_peer_presence():
     assert "self.room_handle," in patch
     assert "CONN_INTERFACE_BUDDY_INFO" in patch
     assert "unable to publish current Activity" in patch
-    assert '*0185*) target="$toolkit" ;;' in build
-    assert '"$patch_name" == *0185*' in build
-    assert "applied GTK4 current Activity presence publication" in build
 
 
 def test_share_roundtrip_can_qualify_successful_telepathy_mode():
@@ -142,28 +119,22 @@ def test_peer_join_probe_reports_discovery_state_and_failure_phase():
 
 def test_public_activity_accepts_owner_local_pending_requests_only():
     patch = (ROOT /
-             "patches/gtk4-preview/0204-toolkit-accept-public-local-pending.patch").read_text()
+             "patches/gtk4-preview/folded/0204-toolkit-accept-public-local-pending.patch").read_text()
     build = BUILD.read_text()
     assert "__accept_public_local_pending" in patch
     assert "local_pending" in patch
     assert "_public_join_handles" in patch
     source_hunk = patch.split("--- a/src/sugar4/presence/activity.py", 1)[1]
     assert "remote_pending" not in source_hunk
-    assert '*0204*) target="$toolkit" ;;' in build
-    assert "verified public Activity local-pending admission" in build
 
 
 def test_join_failure_does_not_continue_with_uninitialized_channels():
     patch = (ROOT /
-             "patches/gtk4-preview/0205-toolkit-return-after-join-error.patch").read_text()
+             "patches/gtk4-preview/folded/0205-toolkit-return-after-join-error.patch").read_text()
     build = BUILD.read_text()
     series = (ROOT / "scripts/sugar-gtk4-series-check.sh").read_text()
     assert 'self.emit("joined", error is None, str(error))' in patch
     assert "            return" in patch
-    assert '*0205*) target="$toolkit" ;;' in build
-    assert '*0205*' in series
-    assert "public Activity join robustness patch" in build
-    assert "verified Activity join error guard" in build
 
 
 def test_peer_observer_uses_the_live_neighborhood_model():

@@ -384,6 +384,16 @@ and `qemu-pointer-frontier-20260915.md` for the reproductions.
 
 ## GTK4-025 — the preview patch series does not reconstruct the preview
 
+- **Closed 2026-10-22 (host replay).** On the re-pinned baseline (sugar
+  `beaae56`, toolkit `9d86a31`), the series is 0300/0301 plus seven
+  datastore, ext, Log and Casilda patches. The host replay reports
+  `exact=9 fuzz=0 failed=0 skipped=1 uncompilable=0`. The build now applies
+  each patch with `--fuzz=0` or stops on drift; the semantic heuristics are
+  gone. Before the re-pin, the old series had regressed to 4 failures and
+  an uncompilable `service.py`. The exported October 4 runtime archive also
+  lacked patches 0058, 0112z and 0180-0205. `build-iso.sh` now refuses
+  such an archive. The history below is kept for provenance.
+
 - Category: `BUILD` / patch pipeline
 - Reproduction: inside the development guest, `make sugar-gtk4-series-check`.
   It builds a pristine tree per repository with `git archive HEAD` from the

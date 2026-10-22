@@ -7,7 +7,7 @@ correct, but it left icon-only buttons anonymous to assistive technology.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PATCH = ROOT / 'patches/gtk4-preview/0148-toolbutton-accessible-name-from-tooltip.patch'
+PATCH = ROOT / 'patches/gtk4-preview/folded/0148-toolbutton-accessible-name-from-tooltip.patch'
 
 
 def _added():
@@ -33,6 +33,3 @@ def test_patch_keeps_the_native_tooltip_cleared():
     assert not removed
 
 
-def test_build_routes_the_patch_to_the_toolkit():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0148*) target="$toolkit" ;;' in build

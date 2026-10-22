@@ -20,7 +20,7 @@ def registry(tmp_path):
     target.write_text((ROOT / "tests/fixtures/registry-before-0124.py").read_text())
     subprocess.run(
         ["patch", "--batch", "--fuzz=0", "-p1", "-i", str(ROOT / "patches/"
-         "gtk4-preview/0124-registry-authoritative-runtime-selection.patch")],
+         "gtk4-preview/folded/0124-registry-authoritative-runtime-selection.patch")],
         cwd=tmp_path, check=True, capture_output=True)
     tree = ast.parse(target.read_text())
     klass = next(node for node in tree.body if isinstance(node, ast.ClassDef))

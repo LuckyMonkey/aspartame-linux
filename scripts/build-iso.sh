@@ -44,22 +44,30 @@ while IFS= read -r -d '' source_file; do
     sed -i 's#/home/aspartame/Development/gtk4-preview#/usr/lib/aspartame/gtk4-preview#g' \
         "$source_file"
 done < <(find "$preview_root/gtk4-preview/sources" -type f -name '*.py' -print0)
-# The exported preview archive is intentionally kept out of Git and may be
-# older than the repository overlay. Apply packaging-only source patches to
-# the staged checkout so a fresh ISO cannot silently omit a newly registered
-# native control-panel section. The guest build still applies the same patch
-# during a normal preview rebuild.
-aboutcomputer_patch="$project_root/patches/gtk4-preview/0112z-controlpanel-aboutcomputer-section.patch"
-aboutcomputer_source="$preview_root/gtk4-preview/sources/sugar/src/jarabe/controlpanel/gui.py"
-if test -f "$aboutcomputer_patch" && test -f "$aboutcomputer_source" &&
-        ! grep -q 'import cpsection.aboutcomputer' "$aboutcomputer_source"; then
-    (cd "$preview_root/gtk4-preview/sources/sugar" &&
-        patch --batch --fuzz=5 -p1 < "$aboutcomputer_patch" >/dev/null)
-    echo 'staged GTK4 About my Computer registration patch'
-fi
-# Older archives may contain the truncated 0058 Settings action.
-python3 "$project_root/scripts/repair-gtk4-controlpanel-action.py" \
-    "$preview_root/gtk4-preview/sources/sugar/src/jarabe/view/service.py"
+# The exported preview archive is kept out of Git, so prove it was built from
+# the current series: every routed shell/toolkit patch must already be
+# applied to the staged sources. A stale archive is refused, not patched up
+# here; rebuild in the guest (make sugar-gtk4-init sugar-gtk4-build) and
+# re-export it. (The path rewrite above touches no line in 0300/0301.)
+stale=0
+series_dir=${GTK4_PREVIEW_PATCH_DIR:-$project_root/patches/gtk4-preview}
+for patch_file in "$series_dir"/0300-*.patch "$series_dir"/0301-*.patch; do
+    [ -f "$patch_file" ] || continue
+    case "$(basename "$patch_file")" in
+        0300-*) checkout=sugar ;;
+        *) checkout=sugar-toolkit-gtk4 ;;
+    esac
+    if ! (cd "$preview_root/gtk4-preview/sources/$checkout" &&
+            patch --dry-run --reverse --force --fuzz=0 -p1 -s \
+                < "$patch_file" >/dev/null 2>&1); then
+        echo "stale GTK4 runtime archive: $(basename "$patch_file") is not applied" >&2
+        stale=1
+    fi
+done
+test "$stale" -eq 0 || {
+    echo "refusing to stage $preview_archive; rebuild and re-export the preview" >&2
+    exit 1
+}
 # Stage the built GTK4 upstream Activities from the archive, not their GTK3
 # reference copies in packages/upstream-activities. Refresh checked-in native
 # bundles even when an older preview left a real bundle directory: ln -sfn

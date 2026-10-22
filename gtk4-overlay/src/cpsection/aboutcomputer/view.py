@@ -42,7 +42,7 @@ class AboutComputer(SectionView):
         label = Gtk.Label(label=label_text)
         label.set_halign(Gtk.Align.END)
         style.apply_css_to_widget(
-            label, '* { color: %s; }' % style.COLOR_SELECTION_GREY.get_html())
+            label, 'color: %s;' % style.COLOR_SELECTION_GREY.get_html())
         box.append(label)
         self._group.add_widget(label)
         value = Gtk.Label(label=str(value_text), xalign=0)

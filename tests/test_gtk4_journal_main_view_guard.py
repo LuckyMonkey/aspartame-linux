@@ -8,7 +8,7 @@ because _active_view starts as MAIN the Journal is then blank forever.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PATCH = ROOT / 'patches/gtk4-preview/0144-journal-main-view-needs-canvas.patch'
+PATCH = ROOT / 'patches/gtk4-preview/folded/0144-journal-main-view-needs-canvas.patch'
 
 
 def _patch_text():
@@ -26,6 +26,3 @@ def test_patch_targets_show_main_view():
     assert 'def show_main_view' in _patch_text()
 
 
-def test_build_routes_the_patch_to_the_shell_checkout():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0144*) target="$root/sources/sugar" ;;' in build

@@ -45,12 +45,6 @@ def test_gtk4_dev_sync_copies_only_runtime_inputs():
     assert 'Generated guest build trees and runtime state remain untouched' in script
 
 
-def test_gtk4_dev_sync_removes_retired_share_experiments():
-    script = (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
-    assert '0186-toolkit-accept-public-join-requests.patch' in script
-    assert '0187-toolkit-invite-public-contacts.patch' in script
-
-
 def test_peer_fixture_isolated_from_the_normal_sugar_profile():
     runner = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     fixture = (ROOT / "scripts/sugar-gtk4-peer-prepare.sh").read_text()

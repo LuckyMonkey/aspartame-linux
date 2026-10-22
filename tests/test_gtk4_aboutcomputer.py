@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 INVENTORY = ROOT / 'gtk4-overlay/src/cpsection/aboutcomputer/inventory.py'
 VIEW = ROOT / 'gtk4-overlay/src/cpsection/aboutcomputer/view.py'
 MODEL = ROOT / 'gtk4-overlay/src/cpsection/aboutcomputer/model.py'
-PATCH = ROOT / 'patches/gtk4-preview/0112z-controlpanel-aboutcomputer-section.patch'
+PATCH = ROOT / 'patches/gtk4-preview/folded/0112z-controlpanel-aboutcomputer-section.patch'
 BUILD = ROOT / 'scripts/sugar-gtk4-build.sh'
 
 
@@ -88,6 +88,3 @@ def test_about_computer_is_native_refreshable_and_registered():
     assert 'collect_inventory' in model
     assert "options['aboutcomputer']" in patch
     assert 'import cpsection.aboutcomputer' in patch
-    assert '*0112*) target="$root/sources/sugar" ;;' in build
-    assert '0112-controlpanel-activity-manager-section.patch' in build
-    assert '*0112z*' in build

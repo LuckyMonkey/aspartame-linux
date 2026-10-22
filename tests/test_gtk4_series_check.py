@@ -21,8 +21,8 @@ TARGET_NAMES = {
     "$toolkit": "sugar-toolkit-gtk4",
     "$ext": "sugar-ext",
     "$log_activity": "log-activity",
-    "$root/sources/sugar": "sugar",
-    "$root/sources/sugar-datastore": "sugar-datastore",
+    "$shell": "sugar",
+    "$datastore": "sugar-datastore",
     "$casilda": "casilda",
 }
 
@@ -30,7 +30,7 @@ TARGET_NAMES = {
 def _build_routing():
     lines = BUILD.read_text().splitlines()
     start = next(i for i, l in enumerate(lines)
-                 if l.strip().startswith('case "$patch" in'))
+                 if l.strip().startswith('case "$(basename "$patch")" in'))
     end = next(i for i, l in enumerate(lines[start:], start)
                if l.strip() == "esac")
     rules = []
@@ -44,9 +44,9 @@ def _build_routing():
 
 def _build_target(path):
     for patterns, target in _build_routing():
-        if any(fnmatch.fnmatch(str(path), pattern) for pattern in patterns):
+        if any(fnmatch.fnmatch(path.name, pattern) for pattern in patterns):
             return TARGET_NAMES.get(target, "SKIP" if target is None else target)
-    return None
+    return "UNROUTED"
 
 
 def _check_target(path):

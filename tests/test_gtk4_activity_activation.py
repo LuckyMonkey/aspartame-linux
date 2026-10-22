@@ -5,17 +5,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_single_process_activity_activation_reuses_window():
-    patch = (ROOT / "patches/gtk4-preview/0047-toolkit-single-process-activation-guard.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0047-toolkit-single-process-activation-guard.patch").read_text()
     assert "_sugar_activity_instance" in patch
     assert "re-presenting existing Activity" in patch
     assert "app.add_window(activity)" in patch
-
-
-def test_activity_activation_guard_is_routed_by_guest_build():
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "*0047*" in build and "target=\"$toolkit\"" in build
-    assert '*0057*' in build
-    assert '"$patch_name" == *0047*' in build
 
 
 def test_qemu_key_helper_uses_qmp_usb_keyboard_events():
@@ -44,7 +37,7 @@ def test_qemu_key_helper_supports_activity_text_input():
 
 
 def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
-    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0157-main-shell-window-consolidated.patch").read_text()
     for key in ("Gdk.KEY_F1", "Gdk.KEY_F2", "Gdk.KEY_F3", "Gdk.KEY_F4"):
         assert key in patch
     assert "Gtk.PropagationPhase.CAPTURE" in patch
@@ -55,14 +48,13 @@ def test_zoom_keys_are_captured_at_the_gtk4_shell_window():
 
 
 def test_sugar_shortcuts_are_registered_on_home_surface():
-    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0157-main-shell-window-consolidated.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "semantic_keys.add_window(home_window)" in patch
-    assert '*0157*' in build and 'target="$root/sources/sugar"' in build
 
 
 def test_frame_and_journal_keys_are_captured_by_gtk4_shell():
-    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0157-main-shell-window-consolidated.patch").read_text()
     assert "Gdk.KEY_F5" in patch
     assert "Gdk.KEY_F6" in patch
     assert "notify_key_press()" in patch
@@ -70,75 +62,64 @@ def test_frame_and_journal_keys_are_captured_by_gtk4_shell():
 
 
 def test_journal_unique_values_uses_datastore_variant_dictionary():
-    patch = (ROOT / "patches/gtk4-preview/0083-journal-unique-values-signature.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0083-journal-unique-values-signature.patch").read_text()
     assert "empty_dict = dbus.Dictionary({}, signature='sv')" in patch
     assert "get_uniquevaluesfor" in patch
 
 
 def test_journal_surface_receives_semantic_sugar_keys():
-    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0157-main-shell-window-consolidated.patch").read_text()
     assert "semantic_keys.add_window(journal)" in patch
 
 
 def test_home_surface_handles_semantic_zoom_keys():
-    patch = (ROOT / "patches/gtk4-preview/0158-home-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0158-home-window-consolidated.patch").read_text()
     assert "zoom_levels =" in patch
     assert "ShellModel.ZOOM_MESH" in patch
 
 
 def test_home_zoom_selects_gtk4_view_stack():
-    patch = (ROOT / "patches/gtk4-preview/0158-home-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0158-home-window-consolidated.patch").read_text()
     assert "set_visible_child_name('mesh')" in patch
     assert "set_visible_child_name('group')" in patch
 
 
 def test_semantic_zoom_actions_patch_is_valid():
-    patch = (ROOT / "patches/gtk4-preview/0087-shell-show-zoom-actions.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0087-shell-show-zoom-actions.patch").read_text()
     assert "def ShowNeighborhood" in patch
     assert "def ShowGroup" in patch
 
 
 def test_home_focus_surface_patch():
-    patch = (ROOT / "patches/gtk4-preview/0158-home-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0158-home-window-consolidated.patch").read_text()
     assert "self.set_focusable(True)" in patch
 
 
 def test_shell_exposes_semantic_frame_action():
-    patch = (ROOT / "patches/gtk4-preview/0052-shell-show-frame-action.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0052-shell-show-frame-action.patch").read_text()
     assert "def ShowFrame" in patch
     assert "frame.get_view().show()" in patch
 
 
 def test_empty_collaboration_state_is_routed_into_guest_sugar():
-    patch = (ROOT / "patches/gtk4-preview/0055-empty-space-view-state.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0055-empty-space-view-state.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "No friends are nearby yet." in patch
-    assert '*0055*' in build and 'target="$root/sources/sugar"' in build
-    assert '"$patch_name" == *0055*' in build
-
-
-def test_empty_group_view_patch_is_semantically_idempotent():
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert '"$patch_name" == *0055*' in build
-    assert 'No friends are nearby yet\\.' in build
-    assert 'self\\._empty_state' in build
 
 
 def test_control_panel_can_open_without_active_activity():
-    patch = (ROOT / "patches/gtk4-preview/0057-controlpanel-home-owner.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0057-controlpanel-home-owner.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "if activity is not None" in patch
     assert "panel.set_transient_for(shell_model._main_window)" in patch
-    assert "*0057*" in build and 'target="$root/sources/sugar"' in build
 
 
 def test_shell_exposes_semantic_control_panel_action():
-    patch = (ROOT / "patches/gtk4-preview/0058-shell-show-controlpanel-action.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0058-shell-show-controlpanel-action.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "def ShowControlPanel" in patch
     assert "ControlPanel(0)" in patch
     assert "getattr(self._shell_model, '_main_window', None)" in patch
-    assert "*0058*" in build
 
 
 def test_native_help_activity_is_staged_for_modern_space():
@@ -173,9 +154,9 @@ def test_native_help_activity_is_staged_for_modern_space():
 
 
 def test_shell_stop_activity_is_authoritative_and_terminates_child():
-    stop = (ROOT / "patches/gtk4-preview/0062-shell-stop-activity-action.patch").read_text()
-    terminate = (ROOT / "patches/gtk4-preview/0064-shell-stop-activity-terminates-process.patch").read_text()
-    fallback = (ROOT / "patches/gtk4-preview/0065-shell-stop-activity-pid-fallback.patch").read_text()
+    stop = (ROOT / "patches/gtk4-preview/folded/0062-shell-stop-activity-action.patch").read_text()
+    terminate = (ROOT / "patches/gtk4-preview/folded/0064-shell-stop-activity-terminates-process.patch").read_text()
+    fallback = (ROOT / "patches/gtk4-preview/folded/0065-shell-stop-activity-pid-fallback.patch").read_text()
     assert "def StopActivity(self, activity_id)" in stop
     assert "get_activity_by_id" in stop
     assert "os.kill(pid, 15)" in terminate
@@ -183,59 +164,53 @@ def test_shell_stop_activity_is_authoritative_and_terminates_child():
 
 
 def test_child_exit_notifies_shell_without_self_dbus_roundtrip():
-    patch = (ROOT / "patches/gtk4-preview/0066-toolkit-local-launch-failure-notify.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0066-toolkit-local-launch-failure-notify.patch").read_text()
     assert "shell.get_model().notify_launch_failed(activity_id)" in patch
     assert "+        dbus.Interface(shell" not in patch
 
 
 def test_activity_removal_is_idempotent_in_shell_and_frame():
-    patch = (ROOT / "patches/gtk4-preview/0067-shell-idempotent-activity-removal.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0067-shell-idempotent-activity-removal.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "self._buttons.pop(home_activity, None)" in patch
     assert "home_activity not in self._activities" in patch
-    assert "*0067*" in build
 
 
 def test_gtk4_menuitem_preserves_sugar_set_image_api():
-    patch = (ROOT / "patches/gtk4-preview/0068-toolkit-menuitem-set-image.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0068-toolkit-menuitem-set-image.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "def set_image(self, image)" in patch
     assert "self._content_box.prepend(image)" in patch
-    assert "*0068*" in build
 
 
 def test_group_view_imports_gettext_for_empty_state():
-    patch = (ROOT / "patches/gtk4-preview/0069-groupbox-gettext-import.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0069-groupbox-gettext-import.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "from gettext import gettext as _" in patch
-    assert "*0069*" in build
 
 
 def test_compositor_key_capture_patch_is_routed():
-    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0157-main-shell-window-consolidated.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "shell_instance.compositor.add_controller(activity_keys)" in patch
     assert "Gtk.PropagationPhase.CAPTURE" in patch
-    assert "*0157*" in build
 
 
 def test_zoom_shortcuts_dismiss_frame_overlay():
-    patch = (ROOT / "patches/gtk4-preview/0157-main-shell-window-consolidated.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0157-main-shell-window-consolidated.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "frame.get_view().hide()" in patch
-    assert "*0157*" in build
 
 
 def test_home_activity_icons_expose_accessible_identity():
-    patch = (ROOT / "patches/gtk4-preview/0073-home-activity-accessibility.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0073-home-activity-accessibility.patch").read_text()
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     assert "Gtk.AccessibleProperty.LABEL" in patch
     assert "Gtk.AccessibleRole.BUTTON" in patch
-    assert "*0073*" in build
 
 
 def test_shell_exposes_semantic_journal_action():
-    patch = (ROOT / "patches/gtk4-preview/0049-shell-show-journal-action.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0049-shell-show-journal-action.patch").read_text()
     assert "def ShowJournal" in patch
     assert "journal.show_journal()" in patch
     assert "model.ZOOM_ACTIVITY" in patch

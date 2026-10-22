@@ -1,7 +1,13 @@
 diff --git a/logviewer.py b/logviewer.py
+index aaa3426..9fbda10 100644
 --- a/logviewer.py
 +++ b/logviewer.py
-@@ -102,1 +102,3 @@
+@@ -100,6 +100,8 @@ class MultiLogView(Gtk.Paned):
+         scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+         scroll.set_child(self._textview)
          self.set_end_child(scroll)
 +        self.set_position(420)
 +        self.set_shrink_start_child(False)
+ 
+     def _sort_key(self, path):
+         name = os.path.basename(path).lower()

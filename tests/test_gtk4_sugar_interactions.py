@@ -2,7 +2,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).parents[1]
-PATCH = ROOT / "patches/gtk4-preview/0028-toolkit-sugar-interactions.patch"
+PATCH = ROOT / "patches/gtk4-preview/folded/0028-toolkit-sugar-interactions.patch"
 
 
 def _changed_lines(prefix):
@@ -32,7 +32,7 @@ def test_canvas_icons_have_one_primary_activation_path():
 def test_svg_scaling_and_toolbar_snapshotting_are_native_and_theme_driven():
     patch = PATCH.read_text()
     snapshot_patch = (
-        ROOT / "patches/gtk4-preview/0032-toolkit-toolbar-snapshot-dispatch.patch"
+        ROOT / "patches/gtk4-preview/folded/0032-toolkit-toolbar-snapshot-dispatch.patch"
     ).read_text()
     added = _changed_lines("+")
     removed = _changed_lines("-")
@@ -43,13 +43,6 @@ def test_svg_scaling_and_toolbar_snapshotting_are_native_and_theme_driven():
     assert "+        Gtk.Widget.do_snapshot(self, snapshot)" in snapshot_patch
     assert "@theme_selected_bg_color" in patch
     assert "+" + "@theme_selected_bg_color" not in patch
-
-
-def test_build_accepts_interaction_patch_after_snapshot_followup():
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "click_gesture\\.set_button(1)" in build
-    assert "class _PaletteWindowWidget(Gtk.Popover):" in build
-    assert "verified existing Sugar interaction/snapshot result" in build
 
 
 def test_toolbuttons_use_only_sugar_palettes_for_tooltips():

@@ -11,52 +11,38 @@ def _toolkit_route():
     )
 
 def test_palette_menu_item_compatibility_patch_maps_old_calls_to_gtk4_image_api():
-    patch = (ROOT / "patches/gtk4-preview/0013-toolkit-palette-icon-compat.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0013-toolkit-palette-icon-compat.patch").read_text()
     assert "def set_icon_widget(self, icon):" in patch
     assert "self.set_image(icon)" in patch
 
-def test_gtk4_build_applies_palette_compatibility_to_toolkit():
-    assert "*0013*" in _toolkit_route()
-
 
 def test_cell_renderer_props_compatibility_patch_targets_toolkit_boundary():
-    patch = (ROOT / "patches/gtk4-preview/0015-toolkit-cell-renderer-props-compat.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0015-toolkit-cell-renderer-props-compat.patch").read_text()
     assert "class _CellRendererIconProps" in patch
     assert "self.props = _CellRendererIconProps(self)" in patch
     assert "def connect(self, signal_name, callback, *user_data):" in patch
-    assert "*0015*" in _toolkit_route()
-
-
-def test_build_recognizes_0015_semantic_result_after_native_renderer_hunks():
-    build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    assert "class CellRendererIcon(Gtk.CellRenderer):" in build
-    assert "self\\.props = _CellRendererIconProps(self)" in build
-    assert "def connect(self, signal_name, callback, \\*user_data):" in build
-    assert "verified existing CellRendererIcon property/signal contract" in build
 
 
 def test_gtk4_cell_renderer_uses_native_gobject_boundary():
-    patch = (ROOT / "patches/gtk4-preview/0016-toolkit-cell-renderer-gobject.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0016-toolkit-cell-renderer-gobject.patch").read_text()
     assert "class CellRendererIcon(Gtk.CellRenderer):" in patch
     assert "do_snapshot(self, snapshot, widget, background_area, cell_area, flags)" in patch
-    assert "*0016*" in _toolkit_route()
 
 
 def test_gtk4_icon_file_alias_is_staged_after_renderer_patch():
-    patch = (ROOT / "patches/gtk4-preview/0017-toolkit-icon-file-alias.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0017-toolkit-icon-file-alias.patch").read_text()
     assert "file = GObject.Property" in patch
-    assert "*0017*" in _toolkit_route()
 
 
 def test_gtk4_datastore_uses_the_stable_dbus_contract():
-    patch = (ROOT / "patches/gtk4-preview/0018-toolkit-datastore-dbus-contract.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0018-toolkit-datastore-dbus-contract.patch").read_text()
     assert '+DS_DBUS_SERVICE = "org.laptop.sugar.DataStore"' in patch
     assert '+DS_DBUS_INTERFACE = "org.laptop.sugar.DataStore"' in patch
     assert 'org.laptop.sugar4.DataStore' in patch
 
 
 def test_gtk4_cell_renderer_preserves_scrolling_contract():
-    patch = (ROOT / "patches/gtk4-preview/0020-toolkit-cell-renderer-scrolling.patch").read_text()
+    patch = (ROOT / "patches/gtk4-preview/folded/0020-toolkit-cell-renderer-scrolling.patch").read_text()
     assert "self._is_scrolling = False" in patch
     assert 'scrolled.connect("scroll-start", self._scroll_start_cb)' in patch
     assert 'scrolled.connect("scroll-end", self._scroll_end_cb)' in patch
@@ -67,7 +53,6 @@ def test_gtk4_build_stages_and_launcher_starts_datastore_preview():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
     run = (ROOT / "scripts/sugar-gtk4-run.sh").read_text()
     session = (ROOT / "scripts/sugar-gtk4-session.sh").read_text()
-    assert "0014*) target=\"$root/sources/sugar-datastore\"" in build
     assert "python_version=$($venv/bin/python" in build
     assert "metadatareader$python_ext_suffix" in build
     assert "metadata_reader=$(find" in run

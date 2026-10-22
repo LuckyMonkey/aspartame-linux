@@ -8,7 +8,7 @@ the image. Patch 0145 adds os-release as a source.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PATCH = ROOT / 'patches/gtk4-preview/0145-aboutcomputer-build-from-os-release.patch'
+PATCH = ROOT / 'patches/gtk4-preview/folded/0145-aboutcomputer-build-from-os-release.patch'
 
 
 def _added_lines():
@@ -38,6 +38,3 @@ def test_patch_tolerates_a_missing_or_malformed_os_release():
     assert 'except (OSError, ValueError)' in added
 
 
-def test_build_routes_the_patch_to_the_shell_checkout():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0145*) target="$root/sources/sugar" ;;' in build

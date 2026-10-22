@@ -9,7 +9,7 @@ and never registers a Gtk window. Every press raised ValueError.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PATCH = ROOT / 'patches/gtk4-preview/0151-shell-alt-tab-walks-tracked-activities.patch'
+PATCH = ROOT / 'patches/gtk4-preview/folded/0151-shell-alt-tab-walks-tracked-activities.patch'
 
 
 def _added():
@@ -57,6 +57,3 @@ def test_patch_leaves_the_window_filter_for_its_other_callers():
     assert 'ret.append(i)' not in removed
 
 
-def test_build_routes_the_patch_to_the_shell_checkout():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0151*) target="$root/sources/sugar" ;;' in build

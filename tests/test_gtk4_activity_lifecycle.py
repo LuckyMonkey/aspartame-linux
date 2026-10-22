@@ -25,7 +25,7 @@ def _patch(name):
 
 
 def test_activity_launch_patch_owns_the_child_process_contract():
-    patch = _patch("0022-toolkit-activity-launch.patch")
+    patch = _patch("folded/0022-toolkit-activity-launch.patch")
 
     assert "def create(bundle, handle):" in patch
     assert "subprocess.Popen(" in patch
@@ -35,13 +35,13 @@ def test_activity_launch_patch_owns_the_child_process_contract():
     assert "GLib.child_watch_add(" in patch
     assert "os.close(client_fd)" in patch
     assert "_notify_launch_failed(handle.activity_id)" in patch
-    id_patch = _patch("0035-toolkit-activity-id-argument.patch")
+    id_patch = _patch("folded/0035-toolkit-activity-id-argument.patch")
     assert 'command.extend(["--activity-id", handle.activity_id])' in id_patch
 
 
 def test_activity_service_exposes_the_shell_lifecycle_boundary():
-    patch = _patch("0023-toolkit-activity-dbus-lifecycle.patch")
-    path_patch = _patch("0033-toolkit-activity-object-path.patch")
+    patch = _patch("folded/0023-toolkit-activity-dbus-lifecycle.patch")
+    path_patch = _patch("folded/0033-toolkit-activity-object-path.patch")
 
     assert "class ActivityService(dbus.service.Object):" in patch
     assert '"org.laptop.Activity" + activity_id' in patch
@@ -55,7 +55,7 @@ def test_activity_service_exposes_the_shell_lifecycle_boundary():
 
 def test_activity_entrypoint_and_window_cleanup_are_wired():
     entrypoint = (ROOT / "scripts/sugar-activity4").read_text()
-    lifecycle = _patch("0025-toolkit-activity-lifecycle.patch")
+    lifecycle = _patch("folded/0025-toolkit-activity-lifecycle.patch")
 
     assert "sugar4.activity.activityinstance" in entrypoint
     assert "from sugar4.activity.activityservice import ActivityService" in lifecycle
@@ -73,23 +73,6 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
         / "archiso/aspartame/airootfs/root/customize_airootfs.sh"
     ).read_text()
 
-    for patch_name in (
-        "*0022*",
-        "*0023*",
-        "*0024*",
-        "*0025*",
-        "*0033*",
-        "*0034*",
-        "*0035*",
-        "*0036*",
-        "*0037*",
-        "*0038*",
-        "*0042*",
-        "*0043*",
-        "*0044*",
-    ):
-        assert patch_name in build
-
     assert 'test -x "$venv/bin/sugar-activity4"' in build
     assert 'test -x "$venv/bin/sugar-activity4"' in run
     assert "find /usr/lib/aspartame/gtk4-preview/prefix/share/sugar/activities" in customize
@@ -101,7 +84,7 @@ def test_build_routes_and_runtime_requires_the_lifecycle_surface():
 
 
 def test_journal_fallback_enters_the_visible_activity_stack():
-    patch = _patch("0043-keyhandler-journal-zoom.patch")
+    patch = _patch("folded/0043-keyhandler-journal-zoom.patch")
     assert "journal = journalactivity.get_journal()" in patch
     assert "journal.show_journal()" in patch
     assert "model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)" in patch
@@ -109,46 +92,42 @@ def test_journal_fallback_enters_the_visible_activity_stack():
 
 def test_activity_object_path_encoding_is_routed_to_toolkit_and_shell():
     build = (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-    shell_patch = _patch("0034-shell-activity-object-path.patch")
-    assert "*0033*" in build
-    assert "*0034*" in build
+    shell_patch = _patch("folded/0034-shell-activity-object-path.patch")
     assert "def _get_service_path(self):" in shell_patch
     assert "replace('-', '_')" in shell_patch
 
 
 def test_shell_registers_casilda_activity_before_spawn():
-    patch = _patch("0036-shell-notify-activity-launch.patch")
+    patch = _patch("folded/0036-shell-notify-activity-launch.patch")
     assert "shell_model.notify_launch(activity_id, bundle.get_bundle_id())" in patch
 
 
 def test_journal_bundle_launch_uses_shell_lifecycle_helper():
-    patch = _patch("0037-journal-bundle-launch-lifecycle.patch")
+    patch = _patch("folded/0037-journal-bundle-launch-lifecycle.patch")
     assert "misc.launch(bundle, object_id=object_id)" in patch
     assert "+    activityfactory.create(bundle" not in patch
 
 
 def test_launcher_restores_activity_surface_after_overlay():
-    patch = _patch("0038-launcher-restore-activity-surface.patch")
+    patch = _patch("folded/0038-launcher-restore-activity-surface.patch")
     assert 'model.stack.set_visible_child_name("activity")' in patch
     assert "model.zoom_level == model.ZOOM_ACTIVITY" in patch
 
 
 def test_main_does_not_install_duplicate_zoom_key_controller():
-    patch = _patch("0157-main-shell-window-consolidated.patch")
+    patch = _patch("folded/0157-main-shell-window-consolidated.patch")
     assert "_capture_zoom_key" in patch
     assert "shell_instance._sugar_zoom_controller" in patch
 
 
 def test_home_filters_favorites_with_missing_bundle_paths():
-    patch = _patch("0039-home-filter-missing-activities.patch")
+    patch = _patch("folded/0039-home-filter-missing-activities.patch")
     assert "os.path.isdir(bundle_path)" in patch
     assert "Skipping favorite with missing bundle" in patch
 
 
-
-
 def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():
-    patch = _patch("0022-toolkit-activity-launch.patch")
+    patch = _patch("folded/0022-toolkit-activity-launch.patch")
 
     assert "except (RuntimeError, ValueError) as error:" in patch
     assert 'logging.error("GTK4 Activity %s cannot launch: %s",' in patch
@@ -159,7 +138,7 @@ def test_unsupported_activity_reports_launch_failure_instead_of_pulsing():
 
 
 def test_gtk3_launcher_guard_is_kept_in_the_activity_launch_patch():
-    patch = _patch("0022-toolkit-activity-launch.patch")
+    patch = _patch("folded/0022-toolkit-activity-launch.patch")
     assert 'launcher_name == "sugar-activity3"' in patch
 
 

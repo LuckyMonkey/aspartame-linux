@@ -121,6 +121,8 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
             "OUT_DIR": str(tmp_path / "out"),
             "WORK_DIR": str(work),
             "GTK4_PREVIEW_ARCHIVE": str(archive),
+            # The fixture archive has no sources for the rebased series.
+            "GTK4_PREVIEW_PATCH_DIR": str(tmp_path / "no-series"),
         },
         check=True,
         capture_output=True,
@@ -139,15 +141,9 @@ def test_staged_activities_keep_gtk4_log_and_refresh_legacy_count(tmp_path):
     assert not (staged / "Count.activity/gtk4-count-activity").exists()
     assert (staged / "Calculate.activity/calculateactivity4.py").is_file()
     assert not any(path.is_symlink() for path in staged.rglob("*"))
-    staged_gui = (
-        work / "profile/airootfs/usr/lib/aspartame/gtk4-preview"
-        / "sources/sugar/src/jarabe/controlpanel/gui.py"
-    )
-    assert "import cpsection.aboutcomputer" in staged_gui.read_text()
-    assert "staged GTK4 About my Computer registration patch" in build_result.stdout
-    staged_service = staged_gui.parent.parent / "view/service.py"
-    assert "self._control_panel = panel" in staged_service.read_text()
-    assert "return True" in staged_service.read_text()
+    # Staging no longer patches the archive's sources: a stale archive is
+    # refused (see test_iso_build_refuses_an_archive_without_the_rebased_series).
+    assert "staged GTK4 About my Computer registration patch" not in build_result.stdout
 
 
 def test_staged_layout_activities_replace_nested_archive_copies(tmp_path):
@@ -197,6 +193,8 @@ def test_staged_layout_activities_replace_nested_archive_copies(tmp_path):
             "OUT_DIR": str(tmp_path / "out"),
             "WORK_DIR": str(work),
             "GTK4_PREVIEW_ARCHIVE": str(archive),
+            # The fixture archive has no sources for the rebased series.
+            "GTK4_PREVIEW_PATCH_DIR": str(tmp_path / "no-series"),
         },
         check=True,
         capture_output=True,
@@ -255,3 +253,10 @@ def test_export_contains_built_runtime_without_user_state(tmp_path):
         }
         assert not any(name.startswith(("gtk4-preview/logs/", "gtk4-preview/build/"))
                        for name in names)
+
+
+def test_iso_build_refuses_an_archive_without_the_rebased_series():
+    script = (ROOT / "scripts/build-iso.sh").read_text()
+    assert "stale GTK4 runtime archive" in script
+    assert "--reverse --force --fuzz=0" in script
+    assert "exit 1" in script.split("stale GTK4 runtime archive", 1)[1]

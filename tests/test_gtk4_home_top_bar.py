@@ -14,8 +14,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PATCHES = ROOT / 'patches/gtk4-preview'
-CENTRING = PATCHES / '0154-home-toolbar-centres-its-items.patch'
-FURNITURE = PATCHES / '0155-home-top-bar-clock-and-help-icon.patch'
+CENTRING = PATCHES / 'folded/0154-home-toolbar-centres-its-items.patch'
+FURNITURE = PATCHES / 'folded/0155-home-top-bar-clock-and-help-icon.patch'
 
 
 def _added(patch):
@@ -47,7 +47,7 @@ def test_clock_is_placed_as_an_overlay_child():
     # Keeping it out of the toolbar's allocation flow is what stops the
     # search and view controls from shifting the time sideways. The
     # HomeWindow half of this now lives in the consolidated patch.
-    home = (ROOT / 'patches/gtk4-preview/'
+    home = (ROOT / 'patches/gtk4-preview/folded/'
             '0158-home-window-consolidated.patch').read_text()
     assert 'self._overlay.add_overlay(self._clock)' in home
     assert 'self._overlay.set_child(self._box)' in home
@@ -96,7 +96,3 @@ def test_help_button_degrades_when_the_artwork_is_absent():
     assert 'if not os.path.exists(help_path):' in _added(FURNITURE)
 
 
-def test_build_routes_both_patches_to_the_shell_checkout():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0154*) target="$root/sources/sugar" ;;' in build
-    assert '*0155*) target="$root/sources/sugar" ;;' in build

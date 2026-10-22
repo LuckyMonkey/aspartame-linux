@@ -69,7 +69,7 @@ def test_fresh_patch_replays_complete_action(tmp_path, monkeypatch):
     target.write_text('class UIService:\n    def ShowFrame(self):\n'
                       '        from jarabe import frame\n'
                       '        frame.get_view().show()\n        return True\n')
-    patch = ROOT / 'patches/gtk4-preview/0058-shell-show-controlpanel-action.patch'
+    patch = ROOT / 'patches/gtk4-preview/folded/0058-shell-show-controlpanel-action.patch'
     subprocess.run(['patch', '--batch', '-p1', '-i', str(patch)],
                    cwd=tmp_path, check=True, capture_output=True)
     exercise(target.read_text(), monkeypatch)
@@ -77,6 +77,9 @@ def test_fresh_patch_replays_complete_action(tmp_path, monkeypatch):
 
 
 def test_build_and_packaging_repair_old_exports():
-    for name in ('sugar-gtk4-build.sh', 'build-iso.sh'):
-        assert 'scripts/repair-gtk4-controlpanel-action.py' in (
-            ROOT / 'scripts' / name).read_text()
+    # The guest build still repairs an old checkout; the ISO build now
+    # refuses an archive that predates the rebased series instead.
+    assert 'scripts/repair-gtk4-controlpanel-action.py' in (
+        ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
+    assert 'stale GTK4 runtime archive' in (
+        ROOT / 'scripts/build-iso.sh').read_text()

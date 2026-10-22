@@ -1,0 +1,3516 @@
+Aspartame downstream delta for sugar, rebased onto Sugar PR #1106 at
+beaae56c23acab8781525319d4da2884082ab0e7 (2026-10-22).
+
+Generated from the verified guest preview checkout (October 5 build plus
+0058, 0112z and 0203), rebased onto the new upstream head. It folds every
+patch now kept for provenance under patches/gtk4-preview/folded/. It also
+converts src/jarabe/main.py and src/jarabe/frame/framewindow.py back to LF:
+upstream commits 9103057/beaae56 accidentally introduced CRLF line endings.
+Regenerate with scripts/sugar-gtk4-rebase.sh; never hand-edit hunks.
+
+diff --git a/extensions/cpsection/aboutcomputer/model.py b/extensions/cpsection/aboutcomputer/model.py
+index 5065b35..eb9ae3d 100644
+--- a/extensions/cpsection/aboutcomputer/model.py
++++ b/extensions/cpsection/aboutcomputer/model.py
+@@ -16,6 +16,7 @@
+ 
+ import os
+ import logging
++import platform
+ import subprocess
+ from gettext import gettext as _
+ import errno
+@@ -93,6 +94,22 @@ def get_build_number():
+             build_no, stderr_ = popen.communicate()
+             build_no = build_no.strip().decode()
+ 
++    if build_no is None or not build_no:
++        # Every modern distribution identifies itself in os-release. Without
++        # this the OLPC and Red Hat specific probes above are the only
++        # sources, so Aspartame reported its build as 'Not available' on a
++        # system that names itself plainly.
++        try:
++            os_release = platform.freedesktop_os_release()
++        except (OSError, ValueError):
++            os_release = {}
++        build_no = (os_release.get('IMAGE_ID') or
++                    os_release.get('PRETTY_NAME') or
++                    os_release.get('NAME'))
++        build_id = os_release.get('IMAGE_VERSION') or os_release.get('BUILD_ID')
++        if build_no and build_id:
++            build_no = '%s %s' % (build_no, build_id)
++
+     if build_no is None or not build_no:
+         build_no = _not_available
+ 
+diff --git a/extensions/cpsection/language/view.py b/extensions/cpsection/language/view.py
+index e9b9f01..2bfea86 100644
+--- a/extensions/cpsection/language/view.py
++++ b/extensions/cpsection/language/view.py
+@@ -66,6 +66,9 @@ class Language(SectionView):
+         self._cursor_change_handler = None
+ 
+         self._available_locales = self._model.read_all_languages()
++        if not self._available_locales:
++            self._available_locales = [('English', 'USA', 'C.UTF-8')]
++
+         self._selected_locales = self._model.get_languages()
+ 
+         for language, country, code in self._available_locales:
+diff --git a/src/jarabe/controlpanel/gui.py b/src/jarabe/controlpanel/gui.py
+index 752dc4a..e80d93a 100644
+--- a/src/jarabe/controlpanel/gui.py
++++ b/src/jarabe/controlpanel/gui.py
+@@ -86,8 +86,18 @@ class ControlPanel(Gtk.Window):
+ 
+         key_controller = Gtk.EventControllerKey()
+         key_controller.connect('key-pressed', self.__key_press_event_cb)
++        key_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+         self.add_controller(key_controller)
+ 
++        # This window is not a Gtk.ApplicationWindow, so 'window-added'
++        # never fires for it and the shell's key handler never attached.
++        # Nothing the shell owns reached the keyboard while the control
++        # panel was up - including the keys that leave the Space.
++        from jarabe.view import keyhandler as _keyhandler
++        _handler = _keyhandler.get_instance()
++        if _handler is not None:
++            _handler.add_window(self)
++
+         self._toolbar = None
+         self._canvas = None
+         self._table = None
+@@ -196,8 +206,8 @@ class ControlPanel(Gtk.Window):
+         sh = self._get_screen_height()
+         self._max_columns = int(0.285 * (float(sw) / style.GRID_CELL_SIZE - 3))
+         offset = style.GRID_CELL_SIZE
+-        width = sw - offset * 2
+-        height = sh - offset * 2
++        width = sw
++        height = sh
+         self.set_size_request(width, height)
+         self.set_default_size(width, height)
+         if hasattr(self, '_table') and self._table is not None:
+@@ -338,7 +348,7 @@ class ControlPanel(Gtk.Window):
+                 self.show_section_view(self._selected[0])
+                 return True
+ 
+-        if keyval == Gdk.KEY_Escape:
++        if keyval in (Gdk.KEY_Escape, Gdk.KEY_F3, Gdk.KEY_F4):
+             if self._toolbar == self._main_toolbar:
+                 self.__stop_clicked_cb(None)
+                 self.close()
+@@ -456,6 +466,32 @@ class ControlPanel(Gtk.Window):
+                 except Exception:
+                     logging.exception('Exception while loading extension:')
+ 
++        try:
++            import cpsection.activities
++            options.setdefault('activities', {
++                'alerts': [],
++                'view': 'ActivityManager',
++                'icon': cpsection.activities.ICON,
++                'title': cpsection.activities.TITLE,
++                'color': None,
++                'keywords': list(cpsection.activities.KEYWORDS),
++            })
++        except Exception:
++            logging.exception('Exception while loading GTK4 Activity Manager:')
++
++        try:
++            import cpsection.aboutcomputer
++            options['aboutcomputer'] = {
++                'alerts': [],
++                'view': 'AboutComputer',
++                'icon': cpsection.aboutcomputer.ICON,
++                'title': cpsection.aboutcomputer.TITLE,
++                'color': None,
++                'keywords': list(cpsection.aboutcomputer.KEYWORDS),
++            }
++        except Exception:
++            logging.exception('Exception while loading GTK4 About my Computer:')
++
+         return options
+ 
+     def __cancel_clicked_cb(self, widget):
+@@ -627,6 +663,12 @@ class _SectionIcon(Gtk.Box):
+         self.set_valign(Gtk.Align.CENTER)
+         self.set_hexpand(True)
+         self.set_vexpand(True)
++        self.set_focusable(True)
++        self.set_accessible_role(Gtk.AccessibleRole.BUTTON)
++        self.update_property([Gtk.AccessibleProperty.LABEL], [self._title])
++        key = Gtk.EventControllerKey()
++        key.connect('key-pressed', self._key_pressed)
++        self.add_controller(key)
+ 
+         self._icon = Icon(icon_name=self._icon_name,
+                           pixel_size=self._pixel_size,
+@@ -647,6 +689,12 @@ class _SectionIcon(Gtk.Box):
+         self._label.set_visible(True)
+         self._icon.set_visible(True)
+ 
++    def _key_pressed(self, controller, keyval, keycode, state):
++        if keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter, Gdk.KEY_space):
++            self.emit('option-clicked')
++            return True
++        return False
++
+     def _on_clicked(self, gesture, n_press, x, y):
+         self.emit('option-clicked')
+ 
+diff --git a/src/jarabe/desktop/activitieslist.py b/src/jarabe/desktop/activitieslist.py
+index dcb50c4..038da5b 100644
+--- a/src/jarabe/desktop/activitieslist.py
++++ b/src/jarabe/desktop/activitieslist.py
+@@ -80,7 +80,8 @@ class ActivitiesTreeView(Gtk.TreeView):
+         for i in range(desktop.get_number_of_views()):
+             fav_column = Gtk.TreeViewColumn()
+             cell_favorite = CellRendererFavorite(i)
+-            cell_favorite.connect('clicked', self.__favorite_clicked_cb)
++            if hasattr(cell_favorite, 'connect'):
++                cell_favorite.connect('clicked', self.__favorite_clicked_cb)
+             fav_column.pack_start(cell_favorite, True)
+             fav_column.set_cell_data_func(cell_favorite,
+                                           self.__favorite_set_data_cb)
+@@ -89,7 +90,8 @@ class ActivitiesTreeView(Gtk.TreeView):
+             self._favorite_cells.append(cell_favorite)
+ 
+         self.cell_icon = CellRendererActivityIcon()
+-        self.cell_icon.connect('clicked', self.__activity_icon_clicked_cb)
++        if hasattr(self.cell_icon, 'connect'):
++            self.cell_icon.connect('clicked', self.__activity_icon_clicked_cb)
+ 
+         column = Gtk.TreeViewColumn()
+         column.pack_start(self.cell_icon, True)
+@@ -157,9 +159,9 @@ class ActivitiesTreeView(Gtk.TreeView):
+         favorite = \
+             model[tree_iter][self._model.column_favorites[cell.favorite_view]]
+         if favorite:
+-            cell.props.xo_color = profile.get_color()
++            cell.set_xo_color(profile.get_color())
+         else:
+-            cell.props.xo_color = None
++            cell.set_xo_color(None)
+ 
+     def __favorite_clicked_cb(self, cell, path):
+         row = self.get_model()[path]
+@@ -409,13 +411,10 @@ class CellRendererFavorite(CellRendererIcon):
+         CellRendererIcon.__init__(self)
+ 
+         self.favorite_view = favorite_view
+-        self.props.width = style.GRID_CELL_SIZE
+-        self.props.height = style.GRID_CELL_SIZE
+-        self.props.size = style.SMALL_ICON_SIZE
+-        self.props.icon_name = desktop.get_favorite_icons()[favorite_view]
+-        self.props.fill_color = style.COLOR_BUTTON_GREY.get_svg()
+-        self.props.stroke_color = style.COLOR_TRANSPARENT.get_svg()
+-        self.props.mode = Gtk.CellRendererMode.ACTIVATABLE
++        self.set_size(style.GRID_CELL_SIZE)
++        self.set_icon_name(desktop.get_favorite_icons()[favorite_view])
++        self.set_fill_color(style.COLOR_BUTTON_GREY.get_svg())
++        self.set_stroke_color(style.COLOR_TRANSPARENT.get_svg())
+ 
+ 
+ class CellRendererActivityIcon(CellRendererIcon):
+@@ -429,16 +428,13 @@ class CellRendererActivityIcon(CellRendererIcon):
+     def __init__(self):
+         CellRendererIcon.__init__(self)
+ 
+-        self.props.width = style.GRID_CELL_SIZE
+-        self.props.height = style.GRID_CELL_SIZE
+-        self.props.size = style.STANDARD_ICON_SIZE
+-        self.props.stroke_color = style.COLOR_BUTTON_GREY.get_svg()
+-        self.props.fill_color = style.COLOR_TRANSPARENT.get_svg()
+-        self.props.mode = Gtk.CellRendererMode.INERT
++        self.set_size(style.GRID_CELL_SIZE)
++        self.set_stroke_color(style.COLOR_BUTTON_GREY.get_svg())
++        self.set_fill_color(style.COLOR_TRANSPARENT.get_svg())
+ 
+         prelit_color = profile.get_color()
+-        self.props.prelit_stroke_color = prelit_color.get_stroke_color()
+-        self.props.prelit_fill_color = prelit_color.get_fill_color()
++        self._prelit_stroke_color = prelit_color.get_stroke_color()
++        self._prelit_fill_color = prelit_color.get_fill_color()
+ 
+ 
+ class ClearMessageBox(Gtk.Box):
+diff --git a/src/jarabe/desktop/favoriteslayout.py b/src/jarabe/desktop/favoriteslayout.py
+index 835f646..2551fde 100644
+--- a/src/jarabe/desktop/favoriteslayout.py
++++ b/src/jarabe/desktop/favoriteslayout.py
+@@ -200,6 +200,42 @@ class SpreadLayout(ViewLayout):
+ 
+                 if hasattr(child, "get_positioning_data"):
+                     positioning_data = child.get_positioning_data()
++                    if positioning_data is None:
++                        # A peer can be discovered before its BuddyInfo key
++                        # arrives.  Keep layout allocation alive and give the
++                        # unkeyed child a unique, local placement token.
++                        positioning_data = '%s:%s' % (
++                            type(child).__qualname__, id(child))
++                    if positioning_data is None:
++                        # A peer can be discovered before its BuddyInfo key
++                        # arrives.  Keep layout allocation alive and give the
++                        # unkeyed child a unique, local placement token.
++                        positioning_data = '%s:%s' % (
++                            type(child).__qualname__, id(child))
++                    if positioning_data is None:
++                        # A peer can be discovered before its BuddyInfo key
++                        # arrives.  Keep layout allocation alive and give the
++                        # unkeyed child a unique, local placement token.
++                        positioning_data = '%s:%s' % (
++                            type(child).__qualname__, id(child))
++                    if positioning_data is None:
++                        # A peer can be discovered before its BuddyInfo key
++                        # arrives.  Keep layout allocation alive and give the
++                        # unkeyed child a unique, local placement token.
++                        positioning_data = '%s:%s' % (
++                            type(child).__qualname__, id(child))
++                    if positioning_data is None:
++                        # A peer can be discovered before its BuddyInfo key
++                        # arrives.  Keep layout allocation alive and give the
++                        # unkeyed child a unique, local placement token.
++                        positioning_data = '%s:%s' % (
++                            type(child).__qualname__, id(child))
++                    if positioning_data is None:
++                        # A peer can be discovered before its BuddyInfo key
++                        # arrives.  Keep layout allocation alive and give the
++                        # unkeyed child a unique, local placement token.
++                        positioning_data = '%s:%s' % (
++                            type(child).__qualname__, id(child))
+                     if isinstance(positioning_data, str):
+                         positioning_data = positioning_data.encode('utf-8')
+                     md5hash = hashlib.md5(positioning_data)
+@@ -436,7 +472,7 @@ class RingLayout(ViewLayout):
+             # coordinate for the top of the icon.
+             y += icon_size / 2
+ 
+-            child.set_size(icon_size)
++            child.set_pixel_size(icon_size)
+             new_width = child.measure(Gtk.Orientation.HORIZONTAL, -1)[1]
+             new_height = child.measure(Gtk.Orientation.VERTICAL, -1)[1]
+             child_allocation = Gdk.Rectangle()
+diff --git a/src/jarabe/desktop/favoritesview.py b/src/jarabe/desktop/favoritesview.py
+index 8f2d95a..9620fe4 100644
+--- a/src/jarabe/desktop/favoritesview.py
++++ b/src/jarabe/desktop/favoritesview.py
+@@ -48,6 +48,7 @@ from jarabe.model import shell
+ from jarabe.model import bundleregistry
+ from jarabe.model import desktop
+ from jarabe.journal import misc
++from jarabe.desktop import activitypresentation
+ 
+ from jarabe.desktop import schoolserver
+ from jarabe.desktop.schoolserver import RegisterError
+@@ -124,7 +125,12 @@ class FavoritesView(ViewContainer):
+         ViewContainer.__init__(self, layout=self._layout,
+                                owner_icon=owner_icon,
+                                activity_icon=current_activity)
+-        self.set_can_focus(False)
++        # GTK3's set_can_focus(False) only stopped this container taking
++        # focus. In GTK4 can-focus gates whether focus may enter the widget
++        # *or any of its children*, so it made every Activity icon in the
++        # ring unreachable by keyboard. set_focusable(False) is the GTK4
++        # spelling of the original intent.
++        self.set_focusable(False)
+ 
+         # Drag and drop is set only for the Random layout.
+         self._dragging_mode = False
+@@ -357,7 +363,6 @@ class FavoritesView(ViewContainer):
+             if hasattr(icon, 'set_resume_mode'):
+                 icon.set_resume_mode(self._resume_mode)
+ 
+-
+ class ActivityIcon(CanvasIcon):
+     __gtype_name__ = 'SugarFavoriteActivityIcon'
+ 
+@@ -368,6 +373,11 @@ class ActivityIcon(CanvasIcon):
+         CanvasIcon.__init__(self, cache=True,
+                             file_name=activity_info.get_icon())
+ 
++        self.set_focusable(True)
++        self.update_property([Gtk.AccessibleProperty.LABEL],
++                             [activity_info.get_name()])
++        self.set_accessible_role(Gtk.AccessibleRole.BUTTON)
++
+         self._activity_info = activity_info
+         self._journal_entries = []
+         self._resume_mode = Gio.Settings.new(
+@@ -379,6 +389,8 @@ class ActivityIcon(CanvasIcon):
+         datastore.updated.connect(self.__datastore_listener_updated_cb)
+         datastore.deleted.connect(self.__datastore_listener_deleted_cb)
+ 
++        self._presentation = activitypresentation.get_model()
++        self._presentation.connect('changed', self._lifecycle_changed)
+         self._refresh()
+         self._update()
+ 
+@@ -429,6 +441,16 @@ class ActivityIcon(CanvasIcon):
+         else:
+             xo_color = misc.get_icon_color(self._journal_entries[0])
+         self.props.xo_color = xo_color
++        self._lifecycle_changed()
++
++    def _lifecycle_changed(self, *_args):
++        state, activity = self._presentation.state(self.bundle_id)
++        if state in ('launching', 'running', 'active') and activity is not None:
++            self.props.xo_color = activity.get_icon_color()
++            return
++        # A stopped Activity is still resumable, but must not look active.
++        self.props.xo_color = XoColor('%s,%s' % (
++            style.COLOR_BUTTON_GREY.get_svg(), style.COLOR_WHITE.get_svg()))
+ 
+     def create_palette(self):
+         palette = FavoritePalette(self._activity_info, self._journal_entries)
+diff --git a/src/jarabe/desktop/groupbox.py b/src/jarabe/desktop/groupbox.py
+index 4044e53..046efe3 100644
+--- a/src/jarabe/desktop/groupbox.py
++++ b/src/jarabe/desktop/groupbox.py
+@@ -14,8 +14,10 @@
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ import logging
++from gettext import gettext as _
+ 
+ from sugar4.graphics import style
++from gi.repository import Gtk
+ 
+ from jarabe.view.buddyicon import BuddyIcon
+ from jarabe.model.buddy import get_owner_instance
+@@ -39,11 +41,17 @@ class GroupBox(ViewContainer):
+                                style.LARGE_ICON_SIZE & ~1)
+         super().__init__(layout, owner_icon)
+         self.set_focusable(False)
++        self.update_property([Gtk.AccessibleProperty.LABEL],
++                             [_('Group')])
+ 
+         self._query = ''
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
+         toolbar.connect('query-changed', self._toolbar_query_changed_cb)
+ 
+         self._friends = {}
++        self._empty_state = Gtk.Label(label=_("No friends are nearby yet."))
++        self._empty_state.set_opacity(0.72)
++        self.add(self._empty_state)
+ 
+         friends_model = friends.get_model()
+ 
+@@ -54,6 +62,10 @@ class GroupBox(ViewContainer):
+         friends_model.connect('friend-removed', self._friend_removed_cb)
+ 
+     def add_friend(self, buddy_info):
++        if self._empty_state is not None:
++            self.remove(self._empty_state)
++            self._empty_state = None
++
+         icon = FriendView(buddy_info)
+         self.add(icon)
+         self._friends[buddy_info.get_key()] = icon
+diff --git a/src/jarabe/desktop/homebox.py b/src/jarabe/desktop/homebox.py
+index 61ec984..11a12b7 100644
+--- a/src/jarabe/desktop/homebox.py
++++ b/src/jarabe/desktop/homebox.py
+@@ -41,6 +41,7 @@ class HomeBox(Gtk.Box):
+         logging.debug('STARTUP: Loading the home view')
+ 
+         super().__init__(orientation=Gtk.Orientation.VERTICAL)
++        self._toolbar = toolbar
+ 
+         self._favorites_views_indicies = []
+         for i in range(desktop.get_number_of_views()):
+@@ -58,8 +59,9 @@ class HomeBox(Gtk.Box):
+             self._favorites_boxes.append(box)
+             self._view_stack.add_named(box, f"favorite_{i}")
+             
+-        self._list_view = ActivitiesList()
+-        self._view_stack.add_named(self._list_view, "list")
++        # The GTK4 preview's legacy TreeView list is not yet a native
++        # GTK4 view. Keep the default Favorites/Home path independent of it.
++        self._list_view = None
+ 
+         self._desktop_model = desktop.get_model()
+         self._desktop_model.connect('desktop-view-icons-changed',
+@@ -75,8 +77,10 @@ class HomeBox(Gtk.Box):
+         toolbar.search_entry.add_controller(key_controller)
+ 
+ 
+-        self._list_view.connect('clear-clicked',
+-                                self.__activitylist_clear_clicked_cb, toolbar)
++        if self._list_view is not None:
++            self._list_view.connect('clear-clicked',
++                                    self.__activitylist_clear_clicked_cb,
++                                    toolbar)
+ 
+         self._last_view = self._favorites_views_indicies[0]
+         self._query = ''
+@@ -108,8 +112,18 @@ class HomeBox(Gtk.Box):
+         logging.debug('homebox: reassigning list view index to %d' %
+                       (self._list_view_index))
+ 
++    def _ensure_list_view(self, toolbar):
++        if self._list_view is None:
++            self._list_view = ActivitiesList()
++            self._view_stack.add_named(self._list_view, "list")
++            self._list_view.connect('clear-clicked',
++                                    self.__activitylist_clear_clicked_cb,
++                                    toolbar)
++        return self._list_view
++
+     def __toolbar_query_changed_cb(self, toolbar, query):
+         self._query = normalize_string(query)
++        self._ensure_list_view(toolbar)
+         self._list_view.set_filter(self._query)
+         for i in range(desktop.get_number_of_views()):
+             self._favorites_boxes[i].set_filter(self._query)
+@@ -175,14 +189,32 @@ class HomeBox(Gtk.Box):
+             self._last_view = view
+         self._set_view(view)
+ 
++    def show_list_view(self):
++        """Show the native GTK4 installed-Activity list."""
++        self._set_view(self._list_view_index)
++
++    def _searching(self):
++        """Whether the user is currently typing in the Home search entry."""
++        entry = getattr(self._toolbar, 'search_entry', None)
++        if entry is None:
++            return False
++        return bool(entry.get_state_flags() & Gtk.StateFlags.FOCUS_WITHIN)
++
+     def _set_view(self, view):
++        # A query switches Home to List View while the user is still typing.
++        # Pulling focus into the results would send the next keystroke, and
++        # Backspace, to a row instead of the entry.
++        keep_focus = self._searching()
+         if view in self._favorites_views_indicies:
+             favorite = self._favorites_views_indicies.index(view)
+             self._view_stack.set_visible_child_name(f"favorite_{favorite}")
+-            self._favorites_boxes[favorite].grab_focus()
++            if not keep_focus:
++                self._favorites_boxes[favorite].grab_focus()
+         elif view == self._list_view_index:
++            self._ensure_list_view(self._toolbar)
+             self._view_stack.set_visible_child_name("list")
+-            self._list_view.grab_focus()
++            if not keep_focus:
++                self._list_view.grab_focus()
+         else:
+             raise ValueError('Invalid view: %r' % view)
+ 
+diff --git a/src/jarabe/desktop/homewindow.py b/src/jarabe/desktop/homewindow.py
+index c1a654e..9e45d05 100644
+--- a/src/jarabe/desktop/homewindow.py
++++ b/src/jarabe/desktop/homewindow.py
+@@ -57,9 +57,11 @@ class HomeWindow(Gtk.Box):
+     def __init__(self):
+         logging.debug('STARTUP: Loading the desktop window')
+         super().__init__(orientation=Gtk.Orientation.VERTICAL)
++        self.set_focusable(True)
+         self.add_css_class('home-window')
+         self.add_css_class('background')
+ 
++        self._windowed = os.environ.get('SUGAR_WINDOWED', '0') == '1'
+         self._active = False
+         self._fully_obscured = True
+ 
+@@ -71,8 +73,9 @@ class HomeWindow(Gtk.Box):
+         if self._monitors.get_n_items() > 0:
+             self._current_monitor = self._monitors.get_item(0)
+             self._monitor_geom_hid = self._current_monitor.connect('notify::geometry', self.__screen_size_changed_cb)
+-            geom = self._current_monitor.get_geometry()
+-            self.set_size_request(geom.width, geom.height)
++            if not self._windowed:
++                geom = self._current_monitor.get_geometry()
++                self.set_size_request(geom.width, geom.height)
+ 
+         icons_path = os.path.join(config.data_path, 'icons')
+         icon_theme = Gtk.IconTheme.get_for_display(display)
+@@ -113,18 +116,26 @@ class HomeWindow(Gtk.Box):
+         self._resume_mode = setting.get_boolean('resume-activity')
+         self._home_box.set_resume_mode(self._resume_mode)
+ 
+-        self._group_box = GroupBox(self._toolbar)
+-        self._view_stack.add_named(self._group_box, 'group')
+-        
+-        self._mesh_box = MeshBox(self._toolbar)
+-        self._view_stack.add_named(self._mesh_box, 'mesh')
++        # Group and Neighborhood have optional service dependencies. Defer
++        # them until selected so the default Home view can start independently.
++        self._group_box = None
++        self._mesh_box = None
+         
+         self._transition_box = TransitionBox()
+         self._view_stack.add_named(self._transition_box, 'transition')
+ 
+         self._view_stack.set_visible_child_name('home')
+ 
+-        self.append(self._box)
++        # Shell content still owns normal layout. The only overlay is the
++        # passive clock, centred against this window rather than against a
++        # changing toolbar allocation.
++        self._overlay = Gtk.Overlay()
++        self._overlay.set_child(self._box)
++
++        self._clock = self._toolbar.get_clock_widget()
++        self._overlay.add_overlay(self._clock)
++
++        self.append(self._overlay)
+ 
+         self._transition_box.connect('completed',
+                                      self._transition_completed_cb)
+@@ -152,12 +163,24 @@ class HomeWindow(Gtk.Box):
+         if self._alert:
+             self._box.remove(self._alert)
+ 
++    def _ensure_group_box(self):
++        if self._group_box is None:
++            self._group_box = GroupBox(self._toolbar)
++            self._view_stack.add_named(self._group_box, 'group')
++        return self._group_box
++
++    def _ensure_mesh_box(self):
++        if self._mesh_box is None:
++            self._mesh_box = MeshBox(self._toolbar)
++            self._view_stack.add_named(self._mesh_box, 'mesh')
++        return self._mesh_box
++
+     def _deactivate_view(self, level):
+         group = palettegroup.get_group('default')
+         group.popdown()
+         if level == ShellModel.ZOOM_HOME:
+             self._home_box.suspend()
+-        elif level == ShellModel.ZOOM_MESH:
++        elif level == ShellModel.ZOOM_MESH and self._mesh_box is not None:
+             self._mesh_box.suspend()
+ 
+     def __screen_size_changed_cb(self, *args):
+@@ -168,14 +191,17 @@ class HomeWindow(Gtk.Box):
+                     self._current_monitor.disconnect(self._monitor_geom_hid)
+                 self._current_monitor = monitor
+                 self._monitor_geom_hid = monitor.connect('notify::geometry', self.__screen_size_changed_cb)
+-            geom = monitor.get_geometry()
+-            self.set_size_request(geom.width, geom.height)
++            if not self._windowed:
++                geom = monitor.get_geometry()
++                self.set_size_request(geom.width, geom.height)
+ 
+     def _activate_view(self, level):
+         if level == ShellModel.ZOOM_HOME:
+             self._home_box.resume()
++        elif level == ShellModel.ZOOM_GROUP:
++            self._ensure_group_box()
+         elif level == ShellModel.ZOOM_MESH:
+-            self._mesh_box.resume()
++            self._ensure_mesh_box().resume()
+ 
+     def __is_alt(self, keyval, state):
+         # with Shift held, Alt reports as Meta
+@@ -184,6 +210,22 @@ class HomeWindow(Gtk.Box):
+             keyval in [Gdk.KEY_Meta_L, Gdk.KEY_Meta_R] and shift
+ 
+     def __key_pressed_cb(self, controller, keyval, keycode, state):
++        zoom_levels = {
++            Gdk.KEY_F1: ShellModel.ZOOM_MESH,
++            Gdk.KEY_F2: ShellModel.ZOOM_GROUP,
++            Gdk.KEY_F3: ShellModel.ZOOM_HOME,
++            Gdk.KEY_F4: ShellModel.ZOOM_ACTIVITY,
++        }
++        if keyval in zoom_levels:
++            shell.get_model().set_zoom_level(zoom_levels[keyval])
++            if keyval == Gdk.KEY_F1:
++                self._ensure_mesh_box()
++                self._view_stack.set_visible_child_name('mesh')
++            elif keyval == Gdk.KEY_F2:
++                self._ensure_group_box()
++                self._view_stack.set_visible_child_name('group')
++            return True
++
+         if self.__is_alt(keyval, state) and not getattr(self, '_alt_held', False):
+             self._home_box.set_resume_mode(not self._resume_mode)
+             self._alt_held = True
+@@ -206,7 +248,13 @@ class HomeWindow(Gtk.Box):
+ 
+             if not has_focus:
+                 search_entry.grab_focus()
+-
++                # Focus moved mid-dispatch, so GTK will not deliver this key
++                # to the entry. The character that summoned search belongs in
++                # it, as it does in GTK3 Sugar.
++                search_entry.set_text(
++                    search_entry.get_text() + chr(unicode_char))
++                search_entry.set_position(-1)
++                return True
+ 
+         return False
+ 
+@@ -229,6 +277,14 @@ class HomeWindow(Gtk.Box):
+         self._deactivate_view(old_level)
+         self._activate_view(new_level)
+ 
++        # TransitionBox resizes a managed canvas widget and never completes
++        # reliably under GTK4 allocation.  Switch the already-owned stack
++        # synchronously in the modern space; the GTK3 reference keeps its
++        # established animated transition path.
++        if os.environ.get('ASPARTAME_GTK4_PREVIEW') == '1':
++            self._update_view(new_level)
++            return
++
+         if old_level != ShellModel.ZOOM_ACTIVITY and \
+            new_level != ShellModel.ZOOM_ACTIVITY:
+             self._hide_alert()
+@@ -268,17 +324,19 @@ class HomeWindow(Gtk.Box):
+             self._toolbar.show_view_buttons()
+             GLib.idle_add(self._home_box.grab_focus)
+         elif level == ShellModel.ZOOM_GROUP:
++            group_box = self._ensure_group_box()
+             self._view_stack.set_visible_child_name('group')
+             self._toolbar.clear_query()
+             self._toolbar.set_placeholder_text_for_view(_('Group'))
+             self._toolbar.show_view_buttons()
+-            GLib.idle_add(self._group_box.grab_focus)
++            GLib.idle_add(group_box.grab_focus)
+         elif level == ShellModel.ZOOM_MESH:
++            mesh_box = self._ensure_mesh_box()
+             self._view_stack.set_visible_child_name('mesh')
+             self._toolbar.clear_query()
+             self._toolbar.set_placeholder_text_for_view(_('Neighborhood'))
+             self._toolbar.hide_view_buttons()
+-            GLib.idle_add(self._mesh_box.grab_focus)
++            GLib.idle_add(mesh_box.grab_focus)
+         self._show_alert()
+ 
+     def do_dispose(self):
+diff --git a/src/jarabe/desktop/meshbox.py b/src/jarabe/desktop/meshbox.py
+index 21f5efd..886bfc7 100644
+--- a/src/jarabe/desktop/meshbox.py
++++ b/src/jarabe/desktop/meshbox.py
+@@ -22,6 +22,7 @@ import logging
+ import dbus
+ from gi.repository import GObject
+ from gi.repository import Gio
++from gi.repository import Gtk
+ 
+ from sugar4.graphics.icon import Icon
+ from sugar4.graphics.icon import CanvasIcon
+@@ -367,7 +368,10 @@ class MeshBox(ViewContainer):
+         ViewContainer.__init__(self, layout, owner_icon)
+         self.set_focusable(False)
+ 
++        self.update_property([Gtk.AccessibleProperty.LABEL],
++                             [_('Neighborhood')])
+         self.wireless_networks = {}
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
+         self._adhoc_manager = None
+         self._adhoc_networks = []
+ 
+@@ -378,6 +382,9 @@ class MeshBox(ViewContainer):
+         self._buddy_to_activity = {}
+         self._suspended = True
+         self._query = ''
++        self._empty_state = Gtk.Label(label=_("No people or shared Activities are nearby yet."))
++        self._empty_state.set_opacity(0.72)
++        self.add(self._empty_state)
+ 
+         toolbar.connect('query-changed', self._toolbar_query_changed_cb)
+ 
+@@ -393,6 +400,7 @@ class MeshBox(ViewContainer):
+ 
+         self._model.connect('activity-added', self._activity_added_cb)
+         self._model.connect('activity-removed', self._activity_removed_cb)
++        self._update_empty_state()
+ 
+         netmgr_observer = NetworkManagerObserver(self)
+         netmgr_observer.listen()
+@@ -409,6 +417,12 @@ class MeshBox(ViewContainer):
+     def _activity_removed_cb(self, model, activity_model):
+         self._remove_activity(activity_model)
+ 
++    def _update_empty_state(self):
++        if self._empty_state is None:
++            return
++        has_content = bool(self._buddies or self._activities)
++        self._empty_state.set_visible(not has_content)
++
+     def _add_buddy(self, buddy_model):
+         buddy_model.connect('notify::current-activity',
+                             self.__buddy_notify_current_activity_cb)
+@@ -416,6 +430,8 @@ class MeshBox(ViewContainer):
+             return
+         if buddy_model.is_owner():
+             return
++        if buddy_model.props.key in self._buddies:
++            return
+         icon = BuddyIcon(buddy_model)
+         self.add(icon)
+ 
+@@ -423,12 +439,17 @@ class MeshBox(ViewContainer):
+             icon.set_filter(self._query)
+ 
+         self._buddies[buddy_model.props.key] = icon
++        self._update_empty_state()
+ 
+     def _remove_buddy(self, buddy_model):
+         logging.debug('MeshBox._remove_buddy')
+-        icon = self._buddies[buddy_model.props.key]
++        key = buddy_model.props.key
++        icon = self._buddies.pop(key, None)
++        if icon is None:
++            logging.debug('MeshBox: buddy icon already removed: %s', key)
++            return
+         self.remove(icon)
+-        del self._buddies[buddy_model.props.key]
++        self._update_empty_state()
+ 
+     def __buddy_notify_current_activity_cb(self, buddy_model, pspec):
+         logging.debug('MeshBox.__buddy_notify_current_activity_cb %s',
+@@ -447,11 +468,17 @@ class MeshBox(ViewContainer):
+             icon.set_filter(self._query)
+ 
+         self._activities[activity_model.activity_id] = icon
++        self._update_empty_state()
+ 
+     def _remove_activity(self, activity_model):
+-        icon = self._activities[activity_model.activity_id]
++        activity_id = activity_model.activity_id
++        icon = self._activities.pop(activity_id, None)
++        if icon is None:
++            logging.debug('MeshBox: Activity icon already removed: %s',
++                          activity_id)
++            return
+         self.remove(icon)
+-        del self._activities[activity_model.activity_id]
++        self._update_empty_state()
+ 
+     # add AP to its corresponding network icon on the desktop,
+     # creating one if it doesn't already exist
+diff --git a/src/jarabe/desktop/viewtoolbar.py b/src/jarabe/desktop/viewtoolbar.py
+index 0d1dab9..ebd01c1 100644
+--- a/src/jarabe/desktop/viewtoolbar.py
++++ b/src/jarabe/desktop/viewtoolbar.py
+@@ -19,20 +19,28 @@
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
++from datetime import datetime
+ from gettext import gettext as _
++import locale
+ import logging
++import os
++import subprocess
+ 
++from gi.repository import Gio
+ from gi.repository import Gtk
+ from gi.repository import GObject
+ from gi.repository import GLib
+ 
+ from sugar4.graphics import style
+ from sugar4.graphics import iconentry
++from sugar4.graphics.icon import Icon
+ from sugar4.graphics.radiotoolbutton import RadioToolButton
+ 
+ 
+ from jarabe.desktop import favoritesview
+ from jarabe.model import desktop
++from jarabe.model import shell
++from jarabe.view import actions
+ 
+ _AUTOSEARCH_TIMEOUT = 1000
+ 
+@@ -75,12 +83,24 @@ class ViewToolbar(Gtk.Box):
+         self.search_entry.set_width_chars(25)
+         self.search_entry.connect('activate', self._entry_activated_cb)
+         self.search_entry.connect('changed', self._entry_changed_cb)
+-        
++
++        # This toolbar is a plain Gtk.Box, whose children default to
++        # valign=FILL, so the entry grew to the toolbar's whole 75px
++        # height. GTK3's Gtk.Toolbar centred its items at their natural
++        # size; match that.
++        self.search_entry.set_valign(Gtk.Align.CENTER)
++
+         self.append(self.search_entry)
+         self.search_entry.set_visible(True)
+ 
++        self._build_help_button()
++        self._build_navigation_button()
++        self._build_spaces_button()
++
+         self._add_separator(expand=True)
+ 
++        self._build_clock()
++
+         self._button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+         self._favorites_buttons = []
+         for i in range(desktop.get_number_of_views()):
+@@ -101,10 +121,263 @@ class ViewToolbar(Gtk.Box):
+         toolitem = Gtk.Box()
+         toolitem.append(self._button_box)
+         toolitem.set_visible(True)
++        # Same reason as the entry: stretched view buttons painted their
++        # selected background over the full toolbar height, so the
++        # selection ran behind the bar edges instead of framing the icon.
++        self._button_box.set_valign(Gtk.Align.CENTER)
++        toolitem.set_valign(Gtk.Align.CENTER)
+         self.append(toolitem)
+ 
+         self._add_separator()
+ 
++    def _build_help_button(self):
++        """The universal help icon, as the classic Space shows it.
++
++        The classic shell turns this into Select-a-Thing, which has no GTK4
++        port yet. Until it does, open the Help activity - the same thing the
++        icon points at - rather than leave the control out of the toolbar.
++        """
++        help_path = ('/usr/share/sugar/activities/Help.activity/'
++                     'activity/activity-help.svg')
++        if not os.path.exists(help_path):
++            self._help_button = None
++            return
++
++        # Sugar SVGs colour themselves through internal DTD entities
++        # (&stroke_color;, &fill_color;). The GdkPixbuf loader behind
++        # Gtk.Image.new_from_file() does not expand them, so the icon
++        # rasterises completely transparent. Sugar's own Icon substitutes
++        # the entities and hands the result to librsvg.
++        image = Icon(file_name=help_path,
++                     pixel_size=style.STANDARD_ICON_SIZE)
++
++        self._help_button = Gtk.Button()
++        self._help_button.set_child(image)
++        self._help_button.add_css_class('aspartame-help-button')
++        self._help_button.set_has_frame(False)
++        self._help_button.set_valign(Gtk.Align.CENTER)
++        self._help_button.set_tooltip_text(
++            _('What is this? - Learn what something on the screen does.'))
++        self._help_button.update_property(
++            [Gtk.AccessibleProperty.LABEL], [_('Help')])
++        self._help_button.connect('clicked', self.__help_clicked_cb)
++
++        provider = Gtk.CssProvider()
++        provider.load_from_data(b"""
++            .aspartame-help-button {
++                padding: 0;
++                border: 0;
++                border-radius: 999px;
++                background: transparent;
++                background-image: none;
++                box-shadow: none;
++            }
++        """)
++        self._help_button.get_style_context().add_provider(
++            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++
++        self.append(self._help_button)
++
++    def _build_navigation_button(self):
++        """Expose F1-F6 navigation as semantic, clickable actions."""
++        self._navigation_button = Gtk.Button()
++        image = Gtk.Image.new_from_icon_name('view-list-symbolic')
++        self._navigation_button.set_child(image)
++        self._navigation_button.set_has_frame(False)
++        self._navigation_button.set_valign(Gtk.Align.CENTER)
++        self._navigation_button.set_tooltip_text(_('Navigate (F1-F6)'))
++        self._navigation_button.update_property(
++            [Gtk.AccessibleProperty.LABEL], [_('Navigate (F1-F6)')])
++
++        popover = Gtk.Popover()
++        actions = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
++        actions.set_margin_top(8)
++        actions.set_margin_bottom(8)
++        actions.set_margin_start(8)
++        actions.set_margin_end(8)
++        for target, label in (
++                ('mesh', _('Neighborhood (F1)')),
++                ('group', _('Group (F2)')),
++                ('home', _('Home (F3)')),
++                ('activity', _('Activity (F4)')),
++                ('journal', _('Journal (F5)')),
++                ('frame', _('Frame (F6)'))):
++            action = Gtk.Button(label=label)
++            action.set_halign(Gtk.Align.FILL)
++            action.set_hexpand(True)
++            action.update_property(
++                [Gtk.AccessibleProperty.LABEL], [label])
++            action.connect('clicked', self.__navigation_action_cb,
++                           target, popover)
++            actions.append(action)
++        popover.set_child(actions)
++        popover.set_parent(self._navigation_button)
++        popover.set_has_arrow(True)
++        popover.set_position(Gtk.PositionType.BOTTOM)
++        self._navigation_popover = popover
++        self._navigation_button.connect(
++            'clicked', self.__navigation_button_clicked_cb, popover)
++        self.append(self._navigation_button)
++
++    def __navigation_button_clicked_cb(self, button, popover):
++        if popover.is_visible():
++            popover.popdown()
++        else:
++            popover.popup()
++
++    def __navigation_action_cb(self, button, target, popover):
++        popover.popdown()
++        if target == 'journal':
++            from jarabe.journal import journalactivity
++            journalactivity.get_journal().show_journal()
++            return
++        if target == 'frame':
++            from jarabe import frame
++            frame.get_view().notify_key_press()
++            return
++
++        if target == 'home':
++            actions.go_home()
++            return
++
++        model = shell.get_model()
++        levels = {
++            'mesh': shell.ShellModel.ZOOM_MESH,
++            'group': shell.ShellModel.ZOOM_GROUP,
++            'home': shell.ShellModel.ZOOM_HOME,
++            'activity': shell.ShellModel.ZOOM_ACTIVITY,
++        }
++        if target == 'activity' and model.get_active_activity() is None:
++            from jarabe.journal import journalactivity
++            journalactivity.get_journal().show_journal()
++            return
++        model.set_zoom_level(levels[target])
++    def _build_spaces_button(self):
++        """Expose semantic Space actions without requiring F-key delivery."""
++        self._spaces_button = Gtk.Button()
++        image = Gtk.Image.new_from_icon_name('view-grid-symbolic')
++        self._spaces_button.set_child(image)
++        self._spaces_button.set_has_frame(False)
++        self._spaces_button.set_valign(Gtk.Align.CENTER)
++        self._spaces_button.set_tooltip_text(_('Spaces'))
++        self._spaces_button.update_property(
++            [Gtk.AccessibleProperty.LABEL], [_('Spaces')])
++
++        popover = Gtk.Popover()
++        actions = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
++        actions.set_margin_top(8)
++        actions.set_margin_bottom(8)
++        actions.set_margin_start(8)
++        actions.set_margin_end(8)
++        for target, label in (
++                ('gtk3', _('Classic Space (GTK3)')),
++                ('gtk4', _('Modern Space (GTK4)')),
++                ('side-by-side', _('Compare Spaces side by side'))):
++            action = Gtk.Button(label=label)
++            action.set_halign(Gtk.Align.FILL)
++            action.set_hexpand(True)
++            action.update_property(
++                [Gtk.AccessibleProperty.LABEL], [label])
++            action.connect('clicked', self.__space_action_cb,
++                           target, popover)
++            actions.append(action)
++        popover.set_child(actions)
++        popover.set_parent(self._spaces_button)
++        popover.set_has_arrow(True)
++        popover.set_position(Gtk.PositionType.BOTTOM)
++        self._spaces_popover = popover
++        self._spaces_button.connect(
++            'clicked', self.__spaces_button_clicked_cb, popover)
++        self.append(self._spaces_button)
++
++    def __spaces_button_clicked_cb(self, button, popover):
++        if popover.is_visible():
++            popover.popdown()
++        else:
++            popover.popup()
++
++    def __space_action_cb(self, button, target, popover):
++        popover.popdown()
++        controller = os.environ.get(
++            'ASPARTAME_SPACE_SWITCHER',
++            '/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh')
++        if not os.access(controller, os.X_OK):
++            logging.warning('Spaces controller is not executable: %s',
++                            controller)
++            return
++        try:
++            subprocess.Popen([controller, target], close_fds=True)
++        except OSError as error:
++            logging.warning('Could not start Spaces action %s: %s',
++                            target, error)
++
++    def __help_clicked_cb(self, button):
++        from jarabe.journal import misc
++        from jarabe.model import bundleregistry
++
++        bundle = bundleregistry.get_registry().get_bundle(
++            'org.laptop.HelpActivity')
++        if bundle is None:
++            logging.warning('Help activity is not installed')
++            return
++        misc.launch(bundle)
++
++    def _build_clock(self):
++        """Passive clock for HomeWindow's centred overlay.
++
++        It is not appended to this toolbar: HomeWindow overlays it on the
++        window centre so that a changing search entry or view button count
++        cannot shift the time sideways, which is what the GTK3 shell does.
++        """
++        self._clock_label = Gtk.Label(label='--:--')
++        self._clock_label.set_halign(Gtk.Align.CENTER)
++        self._clock_label.set_valign(Gtk.Align.START)
++        self._clock_label.set_focusable(False)
++        self._clock_label.add_css_class('aspartame-clock')
++        # Give the label the toolbar band's height and let it centre its own
++        # text; offsetting by the label's natural height centres the line
++        # box and leaves the digits sitting high in it.
++        self._clock_label.set_size_request(-1, style.GRID_CELL_SIZE)
++
++        provider = Gtk.CssProvider()
++        provider.load_from_data(b"""
++            .aspartame-clock {
++                background: transparent;
++                color: #ffffff;
++                font-size: 24px;
++                font-weight: bold;
++            }
++        """)
++        self._clock_label.get_style_context().add_provider(
++            provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++
++        self._clock_settings = Gio.Settings.new('org.aspartame.clock')
++        self._clock_settings.connect('changed::format',
++                                     self.__clock_format_changed_cb)
++        self.__update_clock_cb()
++        GLib.timeout_add_seconds(30, self.__update_clock_cb)
++
++    def get_clock_widget(self):
++        """Return the passive clock for HomeWindow's centred overlay."""
++        return self._clock_label
++
++    def __clock_format_changed_cb(self, settings, key):
++        self.__update_clock_cb()
++
++    def __update_clock_cb(self):
++        locale.setlocale(locale.LC_TIME, '')
++        clock_format = self._clock_settings.get_string('format')
++        if clock_format:
++            text = datetime.now().strftime(clock_format)
++        else:
++            time_format = locale.nl_langinfo(locale.T_FMT)
++            if '%I' in time_format or '%p' in time_format:
++                text = datetime.now().strftime('%I:%M %p').lstrip('0')
++            else:
++                text = datetime.now().strftime('%H:%M')
++        self._clock_label.set_text(text)
++        return True
++
+     def _add_favorites_button(self, i):
+         logging.debug('adding FavoritesButton %d' % (i))
+         self._favorites_buttons.append(FavoritesButton(i))
+diff --git a/src/jarabe/frame/activitiestray.py b/src/jarabe/frame/activitiestray.py
+index a2030be..ef19642 100644
+--- a/src/jarabe/frame/activitiestray.py
++++ b/src/jarabe/frame/activitiestray.py
+@@ -356,10 +356,13 @@ class ActivitiesTray(HTray):
+ 
+     def __activity_removed_cb(self, home_model, home_activity):
+         logging.debug('__activity_removed_cb: %r', home_activity)
+-        button = self._buttons[home_activity]
++        button = self._buttons.pop(home_activity, None)
++        if button is None:
++            # ShellModel may report a duplicate removal when the Activity
++            # process and its D-Bus name disappear concurrently.
++            return
+         self.remove_item(button)
+-        del self._buttons[home_activity]
+-        del self._buttons_by_name[home_activity.get_activity_id()]
++        self._buttons_by_name.pop(home_activity.get_activity_id(), None)
+ 
+     def _activate_activity(self, home_activity):
+         if home_activity not in self._buttons:
+diff --git a/src/jarabe/frame/eventarea.py b/src/jarabe/frame/eventarea.py
+index c86d91e..0222913 100644
+--- a/src/jarabe/frame/eventarea.py
++++ b/src/jarabe/frame/eventarea.py
+@@ -181,17 +181,12 @@ class EventArea(GObject.GObject):
+ 
+     def show(self):
+         self._is_active = True
+-        if not HAS_LAYER_SHELL:
+-            return
+         for tag in _BOXES:
+             delay = self._corner_delay if tag in _CORNERS else self._edge_delay
+-            if delay != _MAX_DELAY:
+-                self._boxes[tag].set_visible(True)
++            self._boxes[tag].set_visible(delay != _MAX_DELAY)
+ 
+     def hide(self):
+         self._is_active = False
+-        if not HAS_LAYER_SHELL:
+-            return
+         for box in list(self._boxes.values()):
+             box.set_visible(False)
+ 
+diff --git a/src/jarabe/frame/frame.py b/src/jarabe/frame/frame.py
+index 3733002..736d966 100644
+--- a/src/jarabe/frame/frame.py
++++ b/src/jarabe/frame/frame.py
+@@ -92,8 +92,9 @@ class Frame(object):
+             # Add event area hot corners
+             for box in self._event_area._boxes.values():
+                 shell_model._overlay.add_overlay(box)
+-                box.set_visible(True)
+                 
++            self._event_area.show()
++
+             # Add frame panels
+             shell_model._overlay.add_overlay(self._top_panel)
+             shell_model._overlay.add_overlay(self._bottom_panel)
+diff --git a/src/jarabe/frame/framewindow.py b/src/jarabe/frame/framewindow.py
+index 879451b..5309a0b 100644
+--- a/src/jarabe/frame/framewindow.py
++++ b/src/jarabe/frame/framewindow.py
+@@ -1,242 +1,245 @@
+-# Copyright (C) 2006-2007 Red Hat, Inc.
+-#
+-# This program is free software: you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation, either version 3 of the License, or
+-# (at your option) any later version.
+-#
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-#
+-# You should have received a copy of the GNU General Public License
+-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-
+-from gi.repository import Gtk
+-from gi.repository import Gdk
+-from gi.repository import Graphene
+-import gi
+-
+-gi.require_version('Gsk', '4.0')
+-from gi.repository import Gsk
+-
+-from sugar4.graphics import style
+-
+-
+-def _get_screen_size():
+-    display = Gdk.Display.get_default()
+-    if display:
+-        monitors = display.get_monitors()
+-        if monitors and monitors.get_n_items() > 0:
+-            geometry = monitors.get_item(0).get_geometry()
+-            return geometry.width, geometry.height
+-    return 1024, 768
+-
+-
+-class FrameContainer(Gtk.Widget):
+-    """A container class for frame panel rendering. Hosts a child 'box' where
+-    frame elements can be added. Excludes grid-sized squares at each end
+-    of the frame panel, and a space alongside the inside of the screen where
+-    a border is drawn."""
+-
+-    __gtype_name__ = 'SugarFrameContainer'
+-
+-    def __init__(self, position):
+-        super().__init__()
+-        self._position = position
+-
+-        if self.is_vertical():
+-            self._box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+-        else:
+-            self._box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+-        self._box.set_parent(self)
+-
+-    def do_dispose(self):
+-        if self._box:
+-            self._box.unparent()
+-            self._box = None
+-        super().do_dispose()
+-
+-    def get_child_box(self):
+-        return self._box
+-
+-    def is_vertical(self):
+-        return self._position in (Gtk.PositionType.LEFT,
+-                                  Gtk.PositionType.RIGHT)
+-
+-    def do_snapshot(self, snapshot):
+-        width = self.get_width()
+-        height = self.get_height()
+-
+-        # Render CSS background (e.g. framewindow background color)
+-        context = self.get_style_context()
+-        snapshot.render_background(context, 0, 0, width, height)
+-
+-        # Draw the inner border as a rectangle
+-        color = Gdk.RGBA()
+-        color.parse(style.COLOR_BUTTON_GREY.get_svg())
+-
+-        if self.is_vertical():
+-            x = style.GRID_CELL_SIZE \
+-                if self._position == Gtk.PositionType.LEFT else 0
+-            y = style.GRID_CELL_SIZE
+-            rect_width = style.LINE_WIDTH
+-            rect_height = height - (style.GRID_CELL_SIZE * 2)
+-        else:
+-            x = style.GRID_CELL_SIZE
+-            y = style.GRID_CELL_SIZE \
+-                if self._position == Gtk.PositionType.TOP else 0
+-            rect_height = style.LINE_WIDTH
+-            rect_width = width - (style.GRID_CELL_SIZE * 2)
+-
+-        if rect_width > 0 and rect_height > 0:
+-            rect = Graphene.Rect()
+-            rect.init(x, y, rect_width, rect_height)
+-            snapshot.append_color(color, rect)
+-
+-        if self._box:
+-            self.snapshot_child(self._box, snapshot)
+-
+-    def do_measure(self, orientation, for_size):
+-        if self._box:
+-            self._box.measure(orientation, for_size)
+-            
+-        sw, sh = _get_screen_size()
+-        if self.is_vertical():
+-            if orientation == Gtk.Orientation.VERTICAL:
+-                return sh, sh, -1, -1
+-            else:
+-                w = style.GRID_CELL_SIZE + style.LINE_WIDTH
+-                return w, w, -1, -1
+-        else:
+-            if orientation == Gtk.Orientation.HORIZONTAL:
+-                return sw, sw, -1, -1
+-            else:
+-                h = style.GRID_CELL_SIZE + style.LINE_WIDTH
+-                return h, h, -1, -1
+-
+-    def do_size_allocate(self, width, height, baseline):
+-        # exclude grid squares at two ends of the frame
+-        # allocate remaining space to child box, minus the space needed for
+-        # drawing the border
+-        allocation = Gdk.Rectangle()
+-        if self.is_vertical():
+-            allocation.x = 0 if self._position == Gtk.PositionType.LEFT \
+-                else style.LINE_WIDTH
+-            allocation.y = style.GRID_CELL_SIZE
+-            allocation.width = max(0, width - style.LINE_WIDTH)
+-            allocation.height = max(0, height - (style.GRID_CELL_SIZE * 2))
+-        else:
+-            allocation.x = style.GRID_CELL_SIZE
+-            allocation.y = 0 if self._position == Gtk.PositionType.TOP \
+-                else style.LINE_WIDTH
+-            allocation.width = max(0, width - (style.GRID_CELL_SIZE * 2))
+-            allocation.height = max(0, height - style.LINE_WIDTH)
+-
+-        if self._box:
+-            transform = Gsk.Transform.new().translate(Graphene.Point().init(allocation.x, allocation.y))
+-            self._box.allocate(allocation.width, allocation.height, baseline, transform)
+-
+-
+-class FrameWindow(Gtk.Revealer):
+-    """A frame panel that slides in/out using Gtk.Revealer.
+-
+-    GTK3 used floating Gtk.Window objects that were moved with window.move().
+-    In GTK4, Gtk.Revealer is the correct widget for slide-in/out animations.
+-    It handles clipping, animation, and positioning natively.
+-
+-    The Revealer wraps a FrameContainer (the actual drawing surface).
+-    It is added to the shell's Gtk.Overlay as an overlay child, positioned
+-    at its respective screen edge via valign/halign.
+-    """
+-    __gtype_name__ = 'SugarFrameWindow'
+-
+-    def __init__(self, position):
+-        # Choose transition type based on panel edge
+-        if position == Gtk.PositionType.TOP:
+-            transition = Gtk.RevealerTransitionType.SLIDE_DOWN
+-        elif position == Gtk.PositionType.BOTTOM:
+-            transition = Gtk.RevealerTransitionType.SLIDE_UP
+-        elif position == Gtk.PositionType.LEFT:
+-            transition = Gtk.RevealerTransitionType.SLIDE_RIGHT
+-        else:  # RIGHT
+-            transition = Gtk.RevealerTransitionType.SLIDE_LEFT
+-
+-        super().__init__(
+-            transition_type=transition,
+-            transition_duration=250,
+-            reveal_child=False,
+-        )
+-
+-        self.hover = False
+-        self.size = style.GRID_CELL_SIZE + style.LINE_WIDTH
+-        self._position = position
+-
+-        # Shortcut controller
+-        self.shortcut_controller = Gtk.ShortcutController.new()
+-        self.shortcut_controller.set_scope(Gtk.ShortcutScope.GLOBAL)
+-        self.add_controller(self.shortcut_controller)
+-        self.sugar_accel_group = self.shortcut_controller
+-
+-        # Hover tracking
+-        controller = Gtk.EventControllerMotion.new()
+-        controller.connect('enter', self._enter_notify_cb)
+-        controller.connect('leave', self._leave_notify_cb)
+-        self.add_controller(controller)
+-
+-        # The actual drawing surface
+-        self._container = FrameContainer(position)
+-        self._container.add_css_class('framewindow')
+-        self.set_child(self._container)
+-
+-        # Position the revealer at its screen edge via Overlay alignment
+-        if position == Gtk.PositionType.TOP:
+-            self.set_valign(Gtk.Align.START)
+-            self.set_halign(Gtk.Align.FILL)
+-        elif position == Gtk.PositionType.BOTTOM:
+-            self.set_valign(Gtk.Align.END)
+-            self.set_halign(Gtk.Align.FILL)
+-        elif position == Gtk.PositionType.LEFT:
+-            self.set_valign(Gtk.Align.FILL)
+-            self.set_halign(Gtk.Align.START)
+-        elif position == Gtk.PositionType.RIGHT:
+-            self.set_valign(Gtk.Align.FILL)
+-            self.set_halign(Gtk.Align.END)
+-
+-        self._update_size()
+-
+-        display = Gdk.Display.get_default()
+-        if display:
+-            monitors = display.get_monitors()
+-            if monitors:
+-                monitors.connect('items-changed', self._size_changed_cb)
+-
+-    def append(self, child, expand=True, fill=True):
+-        if expand:
+-            if self._container.is_vertical():
+-                child.set_vexpand(True)
+-            else:
+-                child.set_hexpand(True)
+-        if not fill:
+-            if self._container.is_vertical():
+-                child.set_valign(Gtk.Align.CENTER)
+-            else:
+-                child.set_halign(Gtk.Align.CENTER)
+-        self._container.get_child_box().append(child)
+-
+-    def _update_size(self):
+-        sw, sh = _get_screen_size()
+-        if self._position in (Gtk.PositionType.TOP, Gtk.PositionType.BOTTOM):
+-            self._container.set_size_request(sw, self.size)
+-        else:
+-            self._container.set_size_request(self.size, sh)
+-
+-    def _enter_notify_cb(self, controller, x, y):
+-        self.hover = True
+-
+-    def _leave_notify_cb(self, controller):
+-        self.hover = False
+-
+-    def _size_changed_cb(self, monitors, position, removed, added):
+-        self._update_size()
++# Copyright (C) 2006-2007 Red Hat, Inc.
++#
++# This program is free software: you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation, either version 3 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++
++from gettext import gettext as _
++from gi.repository import Gtk
++from gi.repository import Gdk
++from gi.repository import Graphene
++import gi
++
++gi.require_version('Gsk', '4.0')
++from gi.repository import Gsk
++
++from sugar4.graphics import style
++
++
++def _get_screen_size():
++    display = Gdk.Display.get_default()
++    if display:
++        monitors = display.get_monitors()
++        if monitors and monitors.get_n_items() > 0:
++            geometry = monitors.get_item(0).get_geometry()
++            return geometry.width, geometry.height
++    return 1024, 768
++
++
++class FrameContainer(Gtk.Widget):
++    """A container class for frame panel rendering. Hosts a child 'box' where
++    frame elements can be added. Excludes grid-sized squares at each end
++    of the frame panel, and a space alongside the inside of the screen where
++    a border is drawn."""
++
++    __gtype_name__ = 'SugarFrameContainer'
++
++    def __init__(self, position):
++        super().__init__()
++        self.update_property([Gtk.AccessibleProperty.LABEL], [_('Frame')])
++        self.set_accessible_role(Gtk.AccessibleRole.GROUP)
++        self._position = position
++
++        if self.is_vertical():
++            self._box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
++        else:
++            self._box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
++        self._box.set_parent(self)
++
++    def do_dispose(self):
++        if self._box:
++            self._box.unparent()
++            self._box = None
++        super().do_dispose()
++
++    def get_child_box(self):
++        return self._box
++
++    def is_vertical(self):
++        return self._position in (Gtk.PositionType.LEFT,
++                                  Gtk.PositionType.RIGHT)
++
++    def do_snapshot(self, snapshot):
++        width = self.get_width()
++        height = self.get_height()
++
++        # Render CSS background (e.g. framewindow background color)
++        context = self.get_style_context()
++        snapshot.render_background(context, 0, 0, width, height)
++
++        # Draw the inner border as a rectangle
++        color = Gdk.RGBA()
++        color.parse(style.COLOR_BUTTON_GREY.get_svg())
++
++        if self.is_vertical():
++            x = style.GRID_CELL_SIZE \
++                if self._position == Gtk.PositionType.LEFT else 0
++            y = style.GRID_CELL_SIZE
++            rect_width = style.LINE_WIDTH
++            rect_height = height - (style.GRID_CELL_SIZE * 2)
++        else:
++            x = style.GRID_CELL_SIZE
++            y = style.GRID_CELL_SIZE \
++                if self._position == Gtk.PositionType.TOP else 0
++            rect_height = style.LINE_WIDTH
++            rect_width = width - (style.GRID_CELL_SIZE * 2)
++
++        if rect_width > 0 and rect_height > 0:
++            rect = Graphene.Rect()
++            rect.init(x, y, rect_width, rect_height)
++            snapshot.append_color(color, rect)
++
++        if self._box:
++            self.snapshot_child(self._box, snapshot)
++
++    def do_measure(self, orientation, for_size):
++        minimum = 0
++        natural = 0
++        if self._box:
++            minimum, natural, _minimum_baseline, _natural_baseline = \
++                self._box.measure(orientation, for_size)
++
++        corner_space = style.GRID_CELL_SIZE * 2
++        thickness = style.GRID_CELL_SIZE + style.LINE_WIDTH
++        if self.is_vertical():
++            if orientation == Gtk.Orientation.VERTICAL:
++                return (minimum + corner_space, natural + corner_space,
++                        -1, -1)
++            return thickness, thickness, -1, -1
++        if orientation == Gtk.Orientation.HORIZONTAL:
++            return (minimum + corner_space, natural + corner_space,
++                    -1, -1)
++        return thickness, thickness, -1, -1
++
++    def do_size_allocate(self, width, height, baseline):
++        # exclude grid squares at two ends of the frame
++        # allocate remaining space to child box, minus the space needed for
++        # drawing the border
++        allocation = Gdk.Rectangle()
++        if self.is_vertical():
++            allocation.x = 0 if self._position == Gtk.PositionType.LEFT \
++                else style.LINE_WIDTH
++            allocation.y = style.GRID_CELL_SIZE
++            allocation.width = max(0, width - style.LINE_WIDTH)
++            allocation.height = max(0, height - (style.GRID_CELL_SIZE * 2))
++        else:
++            allocation.x = style.GRID_CELL_SIZE
++            allocation.y = 0 if self._position == Gtk.PositionType.TOP \
++                else style.LINE_WIDTH
++            allocation.width = max(0, width - (style.GRID_CELL_SIZE * 2))
++            allocation.height = max(0, height - style.LINE_WIDTH)
++
++        if self._box:
++            transform = Gsk.Transform.new().translate(Graphene.Point().init(allocation.x, allocation.y))
++            self._box.allocate(allocation.width, allocation.height, baseline, transform)
++
++
++class FrameWindow(Gtk.Revealer):
++    """A frame panel that slides in/out using Gtk.Revealer.
++
++    GTK3 used floating Gtk.Window objects that were moved with window.move().
++    In GTK4, Gtk.Revealer is the correct widget for slide-in/out animations.
++    It handles clipping, animation, and positioning natively.
++
++    The Revealer wraps a FrameContainer (the actual drawing surface).
++    It is added to the shell's Gtk.Overlay as an overlay child, positioned
++    at its respective screen edge via valign/halign.
++    """
++    __gtype_name__ = 'SugarFrameWindow'
++
++    def __init__(self, position):
++        # Choose transition type based on panel edge
++        if position == Gtk.PositionType.TOP:
++            transition = Gtk.RevealerTransitionType.SLIDE_DOWN
++        elif position == Gtk.PositionType.BOTTOM:
++            transition = Gtk.RevealerTransitionType.SLIDE_UP
++        elif position == Gtk.PositionType.LEFT:
++            transition = Gtk.RevealerTransitionType.SLIDE_RIGHT
++        else:  # RIGHT
++            transition = Gtk.RevealerTransitionType.SLIDE_LEFT
++
++        super().__init__(
++            transition_type=transition,
++            transition_duration=250,
++            reveal_child=False,
++        )
++
++        self.hover = False
++        self.size = style.GRID_CELL_SIZE + style.LINE_WIDTH
++        self._position = position
++
++        # Shortcut controller
++        self.shortcut_controller = Gtk.ShortcutController.new()
++        self.shortcut_controller.set_scope(Gtk.ShortcutScope.GLOBAL)
++        self.add_controller(self.shortcut_controller)
++        self.sugar_accel_group = self.shortcut_controller
++
++        # Hover tracking
++        controller = Gtk.EventControllerMotion.new()
++        controller.connect('enter', self._enter_notify_cb)
++        controller.connect('leave', self._leave_notify_cb)
++        self.add_controller(controller)
++
++        # The actual drawing surface
++        self._container = FrameContainer(position)
++        self._container.add_css_class('framewindow')
++        self.set_child(self._container)
++
++        # Position the revealer at its screen edge via Overlay alignment
++        if position == Gtk.PositionType.TOP:
++            self.set_valign(Gtk.Align.START)
++            self.set_halign(Gtk.Align.FILL)
++        elif position == Gtk.PositionType.BOTTOM:
++            self.set_valign(Gtk.Align.END)
++            self.set_halign(Gtk.Align.FILL)
++        elif position == Gtk.PositionType.LEFT:
++            self.set_valign(Gtk.Align.FILL)
++            self.set_halign(Gtk.Align.START)
++        elif position == Gtk.PositionType.RIGHT:
++            self.set_valign(Gtk.Align.FILL)
++            self.set_halign(Gtk.Align.END)
++
++        self._update_size()
++
++        display = Gdk.Display.get_default()
++        if display:
++            monitors = display.get_monitors()
++            if monitors:
++                monitors.connect('items-changed', self._size_changed_cb)
++
++    def append(self, child, expand=True, fill=True):
++        if expand:
++            if self._container.is_vertical():
++                child.set_vexpand(True)
++            else:
++                child.set_hexpand(True)
++        if not fill:
++            if self._container.is_vertical():
++                child.set_valign(Gtk.Align.CENTER)
++            else:
++                child.set_halign(Gtk.Align.CENTER)
++        self._container.get_child_box().append(child)
++
++    def _update_size(self):
++        if self._position in (Gtk.PositionType.TOP, Gtk.PositionType.BOTTOM):
++            self._container.set_size_request(-1, self.size)
++        else:
++            self._container.set_size_request(self.size, -1)
++
++    def _enter_notify_cb(self, controller, x, y):
++        self.hover = True
++
++    def _leave_notify_cb(self, controller):
++        self.hover = False
++
++    def _size_changed_cb(self, monitors, position, removed, added):
++        self._update_size()
+diff --git a/src/jarabe/frame/friendstray.py b/src/jarabe/frame/friendstray.py
+index 40f660f..bcab229 100644
+--- a/src/jarabe/frame/friendstray.py
++++ b/src/jarabe/frame/friendstray.py
+@@ -53,8 +53,17 @@ class FriendsTray(VTray):
+         shell.get_model().connect('active-activity-changed',
+                                   self.__active_activity_changed_cb)
+ 
+-        neighborhood.get_model().connect('activity-added',
+-                                         self.__neighborhood_activity_added_cb)
++        try:
++            self._neighborhood_model = neighborhood.get_model()
++        except Exception as error:
++            # Collaboration is optional in a local preview/session. Keep
++            # the Frame usable when Telepathy is not running.
++            logging.warning('Neighborhood unavailable for FriendsTray: %s',
++                            error)
++            self._neighborhood_model = None
++        else:
++            self._neighborhood_model.connect(
++                'activity-added', self.__neighborhood_activity_added_cb)
+ 
+         # always display ourselves by default
+         self.add_buddy(get_owner_instance())
+@@ -85,6 +94,9 @@ class FriendsTray(VTray):
+                                          shared_activity):
+         logging.debug('FriendsTray.__neighborhood_activity_added_cb')
+         active_activity = shell.get_model().get_active_activity()
++        if active_activity is None or shared_activity is None:
++            logging.debug('FriendsTray: no active/shared activity yet')
++            return
+         if active_activity.get_activity_id() != shared_activity.activity_id:
+             return
+ 
+@@ -113,7 +125,10 @@ class FriendsTray(VTray):
+ 
+     def _set_current_activity(self, activity_id):
+         logging.debug('FriendsTray._set_current_activity')
+-        neighborhood_model = neighborhood.get_model()
++        if self._neighborhood_model is None:
++            return
++
++        neighborhood_model = self._neighborhood_model
+         self._shared_activity = neighborhood_model.get_activity(activity_id)
+         if self._shared_activity is None:
+             return
+diff --git a/src/jarabe/journal/bundlelauncher.py b/src/jarabe/journal/bundlelauncher.py
+index ef1097e..f13f825 100644
+--- a/src/jarabe/journal/bundlelauncher.py
++++ b/src/jarabe/journal/bundlelauncher.py
+@@ -14,8 +14,6 @@
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ import logging
+ 
+-from sugar4.activity import activityfactory
+-from sugar4.activity.activityhandle import ActivityHandle
+ from sugar4.datastore import datastore
+ 
+ from jarabe.model import bundleregistry
+@@ -66,9 +64,8 @@ def launch_bundle(bundle_id=None, object_id=None):
+     if bundle is None:
+         return False
+ 
+-    activity_handle = ActivityHandle(activity_id=None,
+-                                     object_id=object_id,
+-                                     uri=None,
+-                                     invited=False)
+-    activityfactory.create(bundle, activity_handle)
++    # Keep Journal launches on the canonical shell lifecycle path.  The local
++    # import avoids a module cycle through misc.get_activities_for_mime.
++    from jarabe.journal import misc
++    misc.launch(bundle, object_id=object_id)
+     return True
+diff --git a/src/jarabe/journal/journalactivity.py b/src/jarabe/journal/journalactivity.py
+index fb2f23c..6b6aa47 100644
+--- a/src/jarabe/journal/journalactivity.py
++++ b/src/jarabe/journal/journalactivity.py
+@@ -226,6 +226,7 @@ class JournalActivity(JournalWindow):
+         self._realized_sid = self.connect('realize', self.__realize_cb)
+ 
+         key_controller = Gtk.EventControllerKey()
++        key_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+         key_controller.connect('key-pressed', self.__key_press_event_cb)
+         self.add_controller(key_controller)
+         self._key_controller = key_controller
+@@ -423,6 +424,10 @@ class JournalActivity(JournalWindow):
+                 return True
+ 
+         elif self._active_view == JournalViews.DETAIL:
++            if keyname == 'Escape':
++                self.show_main_view()
++                return True
++
+             if keyname == 'Left':
+                 path, col = self._list_view.tree_view.get_cursor()
+                 self._list_view.tree_view.grab_focus()
+@@ -515,6 +520,9 @@ class JournalActivity(JournalWindow):
+     def show_main_view(self):
+         if not self._init_done:
+             return
++        if (self._active_view == JournalViews.MAIN and
++                self.canvas == self._main_view):
++            return
+         self._active_view = JournalViews.MAIN
+         self.project_metadata = None
+         if self._editing_mode:
+diff --git a/src/jarabe/journal/journalwindow.py b/src/jarabe/journal/journalwindow.py
+index 3bd6095..20dcc7e 100644
+--- a/src/jarabe/journal/journalwindow.py
++++ b/src/jarabe/journal/journalwindow.py
+@@ -17,7 +17,7 @@
+ import logging
+ _logger = logging.getLogger('JournalWindow')
+ 
+-from gi.repository import Gtk, Gdk
++from gi.repository import Gtk, Gdk, GLib
+ 
+ from gettext import gettext as _
+ 
+@@ -69,14 +69,17 @@ class JournalWindow(Gtk.Box):
+         if self._canvas == widget:
+             return
+         if self._canvas is not None and self._canvas.get_parent() == self._canvas_area:
+-            self._canvas_area.remove(self._canvas)
++            self._canvas.unparent()
+         self._canvas = widget
+         if widget is not None:
+             if widget.get_parent() is not None:
+-                parent = widget.get_parent()
+-                if parent != self._canvas_area:
+-                    parent.remove(widget)
++                if widget.get_parent() != self._canvas_area:
++                    widget.unparent()
+             if widget.get_parent() != self._canvas_area:
++                if widget.get_parent() is not None and widget.get_root() is not None:
++                    # GTK clears the root one dispatch turn after unparent().
++                    GLib.idle_add(self.set_canvas, widget)
++                    return
+                 self._canvas_area.append(widget)
+ 
+     def set_toolbar_box(self, toolbar):
+diff --git a/src/jarabe/journal/listmodel.py b/src/jarabe/journal/listmodel.py
+index 55b91f8..c630386 100644
+--- a/src/jarabe/journal/listmodel.py
++++ b/src/jarabe/journal/listmodel.py
+@@ -107,7 +107,11 @@ class ListModel(GObject.GObject, Gtk.TreeModel):
+ 
+     def __result_set_ready_cb(self, **kwargs):
+         t = time.time()
+-        self._all_ids = self._result_set.find_ids(self._query)
++        try:
++            self._all_ids = self._result_set.find_ids(self._query)
++        except Exception:
++            logging.exception('Journal result-set readiness failed')
++            raise
+         logging.debug('get all ids: %r', time.time() - t)
+         self.emit('ready')
+ 
+diff --git a/src/jarabe/journal/listview.py b/src/jarabe/journal/listview.py
+index e1219c4..37d7ee7 100644
+--- a/src/jarabe/journal/listview.py
++++ b/src/jarabe/journal/listview.py
+@@ -484,6 +484,7 @@ class BaseListView(Gtk.Box):
+                 self._backup_selected = self._model.get_selected_items()
+             self._model.stop()
+         self._dirty = False
++        self._show_message(_('Loading Journal…'))
+ 
+         self._model = ListModel(self._query)
+         self._model.connect('ready', self.__model_ready_cb)
+diff --git a/src/jarabe/journal/misc.py b/src/jarabe/journal/misc.py
+index 2a953dd..3f2dae2 100644
+--- a/src/jarabe/journal/misc.py
++++ b/src/jarabe/journal/misc.py
+@@ -308,6 +308,7 @@ def launch(bundle, activity_id=None, object_id=None, uri=None, color=None,
+     if color is None:
+         color = profile.get_color()
+ 
++    shell_model.notify_launch(activity_id, bundle.get_bundle_id())
+     launcher.add_launcher(activity_id, bundle.get_icon(), color)
+     activity_handle = ActivityHandle(activity_id=activity_id,
+                                      object_id=object_id,
+diff --git a/src/jarabe/journal/model.py b/src/jarabe/journal/model.py
+index 7461342..e74af28 100644
+--- a/src/jarabe/journal/model.py
++++ b/src/jarabe/journal/model.py
+@@ -222,8 +222,14 @@ class DatastoreResultSet(BaseResultSet):
+         BaseResultSet.__init__(self, query, page_size)
+ 
+     def find(self, query):
+-        entries, total_count = _call_datastore('find', query, PROPERTIES,
+-                                               byte_arrays=True)
++        marshaled = dbus.Dictionary({}, signature='sv')
++        for key, value in query.items():
++            if isinstance(value, list):
++                value = dbus.Array(value, signature='s')
++            marshaled[key] = value
++        entries, total_count = _call_datastore(
++            'find', marshaled, dbus.Array(PROPERTIES, signature='s'),
++            byte_arrays=True)
+ 
+         for entry in entries:
+             entry['mountpoint'] = '/'
+@@ -655,7 +661,7 @@ def get_file_size(object_id):
+ def get_unique_values(key):
+     """Returns a list with the different values a property has taken
+     """
+-    empty_dict = dbus.Dictionary({}, signature='ss')
++    empty_dict = dbus.Dictionary({}, signature='sv')
+     return _call_datastore('get_uniquevaluesfor', key, empty_dict)
+ 
+ 
+diff --git a/src/jarabe/main.py b/src/jarabe/main.py
+index f72ac44..1ad1033 100755
+--- a/src/jarabe/main.py
++++ b/src/jarabe/main.py
+@@ -1,417 +1,518 @@
+-# Copyright (C) 2006, Red Hat, Inc.
+-# Copyright (C) 2009, One Laptop Per Child Association Inc
+-#
+-# This program is free software: you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation, either version 3 of the License, or
+-# (at your option) any later version.
+-#
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-#
+-# You should have received a copy of the GNU General Public License
+-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-
+-from sugar4 import logger
+-
+-logger.cleanup()
+-logger.start('shell')
+-
+-import logging
+-
+-logging.debug('STARTUP: Starting the shell')
+-
+-import os
+-import sys
+-import shutil
+-
+-# Disable overlay scrolling before GTK is loaded
+-os.environ['GTK_OVERLAY_SCROLLING'] = '0'
+-os.environ['LIBOVERLAY_SCROLLBAR'] = '0'
+-# Force software rendering for Casilda in software rasterizer or VM environments without DRM GPU
+-if 'CASILDA_FORCE_SOFTWARE' not in os.environ and \
+-        (os.environ.get('LIBGL_ALWAYS_SOFTWARE') == '1' or not os.path.exists('/dev/dri/card0')):
+-    os.environ['CASILDA_FORCE_SOFTWARE'] = '1'
+-
+-
+-import gettext
+-from jarabe import config
+-# must happen early; some modules register translatable strings at import time
+-gettext.bindtextdomain('sugar', config.locale_path)
+-gettext.bindtextdomain('sugar-toolkit-gtk4', config.locale_path)
+-gettext.textdomain('sugar')
+-
+-os.environ['SUGAR_VERSION'] = config.version
+-
+-from dbus.mainloop.glib import DBusGMainLoop
+-DBusGMainLoop(set_as_default=True)
+-
+-import gi
+-gi.require_version('Gtk', '4.0')
+-try:
+-    gi.require_version('Gst', '1.0')
+-    from gi.repository import Gst
+-    HAS_GST = True
+-except ValueError:
+-    HAS_GST = False
+-    logging.warning("Gst 1.0 not available. Running without GStreamer.")
+-
+-from gi.repository import Gio
+-from gi.repository import GLib
+-from gi.repository import Gtk
+-
+-from sugar4 import env
+-
+-from jarabe.model.session import get_session_manager
+-from jarabe.model.update import updater
+-from jarabe.model import screen
+-from jarabe.model import shell
+-from jarabe.view import keyhandler
+-from jarabe.view import gesturehandler
+-from jarabe.view import cursortracker
+-from jarabe.journal import journalactivity
+-from jarabe.model import notifications
+-from jarabe.model import filetransfer
+-from jarabe.view import launcher
+-#from jarabe.model import keyboard
+-from jarabe.desktop import homewindow
+-from jarabe.model.sound import sound
+-from jarabe import intro
+-from jarabe.intro.window import IntroWindow
+-from jarabe.intro.window import create_profile_with_nickname
+-from jarabe import frame
+-from jarabe.view.service import UIService
+-from jarabe import apisocket
+-from jarabe import testrunner
+-from jarabe.model import brightness
+-
+-_window_manager_started = False
+-_starting_desktop = False
+-
+-
+-def unfreeze_screen_cb():
+-    logging.debug('STARTUP: unfreeze_screen_cb')
+-    screen.unfreeze()
+-
+-
+-def setup_frame_cb():
+-    logging.debug('STARTUP: setup_frame_cb')
+-    frame.get_view()
+-
+-
+-def setup_keyhandler_cb():
+-    logging.debug('STARTUP: setup_keyhandler_cb')
+-    keyhandler.setup(frame.get_view())
+-
+-
+-def setup_gesturehandler_cb():
+-    logging.debug('STARTUP: setup_gesturehandler_cb')
+-    gesturehandler.setup(frame.get_view())
+-
+-
+-def setup_cursortracker_cb():
+-    logging.debug('STARTUP: setup_cursortracker_cb')
+-    cursortracker.setup()
+-
+-
+-def setup_journal_cb():
+-    logging.debug('STARTUP: setup_journal_cb')
+-    journalactivity.start()
+-
+-
+-def setup_notification_service_cb():
+-    notifications.init()
+-
+-
+-def setup_file_transfer_cb():
+-    filetransfer.init()
+-
+-
+-def _complete_desktop_startup():
+-    launcher.setup()
+-
+-    setup_frame_cb()
+-    GLib.idle_add(setup_gesturehandler_cb)
+-    GLib.idle_add(setup_journal_cb)
+-    GLib.idle_add(setup_notification_service_cb)
+-    GLib.idle_add(setup_file_transfer_cb)
+-    GLib.timeout_add_seconds(600, updater.startup_periodic_update)
+-
+-    apisocket.start()
+-
+-    testrunner.check_environment()
+-
+-
+-def _start_window_manager():
+-    global _cursor_theme_settings, _cursor_theme
+-
+-    _cursor_theme_settings = Gio.Settings.new('org.gnome.desktop.interface')
+-    _cursor_theme = _cursor_theme_settings.get_string('cursor-theme')
+-
+-    global _starting_desktop
+-    if _starting_desktop:
+-        _complete_desktop_startup()
+-
+-
+-def _begin_desktop_startup():
+-    from jarabe.model import shell as shell_model
+-    global _starting_desktop
+-    _starting_desktop = True
+-
+-    UIService()
+-
+-    shell_instance = shell_model.get_model()
+-    _setup_main_window(shell_instance)
+-
+-    home_window = homewindow.get_instance()
+-
+-    setup_keyhandler_cb()
+-
+-    shell_instance.stack.add_named(home_window, "home")
+-    shell_instance.stack.add_named(shell_instance.compositor, "activity")
+-    shell_instance.stack.set_visible_child_name("home")
+-
+-    os.environ["WAYLAND_DISPLAY"] = "wayland-sugar"
+-    if "DISPLAY" in os.environ:
+-        del os.environ["DISPLAY"]
+-
+-    session_manager = get_session_manager()
+-
+-    _complete_desktop_startup()
+-
+-    # Clear the startup 'wait' cursor now that the desktop is ready.
+-    # busy() was called in HomeWindow.__init__; unbusy() matches it.
+-    GLib.idle_add(home_window.unbusy)
+-
+-
+-def __intro_window_done_cb(window):
+-    _begin_desktop_startup()
+-
+-    global _window_manager_started
+-    if _window_manager_started:
+-        _complete_desktop_startup()
+-
+-
+-def cleanup_temporary_files():
+-    try:
+-        # see http://bugs.sugarlabs.org/ticket/1876
+-        data_dir = os.path.join(env.get_profile_path(), 'data')
+-        shutil.rmtree(data_dir, ignore_errors=True)
+-        os.makedirs(data_dir)
+-    except OSError as e:
+-        # non-fatal: full or read-only disk should not block startup
+-        logging.warning('temporary files cleanup failed: %s', e)
+-
+-
+-def setup_timezone():
+-    settings = Gio.Settings.new('org.sugarlabs.date')
+-    timezone = settings.get_string('timezone')
+-    if timezone is not None and timezone:
+-        os.environ['TZ'] = timezone
+-
+-
+-def setup_fonts():
+-    settings = Gio.Settings.new('org.sugarlabs.font')
+-    face = settings.get_string('default-face')
+-    size = settings.get_double('default-size')
+-
+-    gtk_settings = Gtk.Settings.get_default()
+-    gtk_settings.set_property('gtk-font-name', '%s %f' % (face, size))
+-
+-
+-def setup_proxy():
+-    protos = ['http', 'https', 'ftp', 'socks']
+-    env_variables = ['{}_proxy'.format(proto) for proto in protos]
+-    schemas = ['org.sugarlabs.system.proxy.{}'.format(
+-        proto) for proto in protos]
+-
+-    g_mode = Gio.Settings.new('org.sugarlabs.system.proxy').get_string('mode')
+-    if g_mode == 'manual':
+-        counter = 0
+-        for schema in schemas:
+-            setting_schema = Gio.Settings.new(schema)
+-
+-            if ((env_variables[counter] == 'http_proxy') and
+-                    setting_schema.get_boolean('use-authentication')):
+-                text_to_set = "%s://%s:%s@%s:%s/" % (
+-                    protos[counter],
+-                    setting_schema.get_string('authentication-user'),
+-                    setting_schema.get_string('authentication-password'),
+-                    setting_schema.get_string('host'),
+-                    str(setting_schema.get_int('port')))
+-            else:
+-                text_to_set = "%s://%s:%s/" % (
+-                    protos[counter],
+-                    setting_schema.get_string('host'),
+-                    str(setting_schema.get_int('port')))
+-
+-            os.environ[env_variables[counter]] = text_to_set
+-            os.environ[env_variables[counter].upper()] = text_to_set
+-            counter += 1
+-        os.environ['no_proxy'] = ",".join(Gio.Settings.new(
+-            'org.sugarlabs.system.proxy').get_strv('ignore-hosts'))
+-
+-    elif g_mode == 'none':
+-        for each_env_variable in env_variables:
+-            if each_env_variable in os.environ:
+-                del os.environ[each_env_variable]
+-
+-
+-def setup_theme():
+-    from gi.repository import Gdk
+-    gtk_settings = Gtk.Settings.get_default()
+-    sugar_theme = 'sugar-72'
+-    if 'SUGAR_SCALING' in os.environ:
+-        if os.environ['SUGAR_SCALING'] == '100':
+-            sugar_theme = 'sugar-100'
+-    # gtk-theme-name is deprecated in GTK4 and ignored on Wayland/Casilda.
+-    # GTK_THEME env variable in run_sugar.sh handles the theme name correctly.
+-    gtk_settings.set_property('gtk-icon-theme-name', 'sugar')
+-    gtk_settings.set_property('gtk-cursor-blink-timeout', 3)
+-    gtk_settings.set_property('gtk-overlay-scrolling', False)
+-
+-    # GTK4 / Wayland fix: when Casilda compositor connects (~2 sec after start),
+-    # the Wayland display replaces the initial display and any CssProvider added
+-    # via add_provider_for_display() on the old display is lost → colors fade.
+-    #
+-    # Solution: write Sugar CSS import to ~/.config/gtk-4.0/gtk.css which GTK4
+-    # loads automatically at PRIORITY_USER (800) on EVERY display — including
+-    # after Wayland reconnects. Nothing can override PRIORITY_USER.
+-    css_path = '/usr/share/themes/%s/gtk-4.0/gtk.css' % sugar_theme
+-    if os.path.exists(css_path):
+-        user_css_dir = os.path.expanduser('~/.config/gtk-4.0')
+-        os.makedirs(user_css_dir, exist_ok=True)
+-        user_css_file = os.path.join(user_css_dir, 'gtk.css')
+-        try:
+-            with open(user_css_file, 'w') as f:
+-                f.write('/* Sugar GTK4 theme — auto-written by jarabe/main.py */\n')
+-                f.write('@import url("%s");\n' % css_path)
+-            logging.debug('Sugar GTK4 theme pinned at user priority: %s', user_css_file)
+-        except OSError as e:
+-            logging.warning('Could not write user CSS: %s', e)
+-
+-        # Also load via provider for the current display (belt-and-suspenders).
+-        # Guard: Gdk.Display.get_default() can return None in gdm3 Wayland
+-        # session before the display is fully initialized.
+-        _display = Gdk.Display.get_default()
+-        if _display is not None:
+-            provider = Gtk.CssProvider()
+-            provider.load_from_path(css_path)
+-            Gtk.StyleContext.add_provider_for_display(
+-                _display,
+-                provider,
+-                Gtk.STYLE_PROVIDER_PRIORITY_USER)
+-        else:
+-            logging.warning('setup_theme: display not ready yet, skipping '
+-                            'add_provider_for_display (user CSS already written)')
+-    else:
+-        logging.warning('Sugar GTK4 theme not found at %s', css_path)
+-
+-    icons_path = os.path.join(config.data_path, 'icons')
+-    _display = Gdk.Display.get_default()
+-    if _display is not None:
+-        Gtk.IconTheme.get_for_display(_display).add_search_path(icons_path)
+-    else:
+-        logging.warning('setup_theme: display not ready, icon search path '
+-                        'not set — will be applied after display opens')
+-
+-
+-
+-def _setup_main_window(shell_instance):
+-    if not shell_instance._main_window:
+-        shell_instance._main_window = Gtk.ApplicationWindow(application=shell_instance)
+-        shell_instance._main_window.set_title("Sugar")
+-
+-        shell_instance._overlay = Gtk.Overlay()
+-        shell_instance._overlay.set_child(shell_instance.stack)
+-
+-        shell_instance._main_window.set_child(shell_instance._overlay)
+-        if os.environ.get('SUGAR_WINDOWED', '0') == '1':
+-            shell_instance._main_window.set_default_size(1024, 768)
+-        else:
+-            shell_instance._main_window.fullscreen()
+-        shell_instance._main_window.present()
+-
+-
+-def _start_intro(shell, start_on_age_page=False):
+-    _setup_main_window(shell)
+-    intro_box = IntroWindow(start_on_age_page=start_on_age_page)
+-
+-    shell.stack.add_named(intro_box, "intro")
+-    shell.stack.set_visible_child_name("intro")
+-    intro_box.connect('done', __intro_window_done_cb)
+-
+-
+-def _check_profile():
+-    if intro.check_profile():
+-        return True
+-
+-    profile_name = os.environ.get("SUGAR_PROFILE_NAME", None)
+-    if profile_name is not None:
+-        create_profile_with_nickname(profile_name)
+-        return True
+-
+-    return False
+-
+-
+-def _check_group_label():
+-    return intro.check_group_label()
+-
+-
+-def main(shell):
+-    logging.warning("Running main")
+-
+-    # Create default profile directories if they do not exist
+-    profile_path = env.get_profile_path()
+-    for subdir in ['datastore', 'logs', 'data']:
+-        path = os.path.join(profile_path, subdir)
+-        if not os.path.exists(path):
+-            try:
+-                os.makedirs(path, 0o770)
+-            except OSError as e:
+-                logging.error('Failed to create directory %s: %s', path, e)
+-
+-    import signal
+-    signal.signal(signal.SIGINT, signal.SIG_DFL)
+-
+-    if HAS_GST:
+-        Gst.init(sys.argv)
+-
+-    cleanup_temporary_files()
+-
+-    _start_window_manager()
+-
+-    setup_timezone()
+-    setup_fonts()
+-    setup_theme()
+-    setup_proxy()
+-
+-    # must run early so the screen unfreezes even if blocked on intro
+-    GLib.idle_add(unfreeze_screen_cb)
+-
+-    GLib.idle_add(setup_cursortracker_cb)
+-    sound.restore()
+-    brightness.get_instance()
+-
+-    sys.path.append(config.ext_path)
+-
+-    if not _check_profile():
+-        _start_intro(shell)
+-    elif not _check_group_label():
+-        _start_intro(shell, start_on_age_page=True)
+-    else:
+-        _begin_desktop_startup()
+-
+-shell = shell.get_model()
+-
+-from sugar4.activity import activityfactory
+-def _get_compositor_fd():
+-    if shell.compositor is not None:
+-        return shell.compositor.get_client_socket_fd()
+-    return -1
+-activityfactory.set_compositor_fd_getter(_get_compositor_fd)
+-
+-shell.connect('activate', main)
+-shell.run(None)
++# Copyright (C) 2006, Red Hat, Inc.
++# Copyright (C) 2009, One Laptop Per Child Association Inc
++#
++# This program is free software: you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation, either version 3 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++
++from sugar4 import logger
++
++logger.cleanup()
++logger.start('shell')
++
++import logging
++
++logging.debug('STARTUP: Starting the shell')
++
++import os
++import sys
++import shutil
++
++# Disable overlay scrolling before GTK is loaded
++os.environ['GTK_OVERLAY_SCROLLING'] = '0'
++os.environ['LIBOVERLAY_SCROLLBAR'] = '0'
++# Force software rendering for Casilda in software rasterizer or VM environments without DRM GPU
++if 'CASILDA_FORCE_SOFTWARE' not in os.environ and \
++        (os.environ.get('LIBGL_ALWAYS_SOFTWARE') == '1' or not os.path.exists('/dev/dri/card0')):
++    os.environ['CASILDA_FORCE_SOFTWARE'] = '1'
++
++
++import gettext
++from jarabe import config
++# must happen early; some modules register translatable strings at import time
++gettext.bindtextdomain('sugar', config.locale_path)
++gettext.bindtextdomain('sugar-toolkit-gtk4', config.locale_path)
++gettext.textdomain('sugar')
++
++os.environ['SUGAR_VERSION'] = config.version
++
++from dbus.mainloop.glib import DBusGMainLoop
++DBusGMainLoop(set_as_default=True)
++
++import gi
++gi.require_version('Gtk', '4.0')
++try:
++    gi.require_version('Gst', '1.0')
++    from gi.repository import Gst
++    HAS_GST = True
++except ValueError:
++    HAS_GST = False
++    logging.warning("Gst 1.0 not available. Running without GStreamer.")
++
++from gi.repository import Gio
++from gi.repository import GLib
++from gi.repository import Gtk
++
++from sugar4 import env
++
++from jarabe.model.session import get_session_manager
++from jarabe.model.update import updater
++from jarabe.model import screen
++from jarabe.model import shell
++from jarabe.view import keyhandler
++from jarabe.view import actions
++from jarabe.view import gesturehandler
++from jarabe.view import cursortracker
++from jarabe.journal import journalactivity
++from jarabe.model import notifications
++from jarabe.model import filetransfer
++from jarabe.view import launcher
++#from jarabe.model import keyboard
++from jarabe.desktop import homewindow
++from jarabe.model.sound import sound
++from jarabe import intro
++from jarabe.intro.window import IntroWindow
++from jarabe.intro.window import create_profile_with_nickname
++from jarabe import frame
++from jarabe.view.service import UIService
++from jarabe import apisocket
++from jarabe import testrunner
++from jarabe.model import brightness
++
++_window_manager_started = False
++_starting_desktop = False
++
++
++def unfreeze_screen_cb():
++    logging.debug('STARTUP: unfreeze_screen_cb')
++    screen.unfreeze()
++
++
++def setup_frame_cb():
++    logging.debug('STARTUP: setup_frame_cb')
++    frame.get_view()
++
++
++def setup_keyhandler_cb():
++    logging.debug('STARTUP: setup_keyhandler_cb')
++    keyhandler.setup(frame.get_view())
++
++
++def setup_gesturehandler_cb():
++    logging.debug('STARTUP: setup_gesturehandler_cb')
++    gesturehandler.setup(frame.get_view())
++
++
++def setup_cursortracker_cb():
++    logging.debug('STARTUP: setup_cursortracker_cb')
++    cursortracker.setup()
++
++
++def setup_journal_cb():
++    logging.debug('STARTUP: setup_journal_cb')
++    journalactivity.start()
++    journal = journalactivity.get_journal()
++    semantic_keys = keyhandler.get_instance()
++    if semantic_keys is not None:
++        semantic_keys.add_window(journal)
++
++
++def setup_notification_service_cb():
++    notifications.init()
++
++
++def setup_file_transfer_cb():
++    filetransfer.init()
++
++
++def _complete_desktop_startup():
++    launcher.setup()
++
++    setup_frame_cb()
++    GLib.idle_add(setup_gesturehandler_cb)
++    GLib.idle_add(setup_journal_cb)
++    GLib.idle_add(setup_notification_service_cb)
++    GLib.idle_add(setup_file_transfer_cb)
++    GLib.timeout_add_seconds(600, updater.startup_periodic_update)
++
++    apisocket.start()
++
++    testrunner.check_environment()
++
++
++def _start_window_manager():
++    global _cursor_theme_settings, _cursor_theme
++
++    _cursor_theme_settings = Gio.Settings.new('org.gnome.desktop.interface')
++    _cursor_theme = _cursor_theme_settings.get_string('cursor-theme')
++
++    global _starting_desktop
++    if _starting_desktop:
++        _complete_desktop_startup()
++
++
++def _begin_desktop_startup():
++    from jarabe.model import shell as shell_model
++    global _starting_desktop
++    _starting_desktop = True
++
++    UIService()
++
++    shell_instance = shell_model.get_model()
++    _setup_main_window(shell_instance)
++
++    home_window = homewindow.get_instance()
++
++    setup_keyhandler_cb()
++
++    shell_instance.stack.add_named(home_window, "home")
++    shell_instance.stack.add_named(shell_instance.compositor, "activity")
++    # Casilda owns focus while an Activity is active.  Mirror the shell's
++    # semantic key controller on that widget so Sugar shortcuts are still
++    # handled before the Activity client consumes them.
++    semantic_keys = keyhandler.get_instance()
++    if semantic_keys is not None:
++        activity_keys = Gtk.EventControllerKey()
++        activity_keys.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
++        activity_keys.connect("key-pressed", semantic_keys._key_pressed_cb)
++        shell_instance.compositor.add_controller(activity_keys)
++        shell_instance._activity_key_controller = activity_keys
++        semantic_keys.add_window(home_window)
++    shell_instance.stack.set_visible_child_name("home")
++
++    os.environ["WAYLAND_DISPLAY"] = "wayland-sugar"
++    if "DISPLAY" in os.environ:
++        del os.environ["DISPLAY"]
++
++    session_manager = get_session_manager()
++
++    _complete_desktop_startup()
++
++    # Clear the startup 'wait' cursor now that the desktop is ready.
++    # busy() was called in HomeWindow.__init__; unbusy() matches it.
++    GLib.idle_add(home_window.unbusy)
++
++
++def __intro_window_done_cb(window):
++    _begin_desktop_startup()
++
++    global _window_manager_started
++    if _window_manager_started:
++        _complete_desktop_startup()
++
++
++def cleanup_temporary_files():
++    try:
++        # see http://bugs.sugarlabs.org/ticket/1876
++        data_dir = os.path.join(env.get_profile_path(), 'data')
++        shutil.rmtree(data_dir, ignore_errors=True)
++        os.makedirs(data_dir)
++    except OSError as e:
++        # non-fatal: full or read-only disk should not block startup
++        logging.warning('temporary files cleanup failed: %s', e)
++
++
++def setup_timezone():
++    settings = Gio.Settings.new('org.sugarlabs.date')
++    timezone = settings.get_string('timezone')
++    if timezone is not None and timezone:
++        os.environ['TZ'] = timezone
++
++
++def setup_fonts():
++    settings = Gio.Settings.new('org.sugarlabs.font')
++    face = settings.get_string('default-face')
++    size = settings.get_double('default-size')
++
++    gtk_settings = Gtk.Settings.get_default()
++    gtk_settings.set_property('gtk-font-name', '%s %f' % (face, size))
++
++
++def setup_proxy():
++    protos = ['http', 'https', 'ftp', 'socks']
++    env_variables = ['{}_proxy'.format(proto) for proto in protos]
++    schemas = ['org.sugarlabs.system.proxy.{}'.format(
++        proto) for proto in protos]
++
++    g_mode = Gio.Settings.new('org.sugarlabs.system.proxy').get_string('mode')
++    if g_mode == 'manual':
++        counter = 0
++        for schema in schemas:
++            setting_schema = Gio.Settings.new(schema)
++
++            if ((env_variables[counter] == 'http_proxy') and
++                    setting_schema.get_boolean('use-authentication')):
++                text_to_set = "%s://%s:%s@%s:%s/" % (
++                    protos[counter],
++                    setting_schema.get_string('authentication-user'),
++                    setting_schema.get_string('authentication-password'),
++                    setting_schema.get_string('host'),
++                    str(setting_schema.get_int('port')))
++            else:
++                text_to_set = "%s://%s:%s/" % (
++                    protos[counter],
++                    setting_schema.get_string('host'),
++                    str(setting_schema.get_int('port')))
++
++            os.environ[env_variables[counter]] = text_to_set
++            os.environ[env_variables[counter].upper()] = text_to_set
++            counter += 1
++        os.environ['no_proxy'] = ",".join(Gio.Settings.new(
++            'org.sugarlabs.system.proxy').get_strv('ignore-hosts'))
++
++    elif g_mode == 'none':
++        for each_env_variable in env_variables:
++            if each_env_variable in os.environ:
++                del os.environ[each_env_variable]
++
++
++def setup_theme():
++    from gi.repository import Gdk
++    gtk_settings = Gtk.Settings.get_default()
++    sugar_theme = 'sugar-72'
++    if 'SUGAR_SCALING' in os.environ:
++        if os.environ['SUGAR_SCALING'] == '100':
++            sugar_theme = 'sugar-100'
++    # gtk-theme-name is deprecated in GTK4 and ignored on Wayland/Casilda.
++    # GTK_THEME env variable in run_sugar.sh handles the theme name correctly.
++    gtk_settings.set_property('gtk-icon-theme-name', 'sugar')
++    gtk_settings.set_property('gtk-cursor-blink-timeout', 3)
++    gtk_settings.set_property('gtk-overlay-scrolling', False)
++
++    # GTK4 / Wayland fix: when Casilda compositor connects (~2 sec after start),
++    # the Wayland display replaces the initial display and any CssProvider added
++    # via add_provider_for_display() on the old display is lost → colors fade.
++    #
++    # Solution: write Sugar CSS import to ~/.config/gtk-4.0/gtk.css which GTK4
++    # loads automatically at PRIORITY_USER (800) on EVERY display — including
++    # after Wayland reconnects. Nothing can override PRIORITY_USER.
++    css_path = '/usr/share/themes/%s/gtk-4.0/gtk.css' % sugar_theme
++    if os.path.exists(css_path):
++        user_css_dir = os.path.expanduser('~/.config/gtk-4.0')
++        os.makedirs(user_css_dir, exist_ok=True)
++        user_css_file = os.path.join(user_css_dir, 'gtk.css')
++        try:
++            with open(user_css_file, 'w') as f:
++                f.write('/* Sugar GTK4 theme — auto-written by jarabe/main.py */\n')
++                f.write('@import url("%s");\n' % css_path)
++            logging.debug('Sugar GTK4 theme pinned at user priority: %s', user_css_file)
++        except OSError as e:
++            logging.warning('Could not write user CSS: %s', e)
++
++        # Also load via provider for the current display (belt-and-suspenders).
++        # Guard: Gdk.Display.get_default() can return None in gdm3 Wayland
++        # session before the display is fully initialized.
++        _display = Gdk.Display.get_default()
++        if _display is not None:
++            provider = Gtk.CssProvider()
++            provider.load_from_path(css_path)
++            Gtk.StyleContext.add_provider_for_display(
++                _display,
++                provider,
++                Gtk.STYLE_PROVIDER_PRIORITY_USER)
++        else:
++            logging.warning('setup_theme: display not ready yet, skipping '
++                            'add_provider_for_display (user CSS already written)')
++    else:
++        logging.warning('Sugar GTK4 theme not found at %s', css_path)
++
++    icons_path = os.path.join(config.data_path, 'icons')
++    _display = Gdk.Display.get_default()
++    if _display is not None:
++        Gtk.IconTheme.get_for_display(_display).add_search_path(icons_path)
++    else:
++        logging.warning('setup_theme: display not ready, icon search path '
++                        'not set — will be applied after display opens')
++
++
++
++def _setup_main_window(shell_instance):
++    if not shell_instance._main_window:
++        shell_instance._main_window = Gtk.ApplicationWindow(application=shell_instance)
++        shell_instance._main_window.set_focusable(True)
++        shell_instance._main_window.set_title("Sugar")
++
++        shell_instance._overlay = Gtk.Overlay()
++        shell_instance._overlay.set_child(shell_instance.stack)
++
++        shell_instance._main_window.set_child(shell_instance._overlay)
++        from gi.repository import Gdk
++        semantic_keys = keyhandler.get_instance()
++        zoom_keys = {
++            Gdk.KEY_F1: shell_instance.ZOOM_MESH,
++            Gdk.KEY_F2: shell_instance.ZOOM_GROUP,
++            Gdk.KEY_F3: shell_instance.ZOOM_HOME,
++            Gdk.KEY_F4: shell_instance.ZOOM_ACTIVITY,
++        }
++        space_keys = (Gdk.KEY_F7, Gdk.KEY_F8)
++        zoom_controller = Gtk.EventControllerKey()
++        zoom_controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
++        # F7/F8 belong to the shell's key handler, which follows every
++        # window it is attached to. Handling them here as well bound them
++        # to this window alone.
++
++        def _capture_zoom_key(_controller, keyval, _keycode, _state):
++            if keyval in space_keys and semantic_keys is not None:
++                return semantic_keys._key_pressed_cb(
++                    _controller, keyval, _keycode, _state)
++            if keyval == Gdk.KEY_F5:
++                from jarabe.journal import journalactivity
++                journalactivity.get_journal().show_journal()
++                return True
++            if keyval == Gdk.KEY_F6:
++                from jarabe import frame
++                frame.get_view().notify_key_press()
++                return True
++            if keyval == Gdk.KEY_F3:
++                actions.go_home()
++                return True
++            level = zoom_keys.get(keyval)
++            if level is None:
++                return False
++            from jarabe import frame
++            frame.get_view().hide()
++            shell_instance.get_model().set_zoom_level(level)
++            return True
++
++        zoom_controller.connect("key-pressed", _capture_zoom_key)
++        shortcut_controller = Gtk.ShortcutController()
++        shortcut_controller.set_scope(Gtk.ShortcutScope.GLOBAL)
++        def _switch_space_shortcut(_widget, _args, target):
++            if semantic_keys is None:
++                return False
++            semantic_keys._switch_space(target)
++            return True
++
++        def _escape_shell(_widget, _args):
++            from jarabe import frame
++            frame_view = frame.get_view()
++            if not frame_view.visible:
++                return False
++            frame_view.hide()
++            return True
++        shortcut_controller.add_shortcut(Gtk.Shortcut.new(
++            Gtk.KeyvalTrigger.new(Gdk.KEY_Escape, 0),
++            Gtk.CallbackAction.new(_escape_shell)))
++        for _space_key, _space_target in ((Gdk.KEY_F7, "gtk3"),
++                                           (Gdk.KEY_F8, "gtk4")):
++            _trigger = Gtk.KeyvalTrigger.new(_space_key, 0)
++            _action = Gtk.CallbackAction.new(
++                lambda _widget, _args, target=_space_target:
++                    _switch_space_shortcut(_widget, _args, target))
++            shortcut_controller.add_shortcut(Gtk.Shortcut.new(_trigger,
++                                                               _action))
++        for _shortcut_key in (Gdk.KEY_F1, Gdk.KEY_F2, Gdk.KEY_F3,
++                              Gdk.KEY_F4, Gdk.KEY_F5, Gdk.KEY_F6):
++            _trigger = Gtk.KeyvalTrigger.new(_shortcut_key, 0)
++            _action = Gtk.CallbackAction.new(
++                lambda _widget, _args, keyval=_shortcut_key:
++                    _capture_zoom_key(None, keyval, 0, 0))
++            shortcut_controller.add_shortcut(Gtk.Shortcut.new(_trigger,
++                                                               _action))
++        shell_instance._main_window.add_controller(shortcut_controller)
++        shell_instance._main_window.add_controller(zoom_controller)
++        for _focus_surface in (shell_instance._overlay, shell_instance.stack):
++            _surface_controller = Gtk.EventControllerKey()
++            _surface_controller.set_propagation_phase(
++                Gtk.PropagationPhase.CAPTURE)
++            _surface_controller.connect("key-pressed", _capture_zoom_key)
++            _focus_surface.add_controller(_surface_controller)
++        shell_instance._sugar_zoom_controller = zoom_controller
++
++        if os.environ.get('SUGAR_WINDOWED', '0') == '1':
++            shell_instance._main_window.set_decorated(False)
++            shell_instance._main_window.set_default_size(1024, 768)
++        else:
++            shell_instance._main_window.fullscreen()
++        shell_instance._main_window.present()
++
++
++def _start_intro(shell, start_on_age_page=False):
++    _setup_main_window(shell)
++    intro_box = IntroWindow(start_on_age_page=start_on_age_page)
++
++    shell.stack.add_named(intro_box, "intro")
++    shell.stack.set_visible_child_name("intro")
++    intro_box.connect('done', __intro_window_done_cb)
++
++
++def _check_profile():
++    if intro.check_profile():
++        return True
++
++    profile_name = os.environ.get("SUGAR_PROFILE_NAME", None)
++    if profile_name is not None:
++        create_profile_with_nickname(profile_name)
++        return True
++
++    return False
++
++
++def _check_group_label():
++    return intro.check_group_label()
++
++
++def main(shell):
++    logging.warning("Running main")
++
++    # Create default profile directories if they do not exist
++    profile_path = env.get_profile_path()
++    for subdir in ['datastore', 'logs', 'data']:
++        path = os.path.join(profile_path, subdir)
++        if not os.path.exists(path):
++            try:
++                os.makedirs(path, 0o770)
++            except OSError as e:
++                logging.error('Failed to create directory %s: %s', path, e)
++
++    import signal
++    signal.signal(signal.SIGINT, signal.SIG_DFL)
++
++    if HAS_GST:
++        Gst.init(sys.argv)
++
++    cleanup_temporary_files()
++
++    _start_window_manager()
++
++    setup_timezone()
++    setup_fonts()
++    setup_theme()
++    setup_proxy()
++
++    # must run early so the screen unfreezes even if blocked on intro
++    GLib.idle_add(unfreeze_screen_cb)
++
++    GLib.idle_add(setup_cursortracker_cb)
++    sound.restore()
++    brightness.get_instance()
++
++    sys.path.append(config.ext_path)
++
++    if not _check_profile():
++        _start_intro(shell)
++    elif not _check_group_label():
++        _start_intro(shell, start_on_age_page=True)
++    else:
++        _begin_desktop_startup()
++
++shell = shell.get_model()
++
++from sugar4.activity import activityfactory
++def _get_compositor_fd():
++    if shell.compositor is not None:
++        return shell.compositor.get_client_socket_fd()
++    return -1
++activityfactory.set_compositor_fd_getter(_get_compositor_fd)
++
++shell.connect('activate', main)
++shell.run(None)
+diff --git a/src/jarabe/model/bundleregistry.py b/src/jarabe/model/bundleregistry.py
+index 453d79e..10efbfc 100644
+--- a/src/jarabe/model/bundleregistry.py
++++ b/src/jarabe/model/bundleregistry.py
+@@ -16,6 +16,7 @@
+ 
+ import os
+ import logging
++import shlex
+ from threading import Thread, Lock
+ 
+ from gi.repository import GObject
+@@ -307,6 +308,23 @@ class BundleRegistry(GObject.GObject):
+         bundle_id = bundle.get_bundle_id()
+         logging.debug('STARTUP: Adding bundle %s', bundle_id)
+         installed = self.get_bundle(bundle_id)
++        if (installed is not None and
++                os.environ.get('ASPARTAME_GTK4_PREVIEW') == '1'):
++            # Select the runtime once, at registration, by bundle identity.
++            # Directory names and version numbers may differ across ports.
++            installed_exec = shlex.split(installed.get_command())
++            bundle_exec = shlex.split(bundle.get_command())
++            installed_modern = bool(installed_exec) and os.path.basename(
++                installed_exec[0]) == 'sugar-activity4'
++            bundle_modern = bool(bundle_exec) and os.path.basename(
++                bundle_exec[0]) == 'sugar-activity4'
++            if installed_modern and not bundle_modern:
++                return installed
++            if bundle_modern and not installed_modern:
++                logging.info('Prefer GTK4 bundle %s over GTK3 duplicate',
++                             bundle_id)
++                self.remove_bundle(installed.get_path(), emit_signals=False)
++                installed = None
+ 
+         if installed is not None:
+             if NormalizedVersion(installed.get_activity_version()) == \
+diff --git a/src/jarabe/model/session.py b/src/jarabe/model/session.py
+index 7bcf0d1..ccecab9 100644
+--- a/src/jarabe/model/session.py
++++ b/src/jarabe/model/session.py
+@@ -18,6 +18,7 @@ from gi.repository import GObject
+ from gi.repository import GLib
+ import os
+ import logging
++from gettext import gettext as _
+ import dbus
+ 
+ from jarabe.model import shell
+@@ -93,56 +94,101 @@ class SessionManager(GObject.GObject):
+ 
+     def shutdown_completed(self):
+         if self._logout_mode != self.MODE_LOGOUT:
+-            shutdown_done = False
+-            try:
+-                bus = dbus.SystemBus()
+-                if have_systemd():
+-                    try:
+-                        proxy = bus.get_object('org.freedesktop.login1',
+-                                               '/org/freedesktop/login1')
+-                        pm = dbus.Interface(proxy,
+-                                            'org.freedesktop.login1.Manager')
+-
+-                        if self._logout_mode == self.MODE_SHUTDOWN:
+-                            pm.PowerOff(True)
+-                            shutdown_done = True
+-                        elif self._logout_mode == self.MODE_REBOOT:
+-                            pm.Reboot(True)
+-                            shutdown_done = True
+-                    except Exception:
+-                        logging.exception('Can not stop sugar via systemd D-Bus')
+-                else:
+-                    CONSOLEKIT_DBUS_PATH = '/org/freedesktop/ConsoleKit/Manager'
+-                    try:
+-                        proxy = bus.get_object('org.freedesktop.ConsoleKit',
+-                                               CONSOLEKIT_DBUS_PATH)
+-                        pm = dbus.Interface(proxy,
+-                                            'org.freedesktop.ConsoleKit.Manager')
+-
+-                        if self._logout_mode == self.MODE_SHUTDOWN:
+-                            pm.Stop()
+-                            shutdown_done = True
+-                        elif self._logout_mode == self.MODE_REBOOT:
+-                            pm.Restart()
+-                            shutdown_done = True
+-                    except dbus.DBusException:
+-                        logging.exception('Can not stop sugar via ConsoleKit')
+-            except Exception:
+-                logging.exception('Can not connect to SystemBus for shutdown')
+-
+-            if not shutdown_done:
+-                try:
+-                    import subprocess
+-                    if self._logout_mode == self.MODE_SHUTDOWN:
+-                        subprocess.run(['systemctl', 'poweroff'])
+-                    elif self._logout_mode == self.MODE_REBOOT:
+-                        subprocess.run(['systemctl', 'reboot'])
+-                except Exception:
+-                    logging.exception('systemctl fallback failed')
+-
+-        # Always quit the shell model to ensure we exit
++            if not self._request_system_shutdown():
++                # A refused or failed system action is not permission to
++                # destroy the desktop. Quitting anyway left the user looking
++                # at a black screen with nothing shut down. Stay running and
++                # say what happened.
++                self._logout_mode = None
++                self._shutdown_tries = 0
++                self._report_shutdown_failure()
++                return
++
+         self._shell_model.quit()
+ 
++    def _report_shutdown_failure(self):
++        try:
++            import jarabe.desktop.homewindow
++            from sugar4.graphics.alert import NotifyAlert
++
++            home = jarabe.desktop.homewindow.get_instance()
++            home.unbusy()
++            alert = NotifyAlert()
++            alert.props.title = _("Could not shut down")
++            alert.props.msg = _("The system did not allow it. "
++                                "Your session is still running.")
++            alert.connect('response',
++                          lambda a, response: home.remove_alert(a))
++            home.add_alert(alert)
++            alert.set_visible(True)
++        except Exception:
++            logging.exception('Could not report the failed shutdown')
++
++    def _request_system_shutdown(self):
++        """Ask the system to power off or reboot.
++
++        Returns whether the system accepted the request. The caller must not
++        tear the shell down when it did not: a refusal here used to be
++        followed by quitting anyway, which destroyed the desktop and shut
++        nothing down.
++        """
++        if self._logout_mode not in (self.MODE_SHUTDOWN, self.MODE_REBOOT):
++            return True
++
++        try:
++            bus = dbus.SystemBus()
++        except dbus.DBusException as error:
++            logging.warning('No system bus for the shutdown request: %s',
++                            error)
++            return False
++
++        if have_systemd():
++            try:
++                proxy = bus.get_object('org.freedesktop.login1',
++                                       '/org/freedesktop/login1')
++                pm = dbus.Interface(proxy, 'org.freedesktop.login1.Manager')
++
++                if self._logout_mode == self.MODE_SHUTDOWN:
++                    pm.PowerOff(True)
++                elif self._logout_mode == self.MODE_REBOOT:
++                    pm.Reboot(True)
++            except dbus.DBusException as error:
++                # A refusal is an ordinary outcome, not a crash: log it
++                # plainly so the session log does not look fatal.
++                logging.warning('System refused the shutdown request: %s',
++                                error)
++                return self._request_systemctl_shutdown()
++        else:
++            CONSOLEKIT_DBUS_PATH = '/org/freedesktop/ConsoleKit/Manager'
++            try:
++                proxy = bus.get_object('org.freedesktop.ConsoleKit',
++                                       CONSOLEKIT_DBUS_PATH)
++                pm = dbus.Interface(proxy,
++                                    'org.freedesktop.ConsoleKit.Manager')
++
++                if self._logout_mode == self.MODE_SHUTDOWN:
++                    pm.Stop()
++                elif self._logout_mode == self.MODE_REBOOT:
++                    pm.Restart()
++            except dbus.DBusException as error:
++                logging.warning('System refused the shutdown request: %s',
++                                error)
++                return False
++
++        return True
++
++    def _request_systemctl_shutdown(self):
++        # Upstream (sugar#1106) falls back to systemctl when logind refuses
++        # over D-Bus; keep that, but report its outcome to the caller.
++        import subprocess
++        verb = 'poweroff' if self._logout_mode == self.MODE_SHUTDOWN \
++            else 'reboot'
++        try:
++            return subprocess.run(['systemctl', verb]).returncode == 0
++        except OSError as error:
++            logging.warning('systemctl %s failed: %s', verb, error)
++            return False
++
+ 
+ def get_session_manager():
+     global _session_manager
+diff --git a/src/jarabe/model/shell.py b/src/jarabe/model/shell.py
+index 902c43a..a0334dc 100644
+--- a/src/jarabe/model/shell.py
++++ b/src/jarabe/model/shell.py
+@@ -135,6 +135,14 @@ class Activity(GObject.GObject):
+         return bool(self._shell_windows)
+ 
+     def stop(self):
++        if self._service is not None:
++            # Close saves asynchronously. Keep the surface/process alive until
++            # the Activity completes the save or presents a save error.
++            self._service.Close(
++                reply_handler=lambda: None,
++                error_handler=lambda error: logging.error(
++                    'Activity Close failed: %s', error))
++            return
+         # For web activities the Apisocket will connect to the 'stop'
+         # signal, thus preventing the window close.  Then, on the
+         # 'activity.close' method, it will call close_window()
+@@ -168,6 +176,14 @@ class Activity(GObject.GObject):
+ 
+         return self._service
+ 
++    def service_name_owned(self):
++        if not self._activity_id:
++            return False
++        try:
++            return dbus.SessionBus().name_has_owner(self._get_service_name())
++        except dbus.DBusException:
++            return False
++
+     def get_title(self):
+         """Retrieve the application's root window's suggested title"""
+         if self._windows:
+@@ -297,6 +313,9 @@ class Activity(GObject.GObject):
+             return _SERVICE_NAME + self._activity_id
+         return None
+ 
++    def _get_service_path(self):
++        return _SERVICE_PATH + '/' + self._activity_id.replace('-', '_')
++
+     def _retrieve_service(self):
+         if not self._activity_id:
+             return
+@@ -304,7 +323,7 @@ class Activity(GObject.GObject):
+         try:
+             bus = dbus.SessionBus()
+             proxy = bus.get_object(self._get_service_name(),
+-                                   _SERVICE_PATH + '/' + self._activity_id,
++                                   self._get_service_path(),
+                                    introspect=False)
+             self._service = dbus.Interface(proxy, _SERVICE_INTERFACE)
+         except dbus.DBusException:
+@@ -414,6 +433,25 @@ class ShellModel(Gtk.Application):
+         self._main_window = None
+ 
+         self.compositor = Casilda.Compositor(socket="wayland-sugar")
++        self.compositor.add_css_class('sugar-activity-compositor')
++        compositor_css = Gtk.CssProvider()
++        compositor_css.load_from_data(b'''
++            .sugar-activity-compositor {
++                background-color: #000000;
++            }
++        ''')
++        display = Gdk.Display.get_default()
++        if display is not None:
++            Gtk.StyleContext.add_provider_for_display(
++                display, compositor_css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
++        # An embedded Activity only receives Wayland key events while the
++        # compositor is the window's focus widget. Nothing else on that stack
++        # page can take focus, and a finishing stack transition recomputes
++        # focus, so claim it whenever the page becomes or settles as visible.
++        self.stack.connect('notify::visible-child',
++                           self._stack_focus_cb)
++        self.stack.connect('notify::transition-running',
++                           self._stack_focus_cb)
+ 
+         self.connect('window-added', self._window_added_cb)
+         self.connect('window-removed', self._window_removed_cb)
+@@ -431,6 +469,7 @@ class ShellModel(Gtk.Application):
+         self._tabbing_activity = None
+         self._launchers = {}
+         self._modal_dialogs_counter = 0
++        self._activity_reconcile_source = GLib.timeout_add(250, self._reconcile_activity_services)
+ 
+         settings = Gio.Settings.new('org.sugarlabs')
+         self._maximum_open_activities = settings.get_int(
+@@ -506,6 +545,7 @@ class ShellModel(Gtk.Application):
+                 self.stack.set_visible_child_name("journal")
+             else:
+                 self.stack.set_visible_child_name("activity")
++                self._focus_compositor()
+         else:
+             self.stack.set_visible_child_name("home")
+ 
+@@ -515,6 +555,27 @@ class ShellModel(Gtk.Application):
+                 self.stack.set_visible_child_name("journal")
+             else:
+                 self.stack.set_visible_child_name("activity")
++                self._focus_compositor()
++
++    def _focus_compositor(self):
++        GLib.idle_add(self._grab_compositor_focus)
++
++    def _stack_focus_cb(self, stack, _param):
++        if not stack.get_transition_running():
++            GLib.idle_add(self._grab_compositor_focus)
++
++    def _grab_compositor_focus(self):
++        # Whichever page is showing has to own focus, or key events stop at
++        # the window and never reach the page's own controllers: the Activity
++        # never sees a keystroke, and Home never runs its type-to-search.
++        name = self.stack.get_visible_child_name()
++        if name == 'activity':
++            self.compositor.grab_focus()
++        elif name == 'home':
++            page = self.stack.get_child_by_name('home')
++            if page is not None:
++                page.grab_focus()
++        return False
+ 
+     def _get_activities_with_window(self):
+         ret = []
+@@ -523,26 +584,47 @@ class ShellModel(Gtk.Application):
+                 ret.append(i)
+         return ret
+ 
++    def _get_tabbing_activities(self):
++        """The activities Alt+Tab can walk.
++
++        _get_activities_with_window() only sees entries that registered a
++        Gtk window with the shell. In the modern Space an Activity is a
++        Wayland client inside the compositor and never registers one, so
++        that list holds nothing but the shell's own window - which is not
++        an Activity and has no bundle id. Walk the activities the shell
++        tracks through their D-Bus service instead; that is the same set
++        the Frame shows.
++        """
++        return [activity for activity in self._activities
++                if activity.get_bundle_id() is not None]
++
+     def get_previous_activity(self, current=None):
+         if not current:
+             current = self._active_activity
+ 
+-        activities = self._get_activities_with_window()
+-        i = activities.index(current)
+-        if len(activities) == 0:
++        activities = self._get_tabbing_activities()
++        if not activities:
+             return None
++        if current not in activities:
++            # The active entry can be the shell's own window, which Alt+Tab
++            # should not land on. Indexing it raised ValueError and the
++            # emptiness check below it could never run.
++            return activities[-1]
++        i = activities.index(current)
+         if i - 1 >= 0:
+             return activities[i - 1]
+-        return activities[len(activities) - 1]
++        return activities[-1]
+ 
+     def get_next_activity(self, current=None):
+         if not current:
+             current = self._active_activity
+ 
+-        activities = self._get_activities_with_window()
+-        i = activities.index(current)
+-        if len(activities) == 0:
++        activities = self._get_tabbing_activities()
++        if not activities:
+             return None
++        if current not in activities:
++            return activities[0]
++        i = activities.index(current)
+         if i + 1 < len(activities):
+             return activities[i + 1]
+         return activities[0]
+@@ -555,7 +637,7 @@ class ShellModel(Gtk.Application):
+         self._shared_activities[activity_id] = color
+ 
+     def remove_shared_activity(self, activity_id):
+-        del self._shared_activities[activity_id]
++        self._shared_activities.pop(activity_id, None)
+ 
+     def get_tabbing_activity(self):
+         return self._tabbing_activity
+@@ -782,9 +864,21 @@ class ShellModel(Gtk.Application):
+                 self._set_active_activity(None)
+                 self.set_zoom_level(self._desktop_level)
+ 
++        if home_activity not in self._activities:
++            return
++
+         self.emit('activity-removed', home_activity)
+         self._activities.remove(home_activity)
+ 
++    def _reconcile_activity_services(self):
++        for activity in list(self._activities):
++            if (activity.get_launch_status() == Activity.LAUNCHED and
++                    not activity.service_name_owned()):
++                logging.warning('Removing stale Activity service: %s',
++                                activity.get_activity_id())
++                self._remove_activity(activity)
++        return True
++
+     def notify_launch(self, activity_id, service_name):
+         registry = get_registry()
+         activity_info = registry.get_bundle(service_name)
+diff --git a/src/jarabe/view/actions.py b/src/jarabe/view/actions.py
+new file mode 100644
+index 0000000..475fc36
+--- /dev/null
++++ b/src/jarabe/view/actions.py
+@@ -0,0 +1,11 @@
++"""Canonical semantic actions exposed by the GTK4 Sugar shell."""
++
++def go_home():
++    """Return to Home and clear the active Activity surface."""
++    from jarabe import frame
++    from jarabe.model import shell
++    frame.get_view().hide()
++    model = shell.get_model()
++    model._set_active_activity(None)
++    model.set_zoom_level(model.ZOOM_HOME)
++    return True
+diff --git a/src/jarabe/view/keyhandler.py b/src/jarabe/view/keyhandler.py
+index 39e04fa..81ad4f5 100644
+--- a/src/jarabe/view/keyhandler.py
++++ b/src/jarabe/view/keyhandler.py
+@@ -17,6 +17,7 @@
+ import os
+ import logging
+ import importlib
++import subprocess
+ import types
+ 
+ from gi.repository import GLib
+@@ -66,7 +67,12 @@ _actions_table = {
+     '<alt><shift>m': 'open_controlpanel',
+     '<alt><shift>o': 'open_search',
+     '<alt><shift>q': 'logout',
+-    '<alt><shift>d': 'dump_ui_tree'
++    '<alt><shift>d': 'dump_ui_tree',
++    # Aspartame Spaces. Sugar disables every window manager keybinding at
++    # startup, so nothing outside the shell can switch workspaces: these
++    # have to be shell actions like the rest of the table.
++    'F7': 'space_classic',
++    'F8': 'space_modern',
+ }
+ 
+ # These keys will not be trigger a action if a modal dialog is opened
+@@ -82,6 +88,8 @@ class KeyHandler(object):
+         self._key_pressed = None
+         self._keycode_pressed = 0
+         self._keystate_pressed = 0
++        self._last_dispatch = None
++        self._last_dispatch_handled = False
+         self._handled_windows = set()
+ 
+         self._tabbing_handler = TabbingHandler(self._frame, _TABBING_MODIFIER)
+@@ -142,6 +150,9 @@ class KeyHandler(object):
+     def handle_close_window(self, event_time):
+         active_activity = shell.get_model().get_active_activity()
+         if active_activity is None or active_activity.is_journal():
++            if active_activity is not None and hasattr(active_activity,
++                                                       'show_main_view'):
++                active_activity.show_main_view()
+             return
+ 
+         active_activity.stop()
+@@ -196,6 +207,20 @@ class KeyHandler(object):
+         try:
+             journal = journalactivity.get_journal()
+             journal.show_journal()
++            model = shell.get_model()
++            model._set_active_activity(model.get_activity_by_id(
++                journal.activity_id))
++            model.set_zoom_level(model.ZOOM_ACTIVITY, event_time)
++            model.stack.set_visible_child_name('journal')
++            journal.set_hexpand(True)
++            journal.set_vexpand(True)
++            journal.set_visible(True)
++            if journal._main_view is not None:
++                journal._main_view.set_visible(True)
++            if journal._main_toolbox is not None:
++                journal._main_toolbox.set_visible(True)
++            journal._toolbar_area.set_visible(True)
++            journal._canvas_area.set_visible(True)
+         except Exception as e:
+             logging.exception('Error in handle_open_search')
+ 
+@@ -220,8 +245,23 @@ class KeyHandler(object):
+         if activity is not None:
+             activity.push_shell_window(panel)
+             panel.connect('close-request', lambda w: activity.pop_shell_window(w) or False)
++        else:
++            # Home has no Activity shell window to own the panel. GTK4 ControlPanel is transient for the shell.
++            panel.set_transient_for(shell_model._main_window)
+         panel.present()
+ 
++    def _switch_space(self, target):
++        controller = os.environ.get(
++            'ASPARTAME_SPACE_SWITCHER',
++            '/mnt/aspartame-dev/scripts/sugar-gtk4-space.sh')
++        subprocess.Popen([controller, target], close_fds=True)
++
++    def handle_space_classic(self, event_time):
++        self._switch_space('gtk3')
++
++    def handle_space_modern(self, event_time):
++        self._switch_space('gtk4')
++
+     def handle_dump_ui_tree(self, event_time):
+         if uitree:
+             print(uitree.get_root().dump())
+@@ -229,7 +269,25 @@ class KeyHandler(object):
+             logging.warning("uitree module not available.")
+ 
+     def _key_pressed_cb(self, controller, keyval, keycode, state):
++        event = controller.get_current_event()
++        if event is not None:
++            token = (keyval, keycode, int(state), event.get_time())
++            if token == self._last_dispatch:
++                # This handler is attached to several widgets, so one press
++                # arrives once per widget on the propagation path. Repeat the
++                # first verdict: claiming a key Sugar never acted on stops it
++                # before the focused Activity surface can receive it.
++                return self._last_dispatch_handled
++            self._last_dispatch = token
++        self._last_dispatch_handled = self._dispatch_key(
++            controller, keyval, keycode, state)
++        return self._last_dispatch_handled
++
++    def _dispatch_key(self, controller, keyval, keycode, state):
+         key = Gdk.keyval_name(keyval)
++        # Key dispatch is deliberately not logged: a probe here records
++        # every keystroke, typed text included. Use logging.debug if you
++        # need one temporarily.
+         if not key:
+             return False
+ 
+@@ -248,9 +306,12 @@ class KeyHandler(object):
+                 key = '<alt>Escape'
+             elif key in ['F11', 'F12']:
+                 key = '<alt>' + key
+-            elif key in ['f', 'm', 'o', 'q', 'd']:
++            elif key.lower() in ['f', 'm', 'o', 'q', 'd']:
+                 if state & Gdk.ModifierType.SHIFT_MASK:
+-                    key = '<alt><shift>' + key
++                    # Shift makes the keyval - and so keyval_name() - the
++                    # capital letter, but _actions_table is keyed by the
++                    # lowercase one.
++                    key = '<alt><shift>' + key.lower()
+ 
+         if key in _actions_table:
+             action = _actions_table[key]
+diff --git a/src/jarabe/view/launcher.py b/src/jarabe/view/launcher.py
+index 3c81095..a61e3ce 100644
+--- a/src/jarabe/view/launcher.py
++++ b/src/jarabe/view/launcher.py
+@@ -201,5 +201,9 @@ def _destroy_launcher(home_activity):
+     if launcher.get_parent() == model.stack:
+         model.stack.remove(launcher)
+     if model.stack.get_visible_child() is None:
+-        model.stack.set_visible_child_name("home")
++        if model.zoom_level == model.ZOOM_ACTIVITY and \
++                model.get_active_activity() is not None:
++            model.stack.set_visible_child_name("activity")
++        else:
++            model.stack.set_visible_child_name("home")
+ 
+diff --git a/src/jarabe/view/service.py b/src/jarabe/view/service.py
+index c9e6d27..e4ec6b3 100644
+--- a/src/jarabe/view/service.py
++++ b/src/jarabe/view/service.py
+@@ -17,10 +17,12 @@
+ """D-bus service providing access to the shell's functionality"""
+ 
+ import dbus
++import os
+ from dbus import service
+ 
+ from jarabe.model import shell
+ from jarabe.model import bundleregistry
++from jarabe.view import actions
+ 
+ _DBUS_SERVICE = 'org.laptop.Shell'
+ _DBUS_SHELL_IFACE = 'org.laptop.Shell'
+@@ -85,3 +87,116 @@ class UIService(service.Object):
+                          in_signature='s', out_signature='')
+     def NotifyLaunchFailure(self, activity_id):
+         shell.get_model().notify_launch_failed(activity_id)
++    @service.method(_DBUS_SHELL_IFACE, in_signature="s", out_signature="b")
++    def StopActivity(self, activity_id):
++        """Stop an Activity through the authoritative shell model."""
++        activity = self._shell_model.get_activity_by_id(activity_id)
++        if activity is None:
++            return False
++        activity.stop()
++        return True
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowJournal(self):
++        """Reveal the GTK4 Journal through a semantic shell action."""
++        from jarabe.journal import journalactivity
++        journal = journalactivity.get_journal()
++        journal.show_journal()
++        model = shell.get_model()
++        model._set_active_activity(model.get_activity_by_id(
++            journal.activity_id))
++        model.set_zoom_level(model.ZOOM_ACTIVITY)
++        model.stack.set_visible_child_name("journal")
++        journal.set_hexpand(True)
++        journal.set_vexpand(True)
++        journal.set_visible(True)
++        if journal._main_view is not None:
++            journal._main_view.set_visible(True)
++        if journal._main_toolbox is not None:
++            journal._main_toolbox.set_visible(True)
++        journal._toolbar_area.set_visible(True)
++        journal._canvas_area.set_visible(True)
++        return True
++
++    def _close_control_panel(self):
++        """Dismiss modal Settings before showing another shell surface."""
++        panel = getattr(self, '_control_panel', None)
++        if panel is not None:
++            panel.destroy()
++            self._control_panel = None
++            if getattr(panel, '_has_modal', False):
++                panel._has_modal = False
++                self._shell_model.pop_modal()
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowFrame(self):
++        """Reveal the native GTK4 Sugar Frame and return success."""
++        self._close_control_panel()
++        from jarabe import frame
++        frame.get_view().show()
++        return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowControlPanel(self):
++        """Open GTK4 Settings with the shell as its transient owner."""
++        if self._shell_model.has_modal():
++            return False
++        from jarabe.controlpanel.gui import ControlPanel
++        panel = ControlPanel(0)
++        main_window = getattr(self._shell_model, '_main_window', None)
++        if main_window is not None:
++            panel.set_transient_for(main_window)
++        panel.set_visible(True)
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowNeighborhood(self):
++        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_MESH)
++        return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowGroup(self):
++        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
++        return True
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowHome(self):
++        """Return to the GTK4 Home surface through a semantic action."""
++        self._close_control_panel()
++        return actions.go_home()
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowList(self):
++        """Reveal Home's native installed-Activity list."""
++        self._close_control_panel()
++        self._shell_model._set_active_activity(None)
++        from jarabe.desktop import homewindow
++        homewindow.get_instance().get_home_box().show_list_view()
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_HOME)
++        return True
++
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowNeighborhood(self):
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_MESH)
++        return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowGroup(self):
++        self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
++        return True
++
++    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
++    def ShowControlPanel(self):
++        """Open GTK4 Settings with the shell as its transient owner."""
++        if self._shell_model.has_modal():
++            return False
++        from jarabe.controlpanel.gui import ControlPanel
++        panel = ControlPanel(0)
++        main_window = getattr(self._shell_model, '_main_window', None)
++        if main_window is not None:
++            panel.set_transient_for(main_window)
++        panel.set_visible(True)
++        self._control_panel = panel
++        return True

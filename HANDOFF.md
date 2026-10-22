@@ -65,3 +65,17 @@ in the activity contract. The toolkit save contract is still unconfirmed:
 its source exists only in the guest tree (/home/aspartame/Development/gtk4-preview).
 Still source-only, with no checks. Suggested next step, when the user allows
 code changes and checks: implement the guard in Markdown/Pippy/Portfolio first.
+
+## 2026-10-22 — upstream re-pin (checks allowed again)
+The user lifted no-checks and asked to finish as much GTK4 work as possible.
+The plan is in `~/.claude/plans/glittery-napping-peacock.md`.
+- Re-pinned sugar to PR #1106 `beaae56` and the toolkit to main `9d86a31`
+  (PR #35 merged). The series is now 0300/0301 plus seven other-repo
+  patches; 132 patches moved to `patches/gtk4-preview/folded/`. See
+  `docs/sugar-modernization/UPSTREAM_SYNC.md`.
+- Host replay is exact (GTK4-025 closed). Host suite: 563 passed.
+- `build-iso.sh` refuses a stale runtime archive. The October 4 archive
+  was stale: it lacked 0058, 0112z and 0180-0205.
+- Not yet done: guest `make sugar-gtk4-init sugar-gtk4-build`, re-export,
+  `make iso`, then the qualification probes. Palettes, menus and icons
+  took upstream's rewrite, so re-check them visually.

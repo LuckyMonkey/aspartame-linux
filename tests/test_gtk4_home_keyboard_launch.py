@@ -8,8 +8,8 @@ even though it advertises AccessibleRole.BUTTON.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FAVOURITES = ROOT / 'patches/gtk4-preview/0146-home-focus-enters-favorites-ring.patch'
-ICON = ROOT / 'patches/gtk4-preview/0147-icon-keyboard-activation.patch'
+FAVOURITES = ROOT / 'patches/gtk4-preview/folded/0146-home-focus-enters-favorites-ring.patch'
+ICON = ROOT / 'patches/gtk4-preview/folded/0147-icon-keyboard-activation.patch'
 
 
 def _added(patch):
@@ -46,7 +46,3 @@ def test_icon_reuses_the_existing_signals():
     assert 'GObject.Signal' not in added
 
 
-def test_build_routes_both_patches():
-    build = (ROOT / 'scripts/sugar-gtk4-build.sh').read_text()
-    assert '*0146*) target="$root/sources/sugar" ;;' in build
-    assert '*0147*) target="$toolkit" ;;' in build

@@ -58,6 +58,9 @@ mkdir -p "$share/patches/gtk4-preview" "$share/scripts" \
          "$share/packages/gtk4-moon-activity" \
          "$share/gtk4-overlay"
 
+# The top-level series is authoritative: mirror it exactly so a persistent
+# virtio share cannot replay patches retired or folded on the host.
+find "$share/patches/gtk4-preview" -maxdepth 1 -name '*.patch' -delete
 cp -a "$repo/patches/gtk4-preview/." "$share/patches/gtk4-preview/"
 cp -a "$repo/scripts/." "$share/scripts/"
 cp -a "$repo/assets/gtk4/." "$share/assets/gtk4/"
@@ -158,34 +161,6 @@ cp -a "$repo/packages/gtk4-record-activity/." \
 cp -a "$repo/packages/gtk4-moon-activity/." \
       "$share/packages/gtk4-moon-activity/"
 cp -a "$repo/gtk4-overlay/." "$share/gtk4-overlay/"
-# Remove compatibility patches retired from the host tree so a persistent
-# virtio share cannot replay stale staging decisions.
-rm -f "$share/patches/gtk4-preview/0124-terminal-vte-compat.patch" \
-      "$share/patches/gtk4-preview/0125-terminal-vte-typelib.patch" \
-      "$share/patches/gtk4-preview/0106-journal-main-view-idempotent.patch" \
-      "$share/patches/gtk4-preview/0109-journal-defer-rooted-toolbar.patch" \
-      "$share/patches/gtk4-preview/0128-service-dedupe-zoom-actions.patch" \
-      "$share/patches/gtk4-preview/0030-toolkit-reject-gtk3-launchers.patch" \
-      "$share/patches/gtk4-preview/0127-neighborhood-accessibility-order.patch" \
-      "$share/patches/gtk4-preview/0121-frame-accessibility-final-placement.patch" \
-      "$share/patches/gtk4-preview/0122-frame-accessibility-relocate-final.patch" \
-      "$share/patches/gtk4-preview/0123-frame-accessibility-relocate-current.patch" \
-      "$share/patches/gtk4-preview/0186-toolkit-accept-public-join-requests.patch" \
-      "$share/patches/gtk4-preview/0187-toolkit-invite-public-contacts.patch" \
-      "$share/patches/gtk4-preview/0189-toolkit-accept-public-remote-pending.patch" \
-      "$share/patches/gtk4-preview/0190-toolkit-remote-pending-self-handle.patch" \
-      "$share/patches/gtk4-preview/0191-toolkit-join-self-remote-pending.patch" \
-      "$share/patches/gtk4-preview/0192-toolkit-join-remote-pending-signal.patch" \
-      "$share/patches/gtk4-preview/0193-toolkit-poll-remote-pending-join.patch" \
-      "$share/patches/gtk4-preview/0194-toolkit-reconcile-public-contacts.patch" \
-      "$share/patches/gtk4-preview/0195-toolkit-public-contact-reconciliation-method.patch" \
-      "$share/patches/gtk4-preview/0196-toolkit-fix-join-poll-state.patch" \
-      "$share/patches/gtk4-preview/0197-toolkit-repair-peer-join-poll-state.patch" \
-      "$share/patches/gtk4-preview/0198-toolkit-remove-misplaced-join-state.patch" \
-      "$share/patches/gtk4-preview/0199-toolkit-public-reconcile-diagnostics.patch" \
-      "$share/patches/gtk4-preview/0200-toolkit-start-public-reconcile-on-share.patch" \
-      "$share/patches/gtk4-preview/0201-toolkit-start-public-reconcile-call.patch"
-
 printf 'GTK4 dev share synchronized: %s\n' "$share"
 printf 'patches=%s scripts=%s help_icon=%s\n' \
     "$(find "$share/patches/gtk4-preview" -type f | wc -l)" \
