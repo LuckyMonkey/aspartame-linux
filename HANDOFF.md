@@ -96,8 +96,11 @@ Next phase (needs the owner):
    /mnt/aspartame-dev/artifacts/gtk4-preview-standalone.tar.gz`
    (the VM is in snapshot mode, so export before shutdown).
 2. Host, with sudo:
-   `GTK4_PREVIEW_ARCHIVE=<that tarball> make iso`. The ISO build refuses
-   the stale October 4 archive.
+   copy that tarball over
+   `/media/freezer/SteamLibrary/vms/aspartame-build/artifacts/gtk4-preview-standalone.tar.gz`,
+   then `make iso`. `sudo` drops `GTK4_PREVIEW_ARCHIVE` and the chroot
+   cannot see host paths, so that staged copy is what the build reads. The
+   ISO build refuses the stale October 4 archive.
 3. Boot the new ISO and rerun the receipt checks against the packaged
    runtime.
 Still open: the two-guest share/join run (the last tracker gate), Journal
@@ -123,8 +126,8 @@ row persistence (P2), and the runtime-state P1 proposals.
   (sha256 `eae0e392…`). Its 0300/0301 freshness is verified.
 
 Owner next steps:
-1. `GTK4_PREVIEW_ARCHIVE=/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev/artifacts/gtk4-preview-standalone-20261022.tar.gz make iso`
-   (needs sudo).
+1. `make iso` (needs sudo). The 20261022 export (sha256 `eae0e392…`) is
+   already staged as `aspartame-build/artifacts/gtk4-preview-standalone.tar.gz`.
 2. Boot the new ISO and rerun the receipts in
    `reports/gtk4/repin-qualification-20261022.md` against the packaged
    runtime.
