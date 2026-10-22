@@ -40,3 +40,19 @@ Settings and Register.
 Not covered: the packaged ISO (needs host sudo for `make iso`), the
 two-guest share/join run, and the guest datastore byte comparison for
 failed loads.
+
+## Later the same day: Snakepit, Chirality, Journal
+
+Host suite: 582 passed. Guest results on the same build:
+
+| Check | Result |
+| --- | --- |
+| Chirality activity round-trip | `chirality-activity-roundtrip=PASS active-sequence=left,right,left` |
+| Chirality object round-trip | `chirality-object-roundtrip=PASS ... payload=utf8 cleanup=PASS` |
+| Chirality crash round-trip | `chirality-crash-roundtrip=PASS crashed=right preserved=left` |
+| Chirality replacement round-trip | `chirality-resume-roundtrip=PASS ... state-clean=PASS` |
+| Shell-restart session resume (Calculate + Clock seeded) | `chirality-resume=PASS restored=left:4f0c…,right:a625… skipped=none failed=none` |
+
+After resume, the state directory contained only `chirality.json` and its
+`.lock` file: there was no fixed `.resume-tmp` and no stray temporary
+files.
