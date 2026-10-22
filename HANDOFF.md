@@ -133,3 +133,11 @@ Owner next steps:
    runtime.
 3. Decide the FULL PORT standard for the eight retirement candidates. This
    is the only remaining retirement blocker.
+
+## ISO built and qualified (2026-10-22)
+
+`artifacts/out/aspartame-2026.10.22-x86_64.iso` (sha256 `f9dff8b7…`)
+carries the 20261022 runtime. All receipt checks pass against the packaged
+runtime without the dev share (see `reports/gtk4/repin-qualification-20261022.md`).
+Remaining owner decision: the FULL PORT standard (the only retirement
+blocker).

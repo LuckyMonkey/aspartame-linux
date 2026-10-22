@@ -56,3 +56,28 @@ Host suite: 582 passed. Guest results on the same build:
 After resume, the state directory contained only `chirality.json` and its
 `.lock` file: there was no fixed `.resume-tmp` and no stray temporary
 files.
+
+## Packaged ISO
+
+`aspartame-2026.10.22-x86_64.iso`, sha256 `f9dff8b7…a41733`, built by
+`make iso` from the staged 20261022 runtime export. The embedded
+`STANDALONE-MANIFEST` reads `eae0e392…`, which matches the export. The
+0300/0301 freshness gate passed during the build. The VM was booted
+headless in snapshot mode with `QEMU_DEV_SHARE_MOUNT=0` (no 9p mount), and
+every check ran from `/usr/lib/aspartame/gtk4-preview`.
+
+| Check | Result |
+| --- | --- |
+| `sugar-gtk4-runtime-check.sh gtk4` | `runtime-check=ok` |
+| Settings probe (full) | 3 close/reopen cycles PASS, `settings-aboutcomputer=PASS refresh=PASS` |
+| GTK4 lifecycle probe, 3 cycles | `lifecycle-probe=PASS` |
+| GTK3 lifecycle probe, 3 cycles | `lifecycle-probe=PASS` |
+| Activity matrix, 1 cycle | `activity-matrix=PASS` |
+| Chirality activity / object / crash / resume round-trips | all PASS, `state-clean=PASS` |
+
+Screenshot: `about-computer-iso-20261022.png` (Image 2026.10.22, themed XO
+palette).
+
+Not run on the ISO: the two-guest share/join, which passed on the dev
+build with the same 0300/0301. One build warning was seen: the
+`archiso_pxe_nfs` hook lacks `nfsmount`, which affects only PXE/NFS boot.
