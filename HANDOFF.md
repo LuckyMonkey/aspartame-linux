@@ -102,3 +102,31 @@ Next phase (needs the owner):
    runtime.
 Still open: the two-guest share/join run (the last tracker gate), Journal
 row persistence (P2), and the runtime-state P1 proposals.
+
+## 2026-10-22 (late): share/join qualified; Snakepit, Chirality and Journal landed
+- **Two-guest join PASS** on the re-pinned build. This closes the last
+  conversion-tracker gate. The retirement gate now blocks only on
+  `full-parity`. Fixed on the way:
+  - the Share toggle palette was closed within the same click (upstream
+    palette rewrite);
+  - `peer-prepare` broke the X cookie;
+  - the toolkit never emitted `joined` when the peer initially saw only
+    itself in the room.
+- Snakepit: one shared launch-contract validator, used by the CLI and the
+  GUI. Chirality: locked state updates and per-hand recoverable resume
+  (guest round-trips PASS). Journal: row edits commit only on datastore
+  success.
+- Issue #1 has an upstream-sync comment listing the upstream bugs found.
+  PR #4 is closed as superseded.
+- Host suite: 584 passed. Fresh runtime export (includes every fix):
+  `runtime/aspartame-dev/artifacts/gtk4-preview-standalone-20261022.tar.gz`
+  (sha256 `eae0e392…`). Its 0300/0301 freshness is verified.
+
+Owner next steps:
+1. `GTK4_PREVIEW_ARCHIVE=/media/freezer/SteamLibrary/vms/aspartame-build/runtime/aspartame-dev/artifacts/gtk4-preview-standalone-20261022.tar.gz make iso`
+   (needs sudo).
+2. Boot the new ISO and rerun the receipts in
+   `reports/gtk4/repin-qualification-20261022.md` against the packaged
+   runtime.
+3. Decide the FULL PORT standard for the eight retirement candidates. This
+   is the only remaining retirement blocker.
