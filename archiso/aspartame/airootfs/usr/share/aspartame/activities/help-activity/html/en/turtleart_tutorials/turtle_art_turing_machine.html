@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Turtle Art Turing Machine &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="../_static/documentation_options.js?v=7ab50005"></script>
+    <script src="../_static/doctools.js?v=20d7b9fc"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Turtle Art Turing Machine</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="turtle-art-turing-machine">
+<span id="id1"></span><h1>Turtle Art Turing Machine<a class="headerlink" href="#turtle-art-turing-machine" title="Link to this heading">¶</a></h1>
+<p>One can do a surprising amount of Computer Science in Turtle Art.</p>
+<p><img alt="Initial state of Turing machine for simple addition adding 3+2" src="../_images/TuringMachineReady.png" /> <img alt="Final state of Turing machine for simple addition showing result 5" src="../_images/Turing_Machine_finished.png" /></p>
+<p>This is an example of a universal computer designed by <a class="reference external" href="http://en.wikipedia.org/wiki/Alan_Turing">Alan
+Turing</a> in order to
+investigate problems in computability. As far as we know (<a class="reference external" href="http://en.wikipedia.org/wiki/Church-Turing_Thesis">Church-Turing
+Thesis</a>), any
+function that can be computed by an effective algorithm can be computed
+by a Turing Machine. A multitude of other systems has been proposed, and
+all are equivalent to the Turing Machine and to each other. However,
+there are <a class="reference external" href="http://en.wikipedia.org/wiki/Entscheidungsproblem">questions that we would like to
+ask</a> that neither
+a Turing Machine nor any of those other systems can answer.</p>
+<p>Before we get to those undecidable questions, however, how is a Turing
+Machine constructed, and what is our Turing Machine going to do?</p>
+<section id="plan">
+<h2>Plan<a class="headerlink" href="#plan" title="Link to this heading">¶</a></h2>
+<p>This Turing Machine is the simplest kind of adding machine. It starts,
+as in the first illustration, with two blocks of cells with a separator
+in between. The number of cells in each block is our input, which the
+user can change by editing the Setup action. The output will be a single
+block containing as many cells as the sum of the two input numbers. It
+will do this by replacing the separator with the color of the number
+blocks, and erasing one number cell at the end of the second block,
+giving a configuration as in the second illustration for its result.
+This model Turing Machine also logs each of its actions in a table,
+described below.</p>
+</section>
+<section id="the-structure-of-a-turing-machine">
+<h2>The Structure of a Turing Machine<a class="headerlink" href="#the-structure-of-a-turing-machine" title="Link to this heading">¶</a></h2>
+<p>A Turing Machine is not designed for efficiency, like commercial
+microprocessors. It is designed to be easy to reason about, and so is
+about as simple as Turing and a few other mathematicians could make it.</p>
+<p>The essential elements of a Turing machine are</p>
+<ul class="simple">
+<li><p>a tape that can be extended as much as needed, consisting of cells
+containing symbols; here, a line of colored dots</p></li>
+<li><p>a program table, consisting of three columns and some number of rows
+of instructions; here, a rectangle of colored dots</p></li>
+<li><p>a head that reads and writes symbols on tape, and follows
+instructions in the program table; here, the turtle with certain
+defined Actions</p></li>
+</ul>
+<p>The machine can be in any of a finite number of states, represented here
+by color values. One of the states is interpreted as Halt: the Machine
+stops executing the program. The rows of the program table correspond to
+combinations of the current state with the symbol read from the current
+cell on the tape. For a three-state machine with two symbols, such as
+our adding machine, the order of the program table is</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>State</p></th>
+<th class="head"><p>Symbol</p></th>
+<th class="head"><p>Line</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>2</p></td>
+<td><p>6</p></td>
+</tr>
+</tbody>
+</table>
+<p>This table starts counting at 1. In programming it is often more
+convenient to start counting at 0. You will see examples of this
+practice if you examine the code for this Turing Machine.</p>
+<p>In operation, the starting point is a given tape with a finite sequence
+of symbols prewritten on it, a given program, and the Turing Machine
+head over the leftmost symbol on the tape in state 1. At each step, the
+head reads the symbol in the current cell, then follows the instruction
+in the row corresponding to that symbol and the current state. There are
+three parts to the instruction:</p>
+<ul class="simple">
+<li><p>A symbol to write in the current cell</p></li>
+<li><p>An instruction to move one cell left or right</p></li>
+<li><p>The state for the next step</p></li>
+</ul>
+</section>
+<section id="the-structure-of-this-turing-machine">
+<h2>The Structure of This Turing Machine<a class="headerlink" href="#the-structure-of-this-turing-machine" title="Link to this heading">¶</a></h2>
+<p>The actual program table in numerical symbols is</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Write</p></th>
+<th class="head"><p>Move</p></th>
+<th class="head"><p>State</p></th>
+<th class="head"><p>Interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>If cell = 0 Write 0. Go right. State 2 End of first number</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>If cell = 1 Write 1. Go right. State 1. Continue to end of number</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>If 0 Write 0. Go left. State 3 End of second number</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>If 1 Write 1. Go right. State 2</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p>If 0 Write 0. Go right. State 4. Halt</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p>If 1 Write 0. Go right. State 4. Halt</p></td>
+</tr>
+</tbody>
+</table>
+<p>Where</p>
+<ul class="simple">
+<li><p>Symbols 0 and 1 are represented as Red and Yellow on the tape</p></li>
+<li><p>Move 0 is Left and 1 is Right</p></li>
+<li><p>States are really numbers, represented in the table as the color with
+number 20 times the state so that we can tell the differences among
+them. The Read Pixel block in Turtle Art pushes the RGB values of the
+pixel on the stack, not the Turtle Art color number, so we have to
+have special logic to translate back to states.</p></li>
+</ul>
+<p>In addition to the essential workings of the Turing Machine, this
+program logs each step in the process on the screen, showing the
+numerical values of the step, symbol, move, state, and cell on each
+pass. Students are encouraged to run the program in step mode (Turtle or
+Bug), watching the process unfold.</p>
+<p>The process proceeds in stages.</p>
+<ul class="simple">
+<li><p>Lines 0-2 of log: We begin in state 1 with symbol 1 in cell 1, and
+execute line 2 in the program. This tells the Machine to write the
+symbol that is already there, move right, and continue in state 1.
+Repeat until the Turtle sees the other color, symbol 0.</p></li>
+<li><p>Log 3: Go to line 1 of the program. Write color 1, move right, go
+into state 2</p></li>
+<li><p>Log 4-5: As long as we see color 1, we execute program line 4, which
+tells us to rewrite it in the cell, go right, and stay in state 2.</p></li>
+<li><p>Log 6: When we see color 0 for the second time, we execute line 3,
+which says to rewrite 0, go left, and go into state 3</p></li>
+<li><p>Log 7: Now we arrive at line 6, which says to overwrite 1 on the last
+cell with color 0, go right, and go into state 4 (Halt).</p></li>
+</ul>
+<p>Line 5 is never executed, but has to be there to complete the table.</p>
+<p>In summary, move past the first number block, rewrite 0 to 1 (removing
+the separator), move past the second number block, back up one step and
+rewrite 1 to 0 to balance the extra 1 written earlier.</p>
+<p>For complete details about the workings of this Turing Machine, see <a class="reference internal" href="turtle_art_code_for_turing_machine.html#turtle-art-code-for-turing-machine"><span class="std std-ref">Turtle Art Code for Turing Machine</span></a>
+and <a class="reference internal" href="logo_code_for_turing_machine.html#logo-code-for-turing-machine"><span class="std std-ref">Logo Code for Turtle Art Turing Machine</span></a>.</p>
+</section>
+<section id="turing-s-research">
+<h2>Turing’s Research<a class="headerlink" href="#turing-s-research" title="Link to this heading">¶</a></h2>
+<p>Among others things, Turing</p>
+<ul class="simple">
+<li><p>designed a program for a Universal Turing Machine, where the program
+of a regular Turing Machine would appear in a block on the tape along
+with an area for working storage, and the head would operate on the
+tape before and after it as if the two segments were connected
+together.</p></li>
+<li><p>proved that no Turing machine can analyze the programs for all other
+Turing machines to decide which of them would ever halt. (If there
+were such a Halting Oracle, we could easily modify it into a program
+that would halt for programs that did not halt, and would not halt
+for programs that halt. When applied to itself, it would thus halt if
+and only if it did not halt, a contradiction.)</p></li>
+<li><p>created an electromechanical cracker, the Bombe, to determine the
+settings on German Enigma cipher machines from transmitted messages,
+allowing all intercepted German message traffic to be read. (This
+Ultra Secret was the biggest British secret of World War II, bigger
+than the Double Cross System turning of German agents and the secret
+of the Normandy landing.)</p></li>
+<li><p>invented the Turing Test for Artificial Intelligence, asking whether
+an AI could successfully pretend to be a person at the other end of a
+Teletype connection.</p></li>
+<li><p>made important contributions to other branches of mathematics, to
+design of actual computers, and to mathematical biology.</p></li>
+</ul>
+<p>2012 is <strong>Alan Turing Year</strong> - a centenary celebration of his life and
+work. <a class="reference external" href="http://www.turingcentenary.eu/">www.turingcentenary.eu</a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Turtle Art Turing Machine</a><ul>
+<li><a class="reference internal" href="#plan">Plan</a></li>
+<li><a class="reference internal" href="#the-structure-of-a-turing-machine">The Structure of a Turing Machine</a></li>
+<li><a class="reference internal" href="#the-structure-of-this-turing-machine">The Structure of This Turing Machine</a></li>
+<li><a class="reference internal" href="#turing-s-research">Turing’s Research</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Turtle Art Turing Machine</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

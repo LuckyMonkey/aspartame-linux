@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Turtle Art and Logo &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="../_static/documentation_options.js?v=7ab50005"></script>
+    <script src="../_static/doctools.js?v=20d7b9fc"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Turtle Art and Logo</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="turtle-art-and-logo">
+<span id="id1"></span><h1>Turtle Art and Logo<a class="headerlink" href="#turtle-art-and-logo" title="Link to this heading">¶</a></h1>
+<p>Turtle Graphics comes from Logo, but Turtle Art (TA) is written in
+Python. However, you can save any TA program in Logo, even a single
+block, and examine the code or run it in Brian Harvey’s UCBLogo. Go to
+the Journal tab and look for Save as Logo, with a turtle icon.</p>
+<p>This allows another perspective on Turtle Art blocks, giving fine
+details in some cases that are not obvious from experiment. So we can
+start to teach Logo to students who have even modest proficiency in
+Turtle Art, by constructing TA programs and saving as Logo, and then
+gradually moving to composing Logo with the TA code as examples. At the
+same time we can use the Logo translations to illuminate what TA is
+doing.</p>
+<p>The ability to go from TA to Logo is important because there are many
+things about computer languages that are inherently not discoverable
+without lots of hints. For example, TA provides all of its blocks on
+palettes, so that you can’t miss any. In text-based languages, including
+Logo, you need to have a list somewhere outside the language
+interpreter. Even with all of the blocks in front of you, some are going
+to be mysterious. You don’t know how they do what they do, or you don’t
+even see them do anything at all unless you know what other block to use
+next. We discuss this further in <a class="reference external" href="https://wiki.sugarlabs.org/go/The_Undiscoverable">The
+Undiscoverable</a>.
+Of course, at some point, if you
+really want to know what is going on, you have to read the source code.</p>
+<p>Having a path from TA to Logo is valuable because Logo is a much fuller
+programming language than TA. Although it is
+<a class="reference internal" href="turtle_art_turing_machine.html#turtle-art-turing-machine"><span class="std std-ref">Turing-complete</span></a>,
+which means that it could in principle compute any computable function,
+given enough space and time, it does not have many of the other
+capabilities of programming languages that can call external libraries,
+such as file handling and convenient UI design. Of course, you can do
+that in Python, and you can call Python from Turtle Art, but that isn’t
+the subject of this lesson.</p>
+<p>Let’s see how it might start to work to learn Logo from TA, or use Logo
+to illuminate TA.</p>
+<section id="logo-code-for-ta-blocks">
+<h2>Logo Code for TA Blocks<a class="headerlink" href="#logo-code-for-ta-blocks" title="Link to this heading">¶</a></h2>
+<section id="start">
+<h3>start<a class="headerlink" href="#start" title="Link to this heading">¶</a></h3>
+<p>A new TA session starts with just a start block. Click it, and nothing
+visible happens. (In older versions, you will have to get a start block
+from the Flow palette, the one with the two arrows going in a circle.</p>
+<figure class="align-default">
+<img alt="TAStart.png" src="../_images/TAStart.png" />
+</figure>
+<p>Any guesses as to what went on? Here you go.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span>
+<span class="n">to</span> <span class="n">start</span>
+
+<span class="n">end</span>
+</pre></div>
+</div>
+<p>This says to open a display window, and then uses “to” to define a
+procedure named “start” with contents a blank line. The keyword “end”
+ends the definition. So we were right. The start block all by itself
+does nothing, but goes through a process to get that result.</p>
+<p>Of course in TA we don’t open display windows, because one is always
+open. Here is what the window looks like in UCBLogo, with a triangle for
+the turtle.</p>
+<figure class="align-default">
+<img alt="BXLogoWindow.png" src="../_images/BXLogoWindow.png" />
+</figure>
+</section>
+<section id="start-forward">
+<h3>Start-Forward<a class="headerlink" href="#start-forward" title="Link to this heading">¶</a></h3>
+<p>All right, it’s a start (haha) but that didn’t tell us a lot. Maybe this
+will help.</p>
+<figure class="align-default">
+<img alt="TAStartForward-100.png" src="../_images/TAStartForward-100.png" />
+</figure>
+<p>Well, that’s better. Now the procedure actually has content, and the
+content is exactly the meaning of the block we were looking at, forward
+100. The only difference is the decimal point and following 0, meaning
+that this is a floating point value, not an integer. We don’t need that
+distinction in Turtle Art, which takes care of the conversion for us.
+Forward works fine with fractional distances, although you would have to
+lay down several different ones side by side to see the difference. We
+don’t need to know all about numeric types yet, for what we are doing in
+Logo.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span>
+<span class="n">to</span> <span class="n">start</span>
+ <span class="n">forward</span> <span class="mf">100.0</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+</section>
+<section id="no-start">
+<h3>No Start<a class="headerlink" href="#no-start" title="Link to this heading">¶</a></h3>
+<p>So what happens if we leave out the start block? This happens.</p>
+<figure class="align-default">
+<img alt="TAForward-100.png" src="../_images/TAForward-100.png" />
+</figure>
+<p>Instead of a start procedure, our Logo program defines a procedure named
+turtleblocks_0. Otherwise, there is no difference.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span>
+<span class="n">to</span> <span class="n">turtleblocks_0</span>
+ <span class="n">forward</span> <span class="mf">100.0</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+</section>
+<section id="left">
+<h3>Left<a class="headerlink" href="#left" title="Link to this heading">¶</a></h3>
+<figure class="align-default">
+<img alt="TALeft-90.png" src="../_images/TALeft-90.png" />
+</figure>
+<p>No surprises.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span>
+<span class="n">to</span> <span class="n">turtleblocks_0</span>
+ <span class="n">left</span> <span class="mf">90.0</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+</section>
+<section id="setbackground">
+<h3>SetBackground<a class="headerlink" href="#setbackground" title="Link to this heading">¶</a></h3>
+<figure class="align-default">
+<img alt="TASetBackground-60-80.png" src="../_images/TASetBackground-60-80.png" />
+</figure>
+<p>Oh. A lot more goes on here. Turtle Art told Logo about how it handles
+colors. I won’t explain everything in detail, but let’s make a list of
+bits of Logo we haven’t seen yet.</p>
+<ul class="simple">
+<li><p>for arguments to a function in the definition</p></li>
+<li><p>“name is the name itself, not the value of the variable with that
+name</p></li>
+<li><p>make to give a value to a variable</p></li>
+<li><p>arithmetic including modulo (remainder on division)</p></li>
+<li><p>ifelse condition [what to do]</p></li>
+<li><p>first gets the first item from a list</p></li>
+<li><p>butfirst drops the first item from a list</p></li>
+<li><p>[data] makes a list</p></li>
+<li><p>colors holds the numeric definition of the Turtle Art color palette</p></li>
+</ul>
+<p>That’s more features than fit comfortably in teaching a lesson, but
+might not be too many in guided discovery over several sessions. With
+the hints given above, you should be able to see what every part of this
+Logo program is, but not necessarily how all of the parts fit together.
+That will require careful reading, including comparing definitions with
+their uses, and lots of experiments. For some learners, that’s the best
+part of all. For others, including many teachers, it is a useful lesson
+in tolerating your own ignorance while you seek to discover something
+you didn’t know. Anyway, we don’t have to require that everybody
+discover everything. Students can share discoveries, which is another
+particularly useful lesson in itself.</p>
+<p>Once we get past those definitions, though, there is a procedure
+definition for tasetbackground, corresponding to the block we are
+testing. It is then called with the arguments 60.0 for color and 80.0
+for shade, as we specified. And look! It’s blue!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span>
+<span class="n">to</span> <span class="n">tasetpalette</span> <span class="p">:</span><span class="n">i</span> <span class="p">:</span><span class="n">r</span> <span class="p">:</span><span class="n">g</span> <span class="p">:</span><span class="n">b</span> <span class="p">:</span><span class="n">myshade</span>
+<span class="n">make</span> <span class="s2">"s ((:myshade - 50) / 50)</span>
+<span class="n">ifelse</span> <span class="n">lessp</span> <span class="p">:</span><span class="n">s</span> <span class="mi">0</span> <span class="p">[</span>
+<span class="n">make</span> <span class="s2">"s (1 + (:s *0.8))</span>
+<span class="n">make</span> <span class="s2">"r (:r * :s)</span>
+<span class="n">make</span> <span class="s2">"g (:g * :s)</span>
+<span class="n">make</span> <span class="s2">"b (:b * :s)</span>
+<span class="p">]</span> <span class="p">[</span> <span class="n">make</span> <span class="s2">"s (:s * 0.9)</span>
+<span class="n">make</span> <span class="s2">"r (:r + ((99-:r) * :s))</span>
+<span class="n">make</span> <span class="s2">"g (:g + ((99-:g) * :s))</span>
+<span class="n">make</span> <span class="s2">"b (:b + ((99-:b) * :s))</span>
+<span class="p">]</span> <span class="n">setpalette</span> <span class="p">:</span><span class="n">i</span> <span class="p">(</span><span class="nb">list</span> <span class="p">:</span><span class="n">r</span> <span class="p">:</span><span class="n">g</span> <span class="p">:</span><span class="n">b</span><span class="p">)</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">rgb</span> <span class="p">:</span><span class="n">myi</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">:</span><span class="n">myshade</span>
+<span class="n">make</span> <span class="s2">"myr first :mycolors</span>
+<span class="n">make</span> <span class="s2">"mycolors butfirst :mycolors</span>
+<span class="n">make</span> <span class="s2">"myg first :mycolors</span>
+<span class="n">make</span> <span class="s2">"mycolors butfirst :mycolors</span>
+<span class="n">make</span> <span class="s2">"myb first :mycolors</span>
+<span class="n">make</span> <span class="s2">"mycolors butfirst :mycolors</span>
+<span class="n">tasetpalette</span> <span class="p">:</span><span class="n">myi</span> <span class="p">:</span><span class="n">myr</span> <span class="p">:</span><span class="n">myg</span> <span class="p">:</span><span class="n">myb</span> <span class="p">:</span><span class="n">myshade</span>
+<span class="n">output</span> <span class="p">:</span><span class="n">mycolors</span>
+<span class="n">end</span>
+<span class="n">to</span> <span class="n">processcolor</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">:</span><span class="n">myshade</span>
+<span class="k">if</span> <span class="n">emptyp</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">[</span><span class="n">stop</span><span class="p">]</span>
+<span class="n">make</span> <span class="s2">"i :i + 1</span>
+<span class="n">processcolor</span> <span class="p">(</span><span class="n">rgb</span> <span class="p">:</span><span class="n">i</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">:</span><span class="n">myshade</span><span class="p">)</span> <span class="p">:</span><span class="n">myshade</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">tasetshade</span> <span class="p">:</span><span class="n">shade</span>
+<span class="n">make</span> <span class="s2">"myshade modulo :shade 200</span>
+<span class="k">if</span> <span class="n">greaterp</span> <span class="p">:</span><span class="n">myshade</span> <span class="mi">99</span> <span class="p">[</span><span class="n">make</span> <span class="s2">"myshade (199-:myshade)]</span>
+<span class="n">make</span> <span class="s2">"i 7</span>
+<span class="n">make</span> <span class="s2">"mycolors :colors</span>
+<span class="n">processcolor</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">:</span><span class="n">myshade</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">tasetpencolor</span> <span class="p">:</span><span class="n">c</span>
+<span class="n">make</span> <span class="s2">"color (modulo (round :c) 100)</span>
+<span class="n">setpencolor</span> <span class="p">:</span><span class="n">color</span> <span class="o">+</span> <span class="mi">8</span>
+<span class="n">end</span>
+
+<span class="n">make</span> <span class="s2">"colors [</span>
+<span class="mi">99</span>  <span class="mi">0</span>  <span class="mi">0</span>
+<span class="mi">99</span>  <span class="mi">5</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">10</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">15</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">20</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">25</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">30</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">35</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">40</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">45</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">50</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">55</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">60</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">65</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">70</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">75</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">80</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">85</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">90</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">95</span>  <span class="mi">0</span>
+<span class="mi">99</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">90</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">80</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">70</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">60</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">50</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">40</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">30</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">20</span> <span class="mi">99</span>  <span class="mi">0</span>
+<span class="mi">10</span> <span class="mi">99</span>  <span class="mi">0</span>
+ <span class="mi">0</span> <span class="mi">99</span>  <span class="mi">0</span>
+ <span class="mi">0</span> <span class="mi">99</span>  <span class="mi">5</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">10</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">15</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">20</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">25</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">30</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">35</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">40</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">45</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">50</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">55</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">60</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">65</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">70</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">75</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">80</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">85</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">90</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">95</span>
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">95</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">90</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">85</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">80</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">75</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">70</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">65</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">60</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">55</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">50</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">45</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">40</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">35</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">30</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">25</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">20</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">15</span> <span class="mi">99</span>
+ <span class="mi">0</span> <span class="mi">10</span> <span class="mi">99</span>
+ <span class="mi">0</span>  <span class="mi">5</span> <span class="mi">99</span>
+ <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">99</span>
+ <span class="mi">5</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">10</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">15</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">20</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">25</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">30</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">35</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">40</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">45</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">50</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">55</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">60</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">65</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">70</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">75</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">80</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">85</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">90</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">95</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">99</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">90</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">80</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">70</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">60</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">50</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">40</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">30</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">20</span>
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">10</span><span class="p">]</span>
+
+<span class="n">make</span> <span class="s2">"shade  50</span>
+<span class="n">tasetshade</span> <span class="p">:</span><span class="n">shade</span>
+
+<span class="n">to</span> <span class="n">tasetbackground</span> <span class="p">:</span><span class="n">color</span> <span class="p">:</span><span class="n">shade</span>
+<span class="n">tasetshade</span> <span class="p">:</span><span class="n">shade</span>
+<span class="n">setbackground</span> <span class="p">:</span><span class="n">color</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">turtleblocks_0</span>
+<span class="n">tasetbackground</span> <span class="mf">60.0</span> <span class="mf">80.0</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="logo-code-for-ta-examples">
+<h2>Logo Code for TA Examples<a class="headerlink" href="#logo-code-for-ta-examples" title="Link to this heading">¶</a></h2>
+<p>This is the code generated for the examples in the
+<a class="reference internal" href="mathematics_and_art.html#mathematics-and-art"><span class="std std-ref">Mathematics and Art</span></a> tutorial for
+Turtle Art, with line breaks and indents added for clarity. Square and
+Squares are of little more difficulty than the Turtle Art they aer
+derived from. Flowers has a substantial section on handling colors in
+the manner of Turtle Art. The last three procedures, stack1, stack2, and
+start, are very similar to the stacks in the Turtle Art version.</p>
+</section>
+<section id="square-program">
+<h2>Square program<a class="headerlink" href="#square-program" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span>
+
+<span class="n">to</span> <span class="n">start</span>
+
+ <span class="n">repeat</span> <span class="mf">4.0</span>
+  <span class="p">[</span> <span class="n">forward</span> <span class="mf">100.0</span>
+    <span class="n">right</span> <span class="mf">90.0</span>
+  <span class="p">]</span>
+
+<span class="n">end</span>
+</pre></div>
+</div>
+</section>
+<section id="squares-program">
+<h2>Squares program<a class="headerlink" href="#squares-program" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span>
+
+<span class="n">to</span> <span class="n">start</span>
+
+ <span class="n">clean</span>
+ <span class="n">repeat</span> <span class="mf">36.0</span>
+  <span class="p">[</span> <span class="n">repeat</span> <span class="mf">4.0</span>
+   <span class="p">[</span> <span class="n">forward</span> <span class="mf">300.0</span>
+     <span class="n">right</span> <span class="mf">90.0</span>
+   <span class="p">]</span>
+   <span class="n">right</span> <span class="mf">10.0</span>
+  <span class="p">]</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+</section>
+<section id="flower-program">
+<h2>Flower program<a class="headerlink" href="#flower-program" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">window</span>
+<span class="n">to</span> <span class="n">tasetpalette</span> <span class="p">:</span><span class="n">i</span> <span class="p">:</span><span class="n">r</span> <span class="p">:</span><span class="n">g</span> <span class="p">:</span><span class="n">b</span> <span class="p">:</span><span class="n">myshade</span>
+ <span class="n">make</span> <span class="s2">"s ((:myshade - 50) / 50)</span>
+ <span class="n">ifelse</span> <span class="n">lessp</span> <span class="p">:</span><span class="n">s</span> <span class="mi">0</span> <span class="p">[</span>
+ <span class="n">make</span> <span class="s2">"s (1 + (:s *0.8))</span>
+ <span class="n">make</span> <span class="s2">"r (:r * :s)</span>
+ <span class="n">make</span> <span class="s2">"g (:g * :s)</span>
+ <span class="n">make</span> <span class="s2">"b (:b * :s)</span>
+ <span class="p">]</span> <span class="p">[</span> <span class="n">make</span> <span class="s2">"s (:s * 0.9)</span>
+ <span class="n">make</span> <span class="s2">"r (:r + ((99-:r) * :s))</span>
+ <span class="n">make</span> <span class="s2">"g (:g + ((99-:g) * :s))</span>
+ <span class="n">make</span> <span class="s2">"b (:b + ((99-:b) * :s))</span>
+ <span class="p">]</span> <span class="n">setpalette</span> <span class="p">:</span><span class="n">i</span> <span class="p">(</span><span class="nb">list</span> <span class="p">:</span><span class="n">r</span> <span class="p">:</span><span class="n">g</span> <span class="p">:</span><span class="n">b</span><span class="p">)</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">rgb</span> <span class="p">:</span><span class="n">myi</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">:</span><span class="n">myshade</span>
+ <span class="n">make</span> <span class="s2">"myr first :mycolors</span>
+ <span class="n">make</span> <span class="s2">"mycolors butfirst :mycolors</span>
+ <span class="n">make</span> <span class="s2">"myg first :mycolors</span>
+ <span class="n">make</span> <span class="s2">"mycolors butfirst :mycolors</span>
+ <span class="n">make</span> <span class="s2">"myb first :mycolors</span>
+ <span class="n">make</span> <span class="s2">"mycolors butfirst :mycolors</span>
+ <span class="n">tasetpalette</span> <span class="p">:</span><span class="n">myi</span> <span class="p">:</span><span class="n">myr</span> <span class="p">:</span><span class="n">myg</span> <span class="p">:</span><span class="n">myb</span> <span class="p">:</span><span class="n">myshade</span>
+ <span class="n">output</span> <span class="p">:</span><span class="n">mycolors</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">processcolor</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">:</span><span class="n">myshade</span>
+ <span class="k">if</span> <span class="n">emptyp</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">[</span><span class="n">stop</span><span class="p">]</span>
+ <span class="n">make</span> <span class="s2">"i :i + 1</span>
+ <span class="n">processcolor</span> <span class="p">(</span><span class="n">rgb</span> <span class="p">:</span><span class="n">i</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">:</span><span class="n">myshade</span><span class="p">)</span> <span class="p">:</span><span class="n">myshade</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">tasetshade</span> <span class="p">:</span><span class="n">shade</span>
+ <span class="n">make</span> <span class="s2">"myshade modulo :shade 200</span>
+ <span class="k">if</span> <span class="n">greaterp</span> <span class="p">:</span><span class="n">myshade</span> <span class="mi">99</span> <span class="p">[</span><span class="n">make</span> <span class="s2">"myshade (199-:myshade)]</span>
+ <span class="n">make</span> <span class="s2">"i 7</span>
+ <span class="n">make</span> <span class="s2">"mycolors :colors</span>
+ <span class="n">processcolor</span> <span class="p">:</span><span class="n">mycolors</span> <span class="p">:</span><span class="n">myshade</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">tasetpencolor</span> <span class="p">:</span><span class="n">c</span>
+ <span class="n">make</span> <span class="s2">"color (modulo (round :c) 100)</span>
+ <span class="n">setpencolor</span> <span class="p">:</span><span class="n">color</span> <span class="o">+</span> <span class="mi">8</span>
+<span class="n">end</span>
+
+<span class="n">make</span> <span class="s2">"colors [</span>
+<span class="mi">99</span>  <span class="mi">0</span>  <span class="mi">0</span>\
+<span class="mi">99</span>  <span class="mi">5</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">10</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">15</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">20</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">25</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">30</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">35</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">40</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">45</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">50</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">55</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">60</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">65</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">70</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">75</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">80</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">85</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">90</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">95</span>  <span class="mi">0</span>\
+<span class="mi">99</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">90</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">80</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">70</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">60</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">50</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">40</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">30</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">20</span> <span class="mi">99</span>  <span class="mi">0</span>\
+<span class="mi">10</span> <span class="mi">99</span>  <span class="mi">0</span>\
+ <span class="mi">0</span> <span class="mi">99</span>  <span class="mi">0</span>\
+ <span class="mi">0</span> <span class="mi">99</span>  <span class="mi">5</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">10</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">15</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">20</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">25</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">30</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">35</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">40</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">45</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">50</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">55</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">60</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">65</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">70</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">75</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">80</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">85</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">90</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">95</span>\
+ <span class="mi">0</span> <span class="mi">99</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">95</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">90</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">85</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">80</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">75</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">70</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">65</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">60</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">55</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">50</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">45</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">40</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">35</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">30</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">25</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">20</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">15</span> <span class="mi">99</span>\
+ <span class="mi">0</span> <span class="mi">10</span> <span class="mi">99</span>\
+ <span class="mi">0</span>  <span class="mi">5</span> <span class="mi">99</span>\
+ <span class="mi">0</span>  <span class="mi">0</span> <span class="mi">99</span>\
+ <span class="mi">5</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">10</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">15</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">20</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">25</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">30</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">35</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">40</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">45</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">50</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">55</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">60</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">65</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">70</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">75</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">80</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">85</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">90</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">95</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">99</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">90</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">80</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">70</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">60</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">50</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">40</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">30</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">20</span>\
+<span class="mi">99</span>  <span class="mi">0</span> <span class="mi">10</span><span class="p">]</span>
+
+<span class="n">make</span> <span class="s2">"shade  50</span>
+
+<span class="n">to</span> <span class="n">taminus</span> <span class="p">:</span><span class="n">y</span> <span class="p">:</span><span class="n">x</span>
+ <span class="n">output</span> <span class="nb">sum</span> <span class="p">:</span><span class="n">x</span> <span class="n">minus</span> <span class="p">:</span><span class="n">y</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">stack1</span>
+ <span class="n">repeat</span> <span class="mf">4.0</span> <span class="p">[</span> <span class="n">forward</span> <span class="p">:</span><span class="n">box1</span> <span class="n">right</span> <span class="mf">90.0</span> <span class="p">]</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">stack2</span>
+ <span class="n">repeat</span> <span class="mf">10.0</span> <span class="p">[</span> <span class="n">stack1</span> <span class="n">right</span> <span class="mf">36.0</span> <span class="p">]</span>
+<span class="n">end</span>
+
+<span class="n">to</span> <span class="n">start</span>
+ <span class="n">clean</span>
+ <span class="n">make</span> <span class="s2">"box1 0.0</span>
+ <span class="n">repeat</span> <span class="mf">300.0</span> <span class="p">[</span>
+  <span class="n">tasetshade</span> <span class="n">taminus</span> <span class="mf">100.0</span> <span class="p">:</span><span class="n">box1</span>
+  <span class="n">tasetpencolor</span> <span class="n">quotient</span> <span class="p">:</span><span class="n">box1</span> <span class="mf">3.0</span> <span class="n">stack2</span>
+  <span class="n">make</span> <span class="s2">"box1 sum :box1 1.0 ]</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.eecs.berkeley.edu/~bh/logo.html">UCB Logo</a></p></li>
+<li><p><a class="reference external" href="http://dailypapert.com/">The Daily Papert</a></p></li>
+<li><p><a class="reference external" href="http://el.media.mit.edu/logo-foundation/">Logo Foundation</a></p></li>
+</ul>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><em>Mindstorms: Children, Computers, and Powerful Ideas</em>, by Seymour
+Papert. Where Logo and Turtle Graphics got started.</p></li>
+<li><p><em>LogoWorks: Lessons in Logo</em>, by Sheila Cory and Margie Walker</p></li>
+<li><p><em>Teaching With Logo</em>, by Molly and Daniel Watt</p></li>
+<li><p><em>Advanced Logo, A Language for Learning</em>, by Michael Friendly</p></li>
+<li><p><em>Computer Science Logo Style, Second Edition</em>, by Brian Harvey. Three
+volumes.</p></li>
+</ul>
+<p>There are also many books on using Logo to teach various subjects,
+mostly in math.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Turtle Art and Logo</a><ul>
+<li><a class="reference internal" href="#logo-code-for-ta-blocks">Logo Code for TA Blocks</a><ul>
+<li><a class="reference internal" href="#start">start</a></li>
+<li><a class="reference internal" href="#start-forward">Start-Forward</a></li>
+<li><a class="reference internal" href="#no-start">No Start</a></li>
+<li><a class="reference internal" href="#left">Left</a></li>
+<li><a class="reference internal" href="#setbackground">SetBackground</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#logo-code-for-ta-examples">Logo Code for TA Examples</a></li>
+<li><a class="reference internal" href="#square-program">Square program</a></li>
+<li><a class="reference internal" href="#squares-program">Squares program</a></li>
+<li><a class="reference internal" href="#flower-program">Flower program</a></li>
+<li><a class="reference internal" href="#see-also">See Also</a></li>
+<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Turtle Art and Logo</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

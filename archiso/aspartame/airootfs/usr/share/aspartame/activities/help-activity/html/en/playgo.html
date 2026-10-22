@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PlayGo &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Poll" href="poll.html" />
+    <link rel="prev" title="Pippy" href="pippy.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="poll.html" title="Poll"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="pippy.html" title="Pippy"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PlayGo</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="playgo">
+<span id="id1"></span><h1>PlayGo<a class="headerlink" href="#playgo" title="Link to this heading">¶</a></h1>
+<section id="where-to-get-playgo">
+<h2>Where to get PlayGo<a class="headerlink" href="#where-to-get-playgo" title="Link to this heading">¶</a></h2>
+<p>PlayGo activity is available for download from the <a class="reference external" href="http://activities.sugarlabs.org/en-US/sugar/">Sugar Activity Library</a>:
+<a class="reference external" href="http://activities.sugarlabs.org/sugar/addon/4083">PlayGo</a></p>
+<p>The source code is available on <a class="reference external" href="https://github.com/sugarlabs/playgo-activity">GitHub</a>.</p>
+</section>
+<section id="the-ancient-game-of-go-derived-from-wikipedia">
+<h2>The Ancient Game of Go (derived from WikiPedia)<a class="headerlink" href="#the-ancient-game-of-go-derived-from-wikipedia" title="Link to this heading">¶</a></h2>
+<p>The olpc PlayGo activity implements <strong>Go</strong> a strategic board game for
+two players. Go originated in ancient China, centuries before its
+earliest known references in 5th century BC writing. It is mostly
+popular in East Asia but has nowadays gained some popularity in the rest
+of the world as well. Go is noted for being rich in strategic complexity
+despite its simple rules.</p>
+<p>Go is played by two players alternately placing black and white stones
+on the vacant intersections of a line grid. The standard size of this
+grid is 19 × 19, although the rules of Go can be freely applied to any
+size: 13 × 13 and 9 × 9 are also popular choices for simpler and more
+tactic-oriented games as well as a way to introduce Go to new players.
+The objective of the game is to control a larger part of the board than
+the opponent. To achieve this, players strive to place their stones in
+such a way that they cannot be captured, while mapping out territories
+that cannot be invaded by the opponent without being captured. A stone
+or a group of stones is captured and removed if it has no empty adjacent
+intersections, the result of being completely surrounded by stones of
+the opposing color. Generally, placing stones close together helps them
+avoid capture, whereas placing them far apart allows a player to
+surround more territory. Part of the strategic difficulty of the game
+stems from finding a balance between these two conflicting interests.
+The game ends, and the score is counted when both players consecutively
+pass on a turn, indicating that neither side can increase its territory
+or reduce its opponent’s.</p>
+</section>
+<section id="basic-rules-from-wikipedia">
+<h2><a class="reference external" href="http://en.wikipedia.org/wiki/Go_(board_game)#Rules">Basic rules from WikiPedia</a><a class="headerlink" href="#basic-rules-from-wikipedia" title="Link to this heading">¶</a></h2>
+<figure class="align-default" id="id8">
+<img alt="One black chain and two white chains, their liberties shown with dots. Note that liberties are shared among all stones of a chain." src="_images/Go_adjacent_stones.png" />
+<figcaption>
+<p><span class="caption-text">One black chain and two white chains, their liberties shown with
+dots. Note that liberties are shared among all stones of a chain.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Two players, <em>Black</em> and <em>White</em>, take turns placing a <em>stone</em> (game
+piece) of their own color on a vacant <em>point</em> (intersection) of the grid
+on a Go board. Black moves first. Normally, the grid measures 19×19
+lines, though the rules can be freely applied to all grid sizes. Grid
+sizes 9×9 and 13×13 are often used to teach beginners and still offer a
+challenging game to experienced players. Once played, a stone may not be
+moved to a different point. <a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<p>Orthogonally adjacent stones of the same color form a <em>chain</em> (also
+called a <em>group</em>) that shares its liberties (see
+below) in common, cannot subsequently be subdivided, and in effect
+becomes a single larger ston. Only stones connected to one another by
+the lines on the board create a chain; stones that are diagonally
+adjacent are not connected. Chains may be expanded by playing additional
+stones on adjacent intersections or connected together by playing a
+stone on an intersection that is adjacent to two or more chains of the
+same color.</p>
+<figure class="align-default" id="id9">
+<img alt="If white plays at A, the black chain loses its last liberty. It is captured and removed from the board." src="_images/Go_capturing.png" />
+<figcaption>
+<p><span class="caption-text">If white plays at A, the black chain loses its last liberty. It is
+captured and removed from the board.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>A vacant point adjacent to a stone is called a <em>liberty</em> for that
+stone. <a class="footnote-reference brackets" href="#id7" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>. Chains of stones share their liberties. A chain of stones
+must have at least one liberty to remain on the board. When a chain is
+surrounded by opposing stones so that it has no liberties, it is
+<em>captured</em> and removed from the board.</p>
+<p>Generally, it is not allowed to play a stone in such a way that one of
+your own chains is left without liberties. Such a move is dubbed
+<em>suicide</em>. An exception to this rule occurs if doing so captures one or
+more of the opponent’s stones. In this case, the opponent’s stones are
+captured first, leaving the newly played stone at least one liberty.</p>
+<figure class="align-default" id="id10">
+<img alt="An example of a situation in which the ko rule applies." src="_images/Go_ko.png.jpg" />
+<figcaption>
+<p><span class="caption-text">An example of a situation in which the ko rule applies.</span><a class="headerlink" href="#id10" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Players are not allowed to make a move that returns the game to the
+position before the opponent’s last previous move. This rule, called the
+<em>ko rule</em>,
+prevents unending repetition. See the example to the right: Black has
+just played the stone marked <strong>1</strong>, capturing a white stone at the
+intersection marked with a circle. If White were now allowed to play on
+the marked intersection, that move would capture the black stone marked
+<strong>1</strong> and recreate the situation before Black made the move marked
+<strong>1</strong>. Allowing this would result in an unending cycle of captures by
+both players. The ko rule therefore prohibits White from playing at the
+marked intersection. Instead White must play elsewhere; Black can then
+end the ko by filling at the marked intersection, creating a five-stone
+Black chain. If White wants to continue the ko, she will try to find a
+play that Black must answer; if Black answers, then White can retake the
+ko. A repetition of such exchanges is called a <em>ko fight</em>.</p>
+<p>Instead of placing a stone, a player may <em>pass</em>, indicating that he sees
+no way to increase his territory or reduce his opponent’s territory.
+When both players pass consecutively, the game ends and is then
+scored.</p>
+</section>
+<section id="scoring-rules">
+<h2>Scoring Rules<a class="headerlink" href="#scoring-rules" title="Link to this heading">¶</a></h2>
+<p>There are two basic ways to count the score at the end of the game. The
+oldest of these is called <em>territory scoring</em> and is used in Japan,
+Korea and most Western nations. The other scoring rules —invented in
+15th-century China — are called <em>area scoring</em> and are used in China and
+some other countries. The US uses a scoring system that is a hybrid of
+these two systems.</p>
+<p>With territory scoring, a player’s score is the number of empty points
+enclosed by his stones, plus the number of prisoners he has. Prisoners
+are opposing stones which he has captured during the game or those that
+are still on the board but cannot avoid capture.</p>
+<p>With area scoring, a player’s score is the number of stones he has on
+the board, plus the number of empty intersections he has surrounded.
+Prisoners do not count toward the score under these rules.</p>
+<p>Given the fact that the number of stones a player has on the board is
+directly related to the number of prisoners his opponent has taken, the
+resulting score under both rules is often identical and is rarely more
+than one point different. Under US rules, players hand over a prisoner
+when they pass, called a <em>pass stone</em>. Combined with the requirement
+that White makes the last pass, this system guarantees that the <em>net</em>
+score under territory scoring will be the same as that under area
+scoring.</p>
+<p>Each of these scoring methods has advantages and disadvantages. There
+have been some efforts to agree on a standardized set of international
+rules.</p>
+</section>
+<section id="optional-rules">
+<h2>Optional rules<a class="headerlink" href="#optional-rules" title="Link to this heading">¶</a></h2>
+<p>Optional Go rules may set the following:</p>
+<ul class="simple">
+<li><p>compensation points, almost always for the second player;
+Tournaments commonly use a compensation in
+the range of 5-8 points, generally including a half-point to prevent
+draws.</p></li>
+<li><p>compensation stones placed on the board before alternate play,
+allowing players of different strengths to play competitively</p></li>
+<li><p><em>superko</em>: Although the basic ko rule described above covers over 95%
+of all cycles occurring in games, there are some complex situations
+—<em>triple ko</em>, <em>eternal life</em>, etc.— that are not covered by it but
+would allow the game to cycle indefinitely. To prevent this, the ko
+rule is sometimes extended to disallow <em>any</em> previous position. This
+is called <em>superko</em>.</p></li>
+</ul>
+</section>
+<section id="where-to-report-problems">
+<h2>Where to report problems<a class="headerlink" href="#where-to-report-problems" title="Link to this heading">¶</a></h2>
+<p>Please report bugs and make feature requests at <a class="reference external" href="https://github.com/sugarlabs/playgo-activity/issues">playgo-activity/issues</a>.</p>
+</section>
+<section id="external-links">
+<h2>External Links<a class="headerlink" href="#external-links" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://gobase.org/">Gobase</a> Including multilingual Internet Go
+Dictionary, game database, tutorials, and other material and links</p></li>
+<li><p><a class="reference external" href="http://sourceforge.net/projects/nngs/">No Name Go Server</a> Go
+server software under GPL.</p></li>
+<li><p><a class="reference external" href="http://www.gokgs.com">The KGS Go Server</a> A good place for kids to
+play.</p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://www.nihonkiin.or.jp/lesson/school-e/okikata-e.htm">How to place Go
+stones</a>
+Retrieved March 4, 2007</p>
+</aside>
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://gobase.org/studying/rules/?id=1&amp;ln=uk">The Go Board</a>
+Retrieved March 4, 2007</p>
+</aside>
+<aside class="footnote brackets" id="id7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://www.telgo.com/#liberties">Why do I keep getting captured?</a>
+Retrieved March 4, 2007</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">PlayGo</a><ul>
+<li><a class="reference internal" href="#where-to-get-playgo">Where to get PlayGo</a></li>
+<li><a class="reference internal" href="#the-ancient-game-of-go-derived-from-wikipedia">The Ancient Game of Go (derived from WikiPedia)</a></li>
+<li><a class="reference internal" href="#basic-rules-from-wikipedia">Basic rules from WikiPedia</a></li>
+<li><a class="reference internal" href="#scoring-rules">Scoring Rules</a></li>
+<li><a class="reference internal" href="#optional-rules">Optional rules</a></li>
+<li><a class="reference internal" href="#where-to-report-problems">Where to report problems</a></li>
+<li><a class="reference internal" href="#external-links">External Links</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="poll.html" title="Poll"
+             >next</a></li>
+        <li class="right" >
+          <a href="pippy.html" title="Pippy"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">PlayGo</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

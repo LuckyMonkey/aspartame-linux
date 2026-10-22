@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cookie Search &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Develop" href="develop.html" />
+    <link rel="prev" title="Clock" href="clock.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="develop.html" title="Develop"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="clock.html" title="Clock"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Cookie Search</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="cookie-search">
+<span id="id1"></span><h1>Cookie Search<a class="headerlink" href="#cookie-search" title="Link to this heading">¶</a></h1>
+<section id="about-cookie-search">
+<h2>About Cookie Search<a class="headerlink" href="#about-cookie-search" title="Link to this heading">¶</a></h2>
+<figure class="align-default">
+<img alt="CookieSearch-icon.svg" src="_images/CookieSearch-icon.svg" />
+</figure>
+<p>Most recent release: version 10.</p>
+<p>The Cookie Search Activity is a simple
+<a class="reference external" href="http://en.wikipedia.org/wiki/Minesweeper_%28video_game%29">mine-sweeper</a>-type
+game.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/CookieSearch.png"><img alt="CookieSearch.png" src="_images/CookieSearch.png" style="width: 300px;" />
+</a>
+</figure>
+</section>
+<section id="where-to-get-cookie-search">
+<h2>Where to get Cookie Search<a class="headerlink" href="#where-to-get-cookie-search" title="Link to this heading">¶</a></h2>
+<p>The Cookie Search activity is available for download from the <a class="reference external" href="http://activities.sugarlabs.org">Sugar
+Activity Library</a>: <a class="reference external" href="http://activities.sugarlabs.org/en-US/sugar/addon/4578">Cookie
+Search</a>.</p>
+<p>The source code is available on
+<a class="reference external" href="https://github.com/sugarlabs/cookie-search-activity">GitHub</a>.</p>
+</section>
+<section id="using-cookie-search">
+<h2>Using Cookie Search<a class="headerlink" href="#using-cookie-search" title="Link to this heading">¶</a></h2>
+<figure class="align-default">
+<img alt="CookieSearch-toolbar.png" src="_images/CookieSearch-toolbar.png" />
+</figure>
+<dl class="simple">
+<dt><strong>Activity Button</strong></dt><dd><p>Opens Activity Toolbar</p>
+</dd>
+<dt><strong>New Game Button</strong></dt><dd><p>Launches new game</p>
+</dd>
+<dt><strong>Stop Button</strong></dt><dd><p>Exit activity</p>
+</dd>
+</dl>
+<hr class="docutils" />
+<p><strong>Activity title</strong></p>
+<p><strong>Write to Journal</strong></p>
+<p><strong>Share Button</strong></p>
+<dl class="simple">
+<dt><strong>Copy Scores Button</strong></dt><dd><p>Copies score history to Clipboard (to be loaded into <a class="reference internal" href="chart.html#chart"><span class="std std-ref">Activities/Chart</span></a>.</p>
+</dd>
+</dl>
+<section id="how-to-play">
+<h3>How to play<a class="headerlink" href="#how-to-play" title="Link to this heading">¶</a></h3>
+<p>Hidden cookies are under the cells.</p>
+<p>Clear the board by clicking on the cells.</p>
+<p>You can click on either the turtle or the red cookie. If a turtle is
+clicked, and the cell contains a hidden cookie, you lose the game.
+Otherwise, a number is shown; how many surrounding cells contain hidden
+cookies. If there are no surrounding cookies, the cell is blank, and the
+surrounding cells are revealed. When you determine that a cell contains
+a hidden cookie, click on the red cookie to mark it as such. When you
+change your mind, right-click to mark it as unknown.</p>
+<p>After all cookies have been marked, and all turtles clicked on, the game
+will be won.</p>
+<p>The game starts with one hidden cookie, and each win the number of
+cookies is increased.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_images/CookieSearch-win.png"><img alt="CookieSearch-win.png" src="_images/CookieSearch-win.png" style="width: 200px;" /></a></p>
+<p>You win :)</p>
+</td>
+<td><p><a class="reference internal" href="_images/CookieSearch-lose.png"><img alt="CookieSearch-lose.png" src="_images/CookieSearch-lose.png" style="width: 200px;" /></a></p>
+<p>You lose :(</p>
+</td>
+<td><p><a class="reference internal" href="_images/CookieSearch-scores.png"><img alt="CookieSearch-scores.png" src="_images/CookieSearch-scores.png" style="width: 200px;" /></a></p>
+<p>History of scores</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>YouTube tutorials</p>
+<hr class="docutils" />
+<p>Winning Game: <a class="reference external" href="http://youtu.be/NKRKTm-w0Ig">http://youtu.be/NKRKTm-w0Ig</a></p>
+<p>Losing Game: <a class="reference external" href="http://youtu.be/RgCx4vgYx78">http://youtu.be/RgCx4vgYx78</a></p>
+</section>
+</section>
+<section id="learning-with-cookie-search">
+<h2>Learning with Cookie Search<a class="headerlink" href="#learning-with-cookie-search" title="Link to this heading">¶</a></h2>
+<p>Cookie Search is a exercise in logic.</p>
+</section>
+<section id="modifying-cookie-search">
+<h2>Modifying Cookie Search<a class="headerlink" href="#modifying-cookie-search" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Replace the artwork with your own designs. (Note that the way in
+which the program distinguishes between the turtle and the cookie is
+by looking at the red component of the image. Pixels with red values
+between 190 and 210 are “cookie”; all other values are considered
+turtle.)</p></li>
+</ul>
+<hr class="docutils" />
+<p>Your suggestions for enhancements and/or use cases…</p>
+</section>
+<section id="where-to-report-problems">
+<h2>Where to report problems<a class="headerlink" href="#where-to-report-problems" title="Link to this heading">¶</a></h2>
+<p>You can report bugs and make feature requests at <a class="reference external" href="https://github.com/sugarlabs/cookie-search-activity/issues">cookie-search-activity/issues</a></p>
+<p>You are also welcome to leave comments/suggestions.</p>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Link to this heading">¶</a></h2>
+<p>Cookie Search was written and is maintained by <a class="reference external" href="https://wiki.sugarlabs.org/go/User:Walter">Walter Bender</a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Cookie Search</a><ul>
+<li><a class="reference internal" href="#about-cookie-search">About Cookie Search</a></li>
+<li><a class="reference internal" href="#where-to-get-cookie-search">Where to get Cookie Search</a></li>
+<li><a class="reference internal" href="#using-cookie-search">Using Cookie Search</a><ul>
+<li><a class="reference internal" href="#how-to-play">How to play</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#learning-with-cookie-search">Learning with Cookie Search</a></li>
+<li><a class="reference internal" href="#modifying-cookie-search">Modifying Cookie Search</a></li>
+<li><a class="reference internal" href="#where-to-report-problems">Where to report problems</a></li>
+<li><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="develop.html" title="Develop"
+             >next</a></li>
+        <li class="right" >
+          <a href="clock.html" title="Clock"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Cookie Search</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Slide Rule &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Speak" href="speak.html" />
+    <link rel="prev" title="Slider" href="slider.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="speak.html" title="Speak"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="slider.html" title="Slider"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Slide Rule</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="slide-rule">
+<h1>Slide Rule<a class="headerlink" href="#slide-rule" title="Link to this heading">¶</a></h1>
+<img alt="_images/Sliderule.jpg" src="_images/Sliderule.jpg" />
+<section id="about">
+<h2>About<a class="headerlink" href="#about" title="Link to this heading">¶</a></h2>
+<img alt="_images/Sliderule-activity-icon.png" src="_images/Sliderule-activity-icon.png" />
+<p>“The <a class="reference external" href="http://en.wikipedia.org/wiki/">slide rule</a> also known colloquially as a slipstick, is a mechanical analog computer.” This Activity implements a basic slide rule with C, D, A, and L scales and can be used for multiplication, division, roots, addition and subtraction.</p>
+<img alt="_images/SlideruleC.png" src="_images/SlideruleC.png" />
+<p>The C and D scales are used for multiplication and division.</p>
+<img alt="_images/SlideruleA.png" src="_images/SlideruleA.png" />
+<p>The A and D scales are used for squares and square roots.</p>
+<img alt="_images/SlideruleL.png" src="_images/SlideruleL.png" />
+<p>The L scales are used for addition and subtraction.</p>
+<img alt="_images/Sliderulecustom.png" src="_images/Sliderulecustom.png" />
+<p>User-defined slides and stators can be created on the fly.</p>
+<p>A nice discussion of the slide rule is found here <a class="reference external" href="http://www.ryereflections.org/servlet/pluto?state=3030347061676530303757656250616765303032696430303438373235">http://www.ryereflections.org/servlet/pluto?state=3030347061676530303757656250616765303032696430303438373235</a></p>
+</section>
+<section id="using-slide-rule">
+<h2>Using Slide Rule<a class="headerlink" href="#using-slide-rule" title="Link to this heading">¶</a></h2>
+<section id="the-toolbars">
+<h3>The toolbars<a class="headerlink" href="#the-toolbars" title="Link to this heading">¶</a></h3>
+<p>There are four sub-menus from the main toolbar: the standard Activity Toolbar, the Project Toolbar and the Custom Slide Toolbar and the Custom Stator Toolbar.</p>
+<img alt="_images/Sliderulemaintoolbar.jpg" src="_images/Sliderulemaintoolbar.jpg" />
+<p>The Project Toolbar from left to right:
+* function combo box used to selection a computation, e.g., addition/subtraction, multiplication/division, etc.
+* top-scale indicator
+* top-scale combo box: linear, log, log², log³, 1/log, sin, tan, log log, ln, and custom
+* bottom-scale indicator
+* bottom-scale combo box: linear, log, log², log³, 1/log, sin, tan, log log, ln, and custom
+* scale-alignment button (aligns top scale to bottom scale)
+* activity stop button</p>
+<p>The results of the calculation are displayed below the slide rule.</p>
+<img alt="_images/Sliderulecustomtoolbar.jpg" src="_images/Sliderulecustomtoolbar.jpg" />
+<p>The Custom Slide Toolbar is used to make a custom slide. From left to right:
+* position function of x used to calculate the horizontal position of each mark along the slide or stator (the range of this function should be 0 to 1)
+* result function of x used to read a value from the slide or stator at the cursor or reticule (usually the inverse of the position function)
+* label function of x used to calculate a label for each mark (often identity)
+* the minimum value of x used in the functions domains
+* the maximum value of x used in the functions domains
+* the step size by which to iterate between minimum and maximum when generating marks
+* the gear-shaped button is used to create the custom slide</p>
+<img alt="_images/Statorcustomtoolbar.jpg" src="_images/Statorcustomtoolbar.jpg" />
+<p>The Custom Stator Toolbar is identical in functionality to the Custom Slide Toolbar.</p>
+<p>In the values shown in the illustration of the Custom Toolbar are used to generate a C (log) slide:
+* the position is determined by <em>f*(*x</em>) = <em>log*(*x</em>, 10)
+* the result (the inverse of <em>f*(*x</em>)) is <em>f*⁻¹(*x</em>) = <em>pow*(10, *x</em>)
+* the label is <em>g*(*x</em>) = <em>x</em>
+* the domain is from 1 to 10
+* the step size is 1.</p>
+</section>
+<section id="the-keyboard-shortcuts">
+<h3>The keyboard shortcuts<a class="headerlink" href="#the-keyboard-shortcuts" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>c: log scale</p></li>
+<li><p>i: 1/log scale</p></li>
+<li><p>a: log² scale</p></li>
+<li><p>k: log³ scale</p></li>
+<li><p>s: sin scale</p></li>
+<li><p>t: tan scale</p></li>
+<li><p>Home: move all scales to “home” position</p></li>
+<li><p>r: move reticle to home position</p></li>
+<li><p>left arrow: jog slide left</p></li>
+<li><p>right arrow: jog slide right</p></li>
+</ul>
+<p>Note that you can type values directly into the tabs to position the slide and reticule.</p>
+</section>
+</section>
+<section id="how-to-use-a-slide-rule">
+<h2>How to use a slide rule<a class="headerlink" href="#how-to-use-a-slide-rule" title="Link to this heading">¶</a></h2>
+<p>There are three parts to the slide rule: (1) the <strong>stator</strong> (fixed scale on the bottom); (2) the <strong>slide</strong> (a sliding scale on the top); and a <strong>reticule</strong>, which moves independently of the scales.</p>
+<p>To move either the slide or reticle, drag it or use the arrow keys. You can also type into the labeled tabs to move to a specific value. (<strong>Note:</strong> The entire slide rule does not fit on the screen. By dragging on the stator, you can scroll the canvas to reveal different sections.)</p>
+<p>Most calculations on a slide rule require three steps:
+# position the end of the slide above a number on the stator;
+# position the reticule over a number on slide;
+# read the result from the stator.</p>
+<p><strong>Note:</strong> You can read values from the fixed scale from either end of the sliding scale.</p>
+<p>The Sliderule Activity displays these three values on tabs attached to the top slider and the reticule. The calculation is also displayed below the slide rule.</p>
+<p><strong>Note:</strong> The scales are all at a fixed scale. It is often necessary to move a decimal place in order to find the number you are looking for on the scale. It is up to the user to keep track and subsequently to estimate the decimal point in the final result.</p>
+<p><strong>Note:</strong> You typically get three significant digits of accuracy when using a slide rule.</p>
+<section id="multiplication">
+<h3>Multiplication<a class="headerlink" href="#multiplication" title="Link to this heading">¶</a></h3>
+<p>To multiply, you use the C (log) slide and D (log) stator. (Addition in log scale is the same as multiplication in linear space.) First position the end of the C slide over one of the multiplicands on the D stator. Then position the reticule over the other multiplicand on the C slide. Read the result off of the D stator.</p>
+<p><strong>Example:</strong> 2 × 1.31 = 2.62</p>
+<img alt="_images/Sliderule-2D.png" src="_images/Sliderule-2D.png" />
+<p>Position the end of the C slide over 2 on the D stator</p>
+<img alt="_images/Sliderule-1.31C.png" src="_images/Sliderule-1.31C.png" />
+<p>Position the reticule over 1.31 on the C slide and read the results (2.62) from the D stator.</p>
+</section>
+<section id="division">
+<h3>Division<a class="headerlink" href="#division" title="Link to this heading">¶</a></h3>
+<p>Division is the opposite of multiplication. First position the reticle over the dividend on the D stator. Then without moving the reticule, position the C slide so that the divisor is under the reticule. Read the quotient off of the D stator under the end of the C slide.</p>
+<p><strong>Example:</strong> 2.62 / 1.31 = 2</p>
+<img alt="_images/Sliderule-1.31C.png" src="_images/Sliderule-1.31C.png" />
+<p>Position the reticule over 2.62 on the D stator. Position 1.31 on the C slide under the reticule.</p>
+<img alt="_images/Sliderule-2D.png" src="_images/Sliderule-2D.png" />
+<p>Read the results from the D stator.</p>
+</section>
+<section id="overflow-on-multiplication-or-division">
+<h3>Overflow on Multiplication or Division<a class="headerlink" href="#overflow-on-multiplication-or-division" title="Link to this heading">¶</a></h3>
+<p>Sometimes the result of multiplication or division is off the end of the slide rule. For example 4 × 3 or 3/4. Here you can use the CI or inverse scale. To multiply you can divide by the inverse and to divide you can multiply by the inverse.</p>
+</section>
+<section id="square">
+<h3>Square<a class="headerlink" href="#square" title="Link to this heading">¶</a></h3>
+<p>You use the A slide and D stator to square number. (A is a log-squared scale.) Simply position the reticule of number you want to square on the D stator and read the result off of the A slide. Remember to properly estimate the proper decimal point for your result. <strong>Note</strong>: the slide and stator must be aligned in order to calculate the square of a number.</p>
+<p><a href="#id2"><span class="problematic" id="id3">*</span></a>e*² = 7.4</p>
+<img alt="_images/Sliderule-e-squared.png" src="_images/Sliderule-e-squared.png" />
+<p>Position the reticule over <em>e</em> on the D stator and read the results off of the A slide.</p>
+</section>
+<section id="square-root">
+<h3>Square root<a class="headerlink" href="#square-root" title="Link to this heading">¶</a></h3>
+<p>You also use the A slide and D statr to find the square root of a number. Simply position the reticule of number you want to square on the A slide and read the result off of the D stator. (Remember to properly estimate the proper decimal point for your result.) <strong>Note:</strong> the slide and stator must be aligned in order to calculate the square root.</p>
+<p>√𝜋 = 1.77</p>
+<img alt="_images/Sliderule-root-pi.png" src="_images/Sliderule-root-pi.png" />
+<p>Position the reticule over 𝜋 on the A slide and read the results (1.77) off of the D stator.</p>
+</section>
+<section id="addition">
+<h3>Addition<a class="headerlink" href="#addition" title="Link to this heading">¶</a></h3>
+<p>To add you use the linear slides, L and L. First position the end of the top L slide over one of the addends on the lower L slide. Then position the reticule over the other addend on the upper L slide. Read the result off of the lower L slide.</p>
+<p><strong>Example:</strong> 1.1 + 2.1 = 3.2</p>
+<img alt="_images/Sliderule-LL1.png" src="_images/Sliderule-LL1.png" />
+<p>Position the end of the upper L slide over 1.1 on the lower L slide.</p>
+<img alt="_images/Sliderule-LL2.png" src="_images/Sliderule-LL2.png" />
+<p>Position the reticule over 2.1 on the upper L slide and read the result (3.2) from the lower L slide.</p>
+</section>
+<section id="subtraction">
+<h3>Subtraction<a class="headerlink" href="#subtraction" title="Link to this heading">¶</a></h3>
+<p>To subtract, you also use the L (linear) slide and stator. Position the reticule over the minuend on the L stator. Without moving the reticle, position the L slide so that the subtrahend is also under the reticle. Read the difference from the L stator.</p>
+<p><strong>Example:</strong> 3.2 – 2.1 = 1.1</p>
+<img alt="_images/Sliderule-LL2.png" src="_images/Sliderule-LL2.png" />
+<p>Position the reticule over the minuend (3.2) on the L stator and the subtrahend (2.1) on the L slide.</p>
+<img alt="_images/Sliderule-LL1.png" src="_images/Sliderule-LL1.png" />
+<p>Read the difference (1.1) from the L stator.</p>
+</section>
+</section>
+<section id="how-does-it-work">
+<h2>How does it work?<a class="headerlink" href="#how-does-it-work" title="Link to this heading">¶</a></h2>
+<p>Why does multiplication and division work on the C and D scales?</p>
+<p>The multiplication of 100 by 1000 can be represented as 10² x 10³ = 10⁵, to multiply, just add the indices, in this case, 2+3=5. 2 and 3 are the logarithms of 100 and 1000 respectively.</p>
+<p>To multiply, add the logarithms, to divide, subtract. See how the C and D scales are compressed to their right end . Though the scales are marked with numbers, their distance along the scales are proportional to the logarithms of those numbers. When two distances are added, the logarithms of the numbers are added, if logarithms are added, numbers are multiplied.</p>
+</section>
+<section id="tutorials">
+<h2>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://wiki.sugarlabs.org/go/File:Slideruletute.pdf">Chapter 1</a></p>
+<p><a class="reference external" href="https://wiki.sugarlabs.org/go/File:Slideruletute-ch2.pdf">Chapter 2</a></p>
+</section>
+<section id="just-for-fun">
+<h2>Just for fun<a class="headerlink" href="#just-for-fun" title="Link to this heading">¶</a></h2>
+<p>Tony Forster has created slide rules in <a class="reference external" href="http://tonyforster.blogspot.com/2010/09/turtle-sliderule.html">Turtle Art</a>, <a class="reference external" href="http://www.freewebs.com/schoolgamemaker/#lobject">GameMaker</a>, and <a class="reference external" href="http://tonyforster.blogspot.com/2010/09/pippy-sliderule.html">Pippy</a>.</p>
+</section>
+<section id="reporting-problems">
+<h2>Reporting problems<a class="headerlink" href="#reporting-problems" title="Link to this heading">¶</a></h2>
+<p>If you discover a bug in the program or have a suggestion for an enhancement, please <a class="reference external" href="https://github.com/sugarlabs/sliderule/issues">create an issue</a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Slide Rule</a><ul>
+<li><a class="reference internal" href="#about">About</a></li>
+<li><a class="reference internal" href="#using-slide-rule">Using Slide Rule</a><ul>
+<li><a class="reference internal" href="#the-toolbars">The toolbars</a></li>
+<li><a class="reference internal" href="#the-keyboard-shortcuts">The keyboard shortcuts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-use-a-slide-rule">How to use a slide rule</a><ul>
+<li><a class="reference internal" href="#multiplication">Multiplication</a></li>
+<li><a class="reference internal" href="#division">Division</a></li>
+<li><a class="reference internal" href="#overflow-on-multiplication-or-division">Overflow on Multiplication or Division</a></li>
+<li><a class="reference internal" href="#square">Square</a></li>
+<li><a class="reference internal" href="#square-root">Square root</a></li>
+<li><a class="reference internal" href="#addition">Addition</a></li>
+<li><a class="reference internal" href="#subtraction">Subtraction</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-does-it-work">How does it work?</a></li>
+<li><a class="reference internal" href="#tutorials">Tutorials</a></li>
+<li><a class="reference internal" href="#just-for-fun">Just for fun</a></li>
+<li><a class="reference internal" href="#reporting-problems">Reporting problems</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="speak.html" title="Speak"
+             >next</a></li>
+        <li class="right" >
+          <a href="slider.html" title="Slider"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Slide Rule</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

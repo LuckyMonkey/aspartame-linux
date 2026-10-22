@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Figurate Numbers &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="../_static/documentation_options.js?v=7ab50005"></script>
+    <script src="../_static/doctools.js?v=20d7b9fc"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Figurate Numbers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="figurate-numbers">
+<span id="id1"></span><h1>Figurate Numbers<a class="headerlink" href="#figurate-numbers" title="Link to this heading">¶</a></h1>
+<p>Most of us are familiar with triangular numbers, such as the arrangement
+of ten bowling pins in a triangle,</p>
+<div class="line-block">
+<div class="line">   .</div>
+<div class="line">  . .</div>
+<div class="line"> . . .</div>
+<div class="line">. . . .</div>
+</div>
+<p>or square numbers,</p>
+<div class="line-block">
+<div class="line">.  .  .  .</div>
+<div class="line">.  .  .  .</div>
+<div class="line">.  .  .  .</div>
+<div class="line">.  .  .  .</div>
+</div>
+<p>but we don’t necessarily know how their arithmetic works, or whether we
+can do the same with, say, pentagons. Pythogoras, the founder of Greek
+mathematics, is said to have discussed these figures and their
+relationships. We know that the triangle of 10 points, called the
+tetractys in Greek, was a central element in the Pythagorean religion.</p>
+<p>Can we learn something by telling a turtle how to make these numbers?
+Let’s try.</p>
+<section id="linear-numbers">
+<h2>Linear numbers<a class="headerlink" href="#linear-numbers" title="Link to this heading">¶</a></h2>
+<p>Before we get to triangles, squares, and so on, we need to have a few
+tools, such as those provided in the <a class="reference internal" href="counting.html#counting"><span class="std std-ref">Counting</span></a> tutorial, so that
+we can create figures and post notes about them. Then we can add a few
+more things.</p>
+</section>
+<section id="triangles">
+<h2>Triangles<a class="headerlink" href="#triangles" title="Link to this heading">¶</a></h2>
+<p>What should we add? How about making dots of different colors, and
+providing notes about how many of each, plus the running total?
+Easy-peasy. We just need to do the arithmetic to work out where to put
+everything.</p>
+<figure class="align-default">
+<img alt="TATriangular_Numbers.png" src="../_images/TATriangular_Numbers.png" />
+</figure>
+<p>The <a class="reference internal" href="triangular_numbers_program.html#triangular-numbers-program"><span class="std std-ref">program to generate the triangular numbers</span></a>
+takes up a lot of space, so I am putting it on another page.</p>
+<p>A problem that TA can’t solve for us directly is the formula for
+triangular numbers. Gauss figured it out on his own as a child, but the
+rest of us need a hint, at least. Here is a big hint.</p>
+<p>The area of a rectangle can be written Base × Height. The area of a
+right triangle is half the area of a rectangle with the same Base and
+Height. Can you do the rest?</p>
+</section>
+<section id="other-figurate-numbers">
+<h2>Other Figurate Numbers<a class="headerlink" href="#other-figurate-numbers" title="Link to this heading">¶</a></h2>
+<p>Two-sided polygons may or may not be allowed in a particular geometry,
+but they are not of interest here, because both sides are necessarily of
+the same length in Euclidean geometry and Lobachevskian/hyperbolic
+geometry, and of indeterminate length in Riemannian/elliptic geometry,
+rather like cutting a great circle on a sphere into two pieces.</p>
+<figure class="align-default">
+<img alt="TACounting.png" src="../_images/TACounting.png" />
+</figure>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Figurate Numbers</a><ul>
+<li><a class="reference internal" href="#linear-numbers">Linear numbers</a></li>
+<li><a class="reference internal" href="#triangles">Triangles</a></li>
+<li><a class="reference internal" href="#other-figurate-numbers">Other Figurate Numbers</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Figurate Numbers</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

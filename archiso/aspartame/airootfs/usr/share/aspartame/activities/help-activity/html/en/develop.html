@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Develop &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dimensions" href="dimensions.html" />
+    <link rel="prev" title="Cookie Search" href="cookie_search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="dimensions.html" title="Dimensions"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="cookie_search.html" title="Cookie Search"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Develop</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="develop">
+<span id="id1"></span><h1>Develop<a class="headerlink" href="#develop" title="Link to this heading">¶</a></h1>
+<section id="about-develop">
+<h2>About Develop<a class="headerlink" href="#about-develop" title="Link to this heading">¶</a></h2>
+<p>Develop allows you to edit existing Activities or create new ones. It
+allows the viewing and editing of multiple files and gives easy access
+to error logs. It includes templates for a number of sample “Hello
+World!” Activities.</p>
+</section>
+<section id="where-to-get-develop">
+<h2>Where to get Develop<a class="headerlink" href="#where-to-get-develop" title="Link to this heading">¶</a></h2>
+<p>Develop activity is available for download from the <a class="reference external" href="http://activities.sugarlabs.org">Sugar Activity Library</a>:
+<a class="reference external" href="http://activities.sugarlabs.org/en-US/sugar/addon/4058">Develop</a></p>
+<p>The source code is available on <a class="reference external" href="https://github.com/godiard/develop-activity">GitHub</a>.</p>
+</section>
+<section id="using-develop">
+<h2>Using Develop<a class="headerlink" href="#using-develop" title="Link to this heading">¶</a></h2>
+<p>You get the screen below the first time you start Develop and every time
+you Start New but not if you resume a project. It gives the option of
+editing an existing Activity or creating a new one from a “Hello World!”
+template. It is recommended that beginners create a new Activity.</p>
+<p>There are 4 “Hello World!” templates to choose from:</p>
+<ul class="simple">
+<li><p>Gtk2</p></li>
+<li><p>Gtk3 (requires Sugar 0.96 or above to run the Activity you create)</p></li>
+<li><p>Sugargame</p></li>
+<li><p>Web (requires Sugar 0.100 or above to run the activity you create)</p></li>
+</ul>
+<figure class="align-default">
+<img alt="Develop_open_screen.jpeg" src="_images/Develop_open_screen.jpeg" />
+</figure>
+<p>The main screen is shown below. In this case, a new Activity called
+testgtk2 has been created from the gtk2 template. The left pane shows
+the files and directories that comprise the Activity and the right pane
+shows the contents of its main file, activity.py</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/Screenshot_of_Develop_testgtk2_.png"><img alt="Screenshot_of_Develop_testgtk2_.png" src="_images/Screenshot_of_Develop_testgtk2_.png" style="width: 600px;" />
+</a>
+</figure>
+<section id="toolbars">
+<h3>Toolbars<a class="headerlink" href="#toolbars" title="Link to this heading">¶</a></h3>
+<p>From left to right, the toolbar buttons have the following functions:</p>
+<p><strong>Home</strong></p>
+<ul class="simple">
+<li><p>The title of the project</p></li>
+<li><p>Edit the Journal description</p></li>
+<li><p>Sharing (disabled)</p></li>
+<li><p>Create a bundle, use the bundle to install your Activity on other
+laptops</p></li>
+</ul>
+<p><strong>View</strong></p>
+<ul class="simple">
+<li><p>Switch to dark or light theme</p></li>
+<li><p>Zoom in</p></li>
+<li><p>Zoom out</p></li>
+</ul>
+<p><strong>Edit</strong></p>
+<ul class="simple">
+<li><p>Undo</p></li>
+<li><p>Redo</p></li>
+<li><p>Copy</p></li>
+<li><p>Paste</p></li>
+</ul>
+<p><strong>Search</strong></p>
+<ul class="simple">
+<li><p>Search box</p></li>
+<li><p>Search previous</p></li>
+<li><p>Search next</p></li>
+</ul>
+<p><strong>Show source</strong></p>
+<ul class="simple">
+<li><p>The left hand pane shows the files and directories that comprise your
+Activity.</p></li>
+</ul>
+<p><strong>Show file symbols</strong></p>
+<ul class="simple">
+<li><p>The left hand pane shows the classes, functions and variables in the
+file on the right.</p></li>
+</ul>
+<p><strong>Show log files</strong></p>
+<ul class="simple">
+<li><p>The left pane shows the log files which contain error messages from
+running your Activity.</p></li>
+</ul>
+<p><strong>Create an empty file</strong></p>
+<ul class="simple">
+<li><p>Your Activity already comprises a number of files, this adds an
+additional empty file in the current directory.</p></li>
+</ul>
+<p><strong>Remove file</strong></p>
+<ul class="simple">
+<li><p>Deletes the most recently viewed file, the one displayed in the right
+pane.</p></li>
+</ul>
+<p><strong>Run activity</strong></p>
+<ul class="simple">
+<li><p>Runs your activity.</p></li>
+</ul>
+<p><strong>Stop</strong></p>
+<ul class="simple">
+<li><p>Quits the Develop Activity.</p></li>
+</ul>
+</section>
+</section>
+<section id="tutorial-creating-your-activity">
+<h2>Tutorial - creating your Activity<a class="headerlink" href="#tutorial-creating-your-activity" title="Link to this heading">¶</a></h2>
+<p>Open Develop, start new</p>
+<figure class="align-default">
+<img alt="Develop-start-new.jpeg" src="_images/Develop-start-new.jpeg" />
+</figure>
+<p>Create a new Activity, this is safer than editing an existing Activity.
+You are offered 4 Activity templates, Gtk2, Gtk3, Sugargame and Web,
+some of these templates are not compatible with all Sugar versions, Gtk2
+should be compatible.</p>
+<p>Select the type Gtk2</p>
+<p>Name the Activity testgtk2</p>
+<p>Start</p>
+<p>Press the Run activity button on the toolbar, your testgtk2 Activity
+will run, it prints Hello World!. (If you look at your Home screen you
+have a new Activity called testgtk2.)</p>
+<section id="editing-your-activity">
+<h3>Editing your Activity<a class="headerlink" href="#editing-your-activity" title="Link to this heading">¶</a></h3>
+<p>Stop testgtk2 and return to Develop. Edit line 70 of activity.py. It
+contains the text “Hello World!”, change this text but be careful only
+to change the text within the quotation marks. Press the Run activity
+button, the Activity now displays the new text.</p>
+<figure class="align-default">
+<img alt="Develop-helloworld.jpg" src="_images/Develop-helloworld.jpg" />
+</figure>
+</section>
+<section id="changing-the-icon">
+<h3>Changing the icon<a class="headerlink" href="#changing-the-icon" title="Link to this heading">¶</a></h3>
+<p>Shown in the left hand pane is the directory activity with a triangle
+next to it pointing right. Click on it, the triangle points down and you
+can see its contents, open activity-helloworld.svg</p>
+<figure class="align-default">
+<img alt="Develop-left-pane.jpg" src="_images/Develop-left-pane.jpg" />
+</figure>
+<p>Line 11 defines the circle of the world in the icon. Change stroke-width
+to “6.5”. You need to restart the laptop to see the changes, the circle
+is now thicker. <a class="reference internal" href="_images/Altered-icon.jpg"><img alt="Altered-icon.jpg" src="_images/Altered-icon.jpg" style="width: 50px;" /></a></p>
+</section>
+<section id="changing-the-version-number">
+<h3>Changing the version number<a class="headerlink" href="#changing-the-version-number" title="Link to this heading">¶</a></h3>
+<p>The Home view, List view shows the version number of all the installed
+Activities. The version number discriminates between older and newer
+versions of an Activity. It is used to tell if you are using the latest
+version. Sometimes the latest version has a bug and you want to go back
+to an earlier known good version.</p>
+<p>Look in your Home view List view and you will see that testgtk2 is
+version 1. To alter the version number, edit activity.info line 6 which
+shows the activity_version=1 , change it to 2.</p>
+<p>You may need to restart the laptop to see the changes.</p>
+<figure class="align-default">
+<img alt="Version-number.jpg" src="_images/Version-number.jpg" />
+</figure>
+</section>
+<section id="installing-your-activity-on-another-computer">
+<h3>Installing your Activity on another computer<a class="headerlink" href="#installing-your-activity-on-another-computer" title="Link to this heading">¶</a></h3>
+<p>Press the Create bundle button on the home toolbar<img alt="Save-bundle.jpg" src="_images/Save-bundle.jpg" />,
+this creates a .xo bundle in the Journal. Copy this to another laptop to
+install your Activity.</p>
+</section>
+<section id="using-the-log-files-to-find-errors">
+<h3>Using the Log files to find errors<a class="headerlink" href="#using-the-log-files-to-find-errors" title="Link to this heading">¶</a></h3>
+<p>Log files are created when Activities run, they also are created by
+other processes. They list software errors among other data and can help
+diagnose software problems.</p>
+<p>Assume you made a typing error, you accidentally deleted the closing
+quote mark “ in activity.py line 70 when you were editing “Hello
+World!”. The activity would not run, you might get an error like
+this:<img alt="Failedtostart.jpg" src="_images/Failedtostart.jpg" /></p>
+<p>Click on the Show log files button <img alt="Show-logfiles.jpg" src="_images/Show-logfiles.jpg" /> , the left hand
+pane will show the list of logfiles. Because our Activity is named
+testgtk2, we are looking for the file org.sugarlabs.testgtk2. If you
+have started testgtk2 multiple times then there are multiple logfiles.
+Click on org.sugarlabs.testgtk to read the logfile. The error message
+tells that it is line 70 of activity.py , in the string “Hello World!,
+it got confused at the opening quote. It got to the end of line (EOL)
+while scanning the string.</p>
+<figure class="align-default">
+<img alt="Develop-logfiles.jpg" src="_images/Develop-logfiles.jpg" />
+</figure>
+<p>The <a class="reference internal" href="log.html#log"><span class="std std-ref">Log Activity</span></a> can also be used to
+view log files.</p>
+</section>
+<section id="sugargame">
+<h3>Sugargame<a class="headerlink" href="#sugargame" title="Link to this heading">¶</a></h3>
+<p>Sugargame, based on Pygame makes it easy to create games. See pygame.org</p>
+<p>To create a game, start a new Develop project but select Sugargame
+rather than Gtk2. If you run the Activity created, it prints Hello World
+on a black background.</p>
+<p>Look at the file game.py, there are a number of simple changes you can
+make:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BLANCO</span> <span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>  <span class="c1">#this sets the red, green and blue values for the white text``</span>
+<span class="n">NEGRO</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#this sets the R G B of the black background``</span>
+<span class="n">fuente</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span> <span class="c1">#48 is the text size``</span>
+<span class="n">texto</span> <span class="o">=</span> <span class="n">fuente</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">'Hello world!'</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">BLANCO</span><span class="p">,</span> <span class="n">NEGRO</span><span class="p">)</span>  <span class="c1"># change Hello world``</span>
+<span class="n">pantalla</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">texto</span><span class="p">,</span> <span class="p">((</span><span class="n">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)))</span> <span class="c1">#the location on the screen``</span>
+</pre></div>
+</div>
+<p>Read the documentation at pygame.org, there are lots of exciting things
+to try. For example, change the line that starts with pantalla.blit to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pantalla.blit(texto, pygame.mouse.get_pos())``
+</pre></div>
+</div>
+<p>the text will follow the mouse. Or change this line to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pygame.draw.circle(pantalla,BLANCO, pygame.mouse.get_pos(),20,0)``
+</pre></div>
+</div>
+<p>and a circle follows the mouse.</p>
+</section>
+<section id="going-further">
+<h3>Going further<a class="headerlink" href="#going-further" title="Link to this heading">¶</a></h3>
+<p>For more on making Sugar Activities see the ebook
+<a class="reference external" href="http://en.flossmanuals.net/make-your-own-sugar-activities/">http://en.flossmanuals.net/make-your-own-sugar-activities/</a></p>
+<p>For editing icons use Inkscape <a class="reference external" href="http://www.inkscape.org">http://www.inkscape.org</a></p>
+<p>Pygame <a class="reference external" href="http://www.pygame.org/docs">http://www.pygame.org/docs</a></p>
+</section>
+</section>
+<section id="videos">
+<h2>Videos<a class="headerlink" href="#videos" title="Link to this heading">¶</a></h2>
+<p>Demo of Develop version 40: <a class="reference external" href="https://www.youtube.com/watch?v=SChweH6snvw">https://www.youtube.com/watch?v=SChweH6snvw</a></p>
+</section>
+<section id="where-to-report-problems">
+<h2>Where to report problems<a class="headerlink" href="#where-to-report-problems" title="Link to this heading">¶</a></h2>
+<p>Please report bugs and make feature requests at <a class="reference external" href="https://github.com/godiard/develop-activity/issues">develop-activity/issues</a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Develop</a><ul>
+<li><a class="reference internal" href="#about-develop">About Develop</a></li>
+<li><a class="reference internal" href="#where-to-get-develop">Where to get Develop</a></li>
+<li><a class="reference internal" href="#using-develop">Using Develop</a><ul>
+<li><a class="reference internal" href="#toolbars">Toolbars</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tutorial-creating-your-activity">Tutorial - creating your Activity</a><ul>
+<li><a class="reference internal" href="#editing-your-activity">Editing your Activity</a></li>
+<li><a class="reference internal" href="#changing-the-icon">Changing the icon</a></li>
+<li><a class="reference internal" href="#changing-the-version-number">Changing the version number</a></li>
+<li><a class="reference internal" href="#installing-your-activity-on-another-computer">Installing your Activity on another computer</a></li>
+<li><a class="reference internal" href="#using-the-log-files-to-find-errors">Using the Log files to find errors</a></li>
+<li><a class="reference internal" href="#sugargame">Sugargame</a></li>
+<li><a class="reference internal" href="#going-further">Going further</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#videos">Videos</a></li>
+<li><a class="reference internal" href="#where-to-report-problems">Where to report problems</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="dimensions.html" title="Dimensions"
+             >next</a></li>
+        <li class="right" >
+          <a href="cookie_search.html" title="Cookie Search"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Develop</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

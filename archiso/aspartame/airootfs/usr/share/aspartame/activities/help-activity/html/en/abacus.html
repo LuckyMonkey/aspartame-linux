@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Abacus &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AEIOU" href="aeiou.html" />
+    <link rel="prev" title="Exiting Activities" href="exiting_activities.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="aeiou.html" title="AEIOU"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="exiting_activities.html" title="Exiting Activities"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Abacus</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="abacus">
+<span id="id1"></span><h1>Abacus<a class="headerlink" href="#abacus" title="Link to this heading">¶</a></h1>
+<section id="about">
+<h2>About<a class="headerlink" href="#about" title="Link to this heading">¶</a></h2>
+<img alt="_images/Abacus-activity.png" src="_images/Abacus-activity.png" />
+<p>Abacus lets the learner explore different representations of numbers using different mechanical counting systems developed by the ancient Romans and Chinese. There are several different variants available for exploration: a suanpan, the traditional Chinese abacus with 2 beads on top and 5 beads below; a soroban, the traditional Japanese abacus with 1 bead on top and 4 beads below; the schety, the traditional Russian abacus, with 10 beads per column, with the exception of one column with just 4 beads used for counting in fourths; and the nepohualtzintzin, a Mayan abacus, 3 beads on top and 4 beads below (base 20). There is also a binary abacus, a hexadecimal abacus, and several abacuses that lets you calculate with common fractions: 1/2, 1/3, 1/4, 1/5, 1/6, 1/8, 1/9, 1/10, and 1/12. And there is a customization toolbar that lets you design your own abacus. The Incan abacus (Yupana) as a standalone program.</p>
+</section>
+<section id="using-abacus">
+<h2>Using Abacus<a class="headerlink" href="#using-abacus" title="Link to this heading">¶</a></h2>
+<section id="clearing-the-abacus">
+<h3>Clearing the abacus<a class="headerlink" href="#clearing-the-abacus" title="Link to this heading">¶</a></h3>
+<p>Before you start an arithmetic operation, you need to “clear” the abacus. The upper beads should be positioned against the top of the frame and the lower beads should be positioned against the bottom of the frame. This is the default position for the abacus when you launch the activity.</p>
+<p>Note that some of the abacuses (e.g., the schety) do not have any upper beads. In such cases, all of the beads should start in the down position.
+Also note that the Clear Button on the main toolbar will also clear the abacus for you.</p>
+</section>
+<section id="reading-the-abacus">
+<h3>Reading the abacus<a class="headerlink" href="#reading-the-abacus" title="Link to this heading">¶</a></h3>
+<p>In each column, the bottom beads represent 1s and the top beads represent 5s. (The exception is the column in the schety with only 4 beads. These are 1/4 each.) So for each bead you raise up from the bottom in a column add 1 and for each bead you lower from the top in the same column, add 5.</p>
+<p>The columns themselves represent decimal positions from right to left, e.g., 1s, 10s, 100s, 1000s, etc. (There are some exceptions: (1) the nepohualtzintzin uses base 20, e.g., 1s, 20s, 400s, 8000s, etc.; (2) on the schety, the beads to the right of the column with just four beads are 0.1s, 0.01s, 0.001s, and 0.0001s; the black beads on the Caacupé abacus are fractions; and the custom abacus lets you choose whatever (integer) base you want.)</p>
+<p>The current value is always displayed on the frame. Experiment and you will quickly learn to write and read numbers.</p>
+<p>Examples: In the gallery below, several simple examples are shown. In the gallery of images above, the number 54321 is shown on each of the different abaci.</p>
+<img alt="_images/Abacus-ex1.png" src="_images/Abacus-ex1.png" />
+<p>From left to right,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>1 bottom bead is up, corresponding to 1 unit</p></li>
+<li><p>1 top bead is down, corresponding to 5 units</p></li>
+<li><p>5 bottom beads are up, also corresponding to 5 units</p></li>
+<li><p>1 bottom bead is up and 1 top bead is down, corresponding to 6 units</p></li>
+</ul>
+</div></blockquote>
+<img alt="_images/Abacus-ex2.png" src="_images/Abacus-ex2.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>5 bottom beads are up and 1 top bead is down, corresponding to 10 units (time to “carry” to the left)</p></li>
+<li><p>This 10 is equivalent to…</p></li>
+<li><p>… this 10</p></li>
+<li><p>54321</p></li>
+</ul>
+<p>Note: The display always assumes a fixed unit column, but you can override this choice.</p>
+<img alt="_images/Abacus-ex3.png" src="_images/Abacus-ex3.png" />
+<p>The beads moved most recently are highlighted.</p>
+</section>
+<section id="addition">
+<h3>Addition<a class="headerlink" href="#addition" title="Link to this heading">¶</a></h3>
+<p>To add, simply move in more beads to represent the number you are adding. There are two rules to follow: (1) whenever you have a total of 5 units or more on the bottom of a column, cancel out the 5 by sliding the beads back down and add a five to to the top; and (2) whenever you have a total of 10 units or more in a column, cancel out the 10 and add one unit to the column immediately to the left. (With the nepohualtzintzin, you work with 20 rather than 10.)</p>
+<p>Example: 4+3+5+19+24=55</p>
+<img alt="_images/Abacus-ex4.png" src="_images/Abacus-ex4.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>4</p></li>
+<li><p>+3=7 (5–2=3)</p></li>
+<li><p>+5=12</p></li>
+<li><p>carry 5s to next column</p></li>
+</ul>
+<img alt="_images/Abacus-ex5.png" src="_images/Abacus-ex5.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>+19=31 (20-1=19)</p></li>
+<li><p>+24=55</p></li>
+<li><p>4+3+5+19+24=55</p></li>
+</ul>
+</section>
+<section id="subtraction">
+<h3>Subtraction<a class="headerlink" href="#subtraction" title="Link to this heading">¶</a></h3>
+<p>Subtraction is the inverse of addition. Move out beads that correspond to the number you are subtracting. You can “borrow” from the column immediately to the left: subtracting one unit and adding 10 to the current column.</p>
+<p>Example: 26–2–4–6–10=4</p>
+<img alt="_images/Abacus-ex6.png" src="_images/Abacus-ex6.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>26</p></li>
+<li><p>26-2=24</p></li>
+<li><p>24-4=20</p></li>
+<li><p>cary 10 to the right</p></li>
+</ul>
+<img alt="_images/Abacus-ex7.png" src="_images/Abacus-ex7.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>20-6=14</p></li>
+<li><p>14-10=4</p></li>
+</ul>
+</section>
+<section id="multiplication">
+<h3>Multiplication<a class="headerlink" href="#multiplication" title="Link to this heading">¶</a></h3>
+<p>There are several strategies for doing multiplication on an abacus. In the method used in the example below, the multiplier is stored on the far left of the abacus and the multiplicand is offset to the left by the number of digits in the multiplier. The red indicator is used to help keep track of where we are in the process.</p>
+<img alt="_images/Abacus-ex8.png" src="_images/Abacus-ex8.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>486×24=? Begin by placing 24 in the left-most columns and 486 offset from the far right by two columns (since 24 has two digits). Set the indicator to the right of the multiplicand.</p></li>
+<li><p>Multiply the least-significant digits (LSD) of the multiplier (4) and multiplicand (6) and place the results (4×6=24) in the far right columns.</p></li>
+<li><p>Multiply the next digit in the multiplier (2, which corresponds to 2×10=20) and the LSD of the multiplicand (6) and add the results (2×6=12) on the right (advancing one column to the left to correspond to the power of the digit in the multiplier).</p></li>
+<li><p>Move the indicator over one column to the left.</p></li>
+</ul>
+<img alt="_images/Abacus-ex9.png" src="_images/Abacus-ex9.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>Repeat for the next digit in the multiplicand (8): 4×8=32</p></li>
+<li><p>2×8=16</p></li>
+<li><p>Move the indicator over one column to the left.</p></li>
+</ul>
+<img alt="_images/Abacus-ex10.png" src="_images/Abacus-ex10.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>Repeat for the next digit in the multiplicand (4): 4×4=16</p></li>
+<li><p>2×4=8</p></li>
+<li><p>Clear the multiplier from the left and view the result: 486×24=11664</p></li>
+</ul>
+</section>
+<section id="division">
+<h3>Division<a class="headerlink" href="#division" title="Link to this heading">¶</a></h3>
+<p>Simple division (by a single-digit number) is the inverse of multiplication. In the example below, the dividend is put on the left (leaving one column vacant for the quotient) and the divisor on the right.</p>
+<img alt="_images/Abacus-ex11.png" src="_images/Abacus-ex11.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>123456789÷2=? Place the dividend (123456789) on the left, leaving one blank column. Place the divisor (2) on the right.</p></li>
+<li><p>Working from the left to the right, divide a digit in the quotient and then move the indicator one column to the right. 1÷2=0.5</p></li>
+<li><p>2÷2=1</p></li>
+<li><p>3÷2=1.5</p></li>
+</ul>
+<img alt="_images/Abacus-ex12.png" src="_images/Abacus-ex12.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>4÷2=2</p></li>
+<li><p>5÷2=2.5</p></li>
+<li><p>6÷2=3</p></li>
+</ul>
+<img alt="_images/Abacus-ex13.png" src="_images/Abacus-ex13.png" />
+<p>from left to right,</p>
+<ul class="simple">
+<li><p>7÷2=3.5</p></li>
+<li><p>8÷2=4</p></li>
+<li><p>9÷2=4.5</p></li>
+<li><p>The result is 61728394.5.</p></li>
+</ul>
+</section>
+<section id="fractions">
+<h3>Fractions<a class="headerlink" href="#fractions" title="Link to this heading">¶</a></h3>
+<p>The fraction abacus lets you add and subtract common fractions: 1/2, 1/3, 1/4, 1/5, 1/6, 1/8, 1/9, 1/10, and 1/12, The fractional value is determined by the number of black beads on a rod, e.g., to work with thirds, use the rod with three beads, to work with fifths, use the rod with five beads.</p>
+<p>The rods with white beads are whole numbers in base 10; from left to right 100000, 10000, 1000, 100, 10, and 1.</p>
+<img alt="_images/Abacus-ex14.png" src="_images/Abacus-ex14.png" />
+<p>20 + 1 + 1/2 + 1/3 + 1/6 = 22</p>
+</section>
+<section id="the-toolbars">
+<h3>The toolbars<a class="headerlink" href="#the-toolbars" title="Link to this heading">¶</a></h3>
+<img alt="_images/Abacus-ex15.png" src="_images/Abacus-ex15.png" />
+<p>From left to right:</p>
+<ul class="simple">
+<li><p>project-toolbar button: see below</p></li>
+<li><p>edit-toolbar button: see below</p></li>
+<li><p>abacus-toolbar button: see below</p></li>
+<li><p>customization-toolbar button</p></li>
+<li><p>clear button: clear the abacus</p></li>
+<li><p>stop button: exit the activity</p></li>
+</ul>
+<img alt="_images/Abacus-ex16.png" src="_images/Abacus-ex16.png" />
+<p>From left to right:</p>
+<ul class="simple">
+<li><p>copy: copy current value to clipboard</p></li>
+<li><p>paste: paste a value from the clipboard into the abacus</p></li>
+</ul>
+<img alt="_images/Abacus-ex17.png" src="_images/Abacus-ex17.png" />
+<p>From left to right:</p>
+<ul class="simple">
+<li><p>Decimal button: decimal abacus</p></li>
+<li><p>Soroban button: Japanese abacus</p></li>
+<li><p>Saupan button: Chinese abacus</p></li>
+<li><p>Nepohualtzintzin button: Mayan abacus</p></li>
+<li><p>Hexadecimal button: hexadecimal abacus</p></li>
+<li><p>Binary button: binary abacus</p></li>
+<li><p>Schety button: Russian abacus</p></li>
+<li><p>Fraction button: fraction abacus</p></li>
+<li><p>Caacupe button: fraction abacus with +/–</p></li>
+<li><p>rod button: Cuisenaire-like abacus</p></li>
+<li><p>custom button: your custom abacus</p></li>
+</ul>
+<img alt="_images/Abacus-ex18.png" src="_images/Abacus-ex18.png" />
+<p>From left to right:</p>
+<ul class="simple">
+<li><p>rods: select the number of rods:</p></li>
+<li><p>top beads: select the number of beads on the top of the frame</p></li>
+<li><p>bottom: select the number of beads on the bottom of the frame</p></li>
+<li><p>factor: select the multiplication factor of top beads (e.g., on the Chinese abacus, each top bead counts as 5× the value of a bottom bead on the same rod)</p></li>
+<li><p>base: select the base to determine the value of bottom beads across rods; this is 10 on most conventional abacuses, but 20 on the Mayan abacus, 16 on the hexadecimal abacus, and 2 on the binary abacus.</p></li>
+<li><p>create: you must push this button to activate the selections you’ve made</p></li>
+</ul>
+</section>
+<section id="gallery-of-abaci">
+<h3>Gallery of abaci<a class="headerlink" href="#gallery-of-abaci" title="Link to this heading">¶</a></h3>
+<img alt="_images/Abacus-ex19.png" src="_images/Abacus-ex19.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>suanpan (Chinese)</p></li>
+<li><p>soropan (Japanese)</p></li>
+<li><p>schety (Russian)</p></li>
+<li><p>nepohualtzintzin (Mayan)</p></li>
+</ul>
+<img alt="_images/Abacus-ex20.png" src="_images/Abacus-ex20.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>binary (base 2)</p></li>
+<li><p>hexadecimal (base 16)</p></li>
+<li><p>fractions (1/2, 1/3, 1/4,…)</p></li>
+</ul>
+<img alt="_images/Abacus-ex21.png" src="_images/Abacus-ex21.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>Caacupe (fractions with +/–)</p></li>
+<li><p>decimal (base 10)</p></li>
+<li><p>Cuisenaire-style rods (fractions)</p></li>
+<li><p>custom, as shown: octal (base 8)</p></li>
+</ul>
+</section>
+</section>
+<section id="learning-with-abacus">
+<h2>Learning with Abacus<a class="headerlink" href="#learning-with-abacus" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="abacus_worksheet.html#abacus-worksheet"><span class="std std-ref">Some lesson plans</span></a> for using Abacus are found here.</p></li>
+<li><p>Using beads or pebbles, you can make an abacus. What is the difference between the abacus on the computer and a physical abacus?</p></li>
+<li><p>It is possible to create a custom abacus. I often use the example of <a class="reference external" href="https://en.wikipedia.org/wiki/Babylonian_mathematics#Sumerian_mathematics_.283000_.E2.80.94_2300_BC.29">Sumerian mathematics</a>: the Sumerians counted on the digital bones (phalanges) of their fingers, so the base of their counting system was 12. All of the 12s (and 60s) we have in our mathemateics, e.g., 12 hours, 60 seconds, etc. have their roots in Sumerian math. But the Sumerians never invented an abacus. What would a Sumerian abacus look like?</p></li>
+</ul>
+</section>
+<section id="extending-abacus">
+<h2>Extending Abacus<a class="headerlink" href="#extending-abacus" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>A fun project is to compare calculations using Abacus with the Calculate Activity. Which is faster? Which is more accurate? Which is better for estimating? Which is better for comparing?</p></li>
+<li><p>Abacus supports paste, so you can take numeric values from other programs and paste them into the abacus to see what their representations are; for example, I often paste numbers into the hexadecimal abacus as a quick way of converting decimal to hexidecimal.</p></li>
+<li><p>Abacus also supports copy, so you can take a sum calculated on an abacus and export it into SimpleGraph or some other data-visualization Activities.</p></li>
+<li><p>A fun collaborative mode might be to have a number randomly selected and each sharer work independently to post it on the abacus of their choice first. There could be a tally of beads awarded for each correct answer.</p></li>
+</ul>
+</section>
+<section id="reporting-problems">
+<h2>Reporting Problems<a class="headerlink" href="#reporting-problems" title="Link to this heading">¶</a></h2>
+<p>If you discover a bug in the program or have a suggestion for an enhancement, please <a class="reference external" href="https://bugs.sugarlabs.org/newticket?component=Abacus">file a ticket</a> in our bug-tracking system.</p>
+<p>You can <a class="reference external" href="https://bugs.sugarlabs.org/query?status=accepted&amp;status=assigned&amp;status=new&amp;status=reopened&amp;component=Abacus">view the open tickets here.</a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Abacus</a><ul>
+<li><a class="reference internal" href="#about">About</a></li>
+<li><a class="reference internal" href="#using-abacus">Using Abacus</a><ul>
+<li><a class="reference internal" href="#clearing-the-abacus">Clearing the abacus</a></li>
+<li><a class="reference internal" href="#reading-the-abacus">Reading the abacus</a></li>
+<li><a class="reference internal" href="#addition">Addition</a></li>
+<li><a class="reference internal" href="#subtraction">Subtraction</a></li>
+<li><a class="reference internal" href="#multiplication">Multiplication</a></li>
+<li><a class="reference internal" href="#division">Division</a></li>
+<li><a class="reference internal" href="#fractions">Fractions</a></li>
+<li><a class="reference internal" href="#the-toolbars">The toolbars</a></li>
+<li><a class="reference internal" href="#gallery-of-abaci">Gallery of abaci</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#learning-with-abacus">Learning with Abacus</a></li>
+<li><a class="reference internal" href="#extending-abacus">Extending Abacus</a></li>
+<li><a class="reference internal" href="#reporting-problems">Reporting Problems</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="aeiou.html" title="AEIOU"
+             >next</a></li>
+        <li class="right" >
+          <a href="exiting_activities.html" title="Exiting Activities"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Abacus</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Dimensions &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Distance" href="distance.html" />
+    <link rel="prev" title="Develop" href="develop.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="distance.html" title="Distance"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="develop.html" title="Develop"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Dimensions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="dimensions">
+<span id="id1"></span><h1>Dimensions<a class="headerlink" href="#dimensions" title="Link to this heading">¶</a></h1>
+<section id="about">
+<h2>About<a class="headerlink" href="#about" title="Link to this heading">¶</a></h2>
+<p>Dimensions (previously known as Visual Match) is a pattern-matching game written for Sugar; it is included as part of the Honey collection of Sugar add-ons. The object of the game is to find sets of three cards where each attribute—color, shape, number of elements, and shading—either match on all three cards or are different on all three cards.</p>
+<p>Prime Dimensions is the number variant of Dimensions, where instead of shape, three prime numbers, 5, 7, and 11, are used. Texture is replaced by representation, e.g. Arabic numerals, Roman numerals, Mayan numerals, etc.</p>
+<p>Word Dimensions is the word variant of Dimensions, where instead of shape, three word categories are used: animal, food, celestial body. Texture is replaced by font attribute: bold, italic, normal.</p>
+<p>Visual Match is deprecated.</p>
+<a class="reference internal image-reference" href="_images/Dimensions-img1.png"><img alt="_images/Dimensions-img1.png" src="_images/Dimensions-img1.png" style="width: 300px;" />
+</a>
+<a class="reference internal image-reference" href="_images/Dimensions-img2.png"><img alt="_images/Dimensions-img2.png" src="_images/Dimensions-img2.png" style="width: 300px;" />
+</a>
+<a class="reference internal image-reference" href="_images/Dimensions-img3.png"><img alt="_images/Dimensions-img3.png" src="_images/Dimensions-img3.png" style="width: 300px;" />
+</a>
+</section>
+<section id="where-to-get-dimensions">
+<h2>Where to get Dimensions<a class="headerlink" href="#where-to-get-dimensions" title="Link to this heading">¶</a></h2>
+<p>Dimensions activity is available for download from the <a class="reference external" href="http://activities.sugarlabs.org">Sugar Activity Library</a>:
+<a class="reference external" href="http://activities.sugarlabs.org/en-US/sugar/addon/4673">Dimensions</a></p>
+<p>The source code is available on <a class="reference external" href="https://github.com/sugarlabs/dimensions">GitHub</a>.</p>
+</section>
+<section id="using-dimensions">
+<h2>Using Dimensions<a class="headerlink" href="#using-dimensions" title="Link to this heading">¶</a></h2>
+<section id="the-basics">
+<h3>The Basics<a class="headerlink" href="#the-basics" title="Link to this heading">¶</a></h3>
+<p>Play by clicking on three cards to make a match.</p>
+<ol class="arabic simple">
+<li><p>As you click, the cards will move to the match area on the left side of the screen. (You can also drag the cards to the match area.)</p></li>
+<li><p>Once three cards are in the match area, a validation test is run:</p></li>
+</ol>
+<ul class="simple">
+<li><p>If the cards make a <a class="reference external" href="#examples-of-valid-matches">valid match</a>, a smiley face will appear.</p></li>
+<li><p>If they are an <a class="reference external" href="#examples-of-invalid-matches">invalid match</a>, a frowny face will appear, which details as to why the cards do not match. Clicking on the smiley face will result in the match being removed and new cards dealt from the deck. Clicking on the frowny face will remove the last card in the match area back to the right side of the screen.</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>Once the game is over, the screen will fill with smiley faces.</p></li>
+</ol>
+<p><a class="reference external" href="http://www.dailymotion.com/video/xbuw5j_visual-match">Video of basic game play</a></p>
+<p>Note: When Dimensions first starts up, it shows a simple animation of game play. Click on the screen to interrupt the animation and begin play.</p>
+</section>
+<section id="more-details">
+<h3>More Details<a class="headerlink" href="#more-details" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Cards have four different attributes: color, shape, fill texture, and number of elements.</p></li>
+</ul>
+<p>The number version works with prime factors instead of shapes and textures.
+The word version works with semantic groupings.</p>
+<ul class="simple">
+<li><p>Matches must be valid across all four attributes. Examples of <a class="reference external" href="#examples-of-valid-matches">valid</a> and <a class="reference external" href="#examples-of-invalid-matches">invalid</a> matches are shown below.</p></li>
+</ul>
+<p>A valid match is defined by cards where each attribute is either the same on each card or different on each card, e.g, all three red cards or one red, one green, and one blue card.
+An invalid match is when two cards share and attribute and the third card does not, e.g., one red and two green cards.</p>
+<ul class="simple">
+<li><p>At the end of the game, all of the matches are displayed in a simple animation.</p></li>
+<li><p>Also, the game state is saved to the Journal and restored upon resume.</p></li>
+<li><p>A simple cooperative sharing model is supported.</p></li>
+</ul>
+<p>Everyone works cooperatively to find matches.
+Only the initiator of the shared session can start new games, change game type or level.</p>
+</section>
+<section id="examples-of-valid-matches">
+<h3>Examples of valid matches<a class="headerlink" href="#examples-of-valid-matches" title="Link to this heading">¶</a></h3>
+<img alt="_images/Dimensions-img4.png" src="_images/Dimensions-img4.png" />
+<p>Rows from top to bottom</p>
+<ul class="simple">
+<li><p>The colors, shapes, and shade match; numbers are different.</p></li>
+<li><p>The numbers match; colors, shapes and shade are different.</p></li>
+<li><p>Everything is different.</p></li>
+</ul>
+</section>
+<section id="examples-of-invalid-matches">
+<h3>Examples of invalid matches<a class="headerlink" href="#examples-of-invalid-matches" title="Link to this heading">¶</a></h3>
+<img alt="_images/Dimensions-img5.png" src="_images/Dimensions-img5.png" />
+<p>Rows from top to bottom</p>
+<ul class="simple">
+<li><p>two of the same colors (red)</p></li>
+<li><p>two of the same shape (X)</p></li>
+<li><p>two of the same shade (solid)</p></li>
+<li><p>two of the same number (2)</p></li>
+</ul>
+</section>
+<section id="additional-features">
+<h3>Additional Features<a class="headerlink" href="#additional-features" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Dimensions includes a computer (robot) assistant: The robot will help you find matches.</p></li>
+</ul>
+<p>It operates on a timer—finding matches after an adjustable number of seconds.
+The robot is enabled/disabled by clicking on the button the the Tool menu.
+You can also use the robot as a computer opponent. Decreasing the time between moves increases the challenge.</p>
+<ul class="simple">
+<li><p>Dimensions includes Beginner, Intermediate, and Expert Modes.</p></li>
+</ul>
+<p>In Beginner Mode, there are only 9 (32) cards and only two card characteristics,
+In Intermediate mode, there are 27 (33) cards and three card characteristics.
+In Expert Mode, there are 81 (34) cards and four card characteristics.</p>
+<ul class="simple">
+<li><p>Dimensions includes number-search and word-search games in addition to the pattern-search game.</p></li>
+</ul>
+<p>There is an edit mode so that customized word lists can be used in the Word Game (and shared over the network).
+Also, you can load custom cards from the Journal.</p>
+<ul class="simple">
+<li><p>The grid layout is arbitrary; there is no need to pick in rows or columns, or one from each column.</p></li>
+<li><p>The blank cards on the left are a place to display the most recent match; they can be otherwise ignored.</p></li>
+<li><p>A count of number of matches found is shown in the toolbar; when the robot assistant is helping, the count is displayed as two numbers, where the number of matches found by the robot is in parentheses, e.g., 3(2) would indicate that the robot found 2 matches out of a total of 5 (3+2) found so far.</p></li>
+<li><p>Dimensions keeps track of your best times (one for Beginner Mode and one for Expert Mode). These times are displayed next to the level-mode buttons on the Tools Toolbar.</p></li>
+</ul>
+<p>As you improve, Dimensions will automatically advance you to a more difficult level of play.</p>
+<ul class="simple">
+<li><p>You can select cards using the keyboard:</p></li>
+</ul>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Top Row</p></td>
+<td><p>1, 2, 3</p></td>
+</tr>
+<tr class="row-even"><td><p>Second Row</p></td>
+<td><p>q, w, e</p></td>
+</tr>
+<tr class="row-odd"><td><p>Third Row</p></td>
+<td><p>a, s, d</p></td>
+</tr>
+<tr class="row-even"><td><p>Fourth Row</p></td>
+<td><p>z, x, c</p></td>
+</tr>
+<tr class="row-odd"><td><p>Extra (bottom) Row</p></td>
+<td><p>8, 9, 0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Watch out, because Dimensions can be very addictive.</p>
+</section>
+<section id="other-modes-of-play">
+<h3>Other modes of play<a class="headerlink" href="#other-modes-of-play" title="Link to this heading">¶</a></h3>
+<p>Number Game</p>
+<img alt="_images/Dimensions-img6.png" src="_images/Dimensions-img6.png" />
+<p>Everything is different: colors, prime factors, and representations.</p>
+<p>Word Game</p>
+<img alt="_images/Dimensions-img7.png" src="_images/Dimensions-img7.png" />
+<p>The words are from different semantic groups; the colors are different; the font style (bold) matches.</p>
+<p>When there is no match</p>
+<img alt="_images/Dimensions-img8.png" src="_images/Dimensions-img8.png" />
+<p>On occasion, there is no match among the 12 cards on the grid. If there is no match, three additional cards are dealt along the bottom row as illustrated in the figure above.</p>
+</section>
+<section id="gallery">
+<h3>Gallery<a class="headerlink" href="#gallery" title="Link to this heading">¶</a></h3>
+<img alt="_images/Dimensions-img9.png" src="_images/Dimensions-img9.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>Basic play: two dimensions: number and color</p></li>
+<li><p>Intermediate play: three dimensions: number, color, and shape</p></li>
+<li><p>Advanced play: four dimensions: number, color, shape, and texture</p></li>
+<li><p>Numbers don’t match</p></li>
+</ul>
+<img alt="_images/Dimensions-img10.png" src="_images/Dimensions-img10.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>Colors don’t match</p></li>
+<li><p>Shapes don’t match</p></li>
+<li><p>Textures don’t match</p></li>
+</ul>
+<img alt="_images/Dimensions-img11.png" src="_images/Dimensions-img11.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>Prime factors (1,2,3,5,7 and 11) are used to determine matches</p></li>
+<li><p>Roman numerals and dots in a circle</p></li>
+<li><p>Hashes and products</p></li>
+<li><p>Mayan</p></li>
+</ul>
+<img alt="_images/Dimensions-img12.png" src="_images/Dimensions-img12.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>semantic word groups (animal, food, celestial objects) are used to determine matches</p></li>
+<li><p>Editing the word list</p></li>
+<li><p>Loading custom cards from the Journal</p></li>
+</ul>
+<img alt="_images/Dimensions-img13.png" src="_images/Dimensions-img13.png" />
+<p>From left to right,</p>
+<ul class="simple">
+<li><p>Custom cards loaded from the Journal</p></li>
+<li><p>Playing with cards loaded from the Journal</p></li>
+<li><p>the source code</p></li>
+<li><p>Scores can be copied to the clipboard and then plotted by SimpleGraph.</p></li>
+</ul>
+</section>
+</section>
+<section id="learning-with-dimensions">
+<h2>Learning with Dimensions<a class="headerlink" href="#learning-with-dimensions" title="Link to this heading">¶</a></h2>
+<p>At a basic level, Dimensions can be used to enhance the observational skills of young learners; they are repeatedly asked: what is the same? what is different? At a deeper level, the concepts of multidimensional sets can be explored.</p>
+<p>The numbers games can be used to explore different arithmetic representations.</p>
+</section>
+<section id="extending-dimensions">
+<h2>Extending Dimensions<a class="headerlink" href="#extending-dimensions" title="Link to this heading">¶</a></h2>
+<section id="exploring-the-math">
+<h3>Exploring the math<a class="headerlink" href="#exploring-the-math" title="Link to this heading">¶</a></h3>
+<p>The combinatoric math behind Dimensions may be of interest to some learners: See <a class="reference external" href="http://en.wikipedia.org/wiki/Set_%28game%29#Basic_Combinatorics_of_Set">this</a> for an explanation.</p>
+</section>
+<section id="creating-a-custom-game">
+<h3>Creating a custom game<a class="headerlink" href="#creating-a-custom-game" title="Link to this heading">¶</a></h3>
+<p>You can create your own set of cards for Dimensions. Use your favorite program for creating images (Paint, Turtle Art, Record, etc.) to make sets of cards. You need to create at least 9 cards in order to play at the beginner level (3 cards each along 2 dimensions). You can also make a collection of 27 cards (3 cards each along 3 dimensions) or 81 cards (3 cards each along 4 dimensions). The cards must all have the same name in the journal with the exception of a number, beginning with 1 and incrementing by 1, e.g., card.1.png, card.2.png, … card.9.png. Any image format supported by Sugar should work and you do not have to include the image-type suffix in the title, e.g., card.1, card.2, … card.9 will also work. Just be sure that the order corresponds to the serialization of your multidimensional space, e.g.:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>card name</p></th>
+<th class="head"><p>dimension 1</p></th>
+<th class="head"><p>dimension 2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>my-card.1</p></td>
+<td><p>one</p></td>
+<td><p>red</p></td>
+</tr>
+<tr class="row-odd"><td><p>my-card.2</p></td>
+<td><p>two</p></td>
+<td><p>red</p></td>
+</tr>
+<tr class="row-even"><td><p>my-card.3</p></td>
+<td><p>three</p></td>
+<td><p>red</p></td>
+</tr>
+<tr class="row-odd"><td><p>my-card.4</p></td>
+<td><p>one</p></td>
+<td><p>green</p></td>
+</tr>
+<tr class="row-even"><td><p>my-card.5</p></td>
+<td><p>two</p></td>
+<td><p>green</p></td>
+</tr>
+<tr class="row-odd"><td><p>my-card.6</p></td>
+<td><p>three</p></td>
+<td><p>green</p></td>
+</tr>
+<tr class="row-even"><td><p>my-card.7</p></td>
+<td><p>one</p></td>
+<td><p>blue</p></td>
+</tr>
+<tr class="row-odd"><td><p>my-card.8</p></td>
+<td><p>two</p></td>
+<td><p>blue</p></td>
+</tr>
+<tr class="row-even"><td><p>my-card.9</p></td>
+<td><p>three</p></td>
+<td><p>blue</p></td>
+</tr>
+</tbody>
+</table>
+<p>You load a set of custom cards from the Journal by clicking on the ‘import image’ icon <img alt="imp_img" src="_images/Dimensions-img15-icon.png" /> and selecting any one image of your set. The rest will be loaded automatically.</p>
+<img alt="_images/Dimensions-img14.png" src="_images/Dimensions-img14.png" />
+<p>The above cards were generated in <a class="reference internal" href="turtleart.html#turtleart"><span class="std std-ref">Turtle Art</span></a>.  The sample code is supplied with Turtle Art: set.ta, the code generates a deck of cards and saves them as SVG to the Journal.</p>
+</section>
+</section>
+<section id="where-to-report-problems">
+<h2>Where to report problems<a class="headerlink" href="#where-to-report-problems" title="Link to this heading">¶</a></h2>
+<p>Please report bugs and make feature requests at <a class="reference external" href="https://github.com/sugarlabs/dimensions/issues">dimensions/issues</a>.</p>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Link to this heading">¶</a></h2>
+<p>Dimensions was written by <a class="reference external" href="http://wiki.sugarlabs.org/go/User:Walter">Walter Bender</a> and the students from his 2009-2010 freshman seminar at MIT: Games, Puzzles, and Other Things to Think With. Special thanks to Michele Pratusevich and Vincent Le, as well as Mark Battley.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Dimensions</a><ul>
+<li><a class="reference internal" href="#about">About</a></li>
+<li><a class="reference internal" href="#where-to-get-dimensions">Where to get Dimensions</a></li>
+<li><a class="reference internal" href="#using-dimensions">Using Dimensions</a><ul>
+<li><a class="reference internal" href="#the-basics">The Basics</a></li>
+<li><a class="reference internal" href="#more-details">More Details</a></li>
+<li><a class="reference internal" href="#examples-of-valid-matches">Examples of valid matches</a></li>
+<li><a class="reference internal" href="#examples-of-invalid-matches">Examples of invalid matches</a></li>
+<li><a class="reference internal" href="#additional-features">Additional Features</a></li>
+<li><a class="reference internal" href="#other-modes-of-play">Other modes of play</a></li>
+<li><a class="reference internal" href="#gallery">Gallery</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#learning-with-dimensions">Learning with Dimensions</a></li>
+<li><a class="reference internal" href="#extending-dimensions">Extending Dimensions</a><ul>
+<li><a class="reference internal" href="#exploring-the-math">Exploring the math</a></li>
+<li><a class="reference internal" href="#creating-a-custom-game">Creating a custom game</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#where-to-report-problems">Where to report problems</a></li>
+<li><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="distance.html" title="Distance"
+             >next</a></li>
+        <li class="right" >
+          <a href="develop.html" title="Develop"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Dimensions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

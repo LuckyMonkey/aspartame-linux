@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Sugar Fundamentals &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="How Sugar Works" href="sugar_architecture.html" />
+    <link rel="prev" title="Sugar Features" href="sugar_features.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="sugar_architecture.html" title="How Sugar Works"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="sugar_features.html" title="Sugar Features"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Sugar Fundamentals</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sugar-fundamentals">
+<h1>Sugar Fundamentals<a class="headerlink" href="#sugar-fundamentals" title="Link to this heading">¶</a></h1>
+<p>Sugar is a learning environment, not a traditional desktop. It is designed
+around curiosity, making things, sharing ideas, and reflecting on what you
+have done. The central idea is simple: <strong>Activities are things you do; the
+Journal remembers what you did.</strong></p>
+<section id="the-learning-cycle">
+<h2>The learning cycle<a class="headerlink" href="#the-learning-cycle" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Choose</strong> an Activity from Home.</p></li>
+<li><p><strong>Make</strong> something, alone or with other people.</p></li>
+<li><p><strong>Share</strong> the Activity when collaboration is useful.</p></li>
+<li><p><strong>Reflect</strong> in the Journal, then continue or begin something new.</p></li>
+</ol>
+<p>There are no required folders, double-clicks, or save dialogs. Sugar still
+uses ordinary files underneath, but presents them as meaningful objects and
+records the Activity that created them.</p>
+</section>
+<section id="the-four-main-views">
+<h2>The four main views<a class="headerlink" href="#the-four-main-views" title="Link to this heading">¶</a></h2>
+<p>Sugar uses a zooming interface. Each view fills the screen and has one job:</p>
+<ul class="simple">
+<li><p><strong>Home</strong> is your personal starting point. The ring or list contains
+Activities, search finds an Activity by name, and the user icon opens your
+personal menu.</p></li>
+<li><p><strong>Neighborhood</strong> shows nearby wireless networks and people. A network icon
+represents a connection; a person icon represents a learner who may invite
+you to collaborate.</p></li>
+<li><p><strong>Group</strong> shows the people in your current group and shared work.</p></li>
+<li><p><strong>Activity</strong> is where you create, explore, read, write, draw, calculate, or
+program.</p></li>
+</ul>
+<p>Use the Home, Neighborhood, and Group keys, or reveal the Frame, to move
+between views. Returning Home normally leaves an Activity ready to resume.</p>
+</section>
+<section id="the-frame-and-top-bar">
+<h2>The Frame and top bar<a class="headerlink" href="#the-frame-and-top-bar" title="Link to this heading">¶</a></h2>
+<p>Move the pointer to an edge of the screen, or press the Frame key, to reveal
+the Frame. It contains status indicators, notifications, the clipboard, open
+Activities, friends, and collaborators. Activity controls belong in the
+Activity toolbar; global controls belong in the Frame. The <strong>Stop</strong> control in
+the upper-right closes the current Activity instance. Sugar usually saves
+continuously before stopping.</p>
+</section>
+<section id="activities-bundles-and-instances">
+<h2>Activities, bundles, and instances<a class="headerlink" href="#activities-bundles-and-instances" title="Link to this heading">¶</a></h2>
+<p>An Activity is more than a program window. Its bundle contains an identity
+(<cite>activity.info</cite>, name, icon, and version), code and resources, Journal
+integration, and optional collaboration support. Launching an Activity creates
+an <strong>instance</strong>. Two instances of one Activity can have different Journal
+entries and collaborators, so opening Write again can start a new document.</p>
+</section>
+<section id="the-journal-sugar-s-memory">
+<h2>The Journal: Sugar’s memory<a class="headerlink" href="#the-journal-sugar-s-memory" title="Link to this heading">¶</a></h2>
+<p>The Journal is both a history and a workspace. It records objects created by
+Activities and events such as downloads, recordings, and shared work. Entries
+may include a title, description, tags, preview, timestamp, and creator.</p>
+<p>Use the Journal to search by title, text, tag, or Activity; sort by date or
+type; resume an entry in its original Activity; and copy important work to
+removable media. <strong>Erase</strong> is different from stopping an Activity and may
+remove the saved object. Saving is normally automatic; an Activity’s export
+button creates an additional copy for another computer.</p>
+</section>
+<section id="sharing-and-collaboration">
+<h2>Sharing and collaboration<a class="headerlink" href="#sharing-and-collaboration" title="Link to this heading">¶</a></h2>
+<p>An Activity may be private, shared with a group, or joined by invitation.
+Sharing exposes the Activity session and the objects that Activity chooses to
+share, not every file on the computer. Check the Activity toolbar and Group
+view before sharing. If the network disappears, continue privately and save to
+the Journal; local work should remain available.</p>
+</section>
+<section id="learning-through-source-and-reuse">
+<h2>Learning through source and reuse<a class="headerlink" href="#learning-through-source-and-reuse" title="Link to this heading">¶</a></h2>
+<p>Many Activities offer <strong>View Source</strong>, which opens the code or document that
+produced what you see. <strong>Duplicate</strong> makes a personal copy for experiments.
+Try this learning loop: run an Activity, inspect its source, duplicate it,
+change one small thing, compare the result, and keep the experiment in the
+Journal. Sugar is designed so learners can eventually modify their tools.</p>
+</section>
+<section id="controls-and-keyboard-habits">
+<h2>Controls and keyboard habits<a class="headerlink" href="#controls-and-keyboard-habits" title="Link to this heading">¶</a></h2>
+<p>Large icons, color, and shape make controls recognizable without reading every
+label. Hover for a tooltip. Common habits are: reveal the Frame; use Home to
+return to Home; use arrows and Enter in lists; use Escape to dismiss a palette
+or dialog; and use Stop to finish an Activity instead of killing its process.
+Exact keys vary by hardware and Activity; the current toolbar is authoritative.</p>
+</section>
+<section id="privacy-permissions-and-maintenance">
+<h2>Privacy, permissions, and maintenance<a class="headerlink" href="#privacy-permissions-and-maintenance" title="Link to this heading">¶</a></h2>
+<p>Activities run with the permissions needed for their purpose, not as a general
+administrator. Installing or removing an Activity may require an approval
+prompt. Read the request, type its confirmation word exactly, or choose
+<strong>Cancel</strong>. Do not erase Journal entries, system Activities, or profile data
+just to fix a visual problem. Preserve important work before maintenance.</p>
+</section>
+<section id="when-something-goes-wrong">
+<h2>When something goes wrong<a class="headerlink" href="#when-something-goes-wrong" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Wait briefly; an Activity may be loading or saving.</p></li>
+<li><p>Open the Frame and check whether it is still running.</p></li>
+<li><p>Stop and resume it from its Journal entry.</p></li>
+<li><p>Check the network icon before diagnosing collaboration.</p></li>
+<li><p>Use Log Activity and record the Activity name, action, time, and error.</p></li>
+</ol>
+<p>Do not repeatedly delete Journal data to cure a crash. Record the error first
+so a teacher, maintainer, or administrator can repair the bundle while keeping
+evidence.</p>
+</section>
+<section id="for-parents-teachers-and-mentors">
+<h2>For parents, teachers, and mentors<a class="headerlink" href="#for-parents-teachers-and-mentors" title="Link to this heading">¶</a></h2>
+<p>The most useful help is a question, not a takeover: “What were you trying to
+make?” and “What do you notice?” Encourage learners to share, explain, and
+iterate. A Journal entry records a learning process, not only a final answer.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="sugar_ui.html"><span class="doc">The Sugar User Interface</span></a> — the zooming interface and design principles.</p></li>
+<li><p><a class="reference internal" href="home_view.html"><span class="doc">Home View</span></a> — finding and organizing Activities.</p></li>
+<li><p><a class="reference internal" href="journal.html"><span class="doc">Journal</span></a> — searching, resuming, and protecting your work.</p></li>
+<li><p><a class="reference internal" href="collaborating.html"><span class="doc">Collaborating</span></a> — sharing with friends and groups.</p></li>
+<li><p><a class="reference internal" href="exiting_activities.html"><span class="doc">Exiting Activities</span></a> — stopping an Activity safely.</p></li>
+<li><p><a class="reference internal" href="glossary.html"><span class="doc">Glossary</span></a> — definitions of Sugar terms.</p></li>
+</ul>
+</section>
+<section id="where-to-go-next">
+<h2>Where to go next<a class="headerlink" href="#where-to-go-next" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="sugar_architecture.html"><span class="doc">How Sugar Works</span></a> explains the shell, toolkit, datastore, and
+Activity lifecycle.</p></li>
+<li><p><a class="reference internal" href="sugar_accessibility.html"><span class="doc">Accessibility and comfort</span></a> explains readable screens, focus, speech, and
+inclusive collaboration.</p></li>
+<li><p><a class="reference internal" href="what_is_an_activity.html"><span class="doc">What is an Activity</span></a> introduces Activity bundles in more detail.</p></li>
+<li><p><a class="reference internal" href="launching_activities.html"><span class="doc">Launching Activities</span></a> covers practical launch and resume steps.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Sugar Fundamentals</a><ul>
+<li><a class="reference internal" href="#the-learning-cycle">The learning cycle</a></li>
+<li><a class="reference internal" href="#the-four-main-views">The four main views</a></li>
+<li><a class="reference internal" href="#the-frame-and-top-bar">The Frame and top bar</a></li>
+<li><a class="reference internal" href="#activities-bundles-and-instances">Activities, bundles, and instances</a></li>
+<li><a class="reference internal" href="#the-journal-sugar-s-memory">The Journal: Sugar’s memory</a></li>
+<li><a class="reference internal" href="#sharing-and-collaboration">Sharing and collaboration</a></li>
+<li><a class="reference internal" href="#learning-through-source-and-reuse">Learning through source and reuse</a></li>
+<li><a class="reference internal" href="#controls-and-keyboard-habits">Controls and keyboard habits</a></li>
+<li><a class="reference internal" href="#privacy-permissions-and-maintenance">Privacy, permissions, and maintenance</a></li>
+<li><a class="reference internal" href="#when-something-goes-wrong">When something goes wrong</a></li>
+<li><a class="reference internal" href="#for-parents-teachers-and-mentors">For parents, teachers, and mentors</a></li>
+<li><a class="reference internal" href="#further-reading">Further reading</a></li>
+<li><a class="reference internal" href="#where-to-go-next">Where to go next</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="sugar_architecture.html" title="How Sugar Works"
+             >next</a></li>
+        <li class="right" >
+          <a href="sugar_features.html" title="Sugar Features"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Sugar Fundamentals</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

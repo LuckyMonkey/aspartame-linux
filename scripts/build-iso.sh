@@ -31,6 +31,13 @@ project_root=$(CDPATH= cd -- "$(dirname "$PROFILE")/.." && pwd)
 mkdir -p "$profile_stage"
 cp -a "$PROFILE/." "$profile_stage/"
 preview_root="$profile_stage/airootfs/usr/lib/aspartame"
+
+# The GTK3 reference Activities are checked in once, under
+# packages/upstream-activities; customize_airootfs.sh installs them from here.
+activity_stage="$profile_stage/airootfs/usr/share/aspartame/activities"
+mkdir -p "$activity_stage"
+tar -C "$project_root/packages/upstream-activities" --exclude=__pycache__ -cf - . |
+    tar -C "$activity_stage" -xf -
 mkdir -p "$preview_root"
 tar -xzf "$preview_archive" -C "$preview_root"
 test -x "$preview_root/gtk4-preview/venv/bin/python" || {

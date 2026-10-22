@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Info Slicer &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IRC" href="irc.html" />
+    <link rel="prev" title="Implode" href="implode.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="irc.html" title="IRC"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="implode.html" title="Implode"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Info Slicer</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="info-slicer">
+<span id="id1"></span><h1>Info Slicer<a class="headerlink" href="#info-slicer" title="Link to this heading">¶</a></h1>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/InfoSlicer.png"><img alt="InfoSlicer.png" src="_images/InfoSlicer.png" style="width: 55px;" />
+</a>
+</figure>
+<p><em>InfoSlicer is an open source tool to enable teachers to quickly and
+easily select web-based content to edit, package, and distribute as
+teaching materials.</em></p>
+<section id="info-slicer-an-overview">
+<h2>Info Slicer: an overview<a class="headerlink" href="#info-slicer-an-overview" title="Link to this heading">¶</a></h2>
+<p>InfoSlicer is a tool for aggregating content off of the Internet,
+rearranging and creating new content, and then publishing this content.
+The basic element of InfoSlicer is an article. This can correspond to
+anything: a page from Wikipedia; a news article; or a story downloaded
+from the WWW. Any content which can be displayed online could be
+represented as an article.</p>
+<p>The prototype version of InfoSlicer gives users the option of
+downloading articles from Wikipedia. There are a number of stages during
+which users can slice content from these articles into their own
+articles. They can format the article and insert images. Articles can
+then be arranged into themes. (A theme is a collection of articles all
+based around the same topic. For example, a theme entitled “Animals”
+could contain articles on “Lion”, “Tiger”, “Giraffe” etc.)</p>
+<p>Once the user has created their own content and arranged it into themes,
+they can publish this content as a Sugar library package (.xol file)
+which automatically gets picked up by the Browse activity on the same
+laptop and added to the off-line content available. The .xol file is
+also available in the Journal so that the user can copy it to a USB
+stick for sharing on other laptops or uploading to a server.</p>
+<p>The Sugar interface is the GUI originally designed for the
+One-Laptop-per-Child XO-1 laptop. Sugar is bundled with most major
+GNU/Linux distributions and hence it is possible to run Sugar on almost
+any computer. Sugar has a very distinct look and feel, and some specific
+interaction style guidelines. When the user is running the Sugar
+environment, publishing creates an entry in the sugar Journal, and adds
+a “Book” to the Browser application.</p>
+</section>
+<section id="where-to-get-info-slicer">
+<h2>Where to get Info Slicer<a class="headerlink" href="#where-to-get-info-slicer" title="Link to this heading">¶</a></h2>
+<p>Info Slicer activity is available for download from the <a class="reference external" href="http://activities.sugarlabs.org/en-US/sugar/">Sugar Activity Library</a>:
+<a class="reference external" href="http://activities.sugarlabs.org/sugar/addon/4042">Info Slicer</a></p>
+<p>The source code is available on <a class="reference external" href="https://github.com/sugarlabs/infoslicer">GitHub</a>.</p>
+</section>
+<section id="the-info-slicer-user-interface">
+<h2>The Info Slicer User Interface<a class="headerlink" href="#the-info-slicer-user-interface" title="Link to this heading">¶</a></h2>
+<p>All of the screenshots are based on the Giraffe Wikipedia article at
+<a class="reference external" href="http://en.wikipedia.org/wiki/Giraffe">http://en.wikipedia.org/wiki/Giraffe</a> in September 2008.</p>
+<p>The screenshots have not been updated for recent versions of InfoSlicer,
+such as InfoSlicer 8, and have more tabs. Use these screenshots as a
+guide only.</p>
+<section id="the-library-pane">
+<h3>The Library Pane<a class="headerlink" href="#the-library-pane" title="Link to this heading">¶</a></h3>
+<p>The Library pane deals with the creation, saving, loading and organising
+of articles.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/Infoslicer-library.png"><img alt="The library pane" src="_images/Infoslicer-library.png" style="width: 640px;" />
+</a>
+</figure>
+<p>The tree-view on the left hand side of the diagram shows the articles
+and themes. The article that is highlighted is the “Giraffe” article,
+which is in the “Animals” theme. There is a status bar at the bottom of
+the page.</p>
+<p>In the toolbar at the top of the page, there is a search dialog, which
+will download and save articles from Wikipedia into the currently
+selected theme.</p>
+<p>Users can drag articles from the tree on the left into the two main text
+boxes in the middle of the screen. The two text boxes represent a
+“source” article, from which content can be copied, and the user’s
+version of the article.</p>
+<p>The user selects which article is to be used as the source, and which
+article is to be edited. They would then proceed to the edit pane.</p>
+</section>
+<section id="the-edit-pane">
+<h3>The Edit Pane<a class="headerlink" href="#the-edit-pane" title="Link to this heading">¶</a></h3>
+<p>The edit pane is the first place the user would go after selecting
+articles in the library pane. It allows dragging and dropping from the
+source article into the destination article. There are various levels of
+selection snapping available to make the copying as simple as possible.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/Infoslicer-edit.png"><img alt="The Edit pane" src="_images/Infoslicer-edit.png" style="width: 640px;" />
+</a>
+</figure>
+<p>The source article is displayed on the left, and the user’s editing
+version is displayed on the right. The user can select text on the left
+but editing is disabled. There is a drop-down menu for users to select
+different source articles from the theme they are currently working in.</p>
+</section>
+<section id="the-format-pane">
+<h3>The Format Pane<a class="headerlink" href="#the-format-pane" title="Link to this heading">¶</a></h3>
+<p>The format pane only deals with the user’s working version. It gives
+them a standard formatting toolbar and they can apply formatting like
+they would in any regular text editor. Most of the formatting options
+are disabled in the prototype InfoSlicer tool.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/Infoslicer-format.png"><img alt="The Format pane" src="_images/Infoslicer-format.png" style="width: 640px;" />
+</a>
+</figure>
+</section>
+<section id="the-images-pane">
+<h3>The Images Pane<a class="headerlink" href="#the-images-pane" title="Link to this heading">¶</a></h3>
+<p>The images pane loads the images associated with an article. In the
+prototype tool, when articles are downloaded from Wikipedia, the
+associated images are also downloaded. The user is presented with a view
+very similar to the Edit pane, except instead of viewing the text of the
+source article, they see the images.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/Infoslicer-images.png"><img alt="The Images pane" src="_images/Infoslicer-images.png" style="width: 640px;" />
+</a>
+</figure>
+<p>Much like the Edit pane, there is a drop-down menu for users to change
+article to other articles in the current theme. Clicking and dragging an
+image from the left will allow users to insert the image and caption
+into their article. The example shows that an image of a giraffe has
+been inserted.</p>
+</section>
+<section id="the-publish-pane">
+<h3>The Publish Pane<a class="headerlink" href="#the-publish-pane" title="Link to this heading">¶</a></h3>
+<p>The Publish pane allows users to select articles within a theme to
+publish. Clicking the publish button will then perform the
+platform-specific publishing action, as detailed in the InfoSlicer
+overview.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/Infoslicer-publish.png"><img alt="The publish pane" src="_images/Infoslicer-publish.png" style="width: 640px;" />
+</a>
+</figure>
+</section>
+<section id="output">
+<h3>Output<a class="headerlink" href="#output" title="Link to this heading">¶</a></h3>
+<p>On the Sugar platform, publishing content results in a book being added
+to the browse application.</p>
+<p><img alt="The index in the Browse homepage" src="_images/Infoslicer-output.png" /></p>
+<p>Clicking on the book brings up the index web page. In a Windows or Linux
+environment, the user would double-click on the output file, which would
+open the same page below but in their default browser.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/Infoslicer-output1.png"><img alt="The output article" src="_images/Infoslicer-output1.png" style="width: 640px;" />
+</a>
+</figure>
+</section>
+</section>
+<section id="future-directions">
+<h2>Future directions<a class="headerlink" href="#future-directions" title="Link to this heading">¶</a></h2>
+<p>Here are some of the ideas we had for features that would make
+InfoSlicer better.</p>
+<section id="content-sources">
+<h3>Content sources<a class="headerlink" href="#content-sources" title="Link to this heading">¶</a></h3>
+<p>For testing purposes, we have been using MediaWiki-based websites as our
+primary data source. This has been useful because it reduces licencing
+issues and presents data in a uniform format. However, particularly in
+more developed countries, there are already established teaching
+resources websites which teachers would prefer to use as their primary
+data source. As such, the tool could be extended to take from these
+sources.</p>
+<p>Similarly, teachers already possess and distribute materials in other
+data formats such as PDF and Word documents. The tool could also be
+extended to process these data formats.</p>
+<p>If the generic HTML parser could be improved, it would be useful to
+provide browser integration whereby teachers could perform a 1-click
+download using a plug-in to their favourite browser. The plug-in would
+automatically process and store the data ready for off-line use in the
+application.</p>
+</section>
+<section id="adding-images-from-the-journal">
+<h3>Adding images from the Journal<a class="headerlink" href="#adding-images-from-the-journal" title="Link to this heading">¶</a></h3>
+<p>You can include any of the images in the downloaded Wikipedia pages in
+the articles you create. It would be handy to be able to pull in images
+from your own library (i.e. the Journal, in the Sugar environment).</p>
+</section>
+<section id="language">
+<h3>Language<a class="headerlink" href="#language" title="Link to this heading">¶</a></h3>
+<p>Given the variation in the number of articles available in the different
+language Wikipedia sites, providing automatic translation into the
+teacher’s language would greatly increase the range of data available.
+For example, the Afrikaans Wikipedia has around 10,000 articles, whereas
+the English Wikipedia has around 2,500,000 articles.</p>
+</section>
+<section id="thesaurus-and-spell-check">
+<h3>Thesaurus and spell-check<a class="headerlink" href="#thesaurus-and-spell-check" title="Link to this heading">¶</a></h3>
+<p>It would also be useful to incorporate a thesaurus to make it easier for
+teachers to substitute complex language with words more suited to the
+children’s level. Spell-checking is also an obvious inclusion that would
+be welcomed.</p>
+</section>
+<section id="content-distribution">
+<h3>Content distribution<a class="headerlink" href="#content-distribution" title="Link to this heading">¶</a></h3>
+<p>At the moment, the tool does not utilise the mesh networking available
+on the One Laptop Per Child laptops. This would be an easy and effective
+way of distributing the teachers’ content in a peer-to-peer fashion,
+without relying on other devices such as USB sticks, school servers, or
+web sites.</p>
+</section>
+<section id="collaboration">
+<h3>Collaboration<a class="headerlink" href="#collaboration" title="Link to this heading">¶</a></h3>
+<p>The application could be enhanced with the use of collaboration tools
+such as comment posting, in order to allow students to share their
+thoughts and views on the published material. This could also allow
+teachers to collaborate on content both on a local network and on the
+internet as a whole.</p>
+</section>
+<section id="deleting-files-when-no-longer-required-by-the-user">
+<h3>Deleting files when no longer required by the user<a class="headerlink" href="#deleting-files-when-no-longer-required-by-the-user" title="Link to this heading">¶</a></h3>
+<p>Deleting downloaded image files presents a problem, as they may be
+referenced by several user-generated articles. As such it is not
+feasible in the current implementation to remove images and guarantee
+link integrity. In future versions of the application, this could be
+solved by implementing more advanced data-tracking tools.</p>
+</section>
+<section id="attribution">
+<h3>Attribution<a class="headerlink" href="#attribution" title="Link to this heading">¶</a></h3>
+<p>Currently the article meta-model includes meta data about the source of
+the content that is used in an article, even as you cut-and-paste and
+chop and change. However, this attribution does not appear in the
+published articles. This would be an enhancement to the publishing part
+of the application, and could either be done as footnotes in the
+articles, or as a separate HTML page in the .xol, which would be
+distributed with the package and can be linked-to from the articles.</p>
+</section>
+<section id="interaction-with-the-library">
+<h3>Interaction with the Library<a class="headerlink" href="#interaction-with-the-library" title="Link to this heading">¶</a></h3>
+<p>The Library has no real precedent in the Sugar environment and feedback
+from users suggested that that part of the application would benefit
+from some re-design work to make it more intuitive.</p>
+</section>
+</section>
+<section id="where-to-report-problems">
+<h2>Where to report problems<a class="headerlink" href="#where-to-report-problems" title="Link to this heading">¶</a></h2>
+<p>Please report bugs and make feature requests at <a class="reference external" href="https://github.com/sugarlabs/infoslicer/issues">infoslicer/issues</a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Info Slicer</a><ul>
+<li><a class="reference internal" href="#info-slicer-an-overview">Info Slicer: an overview</a></li>
+<li><a class="reference internal" href="#where-to-get-info-slicer">Where to get Info Slicer</a></li>
+<li><a class="reference internal" href="#the-info-slicer-user-interface">The Info Slicer User Interface</a><ul>
+<li><a class="reference internal" href="#the-library-pane">The Library Pane</a></li>
+<li><a class="reference internal" href="#the-edit-pane">The Edit Pane</a></li>
+<li><a class="reference internal" href="#the-format-pane">The Format Pane</a></li>
+<li><a class="reference internal" href="#the-images-pane">The Images Pane</a></li>
+<li><a class="reference internal" href="#the-publish-pane">The Publish Pane</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#future-directions">Future directions</a><ul>
+<li><a class="reference internal" href="#content-sources">Content sources</a></li>
+<li><a class="reference internal" href="#adding-images-from-the-journal">Adding images from the Journal</a></li>
+<li><a class="reference internal" href="#language">Language</a></li>
+<li><a class="reference internal" href="#thesaurus-and-spell-check">Thesaurus and spell-check</a></li>
+<li><a class="reference internal" href="#content-distribution">Content distribution</a></li>
+<li><a class="reference internal" href="#collaboration">Collaboration</a></li>
+<li><a class="reference internal" href="#deleting-files-when-no-longer-required-by-the-user">Deleting files when no longer required by the user</a></li>
+<li><a class="reference internal" href="#attribution">Attribution</a></li>
+<li><a class="reference internal" href="#interaction-with-the-library">Interaction with the Library</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#where-to-report-problems">Where to report problems</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="irc.html" title="IRC"
+             >next</a></li>
+        <li class="right" >
+          <a href="implode.html" title="Implode"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Info Slicer</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>

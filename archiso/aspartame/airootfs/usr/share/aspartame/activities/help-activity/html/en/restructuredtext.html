@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Writing in reStructuredText &#8212; Sugar 0.118 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=96603389" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=def86cc0" />
+    <link rel="stylesheet" type="text/css" href="_static/sugar-dark.css?v=1fb4d541" />
+    
+    <script src="_static/documentation_options.js?v=7ab50005"></script>
+    <script src="_static/doctools.js?v=20d7b9fc"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/sugar-help.js?v=94ad2ad2"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Upgrade all your Software" href="upgrade_all.html" />
+    <link rel="prev" title="How to edit Help and contribute" href="how_to_help.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="upgrade_all.html" title="Upgrade all your Software"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="how_to_help.html" title="How to edit Help and contribute"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Writing in reStructuredText</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="writing-in-restructuredtext">
+<h1>Writing in reStructuredText<a class="headerlink" href="#writing-in-restructuredtext" title="Link to this heading">¶</a></h1>
+<p>This page is a short primer and cheat sheet for the markup language we are using in <a class="reference internal" href="how_to_help.html"><span class="doc">How to edit Help and contribute</span></a>. The rst format is easy to create and we are using a part of it only.</p>
+<section id="titles">
+<span id="my-reference-label"></span><h2>Titles<a class="headerlink" href="#titles" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">====================</span>
+<span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">main</span> <span class="n">title</span>
+<span class="o">====================</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">secondary</span> <span class="n">title</span>
+<span class="o">-------------------------</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="mi">3</span><span class="n">rd</span> <span class="n">level</span> <span class="n">title</span>
+<span class="p">:::::::::::::::::::::::::</span>
+</pre></div>
+</div>
+</section>
+<section id="links">
+<h2>Links<a class="headerlink" href="#links" title="Link to this heading">¶</a></h2>
+<p>Links like <a class="reference external" href="http://activities.sugarlabs.org">http://activities.sugarlabs.org</a> are automatically created.</p>
+<p>To create links where the text displayed in the page is different to the link you should do:</p>
+<p>You will find <a class="reference external" href="http://activities.sugarlabs.org">ASLO</a> here.</p>
+<p>Program writing software like <a class="reference external" href="http://www.python.org/">Python</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Links like http://activities.sugarlabs.org are automatically created.
+
+To create links where the text displayed in the page is different to the link you should do:
+
+You will find `ASLO &lt;http://activities.sugarlabs.org&gt;`_ here.
+
+Program writing software like Python_.
+
+.. _Python: http://www.python.org/
+</pre></div>
+</div>
+</section>
+<section id="links-within-help">
+<h2>Links within Help<a class="headerlink" href="#links-within-help" title="Link to this heading">¶</a></h2>
+<p>This link, <a class="reference internal" href="#my-reference-label"><span class="std std-ref">Titles</span></a> links to the top paragraph of this document.</p>
+<blockquote>
+<div><p>To see how this works, <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">_my-reference-label:</span></code> appears on line 7 of restructuredtext.rst.</p>
+</div></blockquote>
+<p>Secondly, this page contains more about terms and words used in sugar. <a class="reference internal" href="glossary.html"><span class="doc">Glossary</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>This link, :ref:`my-reference-label`, links to the top paragraph of this document.
+
+ To see how this works, ``.. _my-reference-label:`` appears on line 7 of restructuredtext.rst.
+
+Secondly, this page contains more about terms and words used in sugar. :doc:`/glossary`
+</pre></div>
+</div>
+</section>
+<section id="lists">
+<h2>Lists<a class="headerlink" href="#lists" title="Link to this heading">¶</a></h2>
+<p>Lists are simple</p>
+<ul class="simple">
+<li><p>First item</p></li>
+<li><p>Second item</p></li>
+<li><p>Last item</p></li>
+</ul>
+<p>or numbered:</p>
+<ol class="arabic simple">
+<li><p>One item</p></li>
+<li><p>Another item</p></li>
+<li><p>The last one</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Lists</span> <span class="n">are</span> <span class="n">simple</span>
+
+<span class="o">*</span> <span class="n">First</span> <span class="n">item</span>
+<span class="o">*</span> <span class="n">Second</span> <span class="n">item</span>
+<span class="o">*</span> <span class="n">Last</span> <span class="n">item</span>
+
+<span class="ow">or</span> <span class="n">numbered</span><span class="p">:</span>
+
+<span class="mf">1.</span> <span class="n">One</span> <span class="n">item</span>
+<span class="mf">2.</span> <span class="n">Another</span> <span class="n">item</span>
+<span class="mf">3.</span> <span class="n">The</span> <span class="n">last</span> <span class="n">one</span>
+</pre></div>
+</div>
+</section>
+<section id="simple-table">
+<h2>Simple table<a class="headerlink" href="#simple-table" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head" colspan="2"><p>Inputs</p></th>
+<th class="head"><p>Output</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>A or B</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>False</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>True</p></td>
+<td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><td><p>False</p></td>
+<td><p>True</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><td><p>True</p></td>
+<td><p>True</p></td>
+<td><p>True</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">=====</span>  <span class="o">=====</span>  <span class="o">======</span>
+   <span class="n">Inputs</span>     <span class="n">Output</span>
+<span class="o">------------</span>  <span class="o">------</span>
+  <span class="n">A</span>      <span class="n">B</span>    <span class="n">A</span> <span class="ow">or</span> <span class="n">B</span>
+<span class="o">=====</span>  <span class="o">=====</span>  <span class="o">======</span>
+<span class="kc">False</span>  <span class="kc">False</span>  <span class="kc">False</span>
+<span class="kc">True</span>   <span class="kc">False</span>  <span class="kc">True</span>
+<span class="kc">False</span>  <span class="kc">True</span>   <span class="kc">True</span>
+<span class="kc">True</span>   <span class="kc">True</span>   <span class="kc">True</span>
+<span class="o">=====</span>  <span class="o">=====</span>  <span class="o">======</span>
+</pre></div>
+</div>
+</section>
+<section id="images">
+<h2>Images<a class="headerlink" href="#images" title="Link to this heading">¶</a></h2>
+<p>An image can be included like this:</p>
+<img alt="_images/Help.png" src="_images/Help.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">image</span> <span class="p">::</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">Help</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+</section>
+<section id="icons-and-small-images">
+<h2>Icons and small images<a class="headerlink" href="#icons-and-small-images" title="Link to this heading">¶</a></h2>
+<p><img alt="Neighborhood_key" src="_images/Neighborhood_key_sml.png" /> This is the sharing option.</p>
+<p><img alt="Home_key_f3_small" src="_images/Home_key_f3_small.png" /> This is the Private option.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">|</span><span class="n">Neighborhood_key</span><span class="o">|</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">sharing</span> <span class="n">option</span><span class="o">.</span>
+
+<span class="o">..</span> <span class="o">|</span><span class="n">Neighborhood_key</span><span class="o">|</span> <span class="n">image</span><span class="p">::</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">Neighborhood_key_sml</span><span class="o">.</span><span class="n">png</span>
+
+<span class="o">|</span><span class="n">Home_key_f3_small</span><span class="o">|</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">Private</span> <span class="n">option</span><span class="o">.</span>
+
+<span class="o">..</span> <span class="o">|</span><span class="n">Home_key_f3_small</span><span class="o">|</span> <span class="n">image</span><span class="p">::</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">Home_key_f3_small</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-a-note">
+<h2>Adding a note<a class="headerlink" href="#adding-a-note" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When you are required to place the first readable character at point 3 or 4 in the line, it is recommended to check if you are required to insert spaces or Tab.</p>
+</div>
+<p>And also</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Notice that first readable character of this note is under the “s”, three spaces preceed it.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">Note</span><span class="p">::</span>
+
+   <span class="n">When</span> <span class="n">you</span> <span class="n">are</span> <span class="n">required</span> <span class="n">to</span> <span class="n">place</span> <span class="n">the</span> <span class="n">first</span> <span class="n">readable</span> <span class="n">character</span> <span class="n">at</span> <span class="n">point</span> <span class="mi">3</span> <span class="ow">or</span> <span class="mi">4</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">line</span><span class="p">,</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">recommended</span> <span class="n">to</span> <span class="n">check</span> <span class="k">if</span> <span class="n">you</span> <span class="n">are</span> <span class="n">required</span> <span class="n">to</span> <span class="n">insert</span> <span class="n">spaces</span> <span class="ow">or</span> <span class="n">Tab</span><span class="o">.</span>
+
+<span class="n">And</span> <span class="n">also</span>
+
+<span class="o">..</span> <span class="n">seealso</span><span class="p">::</span>
+
+   <span class="n">Notice</span> <span class="n">that</span> <span class="n">first</span> <span class="n">readable</span> <span class="n">character</span> <span class="n">of</span> <span class="n">this</span> <span class="n">note</span> <span class="ow">is</span> <span class="n">under</span> <span class="n">the</span> <span class="s2">"s"</span><span class="p">,</span> <span class="n">three</span> <span class="n">spaces</span> <span class="n">preceed</span> <span class="n">it</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><img alt="more" src="_images/more.png" /> There are links to <a class="reference internal" href="how_to_help.html#further-reading"><span class="std std-ref">Further reading</span></a> at the foot of the page <a class="reference internal" href="how_to_help.html"><span class="doc">How to edit Help and contribute</span></a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Writing in reStructuredText</a><ul>
+<li><a class="reference internal" href="#titles">Titles</a></li>
+<li><a class="reference internal" href="#links">Links</a></li>
+<li><a class="reference internal" href="#links-within-help">Links within Help</a></li>
+<li><a class="reference internal" href="#lists">Lists</a></li>
+<li><a class="reference internal" href="#simple-table">Simple table</a></li>
+<li><a class="reference internal" href="#images">Images</a></li>
+<li><a class="reference internal" href="#icons-and-small-images">Icons and small images</a></li>
+<li><a class="reference internal" href="#adding-a-note">Adding a note</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="upgrade_all.html" title="Upgrade all your Software"
+             >next</a></li>
+        <li class="right" >
+          <a href="how_to_help.html" title="How to edit Help and contribute"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Sugar 0.118 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Writing in reStructuredText</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021, SugarLabs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    </div>
+  </body>
+</html>
