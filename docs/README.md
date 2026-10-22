@@ -19,7 +19,7 @@ index is the map for engineers, testers, and curious learners.
 | Port an Activity | [Activity contract](ASPARTAME-ACTIVITY-CONTRACT.md), [Activity runbook](sugar-modernization/GTK4_ACTIVITY_RUNBOOK.md), [classification](sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md) |
 | Verify GTK4 parity | [Qualification deck](sugar-modernization/QUALIFICATION_DECK.md) (current workflow status), [component status](sugar-modernization/GTK4_STATUS.md), [debugging](sugar-modernization/GTK4_DEBUGGING.md) |
 | Find a known GTK4 defect | [Blockers](sugar-modernization/BLOCKERS.md), plus the open findings in the [qualification deck](sugar-modernization/QUALIFICATION_DECK.md) |
-| Learn the user-facing model | [Universal Help](UNIVERSAL-HELP.md), [Activity Help catalog](ACTIVITY-HELP-CATALOG.md), [Sugar current state](sugar-current-state.md) |
+| Learn the user-facing model | [Universal Help](UNIVERSAL-HELP.md), [Activity Help catalog](ACTIVITY-HELP-CATALOG.md) |
 
 ## Core doctrine:
 
@@ -86,7 +86,8 @@ capability contract works.
 ### Modernization:
 
 [GTK4 index](sugar-modernization/README.md) · [Status](sugar-modernization/GTK4_STATUS.md) ·
-[Component matrix](sugar-modernization/GTK4_COMPONENT_MATRIX.md) ·
+[Upstream sync](sugar-modernization/UPSTREAM_SYNC.md) ·
+[Open proposals](OPEN-PROPOSALS.md) ·
 [Journal runbook](sugar-modernization/GTK4_JOURNAL_RUNBOOK.md) ·
 [Spaces and Chirality](sugar-modernization/ASPARTAME_CHIRALITY.md)
 

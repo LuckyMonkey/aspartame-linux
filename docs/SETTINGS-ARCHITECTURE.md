@@ -16,10 +16,8 @@ Sections keep their existing accept/cancel and restart-alert navigation.
 The original 0058 patch declared two fewer added lines than it contained.
 GNU patch therefore omitted window retention and the success return while
 reporting success. The October 17 image contains that truncated method.
-The patch now has the correct hunk length. Both the preview build and ISO
-staging run `scripts/repair-gtk4-controlpanel-action.py` so old exports also
-receive the repair. The helper accepts the known truncated implementation,
-leaves complete implementations unchanged, and rejects unfamiliar endings.
+The rebased `0300` patch carries the complete method. The build verifies
+an exact replay, and the ISO build refuses an archive that predates it.
 
 ## Acceptance
 

@@ -15,7 +15,7 @@ Conflict decisions taken during the rebase:
 - profile.py: keep our key-blob-only public key parsing (presence identity).
 Downstream addition: when read_file() raises, the Activity marks the load as
 failed, shows an alert, and save() updates metadata only, so the original
-Journal payload is never replaced (docs/DOCUMENT-PRESERVATION-PROPOSALS.md).
+Journal payload is never replaced (docs/ASPARTAME-ACTIVITY-CONTRACT.md).
 Regenerate with scripts/sugar-gtk4-rebase.sh; never hand-edit hunks.
 diff --git a/pyproject.toml b/pyproject.toml
 index eec44ae..e3814c7 100644

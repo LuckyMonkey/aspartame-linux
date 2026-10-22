@@ -62,3 +62,17 @@ Verify every recorded upstream ref without changing the checkout:
 This compares every row in the external PINS.tsv with the exact remote ref
 and fails if a ref moved or disappeared. Re-run make sugar-gtk4-init only
 after deliberately reviewing such a change.
+
+## Sending fixes upstream
+
+Aspartame-specific behavior can stay downstream. A fix that would help any
+Sugar user should go to Sugar Labs:
+
+1. Reproduce it against the current upstream pin.
+2. Reduce it to one conceptual change with a test or an exact manual
+   reproduction.
+3. Record the Arch, Python and GTK versions and the logs.
+4. Link the Sugar Labs issue or pull request, and submit it from a branch
+   following their contributor workflow.
+
+Bugs found here but not yet reported are listed on issue #1.

@@ -11,7 +11,7 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux/graphs/commit-activity)
 [![Repository size](https://img.shields.io/github/repo-size/LuckyMonkey/aspartame-linux?style=flat-square)](https://github.com/LuckyMonkey/aspartame-linux)
 
-[![Host tests](https://img.shields.io/badge/host%20tests-584%20passed-2ea44f)](tests/)
+[![Host tests](https://img.shields.io/badge/host%20tests-579%20passed-2ea44f)](tests/)
 [![GTK4 build](https://img.shields.io/badge/guest%20build-PASS-2ea44f)](docs/sugar-modernization/GTK4_RUNBOOK.md)
 [![ISO](https://img.shields.io/badge/ISO%202026.10.22-qualified-2ea44f)](reports/gtk4/repin-qualification-20261022.md)
 [![Upstream](https://img.shields.io/badge/upstream-sugar%20PR%201106%20%C2%B7%20toolkit%20main-blue)](docs/sugar-modernization/UPSTREAM_SYNC.md)
@@ -234,7 +234,7 @@ Executable checks and durable evidence live together:
 
 | Check | Command/result |
 | --- | --- |
-| Host regression suite | `make test` → **PASS**; current full run: 584 passed |
+| Host regression suite | `make test` → **PASS**; current full run: 579 passed |
 | Patch series (in guest) | `make sugar-gtk4-series-check` → the series reconstructs the preview exactly (no fuzz) |
 | Packaged ISO | 2026.10.22 receipts (runtime, Settings, GTK3/GTK4 lifecycle, 50-Activity matrix, Chirality) → **PASS**, see `reports/gtk4/` |
 | Python runtime qualification | `make snakepit-qualify` → **PASS**; dependency-tension preflight is recorded in `reports/python/` |

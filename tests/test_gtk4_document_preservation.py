@@ -1,6 +1,6 @@
 """Failed or read-only loads must never replace the original Journal payload.
 
-See docs/DOCUMENT-PRESERVATION-PROPOSALS.md. Activities refuse a payload they
+See docs/ASPARTAME-ACTIVITY-CONTRACT.md. Activities refuse a payload they
 cannot open by raising from read_file(); the toolkit (0301) then keeps the
 object's bytes and updates metadata only.
 """

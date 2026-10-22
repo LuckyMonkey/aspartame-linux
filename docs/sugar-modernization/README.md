@@ -30,9 +30,8 @@ Current upstream starting points:
 | What remains for each Activity after launch coverage? | [ACTIVITY_LAUNCH_TASKS.md](ACTIVITY_LAUNCH_TASKS.md) |
 | How do I reproduce a past result? | `reports/gtk4/` — each report names the script or key sequence that produced it |
 
-`CONVERSION_TRACKER.md`, `MIGRATION_TODO.md` and `RACE_STATUS.md` are
-execution history from earlier passes. They are kept as memory, not as
-current status; prefer the deck when the two disagree.
+`CONVERSION_TRACKER.md` holds the gates, and `GTK4_RETIREMENT_GATE.md`
+holds the current retirement verdict.
 
 Read [GTK4_STATUS.md](GTK4_STATUS.md) before attempting a port.
 For the current Journal migration scope and acceptance gates, read [GTK4_JOURNAL_RUNBOOK.md](GTK4_JOURNAL_RUNBOOK.md).
