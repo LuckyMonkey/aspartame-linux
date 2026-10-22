@@ -5,8 +5,9 @@
 Write/Calculate unknown-format refusal, TurtleArt/Poll validate-then-assign,
 the Jukebox `int()` fix and Record's transactional restore have all landed
 in source. Host tests: `tests/test_gtk4_document_preservation.py` and the
-updated Activity harness. Still open: Journal row edit persistence
-(Priority 2), unknown-key preservation for JSON payloads, and a guest-side
+updated Activity harness. Journal row edits (Priority 2) now commit only on the datastore success
+callback (`tests/test_gtk4_journal_edit_persistence.py`). Still open:
+unknown-key preservation for JSON payloads, and a guest-side
 datastore byte comparison on a rebuilt image.
 
 Source observations only; no new checks were run. Prioritize these before

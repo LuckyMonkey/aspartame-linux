@@ -219,21 +219,41 @@ class ListView(Gtk.Box):
         self.emit('detail-clicked', uid)
         return GLib.SOURCE_REMOVE
 
+    def _next_revision(self, uid, field):
+        revisions = self.__dict__.setdefault('_edit_revisions', {})
+        revisions[(uid, field)] = revisions.get((uid, field), 0) + 1
+        return revisions[(uid, field)]
+
+    def _is_current(self, uid, field, revision):
+        return self._edit_revisions.get((uid, field)) == revision
+
     def _keep_toggled(self, button, uid, metadata):
+        # Row metadata changes only once the datastore confirms the write. A
+        # failure restores the committed value with this handler blocked, and
+        # an older reply never overrides a newer toggle.
+        revision = self._next_revision(uid, 'keep')
+
+        def restore(error):
+            if not self._is_current(uid, 'keep', revision):
+                return
+            button.handler_block_by_func(self._keep_toggled)
+            button.set_active(str(metadata.get('keep', '0')) == '1')
+            button.handler_unblock_by_func(self._keep_toggled)
+            self._result_status.set_text(
+                _('Could not update Journal entry: %s') % error)
+
+        def applied(*args):
+            metadata.update(updated)
+            if self._is_current(uid, 'keep', revision):
+                self._result_status.set_text(_('Journal entry updated'))
+
         try:
             updated = editable_changes(
                 metadata, {'keep': '1' if button.get_active() else '0'})
-            write_metadata(
-                updated,
-                lambda *args: self._result_status.set_text(
-                    _('Journal entry updated')),
-                lambda error, *args: self._result_status.set_text(
-                    _('Could not update Journal entry: %s') % error))
-            metadata.update(updated)
+            write_metadata(updated, applied,
+                           lambda error, *args: restore(error))
         except (OSError, ValueError, TypeError) as error:
-            button.set_active(not button.get_active())
-            self._result_status.set_text(
-                _('Could not update Journal entry: %s') % error)
+            restore(error)
 
     def _edit_title(self, _button, edit, title_label, title_entry, metadata):
         editing = title_entry.get_visible()
@@ -248,23 +268,37 @@ class ListView(Gtk.Box):
         edit.set_label(_('Save title'))
 
     def _finish_title(self, _entry, edit, title_label, title_entry, metadata):
-        try:
-            updated = editable_changes(
-                metadata, {'title': title_entry.get_text()})
-            write_metadata(
-                updated,
-                lambda *args: self._result_status.set_text(
-                    _('Journal title updated')),
-                lambda error, *args: self._result_status.set_text(
-                    _('Could not update Journal title: %s') % error))
+        # Keep the editor open with the draft until the datastore confirms;
+        # a failed write must not leave an unsaved title on display.
+        uid = metadata.get('uid')
+        revision = self._next_revision(uid, 'title')
+
+        def applied(*args):
             metadata.update(updated)
+            if not self._is_current(uid, 'title', revision):
+                return
             title_label.set_text(metadata['title'])
             title_label.set_visible(True)
             title_entry.set_visible(False)
             edit.set_label(_('Edit title'))
-        except (OSError, ValueError, TypeError) as error:
+            edit.set_sensitive(True)
+            self._result_status.set_text(_('Journal title updated'))
+
+        def failed(error, *args):
+            if not self._is_current(uid, 'title', revision):
+                return
+            edit.set_sensitive(True)
             self._result_status.set_text(
                 _('Could not update Journal title: %s') % error)
+
+        try:
+            updated = editable_changes(
+                metadata, {'title': title_entry.get_text()})
+            edit.set_sensitive(False)
+            self._result_status.set_text(_('Saving title…'))
+            write_metadata(updated, applied, failed)
+        except (OSError, ValueError, TypeError) as error:
+            failed(error)
 
     def _delete_clicked(self, button, uid):
         # Require a deliberate second activation for this destructive action.
