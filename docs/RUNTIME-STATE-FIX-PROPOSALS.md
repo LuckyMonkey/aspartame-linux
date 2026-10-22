@@ -2,6 +2,17 @@
 
 Source review only. No new tests, runtime probes, or build results are claimed.
 
+**Status (later 2026-10-22).** The first two Priority 1 items are
+implemented. `cpsection/activities/snakepit_contract.py` holds one
+validator. Inspect/explain, register, CLI launch and GUI launch all use
+it. The GUI re-verifies the source fingerprint at launch on a worker
+thread, and malformed records become "Not ready" rows with a reason.
+Tests: `tests/test_gtk4_snakepit_activity_manager.py` and
+`tests/test_snakepit.py`. Records without a source fingerprint now need
+requalification.
+Still open: GUI workflow observability (P2), Chirality state
+coordination, partial session resume, and the later P2 items.
+
 ## Priority 1: Use the same qualification policy in CLI and Activity Manager
 
 Evidence:

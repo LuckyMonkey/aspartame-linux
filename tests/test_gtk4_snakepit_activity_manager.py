@@ -19,8 +19,10 @@ def load_model():
     jarabe_model.bundleregistry = types.SimpleNamespace(
         get_registry=lambda: [])
     jarabe.model = jarabe_model
+    overlay = str(ROOT / 'gtk4-overlay/src')
     with mock.patch.dict(sys.modules, {
-            'jarabe': jarabe, 'jarabe.model': jarabe_model}):
+            'jarabe': jarabe, 'jarabe.model': jarabe_model}), \
+            mock.patch.object(sys, 'path', [overlay, *sys.path]):
         spec = importlib.util.spec_from_file_location(
             'gtk4_snakepit_model', MODEL_PATH)
         module = importlib.util.module_from_spec(spec)
@@ -88,11 +90,14 @@ class SnakepitActivityManagerTests(unittest.TestCase):
             environment = Path(directory) / 'environment'
             (environment / 'bin').mkdir(parents=True)
             (environment / 'bin' / 'python').write_text('', encoding='utf-8')
+            (source / 'main.py').write_text('print("ok")\n', encoding='utf-8')
             record = root / 'demo.json'
             record.write_text(json.dumps({
                 'schema': model.SNAKEPIT_SCHEMA,
                 'status': 'PASS',
                 'software': {'name': 'Demo'},
+                'source_fingerprint':
+                    model.snakepit_contract.source_fingerprint(source),
                 'launch': {
                     'command': ['/usr/bin/python3', '-c', 'print("ok")'],
                     'cwd': str(source),
@@ -116,6 +121,36 @@ class SnakepitActivityManagerTests(unittest.TestCase):
             self.assertEqual(kwargs['env']['VIRTUAL_ENV'], str(environment))
             self.assertEqual(kwargs['env']['PYTHONNOUSERSITE'], '1')
             self.assertTrue(kwargs['start_new_session'])
+
+            # A source change after qualification blocks launch, exactly as
+            # the CLI does.
+            (source / 'main.py').write_text('print("changed")\n', encoding='utf-8')
+            os.environ['ASPARTAME_SNAKEPIT_RECORD_DIR'] = str(root)
+            try:
+                with mock.patch.object(model.subprocess, 'Popen') as popen:
+                    with self.assertRaisesRegex(ValueError, 'requalification'):
+                        model.launch_activity(activity)
+                popen.assert_not_called()
+            finally:
+                os.environ.pop('ASPARTAME_SNAKEPIT_RECORD_DIR', None)
+
+    def test_malformed_record_fields_do_not_break_the_inventory(self):
+        model = load_model()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'records'
+            root.mkdir()
+            (root / 'odd.json').write_text(json.dumps({
+                'schema': model.SNAKEPIT_SCHEMA, 'status': 'PASS',
+                'software': {'name': 'Odd'}, 'interpreter': None,
+                'launch': {'command': ['python3'], 'cwd': None},
+            }), encoding='utf-8')
+            (root / 'list.json').write_text('[]', encoding='utf-8')
+            with mock.patch.dict(os.environ,
+                                 {'ASPARTAME_SNAKEPIT_RECORD_DIR': str(root)}):
+                rows = model.list_snakepit_activities()
+            self.assertEqual([row['name'] for row in rows], ['Odd'])
+            self.assertFalse(rows[0]['launchable'])
+            self.assertIn('cwd', rows[0]['summary'])
 
 
 if __name__ == '__main__':

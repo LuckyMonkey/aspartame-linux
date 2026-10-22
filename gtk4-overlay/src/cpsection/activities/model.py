@@ -13,6 +13,8 @@ import time
 
 from jarabe.model import bundleregistry
 
+from cpsection.activities import snakepit_contract
+
 
 UAC_APPROVER = '/usr/local/libexec/aspartame-sudo-askpass'
 SYSTEM_REMOVER = '/usr/local/libexec/aspartame-remove-activity'
@@ -26,7 +28,7 @@ MANAGED_ROOTS = (
     '/usr/local/share/sugar/activities',
     '/usr/lib/sugar/activities',
 )
-SNAKEPIT_SCHEMA = 'aspartame.snakepit.qualification/v0'
+SNAKEPIT_SCHEMA = snakepit_contract.SCHEMA
 
 
 def _snakepit_record_root():
@@ -38,48 +40,34 @@ def _snakepit_record_root():
         '~/.local/share/aspartame/snakepit/records')).resolve()
 
 
-def _qualified_launch(record):
-    """Validate the small launch contract without executing it."""
-    if record.get('schema') != SNAKEPIT_SCHEMA or record.get('status') != 'PASS':
-        return False
-    contract = record.get('launch')
-    if not isinstance(contract, dict):
-        return False
-    command = contract.get('command')
-    cwd = Path(str(contract.get('cwd', ''))).expanduser()
-    environment = Path(str(contract.get('environment', ''))).expanduser()
-    return (isinstance(command, list) and bool(command) and
-            all(isinstance(item, str) and item for item in command) and
-            cwd.is_dir() and (environment / 'bin' / 'python').is_file())
-
-
 def _snakepit_activity(record_path):
-    """Turn one qualified or failed record into a truthful manager row."""
+    """Turn one record into a truthful manager row; never raise on bad data."""
     try:
         record = json.loads(record_path.read_text(encoding='utf-8'))
     except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError):
         return None
-    if not isinstance(record, dict):
+    if not isinstance(record, dict) or not isinstance(record.get('software'), dict):
         return None
-    software = record.get('software')
-    if not isinstance(software, dict):
-        return None
-    name = str(software.get('name') or record_path.stem)
-    qualified = _qualified_launch(record)
+    details = snakepit_contract.describe(record)
+    name = details['name'] or record_path.stem
+    # The same validator decides display and launch; source freshness is
+    # rechecked when launching, off the listing path.
+    qualified = details['problem'] is None
     return {
         'id': 'org.aspartame.snakepit.' + name.replace('_', '-').replace(' ', '-'),
         'name': name,
-        'version': str(record.get('interpreter', {}).get('version') or 'record'),
+        'version': details['version'],
         'path': str(record_path),
         'record': str(record_path),
-        'icon': str(software.get('icon') or ''),
+        'icon': details['icon'],
         'runtime': 'snakepit-python',
         'installed': qualified,
         'launchable': qualified,
         'removable': False,
         'managed': False,
         'summary': ('Qualified launch contract' if qualified else
-                    str(record.get('error') or 'Qualification incomplete')),
+                    str(record.get('error') or details['problem'] or
+                        'Qualification incomplete')),
     }
 
 
@@ -145,12 +133,11 @@ def _launch_contract(activity):
         record = json.loads(record_path.read_text(encoding='utf-8'))
     except (OSError, UnicodeError, ValueError, TypeError, json.JSONDecodeError) as error:
         raise ValueError('The Python qualification record is not readable.') from error
-    if not _qualified_launch(record):
-        raise ValueError('This Python Activity has no qualified launch contract.')
-    contract = record['launch']
-    cwd = Path(contract['cwd']).expanduser().resolve()
-    environment = Path(contract['environment']).expanduser().resolve()
-    return list(contract['command']), cwd, environment
+    try:
+        return snakepit_contract.verified_launch_contract(record)
+    except snakepit_contract.ContractError as error:
+        raise ValueError('This Python Activity needs requalification: %s.'
+                         % error) from error
 
 
 def launch_activity(activity):

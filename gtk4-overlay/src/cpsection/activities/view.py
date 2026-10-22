@@ -2,7 +2,9 @@
 
 from gettext import gettext as _
 
-from gi.repository import Gtk, Pango
+import threading
+
+from gi.repository import GLib, Gtk, Pango
 
 from jarabe.controlpanel.sectionview import SectionView
 from sugar4.graphics import style
@@ -165,15 +167,28 @@ class ActivityManager(SectionView):
         self.setup()
 
     def _launch_clicked(self, _button, activity):
-        try:
-            process = self._model.launch_activity(activity)
-        except (OSError, PermissionError, ValueError) as error:
-            self._status.set_text(_('Launch not completed: %s') % error)
-            return
-        self._processes.append(process)
+        # Launch verifies the source fingerprint by hashing the tree, so it
+        # runs off the GTK main loop and reports back through idle_add.
+        self._status.set_text(_('Checking %s before launch…') % activity['name'])
+
+        def launch():
+            try:
+                result = self._model.launch_activity(activity)
+            except (OSError, PermissionError, ValueError) as error:
+                result = error
+            GLib.idle_add(self._launch_finished, activity, result)
+
+        threading.Thread(target=launch, daemon=True).start()
+
+    def _launch_finished(self, activity, result):
+        if isinstance(result, Exception):
+            self._status.set_text(_('Launch not completed: %s') % result)
+            return False
+        self._processes.append(result)
         self._status.set_text(
             _('Started %s from its qualified Python environment.') %
             activity['name'])
+        return False
 
     def undo(self):
         self.setup()

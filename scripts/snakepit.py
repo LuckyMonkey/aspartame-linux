@@ -24,25 +24,25 @@ import tempfile
 import time
 from typing import Any
 
+# The launch-contract policy is shared with the GTK4 Activity Manager. It is
+# installed beside this script; a source checkout finds it in the overlay.
+_HERE = Path(__file__).resolve().parent
+for _candidate in (_HERE, _HERE.parent / "gtk4-overlay/src/cpsection/activities"):
+    if (_candidate / "snakepit_contract.py").is_file():
+        sys.path.insert(0, str(_candidate))
+        break
+from snakepit_contract import (  # noqa: E402
+    ContractError,
+    launch_contract,
+    source_fingerprint,
+    verified_launch_contract,
+)
+
 
 SCHEMA = "aspartame.snakepit.qualification/v0"
 INSPECTION_SCHEMA = "aspartame.snakepit.inspection/v0"
 EXPLANATION_SCHEMA = "aspartame.snakepit.explanation/v0"
 MAX_OUTPUT = 20_000
-FINGERPRINT_IGNORED_DIRECTORIES = {
-    ".git",
-    ".venv",
-    "venv",
-    "__pycache__",
-    ".pytest_cache",
-    ".mypy_cache",
-    ".cache",
-    "build",
-    "dist",
-    "out",
-    "reports",
-    "work",
-}
 DEPENDENCY_NAME = re.compile(
     r"^\s*([A-Za-z0-9][A-Za-z0-9_.-]*)(?:\[[^\]]+\])?\s*(.*)$"
 )
@@ -59,32 +59,6 @@ def trim_output(value: str) -> tuple[str, bool]:
     if len(value) <= MAX_OUTPUT:
         return value, False
     return value[:MAX_OUTPUT] + "\n[output truncated]", True
-
-
-def source_fingerprint(source: Path) -> dict[str, Any]:
-    """Return a compact receipt for the source used by a qualification.
-
-    The fingerprint is deliberately built on the control path.  It protects
-    the launch contract from silently running a different source tree while
-    ignoring generated caches and nested virtual environments.
-    """
-    digest = hashlib.sha256()
-    files = 0
-    for path in sorted(source.rglob("*")):
-        relative = path.relative_to(source)
-        if (
-            path.is_symlink()
-            or not path.is_file()
-            or any(part in FINGERPRINT_IGNORED_DIRECTORIES for part in relative.parts[:-1])
-        ):
-            continue
-        digest.update(relative.as_posix().encode("utf-8"))
-        digest.update(b"\0")
-        with path.open("rb") as handle:
-            for block in iter(lambda: handle.read(1024 * 1024), b""):
-                digest.update(block)
-        files += 1
-    return {"algorithm": "sha256", "files": files, "digest": digest.hexdigest()}
 
 
 def resolve_executable(value: str) -> str:
@@ -452,6 +426,8 @@ def _load_record(record_path: Path) -> dict[str, Any]:
         record = json.loads(record_path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValueError(f"invalid qualification record: {record_path}: {exc}") from exc
+    if not isinstance(record, dict):
+        raise ValueError(f"invalid qualification record: {record_path}: not a JSON object")
     if record.get("schema") != SCHEMA:
         raise ValueError(
             f"unsupported qualification record schema: {record.get('schema')!r}"
@@ -504,9 +480,18 @@ def explanation_summary(record: dict[str, Any], record_path: Path) -> dict[str, 
             for key in ("command", "cwd", "returncode")
             if key in workflow
         },
-        "launchable": isinstance(record.get("launch"), dict),
+        "launchable": _contract_problem(record) is None,
+        "launch_problem": _contract_problem(record),
         "error": record.get("error"),
     }
+
+
+def _contract_problem(record: dict[str, Any]) -> str | None:
+    try:
+        launch_contract(record)
+    except ContractError as error:
+        return str(error)
+    return None
 
 
 def explain(args: argparse.Namespace) -> int:
@@ -892,41 +877,8 @@ def qualify(args: argparse.Namespace) -> int:
 
 def launch(args: argparse.Namespace) -> int:
     record_path = Path(args.record).expanduser().resolve()
-    if not record_path.is_file():
-        raise ValueError(f"qualification record not found: {record_path}")
-    try:
-        record = json.loads(record_path.read_text())
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"invalid qualification record: {record_path}: {exc}") from exc
-    if record.get("schema") != SCHEMA:
-        raise ValueError(f"unsupported qualification record schema: {record.get('schema')!r}")
-    if record.get("status") != "PASS":
-        raise ValueError("only a passing qualification record can be launched")
-
-    contract = record.get("launch")
-    if not isinstance(contract, dict):
-        raise ValueError("qualification record has no explicit launch contract")
-    command = contract.get("command")
-    cwd = Path(contract.get("cwd", "")).expanduser().resolve()
-    environment = Path(contract.get("environment", "")).expanduser().resolve()
-    if not isinstance(command, list) or not command or not all(
-        isinstance(item, str) and item for item in command
-    ):
-        raise ValueError("qualification record has an invalid launch command")
-    if not cwd.is_dir():
-        raise ValueError(f"launch source directory not found: {cwd}")
-    expected_fingerprint = record.get("source_fingerprint")
-    if isinstance(expected_fingerprint, dict) and expected_fingerprint.get("digest"):
-        actual_fingerprint = source_fingerprint(cwd)
-        if actual_fingerprint["digest"] != expected_fingerprint["digest"]:
-            raise ValueError(
-                "launch source changed since qualification; qualify it again"
-            )
-    if not (environment / "bin" / "python").is_file():
-        raise ValueError(
-            "launch environment interpreter not found: "
-            f"{environment / 'bin' / 'python'}"
-        )
+    record = _load_record(record_path)
+    command, cwd, environment = verified_launch_contract(record)
 
     try:
         result = run_checked(
@@ -963,33 +915,9 @@ def _record_path(args: argparse.Namespace) -> Path:
 def register(args: argparse.Namespace) -> int:
     """Publish one passing launch contract to the GTK4 Activity Manager."""
     record_path = _record_path(args)
-    if not record_path.is_file():
-        raise ValueError(f"qualification record not found: {record_path}")
-    try:
-        record = json.loads(record_path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"invalid qualification record: {record_path}: {exc}") from exc
-    if record.get("schema") != SCHEMA:
-        raise ValueError(f"unsupported qualification record schema: {record.get('schema')!r}")
-    if record.get("status") != "PASS":
-        raise ValueError("only a passing qualification record can be registered")
-    contract = record.get("launch")
-    if not isinstance(contract, dict):
-        raise ValueError("qualification record has no explicit launch contract")
-    command = contract.get("command")
-    cwd = Path(contract.get("cwd", "")).expanduser().resolve()
-    environment = Path(contract.get("environment", "")).expanduser().resolve()
-    if not isinstance(command, list) or not command or not all(
-        isinstance(item, str) and item for item in command
-    ):
-        raise ValueError("qualification record has an invalid launch command")
-    if not cwd.is_dir():
-        raise ValueError(f"launch source directory not found: {cwd}")
-    if not (environment / "bin" / "python").is_file():
-        raise ValueError(
-            "launch environment interpreter not found: "
-            f"{environment / 'bin' / 'python'}"
-        )
+    record = _load_record(record_path)
+    # Register only what launch would accept now, including source freshness.
+    verified_launch_contract(record)
 
     software = record.get("software", {})
     name = software.get("name", "python-activity") if isinstance(software, dict) else "python-activity"
