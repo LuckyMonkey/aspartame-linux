@@ -141,3 +141,14 @@ def test_shell_finds_the_gtk4_theme_in_the_runtime_prefix():
     patch = (PATCH_DIR / "0300-sugar-downstream-on-beaae56.patch").read_text()
     assert "GLib.get_system_data_dirs()" in patch
     assert "+    gtk_settings.set_property('gtk-theme-name', sugar_theme)" in patch
+
+
+def test_toggle_palettes_open_once_and_stay_open():
+    """Share's toggle palette opened and closed in one click after the re-pin:
+    three handlers toggled it, ToolButton then hid it as a tooltip, and the
+    hover detector closed it when the pointer was elsewhere."""
+    patch = (PATCH_DIR / "0301-toolkit-downstream-on-9d86a31.patch").read_text()
+    assert "if now - getattr(self, \"_last_toggle_time\", 0) < 150000:" in patch
+    assert "self._toggled_open = True" in patch
+    assert 'if getattr(self, "_toggled_open", False):' in patch
+    assert "a menu, not a hover tooltip, so it must stay open" in patch

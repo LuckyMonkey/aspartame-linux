@@ -864,7 +864,7 @@ index 0000000..18d360f
 +        self._bus_name = None
 +        self._bus = None
 diff --git a/src/sugar4/activity/widgets.py b/src/sugar4/activity/widgets.py
-index 02640dc..7d8e26f 100644
+index 02640dc..51edf68 100644
 --- a/src/sugar4/activity/widgets.py
 +++ b/src/sugar4/activity/widgets.py
 @@ -20,7 +20,9 @@
@@ -959,23 +959,13 @@ index 02640dc..7d8e26f 100644
          self.props.tooltip = _("Stop")
          self.props.accelerator = "<Ctrl>Q"
          self.connect("clicked", self.__stop_button_clicked_cb, activity)
-@@ -184,15 +177,61 @@ class ShareButton(RadioMenuButton):
+@@ -184,15 +177,51 @@ class ShareButton(RadioMenuButton):
              activity.connect("shared", self.__update_share_cb)
              activity.connect("joined", self.__update_share_cb)
  
 +        kwargs.setdefault("icon_name", "zoom-neighborhood")
 +        kwargs.setdefault("tooltip", _("Share"))
-+        kwargs.setdefault("icon_name", "zoom-neighborhood")
-+        kwargs.setdefault("tooltip", _("Share"))
-+        kwargs.setdefault("icon_name", "zoom-neighborhood")
-+        kwargs.setdefault("tooltip", _("Share"))
          RadioMenuButton.__init__(self, **kwargs)
-+        # RadioMenuButton consumes the tooltip for its palette, while the
-+        # ToolButton label is also needed by GTK4 accessibility.
-+        self.set_tooltip(_("Share"))
-+        # RadioMenuButton consumes the tooltip for its palette, while the
-+        # ToolButton label is also needed by GTK4 accessibility.
-+        self.set_tooltip(_("Share"))
 +        # RadioMenuButton consumes the tooltip for its palette, while the
 +        # ToolButton label is also needed by GTK4 accessibility.
 +        self.set_tooltip(_("Share"))
@@ -1285,7 +1275,7 @@ index 548f1a9..9367df2 100644
          # icon if specified
          if icon_name is not None:
 diff --git a/src/sugar4/graphics/palettewindow.py b/src/sugar4/graphics/palettewindow.py
-index d0df0e6..d958151 100644
+index d0df0e6..ad0dab3 100644
 --- a/src/sugar4/graphics/palettewindow.py
 +++ b/src/sugar4/graphics/palettewindow.py
 @@ -123,6 +123,7 @@ class _PaletteMenuWidget(Gtk.Popover):
@@ -1304,6 +1294,46 @@ index d0df0e6..d958151 100644
          self.set_has_arrow(True)
          self.set_autohide(False)
  
+@@ -840,6 +842,7 @@ class PaletteWindow(GObject.GObject):
+ 
+     def popdown(self, immediate=False):
+         """Hide the palette."""
++        self._toggled_open = False
+         self._popup_anim.stop()
+         self._mouse_detector.stop()
+ 
+@@ -883,6 +886,9 @@ class PaletteWindow(GObject.GObject):
+             self.popdown(immediate=True)
+         else:
+             self.popup(immediate=True)
++            # Opened by a click: it stays until clicked again, an item is
++            # chosen, or Escape, not when the pointer drifts away.
++            self._toggled_open = True
+ 
+     def __enter_notify_cb(self, widget):
+         if not getattr(self._invoker, "locked", False):
+@@ -947,6 +953,8 @@ class PaletteWindow(GObject.GObject):
+             pass
+ 
+         if not in_invoker and not in_popover:
++            if getattr(self, "_toggled_open", False):
++                return True
+             self.popdown()
+             return False
+ 
+@@ -1263,6 +1271,12 @@ class Invoker(GObject.GObject):
+         self.emit("right-click")
+ 
+     def notify_toggle_state(self):
++        # One user action can reach here through several handlers (gesture
++        # release, "clicked", AT-SPI activation). Toggle once per action.
++        now = GLib.get_monotonic_time()
++        if now - getattr(self, "_last_toggle_time", 0) < 150000:
++            return
++        self._last_toggle_time = now
+         self._ensure_palette_exists()
+         self.emit("toggle-state")
+ 
 diff --git a/src/sugar4/graphics/radiopalette.py b/src/sugar4/graphics/radiopalette.py
 index e7758fb..14490e6 100644
 --- a/src/sugar4/graphics/radiopalette.py
@@ -1319,7 +1349,7 @@ index e7758fb..14490e6 100644
          button.connect("clicked", self._on_button_clicked)
  
 diff --git a/src/sugar4/graphics/toolbutton.py b/src/sugar4/graphics/toolbutton.py
-index 26ee771..0f17ba0 100644
+index 26ee771..b7d44c4 100644
 --- a/src/sugar4/graphics/toolbutton.py
 +++ b/src/sugar4/graphics/toolbutton.py
 @@ -50,14 +50,13 @@ Example:
@@ -1378,7 +1408,29 @@ index 26ee771..0f17ba0 100644
  
  
  class ToolButton(Gtk.Button):
-@@ -179,6 +192,11 @@ class ToolButton(Gtk.Button):
+@@ -163,14 +176,18 @@ class ToolButton(Gtk.Button):
+         super().do_dispose()
+ 
+     def __clicked_cb(self, button):
++        invoker = self.get_palette_invoker()
++        if invoker is not None and getattr(invoker, "_toggle_palette", False):
++            # The invoker just toggled this palette for the same click; it is
++            # a menu, not a hover tooltip, so it must stay open.
++            return
+         if self._hide_tooltip_on_click and self.get_palette():
+             palette = self.get_palette()
+             if palette is not None:
+                 if palette.is_up():
+                     palette.popdown(immediate=True)
+-        invoker = self.get_palette_invoker()
+-        if invoker and getattr(invoker, "_toggle_palette", False):
+-            invoker.notify_toggle_state()
++        # The ToolInvoker already toggles its palette on "clicked"; doing it
++        # here too opened and closed a toggle palette (Share) in one click.
+ 
+     def set_tooltip(self, tooltip: Optional[str]):
+         """
+@@ -179,6 +196,11 @@ class ToolButton(Gtk.Button):
          Args:
              tooltip (string): tooltip to be set.
          """
@@ -1390,7 +1442,7 @@ index 26ee771..0f17ba0 100644
          if tooltip is None:
              self._tooltip = None
              if hasattr(self, "_palette_invoker") and self._palette_invoker:
-@@ -187,6 +205,12 @@ class ToolButton(Gtk.Button):
+@@ -187,6 +209,12 @@ class ToolButton(Gtk.Button):
  
          self._tooltip = tooltip
  
@@ -1403,7 +1455,7 @@ index 26ee771..0f17ba0 100644
          if not self.get_palette():
              palette = Palette(tooltip)
              self.set_palette(palette)
-@@ -366,8 +390,6 @@ class ToolButton(Gtk.Button):
+@@ -366,8 +394,6 @@ class ToolButton(Gtk.Button):
          blurb="Invoker for the palette",
      )
  
@@ -1412,7 +1464,7 @@ index 26ee771..0f17ba0 100644
      def set_active(self, active: bool):
          if active:
              self.add_css_class("active")
-@@ -378,43 +400,3 @@ class ToolButton(Gtk.Button):
+@@ -378,43 +404,3 @@ class ToolButton(Gtk.Button):
          """Get the active state of the button."""
          return self.has_css_class("active")
  

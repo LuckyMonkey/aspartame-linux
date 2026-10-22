@@ -50,6 +50,21 @@ busctl call org.freedesktop.hostname1 /org/freedesktop/hostname1 \
 busctl call org.freedesktop.hostname1 /org/freedesktop/hostname1 \
     org.freedesktop.hostname1 SetStaticHostname sb "$hostname" true
 
+# X cookies are keyed by hostname. Copy the running server's own cookie (its
+# -auth file is authoritative; ~/.Xauthority may be stale on a cloned disk)
+# under the new name into both files, so clients started afterwards connect.
+server_auth=$(pgrep -af '/usr/lib/Xorg' | grep -o '/tmp/serverauth[^ ]*' | head -n 1)
+if test -n "$server_auth" && test -f "$server_auth"; then
+    cookie=$(runuser -u aspartame -- xauth -f "$server_auth" list |
+             awk '/unix:0 / {print $3; exit}')
+    if test -n "$cookie"; then
+        for auth in "$server_auth" /home/aspartame/.Xauthority; do
+            runuser -u aspartame -- xauth -f "$auth" add "$hostname/unix:0" \
+                MIT-MAGIC-COOKIE-1 "$cookie"
+        done
+    fi
+fi
+
 run_id=$(date -u +%Y%m%dT%H%M%SZ)-$$
 sugar_home="/home/aspartame/.sugar/peers/$peer-$run_id"
 env_file="/run/aspartame-peer-$peer.env"
