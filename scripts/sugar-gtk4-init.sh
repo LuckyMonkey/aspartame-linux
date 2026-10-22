@@ -30,6 +30,9 @@ clone_at() {
         echo "re-pin $name: local changes saved to $backup" >&2
     fi
     git -C "$path" checkout --force --detach "$sha" >/dev/null
+    # Drop untracked leftovers (*.orig, files earlier patches created) so the
+    # series applies to the exact pinned tree. Ignored build outputs stay.
+    git -C "$path" clean -fdq
     printf '%s\t%s\t%s\t%s\n' "$name" "$url" "$ref" \
         "$(git -C "$path" rev-parse HEAD)"
 }

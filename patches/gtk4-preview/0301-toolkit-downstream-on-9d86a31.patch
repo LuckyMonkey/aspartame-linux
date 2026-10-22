@@ -14,7 +14,6 @@ Conflict decisions taken during the rebase:
 - style.py: take upstream's scoped apply_css_to_widget (drops folded 0026).
 - profile.py: keep our key-blob-only public key parsing (presence identity).
 Regenerate with scripts/sugar-gtk4-rebase.sh; never hand-edit hunks.
-
 diff --git a/pyproject.toml b/pyproject.toml
 index eec44ae..e3814c7 100644
 --- a/pyproject.toml
@@ -1164,7 +1163,7 @@ index a0d5c14..9c31d51 100644
              self._palette_box.append(self._secondary_box)
  
 diff --git a/src/sugar4/graphics/palettemenu.py b/src/sugar4/graphics/palettemenu.py
-index 548f1a9..eba1a29 100644
+index 548f1a9..9367df2 100644
 --- a/src/sugar4/graphics/palettemenu.py
 +++ b/src/sugar4/graphics/palettemenu.py
 @@ -89,8 +89,7 @@ import gi
@@ -1197,17 +1196,6 @@ index 548f1a9..eba1a29 100644
  
          # icon if specified
          if icon_name is not None:
-@@ -386,6 +391,10 @@ class PaletteMenuItem(Gtk.Button):
-             # Insert icon at the beginning
-             self._hbox.prepend(icon)
- 
-+    def set_icon_widget(self, icon):
-+        """Compatibility name for Sugar GTK4 callers still being ported."""
-+        self.set_image(icon)
-+
-     def set_accelerator(self, text):
-         """
-         Set the accelerator text for the menu item.
 diff --git a/src/sugar4/graphics/palettewindow.py b/src/sugar4/graphics/palettewindow.py
 index d0df0e6..d958151 100644
 --- a/src/sugar4/graphics/palettewindow.py

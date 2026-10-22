@@ -7,7 +7,6 @@ patch now kept for provenance under patches/gtk4-preview/folded/. It also
 converts src/jarabe/main.py and src/jarabe/frame/framewindow.py back to LF:
 upstream commits 9103057/beaae56 accidentally introduced CRLF line endings.
 Regenerate with scripts/sugar-gtk4-rebase.sh; never hand-edit hunks.
-
 diff --git a/extensions/cpsection/aboutcomputer/model.py b/extensions/cpsection/aboutcomputer/model.py
 index 5065b35..eb9ae3d 100644
 --- a/extensions/cpsection/aboutcomputer/model.py
@@ -3381,7 +3380,7 @@ index 3c81095..a61e3ce 100644
 +            model.stack.set_visible_child_name("home")
  
 diff --git a/src/jarabe/view/service.py b/src/jarabe/view/service.py
-index c9e6d27..e4ec6b3 100644
+index c9e6d27..b4704bb 100644
 --- a/src/jarabe/view/service.py
 +++ b/src/jarabe/view/service.py
 @@ -17,10 +17,12 @@
@@ -3397,7 +3396,7 @@ index c9e6d27..e4ec6b3 100644
  
  _DBUS_SERVICE = 'org.laptop.Shell'
  _DBUS_SHELL_IFACE = 'org.laptop.Shell'
-@@ -85,3 +87,116 @@ class UIService(service.Object):
+@@ -85,3 +87,94 @@ class UIService(service.Object):
                           in_signature='s', out_signature='')
      def NotifyLaunchFailure(self, activity_id):
          shell.get_model().notify_launch_failed(activity_id)
@@ -3460,6 +3459,8 @@ index c9e6d27..e4ec6b3 100644
 +        if main_window is not None:
 +            panel.set_transient_for(main_window)
 +        panel.set_visible(True)
++        self._control_panel = panel
++        return True
 +
 +    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
 +    def ShowNeighborhood(self):
@@ -3474,6 +3475,7 @@ index c9e6d27..e4ec6b3 100644
 +        self._shell_model._set_active_activity(None)
 +        self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
 +        return True
++
 +    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
 +    def ShowHome(self):
 +        """Return to the GTK4 Home surface through a semantic action."""
@@ -3488,29 +3490,4 @@ index c9e6d27..e4ec6b3 100644
 +        from jarabe.desktop import homewindow
 +        homewindow.get_instance().get_home_box().show_list_view()
 +        self._shell_model.set_zoom_level(self._shell_model.ZOOM_HOME)
-+        return True
-+
-+
-+    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
-+    def ShowNeighborhood(self):
-+        self._shell_model.set_zoom_level(self._shell_model.ZOOM_MESH)
-+        return True
-+
-+    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
-+    def ShowGroup(self):
-+        self._shell_model.set_zoom_level(self._shell_model.ZOOM_GROUP)
-+        return True
-+
-+    @service.method(_DBUS_SHELL_IFACE, in_signature='', out_signature='b')
-+    def ShowControlPanel(self):
-+        """Open GTK4 Settings with the shell as its transient owner."""
-+        if self._shell_model.has_modal():
-+            return False
-+        from jarabe.controlpanel.gui import ControlPanel
-+        panel = ControlPanel(0)
-+        main_window = getattr(self._shell_model, '_main_window', None)
-+        if main_window is not None:
-+            panel.set_transient_for(main_window)
-+        panel.set_visible(True)
-+        self._control_panel = panel
 +        return True

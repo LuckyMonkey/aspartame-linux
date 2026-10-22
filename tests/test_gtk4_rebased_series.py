@@ -68,6 +68,7 @@ def test_pins_follow_upstream_heads_named_by_the_rebased_patches():
 def test_repin_preserves_and_replaces_a_dirty_checkout():
     assert "pre-repin-" in INIT
     assert "checkout --force --detach" in INIT
+    assert "clean -fdq" in INIT
 
 
 def _added_lines(patch_text):
@@ -98,3 +99,37 @@ def test_folded_intent_still_ships():
         if kept / len(added) < 0.25:
             lost.append((patch.name, kept, len(added)))
     assert lost == [], lost
+
+
+def _class_duplicates(source):
+    import ast
+    found = []
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.ClassDef):
+            seen = set()
+            for item in node.body:
+                if isinstance(item, ast.FunctionDef):
+                    if item.name in seen and not any(
+                            "setter" in ast.unparse(d) or "getter" in ast.unparse(d)
+                            for d in item.decorator_list):
+                        found.append(f"{node.name}.{item.name}")
+                    seen.add(item.name)
+    return found
+
+
+def test_shell_service_defines_each_navigation_action_once():
+    """A trailing duplicate silently replaced ShowNeighborhood/ShowGroup with
+    versions that neither closed Settings nor cleared the active Activity."""
+    patch = (PATCH_DIR / "0300-sugar-downstream-on-beaae56.patch").read_text()
+    service = patch.split("+++ b/src/jarabe/view/service.py", 1)[1].split("\ndiff --git", 1)[0]
+    for action in ("ShowNeighborhood", "ShowGroup", "ShowControlPanel"):
+        assert service.count(f"def {action}(self):") <= 1, action
+
+
+def test_overlay_and_activities_have_no_shadowed_methods():
+    offenders = []
+    for path in [*(ROOT / "gtk4-overlay/src").rglob("*.py"),
+                 *ROOT.glob("packages/gtk4-*-activity/*.py")]:
+        offenders += [f"{path.name}:{name}" for name in
+                      _class_duplicates(path.read_text(encoding="utf-8-sig"))]
+    assert offenders == [], offenders

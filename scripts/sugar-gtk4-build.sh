@@ -59,31 +59,62 @@ mkdir -p "$patch_state"
 # Each upstream repository carries at most a few exact patches. Sugar and the
 # toolkit each carry one rebased downstream delta (0300/0301); the individual
 # history lives under patches/gtk4-preview/folded/ for provenance only.
+route_patch() {
+    case "$(basename "$1")" in
+        0002-*) echo "$ext" ;;
+        0014-*|0170-*) echo "$datastore" ;;
+        0029-*|0171-*) echo "$log_activity" ;;
+        0137-*|0138-*) echo "$casilda" ;;
+        0300-*) echo "$shell" ;;
+        0301-*) echo "$toolkit" ;;
+        0003-*) echo SKIP ;;
+        *) echo UNROUTED ;;
+    esac
+}
+declare -A target_patches=()
+targets=()
 for patch in "$patch_dir"/*.patch; do
     [ -f "$patch" ] || continue
-    case "$(basename "$patch")" in
-        0002-*) target="$ext" ;;
-        0014-*|0170-*) target="$datastore" ;;
-        0029-*|0171-*) target="$log_activity" ;;
-        0137-*|0138-*) target="$casilda" ;;
-        0300-*) target="$shell" ;;
-        0301-*) target="$toolkit" ;;
-        0003-*) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
-        *) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
+    target=$(route_patch "$patch")
+    case "$target" in
+        SKIP) echo "skipping legacy Casilda 0.1 compatibility patch"; continue ;;
+        UNROUTED) echo "unrouted GTK4 preview patch: $patch" >&2; exit 2 ;;
     esac
-    patch_name=$(basename "$patch")
-    stamp="$patch_state/$patch_name.sha256"
-    if (cd "$target" && patch --dry-run --reverse --force --fuzz=0 -p1 < "$patch" >/dev/null 2>&1); then
-        echo "verified applied: $patch_name"
-    elif (cd "$target" && patch --dry-run --forward --fuzz=0 -p1 < "$patch" >/dev/null 2>&1); then
-        (cd "$target" && patch --forward --fuzz=0 -p1 < "$patch" >/dev/null)
-        echo "applied: $patch_name"
+    [ -n "${target_patches[$target]:-}" ] || targets+=("$target")
+    target_patches[$target]+="$patch"$'\n'
+done
+# A target's patches can stack on the same lines, so verify the checkout
+# against an exact replay of all of them onto its pinned tree.
+for target in "${targets[@]}"; do
+    mapfile -t patches < <(printf '%s' "${target_patches[$target]}")
+    replay=$(mktemp -d)
+    git -c safe.directory="$target" -C "$target" archive HEAD | tar -x -C "$replay"
+    files=()
+    for patch in "${patches[@]}"; do
+        (cd "$replay" && patch --forward --fuzz=0 -p1 -s < "$patch" >/dev/null) || {
+            echo "GTK4 preview patch drift: $(basename "$patch") does not apply to the pinned tree" >&2
+            echo "target: $target" >&2; rm -rf "$replay"; exit 2; }
+        mapfile -t -O "${#files[@]}" files < <(sed -n 's#^+++ b/##p' "$patch")
+    done
+    if (cd "$target" && for file in "${files[@]}"; do cmp -s "$file" "$replay/$file" || exit 1; done); then
+        echo "verified applied: ${patches[*]##*/}"
+    elif git -c safe.directory="$target" -C "$target" diff --quiet HEAD -- "${files[@]}" &&
+            (cd "$target" && for file in "${files[@]}"; do
+                git -c safe.directory="$target" ls-files --error-unmatch -- "$file" >/dev/null 2>&1 ||
+                    [ ! -e "$file" ] || exit 1; done); then
+        for patch in "${patches[@]}"; do
+            (cd "$target" && patch --forward --fuzz=0 -p1 -s < "$patch" >/dev/null)
+            echo "applied: $(basename "$patch")"
+        done
     else
-        echo "GTK4 preview patch drift: $patch_name" >&2
+        echo "GTK4 preview patch drift: ${patches[*]##*/}" >&2
         echo "target: $target (run make sugar-gtk4-init to reset the pinned checkout)" >&2
-        exit 2
+        rm -rf "$replay"; exit 2
     fi
-    sha256sum "$patch" | cut -d " " -f 1 > "$stamp"
+    rm -rf "$replay"
+    for patch in "${patches[@]}"; do
+        sha256sum "$patch" | cut -d " " -f 1 > "$patch_state/$(basename "$patch").sha256"
+    done
 done
 PYTHONPATH="$toolkit/src${PYTHONPATH:+:$PYTHONPATH}" "$venv/bin/python" -c 'import sugar4; print("sugar4: PASS", sugar4.__file__)'
 

@@ -30,12 +30,12 @@ TARGET_NAMES = {
 def _build_routing():
     lines = BUILD.read_text().splitlines()
     start = next(i for i, l in enumerate(lines)
-                 if l.strip().startswith('case "$(basename "$patch")" in'))
+                 if l.strip().startswith('case "$(basename "$1")" in'))
     end = next(i for i, l in enumerate(lines[start:], start)
                if l.strip() == "esac")
     rules = []
     for line in lines[start + 1:end]:
-        match = re.match(r'\s*(\S.*?)\)\s*(?:target="([^"]+)"|echo)', line)
+        match = re.match(r'\s*(\S.*?)\)\s*echo "?([^";]+)"?', line)
         if match:
             rules.append(([p.strip() for p in match.group(1).split("|")],
                           match.group(2)))
@@ -45,7 +45,7 @@ def _build_routing():
 def _build_target(path):
     for patterns, target in _build_routing():
         if any(fnmatch.fnmatch(path.name, pattern) for pattern in patterns):
-            return TARGET_NAMES.get(target, "SKIP" if target is None else target)
+            return TARGET_NAMES.get(target, target)
     return "UNROUTED"
 
 
