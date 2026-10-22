@@ -52,7 +52,7 @@ if ! test -x "$venv/bin/empy" && test -x "$venv/bin/em.py"; then
     ln -sf "$venv/bin/em.py" "$venv/bin/empy"
 fi
 export PATH="$venv/bin:$PATH"
-echo "toolkit: $(git -C "$toolkit" rev-parse HEAD)"; echo "sugar-ext: $(git -C "$ext" rev-parse HEAD)"
+echo "toolkit: $(git -c safe.directory="$toolkit" -C "$toolkit" rev-parse HEAD)"; echo "sugar-ext: $(git -c safe.directory="$ext" -C "$ext" rev-parse HEAD)"
 patch_dir=${GTK4_PATCH_DIR:-$repo/patches/gtk4-preview}
 patch_state="$root/build/applied-patches"
 mkdir -p "$patch_state"
