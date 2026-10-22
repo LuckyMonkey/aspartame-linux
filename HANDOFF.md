@@ -13,7 +13,7 @@ history.
   - Procedure: `docs/sugar-modernization/UPSTREAM_SYNC.md`.
 - **ISO:**
   - `aspartame-build/artifacts/out/aspartame-2026.10.22-x86_64.iso`
-    (sha256 `f9dff8b7…`) carries the runtime export `eae0e392…`.
+    (sha256 `f2efc04e…`) carries the runtime export `eae0e392…`.
   - Every receipt check passes on the packaged runtime without the dev
     share: `reports/gtk4/repin-qualification-20261022.md`.
 - **Conversion tracker:** every gate is closed, including two-guest share

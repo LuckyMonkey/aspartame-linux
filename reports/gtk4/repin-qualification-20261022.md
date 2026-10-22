@@ -81,3 +81,16 @@ palette).
 Not run on the ISO: the two-guest share/join, which passed on the dev
 build with the same 0300/0301. One build warning was seen: the
 `archiso_pxe_nfs` hook lacks `nfsmount`, which affects only PXE/NFS boot.
+
+### Rebuild after the repository cleanup
+
+The ISO was rebuilt after the duplicate profile Activity tree was removed;
+`build-iso.sh` now stages `packages/upstream-activities`. New sha256
+`f2efc04e…bb8e8` replaces `f9dff8b7…`. On a packaged boot with no dev share:
+- 34 bundles were installed, the same set as before, and the Help HTML is
+  present;
+- `runtime-check=ok` for both gtk3 and gtk4;
+- the GTK3 lifecycle probe gave `lifecycle-probe=PASS` over 3 cycles.
+
+The GTK4 runtime archive did not change, so the GTK4 receipts above still
+apply.
