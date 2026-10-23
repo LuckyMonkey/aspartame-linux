@@ -1,77 +1,136 @@
+import datetime
+import json
+import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).parents[1]
+PACKAGE = ROOT / "packages/gtk4-finance-activity"
+sys.path.insert(0, str(PACKAGE))
+from finance_csv import read_csv, write_csv  # noqa: E402
+from finance_model import DAY, FOREVER, MONTH, WEEK, YEAR, Ledger  # noqa: E402
+
+TODAY = datetime.date(2026, 10, 22)
 
 
-def test_finance_bundle_is_native_and_registered():
-    package = ROOT / "packages/gtk4-finance-activity"
-    info = (package / "activity/activity.info").read_text()
-    source = (package / "financeactivity4.py").read_text()
+def ledger():
+    book = Ledger(today=TODAY)
+    book.add("Pay", "credit", 1000, "Work", datetime.date(2026, 10, 1))
+    book.add("Bread", "debit", 4.5, "Food", datetime.date(2026, 10, 3))
+    book.add("Bus pass", "debit", 50, "Transport", datetime.date(2026, 9, 20))
+    return book
+
+
+def test_periods_filter_the_register():
+    book = ledger()
+    assert book.label == "October 2026" and book.totals() == (1000, 4.5)
+    book.step(-1)
+    assert book.label == "September 2026" and book.totals() == (0, 50)
+    book.set_period(YEAR)
+    assert book.totals() == (1000, 54.5)
+    book.set_period(FOREVER)
+    assert len(book.visible()) == 3
+    book.set_period(WEEK)
+    assert book.start == datetime.date(2026, 10, 19)
+    book.set_period(DAY)
+    assert book.visible() == []
+
+
+def test_monthly_budgets_scale_and_report_status():
+    book = ledger()
+    book.set_budget("Food", 4)
+    assert book.budget_rows()[0] == ("Food", 4.5, 4.0, "over")
+    book.set_budget("Food", 5)   # 90% spent, 68% of October gone
+    assert book.budget_rows()[0][3] == "ahead"
+    book.set_period(YEAR)
+    assert book.budget_rows()[0][2] == 60.0
+    book.set_period(WEEK)
+    assert book.budget_rows()[0][2] == 1.25
+
+
+def test_description_reuses_its_last_category():
+    book = ledger()
+    assert book.add("Bread", "debit", 3, "", TODAY)["category"] == "Food"
+
+
+def test_undo_and_redo():
+    book = ledger()
+    book.set_budget("Food", 10)
+    book.remove(0)
+    assert book.undo() and len(book.data["transactions"]) == 3
+    assert book.undo() and book.data["budgets"] == {}
+    assert book.redo() and book.data["budgets"] == {"Food": {"amount": 10}}
+
+
+def test_gtk3_payload_round_trips_and_keeps_unknown_keys():
+    payload = {"next_id": 2, "budgets": {"Food": {"amount": 20.0}}, "future": [1],
+               "transactions": [{"id": 0, "name": "Rice", "type": "debit", "amount": 2.5,
+                                 "date": TODAY.toordinal(), "category": "Food"},
+                                {"id": 1, "name": "Gift", "type": "credit", "amount": 10,
+                                 "date": TODAY.toordinal(), "category": ""}]}
+    book = Ledger.from_payload(json.loads(json.dumps(payload)), today=TODAY)
+    assert book.totals() == (10, 2.5)
+    assert book.to_payload() == payload
+
+
+def test_gtk4_finance_1_payload_still_opens():
+    book = Ledger.from_payload({"transactions": [{"value": -5.0, "description": "Pens"}]},
+                               today=TODAY)
+    assert book.visible()[0]["name"] == "Pens" and book.totals() == (0, 5.0)
+
+
+@pytest.mark.parametrize("payload", [
+    [], {"transactions": {}}, {"next_id": 1, "transactions": [{"id": 0, "type": "gift"}]},
+    {"next_id": 0, "transactions": [], "budgets": {"Food": 3}},
+])
+def test_malformed_payloads_raise(payload):
+    with pytest.raises(ValueError):
+        Ledger.from_payload(payload)
+
+
+def test_csv_keeps_dates_and_categories(tmp_path):
+    book = ledger()
+    path = tmp_path / "finance.csv"
+    write_csv(path, book.data["transactions"])
+    assert read_csv(path) == [("Pay", "credit", 1000.0, "Work", datetime.date(2026, 10, 1)),
+                              ("Bread", "debit", 4.5, "Food", datetime.date(2026, 10, 3)),
+                              ("Bus pass", "debit", 50.0, "Transport", datetime.date(2026, 9, 20))]
+
+
+def test_activity_records_expense_and_budget(tmp_path):
+    from gtk4_activity_harness import button, load
+    activity = load("gtk4-finance-activity", "financeactivity4", "FinanceActivity")
+    activity.description.set_text("Bread")
+    activity.category.set_text("Food")
+    activity.amount.set_text("4.50")
+    button(activity, "Add expense").emit("clicked")
+    activity.budget_category.set_text("Food")
+    activity.budget_amount.set_text("10")
+    button(activity, "Set budget").emit("clicked")
+    assert activity.status.get_text() == "Budget for Food: 10.00 a month"
+    assert "4.50" in activity.balance.get_text()
+    path = tmp_path / "finance.json"
+    activity.write_file(path)
+    restored = load("gtk4-finance-activity", "financeactivity4", "FinanceActivity")
+    restored.read_file(path)
+    assert restored.ledger.budget_rows()[0][:3] == ("Food", 4.5, 10.0)
+    assert restored.chart_summary.get_text() == "Food 4.50 (100%)"
+
+
+def test_activity_refuses_a_corrupt_payload(tmp_path):
+    from gtk4_activity_harness import load
+    activity = load("gtk4-finance-activity", "financeactivity4", "FinanceActivity")
+    path = tmp_path / "bad"
+    path.write_bytes(b"\xff\xfe not json")
+    with pytest.raises(ValueError):
+        activity.read_file(path)
+
+
+def test_bundle_is_registered():
+    info = (PACKAGE / "activity/activity.info").read_text()
     assert "bundle_id = org.laptop.community.Finance" in info
     assert "sugar-activity4 financeactivity4.FinanceActivity" in info
-    assert "class FinanceActivity(SimpleActivity)" in source
-    assert "Add income" in source and "Add expense" in source and 'label=f"Remove {description}"' in source
-    assert "Import CSV" in source and "Export CSV" in source
-    assert "from finance_csv import read_csv, write_csv" in source
-    assert "Gtk.DrawingArea" in source and "_draw_chart" in source
-    assert 'Gtk.Frame(label="Summary")' in source
-    assert "Income and expense chart" in source
     assert "org.laptop.community.Finance" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-finance-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-finance-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-
-
-def test_finance_journal_roundtrip_is_json():
-    source = (ROOT / "packages/gtk4-finance-activity/financeactivity4.py").read_text()
-    assert "def read_file(self, file_path)" in source
-    assert "def write_file(self, file_path)" in source
-    assert '"transactions"' in source
-
-
-def test_finance_csv_interchange_preserves_transaction_direction(tmp_path):
-    import sys
-    sys.path.insert(0, str(ROOT / "packages/gtk4-finance-activity"))
-    from finance_csv import read_csv, write_csv
-
-    path = tmp_path / "transactions.csv"
-    write_csv(path, [(125.5, "Grant"), (-20.0, "Supplies")])
-    assert read_csv(path) == [(125.5, "Grant"), (-20.0, "Supplies")]
-
-
-def test_finance_transactions_use_aligned_description_and_amount_columns():
-    source = (ROOT / "packages/gtk4-finance-activity/financeactivity4.py").read_text()
-    assert "Gtk.Clamp" not in source
-    assert "root.set_hexpand(True); root.set_vexpand(True)" in source
-    assert "body.set_hexpand(True)" in source
-    assert "body.set_size_request(980, -1)" not in source
-    assert "body.set_halign(Gtk.Align.FILL)" in source
-    assert "body.set_valign(Gtk.Align.FILL)" in source
-    assert "form = Gtk.Grid(column_spacing=12, row_spacing=6)" in source
-    assert "form.attach(self.description, 0, 1, 1, 1)" in source
-    assert "form.attach(self.amount, 1, 1, 1, 1)" in source
-    assert 'Gtk.Frame(label="New transaction")' in source
-    assert 'Gtk.Frame(label="Transactions")' in source
-    assert 'self.rows.set_size_request(-1, 300)' not in source
-    assert 'self.amount.set_width_chars(10)' in source
-    assert 'self.amount.set_max_width_chars(16)' in source
-    assert 'self.rows.set_visible(False)' in source
-    assert 'self.empty_state.set_vexpand(True)' in source
-    assert 'self.amount.set_hexpand(False)' in source
-    assert 'self.empty_state.add_css_class("empty-state")' in source
-    assert 'description_heading = Gtk.Label(label="Description"' in source
-    assert 'amount_heading = Gtk.Label(label="Amount"' in source
-    assert 'table_row.attach(amount_label, 1, 0, 1, 1)' in source
-    assert 'No transactions yet. Add income or an expense to begin.' in source
-    assert 'self.empty_state.set_visible(not self._rows)' in source
-    assert "def _refresh_rows" in source
-    assert "def _remove_row" in source
-    assert "Remove transaction" in source
-    assert 'header.attach(actions_heading, 2, 0, 1, 1)' in source
-    assert "self.chart_summary.set_text" in source and "self.chart.queue_draw()" in source
-
-
-def test_finance_roundtrip_exercises_transaction_removal():
-    probe = (ROOT / "scripts/sugar-gtk4-finance-roundtrip.py").read_text()
-    assert 'find_named(Atspi.get_desktop(0),rpid,"Remove Supplies")' in probe
-    assert 'Balance: 125.50' in probe
-    assert "saved transaction removal" in probe and 'get_role_name() == "button"' in probe
