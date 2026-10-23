@@ -9,6 +9,7 @@ ROOT = Path(__file__).parents[1]
 PACKAGE = ROOT / "packages/gtk4-abacus-activity"
 sys.path.insert(0, str(PACKAGE))
 from abacus_model import Abacus, TYPE_ORDER, format_value, parse_value  # noqa: E402
+from gtk4_activity_harness import needs_gtk4, run  # noqa: E402
 
 # The abacus types of the GTK3 reference (sugarlabs/abacus AbacusActivity.py),
 # minus 'fraction', which its toolbar leaves commented out.
@@ -86,29 +87,30 @@ def test_gtk4_abacus_1_payload_still_opens():
     assert abacus.type.name == "decimal" and abacus.value() == 1234
 
 
+@needs_gtk4
 def test_activity_shows_typed_number_and_saves_it(tmp_path):
-    from gtk4_activity_harness import button, load
-    activity = load("gtk4-abacus-activity", "abacusactivity4", "AbacusActivity")
-    activity.kind.set_selected(TYPE_ORDER.index("soroban"))
-    activity.entry.set_text("3.25")
-    button(activity, "Show number").emit("clicked")
-    assert activity.value_label.get_text() == "3.25"
-    path = tmp_path / "abacus.json"
-    activity.write_file(path)
-    restored = load("gtk4-abacus-activity", "abacusactivity4", "AbacusActivity")
-    restored.read_file(path)
-    assert restored.abacus.type.name == "soroban"
-    assert restored.value_label.get_text() == "3.25"
-    assert restored.kind.get_selected() == TYPE_ORDER.index("soroban")
-
-
-def test_activity_refuses_a_corrupt_payload(tmp_path):
-    from gtk4_activity_harness import load
-    activity = load("gtk4-abacus-activity", "abacusactivity4", "AbacusActivity")
-    path = tmp_path / "bad"
-    path.write_bytes(b"\xff\xfe not json")
-    with pytest.raises(ValueError):
-        activity.read_file(path)
+    out = run("gtk4-abacus-activity", f"""
+        from abacusactivity4 import AbacusActivity
+        from abacus_model import TYPE_ORDER
+        activity = AbacusActivity(None)
+        activity.kind.set_selected(TYPE_ORDER.index("soroban"))
+        activity.entry.set_text("3.25")
+        button(activity, "Show number").emit("clicked")
+        print("shown", activity.value_label.get_text())
+        activity.write_file({str(tmp_path / 'abacus.json')!r})
+        restored = AbacusActivity(None)
+        restored.read_file({str(tmp_path / 'abacus.json')!r})
+        print("restored", restored.abacus.type.name, restored.value_label.get_text(),
+              restored.kind.get_selected() == TYPE_ORDER.index("soroban"))
+        try:
+            open({str(tmp_path / 'bad')!r}, "wb").write(b"\\xff\\xfe not json")
+            restored.read_file({str(tmp_path / 'bad')!r})
+        except ValueError:
+            print("refused")
+    """)
+    assert "shown 3.25" in out
+    assert "restored soroban 3.25 True" in out
+    assert "refused" in out
 
 
 def test_bundle_is_registered():

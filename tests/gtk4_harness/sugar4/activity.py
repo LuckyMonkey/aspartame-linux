@@ -28,6 +28,9 @@ class SimpleActivity(Gtk.Window):
         with tempfile.TemporaryDirectory() as scratch:
             self.write_file(os.path.join(scratch, "journal-object"))
 
+    def can_close(self):
+        return True
+
     def read_file(self, file_path):
         raise NotImplementedError
 

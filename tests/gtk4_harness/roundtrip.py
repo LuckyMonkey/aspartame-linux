@@ -41,6 +41,19 @@ MALFORMED = (b"", b"not json", b"[]", b"null", b"42", b'{"unexpected": true}',
 callback_errors = []
 
 
+class _Clipboard:
+    """Copy/paste buttons must not touch the desktop's real clipboard."""
+
+    def set(self, value):
+        self.value = value
+
+    def read_text_async(self, cancellable, callback, *data):
+        pass
+
+
+Gtk.Widget.get_clipboard = lambda self: _Clipboard()
+
+
 def _record_callback_error(exc_type, exc, tb):
     callback_errors.append("".join(traceback.format_exception(exc_type, exc, tb)))
 

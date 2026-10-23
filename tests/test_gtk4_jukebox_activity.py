@@ -7,9 +7,14 @@ ROOT = Path(__file__).parents[1]
 PACKAGE = ROOT / "packages/gtk4-jukebox-activity"
 sys.path.insert(0, str(PACKAGE))
 from jukebox_playlist import Playlist, is_media, parse_m3u, write_m3u  # noqa: E402
+from gtk4_activity_harness import needs_gtk4, run  # noqa: E402
 
 # Written by GTK3 Jukebox (playlist.py write_playlist_to_file).
 GTK3_PLAYLIST = "#EXTINF:Morning song\njournal://1111\n#EXTINF:Cat video\njournal://2222\n"
+
+
+SETUP = """
+from jukeboxactivity4 import JukeboxActivity
 
 
 class FakeJournal:
@@ -24,13 +29,16 @@ class FakeJournal:
         return entry or object()
 
 
-def activity(metadata=None):
-    from gtk4_activity_harness import load
-    jukebox = load("gtk4-jukebox-activity", "jukeboxactivity4", "JukeboxActivity")
-    jukebox.journal = FakeJournal()
+def jukebox(metadata=None):
+    activity = JukeboxActivity(None, journal=FakeJournal())
     if metadata is not None:
-        jukebox.metadata = metadata
-    return jukebox
+        activity.metadata = metadata
+    return activity
+"""
+
+
+def run_jukebox(body):
+    return run("gtk4-jukebox-activity", SETUP + body)
 
 
 def test_gtk3_playlists_round_trip():
@@ -62,59 +70,80 @@ def test_media_types_follow_the_reference():
     assert not is_media("text/plain") and not is_media(None)
 
 
+@needs_gtk4
 def test_journal_media_are_added_from_the_picker(tmp_path):
-    jukebox = activity()
-    jukebox._show_picker(None)
-    rows = (jukebox.picker_list.get_row_at_index(i) for i in range(2))
-    names = [row.get_child().get_label() for row in rows]
-    assert names == ["Morning song (audio)", "Cat video (video)"]
-    jukebox._pick(None, "2222", "Cat video")
-    path = tmp_path / "playlist"
-    jukebox.write_file(path)
-    assert path.read_text() == "#EXTINF:Cat video\njournal://2222\n"
-    assert jukebox.metadata["mime_type"] == "audio/x-mpegurl"
+    out = run_jukebox(f"""
+activity = jukebox()
+activity._show_picker(None)
+print("picker", [activity.picker_list.get_row_at_index(i).get_child().get_label() for i in range(2)])
+activity._pick(None, "2222", "Cat video")
+activity.write_file({str(tmp_path / 'playlist')!r})
+print("mime", activity.metadata["mime_type"])
+""")
+    assert "picker ['Morning song (audio)', 'Cat video (video)']" in out
+    assert (tmp_path / "playlist").read_text() == "#EXTINF:Cat video\njournal://2222\n"
+    assert "mime audio/x-mpegurl" in out
 
 
+@needs_gtk4
 def test_gtk3_playlist_object_opens(tmp_path):
-    path = tmp_path / "playlist"
-    path.write_text(GTK3_PLAYLIST)
-    jukebox = activity({"mime_type": "audio/x-mpegurl"})
-    jukebox.read_file(path)
-    assert [t["title"] for t in jukebox.playlist.tracks] == ["Morning song", "Cat video"]
+    (tmp_path / "playlist").write_text(GTK3_PLAYLIST)
+    out = run_jukebox(f"""
+activity = jukebox({{"mime_type": "audio/x-mpegurl"}})
+activity.read_file({str(tmp_path / 'playlist')!r})
+print("titles", [t["title"] for t in activity.playlist.tracks])
+""")
+    assert "titles ['Morning song', 'Cat video']" in out
 
 
-def test_opened_from_a_song_it_never_overwrites_the_song(tmp_path, monkeypatch):
+@needs_gtk4
+def test_opened_from_a_song_it_never_overwrites_the_song(tmp_path):
     song = tmp_path / "song"
     song.write_bytes(b"OggS fake audio")
-    jukebox = activity({"mime_type": "audio/ogg", "title": "Morning song"})
-    monkeypatch.setattr(jukebox, "_object_id", lambda: "1111")
-    jukebox.read_file(song)
-    assert jukebox.playlist.tracks == [{"title": "Morning song", "path": "journal://1111"}]
-    with pytest.raises(NotImplementedError):
-        jukebox.write_file(tmp_path / "out")
-    assert not (tmp_path / "out").exists() and jukebox.journal.saved == []
-    jukebox._pick(None, "2222", "Cat video")
-    with pytest.raises(NotImplementedError):
-        jukebox.write_file(tmp_path / "out")
-    assert jukebox.journal.saved == [("Morning song playlist", GTK3_PLAYLIST,
-                                      "org.laptop.sugar.Jukebox")]
+    out = run_jukebox(f"""
+activity = jukebox({{"mime_type": "audio/ogg", "title": "Morning song"}})
+activity._object_id = lambda: "1111"
+activity._play_index = lambda index: None   # no audio on the host
+activity.read_file({str(song)!r})
+print("tracks", activity.playlist.tracks)
+for step in ("single", "two"):
+    if step == "two":
+        activity._pick(None, "2222", "Cat video")
+    try:
+        activity.write_file({str(tmp_path / 'out')!r})
+    except NotImplementedError:
+        print("kept", step, activity.journal.saved)
+""")
+    assert "tracks [{'title': 'Morning song', 'path': 'journal://1111'}]" in out
+    assert "kept single []" in out
+    assert "kept two [('Morning song playlist', %r, 'org.laptop.sugar.Jukebox')]" % GTK3_PLAYLIST in out
+    assert not (tmp_path / "out").exists()
     assert song.read_bytes() == b"OggS fake audio"
 
 
+@needs_gtk4
 def test_gtk4_jukebox_1_payload_keeps_only_real_files(tmp_path):
-    path = tmp_path / "old.json"
-    path.write_text('{"selected": 0, "tracks": [["Morning Bell", "Demo track"],'
-                    ' ["a.ogg", "Local file", "file:///home/a.ogg"]]}')
-    jukebox = activity({"mime_type": ""})
-    jukebox.read_file(path)
-    assert jukebox.playlist.tracks == [{"title": "a.ogg", "path": "file:///home/a.ogg"}]
+    (tmp_path / "old.json").write_text(
+        '{"selected": 0, "tracks": [["Morning Bell", "Demo track"],'
+        ' ["a.ogg", "Local file", "file:///home/a.ogg"]]}')
+    out = run_jukebox(f"""
+activity = jukebox({{"mime_type": ""}})
+activity.read_file({str(tmp_path / 'old.json')!r})
+print("tracks", activity.playlist.tracks)
+""")
+    assert "tracks [{'title': 'a.ogg', 'path': 'file:///home/a.ogg'}]" in out
 
 
+@needs_gtk4
 def test_corrupt_playlist_raises(tmp_path):
-    path = tmp_path / "bad"
-    path.write_bytes(b"\xff\xfe not a valid payload")
-    with pytest.raises(ValueError):
-        activity({"mime_type": "audio/x-mpegurl"}).read_file(path)
+    (tmp_path / "bad").write_bytes(b"\xff\xfe not a valid payload")
+    out = run_jukebox(f"""
+try:
+    jukebox({{"mime_type": "audio/x-mpegurl"}}).read_file({str(tmp_path / 'bad')!r})
+except ValueError:
+    print("refused")
+""")
+    assert "refused" in out
 
 
 def test_bundle_is_registered():

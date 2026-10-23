@@ -186,6 +186,8 @@ class JukeboxActivity(SimpleActivity):
         panes = Gtk.Paned(vexpand=True, shrink_start_child=False, resize_start_child=False)
         panes.set_start_child(self.side)
         panes.set_end_child(stage)
+        # GTK4 collapses a Paned without an explicit position.
+        panes.set_position(380)
         root.append(panes)
 
         self.status = Gtk.Label(label="Add songs or videos to begin.", xalign=0, wrap=True)

@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 
@@ -41,4 +42,4 @@ def test_side_by_side_panes_are_explicitly_initialized():
         assert "Gtk.Paned" in source
         assert "set_start_child(" in source
         assert "set_end_child(" in source
-        assert "set_position(640)" in source
+        assert re.search(r"set_position\([1-9]\d+\)", source)

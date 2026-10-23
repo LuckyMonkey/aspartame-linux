@@ -9,7 +9,8 @@ ROOT = Path(__file__).parents[1]
 PACKAGE = ROOT / "packages/gtk4-finance-activity"
 sys.path.insert(0, str(PACKAGE))
 from finance_csv import read_csv, write_csv  # noqa: E402
-from finance_model import DAY, FOREVER, MONTH, WEEK, YEAR, Ledger  # noqa: E402
+from finance_model import DAY, FOREVER, WEEK, YEAR, Ledger  # noqa: E402
+from gtk4_activity_harness import needs_gtk4, run  # noqa: E402
 
 TODAY = datetime.date(2026, 10, 22)
 
@@ -98,33 +99,34 @@ def test_csv_keeps_dates_and_categories(tmp_path):
                               ("Bus pass", "debit", 50.0, "Transport", datetime.date(2026, 9, 20))]
 
 
+@needs_gtk4
 def test_activity_records_expense_and_budget(tmp_path):
-    from gtk4_activity_harness import button, load
-    activity = load("gtk4-finance-activity", "financeactivity4", "FinanceActivity")
-    activity.description.set_text("Bread")
-    activity.category.set_text("Food")
-    activity.amount.set_text("4.50")
-    button(activity, "Add expense").emit("clicked")
-    activity.budget_category.set_text("Food")
-    activity.budget_amount.set_text("10")
-    button(activity, "Set budget").emit("clicked")
-    assert activity.status.get_text() == "Budget for Food: 10.00 a month"
-    assert "4.50" in activity.balance.get_text()
-    path = tmp_path / "finance.json"
-    activity.write_file(path)
-    restored = load("gtk4-finance-activity", "financeactivity4", "FinanceActivity")
-    restored.read_file(path)
-    assert restored.ledger.budget_rows()[0][:3] == ("Food", 4.5, 10.0)
-    assert restored.chart_summary.get_text() == "Food 4.50 (100%)"
-
-
-def test_activity_refuses_a_corrupt_payload(tmp_path):
-    from gtk4_activity_harness import load
-    activity = load("gtk4-finance-activity", "financeactivity4", "FinanceActivity")
-    path = tmp_path / "bad"
-    path.write_bytes(b"\xff\xfe not json")
-    with pytest.raises(ValueError):
-        activity.read_file(path)
+    out = run("gtk4-finance-activity", f"""
+        from financeactivity4 import FinanceActivity
+        activity = FinanceActivity(None)
+        activity.description.set_text("Bread")
+        activity.category.set_text("Food")
+        activity.amount.set_text("4.50")
+        button(activity, "Add expense").emit("clicked")
+        activity.budget_category.set_text("Food")
+        activity.budget_amount.set_text("10")
+        button(activity, "Set budget").emit("clicked")
+        print("status", activity.status.get_text())
+        activity.write_file({str(tmp_path / 'finance.json')!r})
+        restored = FinanceActivity(None)
+        restored.read_file({str(tmp_path / 'finance.json')!r})
+        print("budget", restored.ledger.budget_rows()[0][:3])
+        print("chart", restored.chart_summary.get_text())
+        try:
+            open({str(tmp_path / 'bad')!r}, "wb").write(b"\\xff\\xfe not json")
+            restored.read_file({str(tmp_path / 'bad')!r})
+        except ValueError:
+            print("refused")
+    """)
+    assert "status Budget for Food: 10.00 a month" in out
+    assert "budget ('Food', 4.5, 10.0)" in out
+    assert "chart Food 4.50 (100%)" in out
+    assert "refused" in out
 
 
 def test_bundle_is_registered():
