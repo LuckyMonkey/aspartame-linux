@@ -78,12 +78,14 @@ class AbacusActivity(SimpleActivity):
         self.custom.set_visible(False)
         root.append(self.custom)
 
-        self.value_label = Gtk.Label(label="0", xalign=0.5, selectable=True)
+        self.value_label = Gtk.Label(label="0", xalign=0.5)
         self.value_label.add_css_class("abacus-value")
         self.value_label.update_property([Gtk.AccessibleProperty.LABEL], ["Abacus value"])
         root.append(self.value_label)
 
-        self.area = Gtk.DrawingArea()
+        # A focusable drawing has no accessible role of its own; as a named
+        # group it is announced and reachable with Tab.
+        self.area = Gtk.DrawingArea(accessible_role=Gtk.AccessibleRole.GROUP)
         self.area.set_hexpand(True); self.area.set_vexpand(True)
         self.area.set_content_height(360)
         self.area.set_focusable(True)

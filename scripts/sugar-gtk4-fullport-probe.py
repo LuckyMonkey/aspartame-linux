@@ -13,8 +13,12 @@ input through QEMU and calls these subcommands between keystrokes:
   a11y PID                       interactive nodes that have no accessible name
   names PID                      every node: role, name and text (for writing specs)
   payload UID                    payload path of a Journal object
+  seed KIND                      put test objects in the Journal: tone (audio),
+                                 clip (video, when GStreamer can encode one),
+                                 starred (two starred entries)
+  find TITLE                     how many Journal objects have this title
 """
-import json, os, subprocess, sys, time
+import json, math, os, struct, subprocess, sys, tempfile, time, wave, zlib
 from pathlib import Path
 
 INTERACTIVE = {"button", "push button", "toggle button", "check box", "radio button",
@@ -35,6 +39,21 @@ def reexec_as_session_user():
               if Path(c).exists())
     os.setgroups([]); os.setgid(1000); os.setuid(1000)
     os.execve(py, [py, __file__, *sys.argv[1:]], env)
+
+
+def tone_wav(path, seconds=10, rate=8000):
+    with wave.open(str(path), "wb") as out:
+        out.setnchannels(1); out.setsampwidth(2); out.setframerate(rate)
+        out.writeframes(b"".join(struct.pack("<h", int(8000 * math.sin(2 * math.pi * 440 * i / rate)))
+                                 for i in range(seconds * rate)))
+
+
+def png(width=64, height=48, rgb=(30, 120, 200)):
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+    rows = b"".join(b"\x00" + bytes(rgb) * width for _ in range(height))
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)) +
+            chunk(b"IDAT", zlib.compress(rows)) + chunk(b"IEND", b""))
 
 
 def wait_for(desc, fn, timeout=20):
@@ -89,6 +108,12 @@ def main():
             if node.get_role_name() == "desktop frame" or node.get_process_id() == pid:
                 stack.extend(c for c in (node.get_child_at_index(i) for i in range(count)) if c)
 
+    def titled(title):
+        # The datastore ignores a title filter, so match titles here.
+        rows, _count = store.find(dbus.Dictionary({}, signature="sv"),
+                                  dbus.Array(["uid", "title"], signature="s"))
+        return [str(r["uid"]) for r in rows if str(r.get("title", "")) == title]
+
     def text_of(node):
         try:
             return Atspi.Text.get_text(node, 0, -1)
@@ -136,8 +161,41 @@ def main():
             uid = str(rows[0]["uid"])
         print(json.dumps({"uid": uid, "path": str(store.get_filename(uid))}))
     elif command == "names":
-        print(json.dumps([[n.get_role_name(), n.get_name(), text_of(n)[:40]]
+        print(json.dumps([[n.get_role_name(), n.get_name(), text_of(n)[:200]]
                           for n in nodes(int(args[0]))]))
+    elif command == "seed":
+        made = {}
+
+        def create(title, mime, data_path, **extra):
+            # One object per test title, so earlier runs never get picked.
+            for uid in titled(title):
+                store.delete(uid)
+            props = dbus.Dictionary({"title": title, "mime_type": mime, "keep": "0",
+                                     "activity": "", **extra}, signature="sv")
+            made[title] = str(store.create(props, str(data_path), True))
+
+        tmp = Path(tempfile.mkdtemp())
+        if args[0] == "tone":
+            tone_wav(tmp / "tone.wav")
+            create("Tone", "audio/x-wav", tmp / "tone.wav")
+        elif args[0] == "clip":
+            out = tmp / "clip.webm"
+            subprocess.run(["gst-launch-1.0", "-q", "videotestsrc", "num-buffers=240", "!",
+                            "video/x-raw,width=320,height=240,framerate=30/1", "!", "vp8enc", "!",
+                            "webmmux", "!", "filesink", "location=%s" % out],
+                           check=True, capture_output=True, timeout=60)
+            create("Clip", "video/webm", out)
+        elif args[0] == "starred":
+            (tmp / "kite.png").write_bytes(png(rgb=(30, 120, 200)))
+            create("Kite", "image/png", tmp / "kite.png", keep="1", description="We built a kite")
+            (tmp / "volcano.txt").write_text("Baking soda and vinegar.\n")
+            create("Volcano", "text/plain", tmp / "volcano.txt", keep="1",
+                   preview=dbus.ByteArray(png(rgb=(200, 80, 40))))
+        else:
+            raise SystemExit("unknown seed %r" % args[0])
+        print(json.dumps(made))
+    elif command == "find":
+        print(json.dumps({"count": len(titled(args[0]))}))
     elif command == "payload":
         print(json.dumps({"path": str(store.get_filename(args[0]))}))
     elif command == "a11y":

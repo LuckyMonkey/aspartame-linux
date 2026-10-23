@@ -166,8 +166,10 @@ class WriteActivity(SimpleActivity):
         picker_head.append(self._button("Done", "Close the image list", self._hide_picker,
                                         name="Close image list"))
         self.picker.append(picker_head)
-        self.picker_list = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=4)
+        # Rows are activated with Enter, Space or a click.
+        self.picker_list = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE)
         self.picker_list.update_property([Gtk.AccessibleProperty.LABEL], ["Journal images"])
+        self.picker_list.connect("row-activated", lambda _l, row: self._pick(None, *row.image))
         self.picker.append(self.picker_list)
         self.picker.set_visible(False)
         root.append(self.picker)
@@ -551,11 +553,18 @@ class WriteActivity(SimpleActivity):
             self.status.set_text("Cannot read the Journal: %s" % error)
             return
         for object_id, title in images:
-            self.picker_list.append(self._button(title, "Insert this image", self._pick, object_id, title,
-                                                 name="Insert %s" % title))
+            self.picker_list.append(Gtk.Label(label=title, xalign=0))
+            row = self.picker_list.get_last_child()
+            row.image = (object_id, title)
+            row.set_tooltip_text("Insert this image")
+            row.update_property([Gtk.AccessibleProperty.LABEL], ["Insert %s" % title])
         if not images:
             self.picker_list.append(Gtk.Label(label="No images in the Journal yet."))
+            self.picker_list.get_last_child().set_activatable(False)
         self.picker.set_visible(True)
+        first = self.picker_list.get_row_at_index(0)
+        if first is not None and first.get_activatable():
+            first.grab_focus()
 
     def _hide_picker(self, _button):
         self.picker.set_visible(False)

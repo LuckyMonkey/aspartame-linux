@@ -2,8 +2,8 @@
 
 A port of GTK3 Jukebox (sugarlabs/jukebox-activity): play audio and video
 from the Journal or local files, keep them in a playlist (previous/next,
-reorder, remove), seek, and watch video full screen. Playback uses
-Gtk.MediaFile, GTK's GStreamer-backed media stream.
+reorder, remove), seek, and watch video full screen. Playback drives
+GStreamer directly (see :mod:`jukebox_player`).
 
 The Journal payload is the GTK3 M3U playlist. Opened from a song or video,
 Jukebox plays it, leaves that object's bytes alone, and saves any playlist
@@ -59,8 +59,8 @@ class Journal:
         return entry
 
 
-def clock(microseconds):
-    seconds = max(0, int(microseconds // 1_000_000))
+def clock(nanoseconds):
+    seconds = max(0, int(nanoseconds // 1_000_000_000))
     return "%d:%02d" % divmod(seconds, 60)
 
 
@@ -123,16 +123,15 @@ class JukeboxActivity(SimpleActivity):
         frame = Gtk.Frame(label="Playlist")
         frame.set_child(scroll)
         self.side.append(frame)
-        edit = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=3)
-        for widget in (
-                self._button("Add from Journal", "Choose songs and videos from the Journal",
-                             self._show_picker),
-                self._button("Add file", "Add a song or video file", self._add_file),
-                self._button("Remove track", "Remove the selected track", self._remove),
-                self._button("Move up", "Move the selected track earlier", self._move, -1),
-                self._button("Move down", "Move the selected track later", self._move, 1)):
-            edit.append(widget)
-        self.side.append(edit)
+        for row in ((("Add from Journal", "Choose songs and videos from the Journal", self._show_picker, ()),
+                     ("Add file", "Add a song or video file", self._add_file, ())),
+                    (("Remove track", "Remove the selected track", self._remove, ()),
+                     ("Move up", "Move the selected track earlier", self._move, (-1,)),
+                     ("Move down", "Move the selected track later", self._move, (1,)))):
+            box = Gtk.Box(spacing=6)
+            for label, tip, handler, args in row:
+                box.append(self._button(label, tip, handler, *args))
+            self.side.append(box)
 
         self.picker = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         picker_header = Gtk.Box(spacing=8)
@@ -142,8 +141,10 @@ class JukeboxActivity(SimpleActivity):
         picker_header.append(self._button("Done", "Close the Journal list", self._hide_picker,
                                           name="Close Journal list"))
         self.picker.append(picker_header)
+        # Rows are activated with Enter, Space or a click.
         self.picker_list = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE)
         self.picker_list.update_property([Gtk.AccessibleProperty.LABEL], ["Journal media"])
+        self.picker_list.connect("row-activated", lambda _l, row: self._pick(None, *row.media))
         picker_scroll = Gtk.ScrolledWindow(vexpand=True)
         picker_scroll.set_child(self.picker_list)
         self.picker.append(picker_scroll)
@@ -280,27 +281,26 @@ class JukeboxActivity(SimpleActivity):
             return
         for object_id, title, mime_type in media:
             kind = "video" if mime_type.startswith("video/") else "audio"
-            button = self._button("%s (%s)" % (title, kind), "Add to the playlist",
-                                  self._pick, object_id, title,
-                                  name="Add %s to playlist" % title)
-            self.picker_list.append(button)
+            self.picker_list.append(Gtk.Label(label="%s (%s)" % (title, kind), xalign=0))
+            row = self.picker_list.get_last_child()
+            row.media = (object_id, title)
+            row.set_tooltip_text("Add to the playlist")
+            row.update_property([Gtk.AccessibleProperty.LABEL], ["Add %s to playlist" % title])
         if not media:
             self.picker_list.append(Gtk.Label(label="No songs or videos in the Journal yet."))
+            self.picker_list.get_last_child().set_activatable(False)
         self.picker.set_visible(True)
         self.status.set_text("%d songs and videos in the Journal" % len(media))
         first = self.picker_list.get_row_at_index(0)
-        if first is not None and isinstance(first.get_child(), Gtk.Button):
-            first.get_child().grab_focus()
+        if first is not None and first.get_activatable():
+            first.grab_focus()
 
     def _hide_picker(self, _button):
         self.picker.set_visible(False)
 
     def _pick(self, _button, object_id, title):
-        index = self.playlist.add(title, journal_path(object_id))
+        self.playlist.add(title, journal_path(object_id))
         self._refresh("Added %s" % title)
-        if self.media is None or not self.media.get_playing():
-            self.playlist.current = index
-            self._refresh()
 
     def _add_file(self, _button):
         dialog = Gtk.FileDialog(title="Choose a song or video")
@@ -319,10 +319,10 @@ class JukeboxActivity(SimpleActivity):
 
     def _stop_media(self):
         if self.media is not None:
-            self.media.set_playing(False)
-            self.media.disconnect_by_func(self._media_changed)
-            self.video.set_paintable(None)
+            self.media.close()
             self.media = None
+        self.video.set_paintable(None)
+        self.now_playing.set_visible(True)
         if self._tick:
             GLib.source_remove(self._tick)
             self._tick = 0
@@ -330,65 +330,77 @@ class JukeboxActivity(SimpleActivity):
             self._entry.destroy()
             self._entry = None
 
-    def _open_track(self, track):
+    def _uri(self, track):
         object_id = journal_id(track["path"])
         if object_id:
             self._entry = self.journal.open(object_id)
-            return Gio.File.new_for_path(self._entry.get_file_path())
+            return Gio.File.new_for_path(self._entry.get_file_path()).get_uri()
         if track["path"].startswith("/"):
-            return Gio.File.new_for_path(track["path"])
-        return Gio.File.new_for_uri(track["path"])
+            return Gio.File.new_for_path(track["path"]).get_uri()
+        return track["path"]
 
     def _play_index(self, index):
+        from jukebox_player import Player
         self._stop_media()
         self.playlist.current = index
         track = self.playlist.track
         if track is None:
             return
         try:
-            media_file = self._open_track(track)
-        except (OSError, GLib.Error) as error:
-            self._refresh("Cannot open %s: %s" % (track["title"], error))
+            uri = self._uri(track)
+            self.media = Player(on_frame=self._frame, on_state=self._state,
+                                on_ended=self._ended, on_error=self._error)
+        except (OSError, GLib.Error, RuntimeError, ValueError) as error:
+            self._refresh("Cannot play %s: %s" % (track["title"], error))
             return
-        self.media = Gtk.MediaFile.new_for_file(media_file)
-        self.media.connect("notify", self._media_changed)
-        self.video.set_paintable(self.media)
+        self.media.open(uri)
         self.media.play()
-        self._tick = GLib.timeout_add(500, self._update_position)
+        self._tick = GLib.timeout_add(250, self._update_position)
         self.now_playing.set_text(track["title"])
-        self.now_playing.set_visible(True)
         self._refresh("Playing: %s" % track["title"])
         self.play_button.set_label("Pause")
 
-    def _media_changed(self, media, pspec):
-        name = pspec.get_name()
+    def _frame(self, width, height, stride, data):
+        if self.media is None:
+            return False
+        texture = Gdk.MemoryTexture.new(width, height, Gdk.MemoryFormat.R8G8B8A8,
+                                        GLib.Bytes.new(data), stride)
+        if self.now_playing.get_visible():
+            # First frame of this track.
+            self.now_playing.set_visible(False)
+            self.status.set_text("Playing: %s · video %d×%d" % (self.playlist.track["title"], width, height))
+        self.video.set_paintable(texture)
+        return False
+
+    def _state(self, playing):
         track = self.playlist.track
-        title = track["title"] if track else ""
-        if name == "error" and media.get_error() is not None:
-            self.status.set_text("Cannot play %s: %s" % (title, media.get_error().message))
+        self.play_button.set_label("Pause" if playing else "Play")
+        if track is not None and self.media is not None:
+            video = "" if self.now_playing.get_visible() else " · video"
+            self.status.set_text(("Playing: %s%s" if playing else "Paused: %s%s") % (track["title"], video))
+
+    def _ended(self):
+        title = self.playlist.track["title"] if self.playlist.track else ""
+        if self.playlist.step(1):
+            self._play_index(self.playlist.current)
+        else:
+            self._stop_media()
+            self._refresh("Finished: %s" % title)
             self.play_button.set_label("Play")
-        elif name == "prepared" and media.is_prepared():
-            self.now_playing.set_visible(not media.has_video())
-            duration = media.get_duration()
-            self.position.set_range(0, max(1, duration))
-        elif name == "playing":
-            self.play_button.set_label("Pause" if media.get_playing() else "Play")
-            if not media.get_ended():
-                self.status.set_text(("Playing: %s" if media.get_playing() else "Paused: %s") % title)
-        elif name == "ended" and media.get_ended():
-            if self.playlist.step(1):
-                self._play_index(self.playlist.current)
-            else:
-                self.status.set_text("Finished: %s" % title)
-                self.play_button.set_label("Play")
-                self.now_playing.set_visible(True)
+
+    def _error(self, message):
+        title = self.playlist.track["title"] if self.playlist.track else ""
+        self._stop_media()
+        self._refresh("Cannot play %s: %s" % (title, message))
+        self.play_button.set_label("Play")
 
     def _update_position(self):
         if self.media is None:
             self._tick = 0
             return False
-        now, total = self.media.get_timestamp(), self.media.get_duration()
+        now, total = self.media.position(), self.media.duration()
         self._seeking = True
+        self.position.set_range(0, max(1, total))
         self.position.set_value(now)
         self._seeking = False
         self.time.set_text("%s / %s" % (clock(now), clock(total)))
@@ -397,14 +409,14 @@ class JukeboxActivity(SimpleActivity):
         return True
 
     def _seek(self, scale):
-        if not self._seeking and self.media is not None and self.media.is_seekable():
-            self.media.seek(int(scale.get_value()))
+        if not self._seeking and self.media is not None:
+            self.media.seek(scale.get_value())
 
     def _play_pause(self, _button):
-        if self.media is None or self.media.get_ended():
+        if self.media is None:
             index = self._selected()
             self._play_index(index if 0 <= index < len(self.playlist) else 0)
-        elif self.media.get_playing():
+        elif self.media.playing:
             self.media.pause()
         else:
             self.media.play()

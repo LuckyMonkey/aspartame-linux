@@ -75,13 +75,17 @@ def test_journal_media_are_added_from_the_picker(tmp_path):
     out = run_jukebox(f"""
 activity = jukebox()
 activity._show_picker(None)
-print("picker", [activity.picker_list.get_row_at_index(i).get_child().get_label() for i in range(2)])
+print("picker", [activity.picker_list.get_row_at_index(i).get_child().get_text() for i in range(2)])
 activity._pick(None, "2222", "Cat video")
+activity._pick(None, "1111", "Morning song")
+print("current", activity.playlist.track["title"])
 activity.write_file({str(tmp_path / 'playlist')!r})
 print("mime", activity.metadata["mime_type"])
 """)
     assert "picker ['Morning song (audio)', 'Cat video (video)']" in out
-    assert (tmp_path / "playlist").read_text() == "#EXTINF:Cat video\njournal://2222\n"
+    assert "current Cat video" in out   # adding never changes the current track
+    assert (tmp_path / "playlist").read_text() == \
+        "#EXTINF:Cat video\njournal://2222\n#EXTINF:Morning song\njournal://1111\n"
     assert "mime audio/x-mpegurl" in out
 
 

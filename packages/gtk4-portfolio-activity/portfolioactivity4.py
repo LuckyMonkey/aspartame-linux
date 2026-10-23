@@ -95,7 +95,7 @@ class PortfolioActivity(SimpleActivity):
         super().__init__(activity_handle)
         self.set_title("Portfolio")
         self.journal = journal or Journal()
-        self.show = Show()
+        self.deck = Show()
         self._autoplay = 0
         self._showing = False
         self._build()
@@ -127,7 +127,7 @@ class PortfolioActivity(SimpleActivity):
         self.autoplay.connect("toggled", self._autoplay_toggled)
         header.append(self.autoplay)
         self.speed = Gtk.DropDown.new_from_strings(list(INTERVAL_NAMES))
-        self.speed.set_selected(INTERVALS.index(self.show.interval))
+        self.speed.set_selected(INTERVALS.index(self.deck.interval))
         self.speed.update_property([Gtk.AccessibleProperty.LABEL], ["Autoplay speed"])
         self.speed.connect("notify::selected", self._speed_changed)
         header.append(self.speed)
@@ -157,6 +157,7 @@ class PortfolioActivity(SimpleActivity):
         provider.load_from_data(
             b"button { min-height: 38px; border-radius: 18px; } entry { min-height: 40px; }"
             b" picture.slide { background: #eef3f5; border-radius: 10px; }"
+            b" flowboxchild.current-slide { outline: 3px solid #2f88bd; border-radius: 8px; }"
             b" label.empty { font-size: 18px; } frame.slide-text { border: 1px solid #8aa8b8;"
             b" border-radius: 10px; padding: 6px; }")
         display = Gdk.Display.get_default()
@@ -180,7 +181,8 @@ class PortfolioActivity(SimpleActivity):
         self.slide_title.update_property([Gtk.AccessibleProperty.LABEL], ["Slide title"])
         self.slide_title.connect("changed", self._title_edited)
         page.append(self.slide_title)
-        self.description = Gtk.TextView(wrap_mode=Gtk.WrapMode.WORD_CHAR)
+        # Short form fields: Tab moves on rather than typing a tab.
+        self.description = Gtk.TextView(wrap_mode=Gtk.WrapMode.WORD_CHAR, accepts_tab=False)
         self.description.update_property([Gtk.AccessibleProperty.LABEL], ["Slide description"])
         self.description.get_buffer().connect("changed", self._description_edited)
         scroll = Gtk.ScrolledWindow(min_content_height=90)
@@ -214,7 +216,7 @@ class PortfolioActivity(SimpleActivity):
         cover.append(self._button("Move earlier", "Move the current slide earlier", self._move, -1))
         cover.append(self._button("Move later", "Move the current slide later", self._move, 1))
         page.append(cover)
-        self.introduction = Gtk.TextView(wrap_mode=Gtk.WrapMode.WORD_CHAR)
+        self.introduction = Gtk.TextView(wrap_mode=Gtk.WrapMode.WORD_CHAR, accepts_tab=False)
         self.introduction.update_property([Gtk.AccessibleProperty.LABEL], ["Portfolio introduction"])
         scroll = Gtk.ScrolledWindow(min_content_height=70)
         scroll.set_child(self.introduction)
@@ -225,6 +227,8 @@ class PortfolioActivity(SimpleActivity):
         self.thumbs = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=6,
                                   homogeneous=True, row_spacing=8, column_spacing=8)
         self.thumbs.update_property([Gtk.AccessibleProperty.LABEL], ["Slides"])
+        # Thumbnails are activated with Enter, Space or a click.
+        self.thumbs.connect("child-activated", lambda _f, child: self._thumb_clicked(None, child.get_index()))
         scroll = Gtk.ScrolledWindow(vexpand=True)
         scroll.set_child(self.thumbs)
         page.append(scroll)
@@ -242,20 +246,20 @@ class PortfolioActivity(SimpleActivity):
         except Exception as error:
             self.status.set_text("Cannot read the Journal: %s" % error)
             slides = []
-        self.show.load_starred(slides)
+        self.deck.load_starred(slides)
         self._render()
         self._render_thumbs()
-        count = len(self.show.slides)
+        count = len(self.deck.slides)
         self.status.set_text("%d starred %s" % (count, "entry" if count == 1 else "entries"))
 
     def _render(self):
-        slide = self.show.slide
+        slide = self.deck.slide
         has = slide is not None
         self.empty.set_visible(not has)
         self.picture.set_visible(has)
         for widget in (self.slide_title, self.description, self.star):
             widget.set_sensitive(has)
-        n, i = len(self.show.slides), self.show.current
+        n, i = len(self.deck.slides), self.deck.current
         self.first_button.set_sensitive(has and i > 0)
         self.prev_button.set_sensitive(has and i > 0)
         self.next_button.set_sensitive(has and i < n - 1)
@@ -278,7 +282,7 @@ class PortfolioActivity(SimpleActivity):
 
     def _render_thumbs(self):
         self.thumbs.remove_all()
-        for index, slide in enumerate(self.show.slides):
+        for index, slide in enumerate(self.deck.slides):
             box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
             picture = Gtk.Picture(paintable=texture(slide.preview), can_shrink=True,
                                   content_fit=Gtk.ContentFit.CONTAIN)
@@ -286,17 +290,16 @@ class PortfolioActivity(SimpleActivity):
             box.append(picture)
             box.append(Gtk.Label(label=slide.title or "Untitled", ellipsize=Pango.EllipsizeMode.END,
                                      max_width_chars=18))
-            button = Gtk.Button(child=box)
-            button.set_tooltip_text("Show this slide")
-            button.update_property([Gtk.AccessibleProperty.LABEL],
-                                   ["Slide %d: %s" % (index + 1, slide.title or "Untitled")])
-            button.connect("clicked", self._thumb_clicked, index)
-            if index == self.show.current:
-                button.add_css_class("suggested-action")
-            self.thumbs.append(button)
+            self.thumbs.append(box)
+            child = self.thumbs.get_child_at_index(index)
+            child.set_tooltip_text("Show this slide")
+            child.update_property([Gtk.AccessibleProperty.LABEL],
+                                  ["Slide %d: %s" % (index + 1, slide.title or "Untitled")])
+            if index == self.deck.current:
+                child.add_css_class("current-slide")
 
     def _thumb_clicked(self, _button, index):
-        self.show.go(index)
+        self.deck.go(index)
         self.views.set_visible_child_name("slides")
         self._render()
 
@@ -305,18 +308,18 @@ class PortfolioActivity(SimpleActivity):
             self._render_thumbs()
 
     def _go(self, _button, index):
-        self.show.go(index if index >= 0 else len(self.show.slides) - 1)
+        self.deck.go(index if index >= 0 else len(self.deck.slides) - 1)
         self._render()
 
     def _step(self, _button, direction):
-        if self.show.step(direction):
+        if self.deck.step(direction):
             self._render()
 
     def _move(self, _button, step):
-        if self.show.move(step):
+        if self.deck.move(step):
             self._render_thumbs()
             self._render()
-            self.status.set_text("Moved to position %d" % (self.show.current + 1))
+            self.status.set_text("Moved to position %d" % (self.deck.current + 1))
 
     def _key(self, _controller, keyval, _keycode, _state):
         if keyval == Gdk.KEY_Escape and self.is_fullscreen():
@@ -340,16 +343,16 @@ class PortfolioActivity(SimpleActivity):
 
     def _title_edited(self, entry):
         if not self._showing:
-            self.show.edit(title=entry.get_text())
+            self.deck.edit(title=entry.get_text())
 
     def _description_edited(self, buffer):
         if not self._showing:
-            self.show.edit(description=buffer.get_text(*buffer.get_bounds(), False))
+            self.deck.edit(description=buffer.get_text(*buffer.get_bounds(), False))
 
     def _flush_edits(self):
         """Write edited titles/descriptions back to their Journal entries."""
         failed = 0
-        for slide in self.show.dirty():
+        for slide in self.deck.dirty():
             try:
                 self.journal.update(slide)
                 slide.dirty = False
@@ -358,7 +361,7 @@ class PortfolioActivity(SimpleActivity):
         return failed
 
     def _unstar(self, _button):
-        slide = self.show.slide
+        slide = self.deck.slide
         if slide is None:
             return
         try:
@@ -366,7 +369,7 @@ class PortfolioActivity(SimpleActivity):
         except Exception as error:
             self.status.set_text("Cannot unstar: %s" % error)
             return
-        self.show.remove(slide.uid)
+        self.deck.remove(slide.uid)
         self._render()
         self._render_thumbs()
         self.status.set_text("Removed %s from the portfolio" % (slide.title or "the slide"))
@@ -382,18 +385,18 @@ class PortfolioActivity(SimpleActivity):
             GLib.source_remove(self._autoplay)
             self._autoplay = 0
         if button.get_active():
-            self._autoplay = GLib.timeout_add_seconds(self.show.interval, self._advance)
-            self.status.set_text("Autoplay every %s" % INTERVAL_NAMES[INTERVALS.index(self.show.interval)])
+            self._autoplay = GLib.timeout_add_seconds(self.deck.interval, self._advance)
+            self.status.set_text("Autoplay every %s" % INTERVAL_NAMES[INTERVALS.index(self.deck.interval)])
         else:
             self.status.set_text("Autoplay stopped")
 
     def _advance(self):
-        if self.show.step(1, wrap=True):
+        if self.deck.step(1, wrap=True):
             self._render()
         return True
 
     def _speed_changed(self, dropdown, _pspec):
-        self.show.interval = INTERVALS[dropdown.get_selected()]
+        self.deck.interval = INTERVALS[dropdown.get_selected()]
         if self.autoplay.get_active():
             self._autoplay_toggled(self.autoplay)
 
@@ -401,25 +404,25 @@ class PortfolioActivity(SimpleActivity):
 
     def _cover(self):
         buffer = self.introduction.get_buffer()
-        self.show.title = self.cover_title.get_text()
-        self.show.introduction = buffer.get_text(*buffer.get_bounds(), False)
+        self.deck.title = self.cover_title.get_text()
+        self.deck.introduction = buffer.get_text(*buffer.get_bounds(), False)
 
     def _save_pdf(self, _button):
         from portfolio_export import write_pdf
         self._cover()
-        if not self.show.slides:
+        if not self.deck.slides:
             self.status.set_text("Star some Journal entries first")
             return
         pictures = {}
-        for slide in self.show.slides:
+        for slide in self.deck.slides:
             try:
                 pictures[slide.uid] = self.journal.picture(slide)
             except Exception:
                 pictures[slide.uid] = slide.preview
         path = Path(tempfile.mkstemp(prefix="portfolio-", suffix=".pdf")[1])
-        title = self.show.title or "Portfolio"
+        title = self.deck.title or "Portfolio"
         try:
-            pages = write_pdf(path, title, self.show.introduction, self.show.slides, pictures)
+            pages = write_pdf(path, title, self.deck.introduction, self.deck.slides, pictures)
             self.journal.export("%s (PDF)" % title, "application/pdf", path)
         except Exception as error:
             path.unlink(missing_ok=True)
@@ -432,7 +435,7 @@ class PortfolioActivity(SimpleActivity):
     def read_file(self, file_path):
         """Restore the cover and show settings; anything else raises."""
         show = Show.from_payload(json.loads(Path(file_path).read_text(encoding="utf-8")))
-        self.show = show
+        self.deck = show
         self.cover_title.set_text(show.title)
         self.introduction.get_buffer().set_text(show.introduction)
         self.speed.set_selected(INTERVALS.index(show.interval))
@@ -442,7 +445,7 @@ class PortfolioActivity(SimpleActivity):
         """Save the cover and settings, and slide edits to their entries."""
         self._cover()
         self._flush_edits()
-        Path(file_path).write_text(json.dumps(self.show.to_payload(), sort_keys=True) + "\n",
+        Path(file_path).write_text(json.dumps(self.deck.to_payload(), sort_keys=True) + "\n",
                                    encoding="utf-8")
 
     def can_close(self):

@@ -42,6 +42,8 @@ KEYCODES.update({
     "EQUAL": "equal", "=": "equal",
     "COMMA": "comma", "SLASH": "slash", "SEMICOLON": "semicolon",
     "APOSTROPHE": "apostrophe",
+    "UP": "up", "DOWN": "down", "LEFT": "left", "RIGHT": "right",
+    "HOME": "home", "END": "end", "PAGEUP": "pgup", "PAGEDOWN": "pgdn",
 })
 # Characters typed with Shift on a US layout, and plain punctuation keys.
 SHIFTED = {"#": "3", "!": "1", "(": "9", ")": "0", "*": "8", "_": "MINUS",

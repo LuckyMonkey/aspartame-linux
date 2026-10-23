@@ -95,6 +95,11 @@ def main(package):
     cls = _activity_class(package)
     activity = cls(None)
     result["checks"]["construct"] = True
+    # An attribute named like a window method (say self.show) breaks the
+    # toolkit, which calls activity.show() when the Activity starts.
+    shadowed = sorted(name for name in vars(activity) if callable(getattr(Gtk.Window, name, None)))
+    if shadowed:
+        result["errors"].append("instance attributes shadow Gtk.Window methods: %s" % shadowed)
 
     clicked = 0
     for button in list(_buttons(activity)):
