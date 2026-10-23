@@ -6,5 +6,5 @@ icon = activity-portfolio
 activity_version = 53
 show_launcher = yes
 license = GPLv3+
-summary = Build a simple portfolio page
-tags = Art;Writing
+summary = Make a slide show from the Journal entries you starred, and save it as a PDF
+tags = Language;Teacher
