@@ -39,6 +39,9 @@ def _install_stub(Gtk):
         def save(self):
             self.saved += 1
 
+        def can_close(self):
+            return True
+
     package = types.ModuleType("sugar4")
     package.__path__ = []
     activity = types.ModuleType("sugar4.activity")
