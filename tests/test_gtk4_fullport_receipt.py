@@ -39,3 +39,13 @@ def test_activity_toolbar_button_has_an_accessible_name():
     patch = (ROOT / 'patches/gtk4-preview/0301-toolkit-downstream-on-9d86a31.patch').read_text()
     assert '+    def _set_accessible_title(self, metadata):' in patch
     assert '[metadata.get("title", "Activity")])' in patch
+
+
+def test_every_retirement_candidate_has_a_receipt_spec():
+    receipt = load(ROOT / 'scripts/sugar-gtk4-fullport-receipt.py')
+    assert set(receipt.CANDIDATES) == {'markdown', 'pippy', 'abacus', 'finance', 'jukebox',
+                                       'write', 'portfolio'}
+    for spec in receipt.CANDIDATES.values():
+        kinds = {step[0] for step in spec['steps']}
+        assert kinds <= {'focus', 'key', 'type', 'see', 'match', 'journal'}
+        assert 'key' in kinds or 'type' in kinds

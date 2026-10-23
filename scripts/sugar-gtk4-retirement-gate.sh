@@ -7,9 +7,10 @@ share_report="$root/reports/gtk4/share-join-qualification-20261004.md"
 chirality_report="$root/reports/gtk4/chirality-session-resume-implementation-20261004.md"
 
 blockers=()
+# Color My World left the list on 2026-10-23: it has no GTK3 version.
 retirement_candidates=(
     "Portfolio" "Markdown" "Finance" "Write"
-    "Pippy" "Jukebox" "Color My World" "Abacus"
+    "Pippy" "Jukebox" "Abacus"
 )
 missing_parity=()
 for candidate in "${retirement_candidates[@]}"; do

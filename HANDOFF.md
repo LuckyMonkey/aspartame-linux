@@ -1,4 +1,4 @@
-# Aspartame handoff — 2026-10-22
+# Aspartame handoff — 2026-10-23
 
 This file holds the current state only. Earlier checkpoints are in git
 history.
@@ -12,21 +12,24 @@ history.
     and intent tests.
   - Procedure: `docs/sugar-modernization/UPSTREAM_SYNC.md`.
 - **ISO:**
-  - `aspartame-build/artifacts/out/aspartame-2026.10.22-x86_64.iso`
-    (sha256 `8d18f445…`) carries the runtime export `ccce1187…`
-    (`runtime/aspartame-dev/artifacts/gtk4-preview-standalone-20261022b.tar.gz`).
-  - Every receipt check passes on the packaged runtime without the dev
-    share: `reports/gtk4/repin-qualification-20261022.md`.
+  - `aspartame-build/artifacts/out/aspartame-2026.10.23-x86_64.iso`
+    (sha256 `c0d0a5fc…`) carries the runtime export `ccce1187…`
+    (`runtime/aspartame-dev/artifacts/gtk4-preview-standalone-20261022b.tar.gz`)
+    and the ported Activities.
+  - Receipts and regression on the packaged runtime, no dev share:
+    `reports/gtk4/fullport-receipts-20261023.md` (runtime) and
+    `reports/gtk4/repin-qualification-20261022.md` (Settings, Chirality).
 - **Conversion tracker:** every gate is closed, including two-guest share
   and join.
 - **Default Space:** GTK4. GTK3 keeps running as the F7 recovery Space
   (`ASPARTAME_DEFAULT_SPACE=gtk3` restores the old default).
-- **Retirement gate:** still BLOCKED, but only on `full-parity`.
-  - Markdown and Pippy are FULL PORT under the core-workflow standard:
-    `reports/gtk4/fullport-receipts-20261022.md`.
-  - The other six candidates lack core GTK3 workflows. See the verdict
-    table in `docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md`.
-- **Host suite:** `make test`.
+- **Retirement gate:** PASS (`scripts/sugar-gtk4-retirement-gate.sh`).
+  - All seven candidates are FULL PORT: Markdown, Pippy, Abacus, Finance,
+    Jukebox, Write, Portfolio. Gaps are listed per Activity in
+    `docs/sugar-modernization/ACTIVITY_PORT_CLASSIFICATION.md`.
+  - Color My World left the list (no GTK3 version).
+  - Nothing is removed. GTK3 packages stay until a separate decision.
+- **Host suite:** `make test` (633 passed).
 
 ## Building the ISO
 1. Export the runtime from the dev guest with `scripts/sugar-gtk4-export.sh`.
@@ -39,17 +42,10 @@ history.
    at build time.
 
 ## Next
-1. **Port the missing core workflows.** Then run
-   `scripts/sugar-gtk4-fullport-receipt.py` (add a spec for each
-   candidate). In rough order of size:
-   - Abacus types;
-   - Finance budgets;
-   - Jukebox Journal media and video;
-   - Write formatting and export;
-   - the Portfolio slideshow, which is effectively a rewrite.
-
-   Color My World needs a GTK3 reference, or it should leave the
-   candidate list.
+1. **GTK3 removal (owner decision).** The evidence gate passes. Next would
+   be a disposable image without the GTK3 packages, qualified with the
+   same receipts and regression, before touching the main image. Keep
+   the F7 recovery Space until then.
 2. **Open proposals:** see `docs/OPEN-PROPOSALS.md`.
    - Unknown-key preservation for JSON payloads.
    - Snakepit GUI workflow observability.
@@ -65,6 +61,11 @@ history.
   `/tmp/aspartame-qemu-qmp`.
 - `./scripts/ssh-asp` needs `SSH_ASKPASS=/tmp/aspartame-askpass
   SSH_ASKPASS_REQUIRE=force`; do not use BatchMode.
+- Receipts: copy `scripts/sugar-gtk4-fullport-probe.py` to `/tmp` in the
+  guest, then run `scripts/sugar-gtk4-fullport-receipt.py <candidate>`
+  on the host. The guest probes in `/usr/lib/aspartame/gtk4-preview/scripts`
+  need `GTK4_ROOT=/usr/lib/aspartame/gtk4-preview`; the lifecycle probes
+  and the matrix run as root.
 - On the ISO, the packaged runtime is `/usr/lib/aspartame/gtk4-preview`,
   and its probes are in `scripts/` there. Copy
   `sugar-gtk4-settings-probe.py` to `/tmp` first.

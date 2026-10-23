@@ -40,6 +40,19 @@ PORT. Peer Activity join was qualified on 2026-10-22 (`share-join=PASS`), so
 the gate no longer reports `collaboration-join`. The shell/session restart requirement is now qualified; no
 GTK3 package is removed by this check.
 
+## Stage reached 2026-10-23: every candidate is FULL PORT; the gate passes
+
+Abacus, Finance, Jukebox, Write and Portfolio were ported to their GTK3
+core workflows. With Markdown and Pippy, all seven candidates passed
+real-keystroke receipts on the packaged `aspartame-2026.10.23` ISO
+(`reports/gtk4/fullport-receipts-20261023.md`). Color My World left the
+list because there is no GTK3 version to compare.
+
+`scripts/sugar-gtk4-retirement-gate.sh` now prints `gtk4-retirement=PASS`.
+That closes the evidence gates only. Removing the GTK3 packages is a
+separate decision: build a disposable image without them first, and keep
+the F7 recovery Space until that image is qualified.
+
 ## Stage reached 2026-10-22: GTK4 is the default Space
 
 The session now boots into GTK4. GTK3 keeps running as the F7 recovery
