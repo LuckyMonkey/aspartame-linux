@@ -1,39 +1,119 @@
+import json
+import sys
+from fractions import Fraction
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).parents[1]
+PACKAGE = ROOT / "packages/gtk4-abacus-activity"
+sys.path.insert(0, str(PACKAGE))
+from abacus_model import Abacus, TYPE_ORDER, format_value, parse_value  # noqa: E402
+
+# The abacus types of the GTK3 reference (sugarlabs/abacus AbacusActivity.py),
+# minus 'fraction', which its toolbar leaves commented out.
+GTK3_TYPES = {"suanpan", "soroban", "decimal", "nepohualtzintzin", "hexadecimal",
+              "binary", "schety", "caacupe", "cuisenaire", "custom"}
 
 
-def test_abacus_bundle_is_native_and_registered():
-    package = ROOT / "packages/gtk4-abacus-activity"
-    info = (package / "activity/activity.info").read_text(); source = (package / "abacusactivity4.py").read_text()
-    assert "bundle_id = com.homegrownapps.abacus" in info
-    assert "sugar-activity4 abacusactivity4.AbacusActivity" in info
-    assert "class AbacusActivity(SimpleActivity)" in source
-    assert "place value" in source and 'label="Clear"' in source
-    assert "Click a bead" in source and "_set_digit" in source
-    assert 'Gtk.Frame(label="Place-value rods")' in source
-    assert "rods_frame.set_halign(Gtk.Align.CENTER)" in source
-    assert "row.set_halign(Gtk.Align.CENTER)" in source
-    assert "self._beads = []" in source
-    assert "def _render_beads" in source
-    assert 'button.abacus-bead' in source and 'font-size: 20px' in source
-    assert 'rods_frame.set_size_request(760, -1)' in source
-    assert 'self.rods.set_vexpand(True)' in source
-    assert 'rods_frame.set_hexpand(False); rods_frame.set_vexpand(True)' in source
-    assert 'row.set_halign(Gtk.Align.CENTER); row.set_hexpand(False); row.set_vexpand(True)' in source
-    assert 'value_frame.set_size_request(420, -1)' in source
-    assert 'label.abacus-title' in source
-    assert 'clear.set_halign(Gtk.Align.CENTER)' in source
+def test_every_gtk3_abacus_type_is_available():
+    assert set(TYPE_ORDER) == GTK3_TYPES
+
+
+@pytest.mark.parametrize("kind,number,rods", [
+    ("suanpan", 1234, [[0, 1], [0, 2], [0, 3], [0, 4]]),
+    ("soroban", Fraction("3.25"), None),
+    ("hexadecimal", 255, [[1, 7], [1, 7]]),
+    ("binary", 5, [[0, 1], [0, 0], [0, 1]]),
+    ("nepohualtzintzin", 399, [[3, 4], [3, 4]]),
+    ("schety", Fraction("12.75"), None),
+    ("caacupe", Fraction(7, 3), None),
+    ("cuisenaire", Fraction(1, 2), None),
+])
+def test_numbers_round_trip_on_each_type(kind, number, rods):
+    abacus = Abacus(kind)
+    abacus.set_value(number)
+    assert abacus.value() == number
+    if rods:
+        assert abacus.rods[-len(rods):] == rods
+    again = Abacus.from_payload(json.loads(json.dumps(abacus.to_payload())))
+    assert again.value() == number and again.type.name == kind
+
+
+def test_bead_clicks_follow_the_reference_rules():
+    abacus = Abacus("suanpan")
+    abacus.click_bead(14, "bottom", 2)      # push three lower beads up
+    abacus.click_bead(14, "top", 0)         # one upper bead down: +5
+    assert abacus.value() == 8
+    abacus.click_bead(14, "bottom", 0)      # first bead back: the rest follow
+    assert abacus.value() == 5
+    fractions = Abacus("caacupe")
+    fractions.click_bead(6, "bottom", 0, down=True)   # 1/2 rod, two beads
+    assert fractions.value() == Fraction(-1)
+    fractions.click_bead(6, "bottom", 0)              # upper bead back to rest
+    assert fractions.value() == Fraction(-1, 2)
+
+
+def test_values_display_exactly():
+    assert format_value(Fraction("12.75")) == "12.75"
+    assert format_value(Fraction(7, 3)) == "2 1/3"
+    assert format_value(Fraction(-1, 2), fractional=True) == "−1/2"
+    assert parse_value("2 1/3") == Fraction(7, 3)
+    assert parse_value("1,234") == 1234
+    with pytest.raises(ValueError):
+        parse_value("twelve")
+
+
+def test_numbers_that_do_not_fit_are_refused():
+    with pytest.raises(ValueError):
+        Abacus("binary").set_value(1 << 15)
+    with pytest.raises(ValueError):
+        Abacus("decimal").set_value(Fraction(1, 2))
+
+
+@pytest.mark.parametrize("payload", [
+    [], {"format": "other"}, {"format": "aspartame-abacus-v2", "type": "suanpan",
+                              "custom": {}, "rods": []},
+    {"values": [0, 1, 2, 3, 99]},
+])
+def test_malformed_payloads_raise(payload):
+    with pytest.raises(ValueError):
+        Abacus.from_payload(payload)
+
+
+def test_gtk4_abacus_1_payload_still_opens():
+    abacus = Abacus.from_payload({"values": [0, 1, 2, 3, 4]})
+    assert abacus.type.name == "decimal" and abacus.value() == 1234
+
+
+def test_activity_shows_typed_number_and_saves_it(tmp_path):
+    from gtk4_activity_harness import button, load
+    activity = load("gtk4-abacus-activity", "abacusactivity4", "AbacusActivity")
+    activity.kind.set_selected(TYPE_ORDER.index("soroban"))
+    activity.entry.set_text("3.25")
+    button(activity, "Show number").emit("clicked")
+    assert activity.value_label.get_text() == "3.25"
+    path = tmp_path / "abacus.json"
+    activity.write_file(path)
+    restored = load("gtk4-abacus-activity", "abacusactivity4", "AbacusActivity")
+    restored.read_file(path)
+    assert restored.abacus.type.name == "soroban"
+    assert restored.value_label.get_text() == "3.25"
+    assert restored.kind.get_selected() == TYPE_ORDER.index("soroban")
+
+
+def test_activity_refuses_a_corrupt_payload(tmp_path):
+    from gtk4_activity_harness import load
+    activity = load("gtk4-abacus-activity", "abacusactivity4", "AbacusActivity")
+    path = tmp_path / "bad"
+    path.write_bytes(b"\xff\xfe not json")
+    with pytest.raises(ValueError):
+        activity.read_file(path)
+
+
+def test_bundle_is_registered():
+    info = (PACKAGE / "activity/activity.info").read_text()
+    assert "exec = sugar-activity4 abacusactivity4.AbacusActivity" in info
     assert "com.homegrownapps.abacus" in (ROOT / "scripts/sugar-gtk4-activity-matrix.sh").read_text()
     assert "gtk4-abacus-activity" in (ROOT / "scripts/sugar-gtk4-dev-sync.sh").read_text()
     assert "gtk4-abacus-activity" in (ROOT / "scripts/sugar-gtk4-build.sh").read_text()
-
-
-def test_abacus_journal_roundtrip_is_json():
-    source = (ROOT / "packages/gtk4-abacus-activity/abacusactivity4.py").read_text()
-    probe = (ROOT / "scripts/sugar-gtk4-abacus-roundtrip.py").read_text()
-    assert "def read_file(self, file_path)" in source
-    assert "def write_file(self, file_path)" in source
-    assert '"values"' in source
-    assert "direct-bead-action=PASS" in probe
-    assert "Move the 7th bead on the Ones rod" in probe
